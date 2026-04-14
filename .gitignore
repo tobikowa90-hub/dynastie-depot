@@ -12,6 +12,9 @@
 # Superpowers docs (nur lokal relevant)
 docs/superpowers/
 
+# Lock files (LibreOffice/Excel)
+.~lock.*
+
 # OS files
 Thumbs.db
 .DS_Store
