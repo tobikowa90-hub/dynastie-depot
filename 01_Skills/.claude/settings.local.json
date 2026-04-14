@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip -o quick-screener.zip -d quick-screener-extracted)",
+      "Read(//c/Users/tobia/.claude/plugins//**)",
+      "Read(//c/Users/tobia/.claude/plugins/**)",
+      "Read(//c/Users/tobia/.claude/**)",
+      "Bash(/dev/null find:*)",
+      "Bash(SKILL_BASE=\"/c/Users/tobia/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/19d236d2-d400-4b62-80df-e66e2eb2bb3b/cb73b7e9-de19-499a-a388-525cc646aeea/skills/quick-screener\")",
+      "Read(//c/Users/tobia/OneDrive/Desktop/Claude Stuff/06_Skills-Pakete/$SKILL_BASE/**)"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+---
+title: "CapEx-FLAG"
+type: concept
+tags: [konzept, flag, capex, scoring, kern]
+created: 2026-04-10
+updated: 2026-04-14
+version: v3.4
+sources: []
+related: [DEFCON-System, Analyse-Pipeline, ROIC-vs-WACC, Update-Klassen-DEFCON, Tariff-Exposure-Regel]
+---
+
+# CapEx-FLAG — Die heilige Regel
+
+> **FLAG überschreibt jeden Score. Kein Kompromiss, keine Ausnahme.**
+
+## Automatische FLAG-Trigger
+
+| Trigger | Konsequenz |
+|---------|------------|
+| CapEx/OCF > 60% | 🔴 FLAG — Sparrate 0€, auch bei DEFCON 4 |
+| Negativer FCF-Trend + steigendes CapEx | 🔴 FLAG — Sparrate 0€ |
+| Insider Net-Selling >$20M / 90d (kein 10b5-1 "M") | 🔴 FLAG — Sparrate 0€ |
+
+## Scoring-Skala CapEx/OCF
+
+| CapEx/OCF | Punkte | Kommentar |
+|-----------|--------|-----------|
+| < 10% | 9 | Fabless-Ideal (Referenz: AVGO) |
+| 10–20% | 7–8 | Asset-Light |
+| 20–40% | 4–6 | Normal |
+| 40–60% | 1–3 | Beobachten |
+| > 60% | 0 + FLAG | Stopp |
+
+## Pre-Processing Regel 2 (Finance Leases)
+
+Wenn Finance Lease Obligations >$5B: **manueller 8-K-Check vor FLAG-Aktivierung.**
+Shibui kann Lease-Payments nicht isolieren. Bereinigung nötig.
+
+**Referenz:** MSFT — Finance Leases $19.5B. Bereinigtes CapEx/OCF ~63% statt 83.6%.
+FLAG bleibt dennoch aktiv, weil bereinigt >60%.
+
+## Fallbeispiele
+
+- **AVGO:** 2.3% → Kalibrierungsanker. Fabless-Modell.
+- **MSFT:** 83.6% (bereinigt 63%) → FLAG aktiv seit 26.03.2026
+- **GOOGL:** ~75% FY26 → struktureller Ausschluss (kein Einstieg)
+- **ASML:** 12.5% → kein FLAG, Non-US-Kalibrierungsanker
+
+## Verlinkungen
+
+- [[DEFCON-System]] — Scoring-Matrix
+- [[Analyse-Pipeline]] — FLAG greift in jeder Stufe
+- [[ROIC-vs-WACC]] — Verwandter Malus (ROIC < WACC)
+- [[Update-Klassen-DEFCON]] — FLAG-Auslösung = Klasse-C-Event (sofort)
+- [[Tariff-Exposure-Regel]] — Verwandter FLAG-Trigger (>35% Exposure)
+- [[Non-US-Scoring]] — CapEx-Kalibrierung für IFRS-Ticker
+- [[MSFT]] — Aktives FLAG-Beispiel
+- [[GOOGL]] — Struktureller Ausschluss
+- [[AVGO]] — Fabless-Referenz (2.3%)

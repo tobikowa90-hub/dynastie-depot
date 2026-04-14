@@ -1,0 +1,181 @@
+# Wiki Log
+
+> Append-only activity log. Most recent entries at the bottom.
+> Format: `## [YYYY-MM-DD] operation | Description`
+
+---
+
+## [2026-04-09] setup | Wiki initialized
+- Created directory structure: raw/, pages/entities/, pages/concepts/, pages/sources/, pages/synthesis/, pages/queries/
+- Created CLAUDE.md (schema), index.md (catalog), log.md (this file)
+- Pages created: none (fresh wiki)
+- Pages updated: none
+
+## [2026-04-10] setup | Claude Stuff Integration — Skills, Konzepte, Verlinkungen
+- Integrationsquelle: `C:\Users\tobia\OneDrive\Desktop\Claude Stuff\` (00_Core, 01_Skills)
+- Neue Source-Seiten: [[quick-screener]], [[insider-intelligence]], [[non-us-fundamentals]], [[dynastie-depot-skill]]
+- Neue Concept-Seiten: [[ETF-Core]], [[Steuer-Architektur]]
+- Aktualisierte Seiten: [[Analyse-Pipeline]], [[DEFCON-System]], [[AI in Investment Analysis]], [[Investing-Mastermind-Index]], [[index.md]]
+- Gesamt: 6 neue Seiten, 5 aktualisierte Seiten — alle Skill/Tool-Seiten mit DEFCON-Konzepten verknüpft
+
+## [2026-04-10] ingest | LLMs for Equity Stock Ratings (J.P. Morgan, ICAIF 2024)
+- Quelle: arXiv 2411.00856 — PDF in raw/ abgelegt
+- Kernthese: GPT-4 ohne Fine-Tuning schlägt Wall-Street-Analysten bei 3–12-Monats-Aktien-Ratings; Fundamentaldaten sind stärkste Daten-Modalität (MAE 1.417 mit Fundamentals+Sentiment vs. 1.570 Analysten)
+- Pages created: [[LLMs for Equity Stock Ratings]], [[J.P. Morgan AI Research]], [[GPT-4]], [[S&P 500]], [[LLM-Based Stock Rating]], [[Financial Fundamentals Analysis]], [[Chain-of-Thought Prompting]], [[News Sentiment Analysis]], [[Forward Returns Evaluation]], [[Analyst Stock Ratings]], [[AI in Investment Analysis]]
+- Pages updated: [[index.md]], [[log.md]]
+- Gesamt: 11 neue Seiten
+
+## [2026-04-10] earnings-preview | ASML Q1 2026
+- Berichtstag: 15.04.2026
+- EPS-Konsensus: $6,64 (+10,6% YoY) | Revenue: $8,65B (+11,8% YoY)
+- Sentiment: 84% bullish (44 Analysten) | PT-Median $1.593
+- Key Watch: High-NA Ramp + China-Exposure (aktuell 24%, FLAG-Schwelle 35%)
+- Pages updated: [[ASML]] — Earnings Preview Block + Analyse-Historie-Eintrag 10.04.2026
+
+## [2026-04-10] link | Querverbindungen JPM-Research ↔ DEFCON-Konzepte gezogen
+- Lücke geschlossen: [[Chain-of-Thought Prompting]] und [[LLM-Based Stock Rating]] waren nicht mit [[DEFCON-System]] / [[Analyse-Pipeline]] / [[dynastie-depot-skill]] verbunden
+- Pages updated (Frontmatter `related:` + neue Body-Sections):
+  - [[Chain-of-Thought Prompting]] — Abschnitt "Umsetzung im Dynastie-Depot" + Links zu DEFCON-System, Analyse-Pipeline, dynasty-depot-skill
+  - [[LLM-Based Stock Rating]] — Abschnitt "Umsetzung im Dynastie-Depot" mit Mapping-Tabelle + selbe Links
+  - [[DEFCON-System]] — Verlinkungen ergänzt: CoT, LLM-Stock-Rating, AI in Investment Analysis
+  - [[Analyse-Pipeline]] — Verlinkungen ergänzt: CoT, LLM-Stock-Rating
+  - [[AI in Investment Analysis]] — Frontmatter `related:` um DEFCON-System, Analyse-Pipeline, dynasty-depot-skill erweitert
+- Gesamt: 0 neue Seiten, 5 aktualisierte Seiten
+
+## [2026-04-14] ingest | Wissenschaftliche Fundierung + Token-Effizienz
+
+### Neue Dateien erstellt (15)
+
+**wiki/sources/ (4):**
+- [[arXiv-1711.04837]] — ML + 5J-Fundamental-Fenster (Gu/Kelly/Xiu)
+- [[Gu-Kelly-Xiu-2020]] — FCF-Primacy, trailing P/E, forward P/E (RFS 2020)
+- [[Morningstar-Wide-Moat]] — 8 Moat-Quellen, Wide Moat Whitepaper
+- [[Buffetts-Alpha]] — QMJ+BAB+Value, Float-Leverage, cheap+safe+quality (AQR 2018)
+
+**wiki/concepts/ — Paper-Konzepte (5):**
+- [[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]
+- [[Buffett-Faktorlogik]], [[QMJ-Faktor]]
+
+**wiki/concepts/ — Token-Effizienz (5):**
+- [[Token-Mechanik]], [[Context-Hygiene]], [[CLAUDE-md-Konstitution]]
+- [[Context-Hygiene-Code]], [[Update-Klassen-DEFCON]]
+
+**wiki/synthesis/ (1):**
+- [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix, vollständig vernetzt
+
+### Aktualisierte Dateien (16)
+
+**wiki/entities/satelliten/ (11):** Alle 11 Satelliten-Seiten mit `related_concepts` + `## Wissenschaftliche Basis`
+- ASML, AVGO, MSFT, RMS, VEEV, SU, BRKB (+ Buffett-Quellen), V, APH, COST, TMO
+
+**System-Dateien (5):**
+- CLAUDE.md — Faktortabelle als 4. Pflicht-Lektüre; Wiki-Trigger erweitert; Token-Kurzreferenz; MCP-Check; Applied Learning
+- index.md — 45 → 60 Notes; alle neuen Seiten katalogisiert
+- log.md — dieser Eintrag
+- 00_Core/CORE-MEMORY.md — Milestone-Eintrag
+
+### Backlink-Vernetzung
+Vollständig bidirektional:
+- 4 Paper → 5 Konzepte → 1 Synthese → 11 Entities
+- Alle Pflicht-Regeln (trailing P/E, Float-Leverage) in betroffenen Dateien dokumentiert
+
+## [2026-04-14] setup | Faktortabelle + Insider-Schnittstelle (Prompt 2)
+- Neu: `00_Core/Faktortabelle.md` — Snapshot-First mit `<!-- DATA:TICKER -->` Kommentar-Ankern
+- Neu: `wiki/concepts/Faktortabelle-Architektur.md` — Konzeptseite mit Datenhierarchie + 3 Arbeitsbereiche
+- Update: `insider_intel.py` — `--update-faktortabelle` Parameter + `factor-sync` 3-Wege-Vergleich
+- Update: `insider-intelligence/SKILL.md` — Snapshot-First Workflow + Vault-Integration
+- Fix: COST CIK `0000723254` → `0000909832` in `dynastie-depot/SKILL.md`
+- Fix: EODHD-Hinweis → yfinance-Hinweis in `dynastie-depot/SKILL.md`
+- Update: `index.md` — 60 → 61 Notes
+
+## [2026-04-14] lint | Vault-Audit — Orphans, Broken Links, Cross-Links, Frontmatter
+
+### Runde 1: Orphan-Fix
+- **Problem:** 7 isolierte Knoten im Obsidian-Graph (3 Raw-Dateien, 4 Autoren-Namen, WIKI-SCHEMA)
+- Pages created: [[Dominik Wolff]], [[Fabian Echterling]], [[Aakanksha Jadhav]], [[Vishal Mirza]]
+- Pages updated: [[LLMs for Equity Stock Ratings]], [[AI in Investment Analysis]], [[index.md]]
+
+### Runde 2: Vollständiges Audit
+- **Backslash-Typos gefixt:** `[[BRKB\|BRK.B]]` → `[[BRKB|BRK.B]]` in [[Investing-Mastermind-Index]], [[Depot-State-April-2026]]
+- **Fehlende Ersatzbank-Seiten erstellt (6):** [[MKL]], [[NVDA]], [[SNPS]], [[RACE]], [[DE]], [[SPGI]]
+- **DEFCON Cross-Links ergänzt:** Alle 6 Konzeptseiten (CapEx-FLAG, ROIC-vs-WACC, Tariff-Exposure, Non-US-Scoring, Analyse-Pipeline, Update-Klassen) jetzt bidirektional vernetzt
+- **Frontmatter standardisiert:** title, type, created, updated, sources, related für alle DEFCON-Konzeptseiten
+- Pages created: 10 neue Seiten (4 Autoren + 6 Ersatzbank)
+- Pages updated: 11 Seiten (2 Typo-Fix + 3 Orphan-Links + 6 DEFCON Cross-Links/Frontmatter)
+- Gesamt: 61 → 71 Notes
+
+## [2026-04-15] edit | System-Integration v4.0 (Cowork-Session)
+- Update: SKILL.md v4.0 (15 Regeln, 4 Blöcke: Datenabruf, Early-Exit, Output-Hygiene, Session-Management + Snapshot-First Schritt 0)
+- Update: INSTRUKTIONEN.md v1.4 (6 neue Blöcke: Sync-Pflicht, Update-Klassen, Ersatzbank-Aktivierung, Non-US Kurzreferenz, Sparplan-Formel, Tariff Scoring)
+- Update: CLAUDE.md (MCP-Session-Check, Token-Effizienz 6 Bullets, Applied Learning, Wiki-Trigger erweitert)
+- Update: CORE-MEMORY.md v1.5 (Scores sync: APH 61/FLAG, RMS 71, VEEV 74; Meilensteine; Sparplan-Formel)
+- Update: settings.json (BASH 150k, Deny Rules für .obsidian/node_modules/dist/.git)
+- Update: [[Context-Hygiene-Code]] (settings.json Wirkungsbereiche korrigiert — autoCompact existiert nicht im Schema)
+- Quelle: Chat 09./10./13./15.04.2026
+
+## [2026-04-15] analysis | V (Visa) DEFCON v3.4 Vollanalyse
+
+- **Score:** 86/100 | **DEFCON:** 🟢 4 | **FLAG:** ✅ Kein FLAG
+- **Kurs:** ~$309 | **Market Cap:** ~$593B | **FY:** Sep 2025
+- **Datenquellen:** defeatbeta (Cash Flow, Balance Sheet, Income Statement, ROIC, WACC, Gross Margin), insider_intel.py (Form 4 SEC EDGAR), StockAnalysis (Quarterly CapEx/OCF, P/FCF, FCF Yield), WebSearch (Kurs, Analyst-Konsensus, Q1 FY26 Earnings, EPS-Revisionen)
+- **Fundamentals 44/50:** CapEx/OCF ~6% (Fabless-Niveau, 9/9), FCF $21.6B FY25, GM ~80% stabil, Net Debt/EBITDA 0.31x exzellent. Schwäche: ROIC ~9.9% GAAP knapp unter WACC ~10.5% (Goodwill-Verzerrung Visa-Europe $19.9B), Fwd PE 23.35x / P/FCF 25.88x im mittleren Bewertungsbereich.
+- **Moat 19/20:** GuruFocus Moat Score 9/10 Wide. 4 überlappende Quellen: Netzwerkeffekte (dominant), Intangible Assets, Switching Costs, Efficient Scale. +1 Pricing Power (VAS +28% Q1 FY26 bestätigt).
+- **Technicals 7/10:** -17.6% vom ATH $375 (Jun 2025). PT-Upside +28–29%. Kurs unter fallendem 200MA ($330) → 1/3 Trend-Score.
+- **Insider 6/10:** Diskr. 90d nur $201K (kein FLAG). Plan-Verkäufe $24.6M (10b5-1 plankonform, Lloyd Carney). Ownership strukturell trivial (<0.1% MC) bei Mega-Cap → 0/3.
+- **Sentiment 10/10:** 37 Buy / 3 Hold / 0 Sell. Zacks: 1 Aufwärtsrevision / 0 Abwärts. -1 PT-Dispersion ($323–450, 32% Spread).
+- **Sparplan:** Voll aktiv (DEFCON 4 × $35.63/Monat).
+- **Nächste Aktion:** Q2 FY26 Earnings ~22.04.2026 → QuickCheck.
+- **Sync:** CORE-MEMORY.md (Meilenstein + Score-Register) + Faktortabelle.md (V-Zeile aktualisiert, Offene Scores 6→5/11) + log.md (dieser Eintrag)
+
+## [2026-04-15] analysis | COST (Costco) DEFCON v3.4 Vollanalyse
+
+- **Score:** 69/100 | **DEFCON:** 🟢 4 (Bestandsposition) | **FLAG:** ✅ Kein FLAG
+- **Kurs:** ~$940 | **Market Cap:** ~$416B | **FY:** Aug 2025
+- **Datenquellen:** defeatbeta (Cash Flow, Balance Sheet, Income Statement, ROIC, WACC), insider_intel.py (Form 4 SEC EDGAR), WebSearch (Kurs, Moat-Score, Analyst-Konsensus)
+- **Screener-Exception:** GAAP-ROIC 5.6% (strukturell niedrig durch niedriges Book Value). Membership Yield $5.3B / IC $34.9B = **15.2%** > WACC 12.3% — echter ökonomischer Return-Motor. Kein ROIC-FLAG; dokumentiert als Ausnahme.
+- **Fundamentals 29/50:** P/FCF ~53x (teuer), FCF Yield 1.88%, Fwd PE ~51x (Bewertungs-Malus). CapEx/OCF 21.3% ausgezeichnet. Bilanz solide (Net Debt/EBITDA <1x). FCF $7.2B FY2025.
+- **Moat 19/20:** GuruFocus 9/10 Wide. Membership-Loyalty unübertroffen — Renewal Rate 93%. Pricing Power durch Low-Cost-Operator-Position strukturell gesichert.
+- **Technicals 5/10:** Moderate Distanz vom ATH. 22 Analysten PT Upside ~+15%.
+- **Insider 8/10:** CEO/Insider-Käufe bekannt. Kein FLAG-Selling.
+- **Sentiment 8/10:** Strong Buy-Konsens, 0% Sell.
+- **Sparplan:** Voll aktiv (DEFCON 4 × $35.63/Monat).
+- **Nächste Aktion:** Q1 FY27 Earnings ~Dez 2026.
+- **Sync:** CORE-MEMORY.md + Faktortabelle.md + log.md
+
+## [2026-04-15] analysis | BRK.B (Berkshire Hathaway) DEFCON v3.4 Vollanalyse
+
+- **Score:** 73/100 | **DEFCON:** 🟢 4 | **FLAG:** ✅ Kein FLAG
+- **Kurs:** ~$480 | **ATH:** $539.80 (Mai 2025) | **Market Cap:** ~$1.04T
+- **Datenquellen:** defeatbeta (Cash Flow, Balance Sheet, Annual CF), WebSearch (Kurs, ATH, Book Value, Float, Analyst PT)
+- **Screener-Exception:** P/B 1.44x statt P/FCF (Versicherung/Holdings). Float $686B als zinsloses Fremdkapital → ROIC-Verzerrung strukturell.
+- **Fundamentals 35/50:** P/B 1.44x (historische Buyback-Zone <1.5x). Book Value CAGR +10% p.a. 5J ($443B→$717B). Interest Income $39.98B FY25 (T-Bill Float-Ertrag). Netto-Cash-Position ~$344B. CapEx/OCF 45.6% (BNSF Railroad + BHE Utilities, kein FLAG). Goodwill 6.8% = kein Malus.
+- **Moat 19/20:** Float-Leverage einzigartig, BNSF Efficient Scale (Railroad-Duopol), 60J Capital-Allocation-Track-Record. –1 Nachfolge-Risiko Greg Abel.
+- **Technicals 4/10:** -11.1% vom ATH, unter 200D-MA, limitierter PT-Upside ~+13.5%.
+- **Insider 7/10:** Buffett ~15% Ownership — maximale Alignment. Kein Selling FY25. Buybacks $0 FY25 (Cash-Preservation-Strategie).
+- **Sentiment 8/10:** Strong Buy-Konsens, 0% Sell, 22 Analysten.
+- **Sparplan:** Voll aktiv (DEFCON 4 × Sparrate).
+- **Nächste Aktion:** Q-Earnings Mai 2026 — Buyback-Wiederaufnahme bei Kurs <$480 (P/B <1.5x).
+- **Sync:** CORE-MEMORY.md + Faktortabelle.md + log.md
+
+## [2026-04-15] analysis | SU (Schneider Electric) DEFCON v3.4 Vollanalyse
+
+- **Score:** 71/100 | **DEFCON:** 🟢 4 | **FLAG:** ✅ Kein FLAG
+- **Kurs:** €267.55 | **Market Cap:** €150.4B | **Börse:** Paris (SU.PA)
+- **Datenquellen:** eodhd_intel.py / yfinance (Non-US Fundamentals Module), WebSearch (ROIC GuruFocus, Analyst-Konsensus)
+- **Fundamentals 31/50:** ROIC 10.48% > WACC 8.96% (positiver Spread ~+1.5-2%). CapEx/OCF 25.2% (4J stabil 23–25%, ausgezeichnet). FCF-Wachstum +41% in 3J (€3.26B→€4.59B). P/FCF 37.7x (teuer), FCF Yield 2.65% (niedrig). Goodwill 40.2% (AVEVA M&A 2023, –Malus). Net Debt/EBITDA 2.51x (akzeptabel). GM-Trend stabil ~42%.
+- **Moat 16/20:** Narrow/Wide (Morningstar Narrow). EcoStruxure IoT-Plattform Switching Costs, Intangible Assets (Marke #1 Energiemanagement), Efficient Scale (Rechenzentrum-Boom). Kein GuruFocus Wide Moat direkt verifiziert.
+- **Technicals 8/10:** +12.6% über 200D-MA (einziger Satellit über 200MA ✅). -4.5% vom 52W-Hoch. PT Ø €294.45 (+10.1%).
+- **Insider 7/10:** 3.39% Ownership (über 1%-Schwelle). AMF manuell unverified — konservativ.
+- **Sentiment 9/10:** 22 Analysten Strong Buy, 0% Sell.
+- **Sparplan:** Voll aktiv (DEFCON 4 × Sparrate).
+- **Nächste Aktion:** H1 2026 Earnings Juli/Aug 2026.
+- **Meilenstein:** Alle 11 Satelliten vollständig gescort — offene Scores: 0/11 ✅
+- **Sync:** CORE-MEMORY.md + Faktortabelle.md + log.md
+
+## [2026-04-15] analysis | APH Tariff-Check abgeschlossen
+- Trigger: Offener APH-FLAG-Posten aus Analyse 09.04.2026 (Tariff-Exposure CN/MY)
+- Datenquellen: defeatbeta (Geography — kein API-Output), Earnings Release FY2025, Q1 FY2025 Transcript (23.04.2025)
+- Befund Revenue: China FY2025 = 14.7% ($4.58B / $31.1B) — unter 15%-Notiz-Schwelle. Trend: 23% (2023) → 14.7% (2025) strukturell rückläufig.
+- Befund Supply-Chain: Produktionsstandorte CN/MY durch CEO Adam Norwitt bestätigt (Q1 2025 Call). Kombinierte Exposure ~17–22% → Risk-Map-Notiz-Pflicht aktiv.
+- FLAG-Entscheidung: Kein neuer Tariff-FLAG nach Regelwerk (Revenue <15%). Bestehender FLAG bleibt (Score-basiert: Score 61, DEFCON 3).
+- Sync: CORE-MEMORY.md + Faktortabelle.md + log.md (diese Einträge)

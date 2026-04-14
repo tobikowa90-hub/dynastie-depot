@@ -1,0 +1,102 @@
+# 🔁 Session-Übergabeprompt — Dynastie-Depot
+**Erstellt:** 08.04.2026 | **Für:** Neue Cowork-Session
+
+---
+
+## ▶️ TRIGGER
+
+```
+Session starten
+```
+
+---
+
+## 📋 Übergabe-Kontext (an Claude übergeben wenn Session startet)
+
+Bitte lies zuerst die vier Core-Dateien wie gewohnt (CORE-MEMORY, KONTEXT, INSTRUKTIONEN, Faktortabelle).
+Danach gilt folgender Kontext aus der letzten Session:
+
+---
+
+### ✅ Was in der letzten Session abgeschlossen wurde
+
+1. **defeatbeta MCP via WSL2 vollständig repariert** (07.04.2026)
+   - Konfiguration: `wsl -d Ubuntu-24.04 bash -c /home/tobia/.defeatbeta-env/bin/python -m defeatbeta_mcp`
+   - Version 1.27.0 | 100+ Tools | Daten bis 03.04.2026
+
+2. **ASML API Sanity Check abgeschlossen** (07.04.2026)
+   - OCF-Δ ~10% = IFRS 16 vs. ASC 842 strukturell (Leasingzahlungen) — kein API-Drift
+   - CapEx-Δ ≤ 3.5% plausibel. FLAG-Schlussfolgerung: Clean unter beiden Standards
+   - IFRS-OCF-Toleranz auf ±15% erweitert wenn Leasingbasis erklärbar
+
+3. **TMO DEFCON v3.4 Re-Analyse abgeschlossen** (07.04.2026)
+   - Score: **67/100** | DEFCON: 🟡 3 | Sparrate: 50% Sockelbetrag
+   - Verbesserungen: Net Debt/EBITDA 2.57x ✅ | Fwd P/E 19.9x ✅
+   - Schwächen: ROIC 2.6% Q (Goodwill $49.4B) | FCF -13.4% YoY | Unter 200MA
+   - **Entscheidung ausstehend:** Q1 Earnings 23.04.2026 (FCF >$7.3B nötig für DEFCON 4)
+
+4. **SKILL.md Token-Optimierungen implementiert** (08.04.2026)
+   - WACC: nur neuester Wert (70+ Handelstage ignorieren)
+   - ROIC quarterly: max. 6 Quartale auswerten
+   - Quarterly CF: bedingt (nur bei CapEx/OCF 45–65%)
+   - Geography: bedingt (nur bei Produktions-Risikoländern CN/TW/MY/TH/VN)
+   - WebSearch: konsolidieren (mehrere Metriken in einer Suche)
+   - ZIP-Paket: `06_Skills-Pakete/dynastie-depot_v3.4.1.zip` bereit zur Reinstallation
+
+---
+
+### 🚀 Nächste Aufgaben (in dieser Reihenfolge)
+
+| Priorität | Aufgabe | Details |
+|-----------|---------|---------|
+| 🔴 1 | **!Analysiere MSFT** | Earnings 29.04. — FLAG-Review CapEx/OCF, aktuell 65.3% |
+| 🔴 2 | **!Analysiere AVGO** | Tariff-Exposure MY/TH ~35%, Insider-FLAG läuft |
+| 🟡 3 | **!Analysiere COST** | Retail, US-lastig, Tariff-Ketteneffekte |
+| 🟡 4 | **!Analysiere V** | Kein Tariff-Risiko, aber Konsumrückgang-Check |
+| 🟡 5 | **!Analysiere APH** | Produktion CN/MY — Tariff-Exposure prüfen |
+| 🟢 6 | **!Analysiere BRK.B** | Holding, defensiv |
+| 🟢 7 | **!Analysiere VEEV** | SaaS, kein Tariff-Risiko |
+| 🟢 8 | **!Analysiere RMS** | Luxury, EUR, Preismacht |
+| 🟢 9 | **!Analysiere SU** | Industrie, EUR |
+
+**Hinweis Liberation Day:** Bei jedem Satelliten Tariff-Exposure prüfen (CN/TW/MY/TH/VN >35% = FLAG). Kurse seit 02.04. teilweise -10–20% gefallen → Forward-Metriken als Primärbasis, TTM als Kontext.
+
+---
+
+### 📅 Kritische Termine
+
+| Datum | Ereignis | Aktion |
+|-------|----------|--------|
+| **23.04.2026** | TMO Q1 Earnings | FCF >$7.3B → DEFCON 4 / sonst ZTS-Aktivierung prüfen |
+| **28.04.2026** | SPGI Earnings | QuickCheck SPGI (Score 79, Watchlist) |
+| **29.04.2026** | MSFT Q3 Earnings | FLAG-Auflösung wenn CapEx/OCF <60% |
+| **Mai 2026** | PEGA Earnings | Slot-16-Entscheidung |
+| **01.05.2026** | Sparplan | !Rebalancing live testen (erster echter Lauf) |
+| **Juni 2026** | Sparplan-Booster | 9.500€ Bausparvertrag + 2.000€ Steuererstattung |
+
+---
+
+### ⚙️ System-Status (Stand 08.04.2026)
+
+| Komponente | Status |
+|-----------|--------|
+| defeatbeta MCP | ✅ WSL2 Ubuntu-24.04 — produktiv |
+| Shibui Finance SQL | ✅ Primärquelle Technicals + FLAG-Historie |
+| insider_intel.py | ✅ Form-4-Scanner 8 US-Satelliten |
+| eodhd_intel.py / yfinance | ✅ Non-US Fundamentals (Cowork-Session: Web-Fallback) |
+| SKILL.md | ✅ v3.4.1 — Token-Optimierungen aktiv |
+| ZIP-Paket | ✅ dynasty-depot_v3.4.1.zip — reinstallation bereit |
+| Shibui SQL column | ⚠️ `code` nicht `ticker` — immer `WHERE code = 'TICKER'` |
+
+---
+
+### 💡 Wichtige Einzel-Hinweise für die nächste Session
+
+- **MSFT FLAG:** CapEx/OCF war 65.3% (Q2 FY26). Nächste Earnings 29.04. entscheidend. Wenn <60% → FLAG auflösen, D3-Sockelbetrag aktivieren.
+- **AVGO Insider:** Modul zeigt $123M FLAG, aber wahrscheinlich Post-Vesting. OpenInsider Spalte „X"/„M" immer manuell gegenchecken vor FLAG-Aktivierung.
+- **Token-Effizienz:** Die neuen Regeln in SKILL.md (v3.4.1) greifen ab sofort. WACC-Zeitreihe kürzen, ROIC auf 6Q, Geography nur bei Risikoländern.
+- **!Rebalancing:** Noch nicht live getestet — Test-Lauf erst am 01.05. wenn Sparplan eingeht.
+
+---
+
+*🦅 SESSION-HANDOVER.md v1.0 | Dynastie-Depot | Erstellt: 08.04.2026*

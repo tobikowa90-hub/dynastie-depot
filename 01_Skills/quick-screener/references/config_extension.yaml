@@ -1,0 +1,35 @@
+# ============================================================
+# DEPRECATED – 04.04.2026
+# Die screener_exceptions sind bereits in config.yaml integriert
+# (Abschnitt "screener_exceptions" als einfache Ticker-Liste).
+# Das screening_log-Konzept wurde nicht weiterverfolgt —
+# Screening-Ergebnisse werden direkt in watchlist/keine_zuteilung
+# der config.yaml dokumentiert.
+# Diese Datei nur als historische Referenz behalten.
+# ============================================================
+
+# --- Screener-Exceptions ---
+# Ticker mit nicht-standardmaessigem Cashflow-Profil.
+# Fuer diese werden angepasste Metriken verwendet (siehe thresholds.md).
+screener_exceptions:
+  - ticker: BRK.B
+    grund: "Float-basiertes Holding-Modell"
+    ersatz_metriken: ["price_book", "combined_ratio"]
+  - ticker: MKL
+    grund: "Specialty Insurance + Ventures"
+    ersatz_metriken: ["price_book", "combined_ratio"]
+  - ticker: FFH.TO
+    grund: "Insurance Holding"
+    ersatz_metriken: ["price_book", "combined_ratio"]
+
+# --- Screening-Status (wird vom Screener vorgeschlagen, User bestaetigt) ---
+# Moegliche Status: "gruen_pending_defcon", "gelb_beobachtung", "rot_aussortiert"
+screening_log:
+  - ticker: AVGO
+    datum: "2026-03-31"
+    ampel: "gruen"
+    status: "im_depot"
+    p_fcf: 30.5
+    roic: 32.0
+    moat: "Wide"
+  # Weitere Eintraege werden vom Screener vorgeschlagen

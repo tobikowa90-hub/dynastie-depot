@@ -1,0 +1,18 @@
+# OneDrive temp files
+.tmp.drivedownload/
+.tmp.driveupload/
+~$*
+
+# Archive (historisch, nicht fuer Remote Agent relevant)
+05_Archiv/
+
+# Skill-Pakete (ZIPs, nicht fuer Remote Agent)
+06_Skills-Pakete/
+
+# Superpowers docs (nur lokal relevant)
+docs/superpowers/
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini

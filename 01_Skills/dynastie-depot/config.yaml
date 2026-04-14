@@ -1,0 +1,418 @@
+# Dynastie-Depot – Portfolio State
+# Regeln: SKILL.md | Strategie: manifest.md | Pipeline: PIPELINE.md
+# Stand: 06.04.2026
+
+# ─────────────────────────────────────────────
+# PORTFOLIO-RAHMEN
+# ─────────────────────────────────────────────
+portfolio:
+  sparrate_eur: 950
+  aktuelle_slots: 16
+  max_aktien_slots: 11
+  belegte_aktien_slots: 11
+  freie_aktien_slots: 0
+  us_hard_cap_pct: 63
+  us_current_pct: 46.41
+  zieljahr: 2058
+
+brokers:
+  ing:
+    zweck: "ETF-Core + Freistellungsauftrag"
+    sparanteil_pct: 65
+    sparrate_eur: 617.50
+    freistellung_eur: 1500
+  scalable:
+    zweck: "Satelliten + Alpha"
+    sparanteil_pct: 30
+    sparrate_eur: 285.00
+    freistellung_eur: 500
+  euwax:
+    zweck: "Gold"
+    sparanteil_pct: 5
+    sparrate_eur: 47.50
+
+allokation:
+  etf_core_pct: 65
+  satelliten_pct: 30
+  gold_pct: 5
+
+# ─────────────────────────────────────────────
+# SYSTEMREGELN (v3.3 — 06.04.2026)
+# ─────────────────────────────────────────────
+system_regeln:
+
+  _system_version: "v3.4 — 06.04.2026"
+
+  score_verfallsregel:
+    beschreibung: "Score gilt 180 Tage ab score_datum. Danach: QuickCheck erzwingt Re-Analyse."
+    formel: "score_valid_until = score_datum + 180 Tage"
+    trigger: "Score-Alter > 180 Tage → automatischer Deep-Dive-Trigger im QuickCheck (Checkpunkt 7 Rot)"
+
+  substitute_activation_global:
+    beschreibung: "Ersatz-Aktivierungsregel für alle Satelliten. Einheitlich und bindend."
+    vorbereitung_bei: "DEFCON 2 (Score 50–64) — Ersatz identifizieren + analysieren"
+    ausfuehrung_bei: "DEFCON 1 (Score <50) ODER explizites Veto durch User"
+    ersatz_voraussetzung: "Ersatz-Ticker muss zum Tauschzeitpunkt Score ≥80 + kein aktives FLAG haben"
+    steuer_regel: "Niemals durch Verkauf tauschen — Sparplan auf Ersatz umleiten. Bei unvermeidbarem Verkauf: Abgeltungsteuer 26,375% + FIFO + Freibetragscheck"
+
+  moat_drift_trigger:
+    beschreibung: "Drei objektive Auslöser für automatischen !Analysiere-Trigger, unabhängig vom Score-Alter"
+    trigger_1: "Morningstar Moat-Downgrade Wide → Narrow (sofort, score-unabhängig)"
+    trigger_2: "Marktanteilsverlust >10% im Kernsegment — dokumentiert in Earnings Call / Pressebericht"
+    trigger_3: "Gross Margin Rückgang >5 Prozentpunkte über 4 aufeinanderfolgende Quartale (Shibui cash_flow_quarterly + Macrotrends)"
+    aktion: "Sofortiger !Analysiere — kein Warten auf Score-Verfall"
+
+  sparplan_verteilung:
+    beschreibung: "Formelle Berechnungsregel für !Rebalancing. Verbindlich."
+    gewichte: "DEFCON-4-Clean = 1.0 | DEFCON-3 = 0.5 | FLAG (beliebig) = 0.0"
+    formel: "Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht"
+    beispiel: |
+      Annahme: 8× DEFCON-4-Clean + 2× DEFCON-3 + 1× FLAG
+      Nenner = (8 × 1.0) + (2 × 0.5) + (1 × 0.0) = 9.0
+      D4-Einzelrate = 285€ / 9.0 × 1.0 = 31,67€
+      D3-Einzelrate = 285€ / 9.0 × 0.5 = 15,83€
+      FLAG-Einzelrate = 0€
+      Summencheck: (8 × 31,67) + (2 × 15,83) + 0 = 285€ ✓
+
+  tariff_exposure_quelle:
+    beschreibung: "Primärquelle für Tariff-Exposure-Scoring (Pflicht bei jedem !Analysiere)"
+    quelle_1: "SEC EDGAR 10-K / 20-F → Abschnitt 'Geographic Revenue' (primär, maschinenlesbar)"
+    quelle_2: "Earnings Call Transcript (defeatbeta get_stock_earning_call_transcript) → Management-Kommentar zu Zöllen"
+    quelle_3: "Simply Wall St 'Company Analysis' → Schätzung (Fallback wenn keine exakten Daten)"
+    schwelle_check: "CN + TW + MY + TH + VN Anteil an Revenue + Supply-Chain-Anteil > 35% → FLAG"
+
+# ─────────────────────────────────────────────
+# ETF-CORE (ING)
+# ─────────────────────────────────────────────
+etfs:
+  - ticker: IWDA
+    name: "iShares MSCI World"
+    broker: ING
+    typ: "Developed World"
+  - ticker: EIMI
+    name: "iShares ACWI IMI"
+    broker: ING
+    typ: "Emerging Markets"
+  - ticker: EXUSA
+    name: "iShares MSCI World ex-USA"
+    broker: ING
+    typ: "Ex-USA Diversifikation"
+  - ticker: AVGC
+    name: "Avantis Global Small Cap Value"
+    broker: ING
+    typ: "Factor / Small Cap Value"
+  - ticker: EUWAX
+    name: "EUWAX Gold"
+    broker: Scalable
+    typ: "Gold 5%"
+
+# ─────────────────────────────────────────────
+# SATELLITEN (Scalable) – 11/11 Slots belegt
+# ─────────────────────────────────────────────
+satelliten:
+  - ticker: ASML
+    name: "ASML Holding"
+    typ: "Asset-Light / Halbleiter-Equipment"
+    defcon: 3
+    score: 68
+    score_datum: "2026-04-06"
+    score_valid_until: "2026-10-03"
+    flag: false
+    flag_hinweis: "China-Revenue ~24% FY2024 (Exportrestriktionen) — Risk-Map-Notiz aktiv, kein FLAG (unter 35%-Schwelle)"
+    sparrate_hinweis: "DEFCON 3 = 50% Sockelbetrag (~15,83 EUR/Monat)"
+    naechste_pruefung: "Q1 2026 Earnings (High-NA-Ramp-Bestätigung + China-Revenue-Trend)"
+    scoring_notiz: "Score 68: Moat 19/20 (Wide, Monopol), aber Bewertung Fwd P/E 38x + P/FCF ~41x drückt Fundamentals auf 28/50. Kein Bewertungsabstand."
+    ersatz: SNPS
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: Europa
+    us_exposure: false
+
+  - ticker: AVGO
+    name: "Broadcom"
+    typ: "Asset-Light / Semiconductors"
+    defcon: 4
+    score: 86
+    score_datum: "2026-03-25"
+    score_valid_until: "2026-09-21"
+    flag: true
+    flag_grund: "Insider-Selling ohne 10b5-1-Plan (M-Code): Tan $24.3M + Brazeal $27.1M – FLAG aktiv per 02.04.2026"
+    flag_seit: "2026-Q2"
+    flag_wirkung: "Sparplan läuft weiter, kein Nachkauf bis FLAG-Review"
+    naechste_pruefung: "Q3 FY26 Earnings"
+    ersatz: "NVDA / MRVL"
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: USA
+    us_exposure: true
+
+  - ticker: MSFT
+    name: "Microsoft"
+    typ: "Asset-Light / Cloud"
+    defcon: 2
+    score: 60
+    score_datum: "2026-04-08"
+    score_valid_until: "2026-10-05"
+    flag: true
+    flag_grund: "CapEx/OCF FLAG aktiv — Q2 FY26: 83.6% (bereinigt um Finance Leases ~63%). Strukturell >60%."
+    flag_seit: "2026-Q1"
+    flag_wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt alle DEFCON-Stufen. DEFCON jetzt 2 (Score 60)."
+    flag_aufloesung: "Q3 FY26 Earnings 29.04.2026 — bereinigtes CapEx/OCF muss <60% fallen"
+    naechste_pruefung: "2026-04-29 Q3 FY26 Earnings — FLAG-Auflösung oder Eskalation zu DEFCON 1"
+    roic_notiz: "ROIC 6Q-Ø 7.5% vs. WACC 13.35% — strukturell unter Kapitalkosten (CapEx-Ramp-Effekt)"
+    ersatz: GOOGL
+    substitute_activation_rule: "GOOGL ist Ersatz aber selbst mit FLAG — bei DEFCON-1-Trigger: ZTS oder VEEV-Verstärkung prüfen"
+    worst_case: "Score <50 → DEFCON 1 → Ersatz-Analyse eskalieren (GOOGL FLAG noch aktiv → alternativ ZTS/VEEV)"
+    region: USA
+    us_exposure: true
+
+  - ticker: RMS
+    name: "Hermès International"
+    typ: "Substanz / Luxury"
+    defcon: 4
+    score: null
+    score_datum: null
+    score_valid_until: null
+    flag: false
+    ersatz: RACE
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: Europa
+    us_exposure: false
+
+  - ticker: VEEV
+    name: "Veeva Systems"
+    typ: "Asset-Light / Life Sciences SaaS"
+    defcon: 4
+    score: null
+    score_datum: null
+    score_valid_until: null
+    flag: false
+    ersatz: "ZTS / SAP"
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: USA
+    us_exposure: true
+
+  - ticker: SU
+    name: "Schneider Electric"
+    typ: "Substanz / Industrials"
+    defcon: 4
+    score: null
+    score_datum: null
+    score_valid_until: null
+    flag: false
+    ersatz: DE
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: Europa
+    us_exposure: false
+
+  - ticker: BRK.B
+    name: "Berkshire Hathaway"
+    typ: "Substanz / Holding / Float-Modell"
+    defcon: 4
+    score: null
+    score_datum: null
+    score_valid_until: null
+    flag: false
+    ersatz: "MKL / FFH.TO"
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: USA
+    us_exposure: true
+    screener_exception: true
+
+  - ticker: V
+    name: "Visa"
+    typ: "Asset-Light / Payments"
+    defcon: 4
+    score: null
+    score_datum: null
+    score_valid_until: null
+    flag: false
+    ersatz: MA
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: USA
+    us_exposure: true
+
+  - ticker: TMO
+    name: "Thermo Fisher Scientific"
+    typ: "Substanz / Life Sciences"
+    defcon: 3
+    score: 67
+    score_datum: "2026-04-07"
+    score_valid_until: "2026-10-04"
+    flag: false
+    flag_hinweis: "Clario-Akquisition: Net Debt/EBITDA verbessert auf 2.57x (FY25). FCF -13.4% YoY — Working-Capital-Effekt Clario. ROIC 2.6% quartalsweise = strukturelles Goodwill-Problem ($49.4B). Kein FLAG."
+    scoring_notiz: "Score 67: Fwd P/E 19.9x attraktiver nach -24% Kursrückgang. Bewertung +3 vs. Apr-02. Technicals -2 (unter 200MA, Abwärtstrend). Net Debt/EBITDA 2.57x < 3.0x-Schwelle. ROIC bleibt GAAP-Kernproblem (Goodwill 44.8% Assets)."
+    naechste_pruefung: "2026-04-23 Q1 Earnings — FCF-Erholung + ROIC-Trend entscheidend. FCF >$7.3B nötig für FCF-Yield >4%."
+    earnings_trigger: "DEFCON 4 bei: FCF Yield >4% + ROIC Aufwärtstrend sichtbar. DEFCON 2 / ZTS-Aktivierung bei: FCF weiter rückläufig + kein Schuldenabbau-Signal."
+    ersatz: ZTS
+    substitute_activation_rule: "Vorbereitung aktiv bei Score 67 (D3). Ausführung bei Score <50 oder Moat-Downgrade. ZTS muss Score ≥80 ohne FLAG haben."
+    region: USA
+    us_exposure: true
+
+  - ticker: APH
+    name: "Amphenol"
+    typ: "Asset-Light / Connectors"
+    defcon: 4
+    score: null
+    score_datum: null
+    score_valid_until: null
+    flag: false
+    ersatz: null
+    substitute_activation_rule: "Kein definierter Ersatz — bei DEFCON 1 Watchlist auf mögliche Kandidaten screenen"
+    region: USA
+    us_exposure: true
+
+  - ticker: COST
+    name: "Costco"
+    typ: "Substanz / Retail"
+    defcon: 4
+    score: null
+    score_datum: null
+    score_valid_until: null
+    flag: false
+    ersatz: null
+    substitute_activation_rule: "Kein direkter Ersatz — Costco-Modell strukturell einzigartig. Bei DEFCON 1: BRK.B-Verstärkung prüfen."
+    region: USA
+    us_exposure: true
+    screener_hinweis: "Niedriger GM geschäftsmodellbedingt – Screener Stufe 0 überspringen, direkt DEFCON"
+
+# ─────────────────────────────────────────────
+# AKTIVE FLAGS
+# ─────────────────────────────────────────────
+flags_aktiv:
+  - ticker: GOOGL
+    grund: "CapEx FY26: 74-79% OCF – strukturell über FLAG-Schwelle"
+    seit: "2026-Q1"
+    wirkung: "Kein Einstieg, kein Nachkauf bis FLAG aufgehoben"
+    naechste_pruefung: "Q2 2026 Earnings"
+
+  - ticker: MSFT
+    grund: "CapEx/OCF 65.3% — Azure-Investitionszyklus über 60%-Schwelle"
+    seit: "2026-Q1"
+    wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON-3-Sockelbetrag"
+    naechste_pruefung: "2026-04-29 Q3 FY26 Earnings"
+
+  - ticker: AVGO
+    grund: "Insider-Selling ohne 10b5-1-Plan: Tan $24.3M + Brazeal $27.1M – kein M-Code in OpenInsider"
+    seit: "2026-04-02"
+    wirkung: "Sparplan läuft weiter, kein Nachkauf bis FLAG-Review"
+    naechste_pruefung: "Q3 FY26 Earnings – erneuter OpenInsider-Check"
+
+# ─────────────────────────────────────────────
+# SCREENER-EXCEPTIONS (Float-/Holding-Modelle)
+# Verwendet angepasste Schwellenwerte: P/B statt P/FCF
+# ─────────────────────────────────────────────
+screener_exceptions:
+  - BRK.B
+  - BRK
+  - MKL
+  - FFH.TO
+
+# ─────────────────────────────────────────────
+# WATCHLIST / ERSATZBANK
+# ─────────────────────────────────────────────
+watchlist:
+  - ticker: MKL
+    name: "Markel Group"
+    score: 82
+    score_datum: "2026-03-25"
+    score_valid_until: "2026-09-21"
+    defcon: 4
+    status: "Ersatzbank BRK.B – Screen bestanden"
+    naechste_aktion: "DEFCON-Analyse bei Kurskorrektur"
+    screener_exception: true
+
+  - ticker: SNPS
+    name: "Synopsys"
+    score: 79
+    score_datum: "2026-03-26"
+    score_valid_until: "2026-09-22"
+    defcon: 3
+    status: "Ersatzbank ASML – 1 Punkt unter Einstiegsschwelle"
+    naechste_aktion: "Re-Analyse Q2 2026 nach Q1 Earnings 28.04.2026 – Regulatory-Risiko prüfen"
+
+  - ticker: SPGI
+    name: "S&P Global"
+    score: 77
+    score_datum: "2026-03-31"
+    score_valid_until: "2026-09-27"
+    defcon: 3
+    status: "3 Punkte unter Einstiegsschwelle – ROIC durch Goodwill verzerrt (IHS Markit)"
+    flag: false
+    naechste_aktion: "Re-Analyse nach Q1 2026 Earnings (28.04.2026 – Katalysator)"
+    region: USA
+    us_exposure: true
+
+  - ticker: GOOGL
+    name: "Alphabet"
+    score: 72
+    score_datum: "2026-03-26"
+    score_valid_until: "2026-09-22"
+    defcon: 3
+    status: "FLAG aktiv – kein Einstieg"
+    naechste_aktion: "FLAG-Review nach Q2 2026 Earnings"
+
+  - ticker: HON
+    name: "Honeywell"
+    score: 71
+    score_datum: "2026-03-28"
+    score_valid_until: "2026-09-24"
+    defcon: 3
+    status: "Post-Spinoff 2026 abwarten"
+    naechste_aktion: "Re-Analyse nach Spinoff-Abschluss"
+
+  - ticker: FICO
+    name: "Fair Isaac Corp"
+    score: 70
+    score_datum: "2026-04-03"
+    score_valid_until: "2026-09-30"
+    defcon: 3
+    status: "Watchlist – Bewertung zu hoch für Einstieg, Wide Moat bestätigt"
+    naechste_aktion: "Keine Zuteilung – Bewertung beobachten"
+    region: USA
+    us_exposure: true
+
+# ─────────────────────────────────────────────
+# KEINE ZUTEILUNG (Beobachtung, keine Analyse-Prio)
+# ─────────────────────────────────────────────
+keine_zuteilung:
+  - ticker: CLPBY
+    grund: "Bewertung prüfen"
+  - ticker: CPRT
+    grund: "Earnings Mai 2026 abwarten"
+  - ticker: MSCI
+    grund: "Bewertung prüfen"
+  # SPGI → in watchlist verschoben nach DEFCON-Analyse (Score 77, 31.03.2026)
+  # FICO → in watchlist verschoben nach DEFCON-Analyse (Score 70, 03.04.2026)
+  - ticker: PEGA
+    grund: "Earnings Mai 2026 abwarten"
+
+# ─────────────────────────────────────────────
+# TERMINE & TRIGGER
+# ─────────────────────────────────────────────
+termine:
+  - datum: "2026-04-23"
+    event: "TMO Q1 2026 Earnings → Re-Analyse (Score 65 → Ziel ≥80 bei FCF-Erholung + ROIC >12%)"
+  - datum: "2026-04-28"
+    event: "SPGI Q1 2026 Earnings → Re-Analyse (Score 77 → ≥80 möglich bei ROIC-Normalisierung)"
+  - datum: "2026-04-28"
+    event: "SNPS Q1 2026 Earnings → Re-Analyse (Score 79 → ≥80 Katalysator)"
+  - datum: "2026-04-29"
+    event: "MSFT Q3 FY26 Earnings → CapEx-FLAG-Review (Ziel: CapEx/OCF <60%)"
+  - datum: "Mai 2026"
+    event: "CPRT / ZTS / PEGA Earnings → Watchlist-Review"
+  - datum: "Juni 2026"
+    event: "Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung"
+  - datum: "Q2 2026"
+    event: "GOOGL FLAG-Review nach Earnings"
+  - datum: "Q3 FY26"
+    event: "AVGO Insider-FLAG-Review – erneuter OpenInsider-Check nach Earnings"
+
+# ─────────────────────────────────────────────
+# API-AUDIT-LOG (Quarterly Sanity Check)
+# ─────────────────────────────────────────────
+api_audit_log:
+  # Format: datum | ticker | ocf_abweichung | capex_abweichung | status
+  # Beispiel: "2026-05-01 | AVGO | OCF: 0.1% | CapEx: 0.3% | OK"
+  eintraege:
+    - "2026-04-06 | ASML | OCF: nicht verifiziert (defeatbeta-Ausfall + Sandbox-Restriction) | CapEx: nicht verifiziert | Status: PENDING — bei nächster Session nachholen"
+  naechster_check: "2026-05-01"
+  check_ticker_q2: ["V", "BRK.B", "TMO"]

@@ -1,0 +1,221 @@
+{
+  "main": {
+    "id": "d0d1c355a9f2f9ce",
+    "type": "split",
+    "children": [
+      {
+        "id": "41068d54b3d4a657",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fde4e943e9b4d7c4",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph-Ansicht"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9eefefeaa4a6b700",
+    "type": "split",
+    "children": [
+      {
+        "id": "6bd0cedef78187f6",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "73ed8e11041306a7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Dateiexplorer"
+            }
+          },
+          {
+            "id": "d3421c47b8506c59",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Suchen"
+            }
+          },
+          {
+            "id": "1e2295533ba14a31",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Lesezeichen"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "6f73c3f85428fdca",
+    "type": "split",
+    "children": [
+      {
+        "id": "0a8321b6e268b155",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7ae9f702bf977bfd",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Willkommen.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Rückverweise auf Willkommen"
+            }
+          },
+          {
+            "id": "68fdd5af205652b8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Willkommen.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Ausgehende Links von Willkommen öffnen"
+            }
+          },
+          {
+            "id": "1b8e2d0af65a2235",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "8e6078e0880dcc27",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Alle Eigenschaften"
+            }
+          },
+          {
+            "id": "c1c4210341b5ada7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Willkommen.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Gliederung von Willkommen"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Schnellauswahl öffnen": false,
+      "graph:Graph-Ansicht öffnen": false,
+      "canvas:Neuen Canvas erstellen": false,
+      "daily-notes:Heutige Notiz öffnen": false,
+      "templates:Vorlage einfügen": false,
+      "command-palette:Befehlspalette öffnen": false,
+      "bases:Neue Base erstellen": false
+    }
+  },
+  "active": "fde4e943e9b4d7c4",
+  "lastOpenFiles": [
+    "CLAUDE.md.tmp.34652.1775777095922",
+    "WIKI-SCHEMA.md",
+    "wiki/concepts/etf-core.md",
+    "wiki/concepts/steuer-architektur.md",
+    "wiki/sources/dynastie-depot-skill.md",
+    "wiki/sources/non-us-fundamentals.md",
+    "wiki/sources/insider-intelligence.md",
+    "wiki/sources/quick-screener.md",
+    "wiki/synthesis/Investing-Mastermind-Index.md",
+    "wiki/synthesis/Investing-Mastermind-Index.md.tmp.5872.1775775413279",
+    "wiki/synthesis/Depot-State-April-2026.md",
+    "wiki/synthesis/Depot-State-April-2026.md.tmp.5872.1775775397179",
+    "wiki/entities/ersatzbank/PEGA.md",
+    "wiki/entities/ersatzbank/PEGA.md.tmp.5872.1775775373322",
+    "wiki/entities/ersatzbank/ZTS.md",
+    "wiki/entities/ersatzbank/ZTS.md.tmp.5872.1775775369314",
+    "wiki/entities/ersatzbank/GOOGL.md",
+    "wiki/entities/ersatzbank/GOOGL.md.tmp.5872.1775775364050",
+    "wiki/sources/OpenInsider.md",
+    "wiki/sources/OpenInsider.md.tmp.5872.1775775357403",
+    "wiki/sources/Shibui-SQL.md",
+    "wiki/sources/Shibui-SQL.md.tmp.5872.1775775347913",
+    "wiki/sources/defeatbeta.md",
+    "wiki/sources/defeatbeta.md.tmp.5872.1775775340301",
+    "wiki/concepts/defcon/Analyse-Pipeline.md",
+    "wiki/concepts/defcon/Analyse-Pipeline.md.tmp.5872.1775775323344",
+    "wiki/concepts/defcon/Non-US-Scoring.md",
+    "wiki/concepts/defcon/Non-US-Scoring.md.tmp.5872.1775775314097",
+    "wiki/concepts/defcon/Tariff-Exposure-Regel.md",
+    "wiki/concepts/defcon/ROIC-vs-WACC.md",
+    "wiki/concepts/defcon/CapEx-FLAG.md",
+    "wiki/concepts/defcon/DEFCON-System.md",
+    "wiki/entities/satelliten/APH.md",
+    "wiki/entities/satelliten/V.md",
+    "wiki/entities/satelliten/BRKB.md",
+    "wiki/entities/satelliten/SU.md"
+  ]
+}
