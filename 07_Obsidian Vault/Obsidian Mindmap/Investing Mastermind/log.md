@@ -144,15 +144,16 @@ Vollständig bidirektional:
 
 ## [2026-04-15] analysis | BRK.B (Berkshire Hathaway) DEFCON v3.4 Vollanalyse
 
-- **Score:** 73/100 | **DEFCON:** 🟢 4 | **FLAG:** ✅ Kein FLAG
+- **Score:** 75/100 | **DEFCON:** 🟢 4 | **FLAG:** ✅ Kein FLAG
 - **Kurs:** ~$480 | **ATH:** $539.80 (Mai 2025) | **Market Cap:** ~$1.04T
-- **Datenquellen:** defeatbeta (Cash Flow, Balance Sheet, Annual CF), WebSearch (Kurs, ATH, Book Value, Float, Analyst PT)
+- **Datenquellen:** defeatbeta (Cash Flow, Balance Sheet, Annual CF), insider_intel.py (SEC EDGAR Form 4, CIK 0001067983), WebSearch (Kurs, ATH, Book Value, Float, Analyst PT)
 - **Screener-Exception:** P/B 1.44x statt P/FCF (Versicherung/Holdings). Float $686B als zinsloses Fremdkapital → ROIC-Verzerrung strukturell.
 - **Fundamentals 35/50:** P/B 1.44x (historische Buyback-Zone <1.5x). Book Value CAGR +10% p.a. 5J ($443B→$717B). Interest Income $39.98B FY25 (T-Bill Float-Ertrag). Netto-Cash-Position ~$344B. CapEx/OCF 45.6% (BNSF Railroad + BHE Utilities, kein FLAG). Goodwill 6.8% = kein Malus.
 - **Moat 19/20:** Float-Leverage einzigartig, BNSF Efficient Scale (Railroad-Duopol), 60J Capital-Allocation-Track-Record. –1 Nachfolge-Risiko Greg Abel.
 - **Technicals 4/10:** -11.1% vom ATH, unter 200D-MA, limitierter PT-Upside ~+13.5%.
-- **Insider 7/10:** Buffett ~15% Ownership — maximale Alignment. Kein Selling FY25. Buybacks $0 FY25 (Cash-Preservation-Strategie).
+- **Insider 9/10:** Greg Abel Open-Market-Käufe $15.3M (90d) — starkes Alignment-Signal (Net Buy 4/4). Kein diskretionäres Selling $0 (3/3). Buffett ~15% Ownership strukturell.
 - **Sentiment 8/10:** Strong Buy-Konsens, 0% Sell, 22 Analysten.
+- **Score-Korrektur:** 73→75 nach korrektem insider_intel.py-Aufruf (`BRK.B` statt `BRK-B`).
 - **Sparplan:** Voll aktiv (DEFCON 4 × Sparrate).
 - **Nächste Aktion:** Q-Earnings Mai 2026 — Buyback-Wiederaufnahme bei Kurs <$480 (P/B <1.5x).
 - **Sync:** CORE-MEMORY.md + Faktortabelle.md + log.md
