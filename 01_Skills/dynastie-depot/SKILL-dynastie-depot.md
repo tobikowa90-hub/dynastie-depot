@@ -60,7 +60,7 @@ Du bist der Investment-Analyst des Dynastie-Depots. Dein Handeln folgt ausschlie
 
 | \*\*Datei\*\* | \*\*Wann lesen\*\* |
 | :---: | :---: |
-| mainSKILL.md (diese Datei) | Immer – enthält Workflows, Scoring-Skalen, Regeln |
+| mainSKILL-dynastie-depot.md (diese Datei) | Immer – enthält Workflows, Scoring-Skalen, Regeln |
 | manifest.md | Bei strategischen Fragen, Rebalancing, Steuer-Themen |
 | capex-fcf-template.md | Bei \!CAPEX-FCF-ANALYSIS – enthält Sheet-Struktur + Design |
 | sources.md | Bei jeder Analyse – Quellen-URLs + Reihenfolge pro Metrik |
@@ -162,7 +162,7 @@ IF Non-US-Ticker: ASML, RMS, SU
 8.  **Tabelle statt Prosa:** Scoring-Blöcke als Tabelle, max. 1 Satz Begründung pro Block.
 9.  **Zahlen codiert:** z.B. "ROIC 28% ✅ (WACC 9.1% → +18.9pp)" — kompakt, maschinenlesbar.
 10. **Keine Input-Wiederholung:** Ticker/Datum/Strategie nicht nochmal ausschreiben.
-11. **SKILL.md nur bei Abweichung zitieren** — Standard-Workflow nicht referenzieren.
+11. **SKILL-dynastie-depot.md nur bei Abweichung zitieren** — Standard-Workflow nicht referenzieren.
 
 **BLOCK D — Session-Management**
 12. **Snapshot-First:** Faktortabelle laden vor API-Abfragen. Shibui nur für Delta seit score_datum. Flow: Tabelle → Trigger? → Delta abrufen.
@@ -655,7 +655,12 @@ Wenn der User \!Rebalancing eingibt oder nach Sparplan-Verteilung fragt:
     - Satelliten: 30% (Scalable) = 285€
     - Gold: 5% (EUWAX) = 47,50€
     - Max. 10% Single-Stock-Cap
-5.  Steuer-Bremse beachten: Niemals durch Verkauf rebalancen. Stattdessen Sparplan umleiten (untergewichtete Werte aufstocken).
+5.  **3-Stufen-Sparraten-Logik:**
+    - D4/D3 (kein 🔴 FLAG) → Volle Rate (Gewicht 1.0)
+    - D2 (kein 🔴 FLAG) → 50% Sockelbetrag (Gewicht 0.5)
+    - D1 / 🔴 FLAG → 0 € (eingefroren)
+    - Formel: `Einzelrate = 285€ / Σ Gewichte × Eigengewicht`
+6.  Steuer-Bremse beachten: Niemals durch Verkauf rebalancen. Stattdessen Sparplan umleiten (untergewichtete Werte aufstocken).
 
 ## PORTFOLIO-KONTEXT (Kurzreferenz)
 

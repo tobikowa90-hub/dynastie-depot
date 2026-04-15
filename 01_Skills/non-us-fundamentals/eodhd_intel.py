@@ -8,7 +8,7 @@ via Yahoo Finance (yfinance). Kein API-Key noetig. Daten in EUR/IFRS.
 EODHD-Hinweis: Free-Tier hat keinen Zugriff auf Fundamentals-Endpoint.
 yfinance ist die kostenlose Alternative mit vollstaendiger Coverage.
 
-Routing-Regel (aus SKILL.md):
+Routing-Regel (aus SKILL-non-us-fundamentals.md):
   IF US_Ticker  -> Shibui SQL + defeatbeta MCP
   IF Non-US     -> dieses Script (yfinance, EUR-Ticker)
 

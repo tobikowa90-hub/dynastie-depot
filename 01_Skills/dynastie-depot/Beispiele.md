@@ -181,6 +181,6 @@ Cashless Exercise (Code M+S, gleicher Tag, Expiry ≤30d) ≠ diskretionärer Ve
 | EXPN | 61/100 | 🟡 3 | 02.04.2026 | Watchlist | ✅ | P/FCF + Insider-Check |
 | FICO | 70/100 | 🟡 3 | 03.04.2026 | Watchlist | ✅ | Re-Analyse VEEV-Schwäche |
 
-*🦅 mainSKILL.md | DEFCON v3.2 | Stand: 04.04.2026*
+*🦅 mainSKILL-dynastie-depot.md | DEFCON v3.2 | Stand: 04.04.2026*
 
 ```
