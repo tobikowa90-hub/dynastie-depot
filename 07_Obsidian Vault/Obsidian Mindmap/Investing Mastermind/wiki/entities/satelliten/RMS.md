@@ -1,31 +1,47 @@
 ---
-tags: [satellit, aktiv, defcon-4, non-us, ifrs]
+tags: [satellit, aktiv, defcon-4, non-us, ifrs, screener-exception]
 ticker: RMS
 name: Hermès International S.A.
 sektor: Luxury / Monopol
 ersatz: RACE
-score_aktuell: 80
+score_aktuell: 69
 defcon: 4
 flag: "keins"
 sparrate: "Volle Rate"
-letzteAnalyse: 2026-03-01
-score_valid_until: 2026-09-01
-naechsterTrigger: "Liberation-Day Tariff-Check (Priorität 9)"
+letzteAnalyse: 2026-04-15
+score_valid_until: 2026-10-15
+naechsterTrigger: "H1 2026 Earnings Juli/Aug 2026"
 waehrung: EUR
 ifrs: true
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
+updated: 2026-04-16
 ---
 
 # RMS — Hermès International
 
-> **DEFCON 🟢 4 | Score ~80/100 | Kein FLAG**
+> **DEFCON 🟢 4 | Score 69/100 | Kein FLAG**
 > Sparrate: Volle Rate | Non-US / IFRS
+
+## DEFCON v3.4 Analyse (15.04.2026)
+
+| Block | Score | Details |
+|-------|-------|---------|
+| Q1 2026 Revenue | -- | €4,07B (+6% CER / -1% reported). Kursreaktion -8.4% |
+| Moat | 19/20 | Wide — Luxury-Monopol, Preismacht strukturell, künstliche Knappheit |
+| ROIC vs WACC | -- | ROIC 24% >> WACC 6.5% — hoher Return-Spread |
+
+**Score-Verlauf:** 80 (Mrz 2026) → 69 (Apr 2026) — Abwertung durch Q1 reported Revenue -1% und Kursreaktion.
+
+**Screener-Exception:** Analog [[COST]] — hoher Return-Spread (ROIC 24% >> WACC 6.5%) rechtfertigt Beibehaltung trotz Score-Rückgang.
+
+**Nächste Aktion:** H1 2026 Earnings Juli/Aug 2026
 
 ## Stärken
 
 - Luxury-Monopol: Preismacht strukturell (keine Rabatte, jahrzehntelange Wartelisten)
 - Niedrige Tariff-Direktexposition: EUR-denominiert, Produktion Frankreich
 - Moat: Wide — Marke + Handwerkskunst + künstliche Knappheit
+- ROIC 24% >> WACC 6.5% — einer der höchsten Return-Spreads im Depot
 
 ## IFRS-Besonderheiten
 
@@ -35,8 +51,12 @@ related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie
 
 ## Verlinkungen
 
+- [[DEFCON-System]]
+- [[Faktortabelle-Architektur]]
+- [[Analyse-Pipeline]]
 - [[Non-US-Scoring]]
 - [[RACE]] — Ersatz-Kandidat
+- [[COST]] — gleiche Screener-Exception-Logik (hoher Return-Spread)
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten

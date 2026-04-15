@@ -173,6 +173,38 @@ Vollständig bidirektional:
 - **Meilenstein:** Alle 11 Satelliten vollständig gescort — offene Scores: 0/11 ✅
 - **Sync:** CORE-MEMORY.md + Faktortabelle.md + log.md
 
+## [2026-04-15] edit | Vault-Sync — Satelliten-Scores nach Vollanalysen aktualisiert
+- **Anlass:** V, COST, BRK.B, SU hatten noch Platzhalter-Scores (~80) und altes Analyse-Datum (2026-03-01) trotz abgeschlossener DEFCON v3.4 Vollanalysen
+- Pages updated: [[V]] (80→86), [[COST]] (80→69), [[BRKB]] (80→75), [[SU]] (80→71)
+- Alle 4 Seiten: Frontmatter (score, datum, trigger) + neuer Analyse-Ergebnis-Block mit Score-Tabelle
+- [[index.md]] — Score-Angaben bei allen 4 Satelliten korrigiert
+- Gesamt: 0 neue Seiten, 5 aktualisierte Seiten
+
+## [2026-04-15] earnings-recap | RMS (Hermès) Q1 2026
+
+- **Trigger:** Q1 2026 Revenue-Veröffentlichung 15.04.2026 — enttäuschende Zahlen
+- **Resultat:** €4,07B (+6% CER, −1% reported). Konsens-Erwartung: +7–8% CER. Minimal-Beat auf absolute Zahl (+0,5%) aber Wachstumsmiss.
+- **Kursreaktion:** **−8,4%** (€1.783 → €1.632,50). Intraday 52W-Tief: €1.529. Gesamtmarkt-Selloff Luxury-Sektor (LVMH, Kering ebenfalls schwach).
+- **Treiber:** Mittlerer Osten −6% (Iran-Krieg, UAE Mall Traffic −40% März), FX-Headwind €290M, China Asien ex Japan +2%.
+- **Positiv:** Leder & Sattlerwaren +9% (Kernmoat intakt), Americas/Japan/Europa ex FR zweistellig.
+- **FY 2025 Kontext:** Revenue €16,0B (+5,5%), Net Income €4,52B (leicht rückläufig vs. €4,60B FY2024, EPS −1,6%).
+- **Insider:** Co-Chairman Henri-Louis Bauer kaufte €4,99M (12.03.2026), Gesamt-Insider-Net-Buy 90d: +€7,67M.
+
+## [2026-04-15] analysis | RMS (Hermès) DEFCON v3.4 Re-Analyse
+
+- **Score:** 71 → **69** (−2 Punkte) | **DEFCON:** 🟢 4 (Bestandsposition) | **FLAG:** ✅ Kein FLAG
+- **Kurs:** €1.632,50 | **Market Cap:** €171,1B | **Börse:** Euronext Paris (RMS.PA)
+- **Datenquellen:** yfinance / earnings-recap-skill (Revenue, FCF, Margins), WebSearch (Analyst-Konsensus, Insider AMF, AlphaSpread DCF, Q1 Details)
+- **Fundamentals 29/50:** Fwd P/E 30,7x (2/8), P/FCF ~37x (1/8), Bilanz 8/9 (Netto-Cash €9,89B, Goodwill minimal), CapEx/OCF ~25% 7/9 (kein FLAG), ROIC 24,2% >> WACC 6,52% (8/8 Maximal), FCF Yield ~2,7% (3/8). SBC 0,83% — kein Abzug. Accruals negativ (gut).
+- **Moat 19/20:** Wide Moat strukturell unberührt. 4 Quellen: Brand/Intangibles, künstliche Verknappung, vertikale Integration, Familienkontrolle. GM >71% (Best-in-class). Leder +9% = Moat-Bestätigung.
+- **Technicals 6/10:** ATH-Abstand −37,4% (3/4), Ø PT ~€2.448 = +50% Upside (3/3), Kurs unter fallendem 200MA — neues 52W-Tief (0/3). AlphaSpread DCF Base €1.197 — Kurs drüber, kein Bonus.
+- **Insider 8/10:** Net Buy €7,67M (90d, AMF), Co-Chairman Bauer €4,99M. Familienkontrolle 67% (3/3). AMF nicht vollständig verifiziert → konservativ (2/3).
+- **Sentiment 7/10:** 14 Buy/3 SB/7 Hold/1 SS. PT-Dispersion 34% (−1 Punkt).
+- **Score-Änderung:** −2 Punkte vs. 09.04.2026 (Technicals schwächer, PT-Dispersion höher nach Kursrückgang).
+- **Sparplan:** Voll aktiv — keine Änderung. DEFCON 4 Bestandsposition ≥65.
+- **Nächste Aktion:** H1 2026 Earnings Juli/Aug 2026 — Mittlerer Osten Recovery + China-Trend.
+- **Sync:** CORE-MEMORY.md (Meilenstein + Score-Register) + Faktortabelle.md (Score 71→69, Datum aktualisiert) + log.md (dieser Eintrag)
+
 ## [2026-04-15] analysis | APH Tariff-Check abgeschlossen
 - Trigger: Offener APH-FLAG-Posten aus Analyse 09.04.2026 (Tariff-Exposure CN/MY)
 - Datenquellen: defeatbeta (Geography — kein API-Output), Earnings Release FY2025, Q1 FY2025 Transcript (23.04.2025)
@@ -180,3 +212,32 @@ Vollständig bidirektional:
 - Befund Supply-Chain: Produktionsstandorte CN/MY durch CEO Adam Norwitt bestätigt (Q1 2025 Call). Kombinierte Exposure ~17–22% → Risk-Map-Notiz-Pflicht aktiv.
 - FLAG-Entscheidung: Kein neuer Tariff-FLAG nach Regelwerk (Revenue <15%). Bestehender FLAG bleibt (Score-basiert: Score 61, DEFCON 3).
 - Sync: CORE-MEMORY.md + Faktortabelle.md + log.md (diese Einträge)
+
+## [2026-04-16] maintenance | Systempflege — config.yaml + Vault-Backlinks + Briefing-Infrastruktur
+
+### config.yaml v3.4.1 (12 Fixes)
+- **Stand:** 06.04 → 16.04.2026
+- **Sparplan-Formel:** D3=0.5 → D3=1.0 (v3.4-Logik: D4/D3 volle Rate)
+- **7 fehlende Scores eingetragen:** RMS 69, VEEV 74, SU 71, BRK.B 75, V 86, COST 69, APH 61
+- **APH:** DEFCON 4→3, flag false→true (Score-basiert)
+- **AVGO:** flag true→false + flag_review:true (Unter Review, nicht bestätigt)
+- **FLAGs-Sektion:** Getrennt in flags_aktiv (MSFT+APH), flags_review (AVGO), flags_watchlist (GOOGL)
+- **Termine:** Aktualisiert (V ~22.04, TMO 23.04, RMS/SU Jul/Aug, APH 23.07)
+
+### Vault-Backlinks (6 Satellite-Pages)
+- **RMS.md:** Q1 2026 Recap + Screener-Exception (ROIC 24% >> WACC 6.5%), Backlinks zu [[COST]], [[DEFCON-System]]
+- **BRKB.md:** Frontmatter-Update, Backlinks zu [[Faktortabelle-Architektur]]
+- **COST.md:** Screener-Exception-Tag, Backlinks zu [[RMS]]
+- **V.md:** Top-Score 86 Backlink zu [[AVGO]]
+- **SU.md:** Frontmatter-Update, Backlinks zu [[Analyse-Pipeline]]
+- **APH.md:** DEFCON 3, FLAG aktiv, Score 80→61, Backlinks zu [[MSFT]], [[CapEx-FLAG]]
+
+### Briefing-Infrastruktur (Session 15-16.04.)
+- Morning-Briefing Remote Trigger v2.1 deployed (JSON-Nesting-Bug gefixt)
+- SessionEnd/SessionStart Hooks installiert (03_Tools/briefing-sync-check.ps1)
+- !SyncBriefing / !BriefingCheck Shortcuts in INSTRUKTIONEN.md §25
+- Known Limitation: Yahoo 403 (BRK.B/RMS/SU-Kurse nicht aus Cloud verfügbar)
+
+### Offene Punkte
+- SKILL.md DEFCON-Schwellen-Mismatch: ≥73 (SKILL) vs. ≥80 (INSTRUKTIONEN) — separater Fix-Task
+- ASML Q1 2026 Earnings QuickCheck — ausstehend seit 15.04.

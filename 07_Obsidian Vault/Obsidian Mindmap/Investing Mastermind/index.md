@@ -47,12 +47,12 @@
 
 ### Satelliten (aktive Positionen)
 - [[AVGO]] — Broadcom Inc. | DEFCON 🟢 4 | Score 86 | Kalibrierungsanker #1
-- [[COST]] — Costco Wholesale | DEFCON 🟢 4 | Score ~80
+- [[COST]] — Costco Wholesale | DEFCON 🟢 4 | Score 69
 - [[RMS]] — Hermès International | DEFCON 🟢 4 | Score ~80 | Non-US
 - [[VEEV]] — Veeva Systems | DEFCON 🟢 4 | Score ~80
-- [[SU]] — Schneider Electric | DEFCON 🟢 4 | Score ~80 | Non-US
-- [[BRKB]] — Berkshire Hathaway B | DEFCON 🟢 4 | Score ~80
-- [[V]] — Visa Inc. | DEFCON 🟢 4 | Score ~80
+- [[SU]] — Schneider Electric | DEFCON 🟢 4 | Score 71 | Non-US
+- [[BRKB]] — Berkshire Hathaway B | DEFCON 🟢 4 | Score 75
+- [[V]] — Visa Inc. | DEFCON 🟢 4 | Score 86
 - [[APH]] — Amphenol Corp. | DEFCON 🟢 4 | Score ~80
 - [[ASML]] — ASML Holding | DEFCON 🟡 3 | Score 68 | Non-US
 - [[TMO]] — Thermo Fisher Scientific | DEFCON 🟡 3 | Score 67 | Q1 Earnings 23.04.
