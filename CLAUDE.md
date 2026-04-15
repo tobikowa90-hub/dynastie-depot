@@ -8,28 +8,30 @@
 4. `00_Core/Faktortabelle.md` — aktueller Score-State aller Satelliten
 
 Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill aktivieren.
-Fallback: Scheduled Task `dynastie-session-init` manuell starten.
 
 ## Verhalten
 
 - `CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
 - Stil: direkt, faktenbasiert, kein Filler — siehe INSTRUKTIONEN.md
 - **Sync-Pflicht:** Nach jeder Analyse: log.md + CORE-MEMORY.md + Faktortabelle aktualisieren
+- **Briefing-Sync:** Vor Session-Ende `!SyncBriefing` falls 00_Core/ geändert wurde (§25). SessionEnd-Hook warnt automatisch.
 
 ## Projektstruktur
 
 ```
 00_Core/            → Kontext, Instruktionen, Gedächtnis (IMMER zuerst lesen)
 01_Skills/          → Skill-Quelldateien (Arbeitsversion)
-  ├── dynastie-depot/   → Haupt-Skill (DEFCON-System)
-  ├── quick-screener/   → Stufe-0-Screener
-  └── _extern/          → Installierte Fremd-Skills (read-only Referenz)
+  ├── dynastie-depot/       → Haupt-Skill (DEFCON-System)
+  ├── insider-intelligence/ → Form-4-Scanner (8 US-Satelliten)
+  ├── non-us-fundamentals/  → yfinance IFRS-Modul (ASML/RMS/SU)
+  ├── quick-screener/       → Stufe-0-Vorfilter
+  └── _extern/              → Fremd-Skills (read-only Referenz)
 02_Analysen/        → DEFCON-Analysen als Excel
-03_Tools/           → Rebalancing-Tool, Satelliten-Monitor, Watchlist
+03_Tools/           → Rebalancing-Tool, Satelliten-Monitor, Watchlist, Briefing-Hook
 04_Templates/       → Single-Source-of-Truth für alle Templates
 05_Archiv/          → Historische Dateien
 06_Skills-Pakete/   → Installierbare ZIP-Skills (Deployables)
-07_Obsidian Vault/  → Investing Mastermind Wiki (71 Notes)
+07_Obsidian Vault/  → Investing Mastermind Wiki (74 Notes)
   └── Obsidian Mindmap/Investing Mastermind/
       ├── WIKI-SCHEMA.md  → Schema + Workflows (bei Wiki-Ops lesen)
       ├── index.md        → Content-Katalog
@@ -52,7 +54,7 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 - **5-Min-Regel:** Vor Pause >5 Min: /compact oder /clear
 - **DEFCON 1 Stopp:** Score <50 → Analyse stoppen (Insider-Modul läuft IMMER durch)
 - **Sync-Pflicht:** log.md + CORE-MEMORY.md + Faktortabelle — immer alle drei
-- **Morning Briefing:** Scheduled 10:00, ~15k Tokens/Tag. Manuell: `!Briefing`
+- **Morning Briefing:** Remote Trigger v2.1, täglich 10:00 MESZ. Manuell: `!Briefing`
 
 ## MCP-Session-Check
 
@@ -67,6 +69,12 @@ Claude Code: Tool Search aktiv, automatisch.
 
 ## Applied Learning
 
-> Max. 15 Wörter pro Bullet. Wird durch Nutzung befüllt.
+> Max. 15 Wörter pro Bullet. Befüllt durch Session-Erfahrungen.
 
-*(leer — wird durch Session-Erfahrungen ergänzt)*
+- RemoteTrigger update ersetzt ccr-Objekt komplett — immer alle 3 Felder mitsenden
+- JSON-Nesting: parent_tool_use_id/session_id/type/uuid auf data-Level, nie in message
+- Yahoo Finance 403 von Cloud-IPs — curl aus Remote-Triggern funktioniert nicht
+- Berkshire (BRK.B) fehlt komplett in Shibui — immer externen Provider nutzen
+- Shibui code='SU' ist Suncor, nicht Schneider — nie SU in Shibui-Queries
+- D3 = volle Rate (1.0), nicht 50% — systemweit seit v3.4 korrigiert
+- SessionEnd-Hook + Windows-Toast für Briefing-Sync → 03_Tools/briefing-sync-check.ps1

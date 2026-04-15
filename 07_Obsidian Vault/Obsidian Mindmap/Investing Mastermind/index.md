@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-15 (System-Integration v4.0 — 71 Notes: 68 wiki + 3 raw)
+> Last updated: 2026-04-16 (Systempflege v4.1 — 74 Notes: 68 wiki + 6 raw)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -48,18 +48,18 @@
 ### Satelliten (aktive Positionen)
 - [[AVGO]] — Broadcom Inc. | DEFCON 🟢 4 | Score 86 | Kalibrierungsanker #1
 - [[COST]] — Costco Wholesale | DEFCON 🟢 4 | Score 69
-- [[RMS]] — Hermès International | DEFCON 🟢 4 | Score ~80 | Non-US
-- [[VEEV]] — Veeva Systems | DEFCON 🟢 4 | Score ~80
+- [[RMS]] — Hermès International | DEFCON 🟢 4 | Score 69 | Non-US | Screener-Exception (ROIC 24% >> WACC)
+- [[VEEV]] — Veeva Systems | DEFCON 🟢 4 | Score 74
 - [[SU]] — Schneider Electric | DEFCON 🟢 4 | Score 71 | Non-US
 - [[BRKB]] — Berkshire Hathaway B | DEFCON 🟢 4 | Score 75
 - [[V]] — Visa Inc. | DEFCON 🟢 4 | Score 86
-- [[APH]] — Amphenol Corp. | DEFCON 🟢 4 | Score ~80
+- [[APH]] — Amphenol Corp. | DEFCON 🟡 3 | Score 61 | 🔴 FLAG (Score-basiert)
 - [[ASML]] — ASML Holding | DEFCON 🟡 3 | Score 68 | Non-US
 - [[TMO]] — Thermo Fisher Scientific | DEFCON 🟡 3 | Score 67 | Q1 Earnings 23.04.
 - [[MSFT]] — Microsoft | DEFCON 🟠 2 | Score 60 | 🔴 CapEx-FLAG | Q3 Earnings 29.04.
 
 ### Ersatzbank
-- [[GOOGL]] — MSFT-Ersatz | 🔴 FLAG: CapEx ~75% OCF — kein Einstieg
+- [[GOOGL]] — MSFT-Ersatz | Score 72, DEFCON 3 | 🔴 FLAG: CapEx ~75% OCF — kein Einstieg
 - [[ZTS]] — VEEV/TMO-Ersatz | DEFCON 4 | bereit
 - [[PEGA]] — Slot-16-Kandidat | Earnings Mai 2026
 - [[MKL]] — BRK.B-Ersatz | Specialty-Versicherung + Holding
