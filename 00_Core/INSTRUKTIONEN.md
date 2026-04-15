@@ -433,13 +433,29 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 
 ---
 
-## 24. Morning Briefing (Scheduled Trigger)
+## 24. Morning Briefing (Scheduled Trigger v2.1)
 
-**Frequenz:** Taeglich 10:00 Uhr (Scheduled Trigger, Claude iOS App Notification)
-**Token-Budget:** ~12-18k/Tag (Mo-Fr), ~2-3k/Tag (Sa-So), ~300-400k/Monat
+**Trigger-ID:** `trig_01PyAVAxFpjbPkvXq7UrS2uG`
+**Frequenz:** Taeglich 10:00 Uhr MESZ (Cron `0 8 * * *` UTC, ~10-15 Min Jitter)
+**Modell:** claude-sonnet-4-6 | **Repo:** github.com/tobikowa90-hub/dynastie-depot
+**Token-Budget:** ~12-18k/Tag (Mo-Fr), ~2-3k/Tag (Sa-So)
+**Prompt-Datei:** `03_Tools/morning-briefing-prompt-v2.md` (Single Source of Truth)
 
-**Scope:** 11 Satelliten + 5 Ersatzbank mit Score (MKL, SNPS, SPGI, RACE, ZTS)
-**Datenquellen:** Faktortabelle.md (read-only) + Shibui Finance (Kurse)
+**Scope:** 11 Satelliten + 5 Ersatzbank mit Score (MKL, SNPS, SPGI, RACE, ZTS) = 16 Symbole
+
+**Datenquellen (2 Tiers):**
+
+| Tier | Symbole | Quelle | Status |
+|------|---------|--------|--------|
+| Shibui | ASML, AVGO, MSFT, TMO, VEEV, V, APH, COST, MKL, SNPS, SPGI, RACE, ZTS (13) | `stock_data_query` P1-Pattern mit `g.code IN(...)` | ✅ Live |
+| Yahoo curl | BRK.B (`BRK-B`), RMS (`RMS.PA`), SU (`SU.PA`) (3) | `curl` in Bash | ❌ HTTP 403 — Yahoo blockiert Cloud-IPs. V3-Backlog. |
+
+**Critical Guards im Prompt:**
+- 🚨 SUNCOR-TRAP: Shibui `code='SU'` = Suncor Energy. Schneider Electric ist NICHT in Shibui. Nie 'SU' in Shibui-Query.
+- 🚨 BERKSHIRE-GAP: BRK.B ist nicht in Shibui indexiert (bestaetigt).
+- 🚨 HERMES-GAP: RMS ist nicht in Shibui.
+- 🚨 ANTI-HALLUCINATION: Bei fehlenden Daten exakter Fehlertext, keine erfundenen Gruende.
+- 🚨 KEIN RETRY: Keine Symbol-Varianten bei Query-Fehlschlag.
 
 **Schwellenwerte:**
 | Trigger | Schwelle | Empfehlung |
@@ -450,9 +466,16 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 | Score-Alter | >90 Tage | Update empfohlen |
 | Score-Alter | >180 Tage | !Analysiere dringend |
 
-**Manueller Trigger:** `!Briefing` (identischer Output)
+**Manueller Trigger:** `!Briefing` (identischer Output) oder Desktop App → Routines → Jetzt ausfuehren
 
-**Voraussetzung:** Faktortabelle muss aktuell sein (Sync-Pflicht). GitHub-Repo muss gepusht sein nach lokalen Aenderungen.
+**Voraussetzung:** Faktortabelle muss aktuell sein (Sync-Pflicht §25). GitHub-Repo muss gepusht sein (`!SyncBriefing`).
+
+**API-Update-Regel (KRITISCH):** RemoteTrigger-Update ersetzt `ccr`-Objekt KOMPLETT (kein Merge). Immer alle 3 Felder (`environment_id`, `session_context`, `events`) zusammen senden. JSON-Nesting: `parent_tool_use_id`, `session_id`, `type`, `uuid` gehoeren auf **data-Level**, NICHT in message.
+
+**Known Limitations v2.1:**
+- BRK.B/RMS/SU-Kurse nicht verfuegbar (Yahoo 403 von Cloud-IPs). Zeigt ehrlich "n.v.".
+- Push-Notifications: Kein Routines-Toggle in Claude iOS App. Wartet auf Anthropic-Update.
+- `RemoteTrigger run` API-Endpoint ist Noop fuer Cron-basierte Trigger — manuell nur via Desktop App "Jetzt ausfuehren".
 
 ---
 
