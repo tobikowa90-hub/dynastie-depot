@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/tobia/OneDrive/Desktop/Claude Stuff/03_Tools/briefing-sync-check.ps1\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:/Users/tobia/OneDrive/Desktop/Claude Stuff/03_Tools/briefing-sync-check.ps1\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  },
+  "autoMemoryEnabled": true,
+  "autoDreamEnabled": true
+}
