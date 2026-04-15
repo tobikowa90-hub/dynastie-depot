@@ -67,9 +67,21 @@ Nicht benötigt → /mcp disable [name]
 Claude Code: Tool Search aktiv, automatisch.
 ```
 
-## Applied Learning
+## Kontinuierliches Lernen (3-Tier-System)
 
-> Max. 15 Wörter pro Bullet. Befüllt durch Session-Erfahrungen.
+**Automatisch aktiv** (`autoMemoryEnabled + autoDreamEnabled`):
+
+| Tier | Speicherort | Wer schreibt | Wann gelesen | Pflege |
+|------|------------|--------------|-------------|--------|
+| 1. Auto-Memory | `~/.claude/.../memory/*.md` | Claude automatisch | Session-Start | Auto-Dream konsolidiert |
+| 2. Applied Learning | CLAUDE.md (diese Sektion) | Manuell bei Review | Session-Start | Monatlich: Obsoletes raus |
+| 3. Formelle Regeln | INSTRUKTIONEN.md §§ | Bei bewiesenem Bedarf | Session-Start | Bei Systemänderungen |
+
+**Promotion-Logik:** Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONEN (wenn systemisch).
+
+### Applied Learning (kuratiert, max. 20 Bullets)
+
+> <15 Wörter pro Bullet. Nur operativ relevante Fakten.
 
 - RemoteTrigger update ersetzt ccr-Objekt komplett — immer alle 3 Felder mitsenden
 - JSON-Nesting: parent_tool_use_id/session_id/type/uuid auf data-Level, nie in message
