@@ -70,12 +70,12 @@ Impuls / Idee
 
 | Score | DEFCON | Neueinstieg | Bestand | Sparrate |
 |-------|--------|-------------|---------|----------|
-| ≥ 80 | 🟢 4 | ✅ Erlaubt | Sparplan voll aktiv | Volle Rate (Budget ÷ aktive D4-Positionen) |
-| 65–79 | 🟡 3 | ❌ Nein | Minimales Rebalancing | 50% Sockelbetrag — Position halten, nicht ausbauen |
-| 50–64 | 🟠 2 | ❌ Nein | Sparrate komplett gestoppt | 0 € — Ersatz identifizieren |
-| < 50 | 🔴 1 | 🛑 Veto | Auswechslung prüfen | 0 € — Auswechslung einleiten |
+| ≥ 80 | 🟢 4 | ✅ Erlaubt | Sparplan voll aktiv | Volle Rate (Gewicht 1.0) |
+| 65–79 | 🟡 3 | ❌ Nein | Sparplan weiter aktiv | Volle Rate (Gewicht 1.0) — These intakt, weiter besparen |
+| 50–64 | 🟠 2 | ❌ Nein | 50% Sockelbetrag | Reduzierte Rate (Gewicht 0.5) — Position halten, nicht ausbauen |
+| < 50 | 🔴 1 | 🛑 Veto | Sparrate eingefroren | 0 € — Auswechslung einleiten |
 
-> **DEFCON 3 = Sockelbetrag (50%):** Position bleibt aktiv, wird aber nicht weiter ausgebaut. Budget verteilt sich gewichtet: D4-Positionen erhalten volle Gewichtung (1.0), D3-Positionen halbe Gewichtung (0.5). Summe ergibt immer 100% des Aktien-Budgets.
+> **3-Stufen-Logik:** D4/D3 = volle Rate (1.0), D2 = Sockelbetrag 50% (0.5), D1 = eingefroren (0.0). Budget verteilt sich gewichtet: Σ Gewichte ergibt immer 100% des Aktien-Budgets. 🔴 FLAG überschreibt jeden Score → 0 €.
 
 ### Automatische FLAGs (score-unabhängig — heilig!):
 
@@ -85,7 +85,7 @@ Impuls / Idee
 | Negativer FCF-Trend + steigendes CapEx | 🔴 FLAG — Sparrate gestoppt |
 | Insider Net-Selling > $20M / 90 Tage (kein 10b5-1 "M") | 🔴 FLAG — Sparrate gestoppt |
 
-> **FLAG überschreibt jeden Score.** Ein DEFCON 4 mit FLAG bekommt 0 €. Ein DEFCON 3 mit FLAG ebenfalls 0 € (FLAG hat Vorrang vor Sockelbetrag).
+> **FLAG überschreibt jeden Score.** Ein DEFCON 4 mit 🔴 FLAG bekommt 0 €. Ein DEFCON 3 mit 🔴 FLAG ebenfalls 0 €. Nur 🔴 FLAGs stoppen die Sparrate — 🟡/🚩 Warnungen lassen die Rate unverändert.
 
 ---
 
@@ -153,16 +153,16 @@ SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power, Relative Stärke, 200MA Slo
 2. Drift prüfen: Weicht eine Position >10% von Zielgewichtung ab?
 3. Sparplan-Vorschlag erstellen mit **formeller Berechnungsformel:**
 
-**Gewichte:** DEFCON-4-Clean = 1.0 | DEFCON-3 (kein FLAG) = 0.5 | FLAG (beliebig) = 0.0
+**Gewichte:** D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0
 
 **Formel:** `Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht`
 
-**Rechenbeispiel (aktueller Stand: 8× D4-Clean, 2× D3, 1× FLAG):**
-- Nenner = (8 × 1.0) + (2 × 0.5) + (1 × 0.0) = 9.0
-- D4-Einzelrate = 285€ / 9.0 × 1.0 = **31,67€**
-- D3-Einzelrate = 285€ / 9.0 × 0.5 = **15,83€**
-- FLAG-Einzelrate = **0€**
-- Summencheck: (8 × 31,67) + (2 × 15,83) + 0 = 285€ ✓
+**Rechenbeispiel (aktueller Stand: 9× D4/D3 aktiv, 2× 🔴 eingefroren):**
+- Nenner = (9 × 1.0) + (0 × 0.5) = 9.0
+- D4/D3-Einzelrate = 285€ / 9.0 × 1.0 = **31,67€**
+- D2-Einzelrate (falls vorhanden) = 285€ / Nenner × 0.5
+- 🔴/D1-Rate = **0€**
+- Summencheck: 9 × 31,67 = 285€ ✓
 
 4. **Steuer-Bremse**: Niemals durch Verkauf rebalancen → Sparplan umleiten
 5. US-Cap prüfen: Bleibt US-Exposure unter 63%?
@@ -404,24 +404,24 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 ## 22. Sparplan-Formel (aktuell 15.04.2026)
 
 **Formel:** `Einzelrate = 285€ / Σ Gewichte × Eigengewicht`
-**Gewichte:** D4-Clean=1,0 | D3=0,5 | FLAG/D≤2=0,0
+**Gewichte:** D4/D3 (kein 🔴)=1,0 | D2 (kein 🔴)=0,5 | D1/🔴 FLAG=0,0
 
 | Position | Gewicht | Grund |
 |----------|---------|-------|
-| AVGO | 0,0 | FLAG (Insider) |
-| ASML | 0,5 | D3 |
-| MSFT | 0,0 | FLAG (CapEx) |
-| RMS | 1,0 | D4 |
-| VEEV | 1,0 | D4 |
-| SU | 1,0 | D4 |
-| BRK.B | 1,0 | D4 |
-| V | 1,0 | D4 |
-| TMO | 0,5 | D3 |
-| APH | 0,0 | FLAG |
-| COST | 1,0 | D4 |
+| AVGO | 1,0 | D4 + Clean |
+| ASML | 1,0 | D3 (kein 🔴) → volle Rate |
+| MSFT | 0,0 | 🔴 FLAG (CapEx) + D2 |
+| RMS | 1,0 | D4 + Clean |
+| VEEV | 1,0 | D4 + Clean |
+| SU | 1,0 | D4 + Clean |
+| BRK.B | 1,0 | D4 + Clean |
+| V | 1,0 | D4 + Clean |
+| TMO | 1,0 | D3 (kein 🔴) → volle Rate |
+| APH | 0,0 | 🔴 FLAG |
+| COST | 1,0 | D4 + Clean |
 
-**Summe:** 7×1,0 + 2×0,5 = 8,0 | **D4-Rate:** 35,63€ | **D3-Rate:** 17,81€
-**Check:** 7×35,63 + 2×17,81 = 285,03€ ✓
+**Summe:** 9×1,0 = 9,0 | **Volle Rate:** 31,67€ | **Eingefroren:** 0€
+**Check:** 9×31,67 = 285€ ✓
 
 ---
 
@@ -455,4 +455,67 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 **Voraussetzung:** Faktortabelle muss aktuell sein (Sync-Pflicht). GitHub-Repo muss gepusht sein nach lokalen Aenderungen.
 
 ---
-*🦅 INSTRUKTIONEN.md v1.5 | Dynastie-Depot | Stand: 15.04.2026*
+
+## 25. Briefing-Sync Shortcuts (GitHub ↔ Local)
+
+**Problem:** Der 10:00-Morning-Briefing-Trigger läuft als Remote-Session auf claude.ai und liest `00_Core/` aus dem **GitHub-Repo** — nicht aus dem lokalen Arbeitsverzeichnis. Jede lokale Änderung an Faktortabelle/CORE-MEMORY/SESSION-HANDOVER muss vor 10:00 gepusht sein, sonst analysiert der Trigger veraltete Daten.
+
+### `!BriefingCheck`
+
+**Zweck:** Schneller Vorab-Check: *Liest der Trigger heute aktuelle Daten?*
+
+**Schritte (Claude führt aus):**
+1. `git fetch origin main --quiet`
+2. `git diff --stat origin/main -- 00_Core/` — zeigt welche Briefing-Quellen lokal vom Remote abweichen
+3. Wenn Unterschiede: Liste ausgeben + Empfehlung `!SyncBriefing`
+4. Wenn keine Unterschiede: `✅ Trigger liest aktuellen Stand — kein Push nötig`
+
+**Ausgabeformat:**
+```
+BriefingCheck [Datum HH:MM]
+  Faktortabelle.md     [X Zeilen divergent] / [✅ identisch]
+  CORE-MEMORY.md       [X Zeilen divergent] / [✅ identisch]
+  SESSION-HANDOVER.md  [X Zeilen divergent] / [✅ identisch]
+Empfehlung: [!SyncBriefing ausführen] / [Kein Handeln nötig]
+```
+
+### `!SyncBriefing`
+
+**Zweck:** Briefing-relevante `00_Core/`-Änderungen ins Repo pushen — mit Review-Gate.
+
+**Schritte (Claude führt aus):**
+1. `git status --short 00_Core/` — welche Dateien modified
+2. `git diff 00_Core/` — vollständigen Diff anzeigen
+3. **Review-Gate:** User bestätigt *explizit* mit `ja`/`push` bevor committed wird — nie automatisch
+4. Nach Bestätigung: `git add 00_Core/Faktortabelle.md 00_Core/CORE-MEMORY.md 00_Core/SESSION-HANDOVER.md 00_Core/INSTRUKTIONEN.md`
+5. `git commit -m "Briefing-Sync: <kurze Begründung aus Diff abgeleitet>"`
+6. `git push origin main`
+7. Verifikation: `git log -1 --format="%h %s"` ausgeben
+
+**Wichtig:**
+- **Nur `00_Core/` wird synchronisiert** — keine Skills, Tools, Vault
+- **Nie `git add .`** — Pfade explizit
+- **Review-Gate ist Pflicht** — kein Auto-Commit
+- **Commit-Message-Schema:** `Briefing-Sync: <Inhalt>` (z.B. `Briefing-Sync: RMS 71→69, Sparraten-Logik D3=voll`)
+
+### Reminder (Scheduled Task `briefing-sync-reminder`)
+
+- **Frequenz:** Werktags 09:50
+- **Verhalten:** Prüft `00_Core/` auf uncommitted/unpushed Änderungen. Bei Treffern: Reminder-Output für nächste Claude-Code-Session. Kein Auto-Push.
+- **Warum 09:50:** 10 Minuten Puffer vor Remote-Trigger um 10:00
+- **Manueller Start:** `scheduled-tasks → briefing-sync-reminder → Run now`
+
+### Wann `!SyncBriefing` nötig ist
+
+- Nach jeder DEFCON-Analyse (Score/FLAG-Änderung)
+- Nach `CORE-MEMORY.md`-Einträgen (institutionelles Gedächtnis)
+- Nach Sparraten-Änderungen in `SESSION-HANDOVER.md`
+- Spätestens abends vor Session-Ende, wenn Score-Updates vom Tag noch nicht gepusht sind
+
+### Wann **kein** Push nötig ist
+
+- Reine Skill-/Tool-/Vault-Änderungen (`01_Skills/`, `03_Tools/`, `07_Obsidian Vault/`) — Briefing liest diese nicht
+- Work-in-Progress-Analysen (Score noch nicht final) — erst nach Abschluss pushen
+
+---
+*🦅 INSTRUKTIONEN.md v1.6 | Dynastie-Depot | Stand: 15.04.2026*

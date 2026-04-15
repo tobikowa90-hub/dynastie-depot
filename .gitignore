@@ -19,3 +19,6 @@ docs/superpowers/
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# Claude Code personal settings (per-user permissions, not for remote agents)
+.claude/settings.local.json

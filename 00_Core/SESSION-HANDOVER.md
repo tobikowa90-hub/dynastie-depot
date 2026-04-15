@@ -30,7 +30,7 @@ Danach gilt folgender Kontext aus der letzten Session:
    - IFRS-OCF-Toleranz auf ±15% erweitert wenn Leasingbasis erklärbar
 
 3. **TMO DEFCON v3.4 Re-Analyse abgeschlossen** (07.04.2026)
-   - Score: **67/100** | DEFCON: 🟡 3 | Sparrate: 50% Sockelbetrag
+   - Score: **67/100** | DEFCON: 🟡 3 | Sparrate: volle Rate (D3, kein 🔴)
    - Verbesserungen: Net Debt/EBITDA 2.57x ✅ | Fwd P/E 19.9x ✅
    - Schwächen: ROIC 2.6% Q (Goodwill $49.4B) | FCF -13.4% YoY | Unter 200MA
    - **Entscheidung ausstehend:** Q1 Earnings 23.04.2026 (FCF >$7.3B nötig für DEFCON 4)
@@ -92,11 +92,47 @@ Danach gilt folgender Kontext aus der letzten Session:
 
 ### 💡 Wichtige Einzel-Hinweise für die nächste Session
 
-- **MSFT FLAG:** CapEx/OCF war 65.3% (Q2 FY26). Nächste Earnings 29.04. entscheidend. Wenn <60% → FLAG auflösen, D3-Sockelbetrag aktivieren.
+- **MSFT FLAG:** CapEx/OCF war 65.3% (Q2 FY26). Nächste Earnings 29.04. entscheidend. Wenn <60% → FLAG auflösen, D3 volle Rate aktivieren (D3 = Gewicht 1.0).
 - **AVGO Insider:** Modul zeigt $123M FLAG, aber wahrscheinlich Post-Vesting. OpenInsider Spalte „X"/„M" immer manuell gegenchecken vor FLAG-Aktivierung.
 - **Token-Effizienz:** Die neuen Regeln in SKILL.md (v3.4.1) greifen ab sofort. WACC-Zeitreihe kürzen, ROIC auf 6Q, Geography nur bei Risikoländern.
 - **!Rebalancing:** Noch nicht live getestet — Test-Lauf erst am 01.05. wenn Sparplan eingeht.
 
 ---
 
-*🦅 SESSION-HANDOVER.md v1.0 | Dynastie-Depot | Erstellt: 08.04.2026*
+## ✅ Briefing-Sync-Infrastruktur live (15.04.2026)
+
+**Problem gelöst:** Morning-Briefing-Trigger (Remote 10:00) liest aus GitHub-Repo → lokale unpushed Änderungen = veraltetes Briefing. Jetzt dreifach abgesichert:
+
+### Layer 1 — SessionEnd/SessionStart Hook (lokal, garantiert)
+- **Datei:** `.claude/settings.local.json` (gitignored)
+- **Script:** `03_Tools/briefing-sync-check.ps1`
+- **Prüft:** `git status` + unpushed commits auf Faktortabelle, CORE-MEMORY, SESSION-HANDOVER, INSTRUKTIONEN
+- **Output bei dirty:** Terminal-Warnung (systemMessage JSON) + **native Windows-Toast** (WinRT-API, kein BurntToast)
+- **Silent bei clean**
+- **Feuert:** 1× beim Session-Start (Catch-up) und 1× beim Session-Ende (Reminder)
+
+### Layer 2 — Claude Mobile App Notifications (Push Handy/Desktop)
+- **Bedingung:** User muss in Claude Mobile App + Desktop App **Notifications für Routines/Scheduled Agents** aktivieren (nicht von Claude konfigurierbar)
+- **Quelle:** Remote-Trigger `morning-briefing` liefert Push via Claude-Account
+
+### Layer 3 — Scheduled Task `briefing-sync-reminder`
+- **Cron:** 09:54 MESZ werktags (11 Min vor 10:00-Briefing)
+- **Bedingung:** Läuft nur wenn Claude Code CLI aktiv
+- **Zweck:** Fallback für den Fall, dass CLI morgens schon offen ist
+
+### Manuelle Shortcuts (INSTRUKTIONEN.md §25)
+- `!BriefingCheck` — Diagnostischer Drift-Check gegen `origin/main`
+- `!SyncBriefing` — Kontrollierter Push-Workflow mit Review-Gate, Scope `00_Core/` only
+
+### RMS Exception (COST-Analogie) institutionell fixiert
+- CORE-MEMORY-Eintrag 15.04.2026 um Screener-Exception ergänzt: ROIC 24% >> WACC 6,5% (Spread +17,5 PP) rechtfertigt DEFCON 🟢 4 trotz Score 69 — analog COST (MY 15,2% > WACC 12,3%)
+- Re-Check-Trigger: H1 2026 Report Juli/Aug 2026
+
+### Verworfene Alternativen
+- **ntfy.sh**: External service — zugunsten nativer Windows-Toast + Claude-App verworfen
+- **Stop-Hook**: Rauschen bei jedem Turn — zugunsten SessionEnd/SessionStart verworfen
+- **Auto-Commit-Hook**: Verschmutzt Git-Historie mit WIP — Review-Gate bleibt Pflicht
+
+---
+
+*🦅 SESSION-HANDOVER.md v1.2 | Dynastie-Depot | Aktualisiert: 15.04.2026 (Briefing-Sync live)*

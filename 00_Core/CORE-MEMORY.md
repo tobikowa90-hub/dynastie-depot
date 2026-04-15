@@ -29,7 +29,8 @@
 | 03.04.2026 | mainconfig.md v1.5 — vollständig synchronisiert |
 | 04.04.2026 | Dreier-Datei-Struktur (KONTEXT/INSTRUKTIONEN/CORE-MEMORY) erstellt |
 | 04.04.2026 | Rebalancing_Tool_v3.2 — visuelles Redesign, DEFCON-Scores vervollständigt (alle 11 Aktien), ASML vorläufig 84 (→ korrigiert auf 68 am 06.04.), TMO korrigiert (DEFCON 3/65) |
-| 04.04.2026 | DEFCON-Sparraten-Logik auf 3 Stufen erweitert: D4=voll, D3=50% Sockelbetrag, D≤2/FLAG=0€ — projektweite Umsetzung in Excel + 7 Markdown/YAML-Dateien |
+| 04.04.2026 | DEFCON-Sparraten-Logik auf 3 Stufen erweitert (initial: D4=voll, D3=50%, D≤2=0€) — projektweite Umsetzung in Excel + 7 Markdown/YAML-Dateien |
+| 15.04.2026 | **Rebalancing_Tool_v3.4** — Sparraten-Logik überarbeitet: D4/D3=volle Rate (1.0), D2=50% Sockelbetrag (0.5), D1/🔴 FLAG=0€. Drift-Warnschwelle typ-abhängig (Faktor×Toleranz). 🟡-CF auf O-Spalte. B26 dynamisch. Ziel-Allokation exakt 100%. Alle Markdown/YAML aktualisiert |
 | 04.04.2026 | Skill-Paket dynastie-depot.zip neu gebaut und installiert (v3.2-Stand) |
 | 04.04.2026 | Session-Initialisierung etabliert: 00_Core-Dateien werden ab sofort zu Sitzungsbeginn gelesen, CORE-MEMORY live fortgeschrieben |
 | 05.04.2026 | defeatbeta-MCP-Server erfolgreich eingerichtet (via Claude Code). 6 neue Skills gesichtet und bewertet. defeatbeta-API in sources.md + SKILL.md als Primärquelle für US-Ticker-Rohdaten integriert. Scoring-Logik unverändert. |
@@ -39,7 +40,7 @@
 | 06.04.2026 | **Insider Intelligence Module v1.0** gebaut und live getestet (Claude Code). sec-edgar-skill umgeschrieben zu spezialisiertem Form-4-Scanner: CIK-Tabelle 8 US-Satelliten hardcoded, XML-Parsing mit 10b5-1-Erkennung (XML-Feld + Footnote-Analyse), Cashless-Exercise-Detection (M+S same-day), DEFCON-Scoring (7/10 automatisch, Ownership extern), FLAG-Detection ($20M/90d). Befehle: !InsiderScan, !FlagCheck, !InsiderDetail. Live-Test: AVGO (FLAG $123M diskr.), MSFT (3/7 clean), V (4/7 sauber, $24.6M korrekt als 10b5-1 erkannt). Generischer sec-edgar-skill bleibt als Recherche-Fallback. Pfad: 01_Skills/insider-intelligence/. |
 | 06.04.2026 | **System-Audit + 7 Lücken geschlossen (v3.3).** SKILL.md: 3 neue Blöcke (Pre-Processing 4 Regeln, Quarterly API Sanity Check mit IFRS-Quelltabelle, API-Routing Shibui/EODHD/SEC EDGAR + CIK-Tabelle). config.yaml: score_valid_until (180d) für alle Positionen + substitute_activation_rule + globale Systemregeln (Moat-Drift-Trigger, Sparplan-Formel, Tariff-Quelle). INSTRUKTIONEN.md: Sparplan-Formel mit Rechenbeispiel, Moat-Drift 3 objektive Trigger, Non-US Addendum (IFRS/EODHD/AFM), Tariff Quellenreihenfolge. System-Reife: 80-85 → ~93 Punkte. ZIP als dynasty-depot_v3.3 neu gebaut. |
 | 06.04.2026 | **Non-US Fundamentals Module v1.1** gebaut und live getestet (Claude Code). EODHD Free-Tier hat keinen Zugriff auf Fundamentals-Endpoint (403 Forbidden) → Wechsel auf yfinance (kostenlos, kein API-Key). Alle 3 Non-US-Satelliten live-getestet: ASML (12.9% CapEx/OCF, 1161 EUR, über 200MA), RMS (24.8% CapEx/OCF fix via info-TTM — IFRS-yfinance-Lücke behoben), SU (25.2% CapEx/OCF, alle 4 Jahrgänge vollständig). Neue Dateien: eodhd_intel.py (CLI: scan/detail/prices), SKILL.md (non-us-fundamentals). sources.md v2.7 + SKILL.md (dynasty-depot) mit API-Routing-Block aktualisiert. Pfad: 01_Skills/non-us-fundamentals/. |
-| 06.04.2026 | **ASML DEFCON v3.4 Vollanalyse** — erster Non-US Kalibrierungsanker gesetzt. Score 68/100, DEFCON 🟡 3. Moat 19/20 (Wide, Monopol bestätigt Morningstar). Fundamentals 28/50 (Bewertung Fwd P/E 38x, P/FCF ~41x, FCF Yield 2,4% drücken Score). Technicals 6/10 (über steigendem 200MA, -15% vom ATH Feb 2026). Insider 7/10 (3 Direktoren-Käufe, keine Verkäufe >$20M, AFM-Protokoll). Sentiment 8/10 (11 Buy, 0 Sell, PT-Dispersion -1). CapEx/OCF 12,5% — weit unter FLAG. China-Exposure ~24%: Risk-Map-Notiz, kein FLAG. DEFCON 3 trotz perfektem Moat wegen fehlender Bewertungsmarge. Sparrate: 50% Sockelbetrag. Score valid: 06.10.2026. API Sanity Check abgeschlossen (07.04.2026): CapEx-Werte konsistent (Δ ≤ 3.5%). OCF-Abweichung ~10% yfinance vs. StockAnalysis = IFRS 16 vs. ASC 842 (Leasingzahlungen IFRS → Finanzierungs-CF). Kein API-Drift. FLAG-Schlussfolgerung unter beiden Standards identisch: Clean. |
+| 06.04.2026 | **ASML DEFCON v3.4 Vollanalyse** — erster Non-US Kalibrierungsanker gesetzt. Score 68/100, DEFCON 🟡 3. Moat 19/20 (Wide, Monopol bestätigt Morningstar). Fundamentals 28/50 (Bewertung Fwd P/E 38x, P/FCF ~41x, FCF Yield 2,4% drücken Score). Technicals 6/10 (über steigendem 200MA, -15% vom ATH Feb 2026). Insider 7/10 (3 Direktoren-Käufe, keine Verkäufe >$20M, AFM-Protokoll). Sentiment 8/10 (11 Buy, 0 Sell, PT-Dispersion -1). CapEx/OCF 12,5% — weit unter FLAG. China-Exposure ~24%: Risk-Map-Notiz, kein FLAG. DEFCON 3 trotz perfektem Moat wegen fehlender Bewertungsmarge. Sparrate: volle Rate (D3, kein 🔴). Score valid: 06.10.2026. API Sanity Check abgeschlossen (07.04.2026): CapEx-Werte konsistent (Δ ≤ 3.5%). OCF-Abweichung ~10% yfinance vs. StockAnalysis = IFRS 16 vs. ASC 842 (Leasingzahlungen IFRS → Finanzierungs-CF). Kein API-Drift. FLAG-Schlussfolgerung unter beiden Standards identisch: Clean. |
 | 07.04.2026 | **TMO DEFCON v3.4 Re-Analyse:** Score 65→67, DEFCON 🟡 3 bestätigt. Verbesserungen: Net Debt/EBITDA 3.6x→2.57x (Clario-Schulden abgebaut), Fwd P/E 27x→19.9x (Kursrückgang -24% vom ATH). Schwächen bleiben: ROIC 2.6% quartalsweise (Goodwill $49.4B = 44.8% Assets), FCF -13.4% YoY. Technicals unter 200MA. Kein FLAG. Earnings-Trigger 23.04.: FCF >$7.3B nötig für FCF-Yield >4%. |
 | 08.04.2026 | **MSFT DEFCON v3.4 Re-Analyse abgeschlossen.** Score 77→60 (−17 Punkte). DEFCON 3→2. FLAG bestätigt und verschärft: Q2 FY26 CapEx/OCF 83.6% (bereinigt via Finance-Lease-Korrektur ~63%). ROIC 7.5% vs. WACC 13.35% = strukturell unter Kapitalkosten (6Q-Muster). Moat 19/20 unverändert. Sparrate bleibt 0€. Nächste Entscheidung: Q3 Earnings 29.04.2026 — bereinigtes CapEx/OCF <60% = FLAG-Auflösung möglich. Neues Scoring-Lernfeld: Pre-Processing Regel 2 (Finance Lease Obligations $19.5B) ist bei MSFT immer aktiv. |
 | 10.04.2026 | **Obsidian Vault vollständig in Claude Stuff integriert (07_Obsidian Vault/).** 45 Notes angelegt: 11 Satelliten, 3 Ersatzbank, 6 DEFCON-Konzepte, 2 Depot-Konzepte, 5 Quellen/Skills, 2 Synthesen. Vault dauerhaft unter Claude Stuff gemountet — kein separater Mount mehr nötig. Code-Konnektor hat Skills + ETF-Core + Steuer-Architektur + Querverbindungen JP-Morgan/LLM-Research ↔ DEFCON-Konzepte automatisch verlinkt. System-Score: 94/100 (von ~84 normiert). Offene Punkte: !PortfolioRisk-Skill (nächste Woche) + Tariff-Triage 6 Satelliten (nächste Woche). |
@@ -56,6 +57,7 @@
 | 15.04.2026 | **COST (Costco) DEFCON v3.4 Vollanalyse:** Score 69/100, DEFCON 🟢 4 (Bestandsposition). Screener-Exception: ROIC 5.6% GAAP (strukturell durch niedriges Book Value) → Membership Yield 15.2% ($5.3B / $34.9B IC) als ökonomischer Return > WACC 12.3%. Highlights: Moat 19/20 (GuruFocus 9/10 Wide — Membership-Loyalty unübertroffen), CapEx/OCF 21.3% Clean, FCF $7.2B FY2025. Schwächen: P/FCF 53x (teuer), FCF Yield 1.88%, Fwd PE 51x, GAAP-ROIC-Malus. Kein FLAG. Sparplan voll aktiv. |
 | 15.04.2026 | **BRK.B (Berkshire Hathaway) DEFCON v3.4 Vollanalyse:** Score 75/100, DEFCON 🟢 4. Screener-Exception: P/B 1.44x statt P/FCF (Versicherung/Holdings). Highlights: Moat 19/20 (Float $686B einzigartig, BNSF Efficient Scale, 60J Capital-Allocation-Track-Record), Book Value CAGR +10% p.a. 5J, Interest Income $39.98B FY25, Goodwill nur 6.8% (kein Malus), CapEx/OCF 45.6% (BNSF+BHE Infrastruktur, kein FLAG). Insider 9/10: Greg Abel Open-Market-Käufe $15.3M (90d) — starkes Alignment-Signal. Schwächen: ROIC 5.6–7.8% GAAP (Insurance Exception), Technicals 4/10 (unter 200MA, limitierter PT-Upside), Buybacks $0 FY25. Kein FLAG. Sparplan voll aktiv. |
 | 15.04.2026 | **SU (Schneider Electric) DEFCON v3.4 Vollanalyse:** Score 71/100, DEFCON 🟢 4. Highlights: CapEx/OCF 25.2% (ausgezeichnet, 4J stabil), ROIC 10.48% > WACC 8.96% (positiver Spread bestätigt), FCF-Wachstum +41% in 3J (€3.26B→€4.59B), Kurs +12.6% über 200D-MA (einziger Satellit über 200MA), 22 Analysten Strong Buy 0% Sell. Schwächen: P/FCF 37.7x (teuer), FCF Yield 2.65%, Goodwill 40.2% (AVEVA M&A), Moat Narrow (nicht Wide gesichert). Kein FLAG. Sparplan voll aktiv. |
+| 15.04.2026 | **RMS (Hermès) Q1 2026 Earnings Recap + DEFCON v3.4 Re-Analyse:** Score 71→**69**, DEFCON 🟢 4 bestätigt. Q1 Revenue €4,07B (+6% CER, −1% reported). Miss vs. +7–8% Erwartung. Kursreaktion: **−8,4%** (neues 52W-Tief €1.529 intraday). Treiber: Mittlerer Osten −6% (Iran-Krieg, UAE Malls −40%), FX-Headwind €290M, China Asien ex Japan +2%. Positiv: Leder +9%, Moat 19/20 intakt, ROIC 24% >> WACC 6,5%, Insider-Käufe +€7,67M (90d). Kein FLAG. Sparrate voll aktiv (31,67€). Score valid bis 15.10.2026. **Screener-Exception (institutionelle Begründung):** Analog COST (Membership Yield 15,2% > WACC 12,3%) rechtfertigt bei RMS der hohe ökonomische Return ROIC 24% >> WACC 6,5% (Spread +17,5 PP) die Beibehaltung von DEFCON 🟢 4 trotz Score 69 (knapp an D3-Grenze). Score-basierte Downgrade-Mechanik wird durch Return-Exception überschrieben, solange Moat 19/20 + ROIC-Spread >10 PP bestätigt bleiben. Re-Check-Trigger: H1 2026 Report Juli/Aug 2026. |
 
 ---
 
@@ -95,14 +97,14 @@
 - **Sparrate:** 0 € (FLAG + DEFCON 2 → doppelte Absicherung) seit 26.03.2026
 - **Score-Verfall:** ROIC 7.5% vs. WACC 13.35% (−5.85 PP) = strukturell unter Kapitalkosten. CapEx FY26 auf Kurs $100–120B. FCF FY25: $71.6B (↓ von $74.1B)
 - **Trigger für FLAG-Auflösung:** Q3 FY26 Earnings 29.04.2026 — bereinigtes CapEx/OCF muss <60% fallen (Finance Leases raus)
-- **Nach FLAG-Auflösung:** Score-Update nötig — bei Score ≥65 → DEFCON 3 Sockelbetrag; Score ≥80 nötig für Volllauf
+- **Nach FLAG-Auflösung:** Score-Update nötig — bei Score ≥65 → DEFCON 3 volle Rate; bei Score 50–64 → DEFCON 2 Sockelbetrag 50%
 - **Worst Case:** Score <50 → DEFCON 1 → Ersatz-Analyse (GOOGL FLAG aktiv → ZTS/VEEV-Alternative)
 - **Ersatz bereit:** GOOGL (FLAG aktiv!) → kein sofortiger Tausch möglich
 - **Moat-Status:** 19/20 unverändert — Wide Moat strukturell intakt (Azure, M365, Switching Costs)
 
 ### TMO — DEFCON 3, Clario-Watch
 - **Score:** 67/100 | **DEFCON:** 🟡 3 | **Stand:** 07.04.2026
-- **Sparrate:** 50% Sockelbetrag (kein FLAG aktiv)
+- **Sparrate:** Volle Rate (D3 ohne 🔴 FLAG → Gewicht 1.0)
 - **Verbesserungen seit 02.04.:** Net Debt/EBITDA 3.6x → 2.57x ✅ | Fwd P/E 27x → 19.9x ✅ | P/FCF 35x → 29.2x ✅
 - **Schwächen:** ROIC 2.6% Q (Goodwill $49.4B) | FCF -13.4% YoY | Unter 200MA
 - **Trigger für DEFCON 4:** FCF Yield >4% (= FCF >$7.3B bei aktuellem Kurs) + ROIC Aufwärtstrend
@@ -126,7 +128,7 @@
 
 | Ticker | Score | DEFCON | Datum | Status | Nächste Aktion |
 |--------|-------|--------|-------|--------|----------------|
-| ASML | 68 | 🟡 3 | 06.04.2026 | Aktiv — 50% Sockelbetrag | Q1 2026 Earnings (High-NA-Ramp) |
+| ASML | 68 | 🟡 3 | 06.04.2026 | Aktiv — volle Rate (D3, kein 🔴) | Q1 2026 Earnings (High-NA-Ramp) |
 | AVGO | 86 | 🟢 4 | 25.03.2026 | Aktiv — Sparplan läuft | Q3 FY26 Earnings |
 | FFH.TO | 88 | 🟢 4 | ~März 2026 | Ersatzbank BRK.B | — |
 | NVDA | 86 | 🟢 4 | ~März 2026 | Ersatzbank AVGO | — |
@@ -141,9 +143,9 @@
 | SAP | 72 | 🟡 3 | ~März 2026 | Watchlist | ZTS bevorzugt |
 | EXPN | 61 | 🟡 3 | 02.04.2026 | Watchlist | P/FCF + Insider-Check |
 | HON | 71 | 🟡 3 | 28.03.2026 | Watchlist | Post-Spinoff 2026 |
-| TMO | 67 | 🟡 3 | 07.04.2026 | Aktiv — 50% Sockelbetrag (kein FLAG) | Q1 Earnings 23.04.2026 — FCF-Erholung + ROIC-Trend |
+| TMO | 67 | 🟡 3 | 07.04.2026 | Aktiv — volle Rate (D3, kein 🔴) | Q1 Earnings 23.04.2026 — FCF-Erholung + ROIC-Trend |
 | APH | 61 | 🟡 3 | 09.04.2026 | Aktiv — FLAG aktiv | Tariff-Check CN/MY |
-| RMS | 71 | 🟢 4 | 09.04.2026 | Aktiv — Sparplan voll | H1 2026 Report |
+| RMS | 69 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | H1 2026 Report Juli/Aug 2026 |
 | VEEV | 74 | 🟢 4 | 09.04.2026 | Aktiv — Sparplan voll | Keine Earnings-Urgenz |
 | FICO | 70 | 🟡 3 | 03.04.2026 | Watchlist VEEV-Ersatz #1 | Re-Analyse bei VEEV-Schwäche |
 | V | 86 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | Q2 FY26 Earnings ~22.04.2026 |

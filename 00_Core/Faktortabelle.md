@@ -23,7 +23,7 @@
 <!-- DATA:TMO -->
 | TMO | ~15% | 2.6% | ~42% | 2.57x | Wide | 67 | 🟡 3 | — | 2026-04-07 | 2026-04-23 Q1 Earnings |
 <!-- DATA:RMS -->
-| RMS | — | — | — | — | Wide | 71 | 🟢 4 | ✅ Clean | 2026-04-09 | H1 2026 Report |
+| RMS | ~28% 5J FCF | 24.2% TTM | ~71% | Netto-Cash +€9,89B | Wide | 69 | 🟢 4 | ✅ Clean | 2026-04-15 | H1 2026 Report Juli/Aug 2026 |
 <!-- DATA:VEEV -->
 | VEEV | — | — | — | — | Wide | 74 | 🟢 4 | ✅ Clean | 2026-04-09 | Nächste Earnings |
 <!-- DATA:SU -->
@@ -74,7 +74,7 @@
 | AVGO | 86 | 🟢 4 | 25.03.2026 | Q3 FY26 Earnings |
 | MSFT | 60 | 🟠 2 | 08.04.2026 | Q3 FY26 Earnings 29.04. (FLAG-Review) |
 | TMO | 67 | 🟡 3 | 07.04.2026 | Q1 2026 Earnings 23.04. |
-| RMS | 71 | 🟢 4 | 09.04.2026 | H1 2026 Report |
+| RMS | 69 | 🟢 4 | 15.04.2026 | H1 2026 Report Juli/Aug 2026 |
 | VEEV | 74 | 🟢 4 | 09.04.2026 | Nächste Earnings |
 | SU | 71 | 🟢 4 | 15.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
 | BRK.B | 75 | 🟢 4 | 15.04.2026 | Q-Earnings Mai 2026 |
