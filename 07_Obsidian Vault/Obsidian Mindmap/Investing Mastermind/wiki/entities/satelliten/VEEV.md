@@ -4,20 +4,21 @@ ticker: VEEV
 name: Veeva Systems Inc.
 sektor: Nischen-SaaS / Life-Science
 ersatz: ZTS
-score_aktuell: 80
+score_aktuell: 74
 defcon: 4
 flag: "keins"
-sparrate: "Volle Rate"
-letzteAnalyse: 2026-03-01
-score_valid_until: 2026-09-01
-naechsterTrigger: "Liberation-Day Tariff-Check (Priorität 8)"
+sparrate: "Volle Rate (Gewicht 1.0)"
+letzteAnalyse: 2026-04-09
+score_valid_until: 2026-10-06
+naechsterTrigger: "Nächste Earnings"
+updated: 2026-04-16
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
 ---
 
 # VEEV — Veeva Systems
 
-> **DEFCON 🟢 4 | Score ~80/100 | Kein FLAG**
-> Sparrate: Volle Rate | SaaS, kein Tariff-Risiko
+> **DEFCON 🟢 4 | Score 74/100 | Kein FLAG**
+> Sparrate: Volle Rate (Gewicht 1.0) | SaaS, kein Tariff-Risiko
 
 ## Stärken
 

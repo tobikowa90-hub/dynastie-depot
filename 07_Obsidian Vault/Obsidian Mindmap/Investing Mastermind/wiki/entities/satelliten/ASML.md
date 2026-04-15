@@ -7,10 +7,11 @@ ersatz: SNPS
 score_aktuell: 68
 defcon: 3
 flag: "keins"
-sparrate: "50% Sockelbetrag"
+sparrate: "Volle Rate (Gewicht 1.0, D3 kein FLAG)"
 letzteAnalyse: 2026-04-06
-score_valid_until: 2026-10-06
-naechsterTrigger: "Q1 2026 Earnings — High-NA-Ramp prüfen"
+score_valid_until: 2026-10-03
+naechsterTrigger: "Q1 2026 Earnings 15.04. — QuickCheck nach Zahlen"
+updated: 2026-04-16
 waehrung: EUR
 ifrs: true
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
@@ -19,7 +20,7 @@ related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie
 # ASML — ASML Holding N.V.
 
 > **DEFCON 🟡 3 | Score 68/100 | Kein FLAG**
-> Sparrate: 50% Sockelbetrag | Non-US / IFRS
+> Sparrate: Volle Rate (D3, Gewicht 1.0) | Non-US / IFRS
 
 ## Aktuelle Lage (Stand: 06.04.2026)
 

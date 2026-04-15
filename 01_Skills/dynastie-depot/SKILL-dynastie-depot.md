@@ -481,10 +481,10 @@ Quelle: Yahoo Finance quote/TICKER/analysis → Range of Estimates
 
 | \*\*DEFCON\*\* | \*\*Score\*\* | \*\*Aktion\*\* |
 | :---: | :---: | :---: |
-| 🟢 4 | ≥ 73 | Sparplan voll aktiv |
-| 🟡 3 | 60–72 | Sparrate einfrieren, Re-Analyse |
-| 🟠 2 | 50–59 | Sparrate stoppen, Ersatz identifizieren |
-| 🔴 1 | < 50 | Auswechslung einleiten |
+| 🟢 4 | ≥ 80 | Sparplan voll aktiv, Neueinstieg erlaubt |
+| 🟡 3 | 65–79 | Sparplan volle Rate (Gewicht 1.0), kein Neueinstieg, These intakt |
+| 🟠 2 | 50–64 | 50% Sockelbetrag (Gewicht 0.5), Ersatz identifizieren |
+| 🔴 1 | < 50 | Sparrate 0€, Auswechslung einleiten |
 
 Begründung der Trennung: Wide-Moat-Positionen mit 32 Jahren Haltedauer werden nicht wegen temporärer Score-Schwäche liquidiert. Verkauf nach Steuer-Event wäre irrational und widerspricht dem Manifest.
 
@@ -492,7 +492,7 @@ Begründung der Trennung: Wide-Moat-Positionen mit 32 Jahren Haltedauer werden n
 
 Ein FLAG 🔴 wird UNABHÄNGIG vom Score ausgelöst durch:
 
-1.  **CapEx/OCF \> 60%** (laufendes oder kommendes GJ) → Sparrate einfrieren
+1.  **CapEx/OCF \> 60%** (laufendes oder kommendes GJ) → Sparrate komplett gestoppt (0 €)
 
 2.  **Negativer FCF-Trend** bei gleichzeitig steigendem CapEx → FLAG aktiv
 
@@ -503,7 +503,7 @@ Ein FLAG 🔴 wird UNABHÄNGIG vom Score ausgelöst durch:
     → Verifiziert heute (02.04.2026) bei AVGO: Tan $24,3M + Brazeal $27,1M ohne „M"
     = FLAG aktiv.
 
-FLAG-Wirkung: Sparrate einfrieren, quartalsweise Re-Analyse, kein Nachkauf bis FLAG aufgehoben.
+FLAG-Wirkung: Sparrate komplett gestoppt (0 €), quartalsweise Re-Analyse, kein Nachkauf bis FLAG aufgehoben. FLAG ueberschreibt jeden DEFCON-Score.
 
 **Aktuell aktiv:** GOOGL 🔴 (CapEx FY26: 74–79% OCF)
 
@@ -519,7 +519,7 @@ Pflichtcheck bei jedem \!Analysiere für US-notierte Titel.
 | :---: | :---: |
 | < 15% | kein FLAG, kein Abzug |
 | 15–35% | Notiz in Risk Map, kein automatischer Abzug; bei DEFCON 3/4-Grenzfall -1 Punkt Fundamentals |
-| \> 35% | FLAG aktiv, Sparrate einfrieren, -3 Punkte Fundamentals |
+| \> 35% | FLAG aktiv, Sparrate 0 €, -3 Punkte Fundamentals |
 
 Bei aktivem FLAG: Tariff-Szenario im Bull/Bear-Case verpflichtend dokumentieren.
 
