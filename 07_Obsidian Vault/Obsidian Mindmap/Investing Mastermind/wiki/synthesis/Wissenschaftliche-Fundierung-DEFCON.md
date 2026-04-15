@@ -27,7 +27,7 @@ status: aktiv
 | **B4** | 8 Moat-Quellen operativ identifiziert | [[Morningstar-Wide-Moat]] | Moat (20 Pt.) | 8-Quellen-Checkliste im Moat-Block | Jede Moat-Analyse prüft alle 8 Quellen |
 | **B5** | Buffetts Alpha = QMJ + BAB + Value (vollständig erklärt) | [[Buffetts-Alpha]] | Fundamentals + Moat | cheap+safe+quality als operativer Dreiklang | DEFCON-4-Kriterien = cheap+safe+quality |
 | **B6** | Moat allein ≠ Excess Return (Quality Trap ohne Bewertung) | [[Morningstar-Wide-Moat]] | Moat + Bewertung | Wide Moat immer mit Bewertungsdisziplin | Kombination Moat + Fundamentals ist Pflicht |
-| **B7** | Fundamentals > Sentiment > Technicals (ML-Datenhierarchie) | alle 4 Quellen | Datenhierarchie | Gewichtung 50/10/10 Pt. bestätigt | SKILL.md: Datenhierarchie explizit benennen |
+| **B7** | Fundamentals > Sentiment > Technicals (ML-Datenhierarchie) | alle 4 Quellen | Datenhierarchie | Gewichtung 50/10/10 Pt. bestätigt | SKILL-dynastie-depot.md: Datenhierarchie explizit benennen |
 
 ---
 
@@ -88,9 +88,9 @@ Alle 4 Quellen + alle 5 Konzepte → DEFCON v3.4 (wissenschaftlich validiert)
 
 ---
 
-## Implikationen für SKILL.md
+## Implikationen für SKILL-dynastie-depot.md
 
-B7 verlangt explizite Dokumentation der Datenhierarchie in SKILL.md:
+B7 verlangt explizite Dokumentation der Datenhierarchie in SKILL-dynastie-depot.md:
 ```
 Datenhierarchie (wissenschaftlich belegt):
 1. Fundamentals (FCF, ROIC, GM, Fwd P/E) — stärkste Prädiktoren
