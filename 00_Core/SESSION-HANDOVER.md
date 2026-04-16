@@ -19,15 +19,19 @@ Danach gilt folgender Kontext aus der letzten Session:
 
 ---
 
-## 🔴 PRIO 1 — Aktive Pause: Scoring-System-Audit vor allem anderen
+## ✅ PRIO 1 ERLEDIGT — DEFCON v3.5 implementiert (16.04.2026)
 
-**⏸️ Alle Satelliten-Analysen sind potenziell blockiert** bis das DEFCON v3.4 Strukturreview entschieden ist. Grund: Am 16.04.2026 wurde ein möglicher struktureller Fehler im Scoring-System gefunden (PT-Upside-Duplikation zwischen Technicals und Sentiment). Wenn sich v3.5 als nötig erweist, müssen alle Re-Analysen darunter laufen.
+Das Scoring-System-Audit ist abgeschlossen. DEFCON v3.5 ist live.
 
-👉 **Details siehe unten: Abschnitt "2026-04-16 Backtest-Ready / Scoring-System-Audit"**
+**Audit-Ergebnis:** 5×A, 1×B (PT-Upside Double-Counting — gefixt), 1×C (Gewichtsanpassung zurückgestellt auf 6 Monate)
+**v3.5-Fix:** PT-Upside aus Technicals entfernt, Relative Stärke vs S&P500 als 0-3 Scored Metric (war: ±1 Tiebreaker)
+**Anker-Shifts:** AVGO 86→85, SNPS 79→76, TMO 65→62 (⚠️ D3→D2), FICO 70→67, SPGI 77→74, MKL 82 (unverändert)
+
+👉 **Die Satelliten-Queue ist jetzt entsperrt.** Alle Re-Analysen laufen unter v3.5.
 
 ---
 
-## 🚀 Offene Analyse-Queue (blockiert bis Audit-Entscheid)
+## 🚀 Offene Analyse-Queue (v3.5 live — ENTSPERRT)
 
 | Priorität | Aufgabe | Kontext |
 |-----------|---------|---------|
@@ -49,7 +53,7 @@ Danach gilt folgender Kontext aus der letzten Session:
 
 | Datum | Ereignis | Aktion |
 |-------|----------|--------|
-| **23.04.2026** | TMO Q1 Earnings | FCF >$7.3B → DEFCON 4 / sonst ZTS-Aktivierung prüfen (TMO aktuell Score 67, D🟡3) |
+| **23.04.2026** | TMO Q1 Earnings | FCF >$7.3B → DEFCON 4 / sonst ZTS-Aktivierung prüfen (TMO v3.5 Score 62, D🟠2 — Sparrate bereits auf 50% reduziert) |
 | **28.04.2026** | SPGI Earnings | QuickCheck SPGI (Score 79, Watchlist) |
 | **29.04.2026** | MSFT Q3 Earnings | FLAG-Auflösung wenn CapEx/OCF <60% |
 | **Mai 2026** | PEGA Earnings | Slot-16-Entscheidung |
@@ -66,7 +70,7 @@ Danach gilt folgender Kontext aus der letzten Session:
 | Shibui Finance SQL | ✅ Primärquelle Technicals + FLAG-Historie |
 | insider_intel.py | ✅ Form-4-Scanner 8 US-Satelliten |
 | eodhd_intel.py / yfinance | ✅ Non-US Fundamentals (Cowork-Session: Web-Fallback) |
-| SKILL.md | ✅ v3.4.1 — Token-Optimierungen aktiv |
+| SKILL.md | ✅ v3.5 — PT-Upside-Fix, Relative Stärke als Scored Metric |
 | Briefing-Sync | ✅ Dreifach abgesichert (SessionStart/End-Hook + Claude-App-Push + Scheduled Task 09:54). Shortcuts: `!BriefingCheck`, `!SyncBriefing` (INSTRUKTIONEN.md §25) |
 | Shibui SQL column | ⚠️ `code` nicht `ticker` — immer `WHERE code = 'TICKER'` |
 
@@ -74,7 +78,7 @@ Danach gilt folgender Kontext aus der letzten Session:
 
 ## 🔬 2026-04-16 — Backtest-Ready / Scoring-System-Audit (PAUSIERT)
 
-**Status:** ⏸️ Pausiert vor Implementation — wartet auf Scoring-System-Audit
+**Status:** ✅ Audit abgeschlossen 16.04.2026, DEFCON v3.5 implementiert — Backtest-Ready-Spec v1.1 ist nächster Schritt (nach Satelliten-Queue)
 **Session-Typ:** Brainstorming + Spec-Entwurf (kein Code geschrieben)
 
 ### Wiedereinstiegs-Befehl (zuerst ausführen)
@@ -201,4 +205,4 @@ Diese müssen nach dem Audit NICHT neu diskutiert werden:
 
 ---
 
-*🦅 SESSION-HANDOVER.md v1.3 | Dynastie-Depot | Bereinigt 16.04.2026*
+*🦅 SESSION-HANDOVER.md v1.4 | Dynastie-Depot | Bereinigt 16.04.2026 — DEFCON v3.5 live*
