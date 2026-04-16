@@ -17,11 +17,11 @@
 <!-- DATA:ASML -->
 | ASML | — | — | ~52% | <1x | Wide | 68 | 🟡 3 | — | 2026-04-06 | Q1 Earnings 15.04. |
 <!-- DATA:AVGO -->
-| AVGO | ~30% | >20% | ~65% | ~2.5x | Wide | 86 | 🟢 4 | ⚠️ Insider $123M (vermutl. Post-Vesting — OpenInsider prüfen!) | 2026-03-25 | Q3 FY26 Earnings |
+| AVGO | ~30% | >20% | ~65% | ~2.5x | Wide | 85 | 🟢 4 | ⚠️ Insider $123M (vermutl. Post-Vesting — OpenInsider prüfen!) | 2026-03-25 | Q3 FY26 Earnings |
 <!-- DATA:MSFT -->
 | MSFT | ~25% | 7.5% | ~69% | ~1x | Wide | 60 | 🟠 2 | 🔴 CapEx/OCF >60% | 2026-04-08 | 2026-04-29 Q3 FY26 |
 <!-- DATA:TMO -->
-| TMO | ~15% | 2.6% | ~42% | 2.57x | Wide | 67 | 🟡 3 | — | 2026-04-07 | 2026-04-23 Q1 Earnings |
+| TMO | ~15% | 2.6% | ~42% | 2.57x | Wide | 62 | 🟠 2 | — | 2026-04-07 | 2026-04-23 Q1 Earnings |
 <!-- DATA:RMS -->
 | RMS | ~28% 5J FCF | 24.2% TTM | ~71% | Netto-Cash +€9,89B | Wide | 69 | 🟢 4 | ✅ Clean | 2026-04-15 | H1 2026 Report Juli/Aug 2026 |
 <!-- DATA:VEEV -->
@@ -45,7 +45,7 @@
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
 **Stand:** 15.04.2026 — Vollständiger Score-Snapshot aller 11 Satelliten
 
-> ⚠️ **v3.5-MIGRATIONSHINWEIS (16.04.2026):** Scores oben wurden unter DEFCON v3.4 berechnet. v3.5 ersetzt PT-Upside (Technicals) durch Relative Stärke vs. S&P500. Shift: max. -3 Punkte pro Position. Kein DEFCON-Wechsel außer TMO (D3→D2 erwartet bei -3P Shift, Q1-Earnings 23.04. triggern Re-Analyse). Vollständige v3.5-Re-Analyse folgt im Rahmen der blockierten Satelliten-Queue.
+> ℹ️ **v3.5 (16.04.2026):** AVGO, MKL, SNPS, SPGI, TMO, FICO auf v3.5 rekalibriert (RS-Fix). TMO: D3→D2 (Score 62). Vollständige Re-Analyse aller 11 Satelliten folgt in der laufenden Queue.
 
 ---
 
@@ -73,9 +73,9 @@
 | Position | Score | DEFCON | Analyse-Datum | Nächster Trigger |
 |----------|-------|--------|--------------|-----------------|
 | ASML | 68 | 🟡 3 | 06.04.2026 | Q1 2026 Earnings 15.04. |
-| AVGO | 86 | 🟢 4 | 25.03.2026 | Q3 FY26 Earnings |
+| AVGO | 85 | 🟢 4 | 25.03.2026 | Q3 FY26 Earnings |
 | MSFT | 60 | 🟠 2 | 08.04.2026 | Q3 FY26 Earnings 29.04. (FLAG-Review) |
-| TMO | 67 | 🟡 3 | 07.04.2026 | Q1 2026 Earnings 23.04. |
+| TMO | 62 | 🟠 2 | 07.04.2026 | Q1 2026 Earnings 23.04. |
 | RMS | 69 | 🟢 4 | 15.04.2026 | H1 2026 Report Juli/Aug 2026 |
 | VEEV | 74 | 🟢 4 | 09.04.2026 | Nächste Earnings |
 | SU | 71 | 🟢 4 | 15.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
@@ -90,7 +90,7 @@
 
 | Satellit | Ersatz | Score | Status |
 |----------|--------|-------|--------|
-| ASML | SNPS | 79 (D3) | 1 Punkt unter Einstiegsschwelle |
+| ASML | SNPS | 76 (D3) | v3.5 Ankerwert |
 | AVGO | NVDA / MRVL | — | Kein Score |
 | MSFT | GOOGL → ZTS/VEEV | 72 (D3, FLAG!) | GOOGL selbst FLAG — Alternativ: ZTS oder VEEV |
 | RMS | RACE | — | Kein Score |

@@ -53,8 +53,8 @@ Das Scoring-System-Audit ist abgeschlossen. DEFCON v3.5 ist live.
 
 | Datum | Ereignis | Aktion |
 |-------|----------|--------|
-| **23.04.2026** | TMO Q1 Earnings | FCF >$7.3B → DEFCON 4 / sonst ZTS-Aktivierung prüfen (TMO v3.5 Score 62, D🟠2 — Sparrate bereits auf 50% reduziert) |
-| **28.04.2026** | SPGI Earnings | QuickCheck SPGI (Score 79, Watchlist) |
+| **23.04.2026** | TMO Q1 Earnings | FCF >$7.3B → DEFCON 4 / sonst ZTS-Aktivierung prüfen (TMO v3.5 Score 62, D🟠2 — Sparrate 50%) |
+| **28.04.2026** | SPGI Earnings | QuickCheck SPGI (Score 74, Watchlist) |
 | **29.04.2026** | MSFT Q3 Earnings | FLAG-Auflösung wenn CapEx/OCF <60% |
 | **Mai 2026** | PEGA Earnings | Slot-16-Entscheidung |
 | **01.05.2026** | Sparplan | !Rebalancing live testen (erster echter Lauf, noch nie gelaufen) |
@@ -76,133 +76,44 @@ Das Scoring-System-Audit ist abgeschlossen. DEFCON v3.5 ist live.
 
 ---
 
-## 🔬 2026-04-16 — Backtest-Ready / Scoring-System-Audit (PAUSIERT)
+## 📋 Backtest-Ready-Infrastruktur (NÄCHSTES PROJEKT — nach Satelliten-Queue)
 
-**Status:** ✅ Audit abgeschlossen 16.04.2026, DEFCON v3.5 implementiert — Backtest-Ready-Spec v1.1 ist nächster Schritt (nach Satelliten-Queue)
-**Session-Typ:** Brainstorming + Spec-Entwurf (kein Code geschrieben)
+**Status:** Audit ✅ abgeschlossen (16.04.2026), DEFCON v3.5 live — Spec v1.0 liegt bereit, v1.1 ausstehend  
+**Spec:** `docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md`
 
-### Wiedereinstiegs-Befehl (zuerst ausführen)
-
-Nach dem Standard-Session-Start-Ritual:
+### Wiedereinstieg
 
 ```
-Lies den Abschnitt "2026-04-16 Backtest-Ready / Scoring-System-Audit"
-aus SESSION-HANDOVER.md, dann den pausierten Spec unter
-docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md
-
-Danach superpowers:brainstorming-Skill starten für das Thema:
-"DEFCON v3.4 Strukturreview / Scoring-System-Audit"
+Lies docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md
+→ Spec v1.1 updaten (10 bekannte Fehler unten) → writing-plans-Skill → Phase 1 bauen
 ```
 
-### Kontext (sehr kurz)
+Die 11 v3.5-Re-Analysen (Queue oben) werden die ersten Forward-Records im Archiv.
 
-1. Brainstorming zu "Formales Backtesting des DEFCON-Systems" gestartet
-2. Gegen formales Backtesting entschieden: n=11 zu klein, System zu jung
-3. Alternativer Ansatz: **"Backtest-Ready"-Infrastruktur** bauen (append-only Score-Archiv + FLAG-Event-Log + Vault-Integration), Review 2028-04-01
-4. Spec v1.0 geschrieben — 95% korrekt, 10 bekannte Fehler für v1.1-Update identifiziert (siehe unten)
-5. **🚨 Kritische Entdeckung:** DEFCON v3.4 scort "Ø PT-Upside" **zweimal** — einmal in Technicals (Schwelle >20%), einmal in Sentiment (Schwelle >15%). Zwei Deutungen:
-   - (a) Intentionales Ordinal-Encoding (abgestuftes Signal)
-   - (b) Echtes Double-Counting (Kategorienfehler: Analyst-PTs sind konzeptionell Sentiment)
-6. **Strategischer Einwand:** Wenn v3.4 strukturell unsauber sein könnte, macht es keinen Sinn, 2 Jahre Archiv-Records auf verzerrter Basis zu bauen — **besser erst Audit, dann ggf. v3.5, dann Infrastruktur**
-7. Implementation gestoppt, Audit als neues Mini-Projekt davor geschaltet
+### Bekannte Fehler im Spec v1.0 (für v1.1 — nicht nochmal suchen)
 
-### Plan für nächste Session
-
-#### Schritt 1: Scoring-System-Audit (timeboxed 2 Arbeitstage)
-
-Fokussiertes Brainstorming, das folgende Fragen beantworten muss:
-
-1. **PT-Upside-Duplikation:** Ordinal-Encoding oder Double-Counting? Entscheidung mit Begründung.
-2. **Weitere Naming-Kollisionen** zwischen den 5 Blöcken systematisch suchen
-3. **Theoretische Redundanzen** innerhalb eines Blocks prüfen:
-   - Fwd P/E vs. P/FCF bei profitablen Firmen (strukturelle Korrelation)
-   - CapEx/OCF vs. FCF Yield (mechanisch verknüpft)
-   - Net Debt/EBITDA vs. Current Ratio vs. Goodwill/Assets (Bilanz-Triade)
-4. **Block-Gewichtung 50/20/10/10/10** gegen die 4 Paper prüfen:
-   - Befund B7 aus `Wissenschaftliche-Fundierung-DEFCON.md`: "Fundamentals > Sentiment > Technicals"
-   - Passt Moat=20 zur Morningstar-Evidenz, oder ist es überhöht?
-   - Sollte Sentiment eher 15 statt 10 sein (Gu-Kelly-Xiu zeigt hohe Prognosekraft)?
-5. **Kategorien-Hygiene:** Sind alle Metriken im konzeptuell richtigen Block?
-6. **Malus-Stacking:** Können SBC (-4) + Accruals (-2) + Tariff (-3) kumuliert zu negativen Fundamentals führen? Intendiert?
-7. **Kalibrierungsanker-Reproduzierbarkeit:** Würden AVGO=86, MKL=82, SNPS=79 bei unabhängigem zweitem Durchlauf identisch rauskommen?
-
-**Audit-Output:** Report mit jeder Finding klassifiziert als:
-- **A** — strukturell sauber, bleibt
-- **B** — nachweislich falsch, muss in v3.5
-- **C** — unklar, braucht Design-Entscheidung
-
-#### Schritt 2: Entscheidung v3.5-Scope
-
-- **Minimal-Fix:** Nur PT-Upside (plus Ersatz-Metrik im Technicals-Block)
-- **Konsolidierter Fix:** PT-Upside + weitere Funde
-- **Status quo:** Audit zeigt v3.4 ist methodisch sauber
-
-#### Schritt 3: v3.5-Implementation (nur falls nötig)
-
-- `SKILL.md`, `Beispiele.md` (neue Anker!), `INSTRUKTIONEN.md`, `KONTEXT.md`, `CORE-MEMORY.md` updaten
-- Vault: `Wissenschaftliche-Fundierung-DEFCON.md` erweitern
-- ZIP-Paket: `06_Skills-Pakete/dynastie-depot_v3.5.0.zip`
-
-#### Schritt 4: Re-Analyse der 11 Satelliten unter v3.5
-
-ASML, AVGO, MSFT, RMS, VEEV, SU, BRK.B, V, TMO, APH, COST
-
-#### Schritt 5: Backtest-Ready-Spec v1.1 + Implementation
-
-Bestehenden Spec an v3.5 anpassen + die 10 v1.0-Fehler fixen → writing-plans-Skill → Phase 1 bauen. Die 11 Re-Analysen aus Schritt 4 werden die ersten Forward-Records im Archiv.
-
-### Bekannte Fehler im Spec v1.0 (für v1.1-Update, nicht nochmal suchen)
-
-**Kritisch (muss fixiert werden):**
-
-1. **Arithmetik AVGO-Beispielrecord §4.1:** `eps_revisions_up_90d: 4` triggert `+1` → `sentiment.gesamt` müsste 10 sein, `score_gesamt` 87 statt 86. Fix: Rohwert auf 2 reduzieren.
-2. **Moat-Schema fehlt `rating_base_score: int` (0-20):** Ohne Basiswert kein Arithmetik-Check möglich (Wide = 17-20 Bereich).
-3. **Malus-Konvention ambig:** `sbc_malus`, `accruals_malus`, `tariff_malus` — Empfehlung: **negative Zahlen**, damit einfache Summe funktioniert.
-4. **`metriken_roh` unvollständig:** Fehlen u.a. `ath_distanz_pct`, `pt_upside_consensus_pct`, `konsensus_rating`, `sell_ratio_pct`, `ownership_pct`, `net_buy_6m_usd`, `max_single_sale_90d_usd`, `trend_200ma_richtung`. **Für spätere Rekalibrierung fatal.**
-5. **Widerspruch §4.1 ↔ §9.2:** "record_id unique" vs. "Duplikate als Sub-Record anhängen". Fix: Duplikate verwerfen, in `_parser_errors.log`.
-6. **`analyse_typ: "rescoring"` erfunden/undefiniert:** Enum reduzieren auf `["vollanalyse", "delta"]`.
+**Kritisch:**
+1. Arithmetik AVGO-Record §4.1: `eps_revisions_up_90d: 4` → `sentiment.gesamt` müsste 10, `score_gesamt` 87 statt 86. Fix: Rohwert auf 2.
+2. Moat-Schema fehlt `rating_base_score: int` (0-20).
+3. Malus-Konvention ambig — Empfehlung: **negative Zahlen** für einfache Summe.
+4. `metriken_roh` unvollständig (fehlen u.a. `ath_distanz_pct`, `pt_upside_consensus_pct`, `konsensus_rating`, `sell_ratio_pct`, `ownership_pct`, `net_buy_6m_usd`, `max_single_sale_90d_usd`, `trend_200ma_richtung`).
+5. Widerspruch §4.1↔§9.2: "unique" vs. "Sub-Record" → Duplikate verwerfen in `_parser_errors.log`.
+6. `analyse_typ: "rescoring"` undefiniert → Enum: `["vollanalyse", "delta"]`.
 
 **Klarheit:**
+7. §12 Phase-Abhängigkeit: Phase 3 ← Phase 2. Phase 4 parallel zu 2+3.
+8. §10.4 Benchmark-Liste: regelbasiert ("primärer Heimatindex") statt Enumeration.
+9. §6.5: "Shibui primär, yfinance Fallback".
+10. Datums-Placeholder vereinheitlichen auf `[YYYY-MM-DD]`.
 
-7. **§12 Phase-Abhängigkeit:** Phase 3 hängt von Phase 2 ab (nicht parallel). Fix: "Phase 3 ← Phase 2. Phase 4 parallel zu 2+3."
-8. **§10.4 Benchmark-Liste:** Nennt nur AEX, CAC40 — fehlt DAX (SAP), TSX (FFH.TO), FTSE MIB (RACE). Fix: regelbasiert ("primärer Heimatindex").
-9. **§6.5:** "Shibui oder yfinance" → "Shibui primär, yfinance Fallback".
-10. **Datums-Placeholder:** Mal `2026-04-XX`, mal `[YYYY-MM-DD]` → vereinheitlichen auf `[YYYY-MM-DD]`.
-
-### Kontext-Dateien (Lese-Reihenfolge beim Wiedereinstieg)
-
-1. **Dieser Abschnitt** — Kurz-Refresher
-2. **`docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md`** — Pausierter Spec v1.0
-3. **`01_Skills/dynastie-depot/SKILL.md`** — v3.4 Scoring-System, zu auditieren
-4. **`01_Skills/dynastie-depot/Beispiele.md`** — Kalibrierungsanker AVGO=86, MKL=82, SNPS=79
-5. **`07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md`** — 4 Paper + 7 Befunde
-6. **`07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/concepts/defcon/`** — Alle DEFCON-Konzeptseiten
-
-### Spec-Entscheidungen, die versionsunabhängig bestehen bleiben
-
-Diese müssen nach dem Audit NICHT neu diskutiert werden:
-
-- ✅ Zwei getrennte JSONL-Dateien (`score_history.jsonl` + `flag_events.jsonl`)
-- ✅ Append-only, niemals UPDATE
+### Spec-Entscheidungen (versionsunabhängig — nicht neu diskutieren)
+- ✅ Zwei JSONL: `score_history.jsonl` + `flag_events.jsonl` (append-only, niemals UPDATE)
 - ✅ Point-in-Time-Backfill via `git show <sha>:pfad`, nie Working Tree
-- ✅ Best-Effort-Parser mit `_parser_errors.log`
-- ✅ FLAG-Events paired (trigger + resolution, gemeinsame `flag_id`)
-- ✅ `flag_id`-Format: `TICKER_FLAGTYP_YYYY-MM-DD`
-- ✅ `fcf_trend_neg`-FLAG deterministisch: "FCF YoY negativ in ≥3 von 4 Quartalen UND CapEx YoY positiv"
-- ✅ Vier neue Vault-Seiten (Score-Archiv, FLAG-Event-Log, Backtest-Ready-Infrastructure, Backtest-Methodik-Roadmap)
-- ✅ System-Integration in CLAUDE.md, INSTRUKTIONEN.md, CORE-MEMORY.md, KONTEXT.md
-- ✅ 4 Implementation-Phasen: Forward-Pipeline → Backfill → Event-Study → Vault/System
-- ✅ Review-Termin 2028-04-01
-- ✅ YAGNI: kein formaler Backtest, keine Statistik-Tests, keine Automatisierung, kein Dashboard, kein SQL
-
-### Merksätze
-
-- **Audit timeboxed auf 2 Arbeitstage** — bei Scope-Creep: offene Fragen in "Anomalien für 2028-Review" parken
-- **Anker-Vorsicht:** AVGO=86, MKL=82, SNPS=79 wurden *mit* PT-Upside-Duplikation kalibriert — jede v3.5-Änderung verschiebt die Anker. Akzeptieren, nicht vermeiden
-- **Spec nicht verwerfen:** v1.0 ist zu 95% korrekt, wird auf v1.1 upgedatet, nicht neu geschrieben
-- **"Alles OK" ist ein wertvolles Audit-Ergebnis:** Auditiertes v3.4 ist qualitativ höherwertig als ungeprüftes v3.4
-- **Wenn v3.5 kommt:** Die 11 Re-Analysen werden die ersten Forward-Records — kein Leerlauf
+- ✅ FLAG-Events paired (`flag_id` = `TICKER_FLAGTYP_YYYY-MM-DD`)
+- ✅ `fcf_trend_neg` deterministisch: FCF YoY neg. in ≥3/4 Quartalen UND CapEx YoY positiv
+- ✅ 4 Implementation-Phasen + Review 2028-04-01
+- ✅ YAGNI: kein formaler Backtest, kein Dashboard, kein SQL
 
 ---
 
-*🦅 SESSION-HANDOVER.md v1.4 | Dynastie-Depot | Bereinigt 16.04.2026 — DEFCON v3.5 live*
+*🦅 SESSION-HANDOVER.md v1.5 | Dynastie-Depot | Bereinigt 17.04.2026 — DEFCON v3.5 live | Backtest-Ready nach Queue*

@@ -1,5 +1,5 @@
 # 🧠 CORE-MEMORY.md — Institutionelles Gedächtnis
-**Version:** 1.5 | **Stand:** 15.04.2026
+**Version:** 1.6 | **Stand:** 16.04.2026
 > Dieses Dokument speichert alle wichtigen Entscheidungen, Erkenntnisse und
 > strategischen Weichenstellungen aus den Projektthreads.
 > Für Strategie → KONTEXT.md | Für Workflows → INSTRUKTIONEN.md
@@ -104,9 +104,9 @@
 - **Ersatz bereit:** GOOGL (FLAG aktiv!) → kein sofortiger Tausch möglich
 - **Moat-Status:** 19/20 unverändert — Wide Moat strukturell intakt (Azure, M365, Switching Costs)
 
-### TMO — DEFCON 3, Clario-Watch
-- **Score:** 67/100 | **DEFCON:** 🟡 3 | **Stand:** 07.04.2026
-- **Sparrate:** Volle Rate (D3 ohne 🔴 FLAG → Gewicht 1.0)
+### TMO — DEFCON 2, Clario-Watch
+- **Score:** 62/100 | **DEFCON:** 🟠 2 | **Stand:** 16.04.2026 (v3.5 RS-Shift: -3P, D3→D2)
+- **Sparrate:** 50% (D2, kein 🔴 FLAG → Gewicht 0.5)
 - **Verbesserungen seit 02.04.:** Net Debt/EBITDA 3.6x → 2.57x ✅ | Fwd P/E 27x → 19.9x ✅ | P/FCF 35x → 29.2x ✅
 - **Schwächen:** ROIC 2.6% Q (Goodwill $49.4B) | FCF -13.4% YoY | Unter 200MA
 - **Trigger für DEFCON 4:** FCF Yield >4% (= FCF >$7.3B bei aktuellem Kurs) + ROIC Aufwärtstrend
@@ -131,25 +131,25 @@
 | Ticker | Score | DEFCON | Datum | Status | Nächste Aktion |
 |--------|-------|--------|-------|--------|----------------|
 | ASML | 68 | 🟡 3 | 06.04.2026 | Aktiv — volle Rate (D3, kein 🔴) | ✅ Q1 2026 Earnings abgeschlossen — kein Handlungsbedarf. Nächster Trigger: Q2 2026 Earnings |
-| AVGO | 86 | 🟢 4 | 25.03.2026 | Aktiv — Sparplan läuft | Q3 FY26 Earnings |
+| AVGO | 85 | 🟢 4 | 25.03.2026 | Aktiv — ⚠️ Insider-FLAG (OpenInsider prüfen) | Q3 FY26 Earnings |
 | FFH.TO | 88 | 🟢 4 | ~März 2026 | Ersatzbank BRK.B | — |
 | NVDA | 86 | 🟢 4 | ~März 2026 | Ersatzbank AVGO | — |
 | MKL | 82 | 🟢 4 | 25.03.2026 | Ersatzbank BRK.B | CapEx-FCF (Performance Thread) |
 | ZTS | 81 | 🟢 4 | ~März 2026 | Ersatzbank VEEV | — |
 | PEGA | 85 | 🟢 4 | ~März 2026 | Slot-16-Kandidat | Earnings Mai 2026 |
 | MSFT | 60 | 🟠 2 | 08.04.2026 | Aktiv — FLAG aktiv (CapEx/OCF Q2 FY26: 83.6%, bereinigt ~63%) | Q3 Earnings 29.04.2026 — FLAG-Auflösung wenn bereinigt <60% |
-| SNPS | 79 | 🟡 3 | 26.03.2026 | Ersatzbank ASML | Re-Analyse Mai 2026 |
-| SPGI | 79 | 🟡 3 | 31.03.2026 | Watchlist | Earnings 28.04.2026 |
+| SNPS | 76 | 🟡 3 | 26.03.2026 | Ersatzbank ASML | Re-Analyse Mai 2026 |
+| SPGI | 74 | 🟡 3 | 31.03.2026 | Watchlist | Earnings 28.04.2026 |
 | RACE | 73 | 🟢 4 | ~März 2026 | Ersatzbank RMS | — |
 | GOOGL | 72 | 🟡 3 | 26.03.2026 | 🔴 FLAG — kein Einstieg | FLAG-Auflösung abwarten |
 | SAP | 72 | 🟡 3 | ~März 2026 | Watchlist | ZTS bevorzugt |
 | EXPN | 61 | 🟡 3 | 02.04.2026 | Watchlist | P/FCF + Insider-Check |
 | HON | 71 | 🟡 3 | 28.03.2026 | Watchlist | Post-Spinoff 2026 |
-| TMO | 67 | 🟡 3 | 07.04.2026 | Aktiv — volle Rate (D3, kein 🔴) | Q1 Earnings 23.04.2026 — FCF-Erholung + ROIC-Trend |
+| TMO | 62 | 🟠 2 | 07.04.2026 | Aktiv — 50% Rate (D2, kein 🔴 FLAG) | Q1 Earnings 23.04.2026 — FCF-Erholung + ROIC-Trend |
 | APH | 61 | 🟡 3 | 09.04.2026 | Aktiv — FLAG aktiv | Tariff-Check CN/MY |
 | RMS | 69 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | H1 2026 Report Juli/Aug 2026 |
 | VEEV | 74 | 🟢 4 | 09.04.2026 | Aktiv — Sparplan voll | Keine Earnings-Urgenz |
-| FICO | 70 | 🟡 3 | 03.04.2026 | Watchlist VEEV-Ersatz #1 | Re-Analyse bei VEEV-Schwäche |
+| FICO | 67 | 🟡 3 | 03.04.2026 | Watchlist VEEV-Ersatz #1 | Re-Analyse bei VEEV-Schwäche |
 | V | 86 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | Q2 FY26 Earnings ~22.04.2026 |
 | COST | 69 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll (Bestandsposition ≥65) | Nächste Earnings ~Dez 2026 Q1 FY27 |
 | BRK.B | 75 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | Q-Earnings Mai 2026 — Buyback-Wiederaufnahme beobachten |
@@ -321,9 +321,9 @@ Falls Fehler → WSL2-Verbindung prüfen: `wsl -d Ubuntu-24.04` verfügbar?
 - Quelle 2: Earnings Call Transcript → Management-Kommentar Zölle
 - Bewertungskorrektur: Kurse seit 02.04. teilweise -10 bis -20% → TTM-Verzerrung prüfen, Forward-Metriken als Basis
 
-### Aktuelle Sparplan-Berechnung (Stand 15.04.2026)
-AVGO FLAG→0,0 | ASML D3→0,5 | MSFT FLAG→0,0 | RMS→1,0 | VEEV→1,0 | SU→1,0 | BRK.B→1,0 | V→1,0 | TMO D3→0,5 | APH FLAG→0,0 | COST→1,0
-Summe: 7×1,0 + 2×0,5 = 8,0 | D4-Rate: 35,63€ | D3-Rate: 17,81€ | Check: 7×35,63 + 2×17,81 = 285,03€ ✓
+### Aktuelle Sparplan-Berechnung (Stand 16.04.2026 — v3.5)
+AVGO FLAG→0,0 | ASML D3→1,0 | MSFT FLAG→0,0 | RMS→1,0 | VEEV→1,0 | SU→1,0 | BRK.B→1,0 | V→1,0 | TMO D2→0,5 | APH FLAG→0,0 | COST→1,0
+Summe: 7×1,0 + 1×0,5 = 7,5 | Einheits-Rate: 38,00€ | D2-Rate: 19,00€ | Check: 7×38,00 + 1×19,00 = 285,00€ ✓
 
 ### Rebalancing-Workflow-Regel (ratifiziert 06.04.2026)
 - Nach `!Analysiere` → config.yaml + CORE-MEMORY + Excel sofort (wenn DEFCON/Sparrate ändert sich)
@@ -353,4 +353,4 @@ Differenz ~€1,2B/Jahr = normal für ASML-Leasingbasis. **Kein Fehler, kein Ale
 → CapEx-Toleranz bleibt ±1,5% (PP&E-Zahlen konvergieren unter beiden Standards).
 
 ---
-*🦅 CORE-MEMORY.md v1.5 | Dynastie-Depot | Stand: 15.04.2026*
+*🦅 CORE-MEMORY.md v1.6 | Dynastie-Depot | Stand: 16.04.2026*
