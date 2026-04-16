@@ -1,8 +1,8 @@
 ---
 name: dynastie-depot
-version: "3.4"
+version: "3.5"
 zieljahr: 2058
-system: DEFCON v3.4
+system: DEFCON v3.5
 description: >
 Investmentanalyse-System für das Dynastie-Depot (Zieljahr 2058). Verwende diesen Skill bei JEDEM Gespräch über Aktienanalyse, Portfolio-Bewertung, DEFCON-Scoring, Sparplan, Rebalancing, Depot-Strategie, Watchlist, Ersatzbank oder Steuerplanung. Bei Unsicherheit: lieber aktivieren als ignorieren.
 trigger_words:
@@ -343,6 +343,9 @@ Quellen: StockAnalysis cash-flow-statement + balance-sheet (berechnet)
 
 - Bei fehlenden Daten: neutral (0) — niemals schätzen
 
+**Fundamentals-Floor (v3.5):**
+Der Fundamentals-Gesamtscore (nach allen Malus-Abzügen: SBC, Accruals, Tariff) hat einen Floor von 0. Negative Werte werden auf 0 gesetzt. Begründung: Theoretisch möglich bei SBC(-4) + Accruals(-2) + Tariff(-3) = -9, praktisch irrelevant für Wide-Moat-Universum.
+
 Sonderregel für Versicherungen/Holdings (BRK, MKL, FFH): Float-basierte Modelle haben strukturell niedrige FCF Yields. Hier Float-Wachstum als Proxy verwenden. Begründungspflicht.
 
 ### Moat (20 Punkte)
@@ -383,7 +386,7 @@ Quelle: Quartr TICKER → letztes Earnings Call Transcript
 | \*\*Kriterium\*\* | \*\*Max\*\* |
 | :---: | :---: |
 | Abstand ATH (\>-25% = Chance) | 4 |
-| Ø PT-Upside (\>20% = bullish) | 3 |
+| Relative Stärke vs. S&P500 (6M) | 3 |
 | Trend-Lage (über steigendem 200D-MA = positiv) | 3 |
 
 #### Technicals-Präzisierungen
@@ -395,18 +398,20 @@ Quelle: Quartr TICKER → letztes Earnings Call Transcript
 - Kurs unter 200MA → 0/3
 - Quelle: TradingView TICKER 1W Chart — MA-Richtung visuell prüfen
 
-##### \*\*Relative Stärke vs. S\&P500 (6 Monate):\*\*
+##### **Relative Stärke vs. S&P500 (6 Monate) — Scored Metric (v3.5):**
 
-Zusatz-Check, kein eigener Punkt — wirkt als Tiebreaker bei Grenzfällen (±1 Punkt Technicals)
+Vollständige 0–3 Metrik. Ersetzt den v3.4-Tiebreaker und die PT-Upside-Metrik (Double-Counting-Fix, siehe Audit 16.04.2026).
 
-| \*\*Relative Performance\*\* | \*\*Wirkung\*\* |
+| **Relative Performance 6M vs. S&P500** | **Score** |
 | :---: | :---: |
-| Aktie outperformt S\&P500 um \> 5% | +1 Punkt Technicals |
-| In-line (±5%) | kein Abzug |
-| Underperformance \> 10% | -1 Punkt Technicals |
+| Outperformance > 10% | 3 |
+| Outperformance 5–10% | 2 |
+| In-line (±5%) | 1 |
+| Underperformance > 5% | 0 |
 
 - Quelle: Finviz quote.ashx?t=TICKER → "Performance"-Tabelle Spalte "6M"
-- Non-US-Titel: Vergleich vs. Heimindex (AEX, CAC40) — nur wenn direkt verfügbar
+- Non-US-Titel: Vergleich vs. Heimatindex (AEX für ASML, CAC40 für RMS und SU/Schneider Electric)
+- Konzeptuelle Orthogonalität: ATH-Distanz = Preis-Niveau, Relative Stärke = Markt-relativ, 200MA = Trend-Richtung
 
 ##### \*\*Bull/Bear DCF — Scoring-Anker:\*\*
 
