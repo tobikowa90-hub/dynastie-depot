@@ -1,5 +1,5 @@
 # ⚙️ INSTRUKTIONEN.md — Handlungsanweisungen & Skill-Guidance
-**Version:** 1.3 | **Stand:** 08.04.2026
+**Version:** 1.3 | **Stand:** 16.04.2026
 > Dieses Dokument beschreibt das WIE — alle Workflows, Befehle, Regeln.
 > Für Strategie → KONTEXT.md | Für Erinnerungen → CORE-MEMORY.md
 
@@ -143,6 +143,7 @@ SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power, 200MA Slope, DCF-Anker, EPS
 | SPGI | 74 | 🟡 3 | ROIC-Verzerrung durch M&A-Goodwill → Non-GAAP ~82 |
 | TMO | 62 | 🟠 2 | ROIC < WACC + Akquisitionsschuld = harter Malus trotz Wide Moat (v3.5: D3→D2 Grenzfall) |
 | EXPN | 61 | 🟡 3 | Datenlücken erzwingen konservatives Scoring |
+| FICO | 67 | 🟡 3 | TTM-Verzerrung durch Kurscrash (-52%); Forward-Metriken deutlich besser (VEEV-Ersatz-Referenz) |
 
 ---
 
