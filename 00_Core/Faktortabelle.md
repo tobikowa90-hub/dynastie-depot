@@ -45,6 +45,8 @@
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
 **Stand:** 15.04.2026 — Vollständiger Score-Snapshot aller 11 Satelliten
 
+> ⚠️ **v3.5-MIGRATIONSHINWEIS (16.04.2026):** Scores oben wurden unter DEFCON v3.4 berechnet. v3.5 ersetzt PT-Upside (Technicals) durch Relative Stärke vs. S&P500. Shift: max. -3 Punkte pro Position. Kein DEFCON-Wechsel außer TMO (D3→D2 erwartet bei -3P Shift, Q1-Earnings 23.04. triggern Re-Analyse). Vollständige v3.5-Re-Analyse folgt im Rahmen der blockierten Satelliten-Queue.
+
 ---
 
 ## Update-Kalender
