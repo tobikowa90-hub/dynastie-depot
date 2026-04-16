@@ -1,5 +1,5 @@
 ---
-title: "Wissenschaftliche Fundierung DEFCON v3.4"
+title: "Wissenschaftliche Fundierung DEFCON v3.5"
 type: synthesis
 tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung]
 sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]]"
@@ -10,7 +10,7 @@ datum: 2026-04-16
 status: aktiv
 ---
 
-# Wissenschaftliche Fundierung DEFCON v3.4
+# Wissenschaftliche Fundierung DEFCON v3.5
 
 > Dieses Dokument belegt, dass das DEFCON-Scoring-System auf peer-reviewed Forschung basiert.
 > 7 Quellen → 11 Befunde → operative Konsequenzen für das Dynasty-Depot.
@@ -27,7 +27,7 @@ status: aktiv
 | **B4** | 8 Moat-Quellen operativ identifiziert | [[Morningstar-Wide-Moat]] | Moat (20 Pt.) | 8-Quellen-Checkliste im Moat-Block | Jede Moat-Analyse prüft alle 8 Quellen |
 | **B5** | Buffetts Alpha = QMJ + BAB + Value (vollständig erklärt) | [[Buffetts-Alpha]] | Fundamentals + Moat | cheap+safe+quality als operativer Dreiklang | DEFCON-4-Kriterien = cheap+safe+quality |
 | **B6** | Moat allein ≠ Excess Return (Quality Trap ohne Bewertung) | [[Morningstar-Wide-Moat]] | Moat + Bewertung | Wide Moat immer mit Bewertungsdisziplin | Kombination Moat + Fundamentals ist Pflicht |
-| **B7** | Fundamentals > Sentiment > Technicals (ML-Datenhierarchie) | alle 4 Kern-Paper | Datenhierarchie | Gewichtung 50/10/10 Pt. bestätigt | Datenhierarchie explizit in !Analysiere benennen |
+| **B7** | Fundamentals > Sentiment > Technicals (ML-Datenhierarchie) | Kern-Paper (arXiv, Gu, MS, AQR) | Datenhierarchie | Gewichtung 50/10/10 Pt. bestätigt | Datenhierarchie explizit in !Analysiere benennen |
 | **B8** | ROIC + FCF/EV + Operating Margin = top-ranked in allen ML-Modellen | [[Wolff-Echterling-2023]] | Fundamentals — ROIC/FCF | ROIC-Malus ist wissenschaftlich zwingend, nicht heuristisch | ROIC-vs-WACC Scoring direkt belegt; Non-US-Übertragbarkeit validiert |
 | **B9** | EPS-Growth + Low Leverage = stabile Quality-Prädiktoren | [[Wolff-Echterling-2023]] | Fundamentals — Bilanz | Debt/EBITDA-Scoring wissenschaftlich fundiert | EPS Revision Momentum (+1 Bonus) + Bilanz-Block (9 Pt.) bestätigt |
 | **B10** | Chain-of-Thought vor Scoring verbessert Konsistenz + Genauigkeit | [[llms-for-equity-stock-ratings]] | Workflow — !Analysiere | Begründen vor Scoren als Pflichtprinzip | Befunde-Priming in INSTRUKTIONEN.md (Stufe 2) verankert |
@@ -68,7 +68,7 @@ status: aktiv
 | Ticker | DEFCON | Score | FLAG | Relevante Befunde |
 |--------|--------|-------|------|------------------|
 | [[ASML]] | 🟡 3 | 68 | — | B1 (5J-EUV-Ramp), B4 (EUV-Monopol 100%), B6 (Fwd P/E 38x = Quality Trap ohne Bewertungsmarge), B8 (ROIC clean, Non-US-Übertragbarkeit) |
-| [[AVGO]] | 🟢 4 | 86 | ⚠️ Insider-Check | B2 (FCF <15% CapEx = Fabless-Referenz), B4 (Chip+SW-Ökosystem Wide Moat), B5 (cheap+safe+quality erfüllt), B8 (ROIC >WACC +10% — Kalibrierungsanker) |
+| [[AVGO]] | 🟢 4 | 85 | ⚠️ Insider-Check | B2 (FCF <15% CapEx = Fabless-Referenz), B4 (Chip+SW-Ökosystem Wide Moat), B5 (cheap+safe+quality erfüllt), B8 (ROIC >WACC +10% — Kalibrierungsanker) |
 | [[MSFT]] | 🟠 2 | 60 | 🔴 CapEx >60% | B2 (CapEx/OCF 83,6% destroys FCF-Qualität), B3 (Finance-Lease-Bereinigung = Accrual-Komplexität), B6 (Score 60 bei Wide Moat 19/20 = Quality Trap aktiv), B8 (ROIC 7,5% < WACC 13,35% — wissenschaftlich nicht tragbar) |
 | [[RMS]] | 🟢 4 | 69 | ✅ Clean | B4 (Marken-Moat: Hermès = 8/8 Moat-Quellen), B6 (Score 69 trotz ROIC 24% wegen Bewertung), B5 (safe: Netto-Cash +€9,89B) |
 | [[VEEV]] | 🟢 4 | 74 | ✅ Clean | B2 (FCF-SaaS-Modell, CapEx-arm), B4 (Switching Costs Life-Sciences-Plattform), B3 (Earnings Quality hoch) |
@@ -77,7 +77,7 @@ status: aktiv
 | [[V]] | 🟢 4 | 86 | ✅ Clean | B4 (Network Effects: 4,9 Mrd. Karten, Duopol), B2 (CapEx/OCF ~6% = Fabless-Niveau), B5 (cheap+safe+quality — Kalibrierungsanker #2), B8 (ROIC ~9,9%, Goodwill-Verzerrung durch Visa Europe) |
 | [[APH]] | 🟡 3 | 61 | 🔴 Score-basiert | B2 (FCF-Marginen ok, aber Bewertung + CN/MY-Risk), B3 (Accrual-Komplexität Supply-Chain), B9 (Financial Leverage mittel) |
 | [[COST]] | 🟢 4 | 69 | ✅ Clean | B4 (Cost Advantage: Membership-Loyalität 8/8 Moat-Quellen), B6 (GM 12,7% ≠ Qualitätsproblem — Geschäftsmodell), B9 (Low Leverage <1x) |
-| [[TMO]] | 🟡 3 | 67 | — | B2 (FCF -13,4% YoY — Erosion), B3 (ROIC 2,6% unter WACC = negative Earnings Quality), B4 (Switching Costs Life-Sciences intakt), B8 (Goodwill $49,4B drückt ROIC unter Kapitalkosten) |
+| [[TMO]] | 🟠 2 | 62 | — | B2 (FCF -13,4% YoY — Erosion), B3 (ROIC 2,6% unter WACC = negative Earnings Quality), B4 (Switching Costs Life-Sciences intakt), B8 (Goodwill $49,4B drückt ROIC unter Kapitalkosten) — ⚠️ v3.5: RS -7,82% = 0/3 → Score 62, D3→D2 |
 
 ---
 
