@@ -1,5 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
-**Erstellt:** 08.04.2026 | **Für:** Neue Cowork-Session
+
+**Aktualisiert:** 16.04.2026 | **Für:** Neue Cowork-Session
 
 ---
 
@@ -11,128 +12,193 @@ Session starten
 
 ---
 
-## 📋 Übergabe-Kontext (an Claude übergeben wenn Session startet)
+## 📋 Übergabe-Kontext
 
 Bitte lies zuerst die vier Core-Dateien wie gewohnt (CORE-MEMORY, KONTEXT, INSTRUKTIONEN, Faktortabelle).
 Danach gilt folgender Kontext aus der letzten Session:
 
 ---
 
-### ✅ Was in der letzten Session abgeschlossen wurde
+## 🔴 PRIO 1 — Aktive Pause: Scoring-System-Audit vor allem anderen
 
-1. **defeatbeta MCP via WSL2 vollständig repariert** (07.04.2026)
-   - Konfiguration: `wsl -d Ubuntu-24.04 bash -c /home/tobia/.defeatbeta-env/bin/python -m defeatbeta_mcp`
-   - Version 1.27.0 | 100+ Tools | Daten bis 03.04.2026
+**⏸️ Alle Satelliten-Analysen sind potenziell blockiert** bis das DEFCON v3.4 Strukturreview entschieden ist. Grund: Am 16.04.2026 wurde ein möglicher struktureller Fehler im Scoring-System gefunden (PT-Upside-Duplikation zwischen Technicals und Sentiment). Wenn sich v3.5 als nötig erweist, müssen alle Re-Analysen darunter laufen.
 
-2. **ASML API Sanity Check abgeschlossen** (07.04.2026)
-   - OCF-Δ ~10% = IFRS 16 vs. ASC 842 strukturell (Leasingzahlungen) — kein API-Drift
-   - CapEx-Δ ≤ 3.5% plausibel. FLAG-Schlussfolgerung: Clean unter beiden Standards
-   - IFRS-OCF-Toleranz auf ±15% erweitert wenn Leasingbasis erklärbar
-
-3. **TMO DEFCON v3.4 Re-Analyse abgeschlossen** (07.04.2026)
-   - Score: **67/100** | DEFCON: 🟡 3 | Sparrate: volle Rate (D3, kein 🔴)
-   - Verbesserungen: Net Debt/EBITDA 2.57x ✅ | Fwd P/E 19.9x ✅
-   - Schwächen: ROIC 2.6% Q (Goodwill $49.4B) | FCF -13.4% YoY | Unter 200MA
-   - **Entscheidung ausstehend:** Q1 Earnings 23.04.2026 (FCF >$7.3B nötig für DEFCON 4)
-
-4. **SKILL.md Token-Optimierungen implementiert** (08.04.2026)
-   - WACC: nur neuester Wert (70+ Handelstage ignorieren)
-   - ROIC quarterly: max. 6 Quartale auswerten
-   - Quarterly CF: bedingt (nur bei CapEx/OCF 45–65%)
-   - Geography: bedingt (nur bei Produktions-Risikoländern CN/TW/MY/TH/VN)
-   - WebSearch: konsolidieren (mehrere Metriken in einer Suche)
-   - ZIP-Paket: `06_Skills-Pakete/dynastie-depot_v3.4.1.zip` bereit zur Reinstallation
+👉 **Details siehe unten: Abschnitt "2026-04-16 Backtest-Ready / Scoring-System-Audit"**
 
 ---
 
-### 🚀 Nächste Aufgaben (in dieser Reihenfolge)
+## 🚀 Offene Analyse-Queue (blockiert bis Audit-Entscheid)
 
-| Priorität | Aufgabe | Details |
+| Priorität | Aufgabe | Kontext |
 |-----------|---------|---------|
-| 🔴 1 | **!Analysiere MSFT** | Earnings 29.04. — FLAG-Review CapEx/OCF, aktuell 65.3% |
-| 🔴 2 | **!Analysiere AVGO** | Tariff-Exposure MY/TH ~35%, Insider-FLAG läuft |
+| 🔴 1 | **!Analysiere MSFT** | Earnings 29.04. — FLAG-Review CapEx/OCF (zuletzt 65.3%). Bei <60% → FLAG auflösen, D3 volle Rate aktivieren |
+| 🔴 2 | **!Analysiere AVGO** | Tariff-Exposure MY/TH ~35% Grenzfall. Insider-FLAG-Pflichtcheck: OpenInsider-Spalte „X"/„M" manuell verifizieren (Post-Vesting wahrscheinlich, aber nicht voreilig auflösen) |
 | 🟡 3 | **!Analysiere COST** | Retail, US-lastig, Tariff-Ketteneffekte |
-| 🟡 4 | **!Analysiere V** | Kein Tariff-Risiko, aber Konsumrückgang-Check |
+| 🟡 4 | **!Analysiere V** | Kein Tariff-Risiko, Konsumrückgang-Check |
 | 🟡 5 | **!Analysiere APH** | Produktion CN/MY — Tariff-Exposure prüfen |
 | 🟢 6 | **!Analysiere BRK.B** | Holding, defensiv |
 | 🟢 7 | **!Analysiere VEEV** | SaaS, kein Tariff-Risiko |
 | 🟢 8 | **!Analysiere RMS** | Luxury, EUR, Preismacht |
 | 🟢 9 | **!Analysiere SU** | Industrie, EUR |
 
-**Hinweis Liberation Day:** Bei jedem Satelliten Tariff-Exposure prüfen (CN/TW/MY/TH/VN >35% = FLAG). Kurse seit 02.04. teilweise -10–20% gefallen → Forward-Metriken als Primärbasis, TTM als Kontext.
+**Hinweis Liberation Day:** Bei jedem Satelliten Tariff-Exposure prüfen (CN/TW/MY/TH/VN >35% = FLAG). Kurse seit 02.04. teilweise -10–20% → Forward-Metriken als Primärbasis.
 
 ---
 
-### 📅 Kritische Termine
+## 📅 Kritische Termine
 
 | Datum | Ereignis | Aktion |
 |-------|----------|--------|
-| **23.04.2026** | TMO Q1 Earnings | FCF >$7.3B → DEFCON 4 / sonst ZTS-Aktivierung prüfen |
+| **23.04.2026** | TMO Q1 Earnings | FCF >$7.3B → DEFCON 4 / sonst ZTS-Aktivierung prüfen (TMO aktuell Score 67, D🟡3) |
 | **28.04.2026** | SPGI Earnings | QuickCheck SPGI (Score 79, Watchlist) |
 | **29.04.2026** | MSFT Q3 Earnings | FLAG-Auflösung wenn CapEx/OCF <60% |
 | **Mai 2026** | PEGA Earnings | Slot-16-Entscheidung |
-| **01.05.2026** | Sparplan | !Rebalancing live testen (erster echter Lauf) |
+| **01.05.2026** | Sparplan | !Rebalancing live testen (erster echter Lauf, noch nie gelaufen) |
 | **Juni 2026** | Sparplan-Booster | 9.500€ Bausparvertrag + 2.000€ Steuererstattung |
 
 ---
 
-### ⚙️ System-Status (Stand 08.04.2026)
+## ⚙️ System-Status
 
 | Komponente | Status |
 |-----------|--------|
-| defeatbeta MCP | ✅ WSL2 Ubuntu-24.04 — produktiv |
+| defeatbeta MCP | ✅ WSL2 Ubuntu-24.04 — produktiv (Daten bis 03.04.2026) |
 | Shibui Finance SQL | ✅ Primärquelle Technicals + FLAG-Historie |
 | insider_intel.py | ✅ Form-4-Scanner 8 US-Satelliten |
 | eodhd_intel.py / yfinance | ✅ Non-US Fundamentals (Cowork-Session: Web-Fallback) |
 | SKILL.md | ✅ v3.4.1 — Token-Optimierungen aktiv |
-| ZIP-Paket | ✅ dynasty-depot_v3.4.1.zip — reinstallation bereit |
+| Briefing-Sync | ✅ Dreifach abgesichert (SessionStart/End-Hook + Claude-App-Push + Scheduled Task 09:54). Shortcuts: `!BriefingCheck`, `!SyncBriefing` (INSTRUKTIONEN.md §25) |
 | Shibui SQL column | ⚠️ `code` nicht `ticker` — immer `WHERE code = 'TICKER'` |
 
 ---
 
-### 💡 Wichtige Einzel-Hinweise für die nächste Session
+## 🔬 2026-04-16 — Backtest-Ready / Scoring-System-Audit (PAUSIERT)
 
-- **MSFT FLAG:** CapEx/OCF war 65.3% (Q2 FY26). Nächste Earnings 29.04. entscheidend. Wenn <60% → FLAG auflösen, D3 volle Rate aktivieren (D3 = Gewicht 1.0).
-- **AVGO Insider:** Modul zeigt $123M FLAG, aber wahrscheinlich Post-Vesting. OpenInsider Spalte „X"/„M" immer manuell gegenchecken vor FLAG-Aktivierung.
-- **Token-Effizienz:** Die neuen Regeln in SKILL.md (v3.4.1) greifen ab sofort. WACC-Zeitreihe kürzen, ROIC auf 6Q, Geography nur bei Risikoländern.
-- **!Rebalancing:** Noch nicht live getestet — Test-Lauf erst am 01.05. wenn Sparplan eingeht.
+**Status:** ⏸️ Pausiert vor Implementation — wartet auf Scoring-System-Audit
+**Session-Typ:** Brainstorming + Spec-Entwurf (kein Code geschrieben)
+
+### Wiedereinstiegs-Befehl (zuerst ausführen)
+
+Nach dem Standard-Session-Start-Ritual:
+
+```
+Lies den Abschnitt "2026-04-16 Backtest-Ready / Scoring-System-Audit"
+aus SESSION-HANDOVER.md, dann den pausierten Spec unter
+docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md
+
+Danach superpowers:brainstorming-Skill starten für das Thema:
+"DEFCON v3.4 Strukturreview / Scoring-System-Audit"
+```
+
+### Kontext (sehr kurz)
+
+1. Brainstorming zu "Formales Backtesting des DEFCON-Systems" gestartet
+2. Gegen formales Backtesting entschieden: n=11 zu klein, System zu jung
+3. Alternativer Ansatz: **"Backtest-Ready"-Infrastruktur** bauen (append-only Score-Archiv + FLAG-Event-Log + Vault-Integration), Review 2028-04-01
+4. Spec v1.0 geschrieben — 95% korrekt, 10 bekannte Fehler für v1.1-Update identifiziert (siehe unten)
+5. **🚨 Kritische Entdeckung:** DEFCON v3.4 scort "Ø PT-Upside" **zweimal** — einmal in Technicals (Schwelle >20%), einmal in Sentiment (Schwelle >15%). Zwei Deutungen:
+   - (a) Intentionales Ordinal-Encoding (abgestuftes Signal)
+   - (b) Echtes Double-Counting (Kategorienfehler: Analyst-PTs sind konzeptionell Sentiment)
+6. **Strategischer Einwand:** Wenn v3.4 strukturell unsauber sein könnte, macht es keinen Sinn, 2 Jahre Archiv-Records auf verzerrter Basis zu bauen — **besser erst Audit, dann ggf. v3.5, dann Infrastruktur**
+7. Implementation gestoppt, Audit als neues Mini-Projekt davor geschaltet
+
+### Plan für nächste Session
+
+#### Schritt 1: Scoring-System-Audit (timeboxed 2 Arbeitstage)
+
+Fokussiertes Brainstorming, das folgende Fragen beantworten muss:
+
+1. **PT-Upside-Duplikation:** Ordinal-Encoding oder Double-Counting? Entscheidung mit Begründung.
+2. **Weitere Naming-Kollisionen** zwischen den 5 Blöcken systematisch suchen
+3. **Theoretische Redundanzen** innerhalb eines Blocks prüfen:
+   - Fwd P/E vs. P/FCF bei profitablen Firmen (strukturelle Korrelation)
+   - CapEx/OCF vs. FCF Yield (mechanisch verknüpft)
+   - Net Debt/EBITDA vs. Current Ratio vs. Goodwill/Assets (Bilanz-Triade)
+4. **Block-Gewichtung 50/20/10/10/10** gegen die 4 Paper prüfen:
+   - Befund B7 aus `Wissenschaftliche-Fundierung-DEFCON.md`: "Fundamentals > Sentiment > Technicals"
+   - Passt Moat=20 zur Morningstar-Evidenz, oder ist es überhöht?
+   - Sollte Sentiment eher 15 statt 10 sein (Gu-Kelly-Xiu zeigt hohe Prognosekraft)?
+5. **Kategorien-Hygiene:** Sind alle Metriken im konzeptuell richtigen Block?
+6. **Malus-Stacking:** Können SBC (-4) + Accruals (-2) + Tariff (-3) kumuliert zu negativen Fundamentals führen? Intendiert?
+7. **Kalibrierungsanker-Reproduzierbarkeit:** Würden AVGO=86, MKL=82, SNPS=79 bei unabhängigem zweitem Durchlauf identisch rauskommen?
+
+**Audit-Output:** Report mit jeder Finding klassifiziert als:
+- **A** — strukturell sauber, bleibt
+- **B** — nachweislich falsch, muss in v3.5
+- **C** — unklar, braucht Design-Entscheidung
+
+#### Schritt 2: Entscheidung v3.5-Scope
+
+- **Minimal-Fix:** Nur PT-Upside (plus Ersatz-Metrik im Technicals-Block)
+- **Konsolidierter Fix:** PT-Upside + weitere Funde
+- **Status quo:** Audit zeigt v3.4 ist methodisch sauber
+
+#### Schritt 3: v3.5-Implementation (nur falls nötig)
+
+- `SKILL.md`, `Beispiele.md` (neue Anker!), `INSTRUKTIONEN.md`, `KONTEXT.md`, `CORE-MEMORY.md` updaten
+- Vault: `Wissenschaftliche-Fundierung-DEFCON.md` erweitern
+- ZIP-Paket: `06_Skills-Pakete/dynastie-depot_v3.5.0.zip`
+
+#### Schritt 4: Re-Analyse der 11 Satelliten unter v3.5
+
+ASML, AVGO, MSFT, RMS, VEEV, SU, BRK.B, V, TMO, APH, COST
+
+#### Schritt 5: Backtest-Ready-Spec v1.1 + Implementation
+
+Bestehenden Spec an v3.5 anpassen + die 10 v1.0-Fehler fixen → writing-plans-Skill → Phase 1 bauen. Die 11 Re-Analysen aus Schritt 4 werden die ersten Forward-Records im Archiv.
+
+### Bekannte Fehler im Spec v1.0 (für v1.1-Update, nicht nochmal suchen)
+
+**Kritisch (muss fixiert werden):**
+
+1. **Arithmetik AVGO-Beispielrecord §4.1:** `eps_revisions_up_90d: 4` triggert `+1` → `sentiment.gesamt` müsste 10 sein, `score_gesamt` 87 statt 86. Fix: Rohwert auf 2 reduzieren.
+2. **Moat-Schema fehlt `rating_base_score: int` (0-20):** Ohne Basiswert kein Arithmetik-Check möglich (Wide = 17-20 Bereich).
+3. **Malus-Konvention ambig:** `sbc_malus`, `accruals_malus`, `tariff_malus` — Empfehlung: **negative Zahlen**, damit einfache Summe funktioniert.
+4. **`metriken_roh` unvollständig:** Fehlen u.a. `ath_distanz_pct`, `pt_upside_consensus_pct`, `konsensus_rating`, `sell_ratio_pct`, `ownership_pct`, `net_buy_6m_usd`, `max_single_sale_90d_usd`, `trend_200ma_richtung`. **Für spätere Rekalibrierung fatal.**
+5. **Widerspruch §4.1 ↔ §9.2:** "record_id unique" vs. "Duplikate als Sub-Record anhängen". Fix: Duplikate verwerfen, in `_parser_errors.log`.
+6. **`analyse_typ: "rescoring"` erfunden/undefiniert:** Enum reduzieren auf `["vollanalyse", "delta"]`.
+
+**Klarheit:**
+
+7. **§12 Phase-Abhängigkeit:** Phase 3 hängt von Phase 2 ab (nicht parallel). Fix: "Phase 3 ← Phase 2. Phase 4 parallel zu 2+3."
+8. **§10.4 Benchmark-Liste:** Nennt nur AEX, CAC40 — fehlt DAX (SAP), TSX (FFH.TO), FTSE MIB (RACE). Fix: regelbasiert ("primärer Heimatindex").
+9. **§6.5:** "Shibui oder yfinance" → "Shibui primär, yfinance Fallback".
+10. **Datums-Placeholder:** Mal `2026-04-XX`, mal `[YYYY-MM-DD]` → vereinheitlichen auf `[YYYY-MM-DD]`.
+
+### Kontext-Dateien (Lese-Reihenfolge beim Wiedereinstieg)
+
+1. **Dieser Abschnitt** — Kurz-Refresher
+2. **`docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md`** — Pausierter Spec v1.0
+3. **`01_Skills/dynastie-depot/SKILL.md`** — v3.4 Scoring-System, zu auditieren
+4. **`01_Skills/dynastie-depot/Beispiele.md`** — Kalibrierungsanker AVGO=86, MKL=82, SNPS=79
+5. **`07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md`** — 4 Paper + 7 Befunde
+6. **`07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/concepts/defcon/`** — Alle DEFCON-Konzeptseiten
+
+### Spec-Entscheidungen, die versionsunabhängig bestehen bleiben
+
+Diese müssen nach dem Audit NICHT neu diskutiert werden:
+
+- ✅ Zwei getrennte JSONL-Dateien (`score_history.jsonl` + `flag_events.jsonl`)
+- ✅ Append-only, niemals UPDATE
+- ✅ Point-in-Time-Backfill via `git show <sha>:pfad`, nie Working Tree
+- ✅ Best-Effort-Parser mit `_parser_errors.log`
+- ✅ FLAG-Events paired (trigger + resolution, gemeinsame `flag_id`)
+- ✅ `flag_id`-Format: `TICKER_FLAGTYP_YYYY-MM-DD`
+- ✅ `fcf_trend_neg`-FLAG deterministisch: "FCF YoY negativ in ≥3 von 4 Quartalen UND CapEx YoY positiv"
+- ✅ Vier neue Vault-Seiten (Score-Archiv, FLAG-Event-Log, Backtest-Ready-Infrastructure, Backtest-Methodik-Roadmap)
+- ✅ System-Integration in CLAUDE.md, INSTRUKTIONEN.md, CORE-MEMORY.md, KONTEXT.md
+- ✅ 4 Implementation-Phasen: Forward-Pipeline → Backfill → Event-Study → Vault/System
+- ✅ Review-Termin 2028-04-01
+- ✅ YAGNI: kein formaler Backtest, keine Statistik-Tests, keine Automatisierung, kein Dashboard, kein SQL
+
+### Merksätze
+
+- **Audit timeboxed auf 2 Arbeitstage** — bei Scope-Creep: offene Fragen in "Anomalien für 2028-Review" parken
+- **Anker-Vorsicht:** AVGO=86, MKL=82, SNPS=79 wurden *mit* PT-Upside-Duplikation kalibriert — jede v3.5-Änderung verschiebt die Anker. Akzeptieren, nicht vermeiden
+- **Spec nicht verwerfen:** v1.0 ist zu 95% korrekt, wird auf v1.1 upgedatet, nicht neu geschrieben
+- **"Alles OK" ist ein wertvolles Audit-Ergebnis:** Auditiertes v3.4 ist qualitativ höherwertig als ungeprüftes v3.4
+- **Wenn v3.5 kommt:** Die 11 Re-Analysen werden die ersten Forward-Records — kein Leerlauf
 
 ---
 
-## ✅ Briefing-Sync-Infrastruktur live (15.04.2026)
-
-**Problem gelöst:** Morning-Briefing-Trigger (Remote 10:00) liest aus GitHub-Repo → lokale unpushed Änderungen = veraltetes Briefing. Jetzt dreifach abgesichert:
-
-### Layer 1 — SessionEnd/SessionStart Hook (lokal, garantiert)
-- **Datei:** `.claude/settings.local.json` (gitignored)
-- **Script:** `03_Tools/briefing-sync-check.ps1`
-- **Prüft:** `git status` + unpushed commits auf Faktortabelle, CORE-MEMORY, SESSION-HANDOVER, INSTRUKTIONEN
-- **Output bei dirty:** Terminal-Warnung (systemMessage JSON) + **native Windows-Toast** (WinRT-API, kein BurntToast)
-- **Silent bei clean**
-- **Feuert:** 1× beim Session-Start (Catch-up) und 1× beim Session-Ende (Reminder)
-
-### Layer 2 — Claude Mobile App Notifications (Push Handy/Desktop)
-- **Bedingung:** User muss in Claude Mobile App + Desktop App **Notifications für Routines/Scheduled Agents** aktivieren (nicht von Claude konfigurierbar)
-- **Quelle:** Remote-Trigger `morning-briefing` liefert Push via Claude-Account
-
-### Layer 3 — Scheduled Task `briefing-sync-reminder`
-- **Cron:** 09:54 MESZ werktags (11 Min vor 10:00-Briefing)
-- **Bedingung:** Läuft nur wenn Claude Code CLI aktiv
-- **Zweck:** Fallback für den Fall, dass CLI morgens schon offen ist
-
-### Manuelle Shortcuts (INSTRUKTIONEN.md §25)
-- `!BriefingCheck` — Diagnostischer Drift-Check gegen `origin/main`
-- `!SyncBriefing` — Kontrollierter Push-Workflow mit Review-Gate, Scope `00_Core/` only
-
-### RMS Exception (COST-Analogie) institutionell fixiert
-- CORE-MEMORY-Eintrag 15.04.2026 um Screener-Exception ergänzt: ROIC 24% >> WACC 6,5% (Spread +17,5 PP) rechtfertigt DEFCON 🟢 4 trotz Score 69 — analog COST (MY 15,2% > WACC 12,3%)
-- Re-Check-Trigger: H1 2026 Report Juli/Aug 2026
-
-### Verworfene Alternativen
-- **ntfy.sh**: External service — zugunsten nativer Windows-Toast + Claude-App verworfen
-- **Stop-Hook**: Rauschen bei jedem Turn — zugunsten SessionEnd/SessionStart verworfen
-- **Auto-Commit-Hook**: Verschmutzt Git-Historie mit WIP — Review-Gate bleibt Pflicht
-
----
-
-*🦅 SESSION-HANDOVER.md v1.2 | Dynastie-Depot | Aktualisiert: 15.04.2026 (Briefing-Sync live)*
+*🦅 SESSION-HANDOVER.md v1.3 | Dynastie-Depot | Bereinigt 16.04.2026*
