@@ -31,7 +31,7 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 04_Templates/       → Single-Source-of-Truth für alle Templates
 05_Archiv/          → Historische Dateien
 06_Skills-Pakete/   → Installierbare ZIP-Skills (Deployables)
-07_Obsidian Vault/  → Investing Mastermind Wiki (74 Notes)
+07_Obsidian Vault/  → Investing Mastermind Wiki (71 Notes — Stand 15.04.2026)
   └── Obsidian Mindmap/Investing Mastermind/
       ├── WIKI-SCHEMA.md  → Schema + Workflows (bei Wiki-Ops lesen)
       ├── index.md        → Content-Katalog
@@ -90,3 +90,5 @@ Claude Code: Tool Search aktiv, automatisch.
 - Shibui code='SU' ist Suncor, nicht Schneider — nie SU in Shibui-Queries
 - D3 = volle Rate (1.0), nicht 50% — systemweit seit v3.4 korrigiert
 - SessionEnd-Hook + Windows-Toast für Briefing-Sync → 03_Tools/briefing-sync-check.ps1
+- Subagents nur für Code+Tests — Markdown/YAML-Edits direkt editieren (3×Subagent-Overhead unnötig)
+- Skill-ZIP: Hauptdatei muss `SKILL.md` heißen (nicht SKILL-dynasty-depot.md). Desktop App liest aus AppData-Pfad, nicht ~/.claude/
