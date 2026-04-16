@@ -56,13 +56,32 @@ Impuls / Idee
 
 ## 4. STUFE 2 — DEFCON-Scoring (100-Punkte-Matrix)
 
+### Befunde-Priming (Pflicht vor jedem Scoring-Start)
+
+**Lies `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` — Befunde-Matrix B1–B11.**
+Benenne im Analyse-Output explizit, welche Befunde auf diesen Ticker zutreffen und wie sie das Scoring beeinflussen.
+
+| Befund | Kern | Wirkt auf |
+|--------|------|-----------|
+| B1 | 5J-Fenster > Spot-Werte | Fundamentals — Trendperspektive |
+| B2 | FCF + GM = stabilste Prädiktoren | Fundamentals — Metrik-Priorisierung |
+| B3 | Earnings-Quality > Value (Accrual Ratio) | Fundamentals — Qualitäts-Check |
+| B4 | 8 Moat-Quellen operativ | Moat-Block |
+| B5 | cheap + safe + quality Dreiklang | Gesamt-Urteil |
+| B6 | Moat allein ≠ Excess Return (Quality Trap) | Moat + Bewertung kombiniert |
+| B7 | Fundamentals > Sentiment > Technicals | Gewichtungs-Disziplin |
+| B8 | ROIC + FCF + OpMargin top-ranked (ML) | ROIC-vs-WACC — Malus zwingend |
+| B9 | EPS-Growth + Low Leverage stabil | Bilanz-Block + EPS Revision |
+| B10 | Chain-of-Thought vor Scoring → bessere Konsistenz | Workflow — erst Reasoning, dann Score |
+| B11 | News-Daten: Positivity-Bias; Analyst 43% Strong Buy | Sentiment-Cap 10 Pt. — Korrektiv |
+
 ### Gewichtung:
 
 | Block | Gewicht | Metriken |
 |-------|---------|---------|
 | 🔢 Fundamentals | 50 Pt. | P/FCF, Fwd P/E, Bilanz, CapEx/OCF, ROIC, FCF Yield |
 | 🏰 Economic Moat | 20 Pt. | Wide/Narrow/None + Quellen (Morningstar Primär) |
-| 📉 Technicals | 10 Pt. | ATH-Abstand, MA-Lage, DCF-Anker |
+| 📉 Technicals | 10 Pt. | ATH-Abstand, Relative Stärke vs. S&P500 (scored, 0-3), MA-Lage, DCF-Anker |
 | 🔴 Insider | 10 Pt. | Net Buy/Sell, Ownership, diskret. Selling >$20M |
 | 📊 Sentiment | 10 Pt. | Analyst-Rating, Ø Price Target, Sell-Ratio |
 
@@ -101,7 +120,7 @@ Impuls / Idee
 | Bilanz | 9 | Net Debt/EBITDA + Current Ratio kombiniert |
 
 **Bonus-Metriken (v3.1-Upgrades, je max 2 Zusatzpunkte):**
-SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power, Relative Stärke, 200MA Slope, DCF-Anker, EPS Revision, PT-Dispersion, Tariff Exposure
+SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power, 200MA Slope, DCF-Anker, EPS Revision, PT-Dispersion, Tariff Exposure
 
 ---
 
@@ -118,11 +137,11 @@ SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power, Relative Stärke, 200MA Slo
 
 | Ticker | Score | DEFCON | Lektion |
 |--------|-------|--------|---------|
-| AVGO | 86 | 🟢 4 | Fabless-Modell = CapEx/OCF <15%, Referenz für Top-Score |
+| AVGO | 85 | 🟢 4 | Fabless-Modell = CapEx/OCF <15%, Referenz für Top-Score |
 | MKL | 82 | 🟢 4 | Float-Modell = FCF-Sonderregel, Versicherungs-Exception |
-| SNPS | 79 | 🟡 3 | Goodwill-Malus durch Ansys-Akquisition (-3 Punkte) |
-| SPGI | 77 | 🟡 3 | ROIC-Verzerrung durch M&A-Goodwill → Non-GAAP ~82 |
-| TMO | 65 | 🟡 3 | ROIC < WACC + Akquisitionsschuld = harter Malus trotz Wide Moat |
+| SNPS | 76 | 🟡 3 | Goodwill-Malus durch Ansys-Akquisition (-3 Punkte) |
+| SPGI | 74 | 🟡 3 | ROIC-Verzerrung durch M&A-Goodwill → Non-GAAP ~82 |
+| TMO | 62 | 🟠 2 | ROIC < WACC + Akquisitionsschuld = harter Malus trotz Wide Moat (v3.5: D3→D2 Grenzfall) |
 | EXPN | 61 | 🟡 3 | Datenlücken erzwingen konservatives Scoring |
 
 ---
