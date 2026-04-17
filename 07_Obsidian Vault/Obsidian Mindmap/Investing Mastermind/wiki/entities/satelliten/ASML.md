@@ -4,14 +4,15 @@ ticker: ASML
 name: ASML Holding N.V.
 sektor: Halbleiter-Equipment / Monopol
 ersatz: SNPS
-score_aktuell: 68
+score_aktuell: 66
 defcon: 3
 flag: "keins"
-sparrate: "Volle Rate (Gewicht 1.0, D3 kein FLAG)"
-letzteAnalyse: 2026-04-06
-score_valid_until: 2026-10-03
+sparrate: "Volle Rate 33,53€ (Gewicht 1.0, D3 kein FLAG)"
+letzteAnalyse: 2026-04-17
+score_valid_until: 2026-10-14
 naechsterTrigger: "Q1 2026 Earnings 15.04. — QuickCheck nach Zahlen"
-updated: 2026-04-16
+updated: 2026-04-17
+scoring_notiz_v37: "v3.7 Fix 1 (Interaktionsterm): Wide Moat + Fwd P/E >30 → Fwd-P/E-Subscore hart 0; Wide Moat + P/FCF >35 → P/FCF-Subscore hart 0. Score 68→66, D3 bleibt."
 waehrung: EUR
 ifrs: true
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"

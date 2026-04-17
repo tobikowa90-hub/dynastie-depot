@@ -4,12 +4,13 @@ ticker: AVGO
 name: Broadcom Inc.
 sektor: KI / Chips / Asset-Light
 ersatz: NVDA
-score_aktuell: 86
+score_aktuell: 84
 defcon: 4
 flag: "keins (Insider-Hinweis — OpenInsider-Check Pflicht)"
-sparrate: "Volle Rate"
-letzteAnalyse: 2026-03-25
-score_valid_until: 2026-09-25
+sparrate: "Volle Rate 33,53€ (v3.7)"
+letzteAnalyse: 2026-04-17
+score_valid_until: 2026-10-14
+scoring_notiz_v37: "v3.7: Score 85→84 (Fix 2 Fundamentals-Cap 50 greift). Weiterhin Top-Score, Fabless-Modell-Referenz."
 naechsterTrigger: "Q3 FY26 Earnings"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
 ---

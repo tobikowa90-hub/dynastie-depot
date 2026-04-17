@@ -4,12 +4,13 @@ ticker: RMS
 name: Hermès International S.A.
 sektor: Luxury / Monopol
 ersatz: RACE
-score_aktuell: 69
+score_aktuell: 68
 defcon: 4
 flag: "keins"
-sparrate: "Volle Rate"
-letzteAnalyse: 2026-04-15
-score_valid_until: 2026-10-15
+sparrate: "Volle Rate 33,53€ (v3.7)"
+letzteAnalyse: 2026-04-17
+score_valid_until: 2026-10-14
+scoring_notiz_v37: "v3.7: Score 69→68 (Fix 1 Interaktionsterm milder Impact, Wide Moat + P/FCF hoch). D4-Screener-Exception bleibt (ROIC 24% >> WACC 6,5%)."
 naechsterTrigger: "H1 2026 Earnings Juli/Aug 2026"
 waehrung: EUR
 ifrs: true

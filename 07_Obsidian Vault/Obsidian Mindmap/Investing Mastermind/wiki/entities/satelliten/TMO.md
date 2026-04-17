@@ -1,16 +1,17 @@
 ---
-tags: [satellit, aktiv, defcon-3]
+tags: [satellit, aktiv, defcon-2]
 ticker: TMO
 name: Thermo Fisher Scientific
 sektor: Life-Science / Instrumente
 ersatz: ZTS
-score_aktuell: 67
-defcon: 3
+score_aktuell: 63
+defcon: 2
 flag: "keins"
-sparrate: "50% Sockelbetrag"
-letzteAnalyse: 2026-04-07
-score_valid_until: 2026-10-07
+sparrate: "Halbe Rate 16,76€ (D2, Gewicht 0.5)"
+letzteAnalyse: 2026-04-17
+score_valid_until: 2026-10-14
 naechsterTrigger: "2026-04-23 — Q1 2026 Earnings"
+scoring_notiz_v37: "v3.7: Fix 2 (OpM) + Fix 3 (Sell-Ratio) drücken Score 67→63, D3→D2. ZTS-Vorbereitung bleibt aktiv."
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
 ---
 

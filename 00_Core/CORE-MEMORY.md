@@ -1,5 +1,5 @@
 # 🧠 CORE-MEMORY.md — Institutionelles Gedächtnis
-**Version:** 1.6 | **Stand:** 16.04.2026
+**Version:** 1.7 (v3.7) | **Stand:** 17.04.2026
 > Dieses Dokument speichert alle wichtigen Entscheidungen, Erkenntnisse und
 > strategischen Weichenstellungen aus den Projektthreads.
 > Für Strategie → KONTEXT.md | Für Workflows → INSTRUKTIONEN.md
@@ -61,6 +61,7 @@
 | 15.04.2026 | **RMS (Hermès) Q1 2026 Earnings Recap + DEFCON v3.4 Re-Analyse:** Score 71→**69**, DEFCON 🟢 4 bestätigt. Q1 Revenue €4,07B (+6% CER, −1% reported). Miss vs. +7–8% Erwartung. Kursreaktion: **−8,4%** (neues 52W-Tief €1.529 intraday). Treiber: Mittlerer Osten −6% (Iran-Krieg, UAE Malls −40%), FX-Headwind €290M, China Asien ex Japan +2%. Positiv: Leder +9%, Moat 19/20 intakt, ROIC 24% >> WACC 6,5%, Insider-Käufe +€7,67M (90d). Kein FLAG. Sparrate voll aktiv (31,67€). Score valid bis 15.10.2026. **Screener-Exception (institutionelle Begründung):** Analog COST (Membership Yield 15,2% > WACC 12,3%) rechtfertigt bei RMS der hohe ökonomische Return ROIC 24% >> WACC 6,5% (Spread +17,5 PP) die Beibehaltung von DEFCON 🟢 4 trotz Score 69 (knapp an D3-Grenze). Score-basierte Downgrade-Mechanik wird durch Return-Exception überschrieben, solange Moat 19/20 + ROIC-Spread >10 PP bestätigt bleiben. Re-Check-Trigger: H1 2026 Report Juli/Aug 2026. |
 | 16.04.2026 | **DEFCON v3.5 Scoring-Audit & Fix:** Formales 7-Fragen-Audit des Scoring-Systems. Ergebnis: 5×A, 1×B (PT-Upside Double-Counting in Technicals+Sentiment), 1×C (Gewichtsanpassung zurückgestellt). Fix: PT-Upside aus Technicals entfernt, Relative Stärke vs S&P500 als 0-3 Scored Metric promotet (vorher ±1 Tiebreaker), Fundamentals-Floor-Klausel (min 0) hinzugefügt. Anker rekalibriert: AVGO 86→85, SNPS 79→76, TMO 65→62 (D3→D2 Grenzfall), FICO 70→67, SPGI 77→74. MKL 82 unverändert. Block-Gewichte 50/20/10/10/10 beibehalten. |
 | 17.04.2026 | **3 Foundation-Papers integriert (Vault v4.3):** Piotroski (2000) F-Score, Novy-Marx (2013) Gross Profitability Premium, Sloan (1996) Accruals-Anomalie. 7→10 Quellen, 11→14 Befunde (B12/B13/B14). 6 neue Notes (3 sources + 3 concepts), Synthese erweitert, index.md 70→76 wiki-Notes. **Vorbereitet für v3.6-Release:** Quality-Bonus (F-Score ≥7 → +2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus (<3% → +2 Pt.). System-Reife-Ceiling 85% → geplant 92-95%. Kein Scoring-Impact vor v3.6-Implementation — aktuelle Scores unverändert. |
+| 17.04.2026 | **v3.6 verworfen, v3.7 „System-Gap-Release" ratifiziert.** v3.6-Boni (F-Score/GP-TA/Accrual) = Double-Counting mit dekomponierten Sub-Signalen → verworfen. v3.7-Fixes implementiert: **(1) Quality-Trap als Interaktionsterm** (Wide Moat + Fwd P/E >30 ODER P/FCF >35 → betreffender Fundamentals-Subscore hart 0; Wide Moat + 22–30/22–35 → Subscore max. 1). Redesign gegen ursprünglichen additiven Moat-Malus (hätte Double-Counting verletzt — Applied Learning 17.04.). **(2) Operating Margin TTM** als Fundamentals-Metrik (max 2 Pt.; >30%→2, 15–30%→1, <15%→0; COST+BRK.B Exception). **(3) Analyst-Bias-Kalibrierung** Sentiment (SB>60% → 1 Crowd-Malus, SB<40%→4; Sell-Ratio <3%→1, 3–10%→3, >10%→0). **(4) Fundamentals-Block-Cap bei 50** (keine Bonus-Inflation). Backtest aller 11 Satelliten approximativ (Interaktions-Redesign): ASML 68→66 (D3 bleibt — Fix-1 milder als additiver Malus), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, VEEV 74→74, V 86→86, BRK.B 75→75, APH 61→63, COST 69→69. **Keine DEFCON-Klassifikations-Shifts.** Sparraten korrigiert (Nenner = 8×1.0 + 1×0.5 = 8.5; zuvor fälschlich 9.0 nach v3.5-Audit nie nachgepflegt): **volle Rate 33,53€, TMO D2-Rate 16,76€, FLAGs (MSFT+APH) 0€**. Live-Verifikation pro Ticker bei nächstem Earnings-Update (QuickCheck-Pflicht). System-Reife 85% → ~92%. **Pending manuell durch User:** `03_Tools/Rebalancing_Tool_v3.4.xlsx` — Sparraten-Spalte auf 33,53€ / TMO 16,76€ / MSFT+APH 0€ setzen (xlsx nicht programmatisch editiert). |
 
 ---
 
@@ -131,14 +132,14 @@
 
 | Ticker | Score | DEFCON | Datum | Status | Nächste Aktion |
 |--------|-------|--------|-------|--------|----------------|
-| ASML | 68 | 🟡 3 | 06.04.2026 | Aktiv — volle Rate (D3, kein 🔴) | ✅ Q1 2026 Earnings abgeschlossen — kein Handlungsbedarf. Nächster Trigger: Q2 2026 Earnings |
-| AVGO | 85 | 🟢 4 | 25.03.2026 | Aktiv — ⚠️ Insider-FLAG (OpenInsider prüfen) | Q3 FY26 Earnings |
+| ASML | 66 | 🟡 3 | 17.04.2026 (v3.7) | Aktiv — volle Rate (D3, kein 🔴) | ✅ Q1 2026 Earnings abgeschlossen. Live-Verify QT-Cap bei Q2 2026 |
+| AVGO | 84 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — ⚠️ Insider-Review | Q3 FY26 Earnings — OpenInsider manuell prüfen |
 | FFH.TO | 88 | 🟢 4 | ~März 2026 | Ersatzbank BRK.B | — |
 | NVDA | 86 | 🟢 4 | ~März 2026 | Ersatzbank AVGO | — |
 | MKL | 82 | 🟢 4 | 25.03.2026 | Ersatzbank BRK.B | CapEx-FCF (Performance Thread) |
 | ZTS | 81 | 🟢 4 | ~März 2026 | Ersatzbank VEEV | — |
 | PEGA | 85 | 🟢 4 | ~März 2026 | Slot-16-Kandidat | Earnings Mai 2026 |
-| MSFT | 60 | 🟠 2 | 08.04.2026 | Aktiv — FLAG aktiv (CapEx/OCF Q2 FY26: 83.6%, bereinigt ~63%) | Q3 Earnings 29.04.2026 — FLAG-Auflösung wenn bereinigt <60% |
+| MSFT | 59 | 🟠 2 | 17.04.2026 (v3.7) | Aktiv — FLAG aktiv (CapEx/OCF Q2 FY26: 83.6%, bereinigt ~63%) | Q3 Earnings 29.04.2026 — FLAG-Auflösung wenn bereinigt <60% |
 | SNPS | 76 | 🟡 3 | 26.03.2026 | Ersatzbank ASML | Re-Analyse Mai 2026 |
 | SPGI | 74 | 🟡 3 | 31.03.2026 | Watchlist | Earnings 28.04.2026 |
 | RACE | 73 | 🟢 4 | ~März 2026 | Ersatzbank RMS | — |
@@ -146,15 +147,15 @@
 | SAP | 72 | 🟡 3 | ~März 2026 | Watchlist | ZTS bevorzugt |
 | EXPN | 61 | 🟡 3 | 02.04.2026 | Watchlist | P/FCF + Insider-Check |
 | HON | 71 | 🟡 3 | 28.03.2026 | Watchlist | Post-Spinoff 2026 |
-| TMO | 62 | 🟠 2 | 07.04.2026 | Aktiv — 50% Rate (D2, kein 🔴 FLAG) | Q1 Earnings 23.04.2026 — FCF-Erholung + ROIC-Trend |
-| APH | 61 | 🟡 3 | 09.04.2026 | Aktiv — FLAG aktiv | Tariff-Check CN/MY |
-| RMS | 69 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | H1 2026 Report Juli/Aug 2026 |
-| VEEV | 74 | 🟢 4 | 09.04.2026 | Aktiv — Sparplan voll | Keine Earnings-Urgenz |
+| TMO | 63 | 🟠 2 | 17.04.2026 (v3.7) | Aktiv — 50% Rate (D2, kein 🔴 FLAG) → **16,76€** | Q1 Earnings 23.04.2026 — FCF-Erholung + ROIC-Trend |
+| APH | 63 | 🟡 3 | 17.04.2026 (v3.7) | Aktiv — FLAG aktiv | Tariff-Check CN/MY |
+| RMS | 68 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll → **33,53€** | H1 2026 Report Juli/Aug 2026 |
+| VEEV | 74 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll → **33,53€** | Keine Earnings-Urgenz |
 | FICO | 67 | 🟡 3 | 03.04.2026 | Watchlist VEEV-Ersatz #1 | Re-Analyse bei VEEV-Schwäche |
-| V | 86 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | Q2 FY26 Earnings ~22.04.2026 |
-| COST | 69 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll (Bestandsposition ≥65) | Nächste Earnings ~Dez 2026 Q1 FY27 |
-| BRK.B | 75 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | Q-Earnings Mai 2026 — Buyback-Wiederaufnahme beobachten |
-| SU | 71 | 🟢 4 | 15.04.2026 | Aktiv — Sparplan voll | H1 2026 Earnings Juli/Aug 2026 |
+| V | 86 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll → **33,53€** | Q2 FY26 Earnings ~22.04.2026 |
+| COST | 69 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll (Bestandsposition ≥65, Screener-Exception) → **33,53€** | Nächste Earnings ~Dez 2026 Q1 FY27 |
+| BRK.B | 75 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll (Insurance Exception) → **33,53€** | Q-Earnings Mai 2026 — Buyback-Wiederaufnahme beobachten |
+| SU | 69 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll → **33,53€** | H1 2026 Earnings Juli/Aug 2026 |
 
 ---
 

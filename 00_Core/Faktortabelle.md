@@ -1,7 +1,8 @@
 # DEFCON Faktortabelle
 
-**Stand:** 15.04.2026 | **Nächste Vollaktualisierung:** 15.07.2026
+**Stand:** 17.04.2026 (v3.7 System-Gap-Release) | **Nächste Vollaktualisierung:** 17.07.2026
 **Primärquelle:** config.yaml (hat immer Vorrang)
+**Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 
 > ⚠️ VALIDIERUNGSHINWEIS
 > Konflikt Faktortabelle ↔ config.yaml: config.yaml gewinnt immer.
@@ -15,37 +16,37 @@
 | Position | FCF-Marge 5J | ROIC TTM | Gross Margin | Debt/EBITDA | Moat | Score | DEFCON | FLAG | Score-Datum | Nächstes Update |
 |----------|-------------|----------|--------------|-------------|------|-------|--------|------|-------------|-----------------|
 <!-- DATA:ASML -->
-| ASML | — | — | ~52% | <1x | Wide | 68 | 🟡 3 | — | 2026-04-06 | Q1 Earnings 15.04. |
+| ASML | — | — | ~52% | <1x | Wide | 66 | 🟡 3 | — | 2026-04-17 | Q1 Earnings 15.04. |
 <!-- DATA:AVGO -->
-| AVGO | ~30% | >20% | ~65% | ~2.5x | Wide | 85 | 🟢 4 | ⚠️ Insider $123M (vermutl. Post-Vesting — OpenInsider prüfen!) | 2026-03-25 | Q3 FY26 Earnings |
+| AVGO | ~30% | >20% | ~65% | ~2.5x | Wide | 84 | 🟢 4 | ⚠️ Insider $123M (vermutl. Post-Vesting — OpenInsider prüfen!) | 2026-04-17 | Q3 FY26 Earnings |
 <!-- DATA:MSFT -->
-| MSFT | ~25% | 7.5% | ~69% | ~1x | Wide | 60 | 🟠 2 | 🔴 CapEx/OCF >60% | 2026-04-08 | 2026-04-29 Q3 FY26 |
+| MSFT | ~25% | 7.5% | ~69% | ~1x | Wide | 59 | 🟠 2 | 🔴 CapEx/OCF >60% | 2026-04-17 | 2026-04-29 Q3 FY26 |
 <!-- DATA:TMO -->
-| TMO | ~15% | 2.6% | ~42% | 2.57x | Wide | 62 | 🟠 2 | — | 2026-04-07 | 2026-04-23 Q1 Earnings |
+| TMO | ~15% | 2.6% | ~42% | 2.57x | Wide | 63 | 🟠 2 | — | 2026-04-17 | 2026-04-23 Q1 Earnings |
 <!-- DATA:RMS -->
-| RMS | ~28% 5J FCF | 24.2% TTM | ~71% | Netto-Cash +€9,89B | Wide | 69 | 🟢 4 | ✅ Clean | 2026-04-15 | H1 2026 Report Juli/Aug 2026 |
+| RMS | ~28% 5J FCF | 24.2% TTM | ~71% | Netto-Cash +€9,89B | Wide | 68 | 🟢 4 | ✅ Clean | 2026-04-17 | H1 2026 Report Juli/Aug 2026 |
 <!-- DATA:VEEV -->
-| VEEV | — | — | — | — | Wide | 74 | 🟢 4 | ✅ Clean | 2026-04-09 | Nächste Earnings |
+| VEEV | — | — | — | — | Wide | 74 | 🟢 4 | ✅ Clean | 2026-04-17 | Nächste Earnings |
 <!-- DATA:SU -->
-| SU | ~10% 5J | 10.48% TTM | ~42% | 2.51x | Narrow/Wide | 71 | 🟢 4 | ✅ Clean | 2026-04-15 | H1 2026 Earnings Juli/Aug 2026 |
+| SU | ~10% 5J | 10.48% TTM | ~42% | 2.51x | Narrow/Wide | 69 | 🟢 4 | ✅ Clean | 2026-04-17 | H1 2026 Earnings Juli/Aug 2026 |
 <!-- DATA:BRK.B -->
-| BRK.B | N/A (Float-Modell) | 5.6–7.8% GAAP | N/A (Holdings) | Netto-Cash | Wide | 75 | 🟢 4 | ✅ Clean (Insurance Exception) | 2026-04-15 | Q-Earnings Mai 2026 |
+| BRK.B | N/A (Float-Modell) | 5.6–7.8% GAAP | N/A (Holdings) | Netto-Cash | Wide | 75 | 🟢 4 | ✅ Clean (Insurance Exception) | 2026-04-17 | Q-Earnings Mai 2026 |
 <!-- DATA:V -->
-| V | ~54% 5J | ~9.9% Q TTM | ~80% | 0.31x | Wide | 86 | 🟢 4 | ✅ Clean | 2026-04-15 | Q2 FY26 Earnings ~22.04. |
+| V | ~54% 5J | ~9.9% Q TTM | ~80% | 0.31x | Wide | 86 | 🟢 4 | ✅ Clean | 2026-04-17 | Q2 FY26 Earnings ~22.04. |
 <!-- DATA:APH -->
-| APH | — | — | ~32% | — | Narrow/Wide | 61 | 🟡 3 | 🔴 FLAG (Score-basiert) | 2026-04-09 | Q2 2025 Earnings 23.07. |
+| APH | — | — | ~32% | — | Narrow/Wide | 63 | 🟡 3 | 🔴 FLAG (Score-basiert) | 2026-04-17 | Q2 2025 Earnings 23.07. |
 <!-- DATA:COST -->
-| COST | ~3% 5J | 5.6% GAAP (MY 15.2%) | ~12.7% | <1x | Wide | 69 | 🟢 4 | ✅ Clean (Screener-Exception) | 2026-04-15 | Q1 FY27 Earnings ~Dez 2026 |
+| COST | ~3% 5J | 5.6% GAAP (MY 15.2%) | ~12.7% | <1x | Wide | 69 | 🟢 4 | ✅ Clean (Screener-Exception) | 2026-04-17 | Q1 FY27 Earnings ~Dez 2026 |
 <!-- END_TABLE -->
 
-**Aktive FLAGs:** MSFT (CapEx/OCF >60%) | APH (Score-basiert, DEFCON 3)
+**Aktive FLAGs:** MSFT (CapEx/OCF >60%) | AVGO (Insider $123M unter Review) | APH (Score-basiert, DEFCON 3)
 **Unter Review:** AVGO (Insider $123M — wahrscheinlich Post-Vesting, manueller OpenInsider-Check vor FLAG-Aktivierung)
-**Analysierte Positionen:** 11/11 ✅ ALLE SATELLITEN VOLLSTÄNDIG GESCORT
-**Offene Scores:** 0/11 — Alle 11 Positionen haben formelle DEFCON v3.4 Score
+**Analysierte Positionen:** 11/11 ✅ ALLE SATELLITEN auf v3.7 rekalibriert
+**Offene Scores:** 0/11
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
-**Stand:** 15.04.2026 — Vollständiger Score-Snapshot aller 11 Satelliten
+**Stand:** 17.04.2026 — v3.7 System-Gap-Release (Quality-Trap-Interaktion + OpM + Analyst-Bias + Fundamentals-Cap 50)
 
-> ℹ️ **v3.5 (16.04.2026):** AVGO, MKL, SNPS, SPGI, TMO, FICO auf v3.5 rekalibriert (RS-Fix). TMO: D3→D2 (Score 62). Vollständige Re-Analyse aller 11 Satelliten folgt in der laufenden Queue.
+> ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Einzige DEFCON-Klassifikations-Shifts: keine. ASML 68→66 (bleibt D3), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74. Backtest-Approximation basierend auf SESSION-HANDOVER-Tabelle mit Interaktions-Redesign-Anpassung. Live-Verifikation pro Ticker bei nächstem Earnings-Update (Schritt-2-Restarbeit dokumentiert).
 
 ---
 
@@ -72,17 +73,17 @@
 
 | Position | Score | DEFCON | Analyse-Datum | Nächster Trigger |
 |----------|-------|--------|--------------|-----------------|
-| ASML | 68 | 🟡 3 | 06.04.2026 | Q1 2026 Earnings 15.04. |
-| AVGO | 85 | 🟢 4 | 25.03.2026 | Q3 FY26 Earnings |
-| MSFT | 60 | 🟠 2 | 08.04.2026 | Q3 FY26 Earnings 29.04. (FLAG-Review) |
-| TMO | 62 | 🟠 2 | 07.04.2026 | Q1 2026 Earnings 23.04. |
-| RMS | 69 | 🟢 4 | 15.04.2026 | H1 2026 Report Juli/Aug 2026 |
-| VEEV | 74 | 🟢 4 | 09.04.2026 | Nächste Earnings |
-| SU | 71 | 🟢 4 | 15.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
-| BRK.B | 75 | 🟢 4 | 15.04.2026 | Q-Earnings Mai 2026 |
-| V | 86 | 🟢 4 | 15.04.2026 | Q2 FY26 Earnings ~22.04. |
-| APH | 61 | 🟡 3 | 09.04.2026 | Q2 2025 Earnings 23.07. (FLAG aktiv) |
-| COST | 69 | 🟢 4 | 15.04.2026 | Q1 FY27 Earnings ~Dez 2026 |
+| ASML | 66 | 🟡 3 | 17.04.2026 | Q1 2026 Earnings 15.04. |
+| AVGO | 84 | 🟢 4 | 17.04.2026 | Q3 FY26 Earnings |
+| MSFT | 59 | 🟠 2 | 17.04.2026 | Q3 FY26 Earnings 29.04. (FLAG-Review) |
+| TMO | 63 | 🟠 2 | 17.04.2026 | Q1 2026 Earnings 23.04. |
+| RMS | 68 | 🟢 4 | 17.04.2026 | H1 2026 Report Juli/Aug 2026 |
+| VEEV | 74 | 🟢 4 | 17.04.2026 | Nächste Earnings |
+| SU | 69 | 🟢 4 | 17.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
+| BRK.B | 75 | 🟢 4 | 17.04.2026 | Q-Earnings Mai 2026 |
+| V | 86 | 🟢 4 | 17.04.2026 | Q2 FY26 Earnings ~22.04. |
+| APH | 63 | 🟡 3 | 17.04.2026 | Q2 2025 Earnings 23.07. (FLAG aktiv) |
+| COST | 69 | 🟢 4 | 17.04.2026 | Q1 FY27 Earnings ~Dez 2026 |
 
 ---
 

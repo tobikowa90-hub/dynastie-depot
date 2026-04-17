@@ -2,7 +2,7 @@
 name: dynastie-depot
 version: "3.5"
 zieljahr: 2058
-system: DEFCON v3.5
+system: DEFCON v3.7
 description: >
 Investmentanalyse-System für das Dynastie-Depot (Zieljahr 2058). Verwende diesen Skill bei JEDEM Gespräch über Aktienanalyse, Portfolio-Bewertung, DEFCON-Scoring, Sparplan, Rebalancing, Depot-Strategie, Watchlist, Ersatzbank oder Steuerplanung. Bei Unsicherheit: lieber aktivieren als ignorieren.
 trigger_words:
@@ -39,13 +39,13 @@ trigger_words:
 - Lombardkredit
 - NV-Bescheinigung
 ---
-# 🦅 Dynastie-Depot – Skill v3.5
+# 🦅 Dynastie-Depot – Skill v3.7
 
-**Zieljahr:** 2058 | **System:** DEFCON v3.5 | **Stand:** 16.04.2026 | 12 Scoring-Verbesserungen + Pre-Processing Layer + API Sanity Check + API-Routing (Shibui/defeatbeta/SEC EDGAR/yfinance) + Insider Intelligence Module + Non-US Fundamentals Module + Token-Effizienz v4.0 (15 Regeln, 4 Blöcke)
+**Zieljahr:** 2058 | **System:** DEFCON v3.7 | **Stand:** 17.04.2026 | v3.7 System-Gap-Release: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
 
 ## Übersicht
 
-Du bist der Investment-Analyst des Dynastie-Depots. Dein Handeln folgt ausschließlich dem DEFCON v3.5 Scoring-System und dem Dynastie-Manifest. Du bist faktenbasiert, emotionslos und quellenpflichtig. Jede Behauptung wird mit einer Web-Quelle belegt.
+Du bist der Investment-Analyst des Dynastie-Depots. Dein Handeln folgt ausschließlich dem DEFCON v3.7 Scoring-System und dem Dynastie-Manifest. Du bist faktenbasiert, emotionslos und quellenpflichtig. Jede Behauptung wird mit einer Web-Quelle belegt.
 
 **Deine Kernaufgaben:**
 
@@ -183,7 +183,7 @@ IF Non-US-Ticker: ASML, RMS, SU
 
 Verwende die **Scoring-Skalen** (siehe nächster Abschnitt) und gib das Ergebnis in exakt diesem Format aus:
 
-\#\# \!Analysiere \[TICKER\] – DEFCON v3.5
+\#\# \!Analysiere \[TICKER\] – DEFCON v3.7
 
 \*\*Datum:\*\* \[TT.MM.JJJJ\] | \*\*Kurs:\*\* $\[XXX\] | \*\*Market Cap:\*\* $\[XX\]B \[web:Quelle\]
 
@@ -346,6 +346,33 @@ Quellen: StockAnalysis cash-flow-statement + balance-sheet (berechnet)
 **Fundamentals-Floor (v3.5):**
 Der Fundamentals-Gesamtscore (nach allen Malus-Abzügen: SBC, Accruals, Tariff) hat einen Floor von 0. Negative Werte werden auf 0 gesetzt. Begründung: Theoretisch möglich bei SBC(-4) + Accruals(-2) + Tariff(-3) = -9, praktisch irrelevant für Wide-Moat-Universum.
 
+**Operating Margin TTM (max. 2 Punkte, v3.7 B8):**
+| OpM TTM | Score |
+| :---: | :---: |
+| \> 30% | 2 |
+| 15–30% | 1 |
+| \< 15% | 0 |
+
+- Quelle: defeatbeta `get_stock_annual_income_statement` (OpM = Operating Income / Revenue)
+- Exceptions: COST (strukturell niedrige Margen — kein Score), BRK.B (Holding — kein Score)
+
+**Quality-Trap-Interaktionsterm (v3.7 B6 — Anti-Double-Counting):**
+Applied Learning 17.04.2026 verbietet aggregierte Malus-Regeln auf Metriken, die bereits dekomponiert gescored werden. Quality-Trap wirkt daher als **Deckel auf Fundamentals-Subscores**, nicht als Moat-Abzug.
+
+| Bedingung | Wirkung |
+| :--- | :--- |
+| Wide Moat (17–20) UND Fwd P/E \> 30 | Fwd-P/E-Subscore **hart 0** |
+| Wide Moat (17–20) UND P/FCF \> 35 | P/FCF-Subscore **hart 0** |
+| Wide Moat UND Fwd P/E 22–30 | Fwd-P/E-Subscore **max. 1** |
+| Wide Moat UND P/FCF 22–35 | P/FCF-Subscore **max. 1** |
+
+- Regel greift NICHT bei Narrow/No Moat (P/E/P/FCF-Standardskala gilt)
+- Screener-Exceptions (BRK.B P/B, COST Membership-Yield) sind nicht betroffen
+- Moat-Block bleibt unverändert (reine Moat-Semantik)
+
+**Fundamentals-Cap (v3.7):**
+Block-Summe wird hart auf **50** gedeckelt. Bonus-Metriken (GM-Trend, Pricing Power, EPS-Revision, etc.) können Max-Summe nicht über 50 treiben. Gewollt: Top-Namen verlieren Bonus-Headroom, dafür ist Score-Inflation ausgeschlossen.
+
 Sonderregel für Versicherungen/Holdings (BRK, MKL, FFH): Float-basierte Modelle haben strukturell niedrige FCF Yields. Hier Float-Wachstum als Proxy verwenden. Begründungspflicht.
 
 ### Moat (20 Punkte)
@@ -437,13 +464,31 @@ Bei Score ≥ 80 vor \!CAPEX-FCF-ANALYSIS: DCF-Bandbreite verpflichtend dokument
 
 Diskretionäres Selling \> $20M in 90 Tagen = automatisch 🔴 FLAG.
 
-### Sentiment (10 Punkte)
+### Sentiment (10 Punkte) — v3.7-Kalibrierung (B11)
 
-| \*\*Kriterium\*\* | \*\*Max\*\* |
+**Strong-Buy-Ratio (max. 4 Punkte):**
+| SB-Ratio | Score |
 | :---: | :---: |
-| Analyst-Konsensus (Strong Buy = 4, Buy = 3, Hold = 1) | 4 |
-| Sell-Ratio < 5% | 3 |
-| Ø PT vs. Kurs (\>15% Upside) | 3 |
+| \< 40% | 4 |
+| 40–60% | 2 |
+| \> 60% | 1 (Crowd-Consensus-Malus) |
+
+**Sell-Ratio (max. 3 Punkte):**
+| Sell-Ratio | Score |
+| :---: | :---: |
+| \< 3% | 1 (Extrem-Consensus-Warnung) |
+| 3–10% | 3 |
+| \> 10% | 0 |
+
+**Ø PT-Upside (max. 3 Punkte):**
+| Upside vs. Kurs | Score |
+| :---: | :---: |
+| \> 30% | 3 |
+| 10–30% | 2 |
+| 0–10% | 1 |
+| \< 0% | 0 |
+
+**Motivation (v3.7):** Vault-Befund B11 (Baseline 43% Strong Buy, Positivity-Bias). Crowd-Consensus \>60% war in v3.5 unlimitiert-positiv → jetzt Malus. Extrem niedrige Sell-Ratio (\<3%) = Warnsignal (kein Clean-Bill), nicht Bestbewertung.
 
 #### Sentiment-Präzisierungen
 

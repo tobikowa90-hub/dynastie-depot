@@ -1,5 +1,5 @@
 # ⚙️ INSTRUKTIONEN.md — Handlungsanweisungen & Skill-Guidance
-**Version:** 1.3 | **Stand:** 16.04.2026
+**Version:** 1.4 (v3.7 System-Gap-Release) | **Stand:** 17.04.2026
 > Dieses Dokument beschreibt das WIE — alle Workflows, Befehle, Regeln.
 > Für Strategie → KONTEXT.md | Für Erinnerungen → CORE-MEMORY.md
 
@@ -118,9 +118,32 @@ Benenne im Analyse-Output explizit, welche Befunde auf diesen Ticker zutreffen u
 | ROIC vs WACC | 8 | ROIC>WACC+5%→8 \| +3–5%→6–7 \| +1–3%→4–5 \| ~WACC→2–3 \| <WACC→0–1 |
 | FCF Yield | 8 | >6%→8 \| 4–6%→6–7 \| 2–4%→3–5 \| 1–2%→1–2 \| <1%→0 |
 | Bilanz | 9 | Net Debt/EBITDA + Current Ratio kombiniert |
+| **Operating Margin TTM** | **2** | **>30%→2 \| 15–30%→1 \| <15%→0** (v3.7; Exceptions: COST, BRK.B) |
 
-**Bonus-Metriken (v3.1-Upgrades, je max 2 Zusatzpunkte):**
+**Quality-Trap-Interaktionsterm (v3.7, B6 — Moat-Malus vermieden):**
+- Wide Moat (17–20) **UND** Fwd P/E >30 → Fwd-P/E-Subscore **hart 0** (Deckel, nicht Abzug)
+- Wide Moat (17–20) **UND** P/FCF >35 → P/FCF-Subscore **hart 0**
+- Wide Moat + Fwd P/E 22–30 ODER P/FCF 22–35 → betreffender Subscore **max. 1**
+- Regel wirkt nur auf Fundamentals-Subscores, Moat-Block (§4) bleibt unverändert
+- Screener-Exceptions (BRK.B P/B, COST Membership) nicht betroffen
+- **Motivation:** Applied Learning 17.04. — Aggregat-Malus wäre Double-Counting, da P/E und P/FCF bereits skaliert gescored werden.
+
+**Fundamentals-Cap (v3.7):** Block-Summe hart auf **50** gedeckelt. Bonus-Metriken dürfen Max-Summe nicht überschreiten (gewollt: Top-Namen verlieren Bonus-Headroom, dafür keine künstliche Score-Inflation).
+
+**Bonus-Metriken (v3.1-Upgrades, je max 2 Zusatzpunkte — nur innerhalb 50er-Cap):**
 SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power, 200MA Slope, DCF-Anker, EPS Revision, PT-Dispersion, Tariff Exposure
+
+---
+
+## 5a. Sentiment-Scoring (Detailskalen, v3.7-Kalibrierung)
+
+| Metrik | Max | Skala |
+|--------|-----|-------|
+| Strong-Buy-Ratio | 4 | <40%→4 \| 40–60%→2 \| **>60%→1** (Crowd-Consensus-Malus, B11) |
+| Sell-Ratio | 3 | <3%→1 \| 3–10%→3 \| >10%→0 (Extrem-Consensus-Warnung) |
+| Ø Price-Target-Upside | 3 | >30%→3 \| 10–30%→2 \| 0–10%→1 \| <0%→0 |
+
+**Motivation (v3.7):** Vault-Befund B11 (Analyst 43% Strong Buy im Baseline, Positivity-Bias). Crowd-Consensus >60% war in v3.5 unlimitiert-positiv → korrigiert. Extrem niedrige Sell-Ratios (<3%) sind ebenfalls Warnsignal, kein Clean-Bill.
 
 ---
 
@@ -421,27 +444,27 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 
 ---
 
-## 22. Sparplan-Formel (aktuell 15.04.2026)
+## 22. Sparplan-Formel (aktuell 17.04.2026, v3.7)
 
 **Formel:** `Einzelrate = 285€ / Σ Gewichte × Eigengewicht`
 **Gewichte:** D4/D3 (kein 🔴)=1,0 | D2 (kein 🔴)=0,5 | D1/🔴 FLAG=0,0
 
-| Position | Gewicht | Grund |
-|----------|---------|-------|
-| AVGO | 1,0 | D4 + Clean |
-| ASML | 1,0 | D3 (kein 🔴) → volle Rate |
-| MSFT | 0,0 | 🔴 FLAG (CapEx) + D2 |
-| RMS | 1,0 | D4 + Clean |
-| VEEV | 1,0 | D4 + Clean |
-| SU | 1,0 | D4 + Clean |
-| BRK.B | 1,0 | D4 + Clean |
-| V | 1,0 | D4 + Clean |
-| TMO | 1,0 | D3 (kein 🔴) → volle Rate |
-| APH | 0,0 | 🔴 FLAG |
-| COST | 1,0 | D4 + Clean |
+| Position | Score | DEFCON | Gewicht | Rate |
+|----------|-------|--------|---------|------|
+| AVGO | 84 | 🟢 4 | 1,0 | 33,53€ |
+| ASML | 66 | 🟡 3 | 1,0 | 33,53€ |
+| MSFT | 59 | 🟠 2 | 0,0 | 0€ (🔴 FLAG) |
+| RMS | 68 | 🟢 4 | 1,0 | 33,53€ |
+| VEEV | 74 | 🟢 4 | 1,0 | 33,53€ |
+| SU | 69 | 🟢 4 | 1,0 | 33,53€ |
+| BRK.B | 75 | 🟢 4 | 1,0 | 33,53€ |
+| V | 86 | 🟢 4 | 1,0 | 33,53€ |
+| TMO | 63 | 🟠 2 | 0,5 | 16,76€ |
+| APH | 63 | 🟡 3 | 0,0 | 0€ (🔴 FLAG) |
+| COST | 69 | 🟢 4 | 1,0 | 33,53€ |
 
-**Summe:** 9×1,0 = 9,0 | **Volle Rate:** 31,67€ | **Eingefroren:** 0€
-**Check:** 9×31,67 = 285€ ✓
+**Summe:** 8×1,0 + 1×0,5 = 8,5 | **Volle Rate:** 33,53€ | **D2-Rate (TMO):** 16,76€ | **Eingefroren (MSFT, APH):** 0€
+**Check:** 8×33,53 + 1×16,76 = 268,24 + 16,76 = 285,00€ ✓
 
 ---
 
@@ -561,4 +584,4 @@ Empfehlung: [!SyncBriefing ausführen] / [Kein Handeln nötig]
 - Work-in-Progress-Analysen (Score noch nicht final) — erst nach Abschluss pushen
 
 ---
-*🦅 INSTRUKTIONEN.md v1.6 | Dynastie-Depot | Stand: 15.04.2026*
+*🦅 INSTRUKTIONEN.md v1.4 (v3.7) | Dynastie-Depot | Stand: 17.04.2026*

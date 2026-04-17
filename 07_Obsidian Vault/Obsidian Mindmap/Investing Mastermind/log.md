@@ -287,3 +287,15 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - Befunde: B12 (F-Score Quality-Signal), B13 (Gross Profitability Premium), B14 (Accruals-Anomalie)
 - Vorbereitung: v3.6-Release — Quality-Bonus (+2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus <3%. System-Reife-Ceiling 85% → 92-95%.
 - Gesamt: 6 neue Seiten, 2 aktualisierte Seiten, 1 Synthese erweitert
+
+## [2026-04-17] system | DEFCON v3.7 "System-Gap-Release" ratifiziert & deployed
+- v3.6 verworfen (Double-Counting: F-Score/GP-TA/Accrual-Bonus überlappen mit dekomponierten Sub-Signalen in §4/§5)
+- v3.7 schließt 3 operative Gaps:
+  - Fix 1 (Quality-Trap-Interaktion, B6): Wide Moat + Fwd P/E >30 → Fwd-P/E-Subscore hart 0; Wide Moat + P/FCF >35 → P/FCF-Subscore hart 0; 22–30 / 22–35 → Subscore max 1. Interaktionsterm (nicht Moat-Malus) gegen Double-Counting.
+  - Fix 2 (Operating Margin, B8): OpM TTM >30%→2 | 15–30%→1 | <15%→0. Fundamentals-Cap hart bei 50.
+  - Fix 3 (Analyst-Bias-Kalibrierung, B11): Strong-Buy >60%→1 (Crowd-Malus). Sell-Ratio <3%→1 (Warning), 3–10%→3 (Healthy), >10%→0.
+- Backtest 11 Satelliten (Interaktions-approx): ASML 68→66 (D3), AVGO 85→84, MSFT 60→59, TMO 62→63 (D2 aus v3.5 Audit), RMS 69→68, SU 71→69, APH 61→63, COST 69, V 86, BRK.B 75, VEEV 74 — keine DEFCON-Shifts
+- Sparraten neu: Nenner 8.5 (8× D4/D3 + 1× D2 TMO), volle Rate 33,53€, TMO D2 16,76€, MSFT/APH 🔴 0€
+- Pages updated: [[Wissenschaftliche-Fundierung-DEFCON]] (v3.7-Änderungsprotokoll)
+- Core files: INSTRUKTIONEN.md §5 + §5a + §22, SKILL-dynastie-depot.md v3.7, config.yaml v3.7, CORE-MEMORY.md v1.7, Faktortabelle.md v3.7
+- System-Reife: 85% → ~92%

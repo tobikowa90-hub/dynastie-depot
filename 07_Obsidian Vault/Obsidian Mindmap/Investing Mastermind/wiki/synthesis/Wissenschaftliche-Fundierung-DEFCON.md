@@ -1,5 +1,5 @@
 ---
-title: "Wissenschaftliche Fundierung DEFCON v3.5"
+title: "Wissenschaftliche Fundierung DEFCON v3.7"
 type: synthesis
 tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung]
 sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]]"
@@ -10,10 +10,26 @@ datum: 2026-04-17
 status: aktiv
 ---
 
-# Wissenschaftliche Fundierung DEFCON v3.5
+# Wissenschaftliche Fundierung DEFCON v3.7
 
 > Dieses Dokument belegt, dass das DEFCON-Scoring-System auf peer-reviewed Forschung basiert.
 > 10 Quellen → 14 Befunde → operative Konsequenzen für das Dynasty-Depot.
+
+---
+
+## v3.7-Änderungsprotokoll (17.04.2026)
+
+**3 operative Gap-Closures, wissenschaftlich validiert:**
+
+1. **Quality-Trap-Interaktionsterm (B6)** — Deckel auf Fundamentals-Subscores statt Moat-Malus. Begründung: Applied Learning 17.04. verbietet Double-Counting. Fwd P/E und P/FCF sind bereits in Fundamentals dekomponiert — ein zusätzlicher Moat-Abzug wäre doppelte Strafe auf dieselbe Beobachtung. Lösung: bei Wide Moat + teure Bewertung wird der Fwd-P/E-/P/FCF-Subscore hart auf 0 gedeckelt. Signal-Erhalt ohne Regelverletzung.
+
+2. **Operating Margin TTM (B8)** — neue Fundamentals-Metrik (max. 2 Pt.) operationalisiert Wolff-Echterling-2023 (ROIC + FCF + OpM als Top-Prädiktoren). Vorher war OpM nur implizit in Moat-GM-Trend enthalten, nicht als eigene Quantität.
+
+3. **Analyst-Bias-Kalibrierung (B11)** — Crowd-Consensus >60% Strong Buy erzeugt jetzt Malus (vorher unlimitiert-positiv). Sell-Ratio dreistufig (<3% = Warnsignal, nicht Bestnote). Direkte Umsetzung von Jadhav-Mirza 2025 + llms-for-equity-stock-ratings: News-/Analyst-Daten haben strukturellen Positivity-Bias, den das Scoring aktiv korrigieren muss.
+
+**Nicht übernommen aus v3.6:** F-Score-Bonus, GP/TA-Metrik, Accrual-Bonus — alle drei waren Double-Counting-Kandidaten. Papers B12/B13/B14 bleiben als wissenschaftliche Validation der Sub-Signale (Piotroski → Bilanz/FCF/ROIC, Novy-Marx → GM-Trend, Sloan → Accrual Ratio), aber werden nicht als Aggregat-Scores addiert.
+
+**Fundamentals-Cap bei 50:** Block-Summe hart gedeckelt — verhindert Score-Inflation durch Bonus-Akkumulation bei Top-Namen.
 
 ---
 

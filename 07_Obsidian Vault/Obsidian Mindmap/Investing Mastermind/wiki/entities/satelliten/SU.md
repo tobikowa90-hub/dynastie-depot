@@ -4,12 +4,13 @@ ticker: SU
 name: Schneider Electric S.E.
 sektor: Energie-Infrastruktur / Automatisierung
 ersatz: DE
-score_aktuell: 71
+score_aktuell: 69
 defcon: 4
 flag: "keins"
-sparrate: "Volle Rate"
-letzteAnalyse: 2026-04-15
-score_valid_until: 2026-10-15
+sparrate: "Volle Rate 33,53€ (v3.7)"
+letzteAnalyse: 2026-04-17
+score_valid_until: 2026-10-14
+scoring_notiz_v37: "v3.7: Score 71→69 (Fix 3 Sell-Ratio-Kalibrierung leichter Malus). D4 bleibt."
 naechsterTrigger: "H1 2026 Earnings Juli/Aug 2026"
 waehrung: EUR
 ifrs: true

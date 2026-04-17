@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-17 (Foundation-Papers-Integration v4.3 — 82 Notes: 76 wiki + 6 raw)
+> Last updated: 2026-04-17 (DEFCON v3.7 System-Gap-Release — 82 Notes: 76 wiki + 6 raw)
 > Schema: [[WIKI-SCHEMA]]
 
 ---

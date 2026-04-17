@@ -8,11 +8,13 @@ score_aktuell: 69
 defcon: 4
 flag: "keins"
 sparrate: "Volle Rate"
-letzteAnalyse: 2026-04-15
-score_valid_until: 2026-10-15
+letzteAnalyse: 2026-04-17
+score_valid_until: 2026-10-14
 naechsterTrigger: "Q1 FY27 Earnings ~Dez 2026"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
-updated: 2026-04-16
+updated: 2026-04-17
+sparrate_eur: "33,53€ (volle Rate v3.7)"
+scoring_notiz_v37: "v3.7 Backtest: Score 69 bleibt stabil (Screener-Exception Membership Yield nicht von Fix 1 betroffen, OpM <15% → 0 Pt. aber Fundamentals war schon unter 50)."
 ---
 
 # COST — Costco Wholesale Corporation
