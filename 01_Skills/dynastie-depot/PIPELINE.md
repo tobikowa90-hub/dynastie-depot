@@ -304,7 +304,7 @@ Claude Stuff/
 │   └── quick-screener/    → SKILL.md
 ├── 02_Analysen/       → DEFCON-Analysen als Excel (Output Stufe 3)
 ├── 03_Tools/          → Rebalancing_Tool | Satelliten_Monitor | Watchlist_Monitor
-├── 04_Templates/      → Analyse-Template | CAPEX-FCF | Alerts-Log
+├── 04_Templates/      → CAPEX-FCF | Alerts-Log (Analyse-Template in SKILL.md §Workflow 1)
 ├── 05_Archiv/         → Historische Dateien
 └── 06_Skills-Pakete/  → Installierbare ZIPs (nur aktive Skills)
     ├── dynastie-depot_v3.4.1.zip
