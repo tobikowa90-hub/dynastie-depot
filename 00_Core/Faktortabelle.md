@@ -35,7 +35,7 @@
 <!-- DATA:V -->
 | V | ~54% 5J | ~9.9% Q TTM | ~80% | 0.31x | Wide | 86 | 🟢 4 | ✅ Clean | 2026-04-17 | Q2 FY26 Earnings ~22.04. |
 <!-- DATA:APH -->
-| APH | — | — | ~32% | — | Narrow/Wide | 63 | 🟡 3 | 🔴 FLAG (Score-basiert) | 2026-04-17 | Q2 2025 Earnings 23.07. |
+| APH | — | — | ~32% | — | Narrow/Wide | 63 | 🟡 3 | 🔴 FLAG (Score-basiert) | 2026-04-17 | Q2 2026 Earnings 23.07. |
 <!-- DATA:COST -->
 | COST | ~3% 5J | 5.6% GAAP (MY 15.2%) | ~12.7% | <1x | Wide | 69 | 🟢 4 | ✅ Clean (Screener-Exception) | 2026-04-17 | Q1 FY27 Earnings ~Dez 2026 |
 <!-- END_TABLE -->
@@ -86,7 +86,7 @@
 | SU | 69 | 🟢 4 | 17.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
 | BRK.B | 75 | 🟢 4 | 17.04.2026 | Q-Earnings Mai 2026 |
 | V | 86 | 🟢 4 | 17.04.2026 | Q2 FY26 Earnings ~22.04. |
-| APH | 63 | 🟡 3 | 17.04.2026 | Q2 2025 Earnings 23.07. (FLAG aktiv) |
+| APH | 63 | 🟡 3 | 17.04.2026 | Q2 2026 Earnings 23.07. (FLAG aktiv) |
 | COST | 69 | 🟢 4 | 17.04.2026 | Q1 FY27 Earnings ~Dez 2026 |
 
 ---

@@ -55,6 +55,30 @@ Danach: freie Agenda (siehe Offene Punkte unten) oder Earnings-Trigger.
 ### Noch offen (User-Pending)
 - Keine offenen Tool-/Doku-Sync-Punkte. Rebalancing_Tool + Satelliten_Monitor + alle 00_Core/-Dateien + Vault sind 17.04.2026 auf v3.7 / ASML 68 synchronisiert.
 
+### Zusatz-Ereignis 17.04. (Nachmittag/Abend)
+- **Parallel-Agents für !Analysiere getestet und REJECTED.** Workflow 6 implementiert → einzelner Testlauf (COST) → verworfen (Token teurer + Screener-Exception-Fehler). Rollback in SKILL.md + PIPELINE.md durchgeführt. Spec erhalten als Lern-Artefakt (REJECTED-Banner). Applied Learning in CLAUDE.md ergänzt: "Genauigkeit > Wall-Time".
+- **Skill-Zip v3.7 manuell installiert** (06_Skills-Pakete/dynastie-depot_v3.7.zip, ersetzt v3.5).
+
+---
+
+## 🎯 NÄCHSTER FOKUS: Backtest-Ready Infrastructure
+
+**Plan:** [`docs/superpowers/plans/2026-04-17-backtest-ready-infrastructure.md`](../docs/superpowers/plans/2026-04-17-backtest-ready-infrastructure.md)
+**Spec:** [`docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md`](../docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md)
+**Status:** Approved, wartet auf Durchführung.
+
+**Ablauf:**
+- Phase 0: Pydantic installieren + `03_Tools/backtest-ready/` anlegen
+- Phase 0.5: Spec-Update (5 Deltas)
+- Phase 1: Forward-Pipeline (schemas.py → archive_*.py → SKILL.md-Hook)
+- Phase 2+4 parallel möglich
+- Phase 3+5: Integration + Vault-Anbindung
+
+**Startprompt für neue Session:**
+```
+Session starten. Anschließend: Plan docs/superpowers/plans/2026-04-17-backtest-ready-infrastructure.md öffnen und Phase 0 beginnen.
+```
+
 ---
 
 ## 📅 NÄCHSTE TRIGGER (nach Datum)

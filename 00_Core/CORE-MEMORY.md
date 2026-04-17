@@ -96,7 +96,7 @@
 - **China-Trend:** Rückgang von 23% (2023) → 20% (2024) → 14.7% (2025) — strukturell positiv durch CommScope-Akquisition + Diversifikation.
 - **Management-Mitigation:** „Purpose built" dezentrale Struktur, Pricing Power bestätigt (Q1 2025 Call).
 - **FLAG-Klärung:** FLAG bleibt aktiv — Basis ist Score 61 (DEFCON 3 mit Sparrate 0€ nach FLAG-Logik). Kein separater Tariff-FLAG nach Regelwerk (Revenue <15%).
-- **Nächste Aktion:** Q2 2025 Earnings (23.07.2025) — Revenue-Trend China + Manufacturing-Mitigation beobachten.
+- **Nächste Aktion:** Q2 2026 Earnings (23.07.2026) — Revenue-Trend China + Manufacturing-Mitigation beobachten.
 
 ---
 
@@ -327,4 +327,4 @@ Differenz ~€1,2B/Jahr = normal für ASML-Leasingbasis. **Kein Fehler, kein Ale
 → CapEx-Toleranz bleibt ±1,5% (PP&E-Zahlen konvergieren unter beiden Standards).
 
 ---
-*🦅 CORE-MEMORY.md v1.6 | Dynastie-Depot | Stand: 16.04.2026*
+*🦅 CORE-MEMORY.md v1.7 | Dynastie-Depot | Stand: 17.04.2026*
