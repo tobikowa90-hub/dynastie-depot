@@ -29,9 +29,10 @@ bleiben auf Englisch — das sind Standardbegriffe im Finanzkontext.
 ```
 Stufe 0: QUICK-SCREENER (dieser Skill) → Gruen / Gelb / Rot
   ↓ nur Gruen
-Stufe 1: generate-stock-reports → Qualitativer Report
+Stufe 1: ~~generate-stock-reports~~ (entfernt 08.04.2026 — Qualitative
+         Vorab-Recherche erfolgt jetzt direkt via WebSearch in Stufe 2)
 Stufe 2: !Analysiere → DEFCON 100-Punkte-Scoring
-  ↓ nur Score >= 80
+  ↓ nur Score >= 80 + kein FLAG
 Stufe 3: !CAPEX-FCF-ANALYSIS → Excel-Dokument
 ```
 

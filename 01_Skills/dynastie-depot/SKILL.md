@@ -620,8 +620,8 @@ Wenn der User \!QuickCheck \[TICKER\] oder \!QuickCheck ALL eingibt:
 
 ### Risiko-Reihenfolge bei \!QuickCheck ALL
 
-1.  Positionen mit aktivem FLAG oder DEFCON 3 zuerst (aktuell: MSFT, TMO)
-2.  Positionen ohne aktuellen Score (score: null in config.md)
+1.  Positionen mit aktivem FLAG zuerst, danach nach DEFCON aufsteigend sortieren (Portfolio-Stand: `00_Core/STATE.md`)
+2.  Positionen ohne aktuellen Score (score: null in config.yaml)
 3.  Stabile DEFCON-4-Positionen zuletzt
 
 ### 7 Checkpunkte (fest, immer gleich)
