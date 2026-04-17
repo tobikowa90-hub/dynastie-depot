@@ -1,7 +1,7 @@
 # !CAPEX-FCF-ANALYSIS Master-Vorlage v4.0
 
 **Voraussetzung:** Score >= 80 aus `!Analysiere [TICKER]`
-**Stand:** 15.04.2026 | **Kompatibel mit:** DEFCON v3.2, Token-Effizienz v4.0
+**Stand:** 17.04.2026 | **Kompatibel mit:** DEFCON v3.7, Token-Effizienz v4.0
 
 ---
 
