@@ -3,10 +3,12 @@ title: "DEFCON-System"
 type: concept
 tags: [konzept, defcon, scoring, kern]
 created: 2026-04-08
-updated: 2026-04-14
-version: v3.4
+updated: 2026-04-16
+version: v3.5
 stand: 2026-04-08
-sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha]
+sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha, llms-for-equity-stock-ratings, Wolff-Echterling-2023, Jadhav-Mirza-2025]
+wissenschaftlicher_anker: "B1–B11 (alle 7 Paper) — vollständige wissenschaftliche Fundierung in [[Wissenschaftliche-Fundierung-DEFCON]]"
+konfidenzstufe: peer-reviewed
 related: [CapEx-FLAG, ROIC-vs-WACC, Analyse-Pipeline, Tariff-Exposure-Regel, Non-US-Scoring, Update-Klassen-DEFCON]
 ---
 

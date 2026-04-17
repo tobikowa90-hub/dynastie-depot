@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-16 (Systempflege v4.1 — 74 Notes: 68 wiki + 6 raw)
+> Last updated: 2026-04-17 (Foundation-Papers-Integration v4.3 — 82 Notes: 76 wiki + 6 raw)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -13,10 +13,15 @@
 - [[LLMs for Equity Stock Ratings]] — J.P. Morgan AI Research (2024): GPT-4 übertrifft Wall-Street-Analysten bei 3–12-Monats-Aktien-Ratings; Fundamentaldaten sind stärkste Daten-Modalität (1 Quelle)
 
 ### Akademische Paper (Wissenschaftliche Fundierung DEFCON)
-- [[arXiv-1711.04837]] — Gu, Kelly, Xiu (2019): ML + 5J-Fundamental-Fenster → +2,7% CAGR; Datenhierarchie Fundamentals>Sentiment>Technicals
-- [[Gu-Kelly-Xiu-2020]] — RFS 2020: FCF+GM stabilste Prädiktoren; trailing P/E verliert Vorhersagekraft; forward P/E valide
-- [[Morningstar-Wide-Moat]] — Wide Moat Whitepaper: 8 Moat-Quellen; Moat allein ≠ Excess Return
-- [[Buffetts-Alpha]] — Frazzini/Kabiller/Pedersen AQR 2018: QMJ+BAB+Value; Float-Leverage nicht replizierbar
+- [[arXiv-1711.04837]] — Gu, Kelly, Xiu (2019): ML + 5J-Fundamental-Fenster → +2,7% CAGR; Datenhierarchie Fundamentals>Sentiment>Technicals (B1, B7)
+- [[Gu-Kelly-Xiu-2020]] — RFS 2020: FCF+GM stabilste Prädiktoren; trailing P/E verliert Vorhersagekraft; forward P/E valide (B2, B3)
+- [[Morningstar-Wide-Moat]] — Wide Moat Whitepaper: 8 Moat-Quellen; Moat allein ≠ Excess Return (B4, B6)
+- [[Buffetts-Alpha]] — Frazzini/Kabiller/Pedersen AQR 2018: QMJ+BAB+Value; Float-Leverage nicht replizierbar (B5)
+- [[Wolff-Echterling-2023]] — Journal of Forecasting 2023: ROIC+FCF top-ranked; Quality-Faktoren stabil; STOXX Europe 600 robust (B8, B9)
+- [[Jadhav-Mirza-2025]] — Frontiers in AI 2025: 84-Paper-Survey; News-Positivity-Bias; Multi-Agent-Architektur (B11)
+- [[Piotroski-2000]] — Journal of Accounting Research: 9-Punkte-F-Score; High-F-Score Value +7,5% p.a. Outperformance (B12) ← NEU
+- [[Novy-Marx-2013]] — Journal of Financial Economics: Gross Profitability Premium ~gleich stark wie B/M (B13) ← NEU
+- [[Sloan-1996]] — The Accounting Review: Accruals-Anomalie +10,4% p.a. Low-Accrual-Premium (B14) ← NEU
 
 ### Datenquellen-APIs
 - [[defeatbeta]] — US-Fundamentals (Primär): Income, Cash Flow, ROIC, WACC, Geographic Revenue
@@ -96,6 +101,9 @@
 - [[Moat-Taxonomie-Morningstar]] — 8 Moat-Quellen-Checkliste; Wide Moat + Fundamentals = Alpha
 - [[Buffett-Faktorlogik]] — cheap+safe+quality Dreiklang; Float-Leverage nicht replizierbar
 - [[QMJ-Faktor]] — Quality Minus Junk; erklärt Buffetts Alpha vollständig
+- [[F-Score-Quality-Signal]] — Piotroski 9-Kriterien-Score; ≥7 → +2 Pt. Fundamentals-Bonus (B12) ← NEU
+- [[Gross-Profitability-Premium]] — Novy-Marx GP/TA; eigenständiger Renditefaktor, +2 Pt. Fundamentals-Metrik (B13) ← NEU
+- [[Accruals-Anomalie-Sloan]] — Sloan 1996; Low-Accrual outperformt +10,4% p.a.; validiert v3.5-Schwellen (B14) ← NEU
 
 ### Token-Effizienz & System
 - [[Token-Mechanik]] — Strukturiertes Token-Management; Snapshot-First, MCP-Minimalset
@@ -117,7 +125,7 @@
 - [[AI in Investment Analysis]] — Zentrale Synthese: KI in Aktienanalyse, Depot-Strategie, Trading; wächst mit jeder neuen Quelle
 - [[Investing-Mastermind-Index]] — Zentraler Navigationsindex: Depot-State, Satelliten, Konzepte, Skills
 - [[Depot-State-April-2026]] — Monatlicher Snapshot; Sparplan-Verteilung; offene Entscheidungen
-- [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: 4 Paper → operative Konsequenzen für DEFCON v3.4
+- [[Wissenschaftliche-Fundierung-DEFCON]] — 14-Befunde-Matrix: 10 Paper → operative Konsequenzen für DEFCON v3.5 (Stand 17.04.2026)
 
 ---
 

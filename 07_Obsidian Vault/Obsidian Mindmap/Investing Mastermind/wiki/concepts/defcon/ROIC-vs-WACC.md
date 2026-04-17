@@ -4,8 +4,10 @@ type: concept
 tags: [konzept, roic, wacc, scoring]
 created: 2026-04-10
 updated: 2026-04-14
-sources: []
+sources: [Gu-Kelly-Xiu-2020, Buffetts-Alpha, Wolff-Echterling-2023]
 related: [DEFCON-System, CapEx-FLAG, Analyse-Pipeline, Update-Klassen-DEFCON]
+wissenschaftlicher_anker: "B2 (Gu/Kelly/Xiu 2020) — ROIC + FCF stabilste Profitability-Prädiktoren | B5 (Buffetts Alpha AQR) — cheap+safe+quality Dreiklang, ROIC-Spread als Quality-Kern | B8 (Wolff/Echterling 2023) — ROIC top-ranked in allen ML-Modellen, robust auf S&P500 + STOXX Europe 600"
+konfidenzstufe: peer-reviewed
 ---
 
 # ROIC vs. WACC — Harter Malus

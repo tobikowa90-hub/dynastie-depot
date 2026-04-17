@@ -7,6 +7,8 @@ updated: 2026-04-14
 stand: 2026-04-06
 sources: []
 related: [DEFCON-System, Analyse-Pipeline, CapEx-FLAG, Non-US-Scoring, Update-Klassen-DEFCON]
+wissenschaftlicher_anker: "Erfahrungsbasiert — kein direktes Academic Paper. Makro-Kontext: Liberation Day 02.04.2026, Supply-Chain-Disruption-Literatur (allgemein)"
+konfidenzstufe: erfahrungsbasiert
 ---
 
 # Tariff Exposure — Scoring-Regel

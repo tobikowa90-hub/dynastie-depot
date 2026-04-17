@@ -241,3 +241,49 @@ Vollständig bidirektional:
 ### Offene Punkte
 - SKILL.md DEFCON-Schwellen-Mismatch: ≥73 (SKILL) vs. ≥80 (INSTRUKTIONEN) — separater Fix-Task
 - ASML Q1 2026 Earnings QuickCheck — ausstehend seit 15.04.
+
+## [2026-04-16] ingest | Wissenschaftliche Integration v4.2 — B8–B11 + Befunde-Priming
+
+**Anlass:** Operativ totes Wissen — 7-Befunde-Matrix existierte, wurde aber nie während Analysen konsultiert. Lösung: Pflicht-Priming + fehlende Source-Pages + Frontmatter-Verankerung.
+
+### Neue Source-Seiten erstellt (2)
+- [[Wolff-Echterling-2023]] — "Stock Picking with Machine Learning" (Wiley, Journal of Forecasting 2023): B8 (ROIC+FCF/EV+Operating Margin top-ranked in allen ML-Modellen), B9 (EPS Growth + Low Leverage stabile Quality-Prädiktoren), STOXX-Robustheit validiert Non-US-Scoring
+- [[Jadhav-Mirza-2025]] — "Large Language Models in Equity Markets" (Frontiers in AI, PMC 2025): 84-Paper-Survey, B11 (News-Positivity-Bias Meta-Bestätigung), Risk-Management-Forschungslücke identifiziert
+
+### Aktualisierte DEFCON-Konzeptseiten (6) — neues Frontmatter
+Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sources:` Felder:
+- [[DEFCON-System]] — B1–B11 vollständig, 6 Paper, konfidenzstufe: peer-reviewed
+- [[CapEx-FLAG]] — B2+B3 (Gu/Kelly/Xiu FCF-Primacy + Earnings Quality)
+- [[ROIC-vs-WACC]] — B2+B5+B8 (Gu/Xiu + Buffett + Wolff/Echterling)
+- [[Analyse-Pipeline]] — B7+B10 (Datenhierarchie + Chain-of-Thought)
+- [[Non-US-Scoring]] — B8 (STOXX-Robustheit validiert Übertragbarkeit)
+- [[Tariff-Exposure-Regel]] — konfidenzstufe: erfahrungsbasiert (kein Paper-Anker)
+
+### Synthese-Update [[Wissenschaftliche-Fundierung-DEFCON]]
+- 7-Befunde → **11-Befunde** Entscheidungsmatrix (B8: ROIC-Dominanz, B9: Quality-Stabilität, B10: CoT-Konsistenz, B11: News-Positivity-Bias)
+- Quellen-Übersicht: 4 → 7 Paper
+- Satelliten-Tabelle: alle 11 Ticker mit aktuellen Scores + FLAG-Status + relevanten Befunden (vorher 7 "ausstehend")
+- Konzept-Karte erweitert
+
+### 00_Core/INSTRUKTIONEN.md — Befunde-Priming (Pflichtschritt)
+- Neuer Block vor Gewichtungs-Tabelle in Stufe 2: "### Befunde-Priming (Pflicht vor jedem Scoring-Start)"
+- Vorschrift: Wissenschaftliche-Fundierung-DEFCON.md lesen + relevante Befunde im Output benennen
+- B1–B7 Referenztabelle direkt im Instruktionen-Dokument verankert
+
+### index.md aktualisiert
+- 74 → **76 Notes** (70 wiki + 6 raw)
+- Akademische Paper Sektion: Wolff-Echterling-2023 (B8, B9) + Jadhav-Mirza-2025 (B11) ergänzt
+
+### Gesamt
+- Pages created: 2 ([[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]])
+- Pages updated: 9 ([[DEFCON-System]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Analyse-Pipeline]], [[Non-US-Scoring]], [[Tariff-Exposure-Regel]], [[Wissenschaftliche-Fundierung-DEFCON]], [[index.md]], 00_Core/INSTRUKTIONEN.md)
+- Neue Befunde: B8, B9, B10, B11 operationalisiert
+
+## [2026-04-17] ingest | 3 Foundation-Papers: Piotroski, Novy-Marx, Sloan
+- Quellen: Piotroski (2000) F-Score, Novy-Marx (2013) Gross Profitability, Sloan (1996) Accruals-Anomalie
+- Kernthese: Drei Gründungstexte für Quality-Faktor-Investing. Piotroski = 9-Kriterien-Score; Novy-Marx = GP/TA als 2. Value-Seite; Sloan = Accruals-Anomalie +10,4% p.a.
+- Pages created: [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]] (sources); [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]] (concepts)
+- Pages updated: [[Wissenschaftliche-Fundierung-DEFCON]] (B12/B13/B14 + Quellen 7→10 + Konzept-Karte + Änderungsprotokoll), [[index.md]] (Notes 70→76, 3 neue Sources + 3 neue Konzepte)
+- Befunde: B12 (F-Score Quality-Signal), B13 (Gross Profitability Premium), B14 (Accruals-Anomalie)
+- Vorbereitung: v3.6-Release — Quality-Bonus (+2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus <3%. System-Reife-Ceiling 85% → 92-95%.
+- Gesamt: 6 neue Seiten, 2 aktualisierte Seiten, 1 Synthese erweitert

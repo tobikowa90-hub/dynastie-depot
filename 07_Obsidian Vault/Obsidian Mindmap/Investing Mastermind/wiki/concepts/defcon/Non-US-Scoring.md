@@ -5,8 +5,10 @@ tags: [konzept, non-us, ifrs, asml, rms, su]
 created: 2026-04-06
 updated: 2026-04-14
 stand: 2026-04-06
-sources: []
+sources: [Wolff-Echterling-2023]
 related: [DEFCON-System, CapEx-FLAG, Analyse-Pipeline, Tariff-Exposure-Regel, Update-Klassen-DEFCON]
+wissenschaftlicher_anker: "B8 (Wolff/Echterling 2023) — ML-Ergebnisse robust auf STOXX Europe 600 (validiert dass DEFCON-Scoring-Logik auf europäische Titel übertragbar ist)"
+konfidenzstufe: peer-reviewed
 ---
 
 # Non-US Scoring — IFRS-Addendum

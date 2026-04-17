@@ -2,18 +2,18 @@
 title: "Wissenschaftliche Fundierung DEFCON v3.5"
 type: synthesis
 tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung]
-sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]]"
-concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]]"
+sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]]"
+concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]]"
 related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Non-US-Scoring]]"
 entities: "[[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
-datum: 2026-04-16
+datum: 2026-04-17
 status: aktiv
 ---
 
 # Wissenschaftliche Fundierung DEFCON v3.5
 
 > Dieses Dokument belegt, dass das DEFCON-Scoring-System auf peer-reviewed Forschung basiert.
-> 7 Quellen → 11 Befunde → operative Konsequenzen für das Dynasty-Depot.
+> 10 Quellen → 14 Befunde → operative Konsequenzen für das Dynasty-Depot.
 
 ---
 
@@ -32,6 +32,9 @@ status: aktiv
 | **B9** | EPS-Growth + Low Leverage = stabile Quality-Prädiktoren | [[Wolff-Echterling-2023]] | Fundamentals — Bilanz | Debt/EBITDA-Scoring wissenschaftlich fundiert | EPS Revision Momentum (+1 Bonus) + Bilanz-Block (9 Pt.) bestätigt |
 | **B10** | Chain-of-Thought vor Scoring verbessert Konsistenz + Genauigkeit | [[llms-for-equity-stock-ratings]] | Workflow — !Analysiere | Begründen vor Scoren als Pflichtprinzip | Befunde-Priming in INSTRUKTIONEN.md (Stufe 2) verankert |
 | **B11** | News-Daten erzeugen Positivity-Bias — mittelfristig schädlich | [[llms-for-equity-stock-ratings]], [[Jadhav-Mirza-2025]] | Sentiment (10 Pt.) | Sentiment-Gewichtung deckeln; Analyst-Bias (43% Strong Buy) gegensteuern | Sentiment-Cap 10 Pt. gerechtfertigt; Sell-Ratio-Check als Korrektiv |
+| **B12** | F-Score ≥7 → +7,5% p.a. Outperformance bei Value-Aktien | [[Piotroski-2000]] | Fundamentals (Quality-Bonus) | Quality als PRÄDIKTOR (nicht nur Malus); 9-Kriterien-Score operationalisieren | v3.6: F-Score ≥7 → +2 Pt. Bonus Fundamentals; ≤3 → -1 Pt. Malus |
+| **B13** | GP/TA prognostiziert Returns ~gleich stark wie Book-to-Market | [[Novy-Marx-2013]] | Fundamentals (Profitability-Metrik) | Gross Profitability als eigenständiger Renditefaktor | v3.6: GP/TA als 2-Pt.-Metrik in Fundamentals-Block; GM-Trend im Moat-Block bleibt |
+| **B14** | Low-Accrual-Firmen outperformen High-Accrual um +10,4% p.a. | [[Sloan-1996]] | Fundamentals (Accrual Ratio) | Accrual-Schwellen (<5%/>10%) wissenschaftlich validiert | v3.5 Malus bleibt; v3.6-Erweiterung: <3% → +2 Pt. Bonus (Piotroski-Parallele) |
 
 ---
 
@@ -47,7 +50,7 @@ status: aktiv
 
 ---
 
-## Quellen-Übersicht (7 Paper — Stand: 16.04.2026)
+## Quellen-Übersicht (10 Paper — Stand: 17.04.2026)
 
 | Quelle | Jahr | Kernthese | DEFCON-Block | Neue Befunde |
 |--------|------|-----------|--------------|-------------|
@@ -58,6 +61,9 @@ status: aktiv
 | [[Wolff-Echterling-2023]] | 2023 | ROIC+FCF top-ranked; STOXX-robust | Fundamentals ROIC/Bilanz | B8, B9 |
 | [[llms-for-equity-stock-ratings]] | 2024 | Fundamentals > News; CoT verbessert Genauigkeit | Workflow + Sentiment | B10, B11 |
 | [[Jadhav-Mirza-2025]] | 2025 | 84-Paper-Survey; News-Bias; RL+Memory | Sentiment + Architektur | B11 (Bestätigung) |
+| [[Piotroski-2000]] | 2000 | F-Score ≥7 → +7,5% p.a. bei Value-Aktien | Fundamentals (Quality-Bonus) | B12 ← NEU |
+| [[Novy-Marx-2013]] | 2013 | Gross Profitability = 2. Seite des Value-Faktors | Fundamentals (GP/TA) | B13 ← NEU |
+| [[Sloan-1996]] | 1996 | Accruals-Anomalie: +10,4% p.a. Low-Accrual-Premium | Fundamentals (Accrual Ratio) | B14 ← NEU |
 
 ---
 
@@ -109,6 +115,9 @@ Wolff-Echterling-2023 ──► B8 (ROIC-Dominanz) ─────────�
 llms-for-equity-stock-ratings ► B10 (CoT) ──────────────► [[Analyse-Pipeline]] / INSTRUKTIONEN
                 └──────► B11 (News-Bias) ───────────────► Sentiment-Block Cap
 Jadhav-Mirza-2025 ─────► B11 (Bestätigung) ────────────► Sentiment-Block Cap
+Piotroski-2000 ────────► [[F-Score-Quality-Signal]] ────► Fundamentals Quality-Bonus (B12)
+Novy-Marx-2013 ────────► [[Gross-Profitability-Premium]] ► Fundamentals GP/TA-Metrik (B13)
+Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] ────► Fundamentals Accrual Ratio (B14)
 ```
 
 ## Scoring-System-Audit v3.4 → v3.5 (16.04.2026)
@@ -137,3 +146,4 @@ Jadhav-Mirza-2025 ─────► B11 (Bestätigung) ────────
 | 2026-04-14 | Erstellt — 4 Paper, 7 Befunde, vollständige Backlink-Vernetzung |
 | 2026-04-16 | Erweitert — 3 neue Paper (Wolff/Echterling, Jadhav/Mirza, JPM vollständig eingebunden), 4 neue Befunde B8–B11, alle 11 Satelliten-Scores aktualisiert, Konzept-Karte erweitert |
 | 2026-04-16 | v3.4→v3.5 Audit — PT-Upside-Fix, Relative Stärke promoted, Floor-Klausel. 7-Fragen-Audit: 5×A, 1×B, 1×C |
+| 2026-04-17 | 3 Foundation-Papers integriert: Piotroski (F-Score, B12), Novy-Marx (GP-Premium, B13), Sloan (Accrual-Anomalie, B14). 7→10 Quellen, 11→14 Befunde. Vorbereitung für v3.6-Release: Quality-Bonus (+2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus <3%. System-Reife-Ceiling: 85% → geplant 92-95%. |

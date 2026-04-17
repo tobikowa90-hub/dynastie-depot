@@ -4,8 +4,8 @@ type: concept
 tags: [sentiment, news, nlp, aktienanalyse, ki-methodik]
 created: 2026-04-10
 updated: 2026-04-10
-sources: [llms-for-equity-stock-ratings]
-related: [llm-stock-rating, financial-fundamentals-analysis, chain-of-thought-prompting, ai-in-investment-analysis]
+sources: [llms-for-equity-stock-ratings, Jadhav-Mirza-2025]
+related: [llm-stock-rating, financial-fundamentals-analysis, chain-of-thought-prompting, ai-in-investment-analysis, Wissenschaftliche-Fundierung-DEFCON]
 ---
 
 # News Sentiment Analysis
@@ -69,3 +69,5 @@ Bevor Sentiment berechnet wird, müssen irrelevante Artikel gefiltert werden. NE
 
 - [[LLMs for Equity Stock Ratings]] · [[LLM-Based Stock Rating]] · [[Financial Fundamentals Analysis]]
 - [[Chain-of-Thought Prompting]] · [[AI in Investment Analysis]]
+- [[Jadhav-Mirza-2025]] — 84-Paper Meta-Survey bestätigt Positivity-Bias (B11)
+- [[Wissenschaftliche-Fundierung-DEFCON]] — B11: Sentiment-Cap 10 Pt. wissenschaftlich begründet

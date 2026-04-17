@@ -5,8 +5,10 @@ tags: [konzept, flag, capex, scoring, kern]
 created: 2026-04-10
 updated: 2026-04-14
 version: v3.4
-sources: []
+sources: [Gu-Kelly-Xiu-2020, arXiv-1711.04837]
 related: [DEFCON-System, Analyse-Pipeline, ROIC-vs-WACC, Update-Klassen-DEFCON, Tariff-Exposure-Regel]
+wissenschaftlicher_anker: "B2 (Gu/Kelly/Xiu 2020) — FCF stabilster Prädiktor; hoher CapEx erodiert FCF systematisch | B3 (Gu/Kelly/Xiu) — Earnings Quality über Cash-Konvertierung"
+konfidenzstufe: peer-reviewed
 ---
 
 # CapEx-FLAG — Die heilige Regel
