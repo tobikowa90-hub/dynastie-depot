@@ -299,3 +299,10 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - Pages updated: [[Wissenschaftliche-Fundierung-DEFCON]] (v3.7-Änderungsprotokoll)
 - Core files: INSTRUKTIONEN.md §5 + §5a + §22, SKILL-dynastie-depot.md v3.7, config.yaml v3.7, CORE-MEMORY.md v1.7, Faktortabelle.md v3.7
 - System-Reife: 85% → ~92%
+
+## [2026-04-17] hygiene | Systemhygiene post-v3.7
+- SESSION-HANDOVER.md komplett neu geschrieben (Pre-Implementation → Post-Deployment-Status)
+- Auto-Memory aktualisiert: portfolio-state-snapshot.md (v3.7-Scores + Nenner 8.5 + TMO D2), system-architecture.md (config v3.4.1 → v3.7 + Skill-Deployment-Notiz), MEMORY.md Index
+- Skill-Paket-Konsistenz: `06_Skills-Pakete/dynastie-depot_v3.7.zip` gebaut & manuell installiert (ersetzt v3.5)
+- Rebalancing-Tool bleibt als User-Pending (xlsx nicht programmatisch editiert)
+- Commit d890d57: 14 files +247/-142
