@@ -51,8 +51,12 @@ try {
     }
 } catch {}
 
-# Clean state → silent
-if ($dirtyCount -eq 0 -and $unpushedCount -eq 0) {
+# Threshold: only warn when noise becomes actionable
+# Uncommitted changes are always relevant (user has unsaved work).
+# Unpushed commits only matter in bulk — <3 is just normal session churn.
+$unpushedThreshold = 5
+
+if ($dirtyCount -eq 0 -and $unpushedCount -lt $unpushedThreshold) {
     Write-Output '{}'
     exit 0
 }

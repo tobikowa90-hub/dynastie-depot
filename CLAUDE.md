@@ -92,3 +92,6 @@ Claude Code: Tool Search aktiv, automatisch.
 - SessionEnd-Hook + Windows-Toast für Briefing-Sync → 03_Tools/briefing-sync-check.ps1
 - Subagents nur für Code+Tests — Markdown/YAML-Edits direkt editieren (3×Subagent-Overhead unnötig)
 - Skill-ZIP: Hauptdatei muss `SKILL.md` heißen (nicht SKILL-dynasty-depot.md). Desktop App liest aus AppData-Pfad, nicht ~/.claude/
+- Paper-Ingest ≠ System-Update: Wissenschaft validiert Regeln, erzwingt keine neuen — Redundanz-Check vor jeder Scoring-Erweiterung
+- Double-Counting-Falle: Aggregat-Scores (z.B. F-Score) prüfen ob Sub-Signale schon dekomponiert im System sind
+- Bonus-Cap-Check: Bei neuen Boni erst Punkteverteilung Top-Namen prüfen — sonst wirken Boni nur in Mitte
