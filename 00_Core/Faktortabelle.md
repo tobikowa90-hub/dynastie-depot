@@ -8,6 +8,7 @@
 > Konflikt Faktortabelle ↔ config.yaml: config.yaml gewinnt immer.
 > score_datum > 90 Tage → 🟡 veraltet markieren.
 > Bei Datenzweifel → Shibui direkt abfragen.
+> **Seit 17.04.2026:** Session-Start-Entry-Point ist `00_Core/STATE.md` — Faktortabelle ist on-demand Deep-Dive-Quelle. Sync-Pflicht unverändert (immer mit aktualisieren).
 
 ---
 
