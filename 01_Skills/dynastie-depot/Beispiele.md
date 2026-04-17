@@ -1,62 +1,109 @@
 ---
 name: dynastie-depot-kalibrierung
-version: "3.5"
+version: "3.7"
 zieljahr: 2058
-system: DEFCON v3.5
-stand: "16.04.2026"
+system: DEFCON v3.7
+stand: "17.04.2026"
 description: >
-Referenz-Analysen zur Kalibrierung des DEFCON v3.5 Scoring-Systems (AVGO 85, MKL 82, SNPS 76). MUSS vor jeder neuen !Analysiere-Analyse gelesen werden, um konsistente Scores sicherzustellen.
+Referenz-Analysen zur Kalibrierung des DEFCON v3.7 Scoring-Systems. MUSS vor jeder neuen !Analysiere-Analyse gelesen werden, um konsistente Scores sicherzustellen. v3.7-Zielstruktur: 8 Portfolio-Anker (V, AVGO, BRK.B, ASML, RMS, TMO, MSFT, APH) — jeder demonstriert einen spezifischen v3.7-Mechanismus. Legacy-Anker (MKL, SNPS, SPGI, EXPN, FICO, GOOGL, HON) bleiben als historische Kalibrierungsreferenz bis zum Sweep-Cleanup.
 trigger_words:
 - Kalibrierung
 - Referenz-Analysen
 - AVGO
-- MKL
-- SNPS
+- ASML
+- BRK.B
+- Quality-Trap
 - Grenzfall-Referenz
 - Score-Kalibrierung
 - TMO
-- SPGI
-- FICO
+- RMS
+- APH
+- Fundamentals-Cap
 ---
-# 🔬 Referenz-Analysen – Analyse-Labor DEFCON v3.5
+# 🔬 Referenz-Analysen – Analyse-Labor DEFCON v3.7
 
-**Zweck:** Kalibrierungsanker für konsistentes Scoring | **Stand:** 16.04.2026
+**Zweck:** Kalibrierungsanker für konsistentes Scoring | **Stand:** 17.04.2026 | **System:** DEFCON v3.7
 
 ## 📌 Verwendung dieser Datei
 
 *   **Vor jeder neuen Analyse** kurz die Referenz-Scores checken
-*   Eigene Scores gegen AVGO (85) und MKL (82) kalibrieren
-*   SNPS (76) als Grenzfall-Referenz für DEFCON 3/4-Entscheidung
-*   TMO (62) als Referenz für Wide Moat mit ROIC < WACC + Akquisitionsschulden (⚠️ DEFCON 2)
-*   EXPN (61) als Referenz für Watchlist-Kandidaten mit Datenlücken
+*   Portfolio-Anker (v3.7-frisch) sind primäre Kalibrierungsquelle — Legacy-Anker nur ergänzend
+*   AVGO (84) = Top-D4-Referenz, CapEx-light Fabless — zeigt Quality-Trap-Interaktionsterm am P/FCF-Rand
+*   ASML (66) = Non-US/IFRS-Workflow + D3-Grenzfall, Fwd P/E FY27 30,30 Watch → Muster für eodhd_intel.py-Kette [folgt]
+*   TMO (63) = Wide Moat mit ROIC < WACC = Quality-Trap differenziert (nur P/FCF-Zweig) — D2-Referenz
+*   RMS (68) = Non-US Screener-Exception (Luxus, Quality without growth) [folgt]
+*   APH (63) = Score-basierter FLAG + Tariff-Check-Muster [folgt]
+*   MSFT (59) = CapEx-FLAG-Veto, FLAG-Auflösungs-Pfad [folgt — Q3-Earnings 29.04.]
+*   BRK.B (75) = Insurance-Exception, Float-Logik [folgt]
+*   V (86) = absoluter Top-Anker, Payment-Network — Fundamentals-Cap 50 reached [folgt — Q2-Earnings ~22.04.]
 
-## 🥇 AVGO – Broadcom Inc. | Score: 85/100 | 🟢 DEFCON 4
+## 🥇 AVGO – Broadcom Inc. | Score: 84/100 | 🟢 DEFCON 4
 
-**Datum:** 25.03.2026 | **Kurs:** $318.88 | **MC:** $1.51T
+**Datum:** 17.04.2026 (v3.7-Rekalibrierung, Pfad-A — v3.5-Vollanalyse 25.03. + v3.7-Mechanik-Anwendung auf Top-Level) | **MC:** ~$1.51T (Stand 25.03.)
+**Rolle:** Top-D4-Referenz | CapEx-light Fabless | Quality-Trap-Interaktionsterm am P/FCF-Rand
 
-| **Kategorie** | **Score** | **Kernbegründung** |
-| :---: | :---: | :---: |
-| Fundamentals | 43/50 | P/FCF ~22x FY26E, Fabless CapEx/OCF <15%, ROE 56% |
-| Moat | 19/20 | Wide Moat (Morningstar-Upgrade), ASIC Lock-In, VMware |
-| Technicals | 7/10 | -30% von ATH (3/4), RS vs S&P500 6M +9.84% (2/3), über steigendem 200MA (2/3) |
-| Insider | 7/10 | Hock Tan aligned, kein Selling >$20M |
-| Sentiment | 9/10 | 44 Analysten Strong Buy, 0% Sell |
+### Scoring-Status (v3.7)
 
-**FLAG:** ✅ Kein FLAG (Fabless, CapEx/OCF <15%) **FLAG-Hinweis (post CapEx-FCF-Analyse 25.03.2026):**
+| **Feld** | **Wert** |
+| :---: | :--- |
+| **Gesamtscore v3.7** | **84/100 — 🟢 DEFCON 4** (verifiziert 17.04.) |
+| Subscore-Breakdown | **v3.5-Baseline (25.03.)** — v3.7-Subscore-Re-Audit **pending Q3 FY26 Earnings** |
+| Delta v3.5→v3.7 | -1 Pkt (85→84), Quelle: Quality-Trap-Anwendung auf Top-Level-Score |
+| Live-Verify v3.7 | ❌ AVGO nicht in 3/11 (TMO/ASML/RMS verifiziert) — Q3 FY26 Earnings triggert volle Sub-Audit |
 
-⚠️ SBC/Revenue ~11,3% (Q1 FY26) — dilutiv, Non-GAAP verschleiert reale Kosten
+> **Hinweis:** Einzel-Kategorie-Punkte (Fundamentals/Moat/Technicals/Insider/Sentiment) stammen aus v3.5-Analyse vom 25.03. Die v3.7-Mechanik (Quality-Trap, OpM-Scoring, Fundamentals-Cap) wurde für diesen Anker nur auf Gesamtscore-Ebene angewandt — Sub-Audit folgt bei nächsten Earnings.
 
-⚠️ Tarif-Exposure: ~35% Revenue aus US-Halbleitern, Produktion Malaysia/Thailand
+### v3.7-Mechanismen an AVGO (qualitativ)
 
-→ Score-Indikation im CapEx-FCF-Excel: 85/100 (–1 gegenüber Vollanalyse)
+1. **Quality-Trap-Interaktionsterm (B6):** Wide Moat + P/FCF ~22x → Grenzbereich 22-35 → P/FCF-Subscore hart gedeckelt auf max. 1 Pkt. (Regel ist binär an der Bandgrenze, kein weicher Cliff.) Fwd P/E ~25x liegt <30, daher P/E-Zweig **nicht** hart 0 — differenzierte Anwendung nur auf P/FCF-Seite.
+2. **Operating-Margin-Scoring (B8):** AVGO strukturell hohe OpM → Bonus-Potenzial vorhanden. Exakte Subscore-Punkte (1/2 vs. 2/2) pending Re-Audit — abhängig von GAAP vs. Non-GAAP OpM-Definition, SBC-Bereinigung.
+3. **Anti-Double-Counting (v3.7):** SBC/Revenue + Tariff wirken ausschließlich als Fundamentals-Malus, **nicht** zusätzlich auf Moat-Seite — System-Prinzip, das Premium-Qualitäts-Titel vor Doppel-Bestrafung schützt.
+4. **Fundamentals-Cap 50:** Für AVGO nicht bindend (v3.5-Fundamentals war 42, v3.7 liegt darunter). Cap greift erst bei Spitzen-Fabless-Titeln mit niedrigem Multiple (V-Kandidat).
+5. **Contrast-Case:** ASML (Fwd P/E >30 → P/E-Zweig hart 0 + P/FCF-Zweig hart 0) und TMO (ROIC<WACC-Modifikation) zeigen schärfere Anwendungen des gleichen Mechanismus — AVGO ist die **weichste** der drei Quality-Trap-Aktivierungen.
 
-→ Kalibrierungsanker v3.5: 85 — nächste Vollanalyse bei Q3 FY26 Earnings
+### FLAG-Status (17.04.2026)
 
-**Nächste Aktion:** !CAPEX-FCF-ANALYSIS AVGO Broadcom ✅ (bereits durchgeführt) **Status:** 🟢 Aktiv im Depot – Sparplan läuft
+- ⚠️ **Insider-Review aktiv:** $123M Verkäufe letzte 90 Tage (insider_intel.py scan 06.04.). Vermutlich Post-Vesting (Code F/S am gleichen Tag wie A/M). **OpenInsider-Gegencheck Pflicht** vor FLAG-Aktivierung — bisher kein M/X-Auslöser bestätigt → FLAG nicht aktiv, aber Watch.
+- ✅ **Kein CapEx-FLAG:** Fabless-Modell, CapEx/OCF strukturell <15% (in Q3 FY25 <5%).
+- ⚠️ **SBC-Aufmerksamkeit:** 11,3% — dilutiv, nicht kritisch. Bei >15% wäre -4 Malus.
+- ⚠️ **Tariff-Risk-Map-Notiz:** MY/TH-Produktion 35% Revenue. Kein FLAG (unter 50%-Schwelle).
 
-**Scoring-Lektion:** Fabless-Modell = automatisch 9/9 CapEx/OCF. AI-Backlog $73B = Visibility-Bonus bei Sentiment. Referenz für „wie sieht 85/100 aus".
+### 🚨 Risk Map
 
-**v3.5-Update (16.04.2026):** PT-Upside aus Technicals entfernt (Double-Counting-Fix). Relative Stärke vs S&P500 +9.84% = 2/3. Score-Shift: 86 → 85. Kalibrierungsanker: 85 = Top-Referenz.
+1. **Hyperscaler-Konzentration:** ~40% Revenue aus Top-3-Kunden (Google, Meta, ByteDance). Custom-ASIC-Verlust eines Tier-1 = -15-20% Revenue.
+2. **Tariff-Exposure MY/TH:** Verlagerung Kapazitäten kostet 12-18 Monate. Bei Eskalation: Marge temporär -300-500 bps.
+3. **SBC-Dilution:** ~$6-7B p.a. Non-GAAP heilig, GAAP-FCF-Yield liegt tiefer.
+
+### 🐂 Bull / 🐻 Bear
+
+**🐂 Bull:** AI-Backlog $73B (Q1 FY26) = 2+ Jahre Visibility. Wide Moat Switching Costs ASIC+VMware. CapEx-light + 60%+ ROE = Free-Cash-Flow-Maschine. Hock Tan Capital Allocation erstklassig.
+
+**🐻 Bear:** Hyperscaler-Konzentrationsrisiko, Fwd-Multiple nicht günstig (Fwd P/E ~25x, P/FCF ~22x), Post-Vesting-Selling-Muster der C-Suite verwirrt Insider-Signal, Tariff-Eskalationspotenzial.
+
+### 🎯 Value Legends (qualitativ, nicht punktscored)
+
+- **Buffett:** Wide Moat + hoher ROE + disziplinierte Kapitalallokation — ja, aber hoher Preis (Fwd P/E 25x) nicht Graham-kompatibel.
+- **Lynch:** "10-Bagger abschließen" eher erreicht als vor uns — AVGO bereits $1.5T Market Cap.
+- **Fisher:** Exzellente Managementqualität (Tan), klare Wettbewerbsposition — Scuttlebutt positiv.
+
+### Depot-Einordnung
+
+**Status:** 🟢 Aktiv im Depot — Sparplan volle Rate (33,53€)
+**Nächste Aktion:** Q3 FY26 Earnings abwarten + OpenInsider-Gegencheck Insider-$123M-FLAG-Review
+**Ersatzbank:** NVDA / MRVL (kein formaler Score)
+
+### 📚 Scoring-Lektion (Anker-Rolle)
+
+**AVGO = "So sieht 84/100 unter v3.7 aus":**
+- Fabless-CapEx-Modell → strukturell voller CapEx/OCF-Subscore (v3.5 bestätigt, in v3.7 unverändert)
+- Wide Moat + Premium-Valuation → Quality-Trap-Interaktionsterm dämpft, **verhindert aber nicht D4**
+- Quality-Trap wirkt **differenziert** am P/FCF-Zweig (Band 22-35), P/E-Zweig <30 bleibt regulär scorebar — schärfster Kontrast zu ASML (beide Zweige hart 0 wegen Fwd P/E >30)
+- OpM-Scoring-Bonus wirkt richtungs-kompensierend zum Quality-Trap-Abzug — System-Intention: Qualität belohnen ohne Premium-Multiple-Blindheit
+- Insider-$123M **allein** triggert keinen FLAG → Pflicht-Gegencheck OpenInsider auf Code M/X vor FLAG-Aktivierung (siehe CORE-MEMORY §7)
+- SBC/Revenue + Tariff wirken nur als Fundamentals-Malus, nicht als Moat-Abzug (Anti-Double-Counting-Prinzip v3.7)
+- **Subscore-Transparenz:** Wenn Live-Verify fehlt, wird Breakdown als v3.5-Baseline markiert — keine fabrizierte v3.7-Präzision
+
+**Kalibrierungsregel:** Neue Analyse → AVGO-Vergleich. Wenn Kandidat ähnliche CapEx-Struktur + Wide Moat + Premium-Multiple zeigt, erwarte Score-Range 80-85. Über 85 nur bei niedrigerem Multiple (V mit Fwd P/E ~23x).
 
 ## 🥈 MKL – Markel Group Inc. | Score: 82/100 | 🟢 DEFCON 4
 
@@ -182,7 +229,7 @@ Cashless Exercise (Code M+S, gleicher Tag, Expiry ≤30d) ≠ diskretionärer Ve
 
 | **Ticker** | **Score** | **DEFCON** | **Datum** | **Slot** | **Flag** | **Nächste Aktion** |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| AVGO | 85/100 | 🟢 4 | 25.03.2026 | Aktiv | ✅ | Sparplan läuft |
+| AVGO | 84/100 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv | ⚠️ Insider-Review | Sparplan voll — OpenInsider-Gegencheck offen |
 | MKL | 82/100 | 🟢 4 | 25.03.2026 | Ersatzbank | ✅ | CapEx-FCF (Perf.) |
 | SNPS | 76/100 | 🟡 3 | 26.03.2026 | Ersatzbank | ✅ | Re-Analyse Mai 26 |
 | SPGI | 74/100 | 🟡 3 | 31.03.2026 | Watchlist | ✅ | Earnings 28.04.2026 |
@@ -193,6 +240,25 @@ Cashless Exercise (Code M+S, gleicher Tag, Expiry ≤30d) ≠ diskretionärer Ve
 | EXPN | 61/100 | 🟡 3 | 02.04.2026 | Watchlist | ✅ | P/FCF + Insider-Check |
 | FICO | 67/100 | 🟡 3 | 03.04.2026 | Watchlist | ✅ | Re-Analyse VEEV-Schwäche |
 
-*🦅 Beispiele.md | DEFCON v3.5 | Stand: 16.04.2026*
+*🦅 Beispiele.md | DEFCON v3.7 | Stand: 17.04.2026*
+
+---
+
+## 🚧 Rebuild-Status v3.7 (Transitions-Hinweis)
+
+Diese Datei befindet sich im v3.7-Rebuild. Ziel: 8 Portfolio-Anker (V, AVGO, BRK.B, ASML, RMS, TMO, MSFT, APH), jeder demonstriert einen spezifischen v3.7-Mechanismus.
+
+| Anker | Status | Pfad | Mechanismus |
+| :---: | :---: | :---: | :--- |
+| AVGO | ✅ 17.04. (Gesamtscore + Narrativ) | A (Rekonstruktion) | Quality-Trap am P/FCF-Rand, Fabless — Subscore-Re-Audit Q3 FY26 |
+| ASML | ⏳ nächste Session | B (Voll-Analyse) | Non-US IFRS-Workflow, Fwd P/E FY27 Grenzfall, QT beide Zweige |
+| BRK.B | ⏳ folgt | A | Insurance-Exception, Float-Logik |
+| RMS | ⏳ folgt | A | Non-US Screener-Exception, Luxus |
+| APH | ⏳ folgt | A | Score-basierter FLAG, Tariff-Check |
+| TMO | ⏳ Q1-Earnings 23.04. | B | Quality-Trap differenziert (nur P/FCF), D2 |
+| MSFT | ⏳ Q3-Earnings 29.04. | B | CapEx-FLAG, FLAG-Auflösungs-Pfad |
+| V | ⏳ Q2-Earnings ~22.04. | B | Top-Anker, Fundamentals-Cap 50 |
+
+Legacy-Anker (MKL, SNPS, SPGI, EXPN, FICO, GOOGL, HON, TMO v3.5) bleiben als v3.5-Referenz bis Sweep-Cleanup nach Abschluss aller 8 v3.7-Anker.
 
 ```
