@@ -4,24 +4,25 @@ ticker: MSFT
 name: Microsoft Corporation
 sektor: Cloud / Software
 ersatz: GOOGL (FLAG aktiv)
-score_aktuell: 60
+score_aktuell: 59
 defcon: 2
 flag: "CapEx/OCF Q2 FY26: 83.6% (bereinigt ~63%)"
 sparrate: "0€"
-letzteAnalyse: 2026-04-08
-score_valid_until: 2026-10-08
+letzteAnalyse: 2026-04-17
+score_valid_until: 2026-10-14
+scoring_notiz_v37: "v3.7 Algebra: 60→59 (-1 Pt. durch Fix-3 Sell-Ratio-Kalibrierung). FLAG überschreibt DEFCON. Q3 FY26 Earnings 29.04. = FLAG-Auflösungs-Pfad."
 naechsterTrigger: "2026-04-29 — Q3 FY26 Earnings"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
 ---
 
 # MSFT — Microsoft Corporation
 
-> **DEFCON 🟠 2 | Score 60/100 | FLAG 🔴 aktiv**
-> Sparrate: 0 € (FLAG + DEFCON 2)
+> **DEFCON 🟠 2 | Score 59/100 (v3.7) | FLAG 🔴 aktiv**
+> Sparrate: 0 € (FLAG überschreibt DEFCON)
 
-## Aktuelle Lage (Stand: 08.04.2026)
+## Aktuelle Lage (Stand: 17.04.2026 — v3.7 Algebra)
 
-Score ist von 77 auf 60 gefallen (−17 Punkte). Grund: ROIC strukturell unter WACC (7.5% vs. 13.35%) über 6 Quartale. CapEx FY26 auf Kurs $100–120B. FCF FY25 leicht rückläufig ($71.6B, war $74.1B).
+Score 59 (v3.7: 60→59 durch Fix-3 Sell-Ratio-Kalibrierung). Grund: ROIC strukturell unter WACC (7.5% vs. 13.35%) über 6 Quartale. CapEx FY26 auf Kurs $100–120B. FCF FY25 leicht rückläufig ($71.6B, war $74.1B). FLAG-Auflösungs-Pfad: Q3 FY26 29.04. — bereinigtes CapEx/OCF <60%.
 
 ## FLAG-Details
 
@@ -59,6 +60,7 @@ Score ist von 77 auf 60 gefallen (−17 Punkte). Grund: ROIC strukturell unter W
 |-------|-------|--------|---------|
 | 26.03.2026 | 77 | 🟡 3 | Erst-Analyse, FLAG gesetzt |
 | 08.04.2026 | 60 | 🟠 2 | Re-Analyse v3.4 — ROIC/WACC-Malus verschärft |
+| 17.04.2026 | 59 | 🟠 2 | v3.7 Algebra (Fix-3 Sell-Ratio, -1 Pt.) — FLAG bleibt aktiv |
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten

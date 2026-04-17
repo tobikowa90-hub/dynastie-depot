@@ -17,12 +17,12 @@ related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie
 
 # TMO — Thermo Fisher Scientific
 
-> **DEFCON 🟡 3 | Score 67/100 | Kein FLAG**
-> Sparrate: 50% Sockelbetrag
+> **DEFCON 🟠 2 | Score 63/100 (v3.7) | Kein FLAG**
+> Sparrate: 16,76€ (D2, Gewicht 0.5)
 
-## Aktuelle Lage (Stand: 07.04.2026)
+## Aktuelle Lage (Stand: 17.04.2026 — v3.7 Live-Verify)
 
-Score von 65 auf 67 gestiegen (Re-Analyse v3.4). Verbesserungen durch Kursrückgang (-24% vom ATH) und Clario-Schuldenabbau. Kernprobleme bleiben: Goodwill $49.4B (44.8% der Assets), ROIC 2.6% (quartalsweise), FCF -13.4% YoY.
+Score 63 (v3.7: Fix-2 OpM + Fix-3 Sell-Ratio drücken 67→63, D3→D2). Kernprobleme bleiben: Goodwill $49.4B (44.8% der Assets), ROIC 2.6% (quartalsweise), FCF -13.4% YoY. Q1-Earnings 23.04. kritisch für D2-Entscheidung.
 
 ## Schwächen
 
@@ -56,6 +56,7 @@ Score von 65 auf 67 gestiegen (Re-Analyse v3.4). Verbesserungen durch Kursrückg
 |-------|-------|--------|---------|
 | 02.04.2026 | 65 | 🟡 3 | Erst-Analyse v3.4 — Clario-Watch gesetzt |
 | 07.04.2026 | 67 | 🟡 3 | Re-Analyse — Verbesserungen bestätigt |
+| 17.04.2026 | 63 | 🟠 2 | v3.7 Live-Verify (Fix-2 OpM + Fix-3 Sell-Ratio, -4 Pt.) — D3→D2, ZTS-Vorbereitung aktiv |
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten

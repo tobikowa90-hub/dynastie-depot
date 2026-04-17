@@ -20,8 +20,8 @@ updated: 2026-04-16
 
 # SU — Schneider Electric
 
-> **DEFCON 🟢 4 | Score 71/100 | Kein FLAG**
-> Sparrate: Volle Rate | Non-US / IFRS
+> **DEFCON 🟢 4 | Score 69/100 (v3.7) | Kein FLAG**
+> Sparrate: Volle Rate 33,53€ | Non-US / IFRS
 
 ## DEFCON v3.4 Analyse (15.04.2026)
 

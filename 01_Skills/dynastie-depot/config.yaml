@@ -37,7 +37,7 @@ allokation:
   gold_pct: 5
 
 # ─────────────────────────────────────────────
-# SYSTEMREGELN (v3.4.1 — 16.04.2026)
+# SYSTEMREGELN (v3.7 — 17.04.2026)
 # ─────────────────────────────────────────────
 system_regeln:
 
@@ -108,21 +108,21 @@ etfs:
 
 # ─────────────────────────────────────────────
 # SATELLITEN (Scalable) – 11/11 Slots belegt
-# Alle 11 Positionen haben formelle DEFCON v3.4 Vollanalysen (Stand 15.04.2026)
+# Alle 11 Positionen auf DEFCON v3.7 umgestellt (17.04.2026) — 3/11 Live-Verify (TMO/ASML/RMS), Rest Algebra-Rechnung bis Earnings-Trigger
 # ─────────────────────────────────────────────
 satelliten:
   - ticker: ASML
     name: "ASML Holding"
     typ: "Asset-Light / Halbleiter-Equipment"
     defcon: 3
-    score: 66
+    score: 68
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
     flag_hinweis: "China-Revenue ~24% FY2024 (Exportrestriktionen) — Risk-Map-Notiz aktiv, kein FLAG (unter 35%-Schwelle)"
     sparrate_hinweis: "DEFCON 3, kein 🔴 FLAG → Gewicht 1.0 (volle Rate)"
-    naechste_pruefung: "Q1 2026 Earnings 15.04. — QuickCheck nach Zahlen"
-    scoring_notiz: "Score 68: Moat 19/20 (Wide, Monopol), aber Bewertung Fwd P/E 38x + P/FCF ~41x drückt Fundamentals auf 28/50. Kein Bewertungsabstand."
+    naechste_pruefung: "Q2 2026 Earnings (Q1 17.04. Vollanalyse ✅ — Score 66→68 post-Q1)"
+    scoring_notiz: "Score 68 (v3.7 Live-Verify post-Q1 17.04.): Moat 19/20 (Wide, Monopol), Fwd P/E FY27 30.30 (Grenzfall <30 triggert D3→D4). Screener-Exception #6 (Non-US/IFRS Pfad B)."
     ersatz: SNPS
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: Europa
@@ -140,7 +140,7 @@ satelliten:
     flag_hinweis: "⚠️ Unter Review — Insider $123M (Tan $24.3M + Brazeal $27.1M). Wahrscheinlich Post-Vesting. OpenInsider Spalte X/M manuell prüfen vor FLAG-Aktivierung."
     sparrate_hinweis: "DEFCON 4, kein bestätigtes 🔴 FLAG → Gewicht 1.0 (volle Rate). Sparplan läuft."
     naechste_pruefung: "Q3 FY26 Earnings — erneuter OpenInsider-Check"
-    scoring_notiz: "Score 86: Fabless-Modell = CapEx/OCF <15%, Referenz für Top-Score. Kalibrierungsanker."
+    scoring_notiz: "Score 84 (v3.7 Algebra 85→84, Quality-Trap-Anwendung auf Top-Level): Fabless-Modell = CapEx/OCF <15%, Referenz für Top-Score. Kalibrierungsanker. Sub-Audit pending Q3 FY26."
     ersatz: "NVDA / MRVL"
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: USA
@@ -175,9 +175,9 @@ satelliten:
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate). Screener-Exception analog COST: ROIC 24% >> WACC 6,5% rechtfertigt D4 trotz Score 69."
+    sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate). Screener-Exception #3: ROIC 24% >> WACC 6,5% rechtfertigt D4 trotz Score 68."
     naechste_pruefung: "H1 2026 Report Juli/Aug 2026"
-    scoring_notiz: "Score 71→69 nach Q1 2026 Recap. Revenue +6% CER/-1% rep. Kursreaktion -8,4%. Moat 19/20 intakt, ROIC 24% >> WACC 6,5%, Insider-Käufe +€7,67M (90d). D4-Exception: hoher Return-Spread +17,5 PP analog COST MY-Exception."
+    scoring_notiz: "Score 68 (v3.7 Live-Verify, 71→68 inkl. Q1-Recap). Revenue +6% CER/-1% rep. Kursreaktion -8,4%. Moat 19/20 intakt, ROIC 24% >> WACC 6,5%, Insider-Käufe +€7,67M (90d). D4-Exception #3: ROIC-Spread +17,5 PP."
     ersatz: RACE
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: Europa
@@ -209,7 +209,7 @@ satelliten:
     flag: false
     sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate)"
     naechste_pruefung: "H1 2026 Earnings Juli/Aug 2026"
-    scoring_notiz: "Score 71: CapEx/OCF 25.2% (ausgezeichnet), ROIC 10.48% > WACC 8.96%, FCF-Wachstum +41% 3J. Schwächen: P/FCF 37.7x, Goodwill 40.2% (AVEVA). Moat Narrow."
+    scoring_notiz: "Score 69 (v3.7 Algebra 71→69): CapEx/OCF 25.2% (ausgezeichnet), ROIC 10.48% > WACC 8.96%, FCF-Wachstum +41% 3J. Schwächen: P/FCF 37.7x, Goodwill 40.2% (AVEVA). Moat Narrow."
     ersatz: DE
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: Europa
@@ -308,10 +308,10 @@ satelliten:
 # ─────────────────────────────────────────────
 flags_aktiv:
   - ticker: MSFT
-    grund: "CapEx/OCF 65.3% — Azure-Investitionszyklus über 60%-Schwelle"
+    grund: "CapEx/OCF Q2 FY26: 83.6% (bereinigt um Finance Leases ~63%) — strukturell >60%-Schwelle, Azure-Investitionszyklus"
     seit: "2026-Q1"
     wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON"
-    naechste_pruefung: "2026-04-29 Q3 FY26 Earnings"
+    naechste_pruefung: "2026-04-29 Q3 FY26 Earnings — bereinigtes CapEx/OCF <60% = Auflösung"
 
   - ticker: APH
     grund: "Score-basiert — Score 63 (v3.7), DEFCON 3. Tariff CN/MY Risk-Map aktiv."

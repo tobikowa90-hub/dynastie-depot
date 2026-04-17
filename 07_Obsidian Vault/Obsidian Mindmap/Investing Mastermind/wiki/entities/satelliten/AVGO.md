@@ -17,14 +17,14 @@ related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie
 
 # AVGO — Broadcom Inc.
 
-> **DEFCON 🟢 4 | Score 86/100 | Kein FLAG**
-> Sparrate: Volle Rate | Kalibrierungsanker #1
+> **DEFCON 🟢 4 | Score 84/100 (v3.7) | Kein FLAG** (Insider-Review pending)
+> Sparrate: Volle Rate 33,53€ | Kalibrierungsanker #1
 
-## Aktuelle Lage (Stand: 25.03.2026)
+## Aktuelle Lage (Stand: 17.04.2026 — v3.7 Algebra)
 
-Score 86 = Top-Score im Depot. Fabless-Modell mit extrem niedrigem CapEx/OCF. Primärer Kalibrierungsanker für das DEFCON-System.
+Score 84 (v3.7, 85→84 durch Fundamentals-Cap 50 Fix). v3.5-Baseline-Analyse vom 25.03. — v3.7-Sub-Audit pending Q3 FY26 Earnings. Fabless-Modell bleibt Top-Referenz (CapEx/OCF <15%). Primärer Kalibrierungsanker.
 
-## Warum 86 und nicht höher
+## Warum 84 und nicht höher
 
 - Tariff-Exposure: ~35% Revenue US-Halbleiter, Produktion Malaysia/Thailand → -1 Punkt Fundamentals
 - SBC/Revenue: Dokumentationspflicht (Pre-Processing Regel 1)
@@ -51,8 +51,9 @@ Das Insider-Intelligence-Modul zeigte $123M FLAG (06.04.2026). Manueller OpenIns
 
 | Datum | Score | DEFCON | Ereignis |
 |-------|-------|--------|---------|
-| 25.03.2026 | 86 | 🟢 4 | Vollanalyse — Kalibrierungsanker gesetzt |
+| 25.03.2026 | 86 | 🟢 4 | v3.5-Vollanalyse — Kalibrierungsanker gesetzt |
 | 06.04.2026 | 86 | 🟢 4 | Insider-Check — kein FLAG nach manuellem Review |
+| 17.04.2026 | 84 | 🟢 4 | v3.7-Algebra (Fundamentals-Cap 50 Fix, -1 Pt.) — Sub-Audit pending Q3 FY26 |
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten

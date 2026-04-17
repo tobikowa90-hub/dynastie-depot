@@ -373,7 +373,33 @@ Applied Learning 17.04.2026 verbietet aggregierte Malus-Regeln auf Metriken, die
 **Fundamentals-Cap (v3.7):**
 Block-Summe wird hart auf **50** gedeckelt. Bonus-Metriken (GM-Trend, Pricing Power, EPS-Revision, etc.) können Max-Summe nicht über 50 treiben. Gewollt: Top-Namen verlieren Bonus-Headroom, dafür ist Score-Inflation ausgeschlossen.
 
-Sonderregel für Versicherungen/Holdings (BRK, MKL, FFH): Float-basierte Modelle haben strukturell niedrige FCF Yields. Hier Float-Wachstum als Proxy verwenden. Begründungspflicht.
+#### Screener-Exceptions (v3.7)
+
+Wide-Moat-Ausnahmen, in denen die Standard-Fundamentals-Skala ökonomisch irreführend wäre. Jede Exception: **Regel + Anwendungsbeispiel**. Anwendung löst Begründungspflicht in der Analyse-Notiz aus.
+
+1. **BRK.B Insurance/Holding (Float-Modell)**
+   - Regel: P/B statt P/FCF; FCF-Yield → Float-Wachstum als Proxy. Standard-ROIC nicht vergleichbar (Insurance-Cycle). Gilt auch für MKL, FFH.
+   - Anwendung: BRK.B Score 75 / D4 ✅ Clean trotz 5,6–7,8% GAAP-ROIC — Float ist operativer Hebel, kein Cash-Drain.
+
+2. **COST Membership-Yield**
+   - Regel: GAAP-ROIC ~5,6% unterzeichnet; Membership-Yield (Fees/Equity ~15,2%) als ökonomischer Return-Proxy. GM <15% ist Kostenführer-Modell, nicht Moat-Erosion.
+   - Anwendung: COST Score 69 / D4 ✅ Clean. GM 12,7% lesen als Pricing-Power-Transfer an Members — Moat-Mechanismus, kein Signal.
+
+3. **RMS ROIC-Spread-Dominanz**
+   - Regel: ROIC-WACC-Spread >10pp überschreibt Score-Downgrades aus Einzel-Metriken (z.B. niedriger FCF-Yield durch Premium). Nur bei Wide Moat + Netto-Cash.
+   - Anwendung: RMS Score 68 / D4 ✅ Clean trotz FCF-Yield <3% — Spread ~15pp = strukturelle Kapitaleffizienz.
+
+4. **TMO ROIC<WACC differenzierte QT**
+   - Regel: ROIC-WACC-Spread negativ + Wide Moat → QT-Interaktion greift NUR auf P/FCF-Zweig; Fwd-P/E-Zweig behält Standard-Skala. Verhindert Doppel-Malus bei temporärer Kapitalineffizienz.
+   - Anwendung: TMO Score 63 / D2 — Fwd-P/E gescored, P/FCF hart 0.
+
+5. **MSFT CapEx-FLAG bereinigter Pfad**
+   - Regel: Bei FLAG-Review CapEx/OCF-Ratio um Finance-Lease-Anteil (ASC 842) bereinigen. Bereinigt <60% = FLAG-Auflösung; ≥60% = Veto-Verschärfung.
+   - Anwendung: MSFT Q3 FY26 29.04. — Nominal 83,6% enthält ~$19,5B Finance Leases; ökonomische Basis ist Reinvestitions-Zwang, nicht Bilanzmechanik.
+
+6. **ASML Non-US/IFRS-Pfad (Pfad B)**
+   - Regel: Datenquelle yfinance + eodhd_intel.py (kein Shibui); OCF-Toleranz ±15% bei erklärbarer IFRS-16-Leasingbasis; WACC via FRED DGS10 + 5% ERP (nicht GuruFocus); Insider via AFM-Meldungen (afm.nl) statt Form 4.
+   - Anwendung: ASML Score 68 / D3 ✅ — WACC 9,29% (FRED) statt 18,21% (GuruFocus) → ROIC-WACC-Spread +17,19pp korrekt ermittelt.
 
 ### Moat (20 Punkte)
 

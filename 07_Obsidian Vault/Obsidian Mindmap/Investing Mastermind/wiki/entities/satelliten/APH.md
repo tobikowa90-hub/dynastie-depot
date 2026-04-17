@@ -4,12 +4,13 @@ ticker: APH
 name: Amphenol Corporation
 sektor: Verbindungstechnologie / Elektro
 ersatz: ""
-score_aktuell: 61
+score_aktuell: 63
 defcon: 3
-flag: "FLAG aktiv (seit 09.04.2026)"
+flag: "FLAG aktiv (seit 09.04.2026) — Score-basiert"
 sparrate: "0€"
-letzteAnalyse: 2026-04-15
-score_valid_until: 2026-10-15
+letzteAnalyse: 2026-04-17
+score_valid_until: 2026-10-14
+scoring_notiz_v37: "v3.7 Algebra: 61→63 (+2 Pt. Fix-1 Interaktionsterm milder wirkend, GM >30% rettet Fundamentals). FLAG bleibt Score-basiert (Score <65 + DEFCON 3)."
 naechsterTrigger: "FLAG-Resolution / Q2 Earnings"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[CapEx-FLAG]]"
 updated: 2026-04-16
@@ -17,7 +18,7 @@ updated: 2026-04-16
 
 # APH — Amphenol Corporation
 
-> **DEFCON 🟡 3 | Score 61/100 | FLAG aktiv (seit 09.04.2026)**
+> **DEFCON 🟡 3 | Score 63/100 (v3.7) | FLAG aktiv (seit 09.04.2026)**
 > Sparrate: 0€ | FLAG pausiert Sparrate
 
 ## DEFCON v3.4 Analyse (15.04.2026)
@@ -27,7 +28,7 @@ updated: 2026-04-16
 | Tariff CN Revenue | -- | 14.7% CN-Exposure (kein Revenue-FLAG, Schwelle 20%) |
 | Supply-Chain | -- | CN/MY Risk-Map aktiv — Produktionsverlagerungsrisiko |
 
-**Score-Verlauf:** 80 (Mrz 2026) → 61 (Apr 2026) — Abwertung durch Tariff-Eskalation und FLAG-Aktivierung.
+**Score-Verlauf:** 80 (Mrz 2026) → 61 (Apr 2026 v3.5) → 63 (17.04. v3.7 Algebra, Fix-1 milder).
 
 **FLAG:** Aktiv seit 09.04.2026. Sparrate auf 0€ gesetzt bis FLAG-Resolution.
 

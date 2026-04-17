@@ -33,7 +33,7 @@ stand: 2026-04-07
 | `!EarningsRecap` | earnings-recap | 48h nach Earnings |
 | `!InsiderScan` | [[insider-intelligence]] | Standalone ohne !Analysiere |
 | `!NonUSScan` | [[non-us-fundamentals]] | Non-US-Satelliten |
-| `!PortfolioRisk` | risk-metrics-calculation | Quartalsweise |
+| Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` (Python-Tool) | Quartalsweise manuell — kein Skill |
 
 ## Skill-Dateien
 
@@ -59,17 +59,17 @@ Trigger: nur bei Score ≥ 80 aus Stufe 2.
 
 ## !Rebalancing — Workflow
 
-**Sparplan-Formel:**
+**Sparplan-Formel (v3.4 korrigiert):**
 ```
-Gewichte: D4-Clean = 1.0 | D3 (kein FLAG) = 0.5 | FLAG = 0.0
+Gewichte: D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0
 Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 ```
 
-**Rechenbeispiel (Stand April 2026: 8× D4, 2× D3, 1× FLAG):**
-- Nenner = (8 × 1.0) + (2 × 0.5) + 0 = 9.0
-- D4-Rate = 285 / 9.0 = **31,67€**
-- D3-Rate = 285 / 9.0 × 0.5 = **15,83€**
-- FLAG-Rate = **0€**
+**Rechenbeispiel (Stand 17.04.2026, v3.7: 8× D4/D3, 1× D2 TMO, 2× 🔴 FLAG):**
+- Nenner = (8 × 1.0) + (1 × 0.5) = **8.5**
+- D4/D3-Rate = 285 / 8.5 × 1.0 = **33,53€**
+- D2-Rate (TMO) = 285 / 8.5 × 0.5 = **16,76€**
+- 🔴 FLAG-Rate (MSFT, APH) = **0€**
 
 ## Kalibrierungsanker (vor jeder Analyse pflichtlesen!)
 

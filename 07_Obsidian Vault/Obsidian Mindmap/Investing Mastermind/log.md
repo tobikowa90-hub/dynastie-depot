@@ -327,3 +327,42 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - Pages created: [[INSTRUKTIONEN-SKILL-Trennung]] (concept)
 - Pages updated: [[index.md]] (78 wiki-Notes), [[dynastie-depot-skill]] (SKILL.md-Ref), [[Wissenschaftliche-Fundierung-DEFCON]] (SKILL.md-Ref)
 - Motivation: Token-Effizienz (kein Doppel-Load) + Drift-Vermeidung (eine Quelle pro Regel) + ZIP-Install ohne Copy-Rename-Schritt.
+
+## [2026-04-17] analyse | ASML Q1 2026 Post-Earnings Vollanalyse (Pfad B, Non-US/IFRS-Anker)
+- **Score:** 66 → **68** (Live-Verify +2 innerhalb v3.7-Toleranz ±2) | **DEFCON 🟡 3** bleibt | **Kein FLAG**
+- **Auslöser:** Session-Handover — ASML als mustergültiger Non-US/IFRS-Workflow-Anker für Beispiele.md v3.7-Rebuild (ergänzend zu AVGO Post-Fix-Form).
+- **Datenquelle Primär:** `eodhd_intel.py` (Non-US → nicht Shibui/defeatbeta). Kurs €1.242,60, MC €482,3B, FCF-Marge 33,8%, ROIC 26,48%, WACC 9,29% (FRED DGS10 4,29% + 5% ERP).
+- **WACC-Konflikt:** GuruFocus 18,21% (implausibel — Beta/ERP-Overestimation) verworfen zugunsten FRED-basierter Methodik. 3-Punkte-ROIC-Swing dokumentiert.
+- **v3.7-Mechanismen beobachtet:** Quality-Trap **beidseitig hart 0** (Fwd P/E FY26 30,6x + P/FCF 58,5x) — einziger Depot-Anker mit doppelter QT-Aktivierung. B11 Analyst-Bias-Malus aktiv (35/44 Strong-Buy = 79,5% → Sentiment gedeckelt). B8 OpM-Cap erreicht (2/2).
+- **Q1-Actuals (15.04.):** Rev €8,8B / EPS €7,15 / GM 53,0% ✅ Beat. FY26-Guidance €36-40B (raised). **China 19%** (von 36% Q4) = struktureller Shift. Kurs -6% post-Earnings (Export-Control-Sorge).
+- **FY27-Watch:** Fwd P/E 30,30 — bei <30 deaktiviert QT-P/E-Zweig → Score +6-8 möglich (D3→D4-Pfad dokumentiert).
+- **Subscore-Breakdown:** Fund 28/50 · Moat 20/20 · Tech 7/10 · Insider 7/10 (Carry-Forward — AFM-H1-2026 pending) · Sent 6/10.
+- Pages updated: [[ASML]] (frontmatter score 66→68, Analyse-Historie, Q1-Recap-Section), [[Beispiele.md]] (ASML-Anker in AVGO-Post-Fix-Form eingefügt, Rebuild-Status ASML ⏳→✅)
+- Sync: STATE.md (66→68) + Faktortabelle.md (ROIC/FCF-Marge/Debt-EBITDA live) + CORE-MEMORY §1 (Meilenstein-Eintrag)
+- **Briefing-Sync erforderlich** (00_Core/ geändert).
+
+## [2026-04-17] refactor | Part 1 & 2: _extern Cleanup + Skill-Audit + Vault-Score-Drift-Fix
+- **Part 1 — _extern Cleanup (manuell vom User + Tool-Extraktion):**
+  - `01_Skills/_extern/qualitative-valuation/` gelöscht (~80% in DEFCON kodifiziert, ESG bewusst ausgelassen)
+  - `01_Skills/_extern/risk-metrics-calculation/` gelöscht — 3 Funktionen extrahiert nach `03_Tools/portfolio_risk.py`
+  - `01_Skills/_extern/earnings-calendar/` gelöscht (FMP-basiert, redundant zu earnings-preview/recap)
+  - Neu: `03_Tools/portfolio_risk.py` (Correlation Matrix / Component Risk / Stress-Test 2020-COVID + 2022-Rate-Hikes) — quartalsweise manuell, kein Skill
+- **Part 2 — Skill-Audit Kategorie A (Score-Drift Fixes):**
+  - `config.yaml`: v3.4.1 → v3.7 Header + ASML score 66→68, AVGO-Notiz 86→84, SU-Notiz 71→69, RMS-Notiz 71→68, MSFT-FLAG-Grund harmonisiert (83.6%/bereinigt 63%)
+  - `INSTRUKTIONEN.md` Z.110: TMO 62 → 63
+  - `Faktortabelle.md`: v3.4 → v3.7 + 3/11 Live-Verify-Status
+  - `dynastie-depot-skill.md` (Wiki): D3-Rate 0.5 → 1.0 (v3.4-Logik) + Rechenbeispiel auf 8.5-Nenner/33,53€
+- **Wiki Entity-Page Sync (Body ↔ Frontmatter ↔ STATE):**
+  - [[AVGO]]: Callout 86→84, Historie-Eintrag v3.7
+  - [[SU]]: Callout 71→69
+  - [[RMS]]: Callout 69→68, Score-Verlauf erweitert
+  - [[TMO]]: Callout D3/67 → D2/63, Stand 17.04., Historie-Eintrag
+  - [[MSFT]]: Callout 60→59, Frontmatter-Datum 17.04., Historie-Eintrag
+  - [[APH]]: Callout 61→63, Score-Verlauf erweitert, v3.7-Notiz
+  - [[Wissenschaftliche-Fundierung-DEFCON]]: v3.5-Zeitstand-Banner hinzugefügt (B-konform, keine Score-Änderung)
+- **Pages updated:** 6 Satelliten-Entities, 1 Synthese, 1 Source
+- **Pages created:** keine
+- **Deleted:** 3 _extern Skills + zugehörige Verzeichnisse
+- **Sync:** STATE.md (bereits aktuell — Source of Truth) + Faktortabelle + config.yaml + alle Wiki-Entities on par
+- **Briefing-Sync erforderlich** (00_Core/INSTRUKTIONEN.md + Faktortabelle.md + config.yaml geändert)
+- **Nächster Schritt:** ZIP-Release `dynastie-depot_v3.7.zip` vom User manuell + Rebalancing_Tool_v3.4 + Satelliten-Monitor auf Konsistenz zu STATE prüfen

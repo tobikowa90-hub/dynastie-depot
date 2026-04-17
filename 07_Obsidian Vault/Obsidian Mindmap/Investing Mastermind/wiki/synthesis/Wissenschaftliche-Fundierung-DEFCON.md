@@ -85,7 +85,9 @@ status: aktiv
 
 ## Betroffene Entitäten
 
-### Aktive Satelliten (Stand: 16.04.2026 — alle 11 vollständig gescort)
+### Aktive Satelliten (v3.5-Zeitstand: 16.04.2026 — dient B1-B11 Mapping)
+
+> ⚠️ **Scores sind v3.5-Zeitstand (16.04.)** — nicht Live-Portfolio-State. Aktuelle v3.7-Scores: siehe `00_Core/STATE.md` (Single Source of Truth). Tabelle dient dem Mapping der wissenschaftlichen Befunde (B1-B11) auf Satelliten-Charakteristika, keine Scoring-Aussage.
 
 | Ticker | DEFCON | Score | FLAG | Relevante Befunde |
 |--------|--------|-------|------|------------------|

@@ -62,7 +62,7 @@ Umfassendster aktueller Survey (84 Paper) über LLM-Anwendungen in Aktienmärkte
 | RL + Memory = selbstverbessernde Agenten | [^36], [^20], [^32] | Zukünftige Architektur: Claude mit Feedback-Loop |
 
 ### Lücken (für DEFCON-System relevant)
-- **Risk Management** unterrepräsentiert → !PortfolioRisk-Skill deckt echte Forschungslücke
+- **Risk Management** unterrepräsentiert → quarterly `portfolio_risk.py` (Correlation / Component Risk / Stress-Test) deckt die Lücke minimalistisch
 - **Interpretierbarkeit** fehlt in vielen Studien → DEFCON-Begründungspflicht (Quellenpflicht) differenziert sich ab
 - **Internationale Märkte** kaum erforscht (meist US/China) → Non-US-Modul ist Pionierarbeit
 
@@ -75,7 +75,7 @@ Umfassendster aktueller Survey (84 Paper) über LLM-Anwendungen in Aktienmärkte
 | News-Positivity-Bias bestätigt | Sentiment-Block bleibt bei 10 Pt. — keine Erhöhung |
 | Fundamentals-Dominanz | B2/B7 nochmals bestätigt — 50 Pt. Gewichtung korrekt |
 | Multi-Agent-Ansatz | Insider + Non-US + defeatbeta als separate Module = wissenschaftlich fundiertes Design |
-| !PortfolioRisk-Lücke | Echte Forschungslücke → unser Skill deckt unterforschten Bereich |
+| Risk-Management-Lücke | Echte Forschungslücke → `03_Tools/portfolio_risk.py` (Correlation/Component Risk/Stress-Test) deckt den Bereich minimalistisch ab |
 
 ---
 

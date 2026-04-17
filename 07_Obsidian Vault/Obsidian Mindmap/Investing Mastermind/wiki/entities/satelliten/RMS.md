@@ -20,8 +20,8 @@ updated: 2026-04-16
 
 # RMS — Hermès International
 
-> **DEFCON 🟢 4 | Score 69/100 | Kein FLAG**
-> Sparrate: Volle Rate | Non-US / IFRS
+> **DEFCON 🟢 4 | Score 68/100 (v3.7) | Kein FLAG**
+> Sparrate: Volle Rate 33,53€ | Non-US / IFRS
 
 ## DEFCON v3.4 Analyse (15.04.2026)
 
@@ -31,7 +31,7 @@ updated: 2026-04-16
 | Moat | 19/20 | Wide — Luxury-Monopol, Preismacht strukturell, künstliche Knappheit |
 | ROIC vs WACC | -- | ROIC 24% >> WACC 6.5% — hoher Return-Spread |
 
-**Score-Verlauf:** 80 (Mrz 2026) → 69 (Apr 2026) — Abwertung durch Q1 reported Revenue -1% und Kursreaktion.
+**Score-Verlauf:** 80 (Mrz 2026) → 69 (Apr 2026 v3.5) → 68 (17.04. v3.7, Fix-1 Interaktionsterm).
 
 **Screener-Exception:** Analog [[COST]] — hoher Return-Spread (ROIC 24% >> WACC 6.5%) rechtfertigt Beibehaltung trotz Score-Rückgang.
 

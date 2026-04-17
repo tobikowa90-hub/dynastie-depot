@@ -40,7 +40,7 @@ Impuls / Idee
 | `!EarningsPreview` | earnings-preview |
 | `!EarningsRecap` | earnings-recap |
 | `!InsiderScan` | insider-intelligence |
-| `!PortfolioRisk` | risk-metrics-calculation |
+| Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` (Python-Tool, quarterly) |
 
 ## Verlinkungen
 

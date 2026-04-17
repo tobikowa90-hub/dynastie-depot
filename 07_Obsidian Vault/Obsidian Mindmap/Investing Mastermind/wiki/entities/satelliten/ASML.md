@@ -4,15 +4,15 @@ ticker: ASML
 name: ASML Holding N.V.
 sektor: Halbleiter-Equipment / Monopol
 ersatz: SNPS
-score_aktuell: 66
+score_aktuell: 68
 defcon: 3
 flag: "keins"
 sparrate: "Volle Rate 33,53€ (Gewicht 1.0, D3 kein FLAG)"
 letzteAnalyse: 2026-04-17
-score_valid_until: 2026-10-14
-naechsterTrigger: "Q1 2026 Earnings 15.04. — QuickCheck nach Zahlen"
+score_valid_until: 2026-10-17
+naechsterTrigger: "Q2 2026 Earnings + FY27 Fwd-P/E-Watch (30,30 → D3→D4-Pfad bei <30)"
 updated: 2026-04-17
-scoring_notiz_v37: "v3.7 Fix 1 (Interaktionsterm): Wide Moat + Fwd P/E >30 → Fwd-P/E-Subscore hart 0; Wide Moat + P/FCF >35 → P/FCF-Subscore hart 0. Score 68→66, D3 bleibt."
+scoring_notiz_v37: "v3.7 Post-Q1-Vollanalyse (Pfad B): QT-Interaktionsterm beide Zweige hart 0 (Fwd P/E FY26 30,6x + P/FCF 58,5x). Score 66→68 (+2 Live-Verify-Delta innerhalb Toleranz — GM-Trend-Bonus +1,5pp, EPS-Revision post-Q1)."
 waehrung: EUR
 ifrs: true
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
@@ -20,28 +20,31 @@ related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie
 
 # ASML — ASML Holding N.V.
 
-> **DEFCON 🟡 3 | Score 68/100 | Kein FLAG**
-> Sparrate: Volle Rate (D3, Gewicht 1.0) | Non-US / IFRS
+> **DEFCON 🟡 3 | Score 68/100 | Kein FLAG** (Stand 17.04.2026, Post-Q1-Vollanalyse Pfad B)
+> Sparrate: Volle Rate (D3, Gewicht 1.0) | Non-US / IFRS | Kalibrierungsanker in [[Beispiele.md]] (v3.7-Mechanismus: QT beide Zweige hart 0)
 
-## Aktuelle Lage (Stand: 06.04.2026)
+## Aktuelle Lage (Stand: 17.04.2026 — Post-Q1-Vollanalyse Pfad B)
 
-Erster vollständiger Non-US-Kalibrierungsanker. Score 68 = Wide-Moat-Monopol zu Premium-Bewertung. DEFCON 3 trotz perfektem Moat wegen Bewertungsmarge.
+Non-US/IFRS-Kalibrierungsanker v3.7. Score 68 = Wide-Moat-Monopol zu Premium-Bewertung, QT beide Zweige hart 0. Q1 2026 Beat (Rev €8,8B / EPS €7,15 / GM 53,0%), FY26-Guidance auf €36-40B angehoben. Stock -6% post-Earnings trotz Beat (Export-Control-Sorge). China-Systemumsatz strukturell 36% → **19%**. DEFCON 3 trotz perfektem Moat wegen Bewertungsmarge (Fwd P/E 30,6x + P/FCF 58,5x).
 
-## Scoring-Blöcke (06.04.2026)
+## Scoring-Blöcke (17.04.2026, v3.7-frisch)
 
 | Block | Punkte | Max | Kommentar |
 |-------|--------|-----|-----------|
-| Fundamentals | 28 | 50 | Fwd P/E 38x, P/FCF ~41x drücken Score |
-| Moat | 19 | 20 | Wide Moat — EUV-Monopol, Morningstar bestätigt |
-| Technicals | 6 | 10 | Über steigendem 200MA, -15% vom ATH |
-| Insider | 7 | 10 | 3 Direktoren-Käufe, keine Verkäufe >€20M |
-| Sentiment | 8 | 10 | 11 Buy, 0 Sell, PT-Dispersion -1 |
+| Fundamentals | 28 | 50 | QT beide Zweige hart 0 (Fwd P/E 30,6x + P/FCF 58,5x); Bilanz 8/8, CapEx 8/8, ROIC-Spread +17,19pp 8/8, FCF-Yield 2/8, OpM 2/2 |
+| Moat | 20 | 20 | Wide Moat EUV-Monopol + GM-Trend 3J +1,5pp Bonus (Moat-Widening) |
+| Technicals | 7 | 10 | -5,3% vom 52W-High 1/4, RS vs. S&P500 3/3, +32,8% über 200D-MA 3/3 |
+| Insider | 7 | 10 | Carry-Forward 06.04.: 3 Direktoren-Käufe AFM, keine Verkäufe >€20M (AFM-H1-2026 pending) |
+| Sentiment | 6 | 10 | B11-Bias-Malus (35/44 SB = 79,5% → 2/4), Sell 0% Warning 1/3, PT +17,8% 2/3, Dispersion -1, EPS-Rev +1 |
 
-## Wichtige Kennzahlen
+## Wichtige Kennzahlen (17.04.2026, eodhd_intel.py)
 
-- CapEx/OCF: **12.5%** — weit unter FLAG-Schwelle ✅
-- China-Exposure: ~24% — Risk-Map-Notiz, kein FLAG (unter 35%)
-- FCF Yield: ~2.4% (Bewertungsproblem, kein Qualitätsproblem)
+- CapEx/OCF: **12,9%** — weit unter FLAG-Schwelle ✅
+- China-Systemumsatz: **19%** Q1 (von 36% Q4) — struktureller Shift, weit unter 35%-Schwelle ✅
+- FCF-Yield: **1,71%** (Bewertungsproblem, kein Qualitätsproblem)
+- FCF-Marge: **33,8%** | ROIC: **26,48%** | WACC: **9,29%** (FRED DGS10 4,29% + 5% ERP) → Spread +17,19pp
+- Net Debt/EBITDA: **0,21x** | Goodwill: 9,1% | CR: 1,36
+- **Watch:** Fwd P/E FY27 = 30,30 (Grenzfall). <30 → QT-P/E-Zweig deaktiviert → Score +6-8 (D3→D4-Pfad)
 
 ## API Sanity Check (abgeschlossen 07.04.2026)
 
@@ -118,6 +121,8 @@ Enger Spread (~6%) — Markt ist sich relativ einig. Kein hohes Unsicherheitssig
 | 06.04.2026 | 68 | 🟡 3 | Vollanalyse v3.4 — Kalibrierungsanker gesetzt |
 | 07.04.2026 | 68 | 🟡 3 | API Sanity Check abgeschlossen ✅ |
 | 10.04.2026 | 68 | 🟡 3 | Earnings Preview Q1 2026 erstellt (Berichtstag 15.04.) |
+| 17.04.2026 | 66 | 🟡 3 | v3.7 Backtest-Approximation (STATE.md) — Live-Verify ±2 |
+| 17.04.2026 | **68** | 🟡 3 | **Post-Q1-Vollanalyse Pfad B (Non-US/IFRS-Workflow-Anker für Beispiele.md).** Daten: eodhd_intel.py + Q1-Actuals. WACC 9,29% (FRED, nicht GuruFocus 18,21%). FCF-Marge 33,8%, ROIC 26,48%, ROIC-WACC-Spread +17,19pp (8/8). QT beide Zweige hart 0 (Fwd P/E FY26 30,6 + P/FCF 58,5). B11 Bias-Malus aktiv (35/44 SB). GM-Trend +1,5pp Bonus. China-Shift 36%→19% post-Q1. Subscores: Fund 28/50 · Moat 20/20 · Tech 7/10 · Insider 7/10 (AFM-H1 pending) · Sent 6/10. FY27-Watch 30,30 → D3→D4 bei <30 (+6-8 Pkt). |
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten

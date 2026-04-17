@@ -1,5 +1,5 @@
 # 🦅 Dynastie-Depot – Institutionelle Analyse-Pipeline
-**Version:** 2.0 | **Stand:** 08.04.2026 | **Zieljahr:** 2058
+**Version:** 2.1 | **Stand:** 17.04.2026 | **Zieljahr:** 2058 | **Scoring:** DEFCON v3.7
 
 ---
 
@@ -63,7 +63,7 @@ Jeder zusätzliche Skill-Load kostet Token und verliert DEFCON-Kontext
 | `!EarningsRecap [TICKER]` | `earnings-recap` | 48h nach Earnings |
 | `!EarningsCalendar` | `earnings-calendar` | Wöchentlicher Überblick |
 | `!InsiderScan` | `insider-intelligence` | Standalone ohne !Analysiere |
-| `!PortfolioRisk` | `risk-metrics-calculation` | Quartalsweise (ab Mai 2026) |
+| Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` (Python-Tool) | Quartalsweise manuell — kein Skill |
 
 ---
 
@@ -148,12 +148,14 @@ IF Non-US-Ticker (ASML, RMS, SU):
 
 ### DEFCON-Schwellen (Bestand vs. Neueinstieg):
 
-| Score | DEFCON | Neueinstieg | Bestand | Sparrate |
-|-------|--------|-------------|---------|----------|
-| ≥ 80 | 🟢 4 | Einstieg erlaubt | Sparplan voll | Volle Rate |
-| 65–79 | 🟡 3 | Kein Einstieg | Halten | 50% Sockelbetrag |
-| 50–64 | 🟠 2 | Kein Einstieg | Sparrate 0 € | 0 € |
-| < 50 | 🔴 1 | Veto | Auswechslung | 0 € |
+| Score | DEFCON | Neueinstieg | Bestand | Gewicht (Sparrate) |
+|-------|--------|-------------|---------|--------------------|
+| ≥ 80 | 🟢 4 | Einstieg erlaubt | Sparplan voll | **1.0** (volle Rate) |
+| 65–79 | 🟡 3 | Kein Einstieg | Halten | **1.0** (volle Rate — v3.4 korrigiert, nicht mehr 50%) |
+| 50–64 | 🟠 2 | Kein Einstieg | Halten, reduziert | **0.5** (halbe Rate) |
+| < 50 | 🔴 1 | Veto | Auswechslung | **0** (0 €) |
+
+**FLAG-Regel:** Beliebiger 🔴 FLAG (CapEx/OCF >60%, Netto-Selling >$20M, Tariff >35%, etc.) überschreibt das Gewicht auf **0** unabhängig vom DEFCON-Score.
 
 ### Automatische FLAGs (score-unabhängig, heilig):
 
@@ -166,14 +168,16 @@ IF Non-US-Ticker (ASML, RMS, SU):
 
 ### Kalibrierungsanker (vor jeder Analyse pflichtlesen — Beispiele.md):
 
-| Ticker | Score | Lektion |
-|--------|-------|---------|
-| AVGO | 86 | Fabless = CapEx/OCF <15%, Referenz Top-Score |
-| MKL | 82 | Float-Modell, Versicherungs-Exception |
-| SNPS | 79 | Goodwill-Malus durch Ansys-Akquisition |
-| MSFT | 60 | ROIC < WACC + CapEx-Ramp = DEFCON 2 trotz Wide Moat |
-| TMO | 67 | Akquisitionsschuld + ROIC-Grenzfall |
-| EXPN | 61 | Datenlücken → konservativ scoren |
+**Primär (v3.7-Voll-Anker):**
+
+| Ticker | Score | DEFCON | Lektion |
+|--------|-------|--------|---------|
+| AVGO | 84 | 🟢 4 | Fabless + Wide Moat + Premium-Multiple → QT differenziert am P/FCF-Rand |
+| ASML | 68 | 🟡 3 | Non-US/IFRS Pfad B → QT beide Zweige hart 0; FY27-Watch 30,30 als D3→D4-Pfad |
+
+**Kanonische Regeln:** SKILL.md §Scoring-Skalen + §Screener-Exceptions (6 Exceptions: BRK.B / COST / RMS / TMO / MSFT / ASML). Beispiele.md §Mechanismen-Index mappt Mechanismus → Voll-Anker + SKILL-Zeile.
+
+**Legacy (v3.5, mit Zeitstand-Banner):** MKL, SNPS, SPGI, TMO-v3.5, EXPN, FICO — Workflow-Historie für M&A-Goodwill, Insurance-Exception, Datenlücken-Handling. **Nicht** für v3.7-Score-Kalibrierung verwenden.
 
 **Weitergabe an Stufe 3:** Nur bei Score ≥ 80 + kein aktives FLAG.
 
@@ -246,17 +250,18 @@ Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 
 ## ERGÄNZUNGS-SKILLS (eigenständig, nicht in !Analysiere integriert)
 
-### `qualitative-valuation` — Moat-Vertiefung bei Grenzfällen
-**Wann aktivieren:** Score 77–82, Moat-Block ist der entscheidende Faktor,
-Porter's Five Forces oder Switching-Cost-Tiefe nötig.
-**Nicht nötig bei:** Klaren Wide-Moat-Titeln (AVGO, MSFT, ASML) oder
-klaren Ablehnungen (Score <65).
+### Portfolio-Risk-Audit → `03_Tools/portfolio_risk.py` (kein Skill)
+**Wann ausführen:** Quartalsweise nach Rebalancing.
+**Output:** Correlation Matrix der 11 Satelliten, Component Risk Contribution,
+Stress-Test (2020-COVID + 2022-Rate-Hikes). Markdown-Report nach `03_Tools/Output/`.
+**Aufruf:** `python 03_Tools/portfolio_risk.py`
+**Begründung für Tool statt Skill:** 80% eines Risk-Metrics-Skills (VaR/CVaR/Sharpe/
+Rolling-Metriken/Monte-Carlo) ist irrelevant für Buy-and-Hold 33J-Horizont.
+Die verbleibenden 3 Funktionen rechtfertigen keinen Skill-Load-Overhead.
 
-### `risk-metrics-calculation` — Portfolio-Risikometrik
-**Wann aktivieren:** Quartalsweise nach Rebalancing, oder wenn neue Position
-aufgenommen wird und Portfolio-Beta/VaR-Impact bewertet werden soll.
-**Nicht nötig bei:** Einzelaktien-Scoring (!Analysiere).
-**Geplanter erster Einsatz:** Mai 2026 nach erstem echten Rebalancing-Lauf.
+> Qualitative-Valuation ist kein Skill mehr — Moat-Analyse ist vollständig in
+> DEFCON-Scoring (Moat-Block 20 Pkt.) + GuruFocus Moat-Score + §Screener-Exceptions
+> in SKILL.md kodifiziert. ESG bewusst ausgelassen (kein Veto-Kriterium).
 
 ### `sec-edgar-skill` — Dokumenten-Eskalation
 **Wann aktivieren:** Manueller 10-K/10-Q-Textcheck (z.B. Finance-Lease-
@@ -266,29 +271,28 @@ Fußnoten wie bei MSFT Pre-Processing Regel 2), XBRL-Datenkonflikte,
 
 ---
 
-## SYSTEM-STATUS (Stand: 08.04.2026)
+## SYSTEM-STATUS (Stand: 17.04.2026)
 
 | Komponente | Version | Typ | Status |
 |------------|---------|-----|--------|
-| `dynastie-depot` | 3.4.1 | Haupt-Skill | ✅ Aktiv |
+| `dynastie-depot` | 3.7 | Haupt-Skill | ✅ Aktiv |
 | `quick-screener` | 1.1 | Skill | ✅ Aktiv |
 | `insider-intelligence` | 1.0 | Skill + Python | ✅ Aktiv |
 | `non-us-fundamentals` | 1.1 | Python-Modul | ✅ Aktiv |
 | `earnings-preview` | 1.0 | Skill | ✅ Aktiv |
 | `earnings-recap` | 1.0 | Skill | ✅ Aktiv |
 | `earnings-calendar` | 1.0 | Skill | ✅ Aktiv |
-| `qualitative-valuation` | 1.0 | Skill (optional) | ✅ Aktiv |
-| `risk-metrics-calculation` | 1.0 | Skill (geplant) | ✅ Aktiv |
 | `sec-edgar-skill` | 1.0 | Skill (Fallback) | ✅ Aktiv |
+| `portfolio_risk.py` | 1.0 | Python-Tool | ✅ Aktiv (quarterly) |
 | defeatbeta MCP | 1.27.0 | MCP-Server | ✅ Aktiv (WSL2) |
 | Shibui Finance SQL | — | MCP-Connector | ✅ Aktiv |
 
-**Deinstalliert / entfernt (08.04.2026):**
-- `generate-stock-reports` — vollständig durch WebSearch in !Analysiere ersetzt
-- `us-stock-analysis` — vollständig durch `dynastie-depot` ersetzt
-- `analyzing-financial-statements` — nie produktiv genutzt
-- `findata-toolkit-us` — nie produktiv genutzt
-- `valuation-calculator` — redundant zu defeatbeta
+**Deinstalliert / entfernt:**
+- `generate-stock-reports` (08.04.2026) — vollständig durch WebSearch in !Analysiere ersetzt
+- `us-stock-analysis` (08.04.2026) — vollständig durch `dynastie-depot` ersetzt
+- `analyzing-financial-statements`, `analyzing-financials`, `findata-toolkit-us`, `fmp-api`, `valuation-calculator` (17.04.2026) — redundante Fremd-Skills
+- `qualitative-valuation` (17.04.2026) — ~80% in DEFCON-Scoring kodifiziert, ESG bewusst ausgelassen
+- `risk-metrics-calculation` (17.04.2026) — 3 Funktionen nach `03_Tools/portfolio_risk.py` extrahiert, Rest irrelevant für 33J-Horizont
 
 ---
 
@@ -303,22 +307,20 @@ Claude Stuff/
 │   ├── non-us-fundamentals/  → SKILL.md | eodhd_intel.py
 │   └── quick-screener/    → SKILL.md
 ├── 02_Analysen/       → DEFCON-Analysen als Excel (Output Stufe 3)
-├── 03_Tools/          → Rebalancing_Tool | Satelliten_Monitor | Watchlist_Monitor
+├── 03_Tools/          → Rebalancing_Tool | Satelliten_Monitor | Watchlist_Monitor | portfolio_risk.py | briefing-sync-check.ps1
 ├── 04_Templates/      → CAPEX-FCF | Alerts-Log (Analyse-Template in SKILL.md §Workflow 1)
 ├── 05_Archiv/         → Historische Dateien
 └── 06_Skills-Pakete/  → Installierbare ZIPs (nur aktive Skills)
-    ├── dynastie-depot_v3.4.1.zip
+    ├── dynastie-depot_v3.7.zip
     ├── quick-screener.zip
     ├── insider_intel.zip
     ├── earnings-preview.zip
     ├── earnings-recap.zip
     ├── openclaw-earnings-calendar.zip
-    ├── adaptationio-fmp-api.zip    ← FMP API Key für earnings-calendar
     ├── defeat-beta-defeatbeta-analyst.zip
-    ├── neversight-sec-edgar-skill.zip
-    └── qualitative-valuation.zip
+    └── neversight-sec-edgar-skill.zip
 ```
 
 ---
 
-🦅 PIPELINE.md v2.0 | Dynastie-Depot | Stand: 08.04.2026
+🦅 PIPELINE.md v2.1 | Dynastie-Depot DEFCON v3.7 | Stand: 17.04.2026
