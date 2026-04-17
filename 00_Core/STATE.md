@@ -73,7 +73,7 @@
 | Meilenstein-Chronik vor 15.04.2026 | `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md` |
 | Score-Detail pro Ticker | `Faktortabelle.md` |
 
-**Sync-Pflicht bei Score/FLAG-Änderung:** log.md + CORE-MEMORY.md + Faktortabelle.md (§18 INSTRUKTIONEN).
+**Sync-Pflicht bei Score/FLAG/Sparraten-Änderung:** log.md + CORE-MEMORY.md + Faktortabelle.md + **STATE.md** (§18 INSTRUKTIONEN — alle vier, immer).
 **Briefing-Sync:** `!SyncBriefing` vor Session-Ende, wenn 00_Core/ geändert wurde (§25).
 
 ---

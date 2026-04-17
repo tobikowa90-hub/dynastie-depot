@@ -261,16 +261,17 @@ Ein Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 ---
 
-## 18. Sync-Pflicht: log.md + CORE-MEMORY.md + Faktortabelle
+## 18. Sync-Pflicht: log.md + CORE-MEMORY.md + Faktortabelle.md + STATE.md
 
-**Trigger:** Score/FLAG-Änderung, neue Analyse, Systemänderung.
+**Trigger:** Score/FLAG-Änderung, neue Analyse, Systemänderung, Sparraten-Änderung.
 
-**Reihenfolge (alle drei, immer):**
+**Reihenfolge (alle vier, immer):**
 1. `log.md` (Vault) — technisches Protokoll
 2. `CORE-MEMORY.md` (00_Core) — strategisches Gedächtnis (Section 1: Analysen, Section 3: FLAGs, Section 4: Scores)
 3. `Faktortabelle.md` — Score + FLAG aktualisieren. Bei FLAG-Änderung: config.yaml manuell sync.
+4. `STATE.md` — Portfolio-Tabelle + Watches + Trigger-Liste (Single-Entry-Point seit 17.04.2026).
 
-**Nie nur eine der drei Dateien aktualisieren.**
+**Nie nur eine der vier Dateien aktualisieren.** Verlässt STATE.md den aktuellen Stand, wird Session-Start unbrauchbar.
 
 ---
 
@@ -376,7 +377,7 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 
 **Manueller Trigger:** `!Briefing` (identischer Output) oder Desktop App → Routines → Jetzt ausfuehren
 
-**Voraussetzung:** Faktortabelle muss aktuell sein (Sync-Pflicht §25). GitHub-Repo muss gepusht sein (`!SyncBriefing`).
+**Voraussetzung:** Faktortabelle muss aktuell sein (Sync-Pflicht §18). GitHub-Repo muss gepusht sein (`!SyncBriefing`).
 
 **API-Update-Regel (KRITISCH):** RemoteTrigger-Update ersetzt `ccr`-Objekt KOMPLETT (kein Merge). Immer alle 3 Felder (`environment_id`, `session_context`, `events`) zusammen senden. JSON-Nesting: `parent_tool_use_id`, `session_id`, `type`, `uuid` gehoeren auf **data-Level**, NICHT in message.
 

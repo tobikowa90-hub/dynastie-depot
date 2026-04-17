@@ -77,7 +77,7 @@ Danach: freie Agenda (siehe Offene Punkte unten) oder Earnings-Trigger.
 
 ## 🧭 START-PROTOKOLL FÜR NÄCHSTE SESSION
 
-1. `Session starten` — Claude liest automatisch CORE-MEMORY / KONTEXT / INSTRUKTIONEN / Faktortabelle.
+1. `Session starten` — Claude liest automatisch **nur `00_Core/STATE.md`** (seit 17.04.2026). Andere 00_Core-Dateien on-demand.
 2. Kompakte Lage-Zusammenfassung (max. 10 Zeilen).
 3. `dynastie-depot`-Skill aktiv (v3.7 Desktop-installiert).
 4. Falls Earnings-Tag: `!QuickCheck <TICKER>` oder `!Analysiere <TICKER>`.
