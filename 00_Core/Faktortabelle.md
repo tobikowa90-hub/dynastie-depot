@@ -17,7 +17,7 @@
 | Position | FCF-Marge 5J | ROIC TTM | Gross Margin | Debt/EBITDA | Moat | Score | DEFCON | FLAG | Score-Datum | Nächstes Update |
 |----------|-------------|----------|--------------|-------------|------|-------|--------|------|-------------|-----------------|
 <!-- DATA:ASML -->
-| ASML | — | — | ~52% | <1x | Wide | 66 | 🟡 3 | — | 2026-04-17 | Q1 Earnings 15.04. |
+| ASML | 33,8% | 26,48% | 52,8% | 0,21x | Wide | 68 | 🟡 3 | ✅ Clean | 2026-04-17 | Q2 2026 Earnings — FY27 Fwd P/E Watch (30,30 → D4-Kandidat <30) |
 <!-- DATA:AVGO -->
 | AVGO | ~30% | >20% | ~65% | ~2.5x | Wide | 84 | 🟢 4 | ⚠️ Insider $123M (vermutl. Post-Vesting — OpenInsider prüfen!) | 2026-04-17 | Q3 FY26 Earnings |
 <!-- DATA:MSFT -->
@@ -47,9 +47,9 @@
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
 **Stand:** 17.04.2026 — v3.7 System-Gap-Release (Quality-Trap-Interaktion + OpM + Analyst-Bias + Fundamentals-Cap 50)
 
-> ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Einzige DEFCON-Klassifikations-Shifts: keine. ASML 68→66 (bleibt D3), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74.
+> ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Einzige DEFCON-Klassifikations-Shifts: keine. ASML 68→66 (bleibt D3, **Post-Q1 17.04. Vollanalyse: 68** = +2 Live-Verify-Delta innerhalb Toleranz), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74.
 >
-> **Live-Verify-Status (Schritt-2-Restarbeit):** 3/11 verifiziert am 17.04. — **TMO (±1), ASML (±2), RMS (±2)** alle innerhalb Toleranz bestätigt. Fix-1 empirisch validiert: differenziert (TMO nur P/FCF) vs. maximal (ASML/RMS beide Zweige). Rest-Tickers (AVGO, MSFT, VEEV, SU, BRK.B, V, APH, COST) bei regulärem Earnings-Trigger. **Watch:** ASML Fwd P/E FY27 30,30 Grenzfall — bei <30 Score +1-2 möglich (D4-Upside).
+> **Live-Verify-Status (Schritt-2-Restarbeit):** 3/11 verifiziert am 17.04. — **TMO (±1), ASML (±2), RMS (±2)** alle innerhalb Toleranz bestätigt. Fix-1 empirisch validiert: differenziert (TMO nur P/FCF) vs. maximal (ASML/RMS beide Zweige). Rest-Tickers (AVGO, MSFT, VEEV, SU, BRK.B, V, APH, COST) bei regulärem Earnings-Trigger. **Watch:** ASML Fwd P/E FY27 30,30 Grenzfall — bei <30 Score +6-8 möglich (D3→D4-Pfad, QT-P/E-Zweig deaktiviert).
 
 ---
 
@@ -71,12 +71,13 @@
 
 ## Offene Scores (0 von 11 — ALLE VOLLSTÄNDIG)
 
-> ✅ **Alle 11 Satelliten haben formelle DEFCON v3.4 Vollanalysen** (Stand: 15.04.2026).
+> ✅ **Alle 11 Satelliten auf DEFCON v3.7 umgestellt** (Stand: 17.04.2026).
+> Live-Verify v3.7: 3/11 bestätigt (TMO ±1, ASML ±2 — 66→68 post-Q1, RMS ±2). Rest Algebra-Rechnung bis Earnings-Trigger.
 > Nächste Vollaktualisierung: bei Earnings-Trigger, Score-Verfall >180 Tage, oder Klasse-C-Event.
 
 | Position | Score | DEFCON | Analyse-Datum | Nächster Trigger |
 |----------|-------|--------|--------------|-----------------|
-| ASML | 66 | 🟡 3 | 17.04.2026 | Q1 2026 Earnings 15.04. |
+| ASML | 68 | 🟡 3 | 17.04.2026 | Q2 2026 Earnings + FY27 Fwd-P/E-Watch |
 | AVGO | 84 | 🟢 4 | 17.04.2026 | Q3 FY26 Earnings |
 | MSFT | 59 | 🟠 2 | 17.04.2026 | Q3 FY26 Earnings 29.04. (FLAG-Review) |
 | TMO | 63 | 🟠 2 | 17.04.2026 | Q1 2026 Earnings 23.04. |

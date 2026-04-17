@@ -107,7 +107,7 @@ Benenne im Analyse-Output explizit, welche Befunde auf diesen Ticker zutreffen u
 | MKL | 82 | 🟢 4 | Float-Modell = FCF-Sonderregel, Versicherungs-Exception |
 | SNPS | 76 | 🟡 3 | Goodwill-Malus durch Ansys-Akquisition (-3 Punkte) |
 | SPGI | 74 | 🟡 3 | ROIC-Verzerrung durch M&A-Goodwill → Non-GAAP ~82 |
-| TMO | 62 | 🟠 2 | ROIC < WACC + Akquisitionsschuld = harter Malus trotz Wide Moat (v3.5: D3→D2 Grenzfall) |
+| TMO | 63 | 🟠 2 | ROIC < WACC + Akquisitionsschuld = harter Malus trotz Wide Moat (v3.7 post-Fix-3/OpM: D2-bestätigt, 62→63 post-17.04.) |
 | EXPN | 61 | 🟡 3 | Datenlücken erzwingen konservatives Scoring |
 | FICO | 67 | 🟡 3 | TTM-Verzerrung durch Kurscrash (-52%); Forward-Metriken deutlich besser (VEEV-Ersatz-Referenz) |
 
@@ -244,8 +244,7 @@ Jeder zusätzliche Skill-Load kostet Token und verliert DEFCON-Kontext.
 | `!EarningsRecap [TICKER]` | `earnings-recap` | 48h nach Earnings |
 | `!EarningsCalendar` | `earnings-calendar` | Wöchentlicher Überblick |
 | `!InsiderScan` | `insider-intelligence` | Standalone-Scan ohne !Analysiere |
-| `!PortfolioRisk` | `risk-metrics-calculation` | Quartalsweise (ab Mai 2026) |
-| Moat-Grenzfall (Score 77–82) | `qualitative-valuation` | Optional, wenn Moat entscheidend |
+| Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` | Quartalsweise manuell (Correlation / Component Risk / Stress-Test) — kein Skill |
 | Dokument-Konflikt / 10-K-Text | `sec-edgar-skill` | Eskalations-Fallback |
 
 ### Warum kein Skill-Chaining innerhalb !Analysiere?

@@ -21,7 +21,7 @@
 | SU | 69 | 🟢 4 | 33,53€ | ✅ | H1 Juli/Aug |
 | COST | 69 | 🟢 4 | 33,53€ | ✅ Screener-Exception | Q1 FY27 ~Dez |
 | RMS | 68 | 🟢 4 | 33,53€ | ✅ Screener-Exception | H1 Juli/Aug |
-| ASML | 66 | 🟡 3 | 33,53€ | ✅ | Q2 2026 (Q1 gelesen 16.04.) |
+| ASML | 68 | 🟡 3 | 33,53€ | ✅ | Q2 2026 (Q1 17.04. Vollanalyse ✅) |
 | TMO | 63 | 🟠 2 | 16,76€ | ✅ | **23.04. Q1 — kritisch** |
 | APH | 63 | 🟡 3 | **0€** | 🔴 Score-basiert | 23.07. Q2 |
 | MSFT | 59 | 🟠 2 | **0€** | 🔴 CapEx/OCF 83.6% | **29.04. Q3 FY26 — FLAG-Review** |
@@ -54,7 +54,7 @@
 ## System-Zustand
 
 - **Scoring:** DEFCON v3.7 — Quality-Trap-Interaktionsterm (kein additiver Moat-Malus), OpM max 2Pt., Analyst-Bias-Kalibrierung, Fundamentals-Cap 50. System-Reife ~92%.
-- **Live-Verify v3.7:** 3/11 bestätigt (TMO ±1, ASML ±2, RMS ±2). Rest bei Earnings-Trigger.
+- **Live-Verify v3.7:** 3/11 bestätigt (TMO ±1, ASML ±2 — 66→68 post-Q1, RMS ±2). Rest bei Earnings-Trigger.
 - **Allokation:** 65/30/5 (ETF 617,50€ / Satelliten 285€ / Gold 47,50€), US-Cap 63% / Ist ~46%.
 - **MCP-Status:** defeatbeta (WSL2 Ubuntu-24.04), Shibui, WebSearch — alle live. Non-US via yfinance.
 - **Morning Briefing:** Trigger v2.1 täglich 10:00 MESZ (16 Symbole, Yahoo-Gap BRK.B/RMS/SU).
