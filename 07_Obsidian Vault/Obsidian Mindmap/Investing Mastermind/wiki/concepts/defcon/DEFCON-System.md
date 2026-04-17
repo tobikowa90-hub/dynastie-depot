@@ -47,12 +47,12 @@ Gewichte: D4/D3 (kein 🔴) = 1.0 | D2 (kein 🔴) = 0.5 | D1 / 🔴 FLAG = 0.0
 Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 ```
 
-**Beispiel (aktuell: 9× D4/D3 aktiv, 2× 🔴 eingefroren):**
-- Nenner = (9 × 1.0) + (0 × 0.5) = 9.0
-- D4/D3-Rate = 285 / 9.0 × 1.0 = **31.67€**
-- D2-Rate (falls vorhanden) = 285 / Nenner × 0.5
-- 🔴/D1-Rate = **0€**
-- Check: 9 × 31.67 = 285€ ✓
+**Beispiel (aktuell 17.04.2026: 8× D4/D3 + 1× D2 aktiv, 2× 🔴 eingefroren):**
+- Nenner = (8 × 1.0) + (1 × 0.5) = **8.5**
+- D4/D3-Rate = 285 / 8.5 × 1.0 = **33.53€**
+- D2-Rate (TMO) = 285 / 8.5 × 0.5 = **16.76€**
+- 🔴/D1-Rate (MSFT, APH) = **0€**
+- Check: 8 × 33.53€ + 16.76€ = 285€ ✓
 
 ## Verlinkungen
 

@@ -4,7 +4,7 @@ tags: [index, home, navigation]
 
 # 🦅 Investing Mastermind — Zentralindex
 
-> Zieljahr: 2058 | System: DEFCON v3.4 | Stand: April 2026
+> Zieljahr: 2058 | System: DEFCON v3.7 | Stand: 17.04.2026
 
 ## 📊 Depot-State
 
@@ -16,17 +16,17 @@ tags: [index, home, navigation]
 
 | Ticker | DEFCON | Score | FLAG |
 |--------|--------|-------|------|
-| [[AVGO]] | 🟢 4 | 86 | — |
-| [[COST]] | 🟢 4 | ~80 | — |
-| [[RMS]] | 🟢 4 | ~80 | — |
-| [[VEEV]] | 🟢 4 | ~80 | — |
-| [[SU]] | 🟢 4 | ~80 | — |
-| [[BRKB|BRK.B]] | 🟢 4 | ~80 | — |
-| [[V]] | 🟢 4 | ~80 | — |
-| [[APH]] | 🟢 4 | ~80 | — |
+| [[AVGO]] | 🟢 4 | 84 | — |
+| [[COST]] | 🟢 4 | 69 | Screener-Exception |
+| [[RMS]] | 🟢 4 | 68 | Screener-Exception |
+| [[VEEV]] | 🟢 4 | 74 | — |
+| [[SU]] | 🟢 4 | 69 | — |
+| [[BRKB|BRK.B]] | 🟢 4 | 75 | Insurance-Exception |
+| [[V]] | 🟢 4 | 86 | — |
+| [[APH]] | 🟡 3 | 63 | 🔴 Score-basiert |
 | [[ASML]] | 🟡 3 | 68 | — |
-| [[TMO]] | 🟡 3 | 67 | — |
-| [[MSFT]] | 🟠 2 | 60 | 🔴 |
+| [[TMO]] | 🟠 2 | 63 | — |
+| [[MSFT]] | 🟠 2 | 59 | 🔴 CapEx |
 
 ---
 

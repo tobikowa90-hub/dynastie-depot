@@ -27,7 +27,7 @@ Danach: freie Agenda (siehe Offene Punkte unten) oder Earnings-Trigger.
 ### Backtest-Impact (keine DEFCON-Shifts) + Live-Verify-Status
 | Ticker | v3.5 → v3.7 | DEFCON | Rate | Live-Verify |
 |--------|-------------|--------|------|-------------|
-| ASML | 68 → 66 | 🟡 3 | 33,53€ | ✅ 17.04. (±2) — beide Fix-1-Zweige hart 0. **Watch Fwd P/E FY27 30,30** |
+| ASML | 68 → 66 → **68** | 🟡 3 | 33,53€ | ✅ 17.04. (±2 → Post-Q1 Vollanalyse: 68 bestätigt). **Watch Fwd P/E FY27 30,30 → D4-Upside bei <30** |
 | AVGO | 85 → 84 | 🟢 4 | 33,53€ (Insider-Review) | ⏳ offen (Q3 FY26 Earnings) |
 | MSFT | 60 → 59 | 🟠 2 | 0€ (🔴 CapEx/OCF) | ⏳ offen (29.04.) |
 | TMO | 62 → 63 | 🟠 2 | **16,76€** (D2 aus v3.5 Audit) | ✅ 17.04. (±1) — nur P/FCF-Zweig Fix-1 |
@@ -53,7 +53,7 @@ Danach: freie Agenda (siehe Offene Punkte unten) oder Earnings-Trigger.
 - `06_Skills-Pakete/dynastie-depot_v3.7.zip` (mit `SKILL.md` Rename für Desktop-App) — manuell installiert, ersetzt v3.5.
 
 ### Noch offen (User-Pending)
-- `03_Tools/Rebalancing_Tool_v3.4.xlsx` Sparraten-Spalte manuell setzen: 33,53€ × 8 + 16,76€ (TMO) + 0€ (MSFT, APH).
+- Keine offenen Tool-/Doku-Sync-Punkte. Rebalancing_Tool + Satelliten_Monitor + alle 00_Core/-Dateien + Vault sind 17.04.2026 auf v3.7 / ASML 68 synchronisiert.
 
 ---
 

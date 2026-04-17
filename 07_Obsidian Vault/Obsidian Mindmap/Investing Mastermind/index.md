@@ -51,17 +51,17 @@
 - [[Vishal Mirza]] — Co-Autor "Large Language Models in equity markets" (PMC Survey, 84 Studien)
 
 ### Satelliten (aktive Positionen)
-- [[AVGO]] — Broadcom Inc. | DEFCON 🟢 4 | Score 86 | Kalibrierungsanker #1
+- [[AVGO]] — Broadcom Inc. | DEFCON 🟢 4 | Score 84 | Kalibrierungsanker #1 (v3.7)
 - [[COST]] — Costco Wholesale | DEFCON 🟢 4 | Score 69
-- [[RMS]] — Hermès International | DEFCON 🟢 4 | Score 69 | Non-US | Screener-Exception (ROIC 24% >> WACC)
+- [[RMS]] — Hermès International | DEFCON 🟢 4 | Score 68 | Non-US | Screener-Exception (ROIC 24% >> WACC)
 - [[VEEV]] — Veeva Systems | DEFCON 🟢 4 | Score 74
-- [[SU]] — Schneider Electric | DEFCON 🟢 4 | Score 71 | Non-US
+- [[SU]] — Schneider Electric | DEFCON 🟢 4 | Score 69 | Non-US
 - [[BRKB]] — Berkshire Hathaway B | DEFCON 🟢 4 | Score 75
 - [[V]] — Visa Inc. | DEFCON 🟢 4 | Score 86
-- [[APH]] — Amphenol Corp. | DEFCON 🟡 3 | Score 61 | 🔴 FLAG (Score-basiert)
+- [[APH]] — Amphenol Corp. | DEFCON 🟡 3 | Score 63 | 🔴 FLAG (Score-basiert)
 - [[ASML]] — ASML Holding | DEFCON 🟡 3 | Score 68 | Non-US
-- [[TMO]] — Thermo Fisher Scientific | DEFCON 🟡 3 | Score 67 | Q1 Earnings 23.04.
-- [[MSFT]] — Microsoft | DEFCON 🟠 2 | Score 60 | 🔴 CapEx-FLAG | Q3 Earnings 29.04.
+- [[TMO]] — Thermo Fisher Scientific | DEFCON 🟠 2 | Score 63 | Q1 Earnings 23.04. (D3→D2 v3.7)
+- [[MSFT]] — Microsoft | DEFCON 🟠 2 | Score 59 | 🔴 CapEx-FLAG | Q3 Earnings 29.04.
 
 ### Ersatzbank
 - [[GOOGL]] — MSFT-Ersatz | Score 72, DEFCON 3 | 🔴 FLAG: CapEx ~75% OCF — kein Einstieg

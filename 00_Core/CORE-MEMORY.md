@@ -64,7 +64,9 @@
 
 ---
 
-## 3. Aktive Positions-Entscheidungen (Stand: 04.04.2026)
+## 3. Aktive Positions-Entscheidungen (Stand: 04.04.2026 — pre-v3.7)
+
+> ⚠️ **Historische Entscheidungs-Narrative (04.04.–16.04.).** Aktuelle Live-Scores/DEFCON/Sparraten → `00_Core/STATE.md`. v3.7-Shifts: MSFT 60→59, TMO 62→63 (D2 bestätigt), APH 61→63 (FLAG bleibt), ASML 66→68 (Post-Q1 Vollanalyse). Section bleibt als Entscheidungs-Logik-Archiv erhalten.
 
 ### MSFT — DEFCON 2, FLAG aktiv (Re-Analyse 08.04.2026)
 - **Score:** 60/100 (↓ von 77, −17 Punkte) | **DEFCON:** 🟠 2 | **FLAG:** 🔴 CapEx/OCF Q2 FY26: 83.6% (bereinigt ~63%)
@@ -102,7 +104,7 @@
 
 | Ticker | Score | DEFCON | Datum | Status | Nächste Aktion |
 |--------|-------|--------|-------|--------|----------------|
-| ASML | 66 | 🟡 3 | 17.04.2026 (v3.7) | Aktiv — volle Rate (D3, kein 🔴) | ✅ Q1 2026 Earnings abgeschlossen. Live-Verify QT-Cap bei Q2 2026 |
+| ASML | 68 | 🟡 3 | 17.04.2026 (v3.7 Post-Q1 Vollanalyse) | Aktiv — volle Rate (D3, kein 🔴) | Q2 2026 Earnings — Watch: Fwd P/E FY27 30,30 Grenzfall (<30 → D4-Upside) |
 | AVGO | 84 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — ⚠️ Insider-Review | Q3 FY26 Earnings — OpenInsider manuell prüfen |
 | FFH.TO | 88 | 🟢 4 | ~März 2026 | Ersatzbank BRK.B | — |
 | NVDA | 86 | 🟢 4 | ~März 2026 | Ersatzbank AVGO | — |

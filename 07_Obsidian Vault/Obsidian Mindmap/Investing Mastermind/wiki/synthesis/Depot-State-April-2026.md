@@ -6,6 +6,7 @@ version: April-2026
 
 # Depot-State — April 2026
 
+> ⚠️ **Historischer Snapshot-Zeitstand: 10.04.2026 (pre-v3.7).** Live-Stand (Nenner 8.5, Rate 33,53€/16,76€, TMO D2, ASML 68) → `00_Core/STATE.md`. Dieser Snapshot bleibt als April-Monatsarchiv erhalten.
 > Monatlicher Snapshot. Nach jeder !Analysiere-Session aktualisieren.
 > Nächste Vollaktualisierung: Mai 2026 (nach TMO + MSFT Earnings)
 

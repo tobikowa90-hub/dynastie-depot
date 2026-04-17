@@ -131,12 +131,12 @@ Benenne im Analyse-Output explizit, welche Befunde auf diesen Ticker zutreffen u
 
 **Formel:** `Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht`
 
-**Rechenbeispiel (aktueller Stand: 9× D4/D3 aktiv, 2× 🔴 eingefroren):**
-- Nenner = (9 × 1.0) + (0 × 0.5) = 9.0
-- D4/D3-Einzelrate = 285€ / 9.0 × 1.0 = **31,67€**
-- D2-Einzelrate (falls vorhanden) = 285€ / Nenner × 0.5
-- 🔴/D1-Rate = **0€**
-- Summencheck: 9 × 31,67 = 285€ ✓
+**Rechenbeispiel (aktueller Stand 17.04.2026: 8× D4/D3 + 1× D2 aktiv, 2× 🔴 eingefroren):**
+- Nenner = (8 × 1.0) + (1 × 0.5) = **8.5**
+- D4/D3-Einzelrate = 285€ / 8.5 × 1.0 = **33,53€**
+- D2-Einzelrate (TMO) = 285€ / 8.5 × 0.5 = **16,76€**
+- 🔴/D1-Rate (MSFT, APH) = **0€**
+- Summencheck: 8 × 33,53€ + 16,76€ + 0 + 0 = 285€ ✓
 
 4. **Steuer-Bremse**: Niemals durch Verkauf rebalancen → Sparplan umleiten
 5. US-Cap prüfen: Bleibt US-Exposure unter 63%?
@@ -317,7 +317,7 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 | Position | Score | DEFCON | Gewicht | Rate |
 |----------|-------|--------|---------|------|
 | AVGO | 84 | 🟢 4 | 1,0 | 33,53€ |
-| ASML | 66 | 🟡 3 | 1,0 | 33,53€ |
+| ASML | 68 | 🟡 3 | 1,0 | 33,53€ |
 | MSFT | 59 | 🟠 2 | 0,0 | 0€ (🔴 FLAG) |
 | RMS | 68 | 🟢 4 | 1,0 | 33,53€ |
 | VEEV | 74 | 🟢 4 | 1,0 | 33,53€ |

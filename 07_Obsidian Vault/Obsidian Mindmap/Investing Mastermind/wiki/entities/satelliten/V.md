@@ -30,7 +30,7 @@ updated: 2026-04-16
 | Insider | 6/10 | Diskr. 90d $201K (kein FLAG). Plan-Verkäufe $24.6M (10b5-1, Lloyd Carney) |
 | Sentiment | 10/10 | 37 Buy / 3 Hold / 0 Sell. Zacks 1↑ / 0↓ |
 
-**Wide Moat:** Network Effect + Duopol mit [[MA]]. FCF-Marge ~54%, ROIC ~9.9%. Top-Score 86 gleichauf [[AVGO]].
+**Wide Moat:** Network Effect + Duopol mit [[MA]]. FCF-Marge ~54%, ROIC ~9.9%. Top-Score 86 (alleinig nach AVGO v3.7: 86→84).
 
 **Nächste Aktion:** Q2 FY26 Earnings ~22.04.2026 → QuickCheck
 
@@ -45,7 +45,7 @@ updated: 2026-04-16
 - [[DEFCON-System]]
 - [[Faktortabelle-Architektur]]
 - [[Analyse-Pipeline]]
-- [[AVGO]] — gleichauf Top-Score 86
+- [[AVGO]] — ehemals gleichauf (Top-Score 86); nach v3.7 AVGO bei 84
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten
