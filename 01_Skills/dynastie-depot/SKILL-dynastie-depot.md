@@ -1,6 +1,6 @@
 ---
 name: dynastie-depot
-version: "3.5"
+version: "3.7"
 zieljahr: 2058
 system: DEFCON v3.7
 description: >
