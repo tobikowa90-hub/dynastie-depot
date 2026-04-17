@@ -46,7 +46,9 @@
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
 **Stand:** 17.04.2026 — v3.7 System-Gap-Release (Quality-Trap-Interaktion + OpM + Analyst-Bias + Fundamentals-Cap 50)
 
-> ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Einzige DEFCON-Klassifikations-Shifts: keine. ASML 68→66 (bleibt D3), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74. Backtest-Approximation basierend auf SESSION-HANDOVER-Tabelle mit Interaktions-Redesign-Anpassung. Live-Verifikation pro Ticker bei nächstem Earnings-Update (Schritt-2-Restarbeit dokumentiert).
+> ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Einzige DEFCON-Klassifikations-Shifts: keine. ASML 68→66 (bleibt D3), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74.
+>
+> **Live-Verify-Status (Schritt-2-Restarbeit):** 3/11 verifiziert am 17.04. — **TMO (±1), ASML (±2), RMS (±2)** alle innerhalb Toleranz bestätigt. Fix-1 empirisch validiert: differenziert (TMO nur P/FCF) vs. maximal (ASML/RMS beide Zweige). Rest-Tickers (AVGO, MSFT, VEEV, SU, BRK.B, V, APH, COST) bei regulärem Earnings-Trigger. **Watch:** ASML Fwd P/E FY27 30,30 Grenzfall — bei <30 Score +1-2 möglich (D4-Upside).
 
 ---
 
