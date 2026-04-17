@@ -52,7 +52,7 @@ Skill-Loads. Das ist bewusst so designed:
 
 **Konsequenz:** Kein Mehrwert durch Skill-Verkettung innerhalb von `!Analysiere`.
 Jeder zusätzliche Skill-Load kostet Token und verliert DEFCON-Kontext
-(Scoring-Skalen, FLAG-Regeln, Kalibrierungsanker sind nur in der SKILL-dynastie-depot.md bekannt).
+(Scoring-Skalen, FLAG-Regeln, Kalibrierungsanker sind nur in der SKILL.md bekannt).
 
 ### Wann werden andere Skills eigenständig aktiviert?
 
@@ -298,10 +298,10 @@ Fußnoten wie bei MSFT Pre-Processing Regel 2), XBRL-Datenkonflikte,
 Claude Stuff/
 ├── 00_Core/           → CORE-MEMORY.md | KONTEXT.md | INSTRUKTIONEN.md
 ├── 01_Skills/         → Skill-Quelldateien (Arbeitsversionen)
-│   ├── dynastie-depot/    → SKILL-dynastie-depot.md | config.yaml | Beispiele.md | PIPELINE.md
-│   ├── insider-intelligence/ → SKILL-dynastie-depot.md | insider_intel.py
-│   ├── non-us-fundamentals/  → SKILL-dynastie-depot.md | eodhd_intel.py
-│   └── quick-screener/    → SKILL-dynastie-depot.md
+│   ├── dynastie-depot/    → SKILL.md | config.yaml | Beispiele.md | PIPELINE.md
+│   ├── insider-intelligence/ → SKILL.md | insider_intel.py
+│   ├── non-us-fundamentals/  → SKILL.md | eodhd_intel.py
+│   └── quick-screener/    → SKILL.md
 ├── 02_Analysen/       → DEFCON-Analysen als Excel (Output Stufe 3)
 ├── 03_Tools/          → Rebalancing_Tool | Satelliten_Monitor | Watchlist_Monitor
 ├── 04_Templates/      → Analyse-Template | CAPEX-FCF | Alerts-Log

@@ -39,7 +39,7 @@ stand: 2026-04-07
 
 | Datei | Wann lesen |
 |-------|-----------|
-| `SKILL-dynastie-depot.md` | Immer — Workflows, Scoring-Skalen, Regeln |
+| `SKILL.md` | Immer — Workflows, Scoring-Skalen, Regeln |
 | `manifest.md` | Strategische Fragen, Rebalancing, Steuer |
 | `capex-fcf-template.md` | Bei !CAPEX-FCF-ANALYSIS |
 | `sources.md` | Jede Analyse — Quellen-URLs pro Metrik |

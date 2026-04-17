@@ -1,7 +1,7 @@
 # ⚙️ INSTRUKTIONEN.md — Handlungsanweisungen & Skill-Guidance
-**Version:** 1.4 (v3.7 System-Gap-Release) | **Stand:** 17.04.2026
-> Dieses Dokument beschreibt das WIE — alle Workflows, Befehle, Regeln.
-> Für Strategie → KONTEXT.md | Für Erinnerungen → CORE-MEMORY.md
+**Version:** 1.5 (Post-Dedup INSTRUKTIONEN↔SKILL) | **Stand:** 17.04.2026
+> Dieses Dokument beschreibt das WIE — User-Workflows, Befehle, Meta-Regeln.
+> Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 
 ---
 
@@ -75,84 +75,27 @@ Benenne im Analyse-Output explizit, welche Befunde auf diesen Ticker zutreffen u
 | B10 | Chain-of-Thought vor Scoring → bessere Konsistenz | Workflow — erst Reasoning, dann Score |
 | B11 | News-Daten: Positivity-Bias; Analyst 43% Strong Buy | Sentiment-Cap 10 Pt. — Korrektiv |
 
-### Gewichtung:
+### Scoring-Skalen, DEFCON-Schwellen, FLAGs
 
-| Block | Gewicht | Metriken |
-|-------|---------|---------|
-| 🔢 Fundamentals | 50 Pt. | P/FCF, Fwd P/E, Bilanz, CapEx/OCF, ROIC, FCF Yield |
-| 🏰 Economic Moat | 20 Pt. | Wide/Narrow/None + Quellen (Morningstar Primär) |
-| 📉 Technicals | 10 Pt. | ATH-Abstand, Relative Stärke vs. S&P500 (scored, 0-3), MA-Lage, DCF-Anker |
-| 🔴 Insider | 10 Pt. | Net Buy/Sell, Ownership, diskret. Selling >$20M |
-| 📊 Sentiment | 10 Pt. | Analyst-Rating, Ø Price Target, Sell-Ratio |
-
-### DEFCON-Schwellen:
-
-| Score | DEFCON | Neueinstieg | Bestand | Sparrate |
-|-------|--------|-------------|---------|----------|
-| ≥ 80 | 🟢 4 | ✅ Erlaubt | Sparplan voll aktiv | Volle Rate (Gewicht 1.0) |
-| 65–79 | 🟡 3 | ❌ Nein | Sparplan weiter aktiv | Volle Rate (Gewicht 1.0) — These intakt, weiter besparen |
-| 50–64 | 🟠 2 | ❌ Nein | 50% Sockelbetrag | Reduzierte Rate (Gewicht 0.5) — Position halten, nicht ausbauen |
-| < 50 | 🔴 1 | 🛑 Veto | Sparrate eingefroren | 0 € — Auswechslung einleiten |
-
-> **3-Stufen-Logik:** D4/D3 = volle Rate (1.0), D2 = Sockelbetrag 50% (0.5), D1 = eingefroren (0.0). Budget verteilt sich gewichtet: Σ Gewichte ergibt immer 100% des Aktien-Budgets. 🔴 FLAG überschreibt jeden Score → 0 €.
-
-### Automatische FLAGs (score-unabhängig — heilig!):
-
-| Trigger | Konsequenz |
-|---------|------------|
-| CapEx/OCF > 60% | 🔴 FLAG — Sparrate komplett gestoppt (auch bei DEFCON 4) |
-| Negativer FCF-Trend + steigendes CapEx | 🔴 FLAG — Sparrate gestoppt |
-| Insider Net-Selling > $20M / 90 Tage (kein 10b5-1 "M") | 🔴 FLAG — Sparrate gestoppt |
-
-> **FLAG überschreibt jeden Score.** Ein DEFCON 4 mit 🔴 FLAG bekommt 0 €. Ein DEFCON 3 mit 🔴 FLAG ebenfalls 0 €. Nur 🔴 FLAGs stoppen die Sparrate — 🟡/🚩 Warnungen lassen die Rate unverändert.
+> **Alle Scoring-Details → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) §Scoring-Skalen / §DEFCON-Schwellenwerte / §FLAG-Regeln**
+>
+> Dort verbindlich: Block-Gewichtung (50/20/10/10/10), Detailskalen (Fwd P/E, P/FCF, CapEx/OCF, ROIC, FCF-Yield, Bilanz, OpM TTM), Quality-Trap-Interaktion v3.7, Fundamentals-Cap 50, Bonus-Metriken, DEFCON-Schwellen-Tabellen (Neueinstieg + Bestand), automatische FLAGs.
 
 ---
 
-## 5. Fundamentals-Scoring (Detailskalen)
+## 5. Sentiment-Scoring (v3.7-Kalibrierung)
 
-| Metrik | Max | Skala |
-|--------|-----|-------|
-| Fwd P/E | 8 | <15→8 \| 15–20→6–7 \| 20–25→4–5 \| 25–35→2–3 \| >35→0–1 |
-| P/FCF | 8 | <15→8 \| 15–22→5–7 \| 22–30→3–4 \| 30–45→1–2 \| >45→0 |
-| CapEx/OCF | 9 | <10%→9 \| 10–20%→7–8 \| 20–40%→4–6 \| 40–60%→1–3 \| >60%→0+FLAG |
-| ROIC vs WACC | 8 | ROIC>WACC+5%→8 \| +3–5%→6–7 \| +1–3%→4–5 \| ~WACC→2–3 \| <WACC→0–1 |
-| FCF Yield | 8 | >6%→8 \| 4–6%→6–7 \| 2–4%→3–5 \| 1–2%→1–2 \| <1%→0 |
-| Bilanz | 9 | Net Debt/EBITDA + Current Ratio kombiniert |
-| **Operating Margin TTM** | **2** | **>30%→2 \| 15–30%→1 \| <15%→0** (v3.7; Exceptions: COST, BRK.B) |
-
-**Quality-Trap-Interaktionsterm (v3.7, B6 — Moat-Malus vermieden):**
-- Wide Moat (17–20) **UND** Fwd P/E >30 → Fwd-P/E-Subscore **hart 0** (Deckel, nicht Abzug)
-- Wide Moat (17–20) **UND** P/FCF >35 → P/FCF-Subscore **hart 0**
-- Wide Moat + Fwd P/E 22–30 ODER P/FCF 22–35 → betreffender Subscore **max. 1**
-- Regel wirkt nur auf Fundamentals-Subscores, Moat-Block (§4) bleibt unverändert
-- Screener-Exceptions (BRK.B P/B, COST Membership) nicht betroffen
-- **Motivation:** Applied Learning 17.04. — Aggregat-Malus wäre Double-Counting, da P/E und P/FCF bereits skaliert gescored werden.
-
-**Fundamentals-Cap (v3.7):** Block-Summe hart auf **50** gedeckelt. Bonus-Metriken dürfen Max-Summe nicht überschreiten (gewollt: Top-Namen verlieren Bonus-Headroom, dafür keine künstliche Score-Inflation).
-
-**Bonus-Metriken (v3.1-Upgrades, je max 2 Zusatzpunkte — nur innerhalb 50er-Cap):**
-SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power, 200MA Slope, DCF-Anker, EPS Revision, PT-Dispersion, Tariff Exposure
-
----
-
-## 5a. Sentiment-Scoring (Detailskalen, v3.7-Kalibrierung)
-
-| Metrik | Max | Skala |
-|--------|-----|-------|
-| Strong-Buy-Ratio | 4 | <40%→4 \| 40–60%→2 \| **>60%→1** (Crowd-Consensus-Malus, B11) |
-| Sell-Ratio | 3 | <3%→1 \| 3–10%→3 \| >10%→0 (Extrem-Consensus-Warnung) |
-| Ø Price-Target-Upside | 3 | >30%→3 \| 10–30%→2 \| 0–10%→1 \| <0%→0 |
-
-**Motivation (v3.7):** Vault-Befund B11 (Analyst 43% Strong Buy im Baseline, Positivity-Bias). Crowd-Consensus >60% war in v3.5 unlimitiert-positiv → korrigiert. Extrem niedrige Sell-Ratios (<3%) sind ebenfalls Warnsignal, kein Clean-Bill.
+> **Detailskalen → [SKILL.md §Sentiment (10 Punkte)](../01_Skills/dynastie-depot/SKILL.md)**
+>
+> Strong-Buy-Ratio / Sell-Ratio / PT-Upside — v3.7-Kalibrierung (B11: Crowd-Consensus-Malus, Extrem-Consensus-Warnung).
 
 ---
 
 ## 6. Insider-Scoring — Pflichtregeln
 
-- **Primärquelle:** openinsider.com/[TICKER] — 10b5-1-Spalte "M" prüfen!
-- Verkäufe >$20M: Kein "M" in der Spalte = diskretionär = 🔴 FLAG
-- Cashless Exercise (Code M+S, gleicher Tag, Expiry ≤30d) ≠ diskretionäres Selling
-- Fallback: SEC EDGAR Form 4 / GuruFocus Insiders
+> **Scoring-Skala + Cashless-Exercise-Ausnahme → [SKILL.md §Insider (10 Punkte)](../01_Skills/dynastie-depot/SKILL.md)**
+>
+> Kurz: OpenInsider HEILIG, 10b5-1 "M"-Check bei Verkäufen >$20M, Fallback SEC EDGAR Form 4.
 
 ---
 
@@ -172,21 +115,9 @@ SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power, 200MA Slope, DCF-Anker, EPS
 
 ## 8. Datenquellen-Logik
 
-| Ticker-Typ | Primärquelle | Fallback |
-|-----------|-------------|---------|
-| US (NYSE/NASDAQ) | SEC EDGAR (10-K, 10-Q) | GuruFocus / Macrotrends |
-| Non-US (ASML, RMS, SU) | GuruFocus + Macrotrends | Yahoo Finance |
-| Datenkonflikte | SEC > Drittanbieter | — |
-
-**Standard-Quellen-Reihenfolge:**
-1. Kurs: Yahoo Finance / TradingView
-2. P/FCF, FCF Yield: AlphaSpread / StockAnalysis
-3. Bilanz: SimplyWallSt / GuruFocus
-4. CapEx/OCF: SEC 10-K / StockAnalysis
-5. ROIC/WACC: GuruFocus / AlphaSpread
-6. Moat: Morningstar (Primär)
-7. Insider: openinsider.com (Primär) → SEC EDGAR (Fallback)
-8. Sentiment: Yahoo Finance / TipRanks
+> **API-Routing + Quellen-Reihenfolge → [SKILL.md §API-Routing-Regel](../01_Skills/dynastie-depot/SKILL.md) + `01_Skills/dynastie-depot/sources.md` (kanonische URLs pro Metrik)**
+>
+> Kurz: US → defeatbeta + Shibui + SEC EDGAR. Non-US → EODHD. Datenkonflikt: SEC > Drittanbieter.
 
 ---
 
@@ -265,101 +196,35 @@ Nach **jeder** `!Analysiere`-Analyse, Sparplan-Änderung oder FLAG-Update:
 
 ---
 
-## 13. Verhaltensregeln (unantastbar)
+## 13. Verhaltensregeln
 
-1. **Quellenpflicht** — jede Zahl mit Web-Quelle [web:X] belegen
-2. **Konservativ scoren** — bei Grenzfällen den niedrigeren Score
-3. **Kalibrieren** — vor jeder Analyse Beispiele.md lesen
-4. **Kein Raten** — bei Unsicherheit nachfragen
-5. **EUR/USD explizit** — Währung immer angeben
-6. **FLAG heilig** — überschreibt jeden Score
-7. **Steuer-Bewusstsein** — bei Verkaufs-Fragen: Abgeltungsteuer 26,375%, FIFO, Freibeträge
+> **Vollständige 7 Regeln → [SKILL.md §Verhaltensregeln](../01_Skills/dynastie-depot/SKILL.md)**
+>
+> Kurz: Quellenpflicht · Konservativ scoren · Kalibrieren (Beispiele.md) · Kein Raten · EUR/USD explizit · FLAG heilig · Steuer-Bewusstsein (26,375%, FIFO).
 
 ---
 
 ## 14. Non-US Scoring Addendum (ASML / RMS / SU)
 
-Europäische Satelliten folgen IFRS — nicht US-GAAP. Abweichungen explizit dokumentieren.
-
-**Datensource:** EODHD API (Euronext-Primär, EUR). Routing: IF Non-US → EODHD (nicht Shibui/defeatbeta).
-
-**IFRS-Anpassungen pro Scoring-Block:**
-
-| Block | IFRS-Besonderheit | Handhabung |
-|-------|------------------|------------|
-| Bilanz | Goodwill wird unter IFRS nicht amortisiert (anders als altes US-GAAP) — Bilanzbild stabiler | Goodwill-Anteil trotzdem prüfen, Malus-Regel identisch |
-| CapEx/OCF | IFRS 16 Leasing-Aktivierung erhöht Bilanzvermögen ohne CF-Ausweis | ROU-Asset-Zugänge nicht als CapEx zählen, nur Cash-CapEx |
-| Insider-Scoring | Kein Form 4 / OpenInsider für europäische Titel | AFM-Meldungen (ASML): afm.nl/registers | AMF-Meldungen (RMS, SU): amf-france.org — manueller Check, kein API |
-| SBC | Hermès: SBC minimal, strukturell kein Problem | Trotzdem SBC/OCF-Check durchführen |
-
-**Kalibrierungsanker Non-US:** Kein dedizierter Anker etabliert (Stand 06.04.2026). ASML dient nach erster vollständiger DEFCON-Analyse als Referenzpunkt für europäische Wide-Moat-Titel.
-
-**Währung:** Scores und Ratios sind währungsneutral. Absolute Zahlen immer in EUR ausweisen. Kursangabe: Xetra-Kurs (EUR) als Primär, ADR-Kurs (USD) als Kontext.
+> **IFRS-Anpassungen + API-Routing → [SKILL.md §API-Routing-Regel (Non-US)](../01_Skills/dynastie-depot/SKILL.md) + §21 unten (Kurzreferenz)**
+>
+> EODHD ist Datenquelle für Non-US (Euronext-Primär, EUR). IFRS-Nuancen pro Block (IFRS 16 Leasing, Goodwill, SBC) siehe §21 Kurzreferenz. Insider: AFM (ASML) / AMF (RMS, SU) manuell — kein Form 4.
 
 ---
 
-## 15. Tariff Exposure — Pflicht-Quellenreihenfolge
+## 15. Tariff Exposure
 
-Bei jedem `!Analysiere` für US-notierte Titel:
-
-| Priorität | Quelle | Inhalt |
-|-----------|--------|--------|
-| 1 (Primär) | SEC EDGAR 10-K / 20-F → Abschnitt "Geographic Revenue" | Exakte Revenue-Anteile CN/TW/MY/TH/VN — maschinenlesbar |
-| 2 | defeatbeta `get_quarterly_revenue_by_geography` | API-Abruf, schnell verfügbar |
-| 3 | Earnings Call Transcript → Management-Kommentar zu Zöllen | Qualitative Einschätzung Supply-Chain-Risiken |
-| 4 (Fallback) | Simply Wall St "Company Analysis" | Schätzung — nur wenn keine Primärdaten verfügbar |
-
-**Schwellen:** <15% = kein FLAG | 15–35% = Notiz Risk Map | >35% = FLAG aktiv (Sparrate 0€, -3 Punkte Fundamentals)
+> **FLAG-Regeln + Quellen-Reihenfolge → [SKILL.md §FLAG Typ 4: Tariff Exposure](../01_Skills/dynastie-depot/SKILL.md)**
+>
+> Schwellen: <15% kein FLAG | 15–35% Notiz Risk Map | >35% FLAG aktiv.
 
 ---
 
-## 16. Non-US API Sanity Check — Workflow (OCF/CapEx Kreuzverifikation)
+## 16. Non-US API Sanity Check
 
-**Auslöser:** Nach jeder DEFCON-Analyse eines Non-US-Satelliten (ASML, RMS, SU) ODER wenn yfinance-Daten aktualisiert wurden (Earnings-Zyklus).
-
-**Toleranz:** ±1.5% für CapEx. OCF-Abweichungen bis ~15% zwischen IFRS-EU und US-GAAP-Quellen sind strukturell (IFRS 16 Leasing) — kein API-Drift.
-
-### Schritt 1 — yfinance-Daten abrufen
-
-```bash
-cd "01_Skills/non-us-fundamentals"
-python eodhd_intel.py detail ASML   # oder RMS / SU
-```
-Notiere: OCF, CapEx, FCF, CapEx/OCF % für alle 4 Jahrgänge.
-
-### Schritt 2 — Vergleichsquelle abrufen
-
-| Ticker | Primärquelle (IFRS-PDF) | Fallback (Web) |
-|--------|------------------------|----------------|
-| ASML | asml.com/investors → Q4 Results → Financial Statements PDF | stockanalysis.com/stocks/asml/financials/cash-flow-statement/ |
-| RMS | finance.hermes.com → Résultats semestriels | stockanalysis.com/stocks/rms/financials/cash-flow-statement/ |
-| SU | se.com/investors → Half-Year Results | stockanalysis.com/stocks/su/financials/cash-flow-statement/ |
-
-**IFRS-Zeilen pro Ticker** (aus SKILL.md Abschnitt "Quarterly API Sanity Check"):
-- **ASML:** OCF = "Net cash flows from operating activities" | CapEx = PP&E + Intangibles + Land use rights (China-Erbpacht addieren!)
-- **RMS:** OCF = "Cash flows from operating activities" | CapEx = "Purchases of PP&E and intangible assets" (NICHT "Adjusted FCF" verwenden — enthält IFRS-16-Abzüge)
-- **SU:** OCF = "Net cash from operating activities" (NACH Steuern!) | CapEx = PP&E + Intangibles (IFRS-16 ROU-Zugänge nicht mitzählen)
-
-### Schritt 3 — Kreuzverifikation
-
-| Metrik | Δ ≤ ±1.5% | Δ 1.5–15% | Δ > 15% |
-|--------|-----------|-----------|---------|
-| CapEx | ✅ OK | ⚠️ Prüfen ob Intangibles fehlen | 🔴 API-DRIFT-FLAG |
-| OCF | ✅ OK | ⚠️ IFRS 16 Leasingeffekt prüfen | 🔴 API-DRIFT-FLAG |
-
-**Bei API-DRIFT-FLAG:** Alle laufenden Analysen für diesen Ticker pausieren, Quelle manuell verifizieren, Befund in CORE-MEMORY.md eintragen.
-
-### Schritt 4 — Bekannte Strukturunterschiede (kein Fehler)
-
-| Ticker | Erwartete OCF-Abweichung | Ursache |
-|--------|--------------------------|---------|
-| ASML | ~10–12% (IFRS vs. US GAAP) | IFRS 16: Leasingzahlungen → Finanzierungs-CF. yfinance nutzt IFRS-EU (ASML.AS), StockAnalysis nutzt US GAAP (20-F) |
-| RMS | gering (nur IFRS) | Kein US-Listing, einheitlich IFRS |
-| SU | gering (nur IFRS) | Kein US-Listing, einheitlich IFRS |
-
-### Schritt 5 — CORE-MEMORY aktualisieren
-
-Eintrag: `API Sanity Check [TICKER] [Datum]: CapEx Δ X%, OCF Δ Y% ([Ursache]). FLAG: Ja/Nein.`
+> **Vollständiger Workflow (Rotationsplan, IFRS-Zeilen-Mapping, FLAG-Protokoll) → [SKILL.md §Quarterly API Sanity Check](../01_Skills/dynastie-depot/SKILL.md)**
+>
+> Non-US-Rhythmus: Nach jedem Earnings-Zyklus. Toleranz: ±1,5% CapEx, ~15% OCF (IFRS-16-Leasingeffekt strukturell). Tool: `python 01_Skills/non-us-fundamentals/eodhd_intel.py detail [TICKER]`.
 
 ---
 
@@ -584,4 +449,4 @@ Empfehlung: [!SyncBriefing ausführen] / [Kein Handeln nötig]
 - Work-in-Progress-Analysen (Score noch nicht final) — erst nach Abschluss pushen
 
 ---
-*🦅 INSTRUKTIONEN.md v1.4 (v3.7) | Dynastie-Depot | Stand: 17.04.2026*
+*🦅 INSTRUKTIONEN.md v1.5 (Post-Dedup) | Dynastie-Depot v3.7 | Stand: 17.04.2026*

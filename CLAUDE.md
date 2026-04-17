@@ -1,11 +1,14 @@
 # SESSION-INITIALISIERUNG — Dynasty-Depot Projekt
 
-**PFLICHT bei `Session starten`:** Lies sofort diese vier Dateien — ohne Rückfrage:
+**PFLICHT bei `Session starten`:** Lies sofort **nur `00_Core/STATE.md`** — ohne Rückfrage. Diese Datei ist Single-Entry-Point und genügt für 90% der Sessions (Scores, DEFCON, FLAGs, Sparraten, Trigger, Watches).
 
-1. `00_Core/CORE-MEMORY.md` — institutionelles Gedächtnis, aktuelle Positionen, offene Trigger
-2. `00_Core/KONTEXT.md` — Strategie, Allokation, Philosophie, Depot-Struktur
-3. `00_Core/INSTRUKTIONEN.md` — Workflows, DEFCON-Regeln, Skill-Befehle
-4. `00_Core/Faktortabelle.md` — aktueller Score-State aller Satelliten
+**On-Demand-Lektüre** (nur wenn Kontext explizit gebraucht wird):
+- `CORE-MEMORY.md` — Scoring-Lektionen (§5), Positions-Entscheidungen (§3), Audit-Log (§10), aktuelle Meilensteine ab 15.04. (§1)
+- `INSTRUKTIONEN.md` — Scoring-Skalen, Sparplan-Formel, Workflows (bei `!Analysiere`, `!Rebalancing`)
+- `KONTEXT.md` — Strategie, Allokation, Slot-Zuteilung (bei Strategie-Fragen)
+- `Faktortabelle.md` — Detail-Metriken pro Ticker (bei Deep-Dive)
+- `SESSION-HANDOVER.md` — Last-Session-Kontext (bei Fortsetzung)
+- `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md` — Chronik vor 15.04. (Projekt-Aufbau, Tool-Setups, erste Analysen)
 
 Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill aktivieren.
 
@@ -13,7 +16,7 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 
 - `CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
 - Stil: direkt, faktenbasiert, kein Filler — siehe INSTRUKTIONEN.md
-- **Sync-Pflicht:** Nach jeder Analyse: log.md + CORE-MEMORY.md + Faktortabelle aktualisieren
+- **Sync-Pflicht:** Nach jeder Analyse: log.md + CORE-MEMORY.md + Faktortabelle + **STATE.md** aktualisieren (STATE.md bei jeder Score/FLAG/Sparraten-Änderung)
 - **Briefing-Sync:** Vor Session-Ende `!SyncBriefing` falls 00_Core/ geändert wurde (§25). SessionEnd-Hook warnt automatisch.
 
 ## Projektstruktur
@@ -46,26 +49,14 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 
 Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 
-## Token-Effizienz Kurzreferenz
+## Token-Effizienz (operativ)
 
-- **Snapshot-First:** Faktortabelle vor API-Abfragen lesen — spart 3-5 Tool-Calls
-- **MCP nach Bereich:** Analyse: Shibui+defeatbeta+WebSearch | Vault: filesystem | Code: Tool Search auto
-- **/compact 60%:** Preserve Score/Tabelle/Urteil/FLAGs. Discard: rohe API-Outputs.
-- **5-Min-Regel:** Vor Pause >5 Min: /compact oder /clear
-- **DEFCON 1 Stopp:** Score <50 → Analyse stoppen (Insider-Modul läuft IMMER durch)
-- **Sync-Pflicht:** log.md + CORE-MEMORY.md + Faktortabelle — immer alle drei
-- **Morning Briefing:** Remote Trigger v2.1, täglich 10:00 MESZ. Manuell: `!Briefing`
-
-## MCP-Session-Check
-
-Bei Session-Start ausgeben:
-```
-Aktive MCP-Server: [/mcp ausführen und auflisten]
-Analyse-Session benötigt: Shibui + defeatbeta + WebSearch
-Vault-Session benötigt: filesystem
-Nicht benötigt → /mcp disable [name]
-Claude Code: Tool Search aktiv, automatisch.
-```
+- **Snapshot-First:** STATE.md + Faktortabelle vor API — spart 3-5 Tool-Calls
+- **Sync-Pflicht (alle vier):** log.md + CORE-MEMORY.md + Faktortabelle + STATE.md
+- **Pause-Regel:** >5 Min → /compact (Preserve: Score/Tabelle/Urteil/FLAGs) oder /clear
+- **DEFCON 1 Stopp:** Score <50 → Analyse stoppen (Insider-Modul läuft durch)
+- **MCP:** Tool Search lädt lazy. Manuell deaktivieren nur bei Vault-Only-Sessions.
+- **Modell:** Sonnet 4.6 default; `/model opus` für !Analysiere, Multi-Step-Refactors, strategische Entscheidungen.
 
 ## Kontinuierliches Lernen (3-Tier-System)
 
@@ -91,7 +82,6 @@ Claude Code: Tool Search aktiv, automatisch.
 - D3 = volle Rate (1.0), nicht 50% — systemweit seit v3.4 korrigiert
 - SessionEnd-Hook + Windows-Toast für Briefing-Sync → 03_Tools/briefing-sync-check.ps1
 - Subagents nur für Code+Tests — Markdown/YAML-Edits direkt editieren (3×Subagent-Overhead unnötig)
-- Skill-ZIP: Hauptdatei muss `SKILL.md` heißen (nicht SKILL-dynasty-depot.md). Desktop App liest aus AppData-Pfad, nicht ~/.claude/
 - Paper-Ingest ≠ System-Update: Wissenschaft validiert Regeln, erzwingt keine neuen — Redundanz-Check vor jeder Scoring-Erweiterung
 - Double-Counting-Falle: Aggregat-Scores (z.B. F-Score) prüfen ob Sub-Signale schon dekomponiert im System sind
 - Bonus-Cap-Check: Bei neuen Boni erst Punkteverteilung Top-Namen prüfen — sonst wirken Boni nur in Mitte

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-17 (DEFCON v3.7 System-Gap-Release — 82 Notes: 76 wiki + 6 raw)
+> Last updated: 2026-04-17 (INSTRUKTIONEN-SKILL-Trennung — 84 Notes: 78 wiki + 6 raw)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -112,6 +112,8 @@
 - [[Context-Hygiene-Code]] — Claude Code-spezifisch: autoCompact 75%, Tool Search, Deny Rules
 - [[Update-Klassen-DEFCON]] — A/B/C/D Klassen; Klasse-C-Priorität (Event-getriggert, sofort)
 - [[Faktortabelle-Architektur]] — Snapshot-First; config.yaml → Faktortabelle → API; ~60-70% Token-Einsparung
+- [[Session-Start-Protokoll]] — STATE.md als Single-Entry-Point; ersetzt 4-Datei-Auto-Read (~80% Token-Einsparung, seit 17.04.2026)
+- [[INSTRUKTIONEN-SKILL-Trennung]] — Post-Dedup Arbeitsteilung: User-Workflow (INSTRUKTIONEN) vs. Scoring-Technik (SKILL); 587→452 Zeilen, 10 Cross-Refs, seit 17.04.2026
 
 ### Depot-Struktur & Planung
 - [[ETF-Core]] — 65% des Sparplans (617,50€/Monat); IWDA, EIMI, EXUSA, AVGC, EWG2

@@ -103,9 +103,9 @@ status: aktiv
 
 ---
 
-## Implikationen für SKILL-dynastie-depot.md
+## Implikationen für SKILL.md
 
-B7 verlangt explizite Dokumentation der Datenhierarchie in SKILL-dynastie-depot.md:
+B7 verlangt explizite Dokumentation der Datenhierarchie in SKILL.md:
 ```
 Datenhierarchie (wissenschaftlich belegt):
 1. Fundamentals (FCF, ROIC, GM, Fwd P/E) — stärkste Prädiktoren

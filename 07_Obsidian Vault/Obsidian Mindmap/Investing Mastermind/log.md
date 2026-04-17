@@ -306,3 +306,24 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - Skill-Paket-Konsistenz: `06_Skills-Pakete/dynastie-depot_v3.7.zip` gebaut & manuell installiert (ersetzt v3.5)
 - Rebalancing-Tool bleibt als User-Pending (xlsx nicht programmatisch editiert)
 - Commit d890d57: 14 files +247/-142
+
+## [2026-04-17] refactor | Session-Start-Refactor — STATE.md als Single-Entry-Point
+- **Problem:** Session-Start-Auto-Read lud 4 Dateien (~1.200 Zeilen: CORE-MEMORY 362 + INSTRUKTIONEN 588 + KONTEXT 148 + Faktortabelle 114). ~70% Token-Overload (historische Chronik in CORE-MEMORY §1).
+- **Fix:** `00_Core/STATE.md` (~80 Zeilen) als neuer Single-Entry-Point. Enthält Scores, DEFCON, FLAGs, Sparraten, Trigger, Watches, Navigation. Andere 00_Core-Dateien on-demand.
+- **Archivierung (ohne Kontextverlust):** CORE-MEMORY §1 Meilensteine vor 15.04.2026 → `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md`. Mapping-Tabelle zeigt für jede historische Lektion, wo sie permanent lebt (Sections 2–10, INSTRUKTIONEN, Vault-Konzepte).
+- **CLAUDE.md** Session-Initialisierung-Block + Verhalten-Block (Sync-Pflicht jetzt 4 Dateien inkl. STATE.md) umgeschrieben.
+- **CORE-MEMORY §1** gekürzt: 60+ Einträge → 16 aktuelle (ab 15.04.2026), Verweis auf Archiv vorangestellt.
+- Pages created: [[Session-Start-Protokoll]] (concept)
+- Pages updated: [[CLAUDE-md-Konstitution]] (Session-Init-Section + frontmatter `related`), [[Faktortabelle-Architektur]] (frontmatter `related`), [[index.md]] (77 wiki-Notes, Header)
+- **Kein Commit-/Briefing-Sync in dieser Session** — User entscheidet über `!SyncBriefing` (00_Core/ geändert).
+- Token-Einsparung Session-Start: ~1.200 → ~80 Zeilen Auto-Read (≈-93%)
+
+## [2026-04-17] refactor | Post-STATE Konsolidierung — INSTRUKTIONEN↔SKILL-Dedup + SKILL-Rename + CLAUDE-Konsistenz
+- **Phase 1+4 (CLAUDE.md):** Sync-Pflicht Z.59 auf 4 Dateien korrigiert (vorher 3, Widerspruch zu Header Z.19); MCP-Session-Check 10 Zeilen → 1 Bullet; Token-Effizienz-Block verdichtet (6 Bullets → 6 kompakte; "Modell"-Zeile für `/model opus`-Toggle ergänzt); Applied Learning "SKILL.md-Rename"-Bullet obsolet → entfernt (12→11 Bullets).
+- **Phase 2a (SKILL-Rename):** `01_Skills/dynastie-depot/SKILL-dynastie-depot.md` → `SKILL.md` (ZIP-Install-Konvention). Aktualisiert: config.yaml, PIPELINE.md, SESSION-HANDOVER.md, wiki/sources/dynastie-depot-skill.md, wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md. Historischer Log-Eintrag oben unberührt (zeitliche Authentizität).
+- **Phase 2b (Dedup):** INSTRUKTIONEN.md 587→452 Zeilen (-23%). Gelöscht als Duplikate zu SKILL.md: §4 Gewichtung/DEFCON-Schwellen/FLAGs, §5 Fundamentals-Skalen, §5a Sentiment v3.7, §6 Insider (außer Cashless-Exercise → zu SKILL migriert), §8 Datenquellen, §13 Verhaltensregeln, §14 Non-US Addendum, §15 Tariff, §16 Non-US API Sanity Check. 10 Cross-Refs zu SKILL.md gesetzt.
+- **Phase 3 vorbereitet (Modell-Strategie):** `/model sonnet` Default, `/model opus` manuell für !Analysiere, Multi-Step-Refactors, strategische Entscheidungen. Kein Auto-Routing — null Risiko.
+- **ZIP-Rebuild:** `06_Skills-Pakete/dynastie-depot_v3.7.zip` neu gepackt (SKILL.md 38497 bytes inkl. Cashless-Exercise-Ergänzung).
+- Pages created: [[INSTRUKTIONEN-SKILL-Trennung]] (concept)
+- Pages updated: [[index.md]] (78 wiki-Notes), [[dynastie-depot-skill]] (SKILL.md-Ref), [[Wissenschaftliche-Fundierung-DEFCON]] (SKILL.md-Ref)
+- Motivation: Token-Effizienz (kein Doppel-Load) + Drift-Vermeidung (eine Quelle pro Regel) + ZIP-Install ohne Copy-Rename-Schritt.

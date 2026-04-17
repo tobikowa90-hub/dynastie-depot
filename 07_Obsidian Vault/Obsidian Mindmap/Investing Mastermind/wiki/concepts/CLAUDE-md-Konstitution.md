@@ -2,9 +2,9 @@
 title: "CLAUDE.md Konstitution"
 type: concept
 tags: [system, claude, konfiguration, session-management]
-related: "[[Context-Hygiene]], [[Token-Mechanik]], [[Context-Hygiene-Code]]"
+related: "[[Context-Hygiene]], [[Token-Mechanik]], [[Context-Hygiene-Code]], [[Session-Start-Protokoll]], [[Faktortabelle-Architektur]], [[INSTRUKTIONEN-SKILL-Trennung]]"
 defcon_block: "System-Konfiguration"
-operative_regel: "CLAUDE.md ist die einzige Wahrheitsquelle für Session-Verhalten — jede strukturelle Änderung sofort dort dokumentieren."
+operative_regel: "CLAUDE.md ist die einzige Wahrheitsquelle für Session-Verhalten — jede strukturelle Änderung sofort dort dokumentieren. Seit 17.04.2026: Session-Init liest nur STATE.md, andere 00_Core-Dateien on-demand."
 ---
 
 # CLAUDE.md Konstitution
@@ -22,7 +22,11 @@ CLAUDE.md ist die primäre Konfigurationsdatei für das Verhalten von Claude-Ses
 | MCP-Session-Check | Ausgabe bei Session-Start | Mittel |
 | Applied Learning | Lessons-Learned-Sammlung | Niedrig |
 
-## 4 Pflicht-Lektüren (Session-Init)
+## Session-Init: STATE.md-First (Stand 17.04.2026)
+
+Seit **17.04.2026** liest Claude beim Session-Start **nur `00_Core/STATE.md`** — Einzelheiten siehe [[Session-Start-Protokoll]]. Die 4-Datei-Architektur wurde abgelöst, weil sie ~1.200 Zeilen Auto-Read pro Session erzwang, von denen 99% nicht gebraucht wurden.
+
+**Frühere 4 Pflicht-Lektüren** (jetzt on-demand):
 
 ```
 1. 00_Core/CORE-MEMORY.md
@@ -42,6 +46,8 @@ Auslösende Begriffe: `ingest`, `lint`, `query`, `Wiki`, `Vault`, `Obsidian`, `S
 | 2026-04-14 | Faktortabelle als 4. Pflicht-Lektüre hinzugefügt |
 | 2026-04-14 | Token-Effizienz Kurzreferenz + MCP-Session-Check + Applied Learning hinzugefügt |
 | 2026-04-14 | Wiki-Modus-Trigger um 5 Begriffe erweitert |
+| 2026-04-17 | STATE.md-First Session-Init (ersetzt 4-Datei-Auto-Read); CORE-MEMORY §1-Archivierung |
+| 2026-04-17 | Post-STATE Konsolidierung: Token-Block verdichtet, MCP-Session-Check zu 1 Bullet, Applied Learning 12→11 (SKILL-Rename obsolet), Modell-Toggle-Bullet ergänzt — siehe [[INSTRUKTIONEN-SKILL-Trennung]] |
 
 ## Backlinks
 - [[Context-Hygiene]] — Context-Regeln operationalisiert in CLAUDE.md

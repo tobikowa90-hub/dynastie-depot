@@ -49,7 +49,7 @@ Danach: freie Agenda (siehe Offene Punkte unten) oder Earnings-Trigger.
 - **Rest-Tickers (8) bei regulärem Earnings-Trigger** verifizieren (keine Einzel-Pushes nötig — Morning-Briefing erfasst).
 
 ### Skill-Deployment
-- `01_Skills/dynastie-depot/SKILL-dynastie-depot.md` (Source, v3.7 inhaltlich)
+- `01_Skills/dynastie-depot/SKILL.md` (Source, v3.7 inhaltlich)
 - `06_Skills-Pakete/dynastie-depot_v3.7.zip` (mit `SKILL.md` Rename für Desktop-App) — manuell installiert, ersetzt v3.5.
 
 ### Noch offen (User-Pending)
@@ -97,7 +97,7 @@ Danach: freie Agenda (siehe Offene Punkte unten) oder Earnings-Trigger.
 - `00_Core/CORE-MEMORY.md` (v1.7) — institutionelles Gedächtnis
 - `00_Core/INSTRUKTIONEN.md` (v1.4) — §5 Scoring + §5a Sentiment + §22 Sparplan
 - `00_Core/Faktortabelle.md` (v3.7) — Score-State
-- `01_Skills/dynastie-depot/SKILL-dynastie-depot.md` + `config.yaml` (v3.7)
+- `01_Skills/dynastie-depot/SKILL.md` + `config.yaml` (v3.7)
 - `07_Obsidian Vault/.../synthesis/Wissenschaftliche-Fundierung-DEFCON.md` (v3.7 Änderungsprotokoll)
 
 ---
