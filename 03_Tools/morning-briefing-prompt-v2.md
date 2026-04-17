@@ -1,9 +1,17 @@
-# Morning Briefing Remote Trigger — Prompt v2.1
+# Morning Briefing Remote Trigger — Prompt v2.2
 **Trigger-ID:** `trig_01PyAVAxFpjbPkvXq7UrS2uG`
-**Deployed:** 2026-04-16 (00:21 MESZ)
-**Version:** v2.1 — Strukturfix (JSON-Nesting) + alle v2-Bug-Fixes
+**Deployed:** 2026-04-17 (via Desktop App)
+**Version:** v2.2 — STATE.md als zweite Kontext-Quelle + Format-Erweiterung
 
 ## Changelog
+
+### v2.2 (17.04.2026) — STATE.md Integration
+- SCHRITT 2 aufgeteilt: 2a STATE.md (Sparraten, Watches, Trigger-Tabelle) + 2b Faktortabelle (Score-Details, Earnings)
+- Neuer Abschnitt `--- AKTIVE WATCHES ---` nach FLAGS (aus STATE.md)
+- Kurs-Tabelle: `Rate: [€]`-Spalte ergaenzt (volle Rate / halbe Rate / 0€ FLAG)
+- `EARNINGS NAECHSTE 7 TAGE` → `NAECHSTE TRIGGER & EARNINGS (30 Tage)` (kombiniert aus STATE.md + Faktortabelle)
+- WOCHENEND-MODUS: liest jetzt auch STATE.md, zeigt Watches
+- HINWEIS: `RemoteTrigger update` kann events-Content nicht aendern — Prompt-Updates nur via Desktop App (Routines → Anweisungen-Feld)
 
 ### v2.1 (16.04.2026) — JSON-Nesting-Fix
 - **ROOT CAUSE der leeren Outputs:** `parent_tool_use_id`, `session_id`, `type`, `uuid` waren faelschlich in `events[0].data.message` statt `events[0].data` genestet. API akzeptiert beides (HTTP 200), aber Runtime parsed nur die korrekte Variante.
@@ -25,7 +33,7 @@
 ### v1 (14.04.2026) — Original
 - Funktionierte, aber mit Hallucinations, falschem Tabellenname, fehlenden Symbolen, Retry-Loops.
 
-## Known Limitations v2.1
+## Known Limitations v2.2
 
 1. **Yahoo 403:** BRK.B/RMS/SU-Kurse nicht verfuegbar aus Cloud-Umgebung. Yahoo Finance blockiert Datacenter-IPs. Zeigt ehrlich "n.v. (403)". defeatbeta hat BRK-B lokal aber ist kein Cloud-MCP.
 2. **Push-Notifications:** Claude iOS App hat keinen Routines-Toggle. Feature wartet auf Anthropic-Update.
