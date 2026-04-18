@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 18.04.2026 (Abend) | **Für:** Nächste Session
+**Aktualisiert:** 18.04.2026 (Nacht) | **Für:** Nächste Session (vmtl. 19.04.)
 
 ---
 
@@ -10,120 +10,113 @@
 Session starten
 ```
 
-Claude liest automatisch `00_Core/STATE.md` (Single-Entry-Point).
+Claude liest automatisch `00_Core/STATE.md` (Single-Entry-Point). Für Skill-Planung zusätzlich: `superpowers:brainstorming` → `superpowers:writing-plans`.
 
 ---
 
-## ✅ LETZTE SESSION (18.04.2026) — ERLEDIGT
+## ✅ LETZTE SESSION (18.04.2026 Nacht) — ERLEDIGT
 
-**8 Commits, systemischer Konsistenz-Sprung.** Erste zwei Forward-Records im Archiv (V + TMO), Schema-SKILL-Alignment, komplette Propagation auf alle Layer (00_Core + Skill-SSOT + Vault + Excel-Tools), Applied-Learning auf Kern-Prinzipien verschlankt.
+**1 Commit (`d6d6aaa`), strategischer Meta-Sprung.** Keine Portfolio-Änderungen — rein systemische Institutionalisierung.
 
 ### Kernereignisse
 
-**1. V Pre-Earnings Q2 FY26 — Forward-Vollanalyse + Rescoring** (Commit `a0aeb6e`)
-- Earnings-Preview + Vollanalyse (Score 72) → Advisor-Review → 3 Sub-Score-Korrekturen → Rescoring 63
-- Algebra-Projektion 86 (v3.5→v3.7) empirisch nicht haltbar (-23 Pt.)
-- Korrekturen: (a) Moat Pricing-Power ohne Transcript-Beleg entfernt; (b) Insider Ownership Threshold statt Gradient; (c) ROIC Regel-4-Gating greift nicht (GW/Assets 19,95% <30%), GAAP 9,89% < WACC 10,48% → 1/8
-- **Record:** `2026-04-18_V_vollanalyse` (72) + `2026-04-18_V_rescoring` (63, erstes Rescoring im Archiv)
+**1. BuildPartner-Plugin Install → Cleanup**
+- Plugin `buildpartner@buildpartner v0.5.2` installiert, evaluiert, **vollständig entfernt**
+- Keine Passung zum Dynasty-Depot-System (Business-Builder-Frameworks, keine Investment-Experten)
+- Cleanup: `settings.json` + `installed_plugins.json` + `known_marketplaces.json` + Plugin-Dirs
+- Onboarding-Hook wurde **bewusst nicht ausgeführt** (würde in `next session` ohnehin still verschwinden)
 
-**2. γ-Fix: Schema-SKILL DEFCON-Threshold-Drift** (Commit `a0aeb6e`)
-- `schemas.py` nutzte alte Thresholds 70/60/50, SKILL.md arbeitet seit v3.x mit 80/65/50
-- Fix: `_check_defcon_level` + Smoke-Tests auf SKILL-Alignment
-- **5 Tickers Label-Drift:** BRK.B/VEEV/SU/COST/RMS D4→D3 (Sparrate unverändert bei D3/D4-Übergang)
-- **APH D3→D2** (FLAG überschreibt Sparrate weiterhin)
-- **Nenner 8.5 → 8.0**, volle Rate 33,53€ → 35,63€, D2-Rate 16,76€ → 17,81€
+**2. Skill-Strategie-Analyse (63 Commits, 9 Tage, 8 Cluster)**
 
-**3. TMO Q1 FY26 — Forward-Vollanalyse + struktureller FLAG-Disclosure** (Commit `4e1440c`)
-- Score 63 → 64 (Algebra ±1 empirisch bestätigt, dritter Verifikationsfall)
-- **ROIC-Regel-4-Gating greift:** GW/Assets 44,74% ≥30% → IC bereinigt 43,430M → ROIC bereinigt **17,18% vs WACC 10,44% = +6,74pp Spread**
-- **fcf_trend_neg Option B (Advisor-Entscheidung):** schema-getriggert (FY25 FCF -13,4% YoY, CapEx +8,9%) aber NICHT aktiviert — (a) WC-Delta -$1,766M > FCF-Delta -$974M = WC-Noise; (b) 4J-Plateau $6,9→6,9→7,3→6,3B; (c) OpInc +5,1% YoY
-- **Record:** `2026-04-18_TMO_vollanalyse` mit `flags.aktiv_ids=[]` + strukturellem Disclosure in `notizen`
-- **Resolve-Gate Q1 23.04.2026** — WC-Unwind + FCF-Recovery bestätigt → Disclosure bleibt; fehlende Reversibilität → FLAG nachtragen
+Systemweite Mustererkennung über gesamte System-Aufbau-Phase:
 
-**4. Multi-Layer-Sync-Kaskade** (Commits `5364d06` + `2795d92`)
-- `config.yaml` (Skill-SSOT): Sparplan-Beispiel + V + TMO + APH + 5 Label-Fixes + Meta-Header
-- Vault-Satelliten (8 Pages): V.md komplett neu, TMO.md erweitert, BRK.B/VEEV/SU/COST/RMS/APH Tag-Updates
-- Rebalancing-Tool + Satelliten-Monitor (statische DEFCON-Labels, Sparrate-Werte, Legenden)
+| Cluster | Commits | Status |
+|---|---|---|
+| Backtest-Ready Forward-Pipeline | ~8 | **Skill-Kandidat #1** (nächste Session) |
+| Scoring-Version-Migration | ~10 | ✓ Als §28 institutionalisiert |
+| Briefing-Sync / Pre-10:00-Gate | ~8 | ✓ §25 + Hook |
+| Excel-Tool-Debugging | ~6 | Ad-hoc, nicht skillbar |
+| System-Hygiene | ~10 | Ad-hoc |
+| Vault/Wiki | ~5 | ✓ WIKI-SCHEMA |
+| Session-Lifecycle | ~4 | ✓ SessionEnd-Hook |
+| Learning-System (3-Tier) | ~3 | ✓ §27 |
 
-**5. Excel-Tool-Hygiene** (Commits `5832e17` + `20ef297` + `5d3a005`)
-- Excel-COM-Recalc via `win32com.client` → openpyxl-Save räumt cached values; Recalc populiert sie
-- Metric-Columns im Satelliten-Monitor reconciled (V ROIC `~45%[~]` → `9.89% GAAP`, TMO ROIC `~9%[V]` → `17.18% bereinigt (Regel-4)`)
-- Conditional-Formatting harmonisiert (Dynasty-Palette: D4 grün / D3 gelb / D2 orange / D1/FLAG rot) in beiden Tools
-- Emoji-Bug: `LEFT(O,2)="🔴"` → `LEFT(O,1)="🔴"` (Excel 365+ codepoint-basiert), APH Rot-Färbung wiederhergestellt
+**Meta-Insight:** Engine:Content ~ 2:1 in den letzten 9 Tagen — System wird aktuell stärker gebaut als genutzt. Phase wird sich mit Earnings-Dichte ab 23.04. umkehren.
 
-**6. Applied Learning Evakuierung** (Commit `5f15405`)
-- CLAUDE.md 19/20 → **9/20** (11 Slots Puffer)
-- 6 Tool-Refs evakuiert → Auto-Memory (war bereits dort)
-- 4 systemische Regeln promotet → **INSTRUKTIONEN §27 Scoring-Hygiene & Daten-Integrität** neu
-- §27.1 Double-Counting-Vermeidung / §27.2 Bonus-Cap-Check / §27.3 Projection-Layer ≠ Wahrheitsquelle / §27.4 Multi-Source-Drift-Check
-- **Neue Disziplin:** Proaktiver Monats-Scan (5 Min, Tool-Refs identifizieren) statt reaktive Überlauf-Sanierung
-- **Neuer Kern-Bullet:** "Option B vor mechanischem FLAG-Trigger" (aus TMO 18.04.)
+**3. §28 Scoring-Version-Migration-Workflow** (Commit `d6d6aaa`)
+
+Promotion aus Applied Learning Bullet #8 + systemische Fassung aus v3.4→v3.5 + v3.5→v3.7 Präzedenzfällen.
+
+- **§28.1 Pflicht-Checklist** — 7 Steps: Paper-Evidence → Redundanz-Check (§27.1) → Algebra n≥5 → Forward-Verify → Orphan-Grep (ripgrep `-e` Syntax) → Anchor-Rekalibrierung → Fan-Out-Gate (7 Oberflächen)
+- **Sequencing-Gate:** Steps 1-6 auf Branch, Step 4 muss grün sein bevor Step 7 Fan-Out
+- **§28.2 Gestufte Δ-Toleranz:** ≤2 akzeptiert / 3-5 in CORE-MEMORY §5 loggen / **>5 blockiert** Migration
+- **§28.3 Nicht-Migration-Trigger:** Quartals-Rekalibrierung + Bugfix ohne Skalen-Änderung + FLAG-only-Disclosure = keine Migration-Pflicht
+- **Präzedenzfall §28.2:** V Algebra 86 vs Forward 63 (Δ23), Ursache WC-Proxy-Fehler → Regel-Bug
+- **Präzedenzfall §28.3:** TMO fcf_trend_neg Option B (struktureller FLAG ohne Score-Penalty)
+
+**4. Applied Learning: 9/20 → 8/20**
+- Bullet #8 "Scoring-Version-Bump re-verify" → INSTRUKTIONEN §28.2 promoted
+- CLAUDE.md Historie v2.0 → **v2.1** (Stand: **8/20**)
 
 ### Was entstanden ist
 
-**Archive** (`05_Archiv/score_history.jsonl`):
-- **27 Records** (24 Backfill + 3 Forward: V_vollanalyse 72 / V_rescoring 63 / TMO_vollanalyse 64)
-
-**Doku-Updates:**
-- `STATE.md` — Portfolio-Tabelle + Trigger + Watches (Nenner 8.0, volle Rate 35,63€, D2-Rate 17,81€)
-- `CORE-MEMORY.md §11` — 4 Befunde (Delta-Pattern, Schema-Drift, V-Rescoring, TMO Option B)
-- `Faktortabelle.md` — V/TMO Zeilen + 5 D4→D3 Label-Fixes + APH D3→D2
-- `INSTRUKTIONEN.md v1.7 → v1.8` — §27 neu
-- `schemas.py` + `archive_score.py` — Thresholds auf 80/65/50 + Smoke-Tests
-- `SKILL.md` — Schritt 0 Rewrite (Trigger-first), Schritt 7 Exit-2 mit sed-Recovery
-- `CLAUDE.md` — Applied-Learning auf 9 Bullets + Monatsscan-Regel
-- 8 Vault-Satelliten-Pages (V komplett neu, TMO erweitert, 6 Tag-Updates)
-- Rebalancing-Tool + Satelliten-Monitor (CF harmonisiert, Metrics reconciled)
-
-### Portfolio-Änderungen
-
-| Ticker | Vorher (17.04.) | Nachher (18.04.) | Grund |
-|---|---|---|---|
-| V | 86/D4/35,63€ | **63/D2/17,81€** | Forward-Vollanalyse (-23 Pt. nach Advisor-Review) |
-| TMO | 63/D2/16,76€ | **64/D2/17,81€** | Forward-Vollanalyse (+1, D2 bleibt, struktureller fcf_trend_neg Disclosure) |
-| BRK.B/VEEV/SU/COST/RMS | D4/33,53€ | **D3/35,63€** | Label-Fix Schema-SKILL-Alignment (Score unverändert, Rate steigt durch Nenner 8.5→8.0) |
-| APH | D3/0€ | **D2/0€** | Label-Fix (FLAG-Sparrate-Override unverändert) |
-| ASML | D3/33,53€ | D3/**35,63€** | Rate-Anstieg durch Nenner-Shrink |
-| AVGO | D4/33,53€ | D4/**35,63€** | Rate-Anstieg durch Nenner-Shrink |
-| MSFT | D2-FLAG/0€ | D2-FLAG/0€ | Unverändert |
-
-**Sparrate-Check:** 7×35,63 + 2×17,81 + 2×0 = 285€ ✓
+- `INSTRUKTIONEN.md v1.8 → v1.9` — §28 neu (+79 Zeilen)
+- `CLAUDE.md` — 1 Bullet weniger, Historie v2.1
 
 ---
 
-## 🎯 NÄCHSTER FOKUS: Earnings-Trigger (30 Tage)
+## 🎯 NÄCHSTER FOKUS (in dieser Reihenfolge)
+
+### Priorität 1: Skill `backtest-ready-forward-verify` — Planung (superpowers)
+
+**User-Wunsch:** In nächster Session mit **superpowers** in den Planungsprozess gehen.
+
+**Workflow:**
+1. `superpowers:brainstorming` — Anforderungen, Scope, Integrationspunkte klären
+2. `superpowers:writing-plans` — konkreter Implementation-Plan mit Checkpoints
+3. Implementation erst in darauffolgender Session (Subagent-Ready)
+
+**Input-Basis:**
+- Bestehendes Tool: `03_Tools/backtest-ready/` (Phase 0-4 bereits implementiert, README vorhanden)
+- Kodifizierte Regeln: §28.1 Steps + §28.2 Delta-Regel + §18 Sync-Pflicht
+- Präzedenzfälle: V/TMO/ASML/RMS Forward-Vollanalysen in `score_history.jsonl`
+
+**Zu klärende Fragen im Brainstorming:**
+- Skill-Scope: Nur !Analysiere-Forward-Run, oder auch Backfill-Re-Runs + FLAG-Event-Studies?
+- Trigger: Automatisch bei !Analysiere, oder separater `!ForwardVerify`-Befehl?
+- Verhältnis zu `dynastie-depot` Skill: Einzelner neuer Skill, oder Sub-Workflow des Haupt-Skills?
+- Output-Format: Direkt `score_history.jsonl`-Write, oder Tempfile→Review→archive_score.py?
+
+### Priorität 2: Earnings-Trigger (unverändert aus Session 18.04. Abend)
 
 | Datum | Ticker | Klasse | Aktion |
 |---|---|---|---|
-| **23.04.** | **TMO** | **B** | **Q1 FY26 — D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind?)** |
-| **28.04.** | **V** | **B** | **Q2 FY26 — D2-Entscheidung (Technicals-Reversal bei Beat + Guidance?)** |
+| **23.04.** | **TMO** | **B** | Q1 FY26 — D2-Entscheidung + **fcf_trend_neg Resolve-Gate** (WC-Unwind? → Disclosure bleibt; sonst FLAG nachtragen) |
+| **28.04.** | **V** | **B** | Q2 FY26 — D2-Entscheidung (Technicals-Reversal bei Beat + Guidance?) |
 | 28.04. | SNPS / SPGI | B | Watchlist-Review |
-| **29.04.** | **MSFT** | **C** | **Q3 FY26 — CapEx/OCF FLAG-Review (bereinigt <60% = Auflösung)** |
+| **29.04.** | **MSFT** | **C** | Q3 FY26 — CapEx/OCF FLAG-Review (bereinigt <60% = Auflösung) |
 | Mai | BRK.B / ZTS / PEGA | B | Q-Earnings + Slot-16 |
-
-**Archiv-Disziplin bei jeder `!Analysiere`:**
-- SKILL.md Schritt 6b: FLAG-Resolution-Check vor Archiv-Write
-- SKILL.md Schritt 7: `archive_score.py --file <tempfile.json>`
-- §18 Sync-Pflicht: 6 Dateien im gleichen git-Commit
 
 ---
 
 ## 🧭 START-PROTOKOLL NÄCHSTE SESSION
 
 1. `Session starten` → `STATE.md` wird gelesen (Nenner 8.0, 35,63€/17,81€)
-2. Backtest-Ready-Status: **27 Records** (24 Backfill + 3 Forward)
-3. Earnings-Trigger checken (TMO 23.04., V 28.04., MSFT 29.04.)
-4. Bei `!Analysiere`: Schritt 0 Trigger-Check → Vollanalyse → Schritt 6b → Schritt 7
+2. Falls Skill-Planung: `superpowers:brainstorming` direkt aufrufen mit Prompt *"Skill `backtest-ready-forward-verify` konzipieren — siehe SESSION-HANDOVER Priorität 1"*
+3. Falls Earnings: Schritt 0 Trigger-Check → Vollanalyse-Pfad
+4. Backtest-Ready-Status (unverändert): **27 Records** (24 Backfill + 3 Forward), 2 FLAG-Events
 
 ---
 
 ## 🚫 WAS NICHT ZU TUN
 
-- **Kein** Narrative-Layer (log.md / CORE-MEMORY.md) als Backtest-Primärquelle zitieren — Point-in-Time-Integrität nur im History-Layer (JSONL-Archive)
-- **Kein** manuelles Editieren von `05_Archiv/*.jsonl` — append-only, Korrekturen nur via neuen Record mit Cross-Reference in `notizen` (Präzedenz: V-Rescoring 18.04.)
-- **Kein** Commit von JSONL-Archiven ohne die begleitenden Narrative/State/Projection-Dateien (§18 Sync-Pflicht — alle sechs, immer)
-- **Kein** mechanisches FLAG-Triggern ohne strukturellen Review — WC-Noise / Multi-Year-Trend / OpInc-Parallelität prüfen (Präzedenz: TMO fcf_trend_neg Option B)
-- **Kein** Algebra-Projektion als Scoring-Endergebnis akzeptieren — bei Trigger immer Forward-Lauf (Präzedenz: V Algebra 86 vs Forward 63)
+- **Kein** ad-hoc-Bau des `backtest-ready-forward-verify`-Skills ohne vorherigen Brainstorming+Plan-Schritt (User-Wunsch: strukturierter Prozess via superpowers)
+- **Keine** weiteren §-Erweiterungen vor Skill-Planung — Reihenfolge eingehalten, nicht gleichzeitig
+- **Kein** Narrative-Layer (log.md / CORE-MEMORY.md) als Backtest-Primärquelle zitieren — Point-in-Time nur im History-Layer (JSONL)
+- **Kein** manuelles Editieren von `05_Archiv/*.jsonl` — append-only, Korrekturen nur via neuer Record + Cross-Reference
+- **Kein** mechanisches FLAG-Triggern ohne strukturellen Review (Präzedenz: TMO fcf_trend_neg Option B)
+- **Kein** Ad-hoc-Version-Bump mehr — **§28 Pflicht-Checklist** ist jetzt das Gate
+- **Kein** BuildPartner-Plugin-Reinstall (evaluiert, entfernt, nicht nützlich für Dynasty-Depot)
 
 ---
 
@@ -131,11 +124,12 @@ Claude liest automatisch `00_Core/STATE.md` (Single-Entry-Point).
 
 - **Entry:** `00_Core/STATE.md` — Portfolio + Watches + Trigger
 - **Gedächtnis:** `00_Core/CORE-MEMORY.md` §11 — 4 Befunde (Backtest-Ready + Drift + V + TMO Option B)
-- **Regeln:** `00_Core/INSTRUKTIONEN.md v1.8` — §18 Sync-Pflicht, §22 Sparplan-Formel, §26 Archiv-Sync, **§27 Scoring-Hygiene (neu)**
-- **Architektur:** `00_Core/KONTEXT.md` §11 — 4-Layer-Architektur (State/Narrative/History/Projection)
-- **Tools:** `03_Tools/backtest-ready/README.md` — CLI-Usage
+- **Regeln:** `00_Core/INSTRUKTIONEN.md v1.9` — §18 Sync-Pflicht, §22 Sparplan-Formel, §26 Archiv-Sync, §27 Scoring-Hygiene, **§28 Scoring-Version-Migration-Workflow (neu)**
+- **Architektur:** `00_Core/KONTEXT.md` §11 — 4-Layer-Architektur
+- **Tools:** `03_Tools/backtest-ready/README.md` — CLI-Usage (Skill-Planung-Input!)
 - **Archive:** `05_Archiv/score_history.jsonl` (27) + `flag_events.jsonl` (2)
-- **Skill:** `01_Skills/dynastie-depot/SKILL.md v3.7.1` + `config.yaml` (aktualisiert 18.04.)
+- **Skill:** `01_Skills/dynastie-depot/SKILL.md v3.7.1` + `config.yaml` (Stand 18.04.)
+- **Applied Learning:** `CLAUDE.md` — 8 Bullets (v2.1)
 
 ---
 
@@ -144,5 +138,10 @@ Claude liest automatisch `00_Core/STATE.md` (Single-Entry-Point).
 - v3.5 (16.04.): 85%
 - v3.7 (17.04. Morgen): ~92%
 - Backtest-Ready (17.04. Abend): ~95%
-- **Schema-SKILL-Aligned + Forward-Pipeline-bewährt (18.04.): ~96%** — 3 Forward-Records, §27 Scoring-Hygiene formalisiert, Applied Learning konsolidiert
-- Weitere Hebel: Verhaltens-Layer (Execution Discipline), Makro-Overlay, Position-Sizing-Regel, FLAG-Historie-Volumen für 2028-Review
+- Schema-SKILL-Aligned + Forward-Pipeline-bewährt (18.04. Abend): ~96%
+- **Scoring-Version-Migration-Workflow formalisiert (18.04. Nacht): ~97%** — §28 gate gegen künftige Migration-Drift; Engine-Bau-Phase nähert sich Sedimentierung
+
+### Outstanding Engine-Arbeit (nach aktueller Analyse)
+
+- **Skill-Kapsel für Forward-Pipeline** (Priorität 1 nächste Session)
+- Sonst: Engine "fertig genug" — Fokus-Shift auf Content (Earnings-Analysen ab 23.04.)
