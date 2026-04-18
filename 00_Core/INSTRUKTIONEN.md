@@ -269,13 +269,14 @@ Ein Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 2. `CORE-MEMORY.md` (00_Core) — strategisches Gedächtnis (Section 1: Analysen, Section 3: FLAGs, Section 4: Scores)
 3. `Faktortabelle.md` — Score + FLAG aktualisieren. Bei FLAG-Änderung: config.yaml manuell sync.
 4. `STATE.md` — Portfolio-Tabelle + Watches + Trigger-Liste (Single-Entry-Point seit 17.04.2026).
-5. `score_history.jsonl` (05_Archiv/) — append-only Score-Archiv via `archive_score.py` (jedes `!Analysiere`; vollanalyse/delta/rescoring). SKILL.md Schritt 7.
+5. `score_history.jsonl` (05_Archiv/) — append-only Score-Archiv via `archive_score.py` (jedes `!Analysiere`; vollanalyse/delta/rescoring). SKILL.md Schritt 7. **Orchestriert via Skill `backtest-ready-forward-verify` (seit 19.04.2026, v3.7.2):** Pipeline-Disziplin (Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git add) mechanisch durchgesetzt. 6-File-Sync-Pflicht unverändert.
 6. `flag_events.jsonl` (05_Archiv/) — append-only FLAG-Event-Log via `archive_flag.py` (nur bei FLAG-Trigger oder Resolution). SKILL.md Schritt 6b.
 
 **Nie nur eine der sechs Dateien aktualisieren.** Verlässt STATE.md den aktuellen Stand → Session-Start unbrauchbar. Verpasst JSONL-Append → irreversibler Historie-Verlust für 2028-Backtest-Review.
 
 **Änderungsprotokoll:**
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
+- v1.6 → v1.7 (2026-04-19): Schritt 5 (score_history.jsonl) wird via Skill `backtest-ready-forward-verify` orchestriert — Pipeline-Kapsel statt Inline-CLI-Call in dynastie-depot Schritt 7.
 
 ---
 
