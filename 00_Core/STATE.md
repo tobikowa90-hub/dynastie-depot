@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 18.04.2026 | System: DEFCON v3.7 (Schema-SKILL-Threshold-Alignment)
+**Single Entry Point für Session-Start** | Stand: 18.04.2026 (TMO Forward-Vollanalyse) | System: DEFCON v3.7 (Schema-SKILL-Threshold-Alignment)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`
@@ -22,7 +22,7 @@
 | RMS | 68 | 🟡 3 | 35,63€ | ✅ Screener-Exception | H1 Juli/Aug |
 | ASML | 68 | 🟡 3 | 35,63€ | ✅ | Q2 2026 (Q1 17.04. Vollanalyse ✅) |
 | V | **63** | **🟠 2** | **17,81€** | ✅ | **28.04. Q2 FY26 — D2-Entscheidung** |
-| TMO | 63 | 🟠 2 | 17,81€ | ✅ | **23.04. Q1 — kritisch** |
+| TMO | **64** | 🟠 2 | 17,81€ | ✅ (fcf_trend_neg schema-trigger, WC-Noise → **nicht aktiviert**) | **23.04. Q1 — FLAG-Resolve-Gate** |
 | APH | 63 | 🟠 2 | **0€** | 🔴 Score-basiert | 23.07. Q2 |
 | MSFT | 59 | 🟠 2 | **0€** | 🔴 CapEx/OCF 83.6% | **29.04. Q3 FY26 — FLAG-Review** |
 
@@ -37,7 +37,7 @@
 - **V D2-Kritik (NEU 18.04.):** 6M RelStärke -14pp vs SPY, Kurs unter fallendem 200MA, Crowd-Sell-Ratio 0%. Q2 FY26 am 28.04. entscheidet: Beat + Guidance-Bestätigung → Technicals-Reversal möglich (zurück Richtung D3). Miss → weiterer Downshift Richtung D1.
 - **ASML Fwd P/E FY27 = 30,30** — Grenzfall. Bei <30 deaktiviert Fix-1-Fwd-Zweig → Score +1 bis +2 möglich (D3→D4-Kandidat).
 - **AVGO Insider $123M (90d)** — wahrscheinlich Post-Vesting (Broadcom-Muster Tan/Brazeal/Spears). Vor FLAG-Aktivierung OpenInsider manuell prüfen.
-- **TMO D2-Kritik:** Q1 23.04. — FCF >$7.3B für FCF-Yield >4% nötig. Sonst bleibt D2/Ersatz-Vorbereitung ZTS.
+- **TMO D2-Kritik + FLAG-Resolve-Gate (NEU 18.04.):** Score 64 (Forward), fcf_trend_neg schema-getriggert (FY25 FCF -13,4% YoY, CapEx +8,9%) aber **nicht aktiviert** — WC-Delta FY25 -1766M erklärt FCF-Rückgang vollständig (>Δ FCF -974M), 4J-Trajektorie FY22-25 $6,9→6,9→7,3→6,3B zeigt Plateau, OpInc +5,1%. Q1 23.04. = natürlicher Resolve-Gate: WC-Unwind + FCF-Recovery bestätigt → kein FLAG; fehlende Reversibilität → fcf_trend_neg-Trigger nachtragen. Ersatz-Vorbereitung ZTS aktiv.
 - **MSFT FLAG-Auflösungs-Pfad:** Q3 29.04. — bereinigtes CapEx/OCF <60% (Finance Lease $19.5B raus) = Auflösung. Darüber = Veto-Verschärfung.
 
 ---
@@ -46,7 +46,7 @@
 
 | Datum | Ticker | Klasse | Aktion |
 |-------|--------|--------|--------|
-| **23.04.** | **TMO** | **B** | **Q1 — D2-Entscheidung (FCF/ROIC)** |
+| **23.04.** | **TMO** | **B** | **Q1 — D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind?)** |
 | **28.04.** | **V** | **B** | **Q2 FY26 — D2-Entscheidung (Technicals-Reversal?)** |
 | 28.04. | SNPS/SPGI | B | Watchlist-Review |
 | **29.04.** | **MSFT** | **C** | **Q3 FY26 — FLAG-Review** |
@@ -57,11 +57,11 @@
 ## System-Zustand
 
 - **Scoring:** DEFCON v3.7 — Quality-Trap-Interaktionsterm (kein additiver Moat-Malus), OpM max 2Pt., Analyst-Bias-Kalibrierung, Fundamentals-Cap 50. Schema-Thresholds 18.04. auf SKILL.md aligned (≥80 D4 / 65-79 D3 / 50-64 D2 / <50 D1). System-Reife ~93%.
-- **Live-Verify v3.7:** 4/11 bestätigt — V (18.04. Forward 72→63 nach Advisor-Review), TMO ±1, ASML ±2, RMS ±2. Rest bei Earnings-Trigger.
+- **Live-Verify v3.7:** 5/11 bestätigt — V (18.04. Forward 72→63 nach Advisor-Review), **TMO (18.04. Forward 63→64, fcf_trend_neg struktureller Disclosure)**, ASML ±2, RMS ±2. Rest bei Earnings-Trigger.
 - **Allokation:** 65/30/5 (ETF 617,50€ / Satelliten 285€ / Gold 47,50€), US-Cap 63% / Ist ~46%.
 - **MCP-Status:** defeatbeta (WSL2 Ubuntu-24.04), Shibui, WebSearch — alle live. Non-US via yfinance.
 - **Morning Briefing:** Trigger v2.1 täglich 10:00 MESZ (16 Symbole, Yahoo-Gap BRK.B/RMS/SU).
-- **Backtest-Ready:** aktiv seit 17.04.2026 — **26 Score-Records** (24 Backfill + 2 Forward: V_vollanalyse 72 + V_rescoring 63) + 2 FLAG-Events. SKILL.md Schritt 7 Write-Pflicht. Review 2028-04-01, Interim-Gates 2026-10-17.
+- **Backtest-Ready:** aktiv seit 17.04.2026 — **27 Score-Records** (24 Backfill + 3 Forward: V_vollanalyse 72 + V_rescoring 63 + **TMO_vollanalyse 64**) + 2 FLAG-Events. SKILL.md Schritt 7 Write-Pflicht. Review 2028-04-01, Interim-Gates 2026-10-17.
 
 ---
 

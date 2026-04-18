@@ -384,3 +384,19 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Archive-Stand:** 26 Records (24 Backfill + 2 Forward V).
 - **Sync:** STATE.md + Faktortabelle.md + CORE-MEMORY §11 + schemas.py + archive_score.py + score_history.jsonl (§18 alle 6 Dateien).
 - **Briefing-Sync erforderlich** (00_Core/ geändert).
+
+## [2026-04-18] analysis | TMO Pre-Earnings Q1 FY26 — Forward-Vollanalyse + struktureller FLAG-Disclosure
+- **Ablauf:** earnings-preview TMO → !Analysiere Vollanalyse → Advisor-Review der FLAG-Entscheidung → Option B (Strukturdisclosure statt mechanischem Trigger)
+- **Forward-Record:** `2026-04-18_TMO_vollanalyse` Score 64 D2 — Algebra-Projektion 63 empirisch bestätigt (±1, dritte Verifikation nach V-Gegenbeispiel)
+- **Score-Breakdown:** Fund 30 (Fwd P/E 6, P/FCF 1 QT-cap Wide+31x, Bilanz 6, CapEx/OCF 7, ROIC 6 bereinigt, FCF Yield 3, OpM 1) + Moat 18 (Wide) + Tech 6 (ATH 3, RelStärke 0, Trend 3) + Insider 4 (0+1+3) + Sent 6 (SB 4, Sell 1 Crowd, PT-Upside 2, PT-Disp -1) = 64
+- **ROIC-Bereinigung (Regel-4-Gating erfüllt):** GW/Assets 44,74% ≥30% → Goodwill-Ausnahme; Invested Capital bereinigt = 92,792M - 49,362M = 43,430M → ROIC bereinigt 17,18% vs WACC 10,44% = +6,74pp Spread
+- **FLAG-Entscheidung fcf_trend_neg — Schema-Trigger abgelehnt (Option B):**
+  - Schema-Signal: FCF FY25 6,293M vs FY24 7,267M = **-13,4% YoY**; CapEx +8,9% YoY
+  - Advisor-Begründung (nicht aktiviert): (a) **WC-Noise** — WC-Delta FY25 -1,766M vs -334M FY24, Δ -1,432M erklärt FCF-Rückgang -974M überproportional; (b) **4J-Plateau** — FY22-25 FCF $6,911→6,927→7,267→6,293M = kein Mehrjahres-Abwärtstrend; (c) **Profitabilität intakt** — Operating Income +5,1% YoY ($8,110M vs $7,717M)
+  - Konsequenz: `flags.aktiv_ids=[]` + expliziter Disclosure in `notizen` + Faktortabelle + STATE.md
+- **Systemische Lektion:** Schema-Validator ≠ SKILL-Regel-Semantik — einzelperiodische Trigger brauchen Multi-Year-Kontext + strukturelle Erklärung + Parallel-Metriken (OpInc) vor FLAG-Aktivierung. Dokumentiert in CORE-MEMORY §11 Befund #4.
+- **Resolve-Gate:** Q1 FY26 Earnings 23.04.2026 — WC-Unwind + FCF-Recovery bestätigt → Disclosure bleibt Notiz; fehlende Reversibilität → fcf_trend_neg-Trigger nachtragen
+- **Archive-Stand:** 27 Records (24 Backfill + 3 Forward: V_vollanalyse + V_rescoring + TMO_vollanalyse)
+- **Sparraten:** unverändert (D2 → 17,81€, Nenner 8.0, Summe 285€ ✓)
+- **Sync:** STATE.md + Faktortabelle.md + CORE-MEMORY §11 + score_history.jsonl + log.md (§18 — 5/6 Dateien; schemas.py unberührt)
+- **Briefing-Sync erforderlich** (00_Core/ geändert)
