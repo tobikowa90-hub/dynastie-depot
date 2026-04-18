@@ -16,7 +16,7 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 
 - `CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
 - Stil: direkt, faktenbasiert, kein Filler — siehe INSTRUKTIONEN.md
-- **Sync-Pflicht:** Nach jeder Analyse: log.md + CORE-MEMORY.md + Faktortabelle + **STATE.md** aktualisieren (STATE.md bei jeder Score/FLAG/Sparraten-Änderung)
+- **Sync-Pflicht:** Nach jeder Analyse: log.md + CORE-MEMORY.md + Faktortabelle + **STATE.md** + **score_history.jsonl** (+ ggf. **flag_events.jsonl**) aktualisieren, alles in einem git-Commit (STATE.md bei jeder Score/FLAG/Sparraten-Änderung, JSONL-Archive via `03_Tools/backtest-ready/archive_*.py`)
 - **Briefing-Sync:** Vor Session-Ende `!SyncBriefing` falls 00_Core/ geändert wurde (§25). SessionEnd-Hook warnt automatisch.
 
 ## Projektstruktur
@@ -52,7 +52,7 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 ## Token-Effizienz (operativ)
 
 - **Snapshot-First:** STATE.md + Faktortabelle vor API — spart 3-5 Tool-Calls
-- **Sync-Pflicht (alle vier):** log.md + CORE-MEMORY.md + Faktortabelle + STATE.md
+- **Sync-Pflicht (alle sechs):** log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + flag_events.jsonl
 - **Pause-Regel:** >5 Min → /compact (Preserve: Score/Tabelle/Urteil/FLAGs) oder /clear
 - **DEFCON 1 Stopp:** Score <50 → Analyse stoppen (Insider-Modul läuft durch)
 - **MCP:** Tool Search lädt lazy. Manuell deaktivieren nur bei Vault-Only-Sessions.
@@ -73,6 +73,8 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 ### Applied Learning (kuratiert, max. 20 Bullets)
 
 > <15 Wörter pro Bullet. Nur operativ relevante Fakten.
+>
+> **Kurator-Regel bei Überlauf (20/20):** Hybrid-Strategie in dieser Reihenfolge anwenden: (1) Tool-References evakuieren → Auto-Memory oder INSTRUKTIONEN; (2) stabile API-/Regel-Bullets **promoten** → neue INSTRUKTIONEN-§; (3) thematisch verwandte Bullets **konsolidieren**. Ziel: 15/20 nach Revision. Archivierung ist kein Weg (toter Code).
 
 - RemoteTrigger update ersetzt ccr-Objekt komplett — immer alle 3 Felder mitsenden
 - JSON-Nesting: parent_tool_use_id/session_id/type/uuid auf data-Level, nie in message
@@ -88,3 +90,6 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 - Informationsverlust-Aversion > Ästhetik: bei Delete-vs-Keep Default = erhalten + Zeitstand-Banner
 - Advisor-Empfehlung nicht ohne neue Evidenz überstimmen — Ästhetik-Argumente zählen nicht als Evidenz
 - Vor "fertig"-Meldung Multi-Source-Drift-Grep (INSTRUKTIONEN/CORE-MEMORY §4/Vault-Synthesen/Tools) — config.yaml-Fix allein reicht nie
+- Parallel-Agents für !Analysiere REJECTED 17.04.: ~270k Token + Screener-Exception-Fehler — Genauigkeit > Wall-Time
+- Projection-Layer (STATE.md) ≠ Wahrheitsquelle — nur aus State+Narrative synchron halten, nie selbst fortschreiben (verhindert Drift)
+- Backfill-Tolerant-Pattern für Cross-Validators: bei fehlenden Rohwerten moat.rating="narrow" → Quality-Trap-Validator deaktiviert, keine Schätzungen nötig

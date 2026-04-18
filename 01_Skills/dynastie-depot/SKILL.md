@@ -1,6 +1,6 @@
 ---
 name: dynastie-depot
-version: "3.7"
+version: "3.7.1"
 zieljahr: 2058
 system: DEFCON v3.7
 description: >
@@ -39,9 +39,9 @@ trigger_words:
 - Lombardkredit
 - NV-Bescheinigung
 ---
-# 🦅 Dynastie-Depot – Skill v3.7
+# 🦅 Dynastie-Depot – Skill v3.7.1
 
-**Zieljahr:** 2058 | **System:** DEFCON v3.7 | **Stand:** 17.04.2026 | v3.7 System-Gap-Release: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
+**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.1 | **Stand:** 17.04.2026 | v3.7.1 Delta: Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht) für Backtest-Ready Infrastructure. v3.7 System-Gap-Release-Features unverändert: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
 
 ## Übersicht
 
@@ -236,6 +236,39 @@ Verwende die **Scoring-Skalen** (siehe nächster Abschnitt) und gib das Ergebnis
 \#\#\# 6. Depot-Einordnung
 
 \[Score, DEFCON, nächste Aktion, Status\]
+
+---
+
+### Schritt 6b: FLAG-Resolution-Check (Post-Output, vor Archiv)
+
+Nach Ausgabe der Depot-Einordnung (Output-Abschnitt 6): aktive FLAGs des analysierten Tickers prüfen und ggf. resolven.
+
+**Ablauf:**
+1. `python 03_Tools/backtest-ready/archive_flag.py list --ticker <TICKER> --aktiv` → liefert offene Trigger-Records ohne Resolution.
+2. Für jeden offenen FLAG: Ist die auslösende Metrik im aktuellen Lauf wieder **regel-konform**?
+   - `capex_ocf`: bereinigtes CapEx/OCF < 60%
+   - `fcf_trend_neg`: FCF YoY positiv oder CapEx YoY negativ
+   - `insider_selling_20m`: Diskretionäres Selling 90d ≤ $20M
+   - `tariff_exposure`: Revenue-Anteil tarifbetroffene Märkte ≤ 35%
+3. Falls ja: `archive_flag.py resolve --flag-id <ID> --datum <heute> --metrik-wert <X> --metrik-definition "..." --kurs <K> --waehrung <W> --kurs-quelle <Q> [--related-score-record-id <ID>] [--notizen "..."]`
+4. Falls der aktuelle Lauf einen **neuen** FLAG auslöst: `archive_flag.py trigger ...` mit analogem Schema.
+
+Kein Archive-Write in Schritt 7, bevor Resolution-Check gelaufen ist — sonst fehlt der `aktiv_ids`-Kontext im Score-Record.
+
+### Schritt 7: Archiv-Write (Pflicht)
+
+Am Ende jeder `!Analysiere`-Ausgabe: Score-Record als JSON-Objekt erzeugen (Schema siehe `03_Tools/backtest-ready/schemas.py` → `ScoreRecord`), anschließend via `archive_score.py` anhängen.
+
+**Ablauf:**
+1. JSON-Block zusammenbauen — Pflichtfelder: `schema_version: "1.0"`, `record_id: YYYY-MM-DD_TICKER_TYP`, `source: "forward"`, `defcon_version: "v3.7"`, `score_datum` (heute oder max. 3 Tage zurück), `analyse_typ` (vollanalyse/delta/rescoring), vollständige `scores` (5 Blöcke), `score_gesamt`, `defcon_level`, `kurs`, `market_cap`, `flags` (aktiv_ids + bei_analyse_referenziert), `metriken_roh`, `quellen`. Optional: `notizen`.
+2. JSON in temporäre Datei schreiben oder via stdin pipen.
+3. `python 03_Tools/backtest-ready/archive_score.py --file <tempfile.json>` ausführen (oder `--stdin`).
+4. Bei Validation-Errors (exit 1): JSON korrigieren, erneut ausführen — **keine Ausnahme**. Bei exit 2 (IO): Archiv-Zustand prüfen, Korruption beheben.
+5. Nach Success: `score_history.jsonl` im gleichen git-Commit wie `log.md + CORE-MEMORY.md + Faktortabelle + STATE.md` committen (§18 Sync-Pflicht — alle sechs Dateien, immer).
+
+**Wenn der Lauf abbricht bevor Schritt 7 erreicht wird:** Im nächsten Lauf zuerst nachholen. Jeder verpasste Append = irreversibler Historie-Verlust.
+
+---
 
 ## SCORING-SKALEN (100-Punkte-Matrix)
 

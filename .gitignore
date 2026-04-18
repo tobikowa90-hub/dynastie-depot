@@ -4,7 +4,12 @@
 ~$*
 
 # Archive (historisch, nicht fuer Remote Agent relevant)
-05_Archiv/
+# Pattern mit /* statt /, damit Whitelist-Exceptions fuer JSONL greifen koennen
+05_Archiv/*
+
+# Exception: Backtest-Ready JSONL-Archive MUESSEN git-tracked sein (Spec §3 append-only)
+!05_Archiv/score_history.jsonl
+!05_Archiv/flag_events.jsonl
 
 # Skill-Pakete (ZIPs, nicht fuer Remote Agent)
 06_Skills-Pakete/

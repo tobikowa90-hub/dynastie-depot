@@ -1,5 +1,5 @@
 # ⚙️ INSTRUKTIONEN.md — Handlungsanweisungen & Skill-Guidance
-**Version:** 1.5 (Post-Dedup INSTRUKTIONEN↔SKILL) | **Stand:** 17.04.2026
+**Version:** 1.7 (§26 Archiv-Sync Backtest-Ready) | **Stand:** 17.04.2026
 > Dieses Dokument beschreibt das WIE — User-Workflows, Befehle, Meta-Regeln.
 > Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 
@@ -260,17 +260,22 @@ Ein Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 ---
 
-## 18. Sync-Pflicht: log.md + CORE-MEMORY.md + Faktortabelle.md + STATE.md
+## 18. Sync-Pflicht: log.md + CORE-MEMORY.md + Faktortabelle.md + STATE.md + score_history.jsonl (+ flag_events.jsonl)
 
 **Trigger:** Score/FLAG-Änderung, neue Analyse, Systemänderung, Sparraten-Änderung.
 
-**Reihenfolge (alle vier, immer):**
+**Reihenfolge (alle sechs, immer):**
 1. `log.md` (Vault) — technisches Protokoll
 2. `CORE-MEMORY.md` (00_Core) — strategisches Gedächtnis (Section 1: Analysen, Section 3: FLAGs, Section 4: Scores)
 3. `Faktortabelle.md` — Score + FLAG aktualisieren. Bei FLAG-Änderung: config.yaml manuell sync.
 4. `STATE.md` — Portfolio-Tabelle + Watches + Trigger-Liste (Single-Entry-Point seit 17.04.2026).
+5. `score_history.jsonl` (05_Archiv/) — append-only Score-Archiv via `archive_score.py` (jedes `!Analysiere`; vollanalyse/delta/rescoring). SKILL.md Schritt 7.
+6. `flag_events.jsonl` (05_Archiv/) — append-only FLAG-Event-Log via `archive_flag.py` (nur bei FLAG-Trigger oder Resolution). SKILL.md Schritt 6b.
 
-**Nie nur eine der vier Dateien aktualisieren.** Verlässt STATE.md den aktuellen Stand, wird Session-Start unbrauchbar.
+**Nie nur eine der sechs Dateien aktualisieren.** Verlässt STATE.md den aktuellen Stand → Session-Start unbrauchbar. Verpasst JSONL-Append → irreversibler Historie-Verlust für 2028-Backtest-Review.
+
+**Änderungsprotokoll:**
+- v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
 
 ---
 
@@ -449,4 +454,31 @@ Empfehlung: [!SyncBriefing ausführen] / [Kein Handeln nötig]
 - Work-in-Progress-Analysen (Score noch nicht final) — erst nach Abschluss pushen
 
 ---
-*🦅 INSTRUKTIONEN.md v1.5 (Post-Dedup) | Dynastie-Depot v3.7 | Stand: 17.04.2026*
+
+## 26. Archiv-Sync (Backtest-Ready-Pipeline)
+
+**Trigger:** Nach jeder `!Analysiere` (Vollanalyse/Delta/Rescoring) UND bei jedem FLAG-Trigger oder FLAG-Resolution.
+
+**→ CLI-Usage + Exit-Codes:** [`03_Tools/backtest-ready/README.md`](../03_Tools/backtest-ready/README.md)
+
+### Workflow (4 Schritte)
+
+1. **Score-JSON generieren** (SKILL.md Schritt 7) — `ScoreRecord` gemäß `schemas.py`. Pflichtfelder: `schema_version: "1.0"`, `record_id: YYYY-MM-DD_TICKER_TYP`, `source: "forward"`, `defcon_version` aktuell, `score_datum` (heute, max. 3 Tage zurück), vollständige 5-Block-`scores` + `score_gesamt` + `defcon_level`, `kurs`, `market_cap`, `flags`, `metriken_roh`, `quellen`.
+2. **Archivieren** — `archive_score.py --file <tempfile.json>`. Keine Ausnahme, kein Record darf verloren gehen.
+3. **FLAG-Events archivieren** (nur bei Trigger/Resolution, SKILL.md Schritt 6b) — `archive_flag.py trigger` oder `resolve`. Schwellen aus `FLAG_RULES` automatisch.
+4. **Git-Commit** — alle sechs Dateien §18 in einem Commit.
+
+### Fehler-Klassen
+
+- **Forward-Window-Violation** (`score_datum` >3 Tage alt) → `analyse_typ: "rescoring"` setzen oder heutiges Datum + Hinweis in `notizen`.
+- **Duplicate record_id** → kein `--force`; stattdessen `analyse_typ` auf `delta` ändern.
+- **FLAG-Schwelle-Mismatch** → Schwellen sind hardcoded in `schemas.py`; Schwellen-Änderung = `schema_version`-Bump (additiv 1.1, breaking 2.0).
+- **Validation-Fail (exit 1)** → JSON korrigieren, erneut ausführen.
+- **IO-Fail (exit 2)** → Archiv-Korruption prüfen.
+
+### Nicht archiviert
+
+`!QuickCheck`, Stufe-0-Screener-Outputs, Rohdaten aus `insider_intel.py`/`eodhd_intel.py` (nur finale 100-Punkte-Scores).
+
+---
+*🦅 INSTRUKTIONEN.md v1.7 (§26 Archiv-Sync Backtest-Ready) | Dynastie-Depot v3.7 | Stand: 17.04.2026*

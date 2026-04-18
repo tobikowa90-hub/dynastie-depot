@@ -58,6 +58,7 @@
 - **Allokation:** 65/30/5 (ETF 617,50€ / Satelliten 285€ / Gold 47,50€), US-Cap 63% / Ist ~46%.
 - **MCP-Status:** defeatbeta (WSL2 Ubuntu-24.04), Shibui, WebSearch — alle live. Non-US via yfinance.
 - **Morning Briefing:** Trigger v2.1 täglich 10:00 MESZ (16 Symbole, Yahoo-Gap BRK.B/RMS/SU).
+- **Backtest-Ready:** aktiv seit 17.04.2026 — 24 Score-Records + 2 FLAG-Events archiviert (`05_Archiv/score_history.jsonl` + `flag_events.jsonl`). SKILL.md Schritt 7 Write-Pflicht. Review 2028-04-01.
 
 ---
 
@@ -73,7 +74,7 @@
 | Meilenstein-Chronik vor 15.04.2026 | `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md` |
 | Score-Detail pro Ticker | `Faktortabelle.md` |
 
-**Sync-Pflicht bei Score/FLAG/Sparraten-Änderung:** log.md + CORE-MEMORY.md + Faktortabelle.md + **STATE.md** (§18 INSTRUKTIONEN — alle vier, immer).
+**Sync-Pflicht bei Score/FLAG/Sparraten-Änderung:** log.md + CORE-MEMORY.md + Faktortabelle.md + **STATE.md** + **score_history.jsonl** (+ ggf. **flag_events.jsonl**) (§18 INSTRUKTIONEN — alle sechs, immer).
 **Briefing-Sync:** `!SyncBriefing` vor Session-Ende, wenn 00_Core/ geändert wurde (§25).
 
 ---
