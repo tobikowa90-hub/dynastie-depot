@@ -345,7 +345,10 @@ def case_4() -> None:
     event, signal = build_migration_event(skill_meta, forward_score=63)
     assert event.outcome == "block", f"expected block, got {event.outcome!r}"
     assert event.delta == -23.0, f"expected delta=-23.0, got {event.delta}"
-    assert signal.startswith("STOP:"), f"expected STOP: signal for block, got {signal!r}"
+    assert signal.startswith("STOP:"), f"STOP: prefix missing: {signal!r}"
+    assert "§28.2" in signal, f"§28.2 citation missing: {signal!r}"
+    assert "Fan-Out (7 Oberflächen)" in signal, f"Fan-Out phrase missing: {signal!r}"
+    assert "JSONL-Commit läuft durch" in signal, f"JSONL continuation note missing: {signal!r}"
 
     record["migration_event"] = event.model_dump()
 

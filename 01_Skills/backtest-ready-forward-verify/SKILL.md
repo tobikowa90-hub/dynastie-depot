@@ -124,7 +124,7 @@ check_freshness gibt sie nie zurück — keine manuelle Filterung nötig.
 Lese `00_Core/STATE.md`. Ruf `parse_state_row(ticker, state_md_content)` auf.
 Vergleiche Ergebnis `{score, defcon, flags_active}` gegen `record_dict`:
 
-- **Score:** |state_score − record_score| > 1 → `FAIL phase=P2b reason="score drift: ..."`. Toleranz ≤1 (Rundung).
+- **Score:** `state_score != record.score_gesamt` → `FAIL phase=P2b reason="score drift: state=<X> vs record=<Y>"`. Exakter Vergleich (beide ints).
 - **DEFCON:** Abweichung → `FAIL phase=P2b reason="defcon drift: ..."`.
 - **FLAG:** `flags_active=True` aber `aktiv_ids=[]` → `FAIL phase=P2b reason="FLAG-Drift: ..."`. Umgekehrt (neuer FLAG im Record) kein Fehler.
 - **Ticker nicht gefunden** → ValueError → `FAIL phase=P2b reason="ticker not found"`.

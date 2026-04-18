@@ -130,15 +130,14 @@ def parse_wrapper(path: str) -> tuple[dict, dict]:
     with p.open("r", encoding="utf-8") as fh:
         draft = json.load(fh)
 
-    record_dict: dict = draft.get("record", draft)
-    # If the top-level dict has a "record" key, use that; otherwise treat the
-    # whole dict as the record (flat format). Pop skill_meta from flat format.
-    if "record" in draft:
-        record_dict = draft["record"]
-        skill_meta: dict = draft.get("skill_meta", {}) or {}
-    else:
-        record_dict = dict(draft)
-        skill_meta = record_dict.pop("skill_meta", {}) or {}
+    if "record" not in draft:
+        raise ValueError(
+            f"draft JSON at {path!r} missing 'record' key — "
+            "expected wrapper format {'record': {...}, 'skill_meta': {...}}"
+        )
+
+    record_dict: dict = draft["record"]
+    skill_meta: dict = draft.get("skill_meta", {}) or {}
 
     if skill_meta:
         required = {"expected_algebra_score", "migration_from_version", "migration_to_version"}
@@ -239,7 +238,7 @@ def build_migration_event(
         )
     else:  # block
         signal = (
-            f"STOP: §28.2 |Δ|={int(abs_delta)} > 5. Fan-Out (7 Oberflächen) blockiert "
+            f"STOP: §28.2 |Δ|={abs_delta:g} > 5. Fan-Out (7 Oberflächen) blockiert "
             f"bis Algebra-Ursache identifiziert. Siehe CORE-MEMORY §5. "
             f"JSONL-Commit läuft durch — Record ist Historie-relevant."
         )
@@ -271,14 +270,10 @@ def check_freshness(repo_root: str) -> list[str]:
     # Each line: 2-char status code + space + path
     modified_basenames: set[str] = set()
     for line in result.stdout.splitlines():
-        line = line.strip()
-        if not line:
+        if not line or len(line) < 4:
             continue
-        # Format: XY filepath  (X=index status, Y=worktree status)
-        # Strip the 2-char status prefix (may include spaces)
-        if len(line) < 3:
-            continue
-        filepath = line[3:].strip()  # everything after the 2-char status + space
+        # porcelain format: XY<space>path — always 3-char prefix
+        filepath = line[3:].strip()
         basename = Path(filepath).name
         modified_basenames.add(basename)
 
