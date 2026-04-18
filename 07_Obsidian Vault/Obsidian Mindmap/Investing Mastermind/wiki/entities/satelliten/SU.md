@@ -1,27 +1,28 @@
 ---
-tags: [satellit, aktiv, defcon-4, non-us, ifrs]
+tags: [satellit, aktiv, defcon-3, non-us, ifrs]
 ticker: SU
 name: Schneider Electric S.E.
 sektor: Energie-Infrastruktur / Automatisierung
 ersatz: DE
 score_aktuell: 69
-defcon: 4
+defcon: 3
 flag: "keins"
-sparrate: "Volle Rate 33,53€ (v3.7)"
+sparrate: "Volle Rate 35,63€ (Gewicht 1.0)"
 letzteAnalyse: 2026-04-17
 score_valid_until: 2026-10-14
-scoring_notiz_v37: "v3.7: Score 71→69 (Fix 3 Sell-Ratio-Kalibrierung leichter Malus). D4 bleibt."
+scoring_notiz_v37: "v3.7: Score 71→69 (Fix 3 Sell-Ratio-Kalibrierung leichter Malus). Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment (Score 69 in 65-79-Range, Sparrate bei D3/D4 identisch)."
 naechsterTrigger: "H1 2026 Earnings Juli/Aug 2026"
 waehrung: EUR
 ifrs: true
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
-updated: 2026-04-16
+updated: 2026-04-18
 ---
 
 # SU — Schneider Electric
 
-> **DEFCON 🟢 4 | Score 69/100 (v3.7) | Kein FLAG**
-> Sparrate: Volle Rate 33,53€ | Non-US / IFRS
+> **DEFCON 🟡 3 | Score 69/100 (v3.7) | Kein FLAG**
+> Sparrate: Volle Rate 35,63€ | Non-US / IFRS
+> *(Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment — Score unverändert, Sparrate bei D3/D4 identisch, Volle-Rate-Wert 33,53€→35,63€ weil Nenner 8.5→8.0 nach V-Downgrade)*
 
 ## DEFCON v3.4 Analyse (15.04.2026)
 

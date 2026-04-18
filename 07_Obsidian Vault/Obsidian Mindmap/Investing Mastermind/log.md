@@ -400,3 +400,23 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Sparraten:** unverändert (D2 → 17,81€, Nenner 8.0, Summe 285€ ✓)
 - **Sync:** STATE.md + Faktortabelle.md + CORE-MEMORY §11 + score_history.jsonl + log.md (§18 — 5/6 Dateien; schemas.py unberührt)
 - **Briefing-Sync erforderlich** (00_Core/ geändert)
+
+## [2026-04-18] sync | config.yaml + Vault-Satelliten auf 18.04.-Stand aligned
+- **Scope:** Propagation der V-Forward + TMO-Forward + Schema-SKILL-Threshold-Alignment vom 18.04. in `config.yaml` und `wiki/entities/satelliten/`
+- **config.yaml Updates:**
+  - Sparplan-Beispiel: Nenner 8.5→8.0, Volle Rate 33,53€→35,63€, D2 16,76€→17,81€ (V + TMO beide D2)
+  - V-Entry: Score 86→63, DEFCON 4→2, score_datum → 18.04., sparrate_hinweis → 17,81€, scoring_notiz komplett neu (Technicals-Kollaps + ROIC Regel-4-Gating-Fail)
+  - TMO-Entry: Score 63→64, score_datum → 18.04., sparrate_hinweis → 17,81€, scoring_notiz (ROIC bereinigt 17,18% vs WACC 10,44%, +6,74pp Spread, Regel-4 greift), flag_hinweis (fcf_trend_neg Struktureller Disclosure Option B)
+  - APH-Entry + FLAG-Sektion: DEFCON 3→2 (Label-Fix)
+  - 5 Label-Fixes (DEFCON 4→3): BRK.B, VEEV, SU, COST, RMS (Score unverändert, Sparrate bei D3/D4 identisch)
+  - Meta: Live-Verify 3/11→5/11, Event-Kalender (V Score 86,D4 → 63,D2 ; TMO 63→64)
+- **Vault-Entities aktualisiert (8 Pages):**
+  - [[V]]: Komplette Neuanalyse (v3.4-Block entfernt, v3.7-Forward mit 3 Advisor-Korrekturen dokumentiert)
+  - [[TMO]]: Score 63→64, ROIC-Regel-4-Gating dokumentiert, fcf_trend_neg Struktureller Disclosure tabelliert
+  - [[BRKB]], [[VEEV]], [[SU]], [[COST]], [[RMS]]: Tag defcon-4→defcon-3 + Callout-Banner + Sparrate 33,53€→35,63€
+  - [[APH]]: Tag defcon-3→defcon-2 + Callout-Banner (FLAG überschreibt Sparrate weiter)
+- **Nicht geändert:** ASML (D3), AVGO (D4, Score 84), MSFT (D2 FLAG). Nicht-Satelliten-Pages unberührt.
+- **Konsistenz-Check:** YAML-Parser grün (`python -c yaml.safe_load`), keine Score-Verschiebung gegenüber STATE.md / Faktortabelle.md / score_history.jsonl.
+- **Sync-Applied-Learning-Prinzip:** "config.yaml-Fix allein reicht nie" — diese Konsolidierung schließt den Multi-Source-Drift zwischen 00_Core, Skill-SSOT und Vault.
+- **Briefing-Sync erforderlich** (config.yaml ist Skill-SSOT, wird von Remote-Trigger nicht direkt gelesen, aber Konsistenz für ZIP-Rebuild nötig)
+- **Nächster Schritt:** Skill-ZIP v3.7.2 bauen (manuell via User), Rebalancing_Tool_v3.4 Sparraten-Spalte manuell nachziehen

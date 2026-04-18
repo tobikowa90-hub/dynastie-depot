@@ -1,25 +1,26 @@
 ---
-tags: [satellit, aktiv, defcon-3, flag-aktiv, tariff-risk]
+tags: [satellit, aktiv, defcon-2, flag-aktiv, tariff-risk]
 ticker: APH
 name: Amphenol Corporation
 sektor: Verbindungstechnologie / Elektro
 ersatz: ""
 score_aktuell: 63
-defcon: 3
+defcon: 2
 flag: "FLAG aktiv (seit 09.04.2026) — Score-basiert"
 sparrate: "0€"
 letzteAnalyse: 2026-04-17
 score_valid_until: 2026-10-14
-scoring_notiz_v37: "v3.7 Algebra: 61→63 (+2 Pt. Fix-1 Interaktionsterm milder wirkend, GM >30% rettet Fundamentals). FLAG bleibt Score-basiert (Score <65 + DEFCON 3)."
+scoring_notiz_v37: "v3.7 Algebra: 61→63 (+2 Pt. Fix-1 Interaktionsterm milder wirkend, GM >30% rettet Fundamentals). FLAG bleibt Score-basiert. Label D3→D2 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment (Score 63 in 50-64-Range). FLAG überschreibt Sparrate = 0€ weiterhin."
 naechsterTrigger: "FLAG-Resolution / Q2 Earnings"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[CapEx-FLAG]]"
-updated: 2026-04-16
+updated: 2026-04-18
 ---
 
 # APH — Amphenol Corporation
 
-> **DEFCON 🟡 3 | Score 63/100 (v3.7) | FLAG aktiv (seit 09.04.2026)**
-> Sparrate: 0€ | FLAG pausiert Sparrate
+> **DEFCON 🟠 2 | Score 63/100 (v3.7) | FLAG aktiv (seit 09.04.2026)**
+> Sparrate: 0€ | FLAG pausiert Sparrate (überschreibt DEFCON-Gewicht)
+> *(Label D3→D2 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment — Score unverändert, Sparrate durch FLAG weiterhin 0€)*
 
 ## DEFCON v3.4 Analyse (15.04.2026)
 

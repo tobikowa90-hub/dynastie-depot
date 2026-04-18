@@ -67,12 +67,12 @@ system_regeln:
     gewichte: "D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0"
     formel: "Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht"
     beispiel: |
-      Aktueller Stand (17.04.2026, v3.7): 8× D4/D3 (Gewicht 1.0) + 1× D2 TMO (Gewicht 0.5) + 2× 🔴 eingefroren (MSFT + APH)
-      Nenner = (8 × 1.0) + (1 × 0.5) = 8.5
-      D4/D3-Einzelrate = 285€ / 8.5 × 1.0 = 33,53€
-      D2-Einzelrate (TMO) = 285€ / 8.5 × 0.5 = 16,76€
+      Aktueller Stand (18.04.2026, v3.7 + Schema-SKILL-Threshold-Alignment): 7× D4/D3 (Gewicht 1.0) + 2× D2 (V + TMO, Gewicht 0.5) + 2× 🔴 eingefroren (MSFT + APH)
+      Nenner = (7 × 1.0) + (2 × 0.5) + (2 × 0) = 8.0
+      D4/D3-Einzelrate = 285€ / 8.0 × 1.0 = 35,63€
+      D2-Einzelrate (V + TMO) = 285€ / 8.0 × 0.5 = 17,81€
       🔴/D1-Rate = 0€
-      Summencheck: 8 × 33,53 + 1 × 16,76 = 268,24 + 16,76 = 285€ ✓
+      Summencheck: 7 × 35,63 + 2 × 17,81 = 249,41 + 35,62 = 285€ ✓
 
   tariff_exposure_quelle:
     beschreibung: "Primärquelle für Tariff-Exposure-Scoring (Pflicht bei jedem !Analysiere)"
@@ -108,7 +108,7 @@ etfs:
 
 # ─────────────────────────────────────────────
 # SATELLITEN (Scalable) – 11/11 Slots belegt
-# Alle 11 Positionen auf DEFCON v3.7 umgestellt (17.04.2026) — 3/11 Live-Verify (TMO/ASML/RMS), Rest Algebra-Rechnung bis Earnings-Trigger
+# Alle 11 Positionen auf DEFCON v3.7 umgestellt (17.04.2026, Schema-SKILL-Threshold-Alignment 18.04.2026) — 5/11 Live-Verify (V + TMO 18.04. Forward, ASML + RMS post-Q1 17.04.), Rest Algebra-Projektion bis Earnings-Trigger. Threshold-Labels seit 18.04.: ≥80→D4, 65-79→D3, 50-64→D2, <50→D1.
 # ─────────────────────────────────────────────
 satelliten:
   - ticker: ASML
@@ -170,12 +170,12 @@ satelliten:
   - ticker: RMS
     name: "Hermès International"
     typ: "Substanz / Luxury"
-    defcon: 4
+    defcon: 3
     score: 68
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate). Screener-Exception #3: ROIC 24% >> WACC 6,5% rechtfertigt D4 trotz Score 68."
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Screener-Exception #3: ROIC 24% >> WACC 6,5% — Label D3 nach Schema-SKILL-Alignment 18.04. (Score 68 in 65-79-Range), Sparrate bei D3/D4 identisch."
     naechste_pruefung: "H1 2026 Report Juli/Aug 2026"
     scoring_notiz: "Score 68 (v3.7 Live-Verify, 71→68 inkl. Q1-Recap). Revenue +6% CER/-1% rep. Kursreaktion -8,4%. Moat 19/20 intakt, ROIC 24% >> WACC 6,5%, Insider-Käufe +€7,67M (90d). D4-Exception #3: ROIC-Spread +17,5 PP."
     ersatz: RACE
@@ -186,12 +186,12 @@ satelliten:
   - ticker: VEEV
     name: "Veeva Systems"
     typ: "Asset-Light / Life Sciences SaaS"
-    defcon: 4
+    defcon: 3
     score: 74
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate)"
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 74 in 65-79-Range)."
     naechste_pruefung: "Nächste Earnings"
     scoring_notiz: "Score 74: Wide Moat (Life Sciences Vault-Monopol). Bewertung drückt Score unter 80."
     ersatz: "ZTS / SAP"
@@ -202,12 +202,12 @@ satelliten:
   - ticker: SU
     name: "Schneider Electric"
     typ: "Substanz / Industrials"
-    defcon: 4
+    defcon: 3
     score: 69
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate)"
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 69 in 65-79-Range)."
     naechste_pruefung: "H1 2026 Earnings Juli/Aug 2026"
     scoring_notiz: "Score 69 (v3.7 Algebra 71→69): CapEx/OCF 25.2% (ausgezeichnet), ROIC 10.48% > WACC 8.96%, FCF-Wachstum +41% 3J. Schwächen: P/FCF 37.7x, Goodwill 40.2% (AVEVA). Moat Narrow."
     ersatz: DE
@@ -218,12 +218,12 @@ satelliten:
   - ticker: BRK.B
     name: "Berkshire Hathaway"
     typ: "Substanz / Holding / Float-Modell"
-    defcon: 4
+    defcon: 3
     score: 75
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate)"
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 75 in 65-79-Range). Screener-Exception: Insurance/Float-Modell."
     naechste_pruefung: "Q-Earnings Mai 2026"
     scoring_notiz: "Score 75: P/B 1.44x (Screener-Exception). Moat 19/20 (Float $686B, BNSF, 60J Track-Record). Insider 9/10: Greg Abel $15.3M Open-Market. CapEx/OCF 45.6% (BNSF+BHE, kein FLAG). Schwächen: ROIC 5.6-7.8% GAAP, Technicals 4/10."
     ersatz: "MKL / FFH.TO"
@@ -235,14 +235,14 @@ satelliten:
   - ticker: V
     name: "Visa"
     typ: "Asset-Light / Payments"
-    defcon: 4
-    score: 86
-    score_datum: "2026-04-17"
-    score_valid_until: "2026-10-14"
+    defcon: 2
+    score: 63
+    score_datum: "2026-04-18"
+    score_valid_until: "2026-10-15"
     flag: false
-    sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate)"
-    naechste_pruefung: "Q2 FY26 Earnings ~22.04.2026 — QuickCheck, Sparplan bestätigen"
-    scoring_notiz: "Score 86: Wide Moat (Network Effect, Duopol mit MA). FCF-Marge ~54%, ROIC ~9.9% Q TTM. Top-Score gleichauf AVGO."
+    sparrate_hinweis: "DEFCON 2, kein 🔴 FLAG → Gewicht 0.5 (halbe Rate 17,81€)"
+    naechste_pruefung: "2026-04-28 Q2 FY26 Earnings — D2-Entscheidung (Technicals-Reversal bei Beat + Guidance?)"
+    scoring_notiz: "Score 63 (v3.7 Forward-Vollanalyse 18.04. nach Advisor-Review): Fundamentals 30/50 (Fwd P/E 5 / P/FCF 1 QT-cap Wide+28x / Bilanz 8 / CapEx/OCF 9 Fabless / ROIC 1 — GAAP 9,89% < WACC 10,48%, Regel-4-Gating GW/Assets 19,95% <30% greift NICHT / FCF-Y 4 / OpM 2), Moat 19 (Wide, kein Pricing-Power-Bonus mangels Transcript-Verifikation), Technicals 3 (RelStärke -13,97pp vs SPY, Kurs -4,97% unter fallendem 200MA), Insider 5 (<1% Ownership strikt), Sentiment 6 (Crowd-Warnung: 0% Sell + PT-Dispersion 32%). Algebra-Projektion 86 empirisch nicht haltbar (-23 pts). Q2 FY26 Earnings 28.04. entscheidet Reversal-Pfad."
     ersatz: MA
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: USA
@@ -252,15 +252,15 @@ satelliten:
     name: "Thermo Fisher Scientific"
     typ: "Substanz / Life Sciences"
     defcon: 2
-    score: 63
-    score_datum: "2026-04-17"
-    score_valid_until: "2026-10-14"
+    score: 64
+    score_datum: "2026-04-18"
+    score_valid_until: "2026-10-15"
     flag: false
-    flag_hinweis: "Clario-Akquisition: Net Debt/EBITDA verbessert auf 2.57x (FY25). FCF -13.4% YoY — Working-Capital-Effekt Clario. ROIC 2.6% quartalsweise = strukturelles Goodwill-Problem ($49.4B). Kein FLAG."
-    sparrate_hinweis: "DEFCON 2, kein 🔴 FLAG → Gewicht 0.5 (halbe Rate 16,76€)"
-    scoring_notiz: "Score 63 (v3.7): Fix-3 Sell-Ratio-Kalibrierung + OpM-Subscore drückt auf D2. Fwd P/E 19.9x attraktiver nach -24% Kursrückgang. Net Debt/EBITDA 2.57x < 3.0x-Schwelle. ROIC bleibt GAAP-Kernproblem (Goodwill 44.8% Assets)."
-    naechste_pruefung: "2026-04-23 Q1 Earnings — FCF-Erholung + ROIC-Trend entscheidend. FCF >$7.3B nötig für FCF-Yield >4%."
-    earnings_trigger: "DEFCON 4 bei: FCF Yield >4% + ROIC Aufwärtstrend sichtbar. DEFCON 2 / ZTS-Aktivierung bei: FCF weiter rückläufig + kein Schuldenabbau-Signal."
+    flag_hinweis: "fcf_trend_neg schema-getriggert (FY25 FCF 6,293M / FY24 7,267M = -13,4% YoY; CapEx +8,9%), NICHT aktiviert per Advisor-Review (Option B — struktureller Disclosure): (a) WC-Delta FY25 -1,766M > FCF-Delta -974M = WC-Noise-Erklärung; (b) 4J-Plateau FY22-25 $6,9→6,9→7,3→6,3B = kein Mehrjahres-Abwärtstrend; (c) Operating Income +5,1% YoY = Profitabilität intakt. Resolve-Gate: Q1 FY26 Earnings 23.04.2026."
+    sparrate_hinweis: "DEFCON 2, kein 🔴 FLAG → Gewicht 0.5 (halbe Rate 17,81€)"
+    scoring_notiz: "Score 64 (v3.7 Forward-Vollanalyse 18.04., Algebra-Projektion 63 bestätigt ±1): Fundamentals 30/50 (Fwd P/E 6 / P/FCF 1 QT-cap Wide+31x / Bilanz 6 / CapEx/OCF 7 / ROIC 6 bereinigt — GAAP 8,04%, Regel-4-Gating greift: GW/Assets 44,74% ≥30% → IC bereinigt 43,430M → ROIC bereinigt 17,18% vs WACC 10,44% = +6,74pp Spread / FCF-Y 3 / OpM 1), Moat 18 (Wide Intangibles + Switching Costs + Scale), Technicals 6 (ATH -18% / RelStärke 0 / Trend 3), Insider 4 (0+1+3), Sentiment 6 (SB 4 / Sell 1 / PT-Up 2 / PT-Disp -1 = 35,5% Dispersion)."
+    naechste_pruefung: "2026-04-23 Q1 FY26 Earnings — D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind + FCF-Recovery = Disclosure bleibt; fehlende Reversibilität = FLAG-Trigger nachtragen)."
+    earnings_trigger: "DEFCON 3 bei: FCF-Recovery + WC-Unwind bestätigt + ROIC-Aufwärtstrend. DEFCON 2 bleibt bei: FCF weiter rückläufig + WC-Delta persistent. DEFCON 1 / ZTS-Aktivierung bei: fcf_trend_neg-FLAG nachzutragen + Score <50."
     ersatz: ZTS
     substitute_activation_rule: "Vorbereitung aktiv bei Score 67 (D3). Ausführung bei Score <50 oder Moat-Downgrade. ZTS muss Score ≥80 ohne FLAG haben."
     region: USA
@@ -269,17 +269,17 @@ satelliten:
   - ticker: APH
     name: "Amphenol"
     typ: "Asset-Light / Connectors"
-    defcon: 3
+    defcon: 2
     score: 63
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: true
-    flag_grund: "Score-basiert — Score 63, DEFCON 3. Tariff-Exposure: China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map aktiv."
+    flag_grund: "Score-basiert — Score 63, DEFCON 2 (Schema-SKILL-Threshold-Alignment 18.04.: 50-64 → D2). Tariff-Exposure: China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map aktiv."
     flag_seit: "2026-04-09"
     flag_wirkung: "Sparrate komplett gestoppt (0 €)"
     sparrate_hinweis: "🔴 FLAG aktiv → Gewicht 0.0 (eingefroren)"
     naechste_pruefung: "Q2 2026 Earnings 23.07. — Tariff-Impact-Check + Score-Review"
-    scoring_notiz: "Score 63 (v3.7): GM ~32%, Tariff CN/MY Risk-Map. Kein FLAG durch Revenue >35%, aber Score-basiertes FLAG wegen Score <65 + DEFCON 3."
+    scoring_notiz: "Score 63 (v3.7): GM ~32%, Tariff CN/MY Risk-Map. Kein FLAG durch Revenue >35%, aber Score-basiertes FLAG wegen Score <65 + DEFCON 2 (seit 18.04. Threshold-Alignment)."
     ersatz: null
     substitute_activation_rule: "Kein definierter Ersatz — bei DEFCON 1 Watchlist auf mögliche Kandidaten screenen"
     region: USA
@@ -288,12 +288,12 @@ satelliten:
   - ticker: COST
     name: "Costco"
     typ: "Substanz / Retail"
-    defcon: 4
+    defcon: 3
     score: 69
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 4, kein FLAG → Gewicht 1.0 (volle Rate). Screener-Exception: Membership Yield 15.2% > WACC 12.3% als ökonomischer Return."
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 69 in 65-79-Range). Screener-Exception: Membership Yield 15.2% > WACC 12.3% als ökonomischer Return."
     naechste_pruefung: "Q1 FY27 Earnings ~Dez 2026"
     scoring_notiz: "Score 69: ROIC 5.6% GAAP (strukturell durch niedriges Book Value). Membership Yield 15.2% ($5.3B / $34.9B IC) als ökonomischer Return > WACC 12.3%. Moat 19/20 (Membership-Loyalty). Schwächen: P/FCF 53x, FCF Yield 1.88%."
     ersatz: null
@@ -314,7 +314,7 @@ flags_aktiv:
     naechste_pruefung: "2026-04-29 Q3 FY26 Earnings — bereinigtes CapEx/OCF <60% = Auflösung"
 
   - ticker: APH
-    grund: "Score-basiert — Score 63 (v3.7), DEFCON 3. Tariff CN/MY Risk-Map aktiv."
+    grund: "Score-basiert — Score 63 (v3.7), DEFCON 2 seit 18.04. (Schema-SKILL-Threshold-Alignment). Tariff CN/MY Risk-Map aktiv."
     seit: "2026-04-09"
     wirkung: "Sparrate komplett gestoppt (0 €)"
     naechste_pruefung: "Q2 2026 Earnings 23.07."
@@ -427,9 +427,9 @@ keine_zuteilung:
 # ─────────────────────────────────────────────
 termine:
   - datum: "~2026-04-22"
-    event: "V Q2 FY26 Earnings → QuickCheck, Sparplan bestätigen (Score 86, D4)"
+    event: "V Q2 FY26 Earnings (28.04.) → D2-Entscheidung, Technicals-Reversal bei Beat + Guidance? (Score 63, D2 seit 18.04. Forward)"
   - datum: "2026-04-23"
-    event: "TMO Q1 2026 Earnings → FCF >$7.3B nötig für FCF-Yield >4% (Score 63, D2 seit v3.7)"
+    event: "TMO Q1 FY26 Earnings → D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind?). FCF >$7.3B nötig für FCF-Yield >4% (Score 64, D2 seit 18.04. Forward)"
   - datum: "2026-04-28"
     event: "SPGI Q1 2026 Earnings → Re-Analyse (Score 77 → ≥80 möglich bei ROIC-Normalisierung)"
   - datum: "2026-04-28"

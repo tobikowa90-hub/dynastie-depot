@@ -1,25 +1,27 @@
 ---
-tags: [satellit, aktiv, defcon-4, screener-exception]
+tags: [satellit, aktiv, defcon-3, screener-exception]
 ticker: BRK.B
 name: Berkshire Hathaway Inc. (Class B)
 sektor: Kapitalallokation / Holding
 ersatz: MKL
 score_aktuell: 75
-defcon: 4
+defcon: 3
 flag: "keins"
-sparrate: "Volle Rate"
+sparrate: "Volle Rate 35,63€ (Gewicht 1.0)"
 letzteAnalyse: 2026-04-15
 score_valid_until: 2026-10-15
 naechsterTrigger: "Q-Earnings Mai 2026"
+scoring_notiz_v37: "Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment (Score 75 in 65-79-Range). Screener-Exception Insurance/Float. Sparrate bei D3/D4-Übergang identisch."
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]]"
 related_sources: "[[Buffetts-Alpha]]"
-updated: 2026-04-16
+updated: 2026-04-18
 ---
 
 # BRK.B — Berkshire Hathaway B
 
-> **DEFCON 🟢 4 | Score 75/100 | Kein FLAG**
-> Sparrate: Volle Rate | Defensivster Satellit
+> **DEFCON 🟡 3 | Score 75/100 | Kein FLAG**
+> Sparrate: Volle Rate 35,63€ | Defensivster Satellit
+> *(Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment — Score unverändert)*
 
 ## DEFCON v3.4 Analyse (15.04.2026)
 

@@ -1,27 +1,28 @@
 ---
-tags: [satellit, aktiv, defcon-4, non-us, ifrs, screener-exception]
+tags: [satellit, aktiv, defcon-3, non-us, ifrs, screener-exception]
 ticker: RMS
 name: Hermès International S.A.
 sektor: Luxury / Monopol
 ersatz: RACE
 score_aktuell: 68
-defcon: 4
+defcon: 3
 flag: "keins"
-sparrate: "Volle Rate 33,53€ (v3.7)"
+sparrate: "Volle Rate 35,63€ (Gewicht 1.0)"
 letzteAnalyse: 2026-04-17
 score_valid_until: 2026-10-14
-scoring_notiz_v37: "v3.7: Score 69→68 (Fix 1 Interaktionsterm milder Impact, Wide Moat + P/FCF hoch). D4-Screener-Exception bleibt (ROIC 24% >> WACC 6,5%)."
+scoring_notiz_v37: "v3.7: Score 69→68 (Fix 1 Interaktionsterm milder Impact, Wide Moat + P/FCF hoch). Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment (Score 68 in 65-79-Range). Screener-Exception #3 bleibt ROIC 24% >> WACC 6,5%. Sparrate bei D3/D4-Übergang identisch."
 naechsterTrigger: "H1 2026 Earnings Juli/Aug 2026"
 waehrung: EUR
 ifrs: true
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
-updated: 2026-04-16
+updated: 2026-04-18
 ---
 
 # RMS — Hermès International
 
-> **DEFCON 🟢 4 | Score 68/100 (v3.7) | Kein FLAG**
-> Sparrate: Volle Rate 33,53€ | Non-US / IFRS
+> **DEFCON 🟡 3 | Score 68/100 (v3.7) | Kein FLAG**
+> Sparrate: Volle Rate 35,63€ | Non-US / IFRS
+> *(Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment — Score unverändert, Screener-Exception #3 ROIC-Spread bleibt)*
 
 ## DEFCON v3.4 Analyse (15.04.2026)
 

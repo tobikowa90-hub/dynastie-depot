@@ -1,24 +1,26 @@
 ---
-tags: [satellit, aktiv, defcon-4]
+tags: [satellit, aktiv, defcon-3]
 ticker: VEEV
 name: Veeva Systems Inc.
 sektor: Nischen-SaaS / Life-Science
 ersatz: ZTS
 score_aktuell: 74
-defcon: 4
+defcon: 3
 flag: "keins"
-sparrate: "Volle Rate (Gewicht 1.0)"
+sparrate: "Volle Rate 35,63€ (Gewicht 1.0)"
 letzteAnalyse: 2026-04-09
 score_valid_until: 2026-10-06
 naechsterTrigger: "Nächste Earnings"
-updated: 2026-04-16
+scoring_notiz_v37: "Label D4→D3 nach Schema-SKILL-Threshold-Alignment 18.04.2026 (Score 74 in 65-79-Range). Sparrate bei D3/D4-Übergang identisch. Score selbst unverändert."
+updated: 2026-04-18
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
 ---
 
 # VEEV — Veeva Systems
 
-> **DEFCON 🟢 4 | Score 74/100 | Kein FLAG**
-> Sparrate: Volle Rate (Gewicht 1.0) | SaaS, kein Tariff-Risiko
+> **DEFCON 🟡 3 | Score 74/100 | Kein FLAG**
+> Sparrate: Volle Rate 35,63€ (Gewicht 1.0) | SaaS, kein Tariff-Risiko
+> *(Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment — Score/Sparrate unverändert)*
 
 ## Stärken
 
