@@ -72,26 +72,20 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 
 ### Applied Learning (kuratiert, max. 20 Bullets)
 
-> <15 Wörter pro Bullet. Nur operativ relevante Fakten.
+> <15 Wörter pro Bullet. Nur operativ relevante **Arbeitsprinzipien** — keine Tool-References (→ Auto-Memory) und keine systemischen Regeln (→ INSTRUKTIONEN.md §§).
 >
-> **Kurator-Regel bei Überlauf (20/20):** Hybrid-Strategie in dieser Reihenfolge anwenden: (1) Tool-References evakuieren → Auto-Memory oder INSTRUKTIONEN; (2) stabile API-/Regel-Bullets **promoten** → neue INSTRUKTIONEN-§; (3) thematisch verwandte Bullets **konsolidieren**. Ziel: 15/20 nach Revision. Archivierung ist kein Weg (toter Code).
+> **Proaktive Pflege (seit 18.04.2026):** Bei jedem Monats-Übergang: 5-Min-Scan — Tool-References identifizieren und evakuieren. Verhindert Buildup, billiger als reaktive Überlauf-Sanierung.
+>
+> **Kurator-Regel bei Überlauf (20/20):** Hybrid-Strategie: (1) Tool-References → Auto-Memory; (2) stabile Regeln → neue INSTRUKTIONEN-§; (3) thematisch verwandte Bullets konsolidieren. Ziel: ≤15/20 nach Revision. Archivierung ist kein Weg (toter Code).
 
-- RemoteTrigger update ersetzt ccr-Objekt komplett — immer alle 3 Felder mitsenden
-- JSON-Nesting: parent_tool_use_id/session_id/type/uuid auf data-Level, nie in message
-- Yahoo Finance 403 von Cloud-IPs — curl aus Remote-Triggern funktioniert nicht
-- Berkshire (BRK.B) fehlt komplett in Shibui — immer externen Provider nutzen
-- Shibui code='SU' ist Suncor, nicht Schneider — nie SU in Shibui-Queries
-- D3 = volle Rate (1.0), nicht 50% — systemweit seit v3.4 korrigiert
-- SessionEnd-Hook + Windows-Toast für Briefing-Sync → 03_Tools/briefing-sync-check.ps1
 - Subagents nur für Code+Tests — Markdown/YAML-Edits direkt editieren (3×Subagent-Overhead unnötig)
 - Paper-Ingest ≠ System-Update: Wissenschaft validiert Regeln, erzwingt keine neuen — Redundanz-Check vor jeder Scoring-Erweiterung
-- Double-Counting-Falle: Aggregat-Scores (z.B. F-Score) prüfen ob Sub-Signale schon dekomponiert im System sind
-- Bonus-Cap-Check: Bei neuen Boni erst Punkteverteilung Top-Namen prüfen — sonst wirken Boni nur in Mitte
 - Informationsverlust-Aversion > Ästhetik: bei Delete-vs-Keep Default = erhalten + Zeitstand-Banner
 - Advisor-Empfehlung nicht ohne neue Evidenz überstimmen — Ästhetik-Argumente zählen nicht als Evidenz
-- Vor "fertig"-Meldung Multi-Source-Drift-Grep (INSTRUKTIONEN/CORE-MEMORY §4/Vault-Synthesen/Tools) — config.yaml-Fix allein reicht nie
 - Parallel-Agents für !Analysiere REJECTED 17.04.: ~270k Token + Screener-Exception-Fehler — Genauigkeit > Wall-Time
-- Projection-Layer (STATE.md) ≠ Wahrheitsquelle — nur aus State+Narrative synchron halten, nie selbst fortschreiben (verhindert Drift)
 - Backfill-Tolerant-Pattern für Cross-Validators: bei fehlenden Rohwerten moat.rating="narrow" → Quality-Trap-Validator deaktiviert, keine Schätzungen nötig
 - Cross-Session AI-"Fixes" immer gegen `git diff HEAD` prüfen — Preview-Reads können Truncation fälschlich diagnostizieren
 - Scoring-Version-Bump: Algebra-Projektion ≠ empirischer Lauf, bei Trigger re-verifizieren (V v3.5→v3.7 Algebra 86, Forward 63)
+- Option B vor mechanischem FLAG-Trigger: schema-getriggert ≠ strukturell. WC-Noise / Multi-Year-Trend / OpInc-Parallelität prüfen (TMO 18.04. fcf_trend_neg nicht aktiviert)
+
+> **Historie:** v1.0 (17.04.2026) 19 Bullets gemischt. v2.0 (18.04.2026) Evakuierung: 6 Tool-Refs → Auto-Memory, 4 systemische Regeln → INSTRUKTIONEN §27, auf **9 Kern-Arbeitsprinzipien** reduziert. Neues +1 (Option B FLAG-Entscheidung). Stand: **9/20**.

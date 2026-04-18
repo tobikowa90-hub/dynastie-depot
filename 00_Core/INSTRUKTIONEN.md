@@ -481,4 +481,64 @@ Empfehlung: [!SyncBriefing ausführen] / [Kein Handeln nötig]
 `!QuickCheck`, Stufe-0-Screener-Outputs, Rohdaten aus `insider_intel.py`/`eodhd_intel.py` (nur finale 100-Punkte-Scores).
 
 ---
-*🦅 INSTRUKTIONEN.md v1.7 (§26 Archiv-Sync Backtest-Ready) | Dynastie-Depot v3.7 | Stand: 17.04.2026*
+
+## 27. Scoring-Hygiene & Daten-Integrität
+
+Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-Source-Konsistenz. Promotion aus Applied Learning am 18.04.2026 — bewährt über mehrere Session-Zyklen.
+
+### 27.1 Double-Counting-Vermeidung bei Scoring-Erweiterungen
+
+**Regel:** Bei jeder Scoring-Erweiterung (neuer Bonus, neuer Malus, neuer Sub-Score) zuerst prüfen ob Sub-Signale bereits im System dekomponiert sind.
+
+**Typische Falle:** Aggregat-Scores (F-Score, Altman-Z, etc.) auf ein System aufsetzen, das ihre Einzelfaktoren bereits abbildet. Ergebnis: derselbe Effekt wird doppelt bestraft/belohnt.
+
+**Pflichtcheck vor Erweiterung:**
+1. Liste alle Komponenten des neuen Aggregats auf.
+2. Grep alle DEFCON-Sub-Scores (Fundamentals, Moat, Technicals, Insider, Sentiment) auf Überschneidungen.
+3. Bei Überschneidung: entweder neuer Score nur **orthogonale** Signale nutzt, oder Überschneidung mit Hard-Cap auf Block-Ebene neutralisieren (siehe §27.2).
+
+**Präzedenzfall:** v3.7 Quality-Trap-Interaktion — implementiert als Deckel auf Fwd-P/E + P/FCF-Subscores, nicht als additiver Moat-Malus (vermeidet Double-Counting mit bestehender Fundamentals-Dekomposition).
+
+### 27.2 Bonus-Cap-Check bei neuen Bonus-Regeln
+
+**Regel:** Vor Rollout eines neuen Bonus (Punkte +X) Punkteverteilung Top-Namen simulieren.
+
+**Typische Falle:** Bonus wirkt nur in der Mitte der Score-Verteilung, weil Top-Namen bereits am Block-Cap (Fundamentals 50, Moat 20, etc.) anstehen. Ergebnis: asymmetrische Verzerrung zugunsten von B-Namen, Top-Namen verlieren Bonus-Headroom.
+
+**Pflichtcheck:**
+1. Für alle aktuellen 11 Satelliten durchrechnen: Block-Score + potenzieller Bonus.
+2. Wenn ≥3 Top-Namen am Cap hängen bleiben → Bonus entweder ins Block-Cap integrieren oder als Tie-Breaker statt Score-Boost.
+3. Dokumentieren in Scoring-Lektionen (CORE-MEMORY §5).
+
+**Präzedenzfall:** v3.7 Fundamentals-Cap 50 — bewusst akzeptiert dass Top-Namen (AVGO 84) weniger Bonus-Headroom haben; dafür Score-Inflation strukturell ausgeschlossen.
+
+### 27.3 Projection-Layer ≠ Wahrheitsquelle
+
+**Regel:** STATE.md, Briefing-Tabellen, Dashboard-Summaries sind **Projektionen** aus State+Narrative — nie selbst als Primärquelle fortschreiben.
+
+**Typische Falle:** STATE.md direkt editieren ohne zuerst Faktortabelle/CORE-MEMORY/score_history.jsonl zu aktualisieren. Ergebnis: Drift zwischen Primär- und Projektions-Layer, Session-Start-Informationen werden unzuverlässig.
+
+**Pflichtreihenfolge bei Änderungen:**
+1. Primärquelle zuerst (Faktortabelle.md, CORE-MEMORY.md, score_history.jsonl via archive_score.py).
+2. Projektion synchron nachziehen (STATE.md).
+3. Kein STATE.md-Edit ohne parallele Primärquellen-Änderung (Ausnahme: reine Layout/Navigation).
+
+**Präzedenzfall:** 17.04.2026 — STATE.md-Einführung begleitet von §18 Sync-Pflicht-Erweiterung (alle sechs Dateien, immer, ein Commit).
+
+### 27.4 Multi-Source-Drift-Check vor "fertig"-Meldung
+
+**Regel:** Vor Abschluss einer Systemänderung **alle Wahrheitsquellen greppen** — config.yaml-Fix allein reicht nie.
+
+**Pflicht-Suchliste:**
+- `00_Core/INSTRUKTIONEN.md` (§§)
+- `00_Core/CORE-MEMORY.md` (§4 Score-Tabelle, §5 Scoring-Lektionen)
+- `01_Skills/dynastie-depot/config.yaml`
+- `01_Skills/dynastie-depot/SKILL.md`
+- `00_Core/STATE.md`, `Faktortabelle.md`
+- `07_Obsidian Vault/.../wiki/entities/satelliten/*.md`
+- `03_Tools/Rebalancing_Tool_v3.4.xlsx`, `Satelliten_Monitor_v2.0.xlsx`
+
+**Präzedenzfall:** 18.04.2026 Schema-SKILL-Threshold-Drift — Fix in schemas.py alleine hätte 5 Vault-Pages und beide Tools veraltet zurückgelassen. Kaskaden-Sync war Pflicht.
+
+---
+*🦅 INSTRUKTIONEN.md v1.8 (§27 Scoring-Hygiene & Daten-Integrität) | Dynastie-Depot v3.7 | Stand: 18.04.2026*
