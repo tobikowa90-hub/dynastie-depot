@@ -145,7 +145,7 @@ Injiziere `event.model_dump()` in `record_dict["migration_event"]`.
 
 ### P4 — Dry-Run Validation
 
-Schreibe `record_dict` (inkl. ggf. `migration_event`) als JSON zurück in eine Temp-Datei.
+Schreibe `record_dict` (inkl. ggf. `migration_event`) **als bare ScoreRecord** (nicht das Wrapper-Format `{"record": ...}`) als JSON in eine Temp-Datei.
 
 ```bash
 python 03_Tools/backtest-ready/archive_score.py --file <path> --dry-run
