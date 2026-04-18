@@ -52,3 +52,24 @@ Impuls / Idee
 - [[dynastie-depot-skill]] — Übergeordneter Monolith mit allen Befehlen
 - [[Chain-of-Thought Prompting]] — Strukturprinzip hinter !Analysiere: erst Reasoning, dann Score
 - [[LLM-Based Stock Rating]] — Forschungsgrundlage für den Analyse-Workflow (JPM 2024)
+- [[Score-Archiv]] — Pipeline-Ausgabe landet im History-Layer
+- [[Backtest-Ready-Infrastructure]] — Dachkonzept für persistente Analyse-Historie
+
+## Archiv-Write (Pflicht, Schritt 7 — seit 2026-04-17)
+
+Nach Output-Abschnitt 6 "Depot-Einordnung" folgen zwei verbindliche Schritte in SKILL.md:
+
+**Schritt 6b — FLAG-Resolution-Check:**
+```bash
+python 03_Tools/backtest-ready/archive_flag.py list --ticker <T> --aktiv
+# Für jeden offenen FLAG: prüfen ob Metrik normalisiert, ggf. resolve
+```
+
+**Schritt 7 — Archiv-Write:**
+```bash
+python 03_Tools/backtest-ready/archive_score.py --file <tempfile.json>
+```
+
+Der Score-Record wird via Pydantic-Schema ([[Score-Archiv]]) validiert (Arithmetik, DEFCON-Konsistenz, Quality-Trap-Interaktion) und an `05_Archiv/score_history.jsonl` angehängt. Keine Ausnahme — jeder verpasste Append = irreversibler Historie-Verlust.
+
+Commit-Disziplin §18: Alle sechs Dateien (log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + ggf. flag_events.jsonl) in einem git-Commit.

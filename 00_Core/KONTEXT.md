@@ -145,4 +145,56 @@ Physischer Notfall-Ordner für Laura:
 | Juni 2026 | Bausparvertrag 9.500€ + Steuererstattung 2.000€ | Sparplan-Booster planen |
 
 ---
-*🦅 KONTEXT.md v1.0 | Dynastie-Depot | Stand: 04.04.2026*
+
+## 11. Datenhaltung — 4-Layer-Architektur (ab 2026-04-17)
+
+Das Dynastie-Depot-System hält seinen Zustand in **vier formal getrennten Layern** mit je eigener Semantik und Änderungs-Disziplin. Die Layer sind komplementär, keiner ersetzt den anderen.
+
+### State-Layer — Aktueller Zustand (überschrieben)
+
+- **`Faktortabelle.md`** — Score + DEFCON + FLAG pro Ticker, immer genau eine Zeile pro aktivem Ticker. Wird bei jeder Score-Änderung überschrieben.
+- **Merkmal:** "Was ist JETZT wahr?"
+
+### Narrative-Layer — Menschenlesbare Historie (evolvierend)
+
+- **`log.md`** (Vault) — technisches Protokoll pro Analyse/Session
+- **`CORE-MEMORY.md`** (00_Core) — strategisches Gedächtnis (Sections 1-11: Meilensteine, Entscheidungen, Positionen, §4 Pointer, Lektionen, Upgrades, Audit, Backtest-Infrastructure)
+- **Merkmal:** "Was ist warum passiert?" — Kontext und Begründungen, nicht nur Zahlen.
+
+### History-Layer — Maschinenlesbare Historie (append-only, unveränderlich)
+
+- **`05_Archiv/score_history.jsonl`** — ein Record pro `!Analysiere` (Vollanalyse/Delta/Rescoring), validiert via `ScoreRecord` in `03_Tools/backtest-ready/schemas.py`. Git-tracked via `.gitignore`-Whitelist.
+- **`05_Archiv/flag_events.jsonl`** — ein Record pro FLAG-Trigger und pro Resolution, 4 FLAG-Typen hardcoded in `FLAG_RULES`.
+- **Merkmal:** "Was wurde wann entschieden?" — Point-in-Time, nie überschrieben. Basis für 2028+ Backtest.
+
+### Projection-Layer — Session-Entry-Snapshot (abgeleitet)
+
+- **`STATE.md`** — komprimierte Portfolio-Tabelle + Watches + Trigger-Liste. **Keine eigenständige Wahrheitsquelle.** Projektion aus State + Narrative, wird via §18 Sync-Pflicht synchron gehalten.
+- **Merkmal:** "Was muss ich zum Session-Start wissen?" — 80 Zeilen statt 1.200 Auto-Read.
+
+### Schreib-Disziplin (§18 Sync-Pflicht)
+
+Jede Score/FLAG/Sparraten-Änderung triggert Updates in **allen vier Layern** (6 Dateien) im gleichen git-Commit:
+
+| Layer | Dateien | Disziplin |
+|-------|---------|-----------|
+| State | `Faktortabelle.md` | Überschreiben |
+| Narrative | `log.md`, `CORE-MEMORY.md` | Fortschreiben (append + edit) |
+| History | `score_history.jsonl`, `flag_events.jsonl` | Append-only (nie UPDATE) |
+| Projection | `STATE.md` | Regenerieren aus State + Narrative |
+
+**Korrekturen im History-Layer** sind tabu — stattdessen neuer Record mit `source: "correction"` oder Cross-Reference via `notizen`-Feld. Dies sichert Point-in-Time-Integrität für Backtest.
+
+### Wann welcher Layer gelesen wird
+
+| Kontext | Lies |
+|---------|------|
+| Session-Start (90% der Fälle) | Projection-Layer (`STATE.md`) |
+| Live-Score/FLAG-Check | State-Layer (`Faktortabelle.md`) |
+| "Warum-Fragen", Lessons, Strategie | Narrative-Layer (`CORE-MEMORY.md`) |
+| 2028-Backtest, Event-Study, Review | History-Layer (JSONL-Archive) |
+
+**Anti-Pattern:** Narrative- oder Projection-Layer als Wahrheit für Backtest zitieren. Diese Layer sind für Menschen gedacht und können nachträglich editiert werden — nur History-Layer hat Point-in-Time-Garantie.
+
+---
+*🦅 KONTEXT.md v1.1 (§11 4-Layer-Architektur Backtest-Ready) | Dynastie-Depot | Stand: 17.04.2026*

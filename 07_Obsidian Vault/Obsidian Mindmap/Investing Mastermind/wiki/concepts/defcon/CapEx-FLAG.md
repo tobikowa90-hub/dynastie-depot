@@ -59,3 +59,15 @@ FLAG bleibt dennoch aktiv, weil bereinigt >60%.
 - [[MSFT]] — Aktives FLAG-Beispiel
 - [[GOOGL]] — Struktureller Ausschluss
 - [[AVGO]] — Fabless-Referenz (2.3%)
+- [[FLAG-Event-Log]] — Persistierung aller Trigger/Resolution
+- [[Backtest-Ready-Infrastructure]] — Infrastruktur-Dachkonzept
+
+## Persistierung (seit 2026-04-17)
+
+Jeder `capex_ocf`-Trigger wird in `05_Archiv/flag_events.jsonl` als unveränderlicher Record angehängt. Schwelle 60 ist hardcoded in `FLAG_RULES` in `03_Tools/backtest-ready/schemas.py`.
+
+**Deterministische `fcf_trend_neg`-Definition** (Spec §4.2): FCF YoY negativ in ≥3 von 4 letzten Quartalen UND CapEx YoY positiv. Ersetzt frühere heuristische Beschreibung.
+
+**Backfill-Stand 17.04.2026:** 2 capex_ocf-Trigger rekonstruiert (MSFT `83.6%` FY26 Q2, GOOGL FY26 Guidance Wert=null). APH (Score-basierter FLAG) ist nicht in der 4-Typ-Enum abbildbar → dokumentiert in `_parser_errors.log`.
+
+Details: [[FLAG-Event-Log]], [[Score-Archiv]].

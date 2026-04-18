@@ -51,3 +51,13 @@ CN (China), TW (Taiwan), MY (Malaysia), TH (Thailand), VN (Vietnam)
 - [[CapEx-FLAG]] — Verwandter FLAG-Trigger (>60% CapEx/OCF)
 - [[Non-US-Scoring]] — EUR-Ticker haben geringeres Direkt-Risiko
 - [[Update-Klassen-DEFCON]] — Makro-Schock >50 Bps = Klasse-C-Event
+- [[FLAG-Event-Log]] — Persistierung aller Trigger/Resolution
+- [[Backtest-Ready-Infrastructure]] — Infrastruktur-Dachkonzept
+
+## Persistierung (seit 2026-04-17)
+
+`tariff_exposure` ist einer der vier FLAG-Typen im `FLAG_RULES`-Enum. Schwelle 35 (Revenue-Anteil aus tarifbetroffenen Märkten in Prozent), Verletzung bei `>`.
+
+Jeder Trigger + Resolution wird via `archive_flag.py` in `05_Archiv/flag_events.jsonl` angehängt. Aktuelles APH-Beispiel: Revenue China FY2025 = 14,7% (< 35%-Schwelle, **kein Revenue-FLAG**). APH's aktiver FLAG ist score-basiert, nicht tariff_exposure.
+
+Details: [[FLAG-Event-Log]].

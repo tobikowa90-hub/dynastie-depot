@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 17.04.2026 nach v3.7-Deployment | **Für:** Nächste Session (Claude Code empfohlen)
+**Aktualisiert:** 17.04.2026 nach Backtest-Ready Infrastructure Phase 0-4 komplett | **Für:** Nächste Session
 
 ---
 
@@ -10,124 +10,109 @@
 Session starten
 ```
 
-Danach: freie Agenda (siehe Offene Punkte unten) oder Earnings-Trigger.
+Claude liest automatisch `00_Core/STATE.md` (Single-Entry-Point).
 
 ---
 
-## ✅ LETZTE SESSION (17.04.2026) — ERLEDIGT
+## ✅ LETZTE SESSION (17.04.2026 — Abend) — ERLEDIGT
 
-**DEFCON v3.7 „System-Gap-Release" deployed.** Commit `d890d57`, 14 Dateien.
+**Backtest-Ready Infrastructure Phase 0 + 0.5 + 1 + 2 + 3 + 4 komplett.** Skill v3.7.1 deployed (SKILL.md Schritt 6b/7). Forward-Pipeline scharfgeschaltet — ab nächster `!Analysiere` verliert keine Analyse mehr Historie.
 
-### Was geändert wurde
-- **Fix 1 Quality-Trap als Interaktionsterm** (nicht additiver Moat-Malus): Wide Moat + Fwd P/E >30 → Fwd-P/E-Subscore hart 0; Wide Moat + P/FCF >35 → P/FCF-Subscore hart 0; 22–30/22–35 → Subscore max 1. Grund: Applied Learning 17.04. verbietet Double-Counting.
-- **Fix 2 Operating Margin** (max 2 Pt.; >30%→2, 15–30%→1, <15%→0). Exceptions COST+BRK.B. Fundamentals-Block-Cap hart bei 50.
-- **Fix 3 Analyst-Bias-Kalibrierung:** Strong-Buy >60% → 1 (Crowd-Malus); Sell-Ratio <3%→1 (Warning), 3–10%→3 (Healthy), >10%→0.
-- **v3.6 (F-Score/GP-TA/Accrual-Bonus) verworfen** wegen Double-Counting mit dekomponierten Sub-Signalen.
+### Was entstanden ist
 
-### Backtest-Impact (keine DEFCON-Shifts) + Live-Verify-Status
-| Ticker | v3.5 → v3.7 | DEFCON | Rate | Live-Verify |
-|--------|-------------|--------|------|-------------|
-| ASML | 68 → 66 → **68** | 🟡 3 | 33,53€ | ✅ 17.04. (±2 → Post-Q1 Vollanalyse: 68 bestätigt). **Watch Fwd P/E FY27 30,30 → D4-Upside bei <30** |
-| AVGO | 85 → 84 | 🟢 4 | 33,53€ (Insider-Review) | ⏳ offen (Q3 FY26 Earnings) |
-| MSFT | 60 → 59 | 🟠 2 | 0€ (🔴 CapEx/OCF) | ⏳ offen (29.04.) |
-| TMO | 62 → 63 | 🟠 2 | **16,76€** (D2 aus v3.5 Audit) | ✅ 17.04. (±1) — nur P/FCF-Zweig Fix-1 |
-| RMS | 69 → 68 | 🟢 4 | 33,53€ | ✅ 17.04. (±2) — beide Fix-1 + Screener-Exception |
-| VEEV | 74 → 74 | 🟢 4 | 33,53€ | ⏳ offen |
-| SU | 71 → 69 | 🟢 4 | 33,53€ | ⏳ offen (H1 Report Juli/Aug) |
-| BRK.B | 75 → 75 | 🟢 4 | 33,53€ | ⏳ offen (Q-Earnings Mai) |
-| V | 86 → 86 | 🟢 4 | 33,53€ | ⏳ offen (~22.04.) |
-| APH | 61 → 63 | 🟡 3 | 0€ (🔴 Score-basiert) | ⏳ offen (23.07.) |
-| COST | 69 → 69 | 🟢 4 | 33,53€ | ⏳ offen (Q1 FY27 ~Dez) |
+**Code** (`03_Tools/backtest-ready/`, ~2991 Zeilen):
+- `schemas.py` (678 Z.) — 14 Pydantic-Modelle, Arithmetik + DEFCON-Konsistenz + Quality-Trap-Interaktion (v3.7) + FLAG-Direction
+- `archive_score.py` (468 Z.) — CLI-Append mit Uniqueness + Forward-Window
+- `archive_flag.py` (606 Z.) — trigger/resolve/list Subcommands
+- `backfill_scores.py` (383 Z.) — einmal-Run aus CORE-MEMORY Section 4
+- `backfill_flags.py` (260 Z.) — einmal-Run für MSFT + GOOGL Capex-FLAGs
+- `flag_event_study.py` (596 Z.) — deskriptive Event-Auswertung
+- `README.md` — Tool-Doku
 
-**Sparraten-Nenner:** 8×1.0 (D4/D3) + 1×0.5 (TMO D2) = **8.5** → 285€ / 8.5 = 33,53€ volle, 16,76€ D2.
+**Archive** (`05_Archiv/`, git-tracked via Whitelist):
+- `score_history.jsonl` — **24 Records** (alle Backfill aus Section 4)
+- `flag_events.jsonl` — **2 Records** (MSFT_capex_ocf_2026-01-15, GOOGL_capex_ocf_2026-03-15)
+- `_parser_errors.log` — lokal-only (APH + AVGO Backfill-Skips dokumentiert)
 
-### Live-Verify-Fortschritt (Schritt-2 Backtest-Plan)
-**3/11 verifiziert (17.04.2026) — alle Approximationen innerhalb ±2 Toleranz bestätigt.** Commit `e13cfd3`.
+**Doku-Updates:**
+- `CLAUDE.md` Sync-Pflicht 2 Stellen (Z.19 + Z.55) auf 6 Dateien
+- `STATE.md` Z.76 + System-Zustand um Backtest-Ready-Zeile
+- `INSTRUKTIONEN.md` v1.5 → **v1.7** (§18 erweitert, §26 Archiv-Sync neu, getrimmt)
+- `KONTEXT.md` **§11 4-Layer-Architektur** (State/Narrative/History/Projection)
+- `CORE-MEMORY.md` §4 Tabelle → Pointer, **§11 Backtest-Ready** neu, §1 Meilenstein-Eintrag
+- `01_Skills/dynastie-depot/SKILL.md` **Schritt 6b + 7** nach Depot-Einordnung
+- `06_Skills-Pakete/dynastie-depot_v3.7.1.zip` — manuell Desktop-installiert
+- `docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md` — v3.7-realigned (9 Deltas, §15 neu)
+- `02_Analysen/flag_event_study_2026-04-17.md` — Einmal-Report (n=2, Disclaimer)
 
-- **Kritische Fix-1-Kandidaten abgearbeitet:** ASML, RMS (beide Wide Moat + Fwd P/E >30 + P/FCF >35 → beide Zweige hart 0).
-- **Differenzierungs-Case validiert:** TMO (nur P/FCF-Zweig, Fwd P/E 20,80 unter Schwelle) — beweist: Fix-1 ist echter Interaktionsterm, kein Pauschal-Malus.
-- **Rest-Tickers (8) bei regulärem Earnings-Trigger** verifizieren (keine Einzel-Pushes nötig — Morning-Briefing erfasst).
+**Vault** (4 neu + 6 ergänzt, **84 → 88 Notes**):
+- Neu: `Score-Archiv`, `FLAG-Event-Log`, `Backtest-Ready-Infrastructure` (concepts/defcon/), `Backtest-Methodik-Roadmap` (synthesis/)
+- Ergänzt: DEFCON-System, Analyse-Pipeline, CapEx-FLAG, Tariff-Exposure-Regel, Wissenschaftliche-Fundierung-DEFCON, index.md
 
-### Skill-Deployment
-- `01_Skills/dynastie-depot/SKILL.md` (Source, v3.7 inhaltlich)
-- `06_Skills-Pakete/dynastie-depot_v3.7.zip` (mit `SKILL.md` Rename für Desktop-App) — manuell installiert, ersetzt v3.5.
+### Event-Study Kurz-Ergebnis (n=2, nicht statistisch belastbar)
 
-### Noch offen (User-Pending)
-- Keine offenen Tool-/Doku-Sync-Punkte. Rebalancing_Tool + Satelliten_Monitor + alle 00_Core/-Dateien + Vault sind 17.04.2026 auf v3.7 / ASML 68 synchronisiert.
+- MSFT capex_ocf +30d: **-12.12%** raw, Alpha **-10.56pp** vs S&P500 — FLAG-Konzept-Sanity-Check bestätigt Direction
+- GOOGL capex_ocf +30d: **+8.95%** raw, Alpha +4.95pp — kurze Fensterfrist, Score-FLAG funktioniert trotzdem auf Portfolio-Ebene (kein Einstieg)
+- 5/8 Horizonte pending (+180/+360 noch nicht observierbar)
 
-### Zusatz-Ereignis 17.04. (Nachmittag/Abend)
-- **Parallel-Agents für !Analysiere getestet und REJECTED.** Workflow 6 implementiert → einzelner Testlauf (COST) → verworfen (Token teurer + Screener-Exception-Fehler). Rollback in SKILL.md + PIPELINE.md durchgeführt. Spec erhalten als Lern-Artefakt (REJECTED-Banner). Applied Learning in CLAUDE.md ergänzt: "Genauigkeit > Wall-Time".
-- **Skill-Zip v3.7 manuell installiert** (06_Skills-Pakete/dynastie-depot_v3.7.zip, ersetzt v3.5).
+### Portfolio unverändert
 
----
-
-## 🎯 NÄCHSTER FOKUS: Backtest-Ready Infrastructure
-
-**Plan:** [`docs/superpowers/plans/2026-04-17-backtest-ready-infrastructure.md`](../docs/superpowers/plans/2026-04-17-backtest-ready-infrastructure.md)
-**Spec:** [`docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md`](../docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md)
-**Status:** Approved, wartet auf Durchführung.
-
-**Ablauf:**
-- Phase 0: Pydantic installieren + `03_Tools/backtest-ready/` anlegen
-- Phase 0.5: Spec-Update (5 Deltas)
-- Phase 1: Forward-Pipeline (schemas.py → archive_*.py → SKILL.md-Hook)
-- Phase 2+4 parallel möglich
-- Phase 3+5: Integration + Vault-Anbindung
-
-**Startprompt für neue Session:**
-```
-Session starten. Anschließend: Plan docs/superpowers/plans/2026-04-17-backtest-ready-infrastructure.md öffnen und Phase 0 beginnen.
-```
+Scores + DEFCON-Level + Sparraten (8.5-Nenner / 33,53€ / 16,76€) unverändert. Keine Score-Änderungen durch Infrastruktur-Arbeit.
 
 ---
 
-## 📅 NÄCHSTE TRIGGER (nach Datum)
+## 🎯 NÄCHSTER FOKUS: Earnings-Trigger + Live-Verify
 
 | Datum | Ticker | Klasse | Aktion |
 |-------|--------|--------|--------|
-| ~2026-04-22 | V | B | Q2 FY26 Earnings — QuickCheck + Sparplan bestätigen |
-| 2026-04-23 | TMO | B | Q1 Earnings — **FCF >$7.3B nötig** für FCF-Yield >4%. D2-Kritik-Trigger. |
-| 2026-04-28 | SNPS | B | Q1 Earnings — Watchlist (Score 79 Ersatz ASML) |
-| 2026-04-28 | SPGI | B | Q1 Earnings — Watchlist (Score 77) |
-| **2026-04-29** | **MSFT** | **C** | **Q3 FY26 Earnings — CapEx-FLAG-Review: bereinigt <60% = Auflösung.** |
-| Mai 2026 | BRK.B / CPRT / ZTS / PEGA | B | Q-Earnings + Watchlist |
-| Juni 2026 | — | — | Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung |
-| Juli/Aug 2026 | RMS + SU | — | H1 Reports → Re-Check D4-Exceptions |
-| 2026-07-23 | APH | C | Q2 Earnings — FLAG-Review + Tariff-Impact |
-| Q2 2026 | GOOGL | C | FLAG-Review |
-| Q3 FY26 | AVGO | C | Insider-FLAG-Review — erneuter OpenInsider-Check |
+| ~22.04. | V | B | Q2 FY26 — QuickCheck + Sparplan bestätigen |
+| **23.04.** | **TMO** | **B** | **Q1 — D2-Entscheidung (FCF >$7.3B nötig für FCF-Yield >4%)** |
+| 28.04. | SNPS / SPGI | B | Watchlist-Review |
+| **29.04.** | **MSFT** | **C** | **Q3 FY26 — CapEx/OCF FLAG-Review (bereinigt <60% = Auflösung)** |
+| Mai | BRK.B / ZTS / PEGA | B | Q-Earnings + Slot-16 |
+| Juli/Aug | RMS + SU | — | H1 Reports → Re-Check D4-Exceptions |
+| 2026-07-23 | APH | C | Q2 Earnings + Tariff-Check |
+
+**Archiv-Disziplin-Check** bei jeder !Analysiere ab jetzt:
+- SKILL.md Schritt 7 → `archive_score.py` ausführen
+- Bei FLAG-Trigger/Resolution → Schritt 6b → `archive_flag.py`
+- §18 Sync-Pflicht: **6 Dateien** im gleichen git-Commit
 
 ---
 
-## 🧭 START-PROTOKOLL FÜR NÄCHSTE SESSION
+## 🧭 START-PROTOKOLL NÄCHSTE SESSION
 
-1. `Session starten` — Claude liest automatisch **nur `00_Core/STATE.md`** (seit 17.04.2026). Andere 00_Core-Dateien on-demand.
-2. Kompakte Lage-Zusammenfassung (max. 10 Zeilen).
-3. `dynastie-depot`-Skill aktiv (v3.7 Desktop-installiert).
-4. Falls Earnings-Tag: `!QuickCheck <TICKER>` oder `!Analysiere <TICKER>`.
+1. `Session starten` → `STATE.md` wird gelesen
+2. Backtest-Ready-Status im "System-Zustand"-Block sichtbar
+3. Earnings-Trigger checken, ggf. `!Analysiere <TICKER>` oder `!QuickCheck`
+4. Bei `!Analysiere`: **Neuer Workflow** — Schritt 6b + 7 pflicht (SKILL.md v3.7.1)
 
 ---
 
 ## 🚫 WAS NICHT ZU TUN
 
-- **Keine** Rückkehr zu v3.6 (F-Score/GP-TA/Accrual-Bonus) — verworfen.
-- **Kein** additiver Moat-Malus für Quality-Trap — Interaktionsterm bleibt (Anti-Double-Counting).
-- **Keine** Sparraten-Diskussion — 8.5-Nenner / 33,53€ / 16,76€ fix bis nächster DEFCON-Shift.
+- **Kein** Narrative-Layer (log.md / CORE-MEMORY.md) als Backtest-Primärquelle zitieren — Point-in-Time-Integrität nur im History-Layer (JSONL-Archive).
+- **Kein** manuelles Editieren von `05_Archiv/*.jsonl` — append-only, Korrekturen nur via neuen Record mit Cross-Reference in `notizen`.
+- **Kein** Commit von JSONL-Archiven ohne die begleitenden 4 Narrative/State/Projection-Dateien (§18 Sync-Pflicht).
 
 ---
 
-## 📂 KRITISCHE DATEIEN
+## 📂 KRITISCHE DATEIEN (Navigation)
 
-- `00_Core/CORE-MEMORY.md` (v1.7) — institutionelles Gedächtnis
-- `00_Core/INSTRUKTIONEN.md` (v1.4) — §5 Scoring + §5a Sentiment + §22 Sparplan
-- `00_Core/Faktortabelle.md` (v3.7) — Score-State
-- `01_Skills/dynastie-depot/SKILL.md` + `config.yaml` (v3.7)
-- `07_Obsidian Vault/.../synthesis/Wissenschaftliche-Fundierung-DEFCON.md` (v3.7 Änderungsprotokoll)
+- **Entry:** `00_Core/STATE.md` — Portfolio-State + Watches + Trigger
+- **Gedächtnis:** `00_Core/CORE-MEMORY.md` — §11 Backtest-Ready, §4 Pointer auf JSONL
+- **Regeln:** `00_Core/INSTRUKTIONEN.md` v1.7 — §18 Sync-Pflicht, §26 Archiv-Sync
+- **Architektur:** `00_Core/KONTEXT.md` — §11 4-Layer-Architektur
+- **Tools:** `03_Tools/backtest-ready/README.md` — CLI-Usage
+- **Archive:** `05_Archiv/score_history.jsonl` + `flag_events.jsonl`
+- **Skill:** `01_Skills/dynastie-depot/SKILL.md` v3.7.1 — Workflow inkl. Schritt 6b + 7
+- **Spec + Plan:** `docs/superpowers/` (gitignored, lokal-only)
 
 ---
 
 ## 🔬 System-Reife-Tracker
 
 - v3.5 (16.04.): 85%
-- **v3.7 (17.04.): ~92%** — 3 operative Gaps geschlossen
-- Weitere Hebel (nicht akut): Verhaltens-Layer (Execution Discipline), Makro-Overlay, Position-Sizing-Regel
+- v3.7 (17.04. Morgen): ~92%
+- **Backtest-Ready (17.04. Abend): ~95%** — History-Layer aktiv, Forward-Pipeline scharf, 4-Layer-Architektur dokumentiert
+- Weitere Hebel: Verhaltens-Layer (Execution Discipline), Makro-Overlay, Position-Sizing-Regel, FLAG-Historie-Volumen für 2028-Review

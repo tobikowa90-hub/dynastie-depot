@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-17 (INSTRUKTIONEN-SKILL-Trennung — 84 Notes: 78 wiki + 6 raw)
+> Last updated: 2026-04-17 (Backtest-Ready Infrastructure — 88 Notes: 82 wiki + 6 raw)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -94,6 +94,9 @@
 - [[Analyse-Pipeline]] — Stufe 0 → 1 → 2 → Entscheidung; Skill-Hierarchie
 - [[Tariff-Exposure-Regel]] — Post Liberation Day; <15% kein FLAG, >35% FLAG
 - [[Non-US-Scoring]] — IFRS-Addendum für ASML/RMS/SU; Insider manuell via AFM/AMF
+- [[Score-Archiv]] — Append-only JSONL-Historie aller Score-Records; Basis für 2028+ Backtest (neu 17.04.2026)
+- [[FLAG-Event-Log]] — Trigger + Resolution für 4 FLAG-Typen; Quelle für deskriptive Event-Study (neu 17.04.2026)
+- [[Backtest-Ready-Infrastructure]] — 4-Layer-Architektur (State/Narrative/History/Projection); §18 6-Dateien-Sync (neu 17.04.2026)
 
 ### Wissenschaftliche Fundierung DEFCON
 - [[5J-Fundamental-Fenster]] — 5J-Durchschnitt > Spot als Prädiktor; Pflichtperspektive in jeder Analyse
@@ -128,6 +131,7 @@
 - [[Investing-Mastermind-Index]] — Zentraler Navigationsindex: Depot-State, Satelliten, Konzepte, Skills
 - [[Depot-State-April-2026]] — Monatlicher Snapshot; Sparplan-Verteilung; offene Entscheidungen
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 14-Befunde-Matrix: 10 Paper → operative Konsequenzen für DEFCON v3.5 (Stand 17.04.2026)
+- [[Backtest-Methodik-Roadmap]] — Entscheidungsmatrix für 2028-Review; Options A–D je nach Datenlage; welcher Paper als Benchmark wann anlegbar (neu 17.04.2026)
 
 ---
 

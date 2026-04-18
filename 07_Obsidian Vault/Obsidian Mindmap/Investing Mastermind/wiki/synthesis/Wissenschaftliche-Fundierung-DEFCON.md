@@ -165,3 +165,19 @@ Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] �
 | 2026-04-16 | Erweitert — 3 neue Paper (Wolff/Echterling, Jadhav/Mirza, JPM vollständig eingebunden), 4 neue Befunde B8–B11, alle 11 Satelliten-Scores aktualisiert, Konzept-Karte erweitert |
 | 2026-04-16 | v3.4→v3.5 Audit — PT-Upside-Fix, Relative Stärke promoted, Floor-Klausel. 7-Fragen-Audit: 5×A, 1×B, 1×C |
 | 2026-04-17 | 3 Foundation-Papers integriert: Piotroski (F-Score, B12), Novy-Marx (GP-Premium, B13), Sloan (Accrual-Anomalie, B14). 7→10 Quellen, 11→14 Befunde. Vorbereitung für v3.6-Release: Quality-Bonus (+2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus <3%. System-Reife-Ceiling: 85% → geplant 92-95%. |
+
+## Validierung der Befunde (Backtest-Ready-Infrastructure, seit 2026-04-17)
+
+Die 14 Befunde sind heute **nicht formal validiert** — das Scoring-System ist wissenschaftlich fundiert (peer-reviewed Papers) und hart kalibriert (AVGO/MKL/SNPS als Anker), aber statistische Forward-Return-Validation scheitert an Sample-Size (11 Satelliten × ~2 Jahre Historie, sparse FLAG-Events).
+
+**Lösung:** Nicht heute validieren, sondern Infrastruktur bauen, die 2028+ **überhaupt Validierung ermöglicht**. Ab 17.04.2026 wird jeder Score + jedes FLAG-Event unveränderlich in `05_Archiv/*.jsonl` archiviert.
+
+**Entscheidungs-Roadmap 2028-04-01:** Abhängig von Datenlage wird eine von 4 Methoden angewendet — siehe [[Backtest-Methodik-Roadmap]]:
+- **Option A** (Return-Prediction): validiert B1-B3 via Forward-Return-Quantile
+- **Option B** (Wide-Moat-Prämie): validiert B5, B9-B11 via Alpha vs. S&P500
+- **Option C** (Threshold-Kalibrierung): validiert B4 via DEFCON-Cutpoint-Optimum
+- **Option D** (FLAG-Event-Study): validiert B2-B3 via Forward-Drift nach Trigger
+
+**Explizit NICHT validiert:** B12-B14 (Piotroski, Novy-Marx, Sloan) — v3.6-Integration wurde 17.04.2026 verworfen (Double-Counting-Falle, Applied Learning). Die Befunde bleiben als Forschungskontext, aber sind **nicht Teil des operativen Scorings**.
+
+Infrastruktur-Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FLAG-Event-Log]].

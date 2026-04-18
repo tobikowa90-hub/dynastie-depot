@@ -67,3 +67,19 @@ Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 - [[Chain-of-Thought Prompting]] — Methodik hinter dem strukturierten !Analysiere-Workflow (erst begründen, dann scoren)
 - [[LLM-Based Stock Rating]] — Forschungsgrundlage: Fundamentals-Block 50 Pt. basiert auf JPM-Evidenz
 - [[AI in Investment Analysis]] — Zentrale Synthese: JPM-Forschung → DEFCON-Implementierung
+- [[Score-Archiv]] — Append-only Score-Historie (History-Layer)
+- [[FLAG-Event-Log]] — Append-only FLAG-Events (History-Layer)
+- [[Backtest-Ready-Infrastructure]] — 4-Layer-Architektur (Stand 17.04.2026)
+
+## Datenhaltung — 4-Layer-Architektur (ab 2026-04-17)
+
+Das DEFCON-System hält seinen Zustand in vier getrennten Layern (siehe KONTEXT.md §11):
+
+| Layer | Datei(en) | Mutation |
+|-------|-----------|----------|
+| State | `Faktortabelle.md` | Überschrieben |
+| Narrative | `log.md`, `CORE-MEMORY.md` | Fortgeschrieben |
+| History | `05_Archiv/score_history.jsonl`, `05_Archiv/flag_events.jsonl` | Append-only (unveränderlich) |
+| Projection | `STATE.md` | Aus State + Narrative synchronisiert |
+
+Jede Score/FLAG-Änderung triggert §18 Sync-Pflicht auf **alle sechs Dateien** im gleichen git-Commit. Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FLAG-Event-Log]].
