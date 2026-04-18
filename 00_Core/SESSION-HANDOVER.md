@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 18.04.2026 (Nacht) | **Für:** Nächste Session (vmtl. 19.04.)
+**Aktualisiert:** 19.04.2026 | **Für:** Nächste Session (Implementation)
 
 ---
 
@@ -8,90 +8,81 @@
 
 ```
 Session starten
+
+Dann: Plan unter docs/superpowers/plans/2026-04-19-backtest-ready-forward-verify.md
+laden und via superpowers:subagent-driven-development Task-by-Task abarbeiten.
+Pre-Implementation-Gates (A: git-Performance, B: §-Citations-Audit) zuerst.
 ```
 
-Claude liest automatisch `00_Core/STATE.md` (Single-Entry-Point). Für Skill-Planung zusätzlich: `superpowers:brainstorming` → `superpowers:writing-plans`.
+Claude liest automatisch `00_Core/STATE.md` (Single-Entry-Point). Danach Plan-File laden (Pfad oben).
 
 ---
 
-## ✅ LETZTE SESSION (18.04.2026 Nacht) — ERLEDIGT
+## ✅ LETZTE SESSION (19.04.2026) — ERLEDIGT
 
-**1 Commit (`d6d6aaa`), strategischer Meta-Sprung.** Keine Portfolio-Änderungen — rein systemische Institutionalisierung.
+**Kein Commit, reiner Planungs-Output.** Keine Portfolio-Änderungen — strategische Skill-Spec-Session via Superpowers.
 
 ### Kernereignisse
 
-**1. BuildPartner-Plugin Install → Cleanup**
-- Plugin `buildpartner@buildpartner v0.5.2` installiert, evaluiert, **vollständig entfernt**
-- Keine Passung zum Dynasty-Depot-System (Business-Builder-Frameworks, keine Investment-Experten)
-- Cleanup: `settings.json` + `installed_plugins.json` + `known_marketplaces.json` + Plugin-Dirs
-- Onboarding-Hook wurde **bewusst nicht ausgeführt** (würde in `next session` ohnehin still verschwinden)
+**1. Superpowers-Plan `backtest-ready-forward-verify` finalisiert**
 
-**2. Skill-Strategie-Analyse (63 Commits, 9 Tage, 8 Cluster)**
+Vollständiger Brainstorming → Writing-Plans-Durchlauf (superpowers v5.0.7) mit 4 Advisor-Reviews + 1 externem Reviewer-Feedback + 1 User-Post-Review mit 5 Beobachtungen.
 
-Systemweite Mustererkennung über gesamte System-Aufbau-Phase:
+**Plan-Datei:** `docs/superpowers/plans/2026-04-19-backtest-ready-forward-verify.md` (494 Zeilen, lokal per `.gitignore:18` — Projekt-Konvention "Superpowers docs nur lokal relevant").
 
-| Cluster | Commits | Status |
-|---|---|---|
-| Backtest-Ready Forward-Pipeline | ~8 | **Skill-Kandidat #1** (nächste Session) |
-| Scoring-Version-Migration | ~10 | ✓ Als §28 institutionalisiert |
-| Briefing-Sync / Pre-10:00-Gate | ~8 | ✓ §25 + Hook |
-| Excel-Tool-Debugging | ~6 | Ad-hoc, nicht skillbar |
-| System-Hygiene | ~10 | Ad-hoc |
-| Vault/Wiki | ~5 | ✓ WIKI-SCHEMA |
-| Session-Lifecycle | ~4 | ✓ SessionEnd-Hook |
-| Learning-System (3-Tier) | ~3 | ✓ §27 |
+**Design-Kern (Hard-Decisions):**
+- **Scope:** Forward-Run only (Option A). Backfill + FLAG-Event-Studies bleiben CLI-direkt.
+- **Trigger:** Auto-Aktivierung bei `!Analysiere` via dynastie-depot Schritt 7 — keine eigenen Trigger-Words.
+- **Relation:** Standalone-Satelliten-Skill (~150-220 Zeilen), nicht Sub-Workflow von dynastie-depot.
+- **Input-Vertrag:** Wrapper-Struktur `{record: ..., skill_meta: {expected_algebra_score, migration_from/to_version}}` — `record` = exakt `ScoreRecord`, `skill_meta` ephemer.
+- **Schema-Bump:** neues `Optional[MigrationEvent]`-Feld auf `ScoreRecord` (from_version, to_version, algebra_score, forward_score, delta signed, outcome Enum).
+- **Block-Semantik:** §28.2 `|Δ|>5` blockt **Fan-Out (7 Oberflächen)**, NICHT JSONL-Append. Record wird **immer** persistiert mit `outcome="block"`, Skill emittiert `STOP:`-Prefix auf stdout für dynastie-depot-Handler.
+- **Drift-Check:** STATE.md-Tripwire only (1 Quelle), nicht 4-File-Matrix. Multi-File-Drift bleibt §27.4 Human-Gate.
+- **Freshness-Gate:** 3 Required-Touch-Files {STATE.md, Faktortabelle.md, log.md} — CORE-MEMORY/config.yaml konditional ausgeklammert (Alert-Fatigue-Vermeidung).
 
-**Meta-Insight:** Engine:Content ~ 2:1 in den letzten 9 Tagen — System wird aktuell stärker gebaut als genutzt. Phase wird sich mit Earnings-Dichte ab 23.04. umkehren.
+**Pipeline P1-P6:** Draft-Read → Freshness → STATE-Tripwire → Δ-Gate → Dry-Run → Real-Append → git-add.
 
-**3. §28 Scoring-Version-Migration-Workflow** (Commit `d6d6aaa`)
+**6 Tasks:** Schema-Erweiterung (TDD, grün) → `_drafts/`-Ordner → Skill + Helpers → dynastie-depot Schritt 7 Delegation → §18/Meilenstein-Updates → E2E-Verification.
 
-Promotion aus Applied Learning Bullet #8 + systemische Fassung aus v3.4→v3.5 + v3.5→v3.7 Präzedenzfällen.
+**2. Advisor-Korrekturen eingearbeitet (Plan-Revisionen)**
 
-- **§28.1 Pflicht-Checklist** — 7 Steps: Paper-Evidence → Redundanz-Check (§27.1) → Algebra n≥5 → Forward-Verify → Orphan-Grep (ripgrep `-e` Syntax) → Anchor-Rekalibrierung → Fan-Out-Gate (7 Oberflächen)
-- **Sequencing-Gate:** Steps 1-6 auf Branch, Step 4 muss grün sein bevor Step 7 Fan-Out
-- **§28.2 Gestufte Δ-Toleranz:** ≤2 akzeptiert / 3-5 in CORE-MEMORY §5 loggen / **>5 blockiert** Migration
-- **§28.3 Nicht-Migration-Trigger:** Quartals-Rekalibrierung + Bugfix ohne Skalen-Änderung + FLAG-only-Disclosure = keine Migration-Pflicht
-- **Präzedenzfall §28.2:** V Algebra 86 vs Forward 63 (Δ23), Ursache WC-Proxy-Fehler → Regel-Bug
-- **Präzedenzfall §28.3:** TMO fcf_trend_neg Option B (struktureller FLAG ohne Score-Penalty)
+5 Runden Advisor-Feedback. Hauptumwürfe:
+- Skill-Prosa ist nicht TDD-testbar → Smoke-Tests nur für deterministische Teile (Schema + Helpers + CLI-Invocations). E2E = qualitatives Urteil.
+- `expected_algebra_score` ephemer in `skill_meta`, nicht im Schema (kein Bump für 1-2×/Jahr-Input).
+- Wrapper-Struktur statt Strip-Pattern (strukturelle Trennung Record/Meta).
+- STATE.md-Tripwire einzig statt 4-File-Matrix (Tautologie-Befund).
+- Block → persistieren, nicht wegwerfen (Informationsverlust-Aversion + §28.2 korrekt gelesen).
 
-**4. Applied Learning: 9/20 → 8/20**
-- Bullet #8 "Scoring-Version-Bump re-verify" → INSTRUKTIONEN §28.2 promoted
-- CLAUDE.md Historie v2.0 → **v2.1** (Stand: **8/20**)
+**3. INSTRUKTIONEN unverändert** — kein §28-Update, nur Plan-Ebene. §18 + §27.4 + §28.2 werden im Skill point-linkt (§27.4-konform, keine Duplizierung).
 
 ### Was entstanden ist
 
-- `INSTRUKTIONEN.md v1.8 → v1.9` — §28 neu (+79 Zeilen)
-- `CLAUDE.md` — 1 Bullet weniger, Historie v2.1
+- `docs/superpowers/plans/2026-04-19-backtest-ready-forward-verify.md` (lokal, 494 Z.)
+- Keine Repo-Änderungen, keine Commits
 
 ---
 
-## 🎯 NÄCHSTER FOKUS (in dieser Reihenfolge)
+## 🎯 NÄCHSTER FOKUS (Implementation-Session)
 
-### Priorität 1: Skill `backtest-ready-forward-verify` — Planung (superpowers)
-
-**User-Wunsch:** In nächster Session mit **superpowers** in den Planungsprozess gehen.
+### Priorität 1: Skill `backtest-ready-forward-verify` — Implementation
 
 **Workflow:**
-1. `superpowers:brainstorming` — Anforderungen, Scope, Integrationspunkte klären
-2. `superpowers:writing-plans` — konkreter Implementation-Plan mit Checkpoints
-3. Implementation erst in darauffolgender Session (Subagent-Ready)
+1. `Session starten` → STATE.md lesen
+2. Plan-File laden: `docs/superpowers/plans/2026-04-19-backtest-ready-forward-verify.md`
+3. **Pre-Implementation-Gates** (im Plan dokumentiert):
+   - Gate A: `time git status --porcelain` — <200ms? Sonst Freshness-Strategie re-evaluieren.
+   - Gate B: §-Citations-Audit — §18/§26/§27.4/§28.2 im Plan gegen aktuelle INSTRUKTIONEN matchen.
+4. `superpowers:subagent-driven-development` aufrufen — Fresh Subagent pro Task + Review zwischen Tasks.
+5. 6 Tasks durcharbeiten (Task 1 Schema → Task 6 E2E). Committen pro Task wie im Plan spezifiziert.
+6. Nach Task 6: erster Real-Run bei **TMO Q1 am 23.04.** (FLAG-Resolve-Gate) als echte End-to-End-Validation.
 
-**Input-Basis:**
-- Bestehendes Tool: `03_Tools/backtest-ready/` (Phase 0-4 bereits implementiert, README vorhanden)
-- Kodifizierte Regeln: §28.1 Steps + §28.2 Delta-Regel + §18 Sync-Pflicht
-- Präzedenzfälle: V/TMO/ASML/RMS Forward-Vollanalysen in `score_history.jsonl`
+**Zeit-Estimate:** 2-4h fokussiertes Arbeiten (Tasks 1/2 klein, Task 3 Hauptaufwand, Tasks 4-6 Integration).
 
-**Zu klärende Fragen im Brainstorming:**
-- Skill-Scope: Nur !Analysiere-Forward-Run, oder auch Backfill-Re-Runs + FLAG-Event-Studies?
-- Trigger: Automatisch bei !Analysiere, oder separater `!ForwardVerify`-Befehl?
-- Verhältnis zu `dynastie-depot` Skill: Einzelner neuer Skill, oder Sub-Workflow des Haupt-Skills?
-- Output-Format: Direkt `score_history.jsonl`-Write, oder Tempfile→Review→archive_score.py?
-
-### Priorität 2: Earnings-Trigger (unverändert aus Session 18.04. Abend)
+### Priorität 2: Earnings-Trigger (unverändert)
 
 | Datum | Ticker | Klasse | Aktion |
 |---|---|---|---|
-| **23.04.** | **TMO** | **B** | Q1 FY26 — D2-Entscheidung + **fcf_trend_neg Resolve-Gate** (WC-Unwind? → Disclosure bleibt; sonst FLAG nachtragen) |
+| **23.04.** | **TMO** | **B** | Q1 FY26 — D2-Entscheidung + **fcf_trend_neg Resolve-Gate** (WC-Unwind? → Disclosure bleibt; sonst FLAG nachtragen) + **erster Real-Run des neuen Skills** |
 | **28.04.** | **V** | **B** | Q2 FY26 — D2-Entscheidung (Technicals-Reversal bei Beat + Guidance?) |
 | 28.04. | SNPS / SPGI | B | Watchlist-Review |
 | **29.04.** | **MSFT** | **C** | Q3 FY26 — CapEx/OCF FLAG-Review (bereinigt <60% = Auflösung) |
@@ -102,34 +93,34 @@ Promotion aus Applied Learning Bullet #8 + systemische Fassung aus v3.4→v3.5 +
 ## 🧭 START-PROTOKOLL NÄCHSTE SESSION
 
 1. `Session starten` → `STATE.md` wird gelesen (Nenner 8.0, 35,63€/17,81€)
-2. Falls Skill-Planung: `superpowers:brainstorming` direkt aufrufen mit Prompt *"Skill `backtest-ready-forward-verify` konzipieren — siehe SESSION-HANDOVER Priorität 1"*
-3. Falls Earnings: Schritt 0 Trigger-Check → Vollanalyse-Pfad
-4. Backtest-Ready-Status (unverändert): **27 Records** (24 Backfill + 3 Forward), 2 FLAG-Events
+2. Implementation-Plan laden (Pfad oben)
+3. Pre-Implementation-Gates laufen lassen
+4. `superpowers:subagent-driven-development` aktivieren
+5. Task 1 dispatchen
 
 ---
 
 ## 🚫 WAS NICHT ZU TUN
 
-- **Kein** ad-hoc-Bau des `backtest-ready-forward-verify`-Skills ohne vorherigen Brainstorming+Plan-Schritt (User-Wunsch: strukturierter Prozess via superpowers)
-- **Keine** weiteren §-Erweiterungen vor Skill-Planung — Reihenfolge eingehalten, nicht gleichzeitig
-- **Kein** Narrative-Layer (log.md / CORE-MEMORY.md) als Backtest-Primärquelle zitieren — Point-in-Time nur im History-Layer (JSONL)
-- **Kein** manuelles Editieren von `05_Archiv/*.jsonl` — append-only, Korrekturen nur via neuer Record + Cross-Reference
-- **Kein** mechanisches FLAG-Triggern ohne strukturellen Review (Präzedenz: TMO fcf_trend_neg Option B)
-- **Kein** Ad-hoc-Version-Bump mehr — **§28 Pflicht-Checklist** ist jetzt das Gate
-- **Kein** BuildPartner-Plugin-Reinstall (evaluiert, entfernt, nicht nützlich für Dynasty-Depot)
+- **Kein** inline-Build des Skills aus dem Kopf — Plan ist single source, Abweichungen davon in CORE-MEMORY §5 loggen + Plan aktualisieren
+- **Kein** TDD-Zyklus über SKILL.md-Prosa (Kategorien-Fehler, siehe Plan Task 3 "WICHTIG — Test-Philosophie")
+- **Keine** `migration_event`-Felder in Alt-Records (bleiben `null` per Optional-Default)
+- **Kein** Append-Block bei `|Δ|>5` — Record wird trotzdem persistiert, nur Fan-Out wird geblockt
+- **Kein** Multi-File-Drift-Check im Skill (§27.4 bleibt Human-Gate)
+- **Keine** Schema-Bumps für ephemere Skill-Inputs — Vertrag nutzt `skill_meta`-Wrapper
 
 ---
 
 ## 📂 KRITISCHE DATEIEN (Navigation)
 
 - **Entry:** `00_Core/STATE.md` — Portfolio + Watches + Trigger
-- **Gedächtnis:** `00_Core/CORE-MEMORY.md` §11 — 4 Befunde (Backtest-Ready + Drift + V + TMO Option B)
-- **Regeln:** `00_Core/INSTRUKTIONEN.md v1.9` — §18 Sync-Pflicht, §22 Sparplan-Formel, §26 Archiv-Sync, §27 Scoring-Hygiene, **§28 Scoring-Version-Migration-Workflow (neu)**
+- **Plan:** `docs/superpowers/plans/2026-04-19-backtest-ready-forward-verify.md` (lokal, 494 Z.)
+- **Regeln:** `00_Core/INSTRUKTIONEN.md v1.9` — §18 Sync-Pflicht, §27.4 Multi-Source-Drift, §28.1 Migration-Checklist, §28.2 Δ-Tabelle
 - **Architektur:** `00_Core/KONTEXT.md` §11 — 4-Layer-Architektur
-- **Tools:** `03_Tools/backtest-ready/README.md` — CLI-Usage (Skill-Planung-Input!)
+- **Tools-Base:** `03_Tools/backtest-ready/` — existierende Schemas + 2 Archive-CLIs (werden orchestriert, nicht umgebaut)
 - **Archive:** `05_Archiv/score_history.jsonl` (27) + `flag_events.jsonl` (2)
-- **Skill:** `01_Skills/dynastie-depot/SKILL.md v3.7.1` + `config.yaml` (Stand 18.04.)
-- **Applied Learning:** `CLAUDE.md` — 8 Bullets (v2.1)
+- **Skill-Ziel:** `01_Skills/backtest-ready-forward-verify/` (wird angelegt)
+- **Skill-Aufrufer:** `01_Skills/dynastie-depot/SKILL.md v3.7.1 → v3.7.2` (Schritt 7 wird delegiert)
 
 ---
 
@@ -139,9 +130,10 @@ Promotion aus Applied Learning Bullet #8 + systemische Fassung aus v3.4→v3.5 +
 - v3.7 (17.04. Morgen): ~92%
 - Backtest-Ready (17.04. Abend): ~95%
 - Schema-SKILL-Aligned + Forward-Pipeline-bewährt (18.04. Abend): ~96%
-- **Scoring-Version-Migration-Workflow formalisiert (18.04. Nacht): ~97%** — §28 gate gegen künftige Migration-Drift; Engine-Bau-Phase nähert sich Sedimentierung
+- Scoring-Version-Migration-Workflow formalisiert (18.04. Nacht): ~97%
+- **Skill-Plan für Forward-Verify finalisiert (19.04.): ~97% (Engine-Bau-Phase erreicht Sedimentierungs-Plateau)** — Implementation-Session treibt auf ~98% nach erfolgreichem TMO-Real-Run 23.04.
 
-### Outstanding Engine-Arbeit (nach aktueller Analyse)
+### Outstanding Engine-Arbeit
 
-- **Skill-Kapsel für Forward-Pipeline** (Priorität 1 nächste Session)
-- Sonst: Engine "fertig genug" — Fokus-Shift auf Content (Earnings-Analysen ab 23.04.)
+- **Skill-Implementation** (Priorität 1 nächste Session, 2-4h)
+- Danach: Engine "fertig genug" — Fokus-Shift auf Content (Earnings-Analysen ab 23.04.)
