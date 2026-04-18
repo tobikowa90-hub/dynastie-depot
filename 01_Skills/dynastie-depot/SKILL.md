@@ -1,6 +1,6 @@
 ---
 name: dynastie-depot
-version: "3.7.1"
+version: "3.7.2"
 zieljahr: 2058
 system: DEFCON v3.7
 description: >
@@ -41,7 +41,7 @@ trigger_words:
 ---
 # 🦅 Dynastie-Depot – Skill v3.7.1
 
-**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.1 | **Stand:** 17.04.2026 | v3.7.1 Delta: Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht) für Backtest-Ready Infrastructure. v3.7 System-Gap-Release-Features unverändert: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
+**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.2 | **Stand:** 19.04.2026 | v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
 
 ## Übersicht
 
@@ -255,22 +255,37 @@ Nach Ausgabe der Depot-Einordnung (Output-Abschnitt 6): aktive FLAGs des analysi
 
 Kein Archive-Write in Schritt 7, bevor Resolution-Check gelaufen ist — sonst fehlt der `aktiv_ids`-Kontext im Score-Record.
 
-### Schritt 7: Archiv-Write (Pflicht)
+### Schritt 7: Archiv-Write (via `backtest-ready-forward-verify`-Skill)
 
-Am Ende jeder `!Analysiere`-Ausgabe: Score-Record als JSON-Objekt erzeugen (Schema siehe `03_Tools/backtest-ready/schemas.py` → `ScoreRecord`), anschließend via `archive_score.py` anhängen.
+Am Ende jeder `!Analysiere`-Ausgabe. Pipeline-Disziplin (Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git-add) ist in den Skill `backtest-ready-forward-verify` gekapselt.
 
 **Ablauf:**
-1. JSON-Block zusammenbauen — Pflichtfelder: `schema_version: "1.0"`, `record_id: YYYY-MM-DD_TICKER_TYP`, `source: "forward"`, `defcon_version: "v3.7"`, `score_datum` (heute oder max. 3 Tage zurück), `analyse_typ` (vollanalyse/delta/rescoring — Standard: `vollanalyse`), vollständige `scores` (5 Blöcke), `score_gesamt`, `defcon_level`, `kurs`, `market_cap`, `flags` (aktiv_ids + bei_analyse_referenziert), `metriken_roh`, `quellen`. Optional: `notizen`.
-   - **Null-Pattern bei `analyse_typ: "delta"`:** `metriken_roh` enthält nur neu erhobene Felder; nicht neu erhobene bleiben `null` (schema-legal, alle Felder Optional). Backtest-Consumers resolven via `LAST_VALUE(x) IGNORE NULLS PARTITION BY ticker ORDER BY score_datum`. Bei `vollanalyse`/`rescoring`: vollständige Rohwerte pflicht.
-2. JSON in temporäre Datei schreiben oder via stdin pipen.
-3. `python 03_Tools/backtest-ready/archive_score.py --file <tempfile.json>` ausführen (oder `--stdin`).
-4. **Bei Validation-Errors (exit 1):** JSON korrigieren, erneut ausführen — **keine Ausnahme**.
-   **Bei exit 2:** Fehlermeldung unterscheiden:
-   - `ArchiveCorruptError: archive corrupt at line {N}` → `sed -n '{N}p' 05_Archiv/score_history.jsonl | python -m json.tool` zeigt die defekte Zeile; manuell reparieren (append-only, also letzte Zeile meist) + erneut ausführen.
-   - `IOError: ...` → Pfad/Permissions prüfen (kein Datenproblem).
-5. Nach Success: `score_history.jsonl` im gleichen git-Commit wie `log.md + CORE-MEMORY.md + Faktortabelle + STATE.md` committen (§18 Sync-Pflicht — alle sechs Dateien, immer).
 
-**Wenn der Lauf abbricht bevor Schritt 7 erreicht wird:** Im nächsten Lauf zuerst nachholen. Jeder verpasste Append = irreversibler Historie-Verlust.
+1. **Draft-JSON zusammenbauen** — Wrapper-Struktur:
+   ```json
+   {
+     "record": { /* exakt ScoreRecord-Schema, siehe 03_Tools/backtest-ready/schemas.py */ },
+     "skill_meta": { /* optional: expected_algebra_score + migration_from_version + migration_to_version bei Version-Migration; sonst weglassen */ }
+   }
+   ```
+   - Pflichtfelder in `record`: `schema_version: "1.0"`, `record_id: YYYY-MM-DD_TICKER_TYP`, `source: "forward"`, `defcon_version: "v3.7"`, `score_datum` (heute oder max. 3 Tage zurück), `analyse_typ` (vollanalyse/delta/rescoring — Standard: `vollanalyse`), vollständige `scores` (5 Blöcke), `score_gesamt`, `defcon_level`, `kurs`, `market_cap`, `flags` (aktiv_ids + bei_analyse_referenziert), `metriken_roh`, `quellen`. Optional: `notizen`, `migration_event` (wird bei skill_meta vom Skill injiziert — nicht selbst setzen).
+   - **Null-Pattern bei `analyse_typ: "delta"`:** `metriken_roh` enthält nur neu erhobene Felder; nicht neu erhobene bleiben `null` (schema-legal, alle Felder Optional). Backtest-Consumers resolven via `LAST_VALUE(x) IGNORE NULLS PARTITION BY ticker ORDER BY score_datum`. Bei `vollanalyse`/`rescoring`: vollständige Rohwerte pflicht.
+
+2. **Draft-File schreiben** nach `03_Tools/backtest-ready/_drafts/<TICKER>_<YYYYMMDD-HHMM>.json` (ephemer, gitignored).
+
+3. **Skill invoken:** `Skill(skill="backtest-ready-forward-verify", args="<pfad-zum-draft>")`.
+
+4. **Stdout-Report parsen (6 Fälle):**
+   - `OK record_id=... score=... defcon=...` + Exit 0 → Record appended, git add gesetzt. Weiter zu Schritt 5.
+   - `[freshness: <File> not modified — dynastie-depot Schritt 0-6 vollständig gelaufen?]` (warnung, weicher Gate, Exit 0) → Required-Touch-File fehlt. Prüfen ob Schritte 0-6 vollständig liefen. Bei wiederholter Warnung: Schritt-Sequenz debuggen. Pipeline läuft durch.
+   - `PFLICHT: CORE-MEMORY §5 Eintrag für Migration-Event (log_only outcome). Siehe INSTRUKTIONEN §28.2.` (nur bei Migration mit |Δ|=3-5, Exit 0) → **Pflicht-Handler:** Eintrag in CORE-MEMORY §5 mit Migration-Delta-Details nachholen (Algebra-Score, Forward-Score, Δ, Ursachen-Hypothese).
+   - `STOP: §28.2 |Δ|=<N> > 5 ...` + Exit 0 → **Fan-Out-Block:** v3.x→v3.y-Propagation über die 7 Oberflächen (§28.1 Step 7) **nicht starten**. JSONL-Commit trotzdem durchführen (Record ist Historie-relevant). Algebra-Ursachen-Analyse → CORE-MEMORY §5 mit Befund loggen. Migration bleibt offen bis Ursache identifiziert.
+   - `FAIL phase=P4 reason="duplicate record_id ..."` + Exit 1 → **Nicht Re-Invoke.** Wahrscheinlich partieller P5-Abbruch vom Vorlauf (Append ok, git-add nicht). Recovery: `git add 05_Archiv/score_history.jsonl` manuell, dann direkt Sync-Commit (nicht erneut den Skill invoken).
+   - `FAIL phase=<P1|P2b|anderes> reason=...` + Exit 1 → Skill hat nichts mutiert. Fehler diagnostizieren (Schema-Validation, Tripwire-Drift, etc.), Draft korrigieren, Skill erneut invoken.
+
+5. **Nach Success (Exit 0, Skill hat `git add` bereits gesetzt):** Sync-Commit mit allen 6 Files (§18 Sync-Pflicht — alle sechs, immer): `log.md + CORE-MEMORY.md + Faktortabelle.md + STATE.md + score_history.jsonl` (+ ggf. `flag_events.jsonl`).
+
+**Wenn der Lauf abbricht bevor Schritt 7 Skill-Invocation erreicht:** Im nächsten Lauf Draft rekonstruieren und nachholen. Jeder verpasste Append = irreversibler Historie-Verlust.
 
 ---
 
