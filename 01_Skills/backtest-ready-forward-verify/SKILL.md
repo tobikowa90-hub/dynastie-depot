@@ -130,6 +130,8 @@ Vergleiche Ergebnis `{score, defcon, flags_active}` gegen `record_dict`:
 - **Ticker nicht gefunden** → ValueError → `FAIL phase=P2b reason="ticker not found"`.
 - **Neu analysierter Ticker** (noch nicht in STATE.md): Tripwire überspringen, Report: `[tripwire: ticker 'XYZ' not in STATE.md — new position]`.
 
+Bei jedem `FAIL phase=P2b`: **Pipeline abbrechen — P3/P4/P5/P6 nicht ausführen. Kein Archiv-Write.** (Konsistent zu P4/P5 Stopp-Semantik.)
+
 ### P3 — Algebra-Δ-Gate (conditional)
 
 Nur ausführen wenn `skill_meta` nicht leer.
