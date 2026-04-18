@@ -1,13 +1,15 @@
 ---
-tags: [skill, tool, defcon, analyse, workflow, befehlsreferenz, monolith]
+tags: [skill, tool, defcon, analyse, workflow, befehlsreferenz]
 status: aktiv
-version: "3.4"
-stand: 2026-04-07
+version: "3.7.2"
+stand: 2026-04-19
 ---
 
-# Dynastie-Depot Skill — DEFCON v3.4 Monolith
+# Dynastie-Depot Skill — DEFCON v3.7 (Skill-Paket v3.7.2)
 
 > Der übergeordnete Analyse-Skill des Dynasty-Depots. Alle Workflows, Scoring-Skalen und Regeln. Aktivierung bei JEDEM Gespräch über Aktienanalyse, Portfolio, DEFCON, Sparplan, Rebalancing oder Steuer.
+>
+> **Seit 19.04.2026 (v3.7.2):** Schritt 7 (Archiv-Write) delegiert an Satelliten-Skill [[backtest-ready-forward-verify]] — nicht mehr strikt Monolith. Andere Workflows (!Analysiere, !Rebalancing, etc.) bleiben inline.
 
 ## Befehls-Übersicht
 
@@ -22,17 +24,18 @@ stand: 2026-04-07
 | `!InsiderScan [TICKER\|ALL]` | Form-4-Scan via insider_intel.py | — |
 | `!NonUSScan [TICKER\|ALL]` | Fundamentals ASML/RMS/SU | — |
 
-## Skill-Hierarchie (v2.0 — 08.04.2026)
+## Skill-Hierarchie (v3.0 — 19.04.2026)
 
-**Grundprinzip:** `dynastie-depot` ist der Monolith. Innerhalb von `!Analysiere` werden **keine weiteren Skills geladen** — alle Module werden direkt als Tool-Calls genutzt. Jeder zusätzliche Skill-Load kostet Token und verliert DEFCON-Kontext.
+**Grundprinzip (v3.7.2 revidiert):** `dynastie-depot` ist der **Haupt-Skill** für Scoring + Workflows. Innerhalb von `!Analysiere` werden Module **grundsätzlich** als Tool-Calls genutzt — mit einer Ausnahme: **Schritt 7 (Archiv-Write)** delegiert an den Satelliten-Skill `backtest-ready-forward-verify`, weil die Persistence-Pipeline (Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git add) mechanisch durchgesetzt werden muss statt in Prosa. Skill-Load-Overhead dort akzeptiert — Pipeline-Disziplin > Token.
 
-| Befehl | Eigenständiger Skill | Bedingung |
-|--------|---------------------|-----------|
+| Befehl / Phase | Eigenständiger Skill | Bedingung |
+|----------------|---------------------|-----------|
 | `!QuickCheck` | [[quick-screener]] | Stufe-0-Vorfilter oder monatlicher Check |
 | `!EarningsPreview` | earnings-preview | 48h vor Earnings |
 | `!EarningsRecap` | earnings-recap | 48h nach Earnings |
 | `!InsiderScan` | [[insider-intelligence]] | Standalone ohne !Analysiere |
 | `!NonUSScan` | [[non-us-fundamentals]] | Non-US-Satelliten |
+| `!Analysiere` Schritt 7 | [[backtest-ready-forward-verify]] | Automatisch am Ende jeder Vollanalyse — programmatisch, kein Trigger-Word |
 | Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` (Python-Tool) | Quartalsweise manuell — kein Skill |
 
 ## Skill-Dateien
@@ -65,20 +68,21 @@ Gewichte: D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 F
 Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 ```
 
-**Rechenbeispiel (Stand 17.04.2026, v3.7: 8× D4/D3, 1× D2 TMO, 2× 🔴 FLAG):**
-- Nenner = (8 × 1.0) + (1 × 0.5) = **8.5**
-- D4/D3-Rate = 285 / 8.5 × 1.0 = **33,53€**
-- D2-Rate (TMO) = 285 / 8.5 × 0.5 = **16,76€**
+**Rechenbeispiel (Stand 19.04.2026, v3.7: 7× D4/D3, 2× D2 (V+TMO), 2× 🔴 FLAG):**
+- Nenner = (7 × 1.0) + (2 × 0.5) = **8.0**
+- D4/D3-Rate = 285 / 8.0 × 1.0 = **35,63€**
+- D2-Rate (V, TMO) = 285 / 8.0 × 0.5 = **17,81€**
 - 🔴 FLAG-Rate (MSFT, APH) = **0€**
 
 ## Kalibrierungsanker (vor jeder Analyse pflichtlesen!)
 
 | Ticker | Score | DEFCON | Lektion |
 |--------|-------|--------|---------|
-| [[AVGO]] | 86 | 🟢 4 | Fabless-Modell = CapEx/OCF <15%, Top-Referenz |
+| [[AVGO]] | 84 | 🟢 4 | Fabless-Modell = CapEx/OCF <15%, Top-Referenz (v3.7) |
 | MKL | 82 | 🟢 4 | Float-Modell = FCF-Sonderregel, Versicherung |
-| SNPS | 79 | 🟡 3 | Goodwill-Malus durch Ansys-Akquisition (-3 Pt.) |
-| [[TMO]] | 65 | 🟡 3 | ROIC < WACC + Akquisitionsschuld = Malus trotz Moat |
+| SNPS | 76 | 🟡 3 | Goodwill-Malus durch Ansys-Akquisition (v3.5) |
+| [[TMO]] | 64 | 🟠 2 | ROIC bereinigt 17,18% > WACC 10,44% (Regel-4), fcf_trend_neg strukturell disclosed (18.04.) |
+| [[V]] | 63 | 🟠 2 | Technicals-Kollaps + GAAP ROIC <WACC; 18.04. Forward ersetzte Algebra-Projektion 86 |
 
 ## Verhaltensregeln (unantastbar)
 

@@ -302,16 +302,18 @@ Fußnoten wie bei MSFT Pre-Processing Regel 2), XBRL-Datenkonflikte,
 Claude Stuff/
 ├── 00_Core/           → CORE-MEMORY.md | KONTEXT.md | INSTRUKTIONEN.md
 ├── 01_Skills/         → Skill-Quelldateien (Arbeitsversionen)
-│   ├── dynastie-depot/    → SKILL.md | config.yaml | Beispiele.md | PIPELINE.md
-│   ├── insider-intelligence/ → SKILL.md | insider_intel.py
-│   ├── non-us-fundamentals/  → SKILL.md | eodhd_intel.py
-│   └── quick-screener/    → SKILL.md
+│   ├── dynastie-depot/              → SKILL.md | config.yaml | Beispiele.md | PIPELINE.md (v3.7.2)
+│   ├── backtest-ready-forward-verify/ → SKILL.md | _smoke_test.py (Satellit, programmatisch aus Schritt 7)
+│   ├── insider-intelligence/        → SKILL.md | insider_intel.py
+│   ├── non-us-fundamentals/         → SKILL.md | eodhd_intel.py
+│   └── quick-screener/              → SKILL.md
 ├── 02_Analysen/       → DEFCON-Analysen als Excel (Output Stufe 3)
 ├── 03_Tools/          → Rebalancing_Tool | Satelliten_Monitor | Watchlist_Monitor | portfolio_risk.py | briefing-sync-check.ps1
 ├── 04_Templates/      → CAPEX-FCF | Alerts-Log (Analyse-Template in SKILL.md §Workflow 1)
 ├── 05_Archiv/         → Historische Dateien
 └── 06_Skills-Pakete/  → Installierbare ZIPs (nur aktive Skills)
-    ├── dynastie-depot_v3.7.zip
+    ├── dynastie-depot_v3.7.2.zip
+    ├── backtest-ready-forward-verify.zip
     ├── quick-screener.zip
     ├── insider_intel.zip
     ├── earnings-preview.zip

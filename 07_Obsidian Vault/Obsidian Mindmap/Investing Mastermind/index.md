@@ -29,7 +29,8 @@
 - [[OpenInsider]] — Insider-Pflichtquelle; Form-4-Verifikation (Spalte "X"/"M")
 
 ### Skills & Module (Operative Tools)
-- [[dynastie-depot-skill]] — DEFCON v3.4 Monolith; alle Workflows (!Analysiere, !Rebalancing, !QuickCheck, !CAPEX-FCF-ANALYSIS)
+- [[dynastie-depot-skill]] — DEFCON v3.7 Haupt-Skill (Skill-Paket v3.7.2); alle Workflows (!Analysiere, !Rebalancing, !QuickCheck, !CAPEX-FCF-ANALYSIS). Schritt 7 delegiert an `backtest-ready-forward-verify` (seit 19.04.2026)
+- [[backtest-ready-forward-verify]] — Satellit für Forward-Run Persistence-Pipeline; kein eigenes Trigger-Word, aktiviert programmatisch aus dynastie-depot Schritt 7. Orchestriert Freshness + STATE.md-Tripwire + §28.2 Δ-Gate + Dry-Run + Append + git add (neu 19.04.2026)
 - [[quick-screener]] — Stufe-0 Vorfilter; 3 Filter (P/FCF, ROIC, Moat-Proxy); Ampel-Ergebnis
 - [[insider-intelligence]] — Form-4-Automatisierung; 8 US-Satelliten; FLAG-Detection (>$20M diskretionär)
 - [[non-us-fundamentals]] — yfinance für ASML/RMS/SU; EUR, IFRS, kein API-Key
@@ -88,7 +89,7 @@
 - [[Analyst Stock Ratings]] — Traditionelle Wall-Street-Ratings; struktureller 43%-Strong-Buy-Bias; langfristig besser als LLMs (1 Quelle)
 
 ### DEFCON-System (Kern-Framework)
-- [[DEFCON-System]] — 100-Punkte-Scoring-Matrix; 5 Blöcke; Sparplan-Formel; v3.4
+- [[DEFCON-System]] — 100-Punkte-Scoring-Matrix; 5 Blöcke; Sparplan-Formel; v3.7 (System-Gap-Release; Skill-Paket v3.7.2 seit 19.04.2026)
 - [[CapEx-FLAG]] — Die heilige Regel; 3 Trigger; überschreibt jeden Score
 - [[ROIC-vs-WACC]] — Harter Malus wenn ROIC < WACC; 8 Punkte Fundamentals
 - [[Analyse-Pipeline]] — Stufe 0 → 1 → 2 → Entscheidung; Skill-Hierarchie

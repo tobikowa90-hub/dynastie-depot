@@ -4,7 +4,7 @@ tags: [index, home, navigation]
 
 # 🦅 Investing Mastermind — Zentralindex
 
-> Zieljahr: 2058 | System: DEFCON v3.7 | Stand: 17.04.2026
+> Zieljahr: 2058 | System: DEFCON v3.7 (Skill-Paket v3.7.2) | Stand: 19.04.2026
 
 ## 📊 Depot-State
 
@@ -14,19 +14,21 @@ tags: [index, home, navigation]
 
 ## 🛰️ Satelliten (aktive Positionen)
 
-| Ticker | DEFCON | Score | FLAG |
-|--------|--------|-------|------|
-| [[AVGO]] | 🟢 4 | 84 | — |
-| [[COST]] | 🟢 4 | 69 | Screener-Exception |
-| [[RMS]] | 🟢 4 | 68 | Screener-Exception |
-| [[VEEV]] | 🟢 4 | 74 | — |
-| [[SU]] | 🟢 4 | 69 | — |
-| [[BRKB|BRK.B]] | 🟢 4 | 75 | Insurance-Exception |
-| [[V]] | 🟢 4 | 86 | — |
-| [[APH]] | 🟡 3 | 63 | 🔴 Score-basiert |
-| [[ASML]] | 🟡 3 | 68 | — |
-| [[TMO]] | 🟠 2 | 63 | — |
-| [[MSFT]] | 🟠 2 | 59 | 🔴 CapEx |
+> Quelle: [[STATE]] (00_Core/STATE.md, 19.04.2026). DEFCON-Thresholds Schema-aligned seit 18.04.: ≥80 D4 / 65-79 D3 / 50-64 D2 / <50 D1. Sparraten-Nenner 8.0 → 35,63€ / 17,81€ / 0€.
+
+| Ticker | DEFCON | Score | Rate | FLAG |
+|--------|--------|-------|------|------|
+| [[AVGO]] | 🟢 4 | 84 | 35,63€ | ⚠️ Insider-Review ($123M 90d) |
+| [[BRKB\|BRK.B]] | 🟡 3 | 75 | 35,63€ | Insurance-Exception |
+| [[VEEV]] | 🟡 3 | 74 | 35,63€ | — |
+| [[SU]] | 🟡 3 | 69 | 35,63€ | — |
+| [[COST]] | 🟡 3 | 69 | 35,63€ | Screener-Exception |
+| [[RMS]] | 🟡 3 | 68 | 35,63€ | Screener-Exception |
+| [[ASML]] | 🟡 3 | 68 | 35,63€ | — |
+| [[V]] | 🟠 2 | 63 | 17,81€ | — (D2-Entscheidung 28.04.) |
+| [[TMO]] | 🟠 2 | 64 | 17,81€ | fcf_trend_neg strukturell disclosed (Option B) |
+| [[APH]] | 🟠 2 | 63 | 0€ | 🔴 Score-basiert |
+| [[MSFT]] | 🟠 2 | 59 | 0€ | 🔴 CapEx/OCF 83,6% |
 
 ---
 
@@ -59,7 +61,8 @@ tags: [index, home, navigation]
 
 | Skill | Befehl | Funktion |
 |-------|--------|----------|
-| [[dynastie-depot-skill]] | `!Analysiere`, `!Rebalancing`, `!CAPEX-FCF-ANALYSIS` | Monolith — alle DEFCON-Workflows |
+| [[dynastie-depot-skill]] | `!Analysiere`, `!Rebalancing`, `!CAPEX-FCF-ANALYSIS` | Haupt-Skill DEFCON v3.7 (Paket v3.7.2); alle Scoring-Workflows. Schritt 7 delegiert an backtest-ready-forward-verify |
+| [[backtest-ready-forward-verify]] | — (programmatisch aus Schritt 7) | Satellit seit 19.04.2026: Forward-Run Persistence-Pipeline (Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git add) |
 | [[quick-screener]] | `!QuickCheck [TICKER]` | Stufe-0 Vorfilter (P/FCF, ROIC, Moat) |
 | [[insider-intelligence]] | `!InsiderScan`, `!FlagCheck` | Form-4-Automatisierung für 8 US-Satelliten |
 | [[non-us-fundamentals]] | `!NonUSScan ASML/RMS/SU` | yfinance für europäische Satelliten |

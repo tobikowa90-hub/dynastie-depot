@@ -163,7 +163,7 @@ Das Dynastie-Depot-System hält seinen Zustand in **vier formal getrennten Layer
 
 ### History-Layer — Maschinenlesbare Historie (append-only, unveränderlich)
 
-- **`05_Archiv/score_history.jsonl`** — ein Record pro `!Analysiere` (Vollanalyse/Delta/Rescoring), validiert via `ScoreRecord` in `03_Tools/backtest-ready/schemas.py`. Git-tracked via `.gitignore`-Whitelist.
+- **`05_Archiv/score_history.jsonl`** — ein Record pro `!Analysiere` (Vollanalyse/Delta/Rescoring), validiert via `ScoreRecord` in `03_Tools/backtest-ready/schemas.py`. Git-tracked via `.gitignore`-Whitelist. **Seit 19.04.2026 (v3.7.2)** wird der Write via Skill `backtest-ready-forward-verify` orchestriert (Pipeline-Disziplin: Freshness + STATE.md-Tripwire + §28.2 Δ-Gate + Dry-Run + Append).
 - **`05_Archiv/flag_events.jsonl`** — ein Record pro FLAG-Trigger und pro Resolution, 4 FLAG-Typen hardcoded in `FLAG_RULES`.
 - **Merkmal:** "Was wurde wann entschieden?" — Point-in-Time, nie überschrieben. Basis für 2028+ Backtest.
 

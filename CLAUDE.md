@@ -16,7 +16,7 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 
 - `CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
 - Stil: direkt, faktenbasiert, kein Filler — siehe INSTRUKTIONEN.md
-- **Sync-Pflicht:** Nach jeder Analyse: log.md + CORE-MEMORY.md + Faktortabelle + **STATE.md** + **score_history.jsonl** (+ ggf. **flag_events.jsonl**) aktualisieren, alles in einem git-Commit (STATE.md bei jeder Score/FLAG/Sparraten-Änderung, JSONL-Archive via `03_Tools/backtest-ready/archive_*.py`)
+- **Sync-Pflicht:** Nach jeder Analyse: log.md + CORE-MEMORY.md + Faktortabelle + **STATE.md** + **score_history.jsonl** (+ ggf. **flag_events.jsonl**) aktualisieren, alles in einem git-Commit (STATE.md bei jeder Score/FLAG/Sparraten-Änderung). **score_history.jsonl-Write** via Skill `backtest-ready-forward-verify` (v3.7.2, seit 19.04.2026 — dynastie-depot Schritt 7). **flag_events.jsonl** weiterhin CLI-direkt via `03_Tools/backtest-ready/archive_flag.py`.
 - **Briefing-Sync:** Vor Session-Ende `!SyncBriefing` falls 00_Core/ geändert wurde (§25). SessionEnd-Hook warnt automatisch.
 
 ## Projektstruktur
@@ -24,11 +24,12 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 ```
 00_Core/            → Kontext, Instruktionen, Gedächtnis (IMMER zuerst lesen)
 01_Skills/          → Skill-Quelldateien (Arbeitsversion)
-  ├── dynastie-depot/       → Haupt-Skill (DEFCON-System)
-  ├── insider-intelligence/ → Form-4-Scanner (8 US-Satelliten)
-  ├── non-us-fundamentals/  → yfinance IFRS-Modul (ASML/RMS/SU)
-  ├── quick-screener/       → Stufe-0-Vorfilter
-  └── _extern/              → Fremd-Skills (read-only Referenz)
+  ├── dynastie-depot/              → Haupt-Skill (DEFCON-System, v3.7.2)
+  ├── backtest-ready-forward-verify/ → Satellit: Forward-Run Persistence-Pipeline (v1.0, programmatisch aktiviert)
+  ├── insider-intelligence/        → Form-4-Scanner (8 US-Satelliten)
+  ├── non-us-fundamentals/         → yfinance IFRS-Modul (ASML/RMS/SU)
+  ├── quick-screener/              → Stufe-0-Vorfilter
+  └── _extern/                     → Fremd-Skills (read-only Referenz)
 02_Analysen/        → DEFCON-Analysen als Excel
 03_Tools/           → Rebalancing-Tool, Satelliten-Monitor, Watchlist, Briefing-Hook
 04_Templates/       → Single-Source-of-Truth für alle Templates
