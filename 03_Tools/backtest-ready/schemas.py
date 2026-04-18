@@ -89,6 +89,22 @@ class Quellen(BaseModel):
     sentiment: str
 
 
+class MigrationEvent(BaseModel):
+    """§28.2 Migration-Outcome. Persistent, backtest-queryable.
+
+    delta: signed (forward_score - algebra_score). Rule in §28.2 nutzt abs(delta)
+    für Bucketing; Zeichen hat Diagnose-Wert (algebra optimistisch vs konservativ).
+    """
+
+    model_config = ConfigDict(extra="forbid")
+    from_version: str
+    to_version: str
+    algebra_score: float
+    forward_score: float
+    delta: float
+    outcome: Literal["accepted", "log_only", "block"]
+
+
 # ---------------------------------------------------------------------------
 # Score blocks
 # ---------------------------------------------------------------------------
@@ -256,6 +272,7 @@ class ScoreRecord(BaseModel):
     metriken_roh: MetrikenRoh
     quellen: Quellen
     notizen: Optional[str] = None
+    migration_event: Optional[MigrationEvent] = None
 
     @field_validator("record_id")
     @classmethod
@@ -453,6 +470,7 @@ __all__ = [
     "InsiderScore",
     "Kurs",
     "MarketCap",
+    "MigrationEvent",
     "MetrikenRoh",
     "MoatScore",
     "Quellen",
@@ -589,7 +607,7 @@ def _smoke_tests() -> None:
     rec = ScoreRecord.model_validate(avgo)
     assert rec.ticker == "AVGO"
     assert rec.score_gesamt == 80
-    print("  [1/6] valid AVGO forward record parsed; score_gesamt=80, defcon=4")
+    print("  [1/7] valid AVGO forward record parsed; score_gesamt=80, defcon=4")
 
     # Case 2: arithmetic mismatch
     bad_arith = dict(avgo)
@@ -598,7 +616,7 @@ def _smoke_tests() -> None:
         ScoreRecord.model_validate(bad_arith)
     except ValidationError as e:
         assert "arithmetic mismatch" in str(e), f"wrong error: {e}"
-        print("  [2/6] arithmetic mismatch correctly raised")
+        print("  [2/7] arithmetic mismatch correctly raised")
     else:
         raise AssertionError("expected arithmetic mismatch ValueError")
 
@@ -608,7 +626,7 @@ def _smoke_tests() -> None:
         ScoreRecord.model_validate(bad_defcon)
     except ValidationError as e:
         assert "defcon_level inconsistent" in str(e), f"wrong error: {e}"
-        print("  [3/6] defcon_level inconsistency correctly raised")
+        print("  [3/7] defcon_level inconsistency correctly raised")
     else:
         raise AssertionError("expected defcon inconsistency ValueError")
 
@@ -627,7 +645,7 @@ def _smoke_tests() -> None:
         ScoreRecord.model_validate(qt)
     except ValidationError as e:
         assert "quality-trap violation" in str(e), f"wrong error: {e}"
-        print("  [4/6] quality-trap violation correctly raised")
+        print("  [4/7] quality-trap violation correctly raised")
     else:
         raise AssertionError("expected quality-trap ValueError")
 
@@ -657,7 +675,7 @@ def _smoke_tests() -> None:
     }
     fe = FlagEvent.model_validate(googl_flag)
     assert fe.flag_typ == "capex_ocf"
-    print("  [5/6] valid GOOGL capex_ocf trigger parsed")
+    print("  [5/7] valid GOOGL capex_ocf trigger parsed")
 
     # Case 6: Invalid FLAG — trigger but wert < schwelle (wert=54, schwelle=60 means rule HELD, not violated)
     bad_flag = {**googl_flag, "metrik": {**googl_flag["metrik"], "wert": 54}}
@@ -665,9 +683,27 @@ def _smoke_tests() -> None:
         FlagEvent.model_validate(bad_flag)
     except ValidationError as e:
         assert "trigger event" in str(e) and "violate threshold" in str(e), f"wrong error: {e}"
-        print("  [6/6] FLAG trigger direction mismatch correctly raised")
+        print("  [6/7] FLAG trigger direction mismatch correctly raised")
     else:
         raise AssertionError("expected FLAG trigger direction ValueError")
+
+    # Case 7: ScoreRecord mit migration_event
+    mig_rec = copy.deepcopy(avgo)
+    mig_rec["record_id"] = "2026-04-18_TMO_vollanalyse"
+    mig_rec["ticker"] = "TMO"
+    mig_rec["score_datum"] = "2026-04-18"
+    mig_rec["migration_event"] = {
+        "from_version": "v3.5",
+        "to_version": "v3.7",
+        "algebra_score": 63.0,
+        "forward_score": 80.0,  # matcht mig_rec.score_gesamt = 80
+        "delta": 17.0,
+        "outcome": "block",
+    }
+    rec_mig = ScoreRecord.model_validate(mig_rec)
+    assert rec_mig.migration_event is not None
+    assert rec_mig.migration_event.outcome == "block"
+    print("  [7/7] ScoreRecord with migration_event parsed")
 
     try:
         print("\u2705 all schema smoke tests passed")
