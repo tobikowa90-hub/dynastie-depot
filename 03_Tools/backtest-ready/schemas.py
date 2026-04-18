@@ -293,10 +293,14 @@ class ScoreRecord(BaseModel):
 
     @model_validator(mode="after")
     def _check_defcon_level(self) -> ScoreRecord:
+        """DEFCON-Thresholds ausgerichtet an SKILL.md (Neueinstieg + Bestandsueberwachung):
+        >=80 -> D4 | 65-79 -> D3 | 50-64 -> D2 | <50 -> D1.
+        Fix 2026-04-18: Vorher 70/60/50 (Schema-Drift gegen SKILL), siehe CORE-MEMORY Section 11.
+        """
         s = self.score_gesamt
-        if s >= 70:
+        if s >= 80:
             expected = 4
-        elif s >= 60:
+        elif s >= 65:
             expected = 3
         elif s >= 50:
             expected = 2
@@ -514,10 +518,10 @@ def _smoke_tests() -> None:
                 "dcf_relation_delta": 0,
             },
             "insider": {
-                "gesamt": 9,
+                "gesamt": 10,
                 "net_buy_6m": 4,
                 "ownership": 3,
-                "kein_20m_selling": 2,
+                "kein_20m_selling": 3,
             },
             "sentiment": {
                 "gesamt": 9,
@@ -578,18 +582,18 @@ def _smoke_tests() -> None:
     # Recompute fundamentals.gesamt and score_gesamt accordingly:
     # 1 + 1 + 8 + 7 + 8 + 6 + 2 - 0 - 0 - 0 = 33
     avgo["scores"]["fundamentals"]["gesamt"] = 33
-    # 33 + 18 + 10 + 9 + 9 = 79, defcon 4
-    avgo["score_gesamt"] = 79
+    # 33 + 18 + 10 + 10 + 9 = 80, defcon 4 (>=80 per SKILL-aligned thresholds)
+    avgo["score_gesamt"] = 80
     avgo["defcon_level"] = 4
 
     rec = ScoreRecord.model_validate(avgo)
     assert rec.ticker == "AVGO"
-    assert rec.score_gesamt == 79
-    print("  [1/6] valid AVGO forward record parsed; score_gesamt=79, defcon=4")
+    assert rec.score_gesamt == 80
+    print("  [1/6] valid AVGO forward record parsed; score_gesamt=80, defcon=4")
 
     # Case 2: arithmetic mismatch
     bad_arith = dict(avgo)
-    bad_arith = {**avgo, "score_gesamt": 80}  # off by one
+    bad_arith = {**avgo, "score_gesamt": 81}  # off by one
     try:
         ScoreRecord.model_validate(bad_arith)
     except ValidationError as e:
@@ -598,7 +602,7 @@ def _smoke_tests() -> None:
     else:
         raise AssertionError("expected arithmetic mismatch ValueError")
 
-    # Case 3: DEFCON inconsistency (score 79 → defcon should be 4, set to 3)
+    # Case 3: DEFCON inconsistency (score 80 → defcon should be 4, set to 3)
     bad_defcon = {**avgo, "defcon_level": 3}
     try:
         ScoreRecord.model_validate(bad_defcon)
@@ -617,7 +621,7 @@ def _smoke_tests() -> None:
     # Recompute for valid arithmetic (otherwise arithmetic validator fires first):
     # 4 + 1 + 8 + 7 + 8 + 6 + 2 = 36
     qt["scores"]["fundamentals"]["gesamt"] = 36
-    qt["score_gesamt"] = 36 + 18 + 10 + 9 + 9  # 82
+    qt["score_gesamt"] = 36 + 18 + 10 + 10 + 9  # 83 (insider gesamt=10 after SKILL-alignment)
     qt["defcon_level"] = 4
     try:
         ScoreRecord.model_validate(qt)

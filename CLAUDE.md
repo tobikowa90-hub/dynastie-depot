@@ -94,3 +94,4 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 - Projection-Layer (STATE.md) ≠ Wahrheitsquelle — nur aus State+Narrative synchron halten, nie selbst fortschreiben (verhindert Drift)
 - Backfill-Tolerant-Pattern für Cross-Validators: bei fehlenden Rohwerten moat.rating="narrow" → Quality-Trap-Validator deaktiviert, keine Schätzungen nötig
 - Cross-Session AI-"Fixes" immer gegen `git diff HEAD` prüfen — Preview-Reads können Truncation fälschlich diagnostizieren
+- Scoring-Version-Bump: Algebra-Projektion ≠ empirischer Lauf, bei Trigger re-verifizieren (V v3.5→v3.7 Algebra 86, Forward 63)

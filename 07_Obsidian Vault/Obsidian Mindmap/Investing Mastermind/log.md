@@ -366,3 +366,21 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Sync:** STATE.md (bereits aktuell — Source of Truth) + Faktortabelle + config.yaml + alle Wiki-Entities on par
 - **Briefing-Sync erforderlich** (00_Core/INSTRUKTIONEN.md + Faktortabelle.md + config.yaml geändert)
 - **Nächster Schritt:** ZIP-Release `dynastie-depot_v3.7.zip` vom User manuell + Rebalancing_Tool_v3.4 + Satelliten-Monitor auf Konsistenz zu STATE prüfen
+
+## [2026-04-18] analysis | V Pre-Earnings Q2 FY26 — Erster Forward-Record + Schema-Threshold-Fix
+- **Ablauf:** earnings-preview V → !Analysiere Vollanalyse → Advisor-Review → 3 Scoring-Korrekturen → γ-Schema-Fix → α-Rescoring
+- **Forward-Records (beide 18.04.):**
+  - `2026-04-18_V_vollanalyse` Score 72 D4 — erster Forward-Record überhaupt (Pre-Earnings-Baseline Q2 FY26)
+  - `2026-04-18_V_rescoring` Score 63 D2 — Korrektur nach Advisor-Review (nicht delete, append-only + Chain-Notiz)
+- **Drei Sub-Score-Korrekturen (via Advisor):**
+  - Moat 20→19: Pricing-Power-Bonus entfernt (Earnings-Call-Transcript nicht explizit verifiziert gemäß SKILL-Regel)
+  - Insider 6→5 (ownership 2/3→1/3): V-Aggregate-Ownership <1%, erfüllt 1%-Threshold nicht
+  - Fundamentals 37→30 (ROIC 8/8→1/8): Regel-4-Gating (GW/Assets 19,95% <30%) greift nicht, V ist kein M&A-Compounder, GAAP ROIC 9,89% < WACC 10,48% → Score 1
+- **γ-Schema-Fix (schemas.py + archive_score.py):** DEFCON-Thresholds auf SKILL.md aligned (≥80 D4 / 65-79 D3 / 50-64 D2). Vorher Schema 70/60/50 (Drift). Smoke-Tests grün.
+- **STATE.md / Faktortabelle.md Label-Drift-Fix:** BRK.B/VEEV/SU/COST/RMS D4→D3, APH D3→D2 (Sparraten unverändert bei D3/D4-Übergang, FLAG überschreibt APH).
+- **Sparraten-Nenner:** 8.5 → 8.0, volle Rate 33,53€→35,63€, D2-Rate 16,76€→17,81€. **Summe 285€** ✓
+- **V Score-Delta Narrative:** 86 (17.04. Backfill aus CORE-MEMORY §4-Rekonstruktion, sub-scores Fractional-Split-Platzhalter) → 63 (erste echte v3.7-empirische Berechnung). Treiber: Technicals-Kollaps (6M RelStärke -13,97pp vs SPY, Kurs -4,97% unter fallendem 200MA), v3.7 Sentiment Crowd-Warnung (0% Sell + PT-Dispersion 32%), P/FCF QT-Deckel Wide+28x, ROIC GAAP strikt.
+- **Key Finding:** v3.5→v3.7-Algebra-Projektionen vom 17.04. (8/11 Titel nicht empirisch verifiziert) könnten stille Überschätzungen enthalten. Bei jedem Earnings-Trigger: voller Forward-Lauf ersetzt Algebra-Schätzung.
+- **Archive-Stand:** 26 Records (24 Backfill + 2 Forward V).
+- **Sync:** STATE.md + Faktortabelle.md + CORE-MEMORY §11 + schemas.py + archive_score.py + score_history.jsonl (§18 alle 6 Dateien).
+- **Briefing-Sync erforderlich** (00_Core/ geändert).

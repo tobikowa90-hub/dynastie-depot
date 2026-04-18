@@ -279,12 +279,15 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _build_valid_forward_record(score_datum: date) -> dict[str, Any]:
-    """Build a minimal valid forward ScoreRecord (AVGO-like, v3.7-compliant)."""
+    """Build a minimal valid forward ScoreRecord (AVGO-like, v3.7-compliant).
+
+    DEFCON-Thresholds per SKILL.md (fix 2026-04-18): >=80 -> D4 | 65-79 -> D3 | 50-64 -> D2.
+    """
     ticker = "AVGO"
     rid = f"{score_datum.isoformat()}_{ticker}_vollanalyse"
     # Fundamentals: fwd_pe=1, p_fcf=1, bilanz=8, capex_ocf=7, roic=8, fcf_yield=6,
     # operating_margin=2, maluses=0 → gesamt=33
-    # Moat=18, Tech=10, Insider=9, Sentiment=9 → 79 total, DEFCON 4.
+    # Moat=18, Tech=10, Insider=10, Sentiment=9 → 80 total, DEFCON 4.
     return {
         "schema_version": "1.0",
         "record_id": rid,
@@ -329,10 +332,10 @@ def _build_valid_forward_record(score_datum: date) -> dict[str, Any]:
                 "dcf_relation_delta": 0,
             },
             "insider": {
-                "gesamt": 9,
+                "gesamt": 10,
                 "net_buy_6m": 4,
                 "ownership": 3,
-                "kein_20m_selling": 2,
+                "kein_20m_selling": 3,
             },
             "sentiment": {
                 "gesamt": 9,
@@ -343,7 +346,7 @@ def _build_valid_forward_record(score_datum: date) -> dict[str, Any]:
                 "pt_dispersion_delta": 0,
             },
         },
-        "score_gesamt": 79,
+        "score_gesamt": 80,
         "defcon_level": 4,
         "flags": {"aktiv_ids": [], "bei_analyse_referenziert": []},
         "metriken_roh": {
