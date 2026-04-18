@@ -77,14 +77,14 @@ Wenn der User \!Analysiere \[TICKER\] eingibt oder eine Aktie bewertet haben mö
 Gilt für Chat, Cowork UND Claude Code.
 
 1. `00_Core/Faktortabelle.md` laden
-2. Score + FLAG für [TICKER] prüfen:
-   - score_datum < 14 Tage → Insider aus Tabelle übernehmen
-   - score_datum < 90 Tage + kein Trigger → Delta statt Vollanalyse
-   - score_datum ≥ 90 Tage ODER Earnings → Vollanalyse
-3. Update-Trigger prüfen:
+2. **Update-Trigger prüfen (zuerst):**
    - Klasse B: Earnings in letzten 14 Tagen?
    - Klasse C: Event aktiv?
-   → Kein Trigger = QuickCheck reicht
+   - **Kein Trigger → `!QuickCheck` reicht** (WORKFLOW 4, **kein Archiv-Write**). Weiter nur bei aktivem Trigger.
+3. **Bei aktivem Trigger — Scope nach score_datum:**
+   - score_datum < 14 Tage → Insider aus Faktortabelle übernehmen (API-Skip), Rest Vollanalyse
+   - score_datum ≥ 14 Tage → Vollanalyse
+   - `analyse_typ: "delta"` hat aktuell **offene Semantik** (Review-Gate CORE-MEMORY §11) — nur bei expliziter User-Anforderung verwenden, sonst `"vollanalyse"`.
 
 ### Schritt 1: Daten sammeln
 
@@ -260,10 +260,14 @@ Kein Archive-Write in Schritt 7, bevor Resolution-Check gelaufen ist — sonst f
 Am Ende jeder `!Analysiere`-Ausgabe: Score-Record als JSON-Objekt erzeugen (Schema siehe `03_Tools/backtest-ready/schemas.py` → `ScoreRecord`), anschließend via `archive_score.py` anhängen.
 
 **Ablauf:**
-1. JSON-Block zusammenbauen — Pflichtfelder: `schema_version: "1.0"`, `record_id: YYYY-MM-DD_TICKER_TYP`, `source: "forward"`, `defcon_version: "v3.7"`, `score_datum` (heute oder max. 3 Tage zurück), `analyse_typ` (vollanalyse/delta/rescoring), vollständige `scores` (5 Blöcke), `score_gesamt`, `defcon_level`, `kurs`, `market_cap`, `flags` (aktiv_ids + bei_analyse_referenziert), `metriken_roh`, `quellen`. Optional: `notizen`.
+1. JSON-Block zusammenbauen — Pflichtfelder: `schema_version: "1.0"`, `record_id: YYYY-MM-DD_TICKER_TYP`, `source: "forward"`, `defcon_version: "v3.7"`, `score_datum` (heute oder max. 3 Tage zurück), `analyse_typ` (vollanalyse/delta/rescoring — Standard: `vollanalyse`), vollständige `scores` (5 Blöcke), `score_gesamt`, `defcon_level`, `kurs`, `market_cap`, `flags` (aktiv_ids + bei_analyse_referenziert), `metriken_roh`, `quellen`. Optional: `notizen`.
+   - **Null-Pattern bei `analyse_typ: "delta"`:** `metriken_roh` enthält nur neu erhobene Felder; nicht neu erhobene bleiben `null` (schema-legal, alle Felder Optional). Backtest-Consumers resolven via `LAST_VALUE(x) IGNORE NULLS PARTITION BY ticker ORDER BY score_datum`. Bei `vollanalyse`/`rescoring`: vollständige Rohwerte pflicht.
 2. JSON in temporäre Datei schreiben oder via stdin pipen.
 3. `python 03_Tools/backtest-ready/archive_score.py --file <tempfile.json>` ausführen (oder `--stdin`).
-4. Bei Validation-Errors (exit 1): JSON korrigieren, erneut ausführen — **keine Ausnahme**. Bei exit 2 (IO): Archiv-Zustand prüfen, Korruption beheben.
+4. **Bei Validation-Errors (exit 1):** JSON korrigieren, erneut ausführen — **keine Ausnahme**.
+   **Bei exit 2:** Fehlermeldung unterscheiden:
+   - `ArchiveCorruptError: archive corrupt at line {N}` → `sed -n '{N}p' 05_Archiv/score_history.jsonl | python -m json.tool` zeigt die defekte Zeile; manuell reparieren (append-only, also letzte Zeile meist) + erneut ausführen.
+   - `IOError: ...` → Pfad/Permissions prüfen (kein Datenproblem).
 5. Nach Success: `score_history.jsonl` im gleichen git-Commit wie `log.md + CORE-MEMORY.md + Faktortabelle + STATE.md` committen (§18 Sync-Pflicht — alle sechs Dateien, immer).
 
 **Wenn der Lauf abbricht bevor Schritt 7 erreicht wird:** Im nächsten Lauf zuerst nachholen. Jeder verpasste Append = irreversibler Historie-Verlust.

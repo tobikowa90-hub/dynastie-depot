@@ -326,7 +326,12 @@ Differenz ~€1,2B/Jahr = normal für ASML-Leasingbasis. **Kein Fehler, kein Ale
 - **Nicht archiviert:** APH (score-basiert, nicht in FLAG-Typ-enum), AVGO (insider_selling Status=REVIEW_PENDING — keine Schätzung per Spec §9.2). Dokumentiert in `05_Archiv/_parser_errors.log`.
 - **Override MSFT:** Emoji-DEFCON "🟡 3" bei GOOGL Score 72 → Validator-konsistent zu L4 angepasst (Score 70+ → L4 per Neueinstieg-Tabelle). Real-Portfolio-DEFCON 3 wegen FLAG ist nicht im Schema abgebildet (Limitation: FLAG-getriebener Effective-Downgrade ist Meta-Regel, nicht Score-Konsistenz).
 
-**Review-Termin 2028-04-01:**
+**Interim-Review-Gates (Delta-Semantik):**
+- **Trigger 1 — erster echter Delta-Lauf:** Sobald ein Forward-Record mit `analyse_typ: "delta"` ins Archiv läuft → Kurz-Review (20 Min): Welche Metriken fehlen? Trägt das Null-Pattern (SKILL.md Schritt 7) oder braucht es Carry-Forward-Logik?
+- **Trigger 2 — 2026-10-17 (6 Monate Forward-Betrieb):** Wurde `delta` überhaupt genutzt? Falls 0 Delta-Records bei ≥20 Vollanalysen → Kategorie aus Schema entfernen. Falls genutzt → Null-Pattern-Erfahrung auswerten, ggf. SKILL.md Schritt 0 um definierte Delta-Auslöser erweitern.
+- **Definition A vs. B (SKILL.md ↔ INSTRUKTIONEN:474):** Harmonisierung verschoben auf Trigger 2 — beide Definitionen bleiben nebeneinander stehen, bis reale Nutzung den Konflikt entscheidet.
+
+**Review-Termin 2028-04-01 (Gesamt-Backtest):**
 - Hat die Forward-Historie (+2 Jahre seit 17.04.2026) genug Sample-Size für Return-Prediction oder Threshold-Kalibrierung?
 - Welcher der 4 Fundierungs-Paper (arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha) lässt sich als Benchmark anlegen?
 - Haben Scoring-Version-Sprünge Regime-Wechsel produziert, die Backtest-Vergleiche invalidieren?
