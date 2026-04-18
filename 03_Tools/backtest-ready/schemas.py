@@ -104,6 +104,35 @@ class MigrationEvent(BaseModel):
     delta: float
     outcome: Literal["accepted", "log_only", "block"]
 
+    @model_validator(mode="after")
+    def _check_delta(self) -> MigrationEvent:
+        expected = round(self.forward_score - self.algebra_score, 6)
+        if round(self.delta, 6) != expected:
+            raise ValueError(
+                f"delta arithmetic inconsistent: forward_score({self.forward_score}) "
+                f"- algebra_score({self.algebra_score}) = {expected}, got delta={self.delta}"
+            )
+        return self
+
+    @model_validator(mode="after")
+    def _check_outcome_bucket(self) -> MigrationEvent:
+        """§28.2 thresholds v3.7 (18.04.2026): |Δ|≤2 → accepted | 3-5 → log_only | >5 → block.
+        Fix-anchor comment matches _check_defcon_level precedent (same file, line ~296).
+        """
+        abs_delta = abs(self.delta)
+        if abs_delta <= 2:
+            expected = "accepted"
+        elif abs_delta <= 5:
+            expected = "log_only"
+        else:
+            expected = "block"
+        if self.outcome != expected:
+            raise ValueError(
+                f"outcome '{self.outcome}' inconsistent with |delta|={abs_delta}: "
+                f"§28.2 requires '{expected}'"
+            )
+        return self
+
 
 # ---------------------------------------------------------------------------
 # Score blocks
