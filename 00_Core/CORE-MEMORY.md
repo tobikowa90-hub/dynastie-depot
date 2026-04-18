@@ -31,6 +31,7 @@
 | 17.04.2026 | **RMS Live-Verify (Schritt-2 Backtest v3.7):** stockanalysis (defeatbeta non-US Gap). OpM TTM 41,05% (2 Pt. max), Fwd P/E 34,91 (>30 → Fwd-P/E-Subscore hart 0), P/FCF ~38x (MCap €173B / TTM FCF ~€4,5B, >35 → P/FCF-Subscore hart 0). Analyst-Daten Lücke (EU-Coverage dünn bei stockanalysis). **Beide Fix-1-Zweige triggern** wie ASML — DEFCON 4 durch Screener-Exception (ROIC 24% >> WACC 6,5%, Spread +17,5pp) geschützt. Approximation **68 innerhalb ±2 Toleranz bestätigt**. Nach Q1 −8,4% Kursdrop fiel Fwd P/E von ~39 auf 34,9 — weitere Korrektur könnte <30 bringen, Score +1 möglich. |
 | 17.04.2026 | **Zwischenbilanz Live-Verify 3/11 (TMO, ASML, RMS) — alle Approximationen innerhalb Toleranz bestätigt.** Fix-1 Interaktionsterm funktioniert präzise design-konform: bei ASML+RMS beide Zweige hart 0, bei TMO nur P/FCF-Zweig (Differenzierung). Kein Double-Counting, kein Pauschal-Malus. v3.7-System empirisch validiert. Rest-Tickers (8) bei regulärem Earnings-Trigger. |
 | 17.04.2026 | **ASML Post-Q1 Vollanalyse (Pfad B, Non-US/IFRS-Workflow-Anker für Beispiele.md):** Score **68/100 🟡 DEFCON 3** (+2 vs. STATE.md-Approximation 66 — innerhalb v3.7 Live-Verify-Toleranz ±2). Subscore-Breakdown v3.7-frisch: Fundamentals 28/50 (QT-P/E-Zweig hart 0, QT-P/FCF-Zweig hart 0, Bilanz 8/8, CapEx 8/8, ROIC+17,19pp Spread 8/8, FCF-Yield 2/8, OpM 2/2), Moat 20/20 (GM-Trend +1,5pp Bonus), Technicals 7/10, Insider 7/10 (Carry-Forward 06.04. — AFM-H1 pending), Sentiment 6/10 (B11-Bias-Malus aktiv: 35/44 Strong-Buy). Daten: eodhd_intel.py (Non-US Primärtool) + WebSearch Q1-Actuals. Kurs €1.242,60, FCF-Marge 33,8%, ROIC 26,48%, WACC 9,29% (FRED DGS10 4,29% + 5% ERP — GuruFocus 18,21% als implausibel verworfen), China-Shift 36%→19% post-Q1, Stock -6% trotz Beat (Export-Control-Sorge). **Kein FLAG.** Sparrate voll 33,53€. Ankerrolle in Beispiele.md v3.7 zementiert: einziger Depot-Anker mit beidseitiger QT-Aktivierung; FY27 Fwd-P/E 30,30 Grenzfall dokumentiert D3→D4-Pfad (+6-8 Pkt bei <30). Sync komplett (STATE/Faktortabelle/CORE-MEMORY/log/Wiki-Entität). |
+| 17.04.2026 | **Skill v3.7.1 deployed — Backtest-Ready Forward-Pipeline aktiv (Phase 1/4).** SKILL.md-Delta: **Schritt 6b** (FLAG-Resolution-Check via `archive_flag.py list --aktiv`) + **Schritt 7** (Archiv-Write Pflicht via `archive_score.py`) zwischen Depot-Einordnung und SCORING-SKALEN eingefügt. DEFCON-Scoring **unverändert v3.7** — Skill-Paket-Version-Bump (3.7→3.7.1) ohne Scoring-Semantik-Impact. **Neue Tools in `03_Tools/backtest-ready/`:** schemas.py (14 Pydantic-Modelle inkl. Quality-Trap-Cross-Validator, Cap-50-Floor-0, Direction-Check für 4 FLAG-Typen), archive_score.py (CLI Append + Uniqueness + Forward-Window), archive_flag.py (trigger/resolve/list Subcommands). **Archive git-tracked via `.gitignore`-Whitelist** (Pattern `05_Archiv/*` + Exceptions für score_history.jsonl + flag_events.jsonl). **§18 Sync-Pflicht erweitert auf 6 Dateien** (v1.5→v1.6 INSTRUKTIONEN), CLAUDE.md/STATE.md parallel aktualisiert. **ZIP:** `06_Skills-Pakete/dynastie-depot_v3.7.1.zip` (manuell in Desktop re-installieren — ersetzt v3.7). Nächste Phasen: 0.5 (Spec-Update parallel), 2 (Backfill aus CORE-MEMORY Section 4), 3 (Event-Study), 4 (KONTEXT.md + Vault). |
 | 17.04.2026 | **Skill-Audit + Tools-Sync Phase 2 (Post-ASML-Update, v3.7-Abschluss):** Part 1 — `_extern/risk-metrics-calculation` 3 Funktionen extrahiert nach `03_Tools/portfolio_risk.py`, qualitative-valuation + risk-metrics-calculation _extern-Skills gelöscht (4 Skills gesamt). Part 2 — Full-Skill-Audit A/B/C-Kategorien: **Kategorie A (faktisch falsch → fix)** in `config.yaml` (ASML 66→68, AVGO/RMS/SU scoring_notiz, MSFT flag_grund harmonisiert), `INSTRUKTIONEN.md` (TMO-Kalibrierungsanker 62→63), `Faktortabelle.md` (Header v3.4→v3.7, 3/11 Live-Verify-Status). **Vault-Sync** 6 Satellite-Entities (AVGO/SU/RMS/TMO/MSFT/APH) Callout + Frontmatter + Historie-Einträge; Synthese-Banner B-konform in `Wissenschaftliche-Fundierung-DEFCON.md` (v3.5-Zeitstand markiert statt gelöscht → Informationsverlust-Aversion); `dynastie-depot-skill.md` D3-Rate-Fix (D4/D3=1.0 | D2=0.5 | FLAG=0.0) + Rechenbeispiel Nenner 9.0→8.5. **Tools-Patches via openpyxl:** `Rebalancing_Tool_v3.4.xlsx` N10/O10 APH Score 66→68; `Satelliten_Monitor_v2.0.xlsx` L7 ASML Score 66→68, M7 Delta −2→+2, S7 Live-Verify-Text 66→68, S17 APH-Text 61→63, QuickScreen I12 ASML 66→68, B23 Legende 15.04.→17.04. Sparraten-Summe 285€ in beiden Tools verifiziert. **Skill-ZIP manuell re-installiert.** |
 
 ---
@@ -100,34 +101,15 @@
 
 ---
 
-## 4. Score-Register (alle durchgeführten Analysen)
+## 4. Score-Register
 
-| Ticker | Score | DEFCON | Datum | Status | Nächste Aktion |
-|--------|-------|--------|-------|--------|----------------|
-| ASML | 68 | 🟡 3 | 17.04.2026 (v3.7 Post-Q1 Vollanalyse) | Aktiv — volle Rate (D3, kein 🔴) | Q2 2026 Earnings — Watch: Fwd P/E FY27 30,30 Grenzfall (<30 → D4-Upside) |
-| AVGO | 84 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — ⚠️ Insider-Review | Q3 FY26 Earnings — OpenInsider manuell prüfen |
-| FFH.TO | 88 | 🟢 4 | ~März 2026 | Ersatzbank BRK.B | — |
-| NVDA | 86 | 🟢 4 | ~März 2026 | Ersatzbank AVGO | — |
-| MKL | 82 | 🟢 4 | 25.03.2026 | Ersatzbank BRK.B | CapEx-FCF (Performance Thread) |
-| ZTS | 81 | 🟢 4 | ~März 2026 | Ersatzbank VEEV | — |
-| PEGA | 85 | 🟢 4 | ~März 2026 | Slot-16-Kandidat | Earnings Mai 2026 |
-| MSFT | 59 | 🟠 2 | 17.04.2026 (v3.7) | Aktiv — FLAG aktiv (CapEx/OCF Q2 FY26: 83.6%, bereinigt ~63%) | Q3 Earnings 29.04.2026 — FLAG-Auflösung wenn bereinigt <60% |
-| SNPS | 76 | 🟡 3 | 26.03.2026 | Ersatzbank ASML | Re-Analyse Mai 2026 |
-| SPGI | 74 | 🟡 3 | 31.03.2026 | Watchlist | Earnings 28.04.2026 |
-| RACE | 73 | 🟢 4 | ~März 2026 | Ersatzbank RMS | — |
-| GOOGL | 72 | 🟡 3 | 26.03.2026 | 🔴 FLAG — kein Einstieg | FLAG-Auflösung abwarten |
-| SAP | 72 | 🟡 3 | ~März 2026 | Watchlist | ZTS bevorzugt |
-| EXPN | 61 | 🟡 3 | 02.04.2026 | Watchlist | P/FCF + Insider-Check |
-| HON | 71 | 🟡 3 | 28.03.2026 | Watchlist | Post-Spinoff 2026 |
-| TMO | 63 | 🟠 2 | 17.04.2026 (v3.7) | Aktiv — 50% Rate (D2, kein 🔴 FLAG) → **16,76€** | Q1 Earnings 23.04.2026 — FCF-Erholung + ROIC-Trend |
-| APH | 63 | 🟡 3 | 17.04.2026 (v3.7) | Aktiv — FLAG aktiv | Tariff-Check CN/MY |
-| RMS | 68 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll → **33,53€** | H1 2026 Report Juli/Aug 2026 |
-| VEEV | 74 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll → **33,53€** | Keine Earnings-Urgenz |
-| FICO | 67 | 🟡 3 | 03.04.2026 | Watchlist VEEV-Ersatz #1 | Re-Analyse bei VEEV-Schwäche |
-| V | 86 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll → **33,53€** | Q2 FY26 Earnings ~22.04.2026 |
-| COST | 69 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll (Bestandsposition ≥65, Screener-Exception) → **33,53€** | Nächste Earnings ~Dez 2026 Q1 FY27 |
-| BRK.B | 75 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll (Insurance Exception) → **33,53€** | Q-Earnings Mai 2026 — Buyback-Wiederaufnahme beobachten |
-| SU | 69 | 🟢 4 | 17.04.2026 (v3.7) | Aktiv — Sparplan voll → **33,53€** | H1 2026 Earnings Juli/Aug 2026 |
+→ **Aktueller State:** [`Faktortabelle.md`](Faktortabelle.md) — Live-Score + DEFCON + FLAG pro Ticker
+→ **Portfolio-Snapshot:** [`STATE.md`](STATE.md) — Section "Portfolio-State (11 Satelliten)"
+→ **Vollständige Historie:** `05_Archiv/score_history.jsonl` — alle Score-Records append-only (ab 17.04.2026 forward, Backfill-Records aus damaliger Section-4-Tabelle)
+→ **FLAG-Events:** `05_Archiv/flag_events.jsonl` — Trigger + Resolution append-only
+→ **Write-Tooling:** `03_Tools/backtest-ready/archive_score.py` + `archive_flag.py`
+
+*Score-Register-Tabelle seit 2026-04-17 in JSONL-Archiv migriert. Backfill-Stand: 24 Score-Records + 2 FLAG-Events (MSFT/GOOGL capex_ocf). Vormals an dieser Stelle stehende 24-Zeilen-Tabelle: archiviert im git-Commit pre-Phase-2 (siehe Commit-Historie 17.04.2026) und maschinenlesbar in `score_history.jsonl` rekonstruiert.*
 
 ---
 
@@ -327,4 +309,34 @@ Differenz ~€1,2B/Jahr = normal für ASML-Leasingbasis. **Kein Fehler, kein Ale
 → CapEx-Toleranz bleibt ±1,5% (PP&E-Zahlen konvergieren unter beiden Standards).
 
 ---
-*🦅 CORE-MEMORY.md v1.7 | Dynastie-Depot | Stand: 17.04.2026*
+
+## 11. Backtest-Ready Infrastructure (aktiviert 2026-04-17)
+
+**Ziel:** Ab sofort jede `!Analysiere`-Ausgabe und jedes FLAG-Event maschinenlesbar append-only archivieren, damit 2028+ ein methodisch-seriöser Backtest möglich wird.
+
+**Aktive Komponenten:**
+- **Score-Archiv:** `05_Archiv/score_history.jsonl` — ein Record pro Vollanalyse/Delta/Rescoring (source=forward) + Backfill-Records aus Section-4-Rekonstruktion (source=backfill).
+- **FLAG-Event-Log:** `05_Archiv/flag_events.jsonl` — Trigger + Resolution pro FLAG (4 Typen: capex_ocf, fcf_trend_neg, insider_selling_20m, tariff_exposure).
+- **Write-Tooling:** `03_Tools/backtest-ready/` — schemas.py (14 Pydantic-Modelle + 4 Cross-Validators), archive_score.py, archive_flag.py (trigger/resolve/list).
+- **Write-Pflicht:** SKILL.md Schritt 7 (Archiv-Write) + Schritt 6b (FLAG-Resolution-Check). Sync-Pflicht §18 auf 6 Dateien erweitert.
+
+**Backfill-Stand 2026-04-17 (einmalig):**
+- 24 Score-Records aus CORE-MEMORY Section 4 rekonstruiert. Sub-Score-Breakdown nicht rekonstruierbar — Block-gesamt als Fractional-Split 50/20/10/10/10, Sub-Scores 0 als ehrliche "nicht-rekonstruierbar"-Platzhalter. `defcon_version: "historical"` (nicht v3.7, da Backfill aus unterschiedlichen Scoring-Versionen stammt). `moat.rating: "narrow"` einheitlich → Quality-Trap-Validator deaktiviert bei Backfill.
+- 2 FLAG-Records: `MSFT_capex_ocf_2026-01-15` (wert=83.6, Trigger-Datum Proxy Q2 FY26 Earnings), `GOOGL_capex_ocf_2026-03-15` (wert=null, Rohwert nicht dokumentiert, schwelle=60).
+- **Nicht archiviert:** APH (score-basiert, nicht in FLAG-Typ-enum), AVGO (insider_selling Status=REVIEW_PENDING — keine Schätzung per Spec §9.2). Dokumentiert in `05_Archiv/_parser_errors.log`.
+- **Override MSFT:** Emoji-DEFCON "🟡 3" bei GOOGL Score 72 → Validator-konsistent zu L4 angepasst (Score 70+ → L4 per Neueinstieg-Tabelle). Real-Portfolio-DEFCON 3 wegen FLAG ist nicht im Schema abgebildet (Limitation: FLAG-getriebener Effective-Downgrade ist Meta-Regel, nicht Score-Konsistenz).
+
+**Review-Termin 2028-04-01:**
+- Hat die Forward-Historie (+2 Jahre seit 17.04.2026) genug Sample-Size für Return-Prediction oder Threshold-Kalibrierung?
+- Welcher der 4 Fundierungs-Paper (arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha) lässt sich als Benchmark anlegen?
+- Haben Scoring-Version-Sprünge Regime-Wechsel produziert, die Backtest-Vergleiche invalidieren?
+
+Entscheidungsmatrix wird in `07_Obsidian Vault/.../synthesis/Backtest-Methodik-Roadmap.md` dokumentiert (Phase 4 pending).
+
+**Dokumentation:**
+- Spec: `docs/superpowers/specs/2026-04-16-backtest-ready-infrastructure-design.md` (v3.7-realigned 17.04.2026)
+- Plan: `docs/superpowers/plans/2026-04-17-backtest-ready-infrastructure.md` (356 Zeilen, 4 Phasen + 0 + 0.5)
+- README: `03_Tools/backtest-ready/README.md`
+
+---
+*🦅 CORE-MEMORY.md v1.8 (§11 Backtest-Ready Infrastructure + §4 Pointer) | Dynastie-Depot | Stand: 17.04.2026*
