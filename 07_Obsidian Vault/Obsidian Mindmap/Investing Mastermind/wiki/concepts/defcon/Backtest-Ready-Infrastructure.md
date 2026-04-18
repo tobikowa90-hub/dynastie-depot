@@ -3,8 +3,8 @@ title: "Backtest-Ready-Infrastructure"
 type: concept
 tags: [defcon, backtest, infrastructure, roadmap, kern]
 created: 2026-04-17
-updated: 2026-04-17
-version: v3.7.1
+updated: 2026-04-19
+version: v3.7.2
 sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha]
 related: [DEFCON-System, Score-Archiv, FLAG-Event-Log, Backtest-Methodik-Roadmap, Analyse-Pipeline, Wissenschaftliche-Fundierung-DEFCON]
 wissenschaftlicher_anker: "Operative Voraussetzung für spätere Validierung aller 14 DEFCON-Befunde (B1–B14)"
@@ -39,23 +39,25 @@ Siehe KONTEXT.md §11 für Details:
 3. **History-Layer** — [[Score-Archiv]] + [[FLAG-Event-Log]] (append-only, unveränderlich)
 4. **Projection-Layer** — [[STATE]] (Session-Entry, synchron gehalten)
 
-## Komponenten (Stand 17.04.2026)
+## Komponenten (Stand 19.04.2026)
 
 | Komponente | Ort | Status |
 |------------|-----|--------|
-| Score-Archiv | `05_Archiv/score_history.jsonl` | ✅ aktiv, Backfill 24 Records |
+| Score-Archiv | `05_Archiv/score_history.jsonl` | ✅ aktiv, Backfill 24 + Forward 3 Records |
 | FLAG-Event-Log | `05_Archiv/flag_events.jsonl` | ✅ aktiv, Backfill 2 Records (MSFT/GOOGL) |
-| Pydantic-Schemas | `03_Tools/backtest-ready/schemas.py` | ✅ 14 Modelle + 4 Validators |
+| Pydantic-Schemas | `03_Tools/backtest-ready/schemas.py` | ✅ 15 Modelle (+ MigrationEvent) + 6 Validators (v3.7.2) |
 | CLI-Writer | `archive_score.py` + `archive_flag.py` | ✅ Phase 1 deployed |
+| **Skill-Orchestrator (Forward-Run)** | `01_Skills/backtest-ready-forward-verify/SKILL.md` | ✅ Phase 5 deployed (19.04., v3.7.2) — kapselt P1-P6 Pipeline |
+| Helpers | `03_Tools/backtest-ready/_forward_verify_helpers.py` | ✅ parse_wrapper / parse_state_row / build_migration_event / check_freshness |
 | Backfill-Tools | `backfill_scores.py` + `backfill_flags.py` | ✅ Einmal-Run durchlaufen |
 | Event-Study | `flag_event_study.py` + Report | ✅ Phase 3 Einmal-Analyse (n=2) |
 | git-Tracking | `.gitignore`-Whitelist für JSONL | ✅ Forward-Pipeline git-persistiert |
 
 ## Schreib-Disziplin
 
-§18 Sync-Pflicht (INSTRUKTIONEN.md v1.7): Nach jeder `!Analysiere` müssen **6 Dateien** im gleichen git-Commit aktualisiert werden — log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + flag_events.jsonl (bei FLAG-Event).
+§18 Sync-Pflicht (INSTRUKTIONEN.md v1.7): Nach jeder `!Analysiere` müssen **6 Dateien** im gleichen git-Commit aktualisiert werden — log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + flag_events.jsonl (bei FLAG-Event). **Seit 19.04.2026 (v1.7):** `score_history.jsonl`-Write wird via Skill `backtest-ready-forward-verify` orchestriert.
 
-§26 Archiv-Sync (INSTRUKTIONEN.md v1.7): 4-Schritt-Workflow (JSON generieren → archivieren → FLAG-Check → git commit). SKILL.md Schritt 7 ist die kanonische Trigger-Stelle.
+SKILL.md Schritt 7 (dynastie-depot v3.7.2) ist die kanonische Trigger-Stelle: Draft schreiben → `Skill(args=<pfad>)` → Stdout-Report parsen (6 Fälle: OK / freshness / PFLICHT / STOP / duplicate / FAIL) → bei STOP Fan-Out-Block über 7 Oberflächen (§28.1 Step 7).
 
 ## Review-Termin 2028-04-01
 

@@ -39,7 +39,7 @@ trigger_words:
 - Lombardkredit
 - NV-Bescheinigung
 ---
-# 🦅 Dynastie-Depot – Skill v3.7.1
+# 🦅 Dynastie-Depot – Skill v3.7.2
 
 **Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.2 | **Stand:** 19.04.2026 | v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
 

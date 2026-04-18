@@ -3,7 +3,7 @@ title: "Analyse-Pipeline"
 type: concept
 tags: [konzept, pipeline, workflow]
 created: 2026-04-10
-updated: 2026-04-14
+updated: 2026-04-19
 sources: [llms-for-equity-stock-ratings, arXiv-1711.04837]
 related: [DEFCON-System, CapEx-FLAG, ROIC-vs-WACC, Tariff-Exposure-Regel, Non-US-Scoring, Update-Klassen-DEFCON]
 wissenschaftlicher_anker: "B7 (alle 4 Paper) — Fundamentals > Sentiment > Technicals als Datenhierarchie | B10 (JPM 2024) — Chain-of-Thought vor Scoring verbessert Konsistenz und Genauigkeit"
@@ -65,11 +65,14 @@ python 03_Tools/backtest-ready/archive_flag.py list --ticker <T> --aktiv
 # Für jeden offenen FLAG: prüfen ob Metrik normalisiert, ggf. resolve
 ```
 
-**Schritt 7 — Archiv-Write:**
-```bash
-python 03_Tools/backtest-ready/archive_score.py --file <tempfile.json>
+**Schritt 7 — Archiv-Write (seit 19.04.2026 via Skill orchestriert):**
+
+Draft-JSON (`{"record": {...}, "skill_meta": {...}}`) nach `03_Tools/backtest-ready/_drafts/<TICKER>_<YYYYMMDD-HHMM>.json` schreiben, dann:
+
+```
+Skill(skill="backtest-ready-forward-verify", args="<pfad-zum-draft>")
 ```
 
-Der Score-Record wird via Pydantic-Schema ([[Score-Archiv]]) validiert (Arithmetik, DEFCON-Konsistenz, Quality-Trap-Interaktion) und an `05_Archiv/score_history.jsonl` angehängt. Keine Ausnahme — jeder verpasste Append = irreversibler Historie-Verlust.
+Der Skill orchestriert Phasen P1-P6 (Schema-Validation → Freshness + STATE.md-Tripwire → §28.2 Δ-Gate conditional → Dry-Run → Append → git add). Stdout-Report mit 6 Fällen (OK / freshness / PFLICHT / STOP / duplicate / FAIL) — dynastie-depot-Handler routet weiter. Der Score-Record wird via Pydantic-Schema ([[Score-Archiv]]) validiert (Arithmetik, DEFCON-Konsistenz, Quality-Trap-Interaktion) und an `05_Archiv/score_history.jsonl` angehängt. Keine Ausnahme — jeder verpasste Append = irreversibler Historie-Verlust.
 
 Commit-Disziplin §18: Alle sechs Dateien (log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + ggf. flag_events.jsonl) in einem git-Commit.

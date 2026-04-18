@@ -3,8 +3,8 @@ title: "Score-Archiv"
 type: concept
 tags: [defcon, scoring, infrastructure, history, backtest-ready]
 created: 2026-04-17
-updated: 2026-04-17
-version: v3.7.1
+updated: 2026-04-19
+version: v3.7.2
 sources: []
 related: [DEFCON-System, Analyse-Pipeline, FLAG-Event-Log, Backtest-Ready-Infrastructure, Backtest-Methodik-Roadmap]
 wissenschaftlicher_anker: "Infrastruktur für spätere Validierung der 4 DEFCON-Fundierungspapers"
@@ -27,13 +27,16 @@ Volldetails: [`03_Tools/backtest-ready/schemas.py`](../../../../../03_Tools/back
 
 ## Write-Trigger
 
-SKILL.md **Schritt 7 (Archiv-Write Pflicht)** nach jeder `!Analysiere`:
+SKILL.md **Schritt 7 (Archiv-Write Pflicht)** nach jeder `!Analysiere`. **Seit 19.04.2026 (dynastie-depot v3.7.2)** wird die Persistence-Pipeline über den Satelliten-Skill [`backtest-ready-forward-verify`](../../../../../01_Skills/backtest-ready-forward-verify/SKILL.md) orchestriert:
 
-```bash
-python 03_Tools/backtest-ready/archive_score.py --file <tempfile.json>
+```
+Draft → Skill(args=<pfad>) → P1 Schema-Validation → P2a Freshness + P2b STATE.md-Tripwire
+      → P3 §28.2 Δ-Gate (conditional, injiziert MigrationEvent) → P4 --dry-run → P5 Append → P6 git add
 ```
 
-Validiert via Pydantic: Arithmetik-Check (`score_gesamt` = Summe 5 Blöcke), DEFCON-Konsistenz, Quality-Trap-Interaktionsterm (v3.7), `record_id`-Uniqueness, Forward-Datum-Window (≤3 Tage).
+Der Skill ruft intern weiterhin `archive_score.py`; Unterschied zur v3.7.1-Ära: Pipeline-Disziplin (Tripwire, Δ-Gate, Freshness-Warnung) wird mechanisch durchgesetzt statt Prosa-Anweisung.
+
+Validiert via Pydantic: Arithmetik-Check (`score_gesamt` = Summe 5 Blöcke), DEFCON-Konsistenz, Quality-Trap-Interaktionsterm (v3.7), `record_id`-Uniqueness, Forward-Datum-Window (≤3 Tage). Zusätzlich seit v3.7.2: `MigrationEvent._check_delta` + `_check_outcome_bucket` (§28.2 Buckets self-validating).
 
 ## Abgrenzung zu Faktortabelle
 
