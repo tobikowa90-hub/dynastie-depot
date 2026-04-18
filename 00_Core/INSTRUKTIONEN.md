@@ -541,4 +541,79 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 **Präzedenzfall:** 18.04.2026 Schema-SKILL-Threshold-Drift — Fix in schemas.py alleine hätte 5 Vault-Pages und beide Tools veraltet zurückgelassen. Kaskaden-Sync war Pflicht.
 
 ---
-*🦅 INSTRUKTIONEN.md v1.8 (§27 Scoring-Hygiene & Daten-Integrität) | Dynastie-Depot v3.7 | Stand: 18.04.2026*
+
+## 28. Scoring-Version-Migration-Workflow
+
+Systemischer Workflow für DEFCON-Versionssprünge (v3.x → v3.y). Promotion aus Applied Learning am 18.04.2026 — belegt durch zwei Migrationen binnen 14 Tagen (v3.4→v3.5, v3.5→v3.7), beide mit orphan-References + nachgelagerten Fan-Out-Fixes.
+
+**Regel:** Jeder Version-Bump durchläuft die folgende 7-Step-Checklist **vor** dem finalen Commit. Kein Ad-hoc-Rollout.
+
+### 28.1 Pflicht-Checklist
+
+**Step 1 — Paper/Evidence-Check**
+Schriftlich begründen: *Welche Primärquelle* (Paper, Backtest-Befund, Präzedenz-Lektion aus CORE-MEMORY §5) rechtfertigt die Änderung? Ohne Evidenz kein Bump — Ästhetik zählt nicht (Applied Learning v1.0 Bullet #4).
+
+**Step 2 — Redundanz-Check (§27.1)**
+Neue/geänderte Sub-Scores gegen alle bestehenden DEFCON-Blöcke greppen. Double-Counting ausschließen.
+
+**Step 3 — Algebra-Projektion n≥5**
+Auf 5+ Sample-Tickern **rechnerisch** neue Score-Projektion erstellen. Verteilung prüfen: keine Score-Inflation, keine strukturelle Asymmetrie zwischen Top-/Mid-Namen (§27.2).
+
+**Step 4 — Forward-Verify-Sample**
+Auf 2-3 Tickern die **empirische** Forward-Vollanalyse mit neuer Version laufen (`03_Tools/backtest-ready/`). Delta-Check Algebra vs. Forward nach gestuftem Schema in §28.2. **Schritte 1-6 auf Branch, Step 4 muss grün (Δ≤5) sein bevor Step 7 Fan-Out beginnt** — sonst wird fehlerhafte Migration über 7 Oberflächen geschmiert.
+
+**Step 5 — Orphan-Grep alter Version-Strings**
+```bash
+# ripgrep — ODER-Alternation mit -e (mehrere Patterns), nicht \|
+rg -n -e "v3\.4" -e "3\.4\.1" 01_Skills/ 00_Core/ "07_Obsidian Vault/"
+rg -n -e "3\.4\.1" -e "3\.5" -e "3\.6" 03_Tools/   # Vorgänger-Versionen anpassen
+```
+Alle Treffer prüfen: bewusster Historie-Bezug oder veraltete Referenz? Veraltete → fixen.
+
+**Step 6 — Anchor-Rekalibrierung (§7)**
+Bestehende Kalibrierungsanker auf neue Scoring-Skala umrechnen. Dokumentieren welche Anker verschoben, welche gleich blieben.
+
+**Step 7 — Fan-Out-Gate (7 Oberflächen)**
+Nur starten wenn Step 4 grün. Vor Commit alle folgenden Stellen synchronisiert:
+1. `00_Core/INSTRUKTIONEN.md` — §§ mit versionierten Regeln
+2. `01_Skills/dynastie-depot/SKILL.md` — frontmatter `version:` + inline v-References *(andere Skills: `insider-intelligence`, `quick-screener`, `non-us-fundamentals` — werden durch Step 5 Orphan-Grep abgedeckt, nicht durch Positiv-Sync)*
+3. `01_Skills/dynastie-depot/config.yaml` — Schwellen, Gewichte, FLAG-Trigger
+4. `03_Tools/*.xlsx` — Rebalancing-Tool + Satelliten-Monitor (Scoring-Formeln, Threshold-Zellen)
+5. `00_Core/Faktortabelle.md` — Migration-Note mit Datum + Delta
+6. `07_Obsidian Vault/.../wiki/entities/satelliten/*.md` — Scores + Scoring-Version-Tag
+7. `00_Core/CORE-MEMORY.md` — §5 Scoring-Lektion + §1 Meilenstein-Eintrag
+
+**Final:** §27.4 Drift-Check-Gate (grep alter Version-Strings verifiziert leer bei nicht-historischen Kontexten).
+
+### 28.2 Algebra-≠-Forward-Diskrepanz (gestuft)
+
+**Regel — gestufte Abweichungs-Toleranz:**
+
+| Δ (Algebra vs. Forward) | Aktion |
+|---|---|
+| **≤2 Punkte** | Akzeptiert — innerhalb Proxy/Timing-Noise |
+| **3-5 Punkte** | In CORE-MEMORY §5 als Lektion loggen, Migration fortsetzen |
+| **>5 Punkte** | **Blockiert** — Ursache identifizieren bevor Step 7 Fan-Out |
+
+**Typische Ursachen:**
+- Proxy-Mapping-Drift: Algebra nutzt annahme-basierte Inputs, Forward zieht Live-Daten (z.B. WC-Schwankungen, FX, Quarter-Cuts).
+- FLAG-Trigger bei Live-Daten, die in der Algebra-Projektion nicht aktivierbar waren.
+- Scoring-Regel hängt an Daten-Frische (z.B. `fcf_trend_neg` multi-quarter).
+
+**Pflicht:** Diskrepanz in CORE-MEMORY §5 als Lektion loggen. Bei systematischer Ursache (z.B. Proxy-Fehler) Algebra-Layer nachbessern, nicht nur den Einzelfall fixen.
+
+**Präzedenzfall:** 18.04.2026 V-Forward — Algebra projizierte 86, Forward lieferte 63 (Δ23). Ursache: Algebra ignorierte WC-Working-Capital-Dekomposition, die in Forward `fcf_trend_neg` triggerte. Regel-Bug, nicht Ticker-Einzelfall.
+
+### 28.3 Nicht-Migration-Trigger
+
+**Regel:** Ein Scoring-Bump ist **keine** Migration wenn:
+- Nur einzelne Kalibrierungsanker auf aktualisierte Fundamentals rekalibriert werden (Quartals-Normalpflege).
+- Ein Bugfix einer bestehenden Regel ohne Skalen-/Gewichts-Änderung (z.B. Schwellwert-Copy-Paste-Fehler in config.yaml).
+- Ein neuer FLAG ohne Score-Impact hinzugefügt wird (reine Disclosure).
+
+Für diese Fälle reicht: Commit + STATE.md-Update + CORE-MEMORY §5 Lektion, keine Step-1-7-Pflicht.
+
+**Präzedenzfall:** 18.04.2026 TMO `fcf_trend_neg`-Disclosure (Option B) — struktureller FLAG ohne Score-Penalty, kein Version-Bump.
+
+---
+*🦅 INSTRUKTIONEN.md v1.9 (§28 Scoring-Version-Migration-Workflow) | Dynastie-Depot v3.7 | Stand: 18.04.2026*
