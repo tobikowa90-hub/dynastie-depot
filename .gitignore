@@ -31,3 +31,6 @@ desktop.ini
 # Python bytecode cache
 __pycache__/
 *.pyc
+
+# Backtest-Ready ephemere Draft-Handoffs (Skill backtest-ready-forward-verify)
+03_Tools/backtest-ready/_drafts/*.json
