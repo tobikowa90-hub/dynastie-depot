@@ -278,7 +278,7 @@ satelliten:
     flag_seit: "2026-04-09"
     flag_wirkung: "Sparrate komplett gestoppt (0 €)"
     sparrate_hinweis: "🔴 FLAG aktiv → Gewicht 0.0 (eingefroren)"
-    naechste_pruefung: "Q2 2025 Earnings 23.07. — Tariff-Impact-Check + Score-Review"
+    naechste_pruefung: "Q2 2026 Earnings 23.07. — Tariff-Impact-Check + Score-Review"
     scoring_notiz: "Score 63 (v3.7): GM ~32%, Tariff CN/MY Risk-Map. Kein FLAG durch Revenue >35%, aber Score-basiertes FLAG wegen Score <65 + DEFCON 3."
     ersatz: null
     substitute_activation_rule: "Kein definierter Ersatz — bei DEFCON 1 Watchlist auf mögliche Kandidaten screenen"
@@ -317,7 +317,7 @@ flags_aktiv:
     grund: "Score-basiert — Score 63 (v3.7), DEFCON 3. Tariff CN/MY Risk-Map aktiv."
     seit: "2026-04-09"
     wirkung: "Sparrate komplett gestoppt (0 €)"
-    naechste_pruefung: "Q2 2025 Earnings 23.07."
+    naechste_pruefung: "Q2 2026 Earnings 23.07."
 
 flags_review:
   - ticker: AVGO
@@ -443,7 +443,7 @@ termine:
   - datum: "Juli/Aug 2026"
     event: "RMS H1 2026 Report + SU H1 2026 Earnings → Re-Check D4-Exception"
   - datum: "2026-07-23"
-    event: "APH Q2 2025 Earnings → FLAG-Review + Tariff-Impact-Check"
+    event: "APH Q2 2026 Earnings → FLAG-Review + Tariff-Impact-Check"
   - datum: "Q2 2026"
     event: "GOOGL FLAG-Review nach Earnings"
   - datum: "Q3 FY26"
