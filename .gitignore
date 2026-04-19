@@ -10,6 +10,10 @@
 # Exception: Backtest-Ready JSONL-Archive MUESSEN git-tracked sein (Spec §3 append-only)
 !05_Archiv/score_history.jsonl
 !05_Archiv/flag_events.jsonl
+# Exception: R5 Portfolio-Return-Persistenz (Track 3 Phase 3, 19.04.2026)
+!05_Archiv/portfolio_returns.jsonl
+!05_Archiv/benchmark-series.jsonl
+!05_Archiv/schema-portfolio-returns.md
 
 # Skill-Pakete (ZIPs, nicht fuer Remote Agent)
 06_Skills-Pakete/

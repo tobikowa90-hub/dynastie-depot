@@ -196,6 +196,19 @@ Bei Unternehmen mit signifikanter Produktion in Risikoländern (Malaysia, Thaila
 → Risk-Metrics-Skill existiert bereits (`anthropic-skills:risk-metrics-calculation`) — Portfolio-Return-Persistenz-Setup JETZT starten (Sin #2 Look-Ahead proaktiv vermeiden), Aktivierung erst 2028.
 **Präzedenz:** 4-Paper-Triage-Workflow-Disziplin — Vault-first, dann System; Advisor-Validierung bei Oszillation; Locked-Wording vor Execution.
 
+### R5 Portfolio-Return-Persistenz aktiviert (v3.7.2 — 19.04.2026)
+**Trigger:** Phase 3 Paper-Integration systemweit (Spec 976e67a, Plan ee61535).
+**Befund:** `portfolio_returns.jsonl` + `benchmark-series.jsonl` live. Daily-Schema v1.0 mit `schema_version` pro Record, Cashflow-Trennung, Duplicate-Date-Guard auf beiden JSONL-Files, **Trading-Date statt Wall-Clock** (Codex-Fix #1: Look-Ahead-Prevention via yfinance `common.index[-1]`). Erster Record: date=2026-04-17 (Friday, Session-Start am Sonntag), Portfolio 10.173,42 EUR, SPY 710,14 — notional-Start 10.000€.
+**Regel:**
+→ Jeder Handelstag (oder Montag wenn über Weekend gelaufen): `python 03_Tools/portfolio_risk.py --persist daily --cashflow <euro>`. Sparraten-Tage explizit mit `--cashflow 285.00`.
+→ Cashflow-Trennung: `portfolio_return` ist reine Marktbewegung, `portfolio_value_gross` = `V_prev * (1+r) + cashflow_net` (post-cashflow NAV).
+→ Git-Commit der JSONL-Dateien zusammen mit STATE-Update pflicht (§18 Sync-Pflicht — alle sechs).
+→ **Interim-Gate 2027-10-19** (18M Dry-Run `risk-metrics-calculation` + PBO-Smoke-Test) adressierbar erst nach 540+ Records.
+→ **Review-Gate 2028-04-01:** Vollaktivierung §29.6 (Palomar Ch 6 Metriken: Sortino/Calmar/Max-DD/CVaR/IR).
+**Codex-Code-Review-Gate:** 5/5 Findings akzeptiert + applied — (1) trading-date, (2) dual-file duplicate-guard, (3) hard-fail on missing ticker via common-date intersection, (4) mixed-currency caveat im Docstring + Schema-Doc, (5) schema-doc post-cashflow-NAV-Wording.
+**Mixed-Currency-Caveat:** USD+EUR-Titel werden aktuell lokalwährungs-gemittelt (synthetischer Local-Return-Index). FX-Conversion vor §29.2 AQR-Benchmark-Vergleich pflicht → Interim-Gate 2027-10-19.
+**Präzedenz:** Sin #2 Look-Ahead-Prevention operational durch frühen Persistenz-Start (Codex-Scope-Review 19.04. identifizierte R5 als Blind-Spot in R1-R4-Liste). Codex-Code-Review 19.04. identifizierte zusätzlich Wall-Clock-Date-Bias (Sonntag-Tag mit Freitag-Daten) — Fix via yfinance-Trading-Date bestätigt die Wichtigkeit des Post-Hoc-Reviews.
+
 ---
 
 ## 6. System-Upgrades & Versionsverlauf
