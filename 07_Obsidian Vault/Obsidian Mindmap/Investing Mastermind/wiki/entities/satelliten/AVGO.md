@@ -60,3 +60,15 @@ Das Insider-Intelligence-Modul zeigte $123M FLAG (06.04.2026). Manueller OpenIns
 - [[FCF-Primacy]] — FCF-Yield und forward P/E als primäre Bewertungsanker; trailing P/E: nur Kontext
 - [[Moat-Taxonomie-Morningstar]] — Moat-Prüfung nach 8-Quellen-Schema (Wide/Narrow/None)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** schwach — Fwd P/E hoch, bewertet als AI-Play; P/FCF oberhalb 5J-Median
+- **Quality:** stark — ROIC stark > WACC, Moat wide (Networking + Software-Post-VMware), Customer-Stickiness
+- **Momentum:** stark — Kurs-Rally 2025-26 anhaltend, Q3 FY26 Trigger steht aus
+- **Defensive:** schwach — Insider $123M/90d trotz wahrscheinlichem Post-Vesting, Kunden-Konzentration
+- **Investment:** moderat — VMware-Integration-CapEx elevated, aber operativ kontrolliert
+
+Quellen: [[Aghassi-2023-Fact-Fiction]]

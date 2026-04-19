@@ -65,3 +65,15 @@ updated: 2026-04-18
 - [[FCF-Primacy]] — FCF-Yield und forward P/E als primäre Bewertungsanker; trailing P/E: nur Kontext
 - [[Moat-Taxonomie-Morningstar]] — Moat-Prüfung nach 8-Quellen-Schema (Wide/Narrow/None)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** schwach — Fwd P/E sehr hoch, Luxury-Premium historisch gerechtfertigt
+- **Quality:** stark — ROIC stark, Moat wide (Marke + Scarcity-Pricing), Screener-Exception #1 akzeptiert
+- **Momentum:** moderat — Stable nach Rücksetzer 2024
+- **Defensive:** stark — Customer-Loyalty, Pricing-Power
+- **Investment:** n.a. — niedrige CapEx/OCF-Ratio
+
+Quellen: [[Aghassi-2023-Fact-Fiction]]

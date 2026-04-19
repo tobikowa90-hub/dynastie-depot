@@ -38,3 +38,15 @@ related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie
 - [[FCF-Primacy]] — FCF-Yield und forward P/E als primäre Bewertungsanker; trailing P/E: nur Kontext
 - [[Moat-Taxonomie-Morningstar]] — Moat-Prüfung nach 8-Quellen-Schema (Wide/Narrow/None)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** schwach — Fwd P/E hoch, SaaS-Premium
+- **Quality:** stark — ROIC stark, Vertical-SaaS-Monopol in Life Sciences, QMJ-Profil
+- **Momentum:** moderat — Earnings-getriebene Bewegungen, kein klarer Trend
+- **Defensive:** moderat — Customer-Retention hoch, aber Sektor-Zyklik
+- **Investment:** n.a. — Asset-light, sehr niedrige CapEx
+
+Quellen: [[Aghassi-2023-Fact-Fiction]], [[QMJ-Faktor]]

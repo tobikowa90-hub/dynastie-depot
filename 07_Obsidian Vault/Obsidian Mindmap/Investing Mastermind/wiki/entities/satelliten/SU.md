@@ -61,3 +61,15 @@ updated: 2026-04-18
 - [[FCF-Primacy]] — FCF-Yield und forward P/E als primäre Bewertungsanker; trailing P/E: nur Kontext
 - [[Moat-Taxonomie-Morningstar]] — Moat-Prüfung nach 8-Quellen-Schema (Wide/Narrow/None)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** stark — Fwd P/E niedrig, P/FCF klar unter 5J-Median; klassischer Value-Faktor
+- **Quality:** moderat — ROIC ölpreisabhängig, Moat narrow (Oil-Sands-Kostenposition)
+- **Momentum:** moderat — Commodity-getrieben
+- **Defensive:** schwach — hohe Ölpreis-Sensitivität, Beta >1
+- **Investment:** moderat — CapEx in Oil-Sands strukturell hoch, aber Integration FCF-positiv
+
+Quellen: [[Aghassi-2023-Fact-Fiction]]

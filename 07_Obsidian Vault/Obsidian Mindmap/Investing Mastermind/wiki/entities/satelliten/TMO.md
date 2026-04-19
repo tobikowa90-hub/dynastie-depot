@@ -89,3 +89,15 @@ Schema-Signal war getriggert: FCF FY25 $6,293M vs FY24 $7,267M = **−13,4% YoY*
 - [[FCF-Primacy]]
 - [[Moat-Taxonomie-Morningstar]]
 - [[Wissenschaftliche-Fundierung-DEFCON]]
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** moderat — Fwd P/E leicht über 5J-Median, Quality-Premium gerechtfertigt
+- **Quality:** stark — ROIC >20%, Moat wide (Life-Sciences-Instrumentierung), QMJ-Profil
+- **Momentum:** schwach — Rücksetzer 2025, Q1 23.04. FLAG-Resolve-Gate entscheidet
+- **Defensive:** moderat — Beta moderat, zyklisch via Biotech-Kunden
+- **Investment:** **schema-getriggert (nicht aktiviert)** — fcf_trend_neg FY25 WC-Noise; Schema-Watch, kein aktiver FLAG. §30 daher NICHT automatisch pflicht (siehe [[Factor-Information-Decay]])
+
+Quellen: [[Aghassi-2023-Fact-Fiction]], [[QMJ-Faktor]], [[Flint-Vermaak-2021-Decay]]

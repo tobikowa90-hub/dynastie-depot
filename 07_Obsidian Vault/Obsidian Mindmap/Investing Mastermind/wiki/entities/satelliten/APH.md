@@ -53,3 +53,15 @@ Produktion in Tariff-Risikoländern (CN/MY) — CN Revenue 14.7% (unter 20%-Reve
 - [[FCF-Primacy]] — FCF-Yield und forward P/E als primäre Bewertungsanker; trailing P/E: nur Kontext
 - [[Moat-Taxonomie-Morningstar]] — Moat-Prüfung nach 8-Quellen-Schema (Wide/Narrow/None)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** schwach — Fwd P/E hoch, Multi-Expansion in Electronics-Cycle
+- **Quality:** moderat — ROIC solide, Moat narrow-wide (Connector-Spezialisierung), diversifizierte End-Märkte
+- **Momentum:** moderat — Cyclical, Earnings-getrieben
+- **Defensive:** schwach — zyklische End-Märkte (Automotive, Industrial)
+- **Investment:** moderat — M&A-aktiv, CapEx für Kapazitätserweiterung
+
+Quellen: [[Aghassi-2023-Fact-Fiction]]

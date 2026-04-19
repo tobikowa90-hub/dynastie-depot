@@ -54,3 +54,15 @@ scoring_notiz_v37: "v3.7: Score 69 stabil (Screener-Exception Membership Yield).
 - [[FCF-Primacy]] — FCF-Yield und forward P/E als primäre Bewertungsanker; trailing P/E: nur Kontext
 - [[Moat-Taxonomie-Morningstar]] — Moat-Prüfung nach 8-Quellen-Schema (Wide/Narrow/None)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** schwach — Fwd P/E hoch, Premium-Retailer-Bewertung
+- **Quality:** stark — Membership-Yield-Modell (Screener-Exception #2, siehe [[Moat-Taxonomie-Morningstar]]), Customer-Retention >90%
+- **Momentum:** moderat — Earnings-stabil
+- **Defensive:** stark — Recession-resilient, stabile Mitgliederbasis
+- **Investment:** moderat — CapEx-Expansion für neue Stores, aber operativ kontrolliert
+
+Quellen: [[Aghassi-2023-Fact-Fiction]], [[Moat-Taxonomie-Morningstar]]

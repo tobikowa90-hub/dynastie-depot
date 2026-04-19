@@ -61,3 +61,15 @@ updated: 2026-04-18
 - [[QMJ-Faktor]] — QMJ+BAB+Value erklärt Buffetts Alpha vollständig
 - [[Buffetts-Alpha]] — Primärquelle: Frazzini, Kabiller, Pedersen (AQR 2018)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** moderat — P/B historisch nah am Median, Fwd P/E nicht dramatisch
+- **Quality:** stark — operative Töchter + Versicherungs-Float, Buffett-Faktorlogik (siehe [[Buffett-Faktorlogik]], [[QMJ-Faktor]])
+- **Momentum:** moderat — Kurs-Stabilität
+- **Defensive:** stark — Insurance-Exception-Profil, Rezessions-resilient, Cash-Reserve
+- **Investment:** n.a. — Holding-Struktur, CapEx-Logik via Töchter nicht direkt ableitbar
+
+Quellen: [[Aghassi-2023-Fact-Fiction]], [[Buffetts-Alpha]], [[Buffett-Faktorlogik]]

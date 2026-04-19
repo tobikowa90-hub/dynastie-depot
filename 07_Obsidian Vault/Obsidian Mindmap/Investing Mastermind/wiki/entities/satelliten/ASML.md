@@ -129,3 +129,15 @@ Enger Spread (~6%) — Markt ist sich relativ einig. Kein hohes Unsicherheitssig
 - [[FCF-Primacy]] — FCF-Yield und forward P/E als primäre Bewertungsanker; trailing P/E: nur Kontext
 - [[Moat-Taxonomie-Morningstar]] — Moat-Prüfung nach 8-Quellen-Schema (Wide/Narrow/None)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]] (AQR-Kanon): Value / Quality / Momentum / Defensive / Investment. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** moderat — Fwd P/E FY27 ≈ 30 (Grenzfall gegen 5J-Range), EV/EBITDA im oberen Bereich aber EUV-Monopol rechtfertigt Premium
+- **Quality:** stark — ROIC ~30% > WACC 8-9%, Moat wide (EUV-Monopol, 100% Marktanteil), QMJ-Profil (siehe [[QMJ-Faktor]])
+- **Momentum:** schwach — Q1 17.04. Vollanalyse ergab 68, Kurs-Drawdown aus 2024/25 nicht voll zurückerholt
+- **Defensive:** moderat — Beta 1,1–1,3, hohe Zyklik im Semi-Capex (Investment-Klasse), aber Customer-Concentration bei Top-3 Foundries stützt Cash-Flow-Stabilität
+- **Investment:** schwach — CapEx/OCF ~20-25% hoch wegen EUV-R&D, aber strategisch nötig; kein klassischer "Overspending"-Investment-FLAG
+
+Quellen: [[Aghassi-2023-Fact-Fiction]], [[Factor-Information-Decay]]

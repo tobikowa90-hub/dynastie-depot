@@ -74,3 +74,15 @@ Score 63 (v3.7 Forward nach Advisor-Review). Die Algebra-Projektion 86 vom 17.04
 
 - **2026-04-18** — Forward-Vollanalyse + Rescoring. Score 86 → 72 → **63 D2** (Advisor-Review). Record `2026-04-18_V_vollanalyse` + `2026-04-18_V_rescoring` im `score_history.jsonl`.
 - **2026-04-15** — Letzte v3.4-Snapshot-Analyse (Score 86 damals).
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** moderat — Fwd P/E leicht unterhalb 5J-Median nach 18.04.-Rescoring auf 63
+- **Quality:** stark — ROIC >30%, Moat wide (Netzwerk-Effekt), geringe CapEx-Intensität, QMJ-Profil
+- **Momentum:** schwach — 6M RelStärke -14pp vs SPY, Kurs unter fallendem 200MA; Crowd-Sell-Ratio 0%
+- **Defensive:** stark — Beta ~0,9, Cash-Flow-Stabilität, wenig Konjunkturabhängigkeit
+- **Investment:** n.a. — kein Investment-FLAG, CapEx sehr niedrig
+
+Quellen: [[Aghassi-2023-Fact-Fiction]], [[QMJ-Faktor]]

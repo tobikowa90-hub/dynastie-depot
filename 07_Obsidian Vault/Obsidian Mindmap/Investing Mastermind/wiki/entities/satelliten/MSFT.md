@@ -67,3 +67,15 @@ Score 59 (v3.7: 60→59 durch Fix-3 Sell-Ratio-Kalibrierung). Grund: ROIC strukt
 - [[FCF-Primacy]] — FCF-Yield und forward P/E als primäre Bewertungsanker; trailing P/E: nur Kontext
 - [[Moat-Taxonomie-Morningstar]] — Moat-Prüfung nach 8-Quellen-Schema (Wide/Narrow/None)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 7-Befunde-Matrix: wissenschaftliche Validierung des DEFCON-Systems
+
+## Factor-Exposure (Aghassi 2023)
+
+Einordnung nach [[Factor-Investing-Framework]]. Strikt dokumentativ, keine Score-Wirkung.
+
+- **Value:** schwach — Fwd P/E hoch (AI-Capex-Phantasy), Multiple-Expansion
+- **Quality:** moderat — ROIC solide, aber CapEx/OCF 83.6% FLAG aktiv ([[CapEx-FLAG]]) reduziert Earnings-Quality temporär
+- **Momentum:** moderat — Kurs-Konsolidierung nach Rally, Q3 FY26 am 29.04.
+- **Defensive:** moderat — Moat wide (Azure + Office), aber CapEx-Intensität steigt
+- **Investment:** **stark (negativ)** — CapEx/OCF 83.6% → aktiver Investment-FLAG ([[CapEx-FLAG]]). Flint-Vermaak Investment-Half-Life ~1M → §30 Monthly-Refresh pflicht
+
+Quellen: [[Aghassi-2023-Fact-Fiction]], [[Factor-Information-Decay]], [[Flint-Vermaak-2021-Decay]]
