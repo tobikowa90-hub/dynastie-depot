@@ -3,6 +3,10 @@
 **Deployed:** 2026-04-17 (via Desktop App)
 **Version:** v2.2 — STATE.md als zweite Kontext-Quelle + Format-Erweiterung
 
+<!-- Wissenschaftlicher Kontext (19.04.2026): Briefing-Output ist Input für §18 Sync-Pflicht.
+Die Faktortabelle-Einträge im Briefing werden eines Tages §29-Retrospective-Analyse speisen
+(Bailey CSCV-Datenbasis). Point-in-Time-Disziplin daher kritisch. -->
+
 ## Changelog
 
 ### v2.2 (17.04.2026) — STATE.md Integration

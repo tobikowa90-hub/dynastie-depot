@@ -1,4 +1,9 @@
 #Requires -Version 5.1
+
+# briefing-sync-check.ps1 — STATE/CORE-MEMORY/Faktortabelle → Remote-Trigger-Sync
+# Kontext (19.04.2026): Unterstützt §18 Sync-Pflicht und §29.5 Sin #2 Look-Ahead-Prevention
+# (Point-in-Time-Persistenz kritisch für spätere Retrospective-Validation).
+
 <#
 .SYNOPSIS
   Dynasty-Depot Briefing-Sync Check

@@ -306,7 +306,7 @@ Diese Skalen sind verbindlich. Bei Grenzfällen: konservativ scoren.
 
 Kontextfaktor: Für High-Growth (\>20% Rev-CAGR) darf +1 Punkt Bonus gegeben werden, wenn das PEG-Ratio \< 1.5 ist. Begründungspflicht.
 
-- **Fundamentals-Review:** Fwd P/E gegen eigene 5J-Range im Kommentartext anmerken, keine Score-Wirkung.
+- **Fundamentals-Review:** Fwd P/E gegen eigene 5J-Range im Kommentartext anmerken, keine Score-Wirkung. (→ Faktor-Kanon nach Aghassi 2023, siehe Vault [[Factor-Investing-Framework]])
 
 **P/FCF (max. 8 Punkte):**
 | P/FCF | Score |
@@ -422,7 +422,7 @@ Applied Learning 17.04.2026 verbietet aggregierte Malus-Regeln auf Metriken, die
 
 - Regel greift NICHT bei Narrow/No Moat (P/E/P/FCF-Standardskala gilt)
 - Screener-Exceptions (BRK.B P/B, COST Membership-Yield) sind nicht betroffen
-- Moat-Block bleibt unverändert (reine Moat-Semantik)
+- Moat-Block bleibt unverändert (reine Moat-Semantik) (→ Morningstar-Moat = qualitative QMJ-Variante, siehe [[QMJ-Faktor]] / [[Aghassi-2023-Fact-Fiction]])
 
 **Fundamentals-Cap (v3.7):**
 Block-Summe wird hart auf **50** gedeckelt. Bonus-Metriken (GM-Trend, Pricing Power, EPS-Revision, etc.) können Max-Summe nicht über 50 treiben. Gewollt: Top-Namen verlieren Bonus-Headroom, dafür ist Score-Inflation ausgeschlossen.

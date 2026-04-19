@@ -2,6 +2,8 @@
 
 **Aktiviert:** 2026-04-17 | **System:** DEFCON v3.7 | **Skill-Orchestrator aktiv seit:** 2026-04-19 (v3.7.2) | **Review-Termin:** 2028-04-01
 
+> **Wissenschaftlicher Kontext (19.04.2026):** Diese Infrastruktur operationalisiert die Retrospective-Validation-Gates aus INSTRUKTIONEN.md §29. Relevante Papers: Bailey 2015 (PBO/CSCV), Aghassi 2023 (AQR-Benchmark), Flint-Vermaak 2021 (Half-Life), Palomar 2025 (Seven Sins + Risk-Metrics). Review 2028-04-01.
+
 Append-only JSONL-Archive für das Dynastie-Depot-Scoring-System. Jede `!Analysiere`-Ausgabe und jedes FLAG-Event wird maschinenlesbar persistiert, damit ab 2028+ ein formaler Backtest methodisch möglich wird.
 
 **Prinzip:** *"Jeder Monat ohne Archiv-Infrastruktur ist verlorene Historie."*

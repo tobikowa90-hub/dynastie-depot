@@ -172,6 +172,8 @@ git add 05_Archiv/score_history.jsonl
 
 Kein Commit hier — Sync-Commit gemäß §18. Fehler → `FAIL phase=P6 reason="..."`. Recovery: manuell git add.
 
+**Retrospective-Gate-Vorbereitung:** Jede forward-Persistierung hier speist §29-Retrospective-Analyse (Review 2028). Seven-Sins-Pre-Flight (§29.5) greift zusätzlich bei Migration-Events (§28).
+
 ---
 
 ## 5. Exit-Code Convention

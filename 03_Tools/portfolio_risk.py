@@ -10,6 +10,10 @@ Usage: python portfolio_risk.py [--weights-equal|--weights FILE]
 Extracted from _extern/risk-metrics-calculation (PortfolioRisk +
 StressTester), trimmed to the three patterns actually useful at a
 33-year buy-and-hold horizon.
+
+Wissenschaftlicher Kontext (19.04.2026): Basis für Palomar 2025 Ch 6
+Risk-Metrics (Sortino/Calmar/Max-DD/CVaR/IR). Aktivierung Review
+2028-04-01 nach 24+ Monaten sauberer Return-Serie (Phase 3 R5).
 """
 from __future__ import annotations
 

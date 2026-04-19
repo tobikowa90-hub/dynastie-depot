@@ -274,6 +274,8 @@ Ein Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 **Nie nur eine der sechs Dateien aktualisieren.** Verlässt STATE.md den aktuellen Stand → Session-Start unbrauchbar. Verpasst JSONL-Append → irreversibler Historie-Verlust für 2028-Backtest-Review.
 
+**Wissenschaftlicher Anker:** Die Point-in-Time-Persistenz aller sechs Dateien schützt vor §29.5 Sin #2 (Look-Ahead Bias). Jeder Record muss zum Zeitpunkt der Daten-Sichtung geschrieben werden, nicht rückwirkend. → §29.5 / [[Seven-Sins-Backtesting]]
+
 **Änderungsprotokoll:**
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
 - v1.6 → v1.7 (2026-04-19): Schritt 5 (score_history.jsonl) wird via Skill `backtest-ready-forward-verify` orchestriert — Pipeline-Kapsel statt Inline-CLI-Call in dynastie-depot Schritt 7.
@@ -541,6 +543,8 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 
 **Präzedenzfall:** 18.04.2026 Schema-SKILL-Threshold-Drift — Fix in schemas.py alleine hätte 5 Vault-Pages und beide Tools veraltet zurückgelassen. Kaskaden-Sync war Pflicht.
 
+**Wissenschaftlicher Anker:** Double-Counting-Vermeidung und Bonus-Cap-Check verhindern False-Positives unterhalb §29.4 t-Stat ≥ 3 Hurdle (Harvey/Liu/Zhu). Jede neue Sub-Komponente muss t≥3 erreichen. → §29.4 / [[Aghassi-2023-Fact-Fiction]]
+
 ---
 
 ## 28. Scoring-Version-Migration-Workflow
@@ -615,6 +619,8 @@ Nur starten wenn Step 4 grün. Vor Commit alle folgenden Stellen synchronisiert:
 Für diese Fälle reicht: Commit + STATE.md-Update + CORE-MEMORY §5 Lektion, keine Step-1-7-Pflicht.
 
 **Präzedenzfall:** 18.04.2026 TMO `fcf_trend_neg`-Disclosure (Option B) — struktureller FLAG ohne Score-Penalty, kein Version-Bump.
+
+**Wissenschaftlicher Anker:** §28.2 Δ-Gate und §28.4 Forward-Verify greifen in die Validation-Ebene ein, die §29 retrospektiv absichert: §29.1 (PBO/CSCV nach Bailey) für Parameter-Variations und §29.5 (Seven-Sins-Pre-Flight) für jeden Migration-Event ab sofort aktiv. → §29.1 / §29.5 / [[Bailey-2015-PBO]] / [[Seven-Sins-Backtesting]]
 
 ---
 
@@ -710,6 +716,14 @@ Quelle: [[Palomar-2025-Portfolio-Optimization]] / [[Palomar-Methods-Reference]]
 4. §29.3 Temporal-Konsistenz (Cadence vs. Half-Life)
 5. §29.6 Portfolio-Return-Metriken
 6. Dann Options A–D aus [[Backtest-Methodik-Roadmap]] anwendbar
+
+### 29.8 Rückverweise
+
+Andere §§ die auf §29-Gates verweisen:
+- §18 Sync-Pflicht → §29.5 Sin #2 (Look-Ahead)
+- §27 Scoring-Hygiene → §29.4 t-Hurdle
+- §28 Migration-Workflow → §29.1 PBO + §29.5 Seven-Sins
+- §30 Live-Monitoring → §29.3 Half-Life (ab Phase 4)
 
 ---
 *🦅 INSTRUKTIONEN.md v1.10 (§28-29 Migration + Retrospective-Gate) | Dynastie-Depot v3.7 | Stand: 19.04.2026*
