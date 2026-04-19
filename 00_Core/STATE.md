@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 19.04.2026 (Skill `backtest-ready-forward-verify` deployed v3.7.2) | System: DEFCON v3.7 (Schema-SKILL-Threshold-Alignment)
+**Single Entry Point für Session-Start** | Stand: 19.04.2026 (Track 3 Paper-Integration systemweit abgeschlossen — R5 Portfolio-Persistenz + §30 Live-Monitoring aktiv) | System: DEFCON v3.7 (unverändert)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`

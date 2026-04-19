@@ -474,3 +474,23 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 **Phase 2-4 pending:** Skill-Verankerung, R5 Portfolio-Return-Persistenz, R1 §30 Monthly-Refresh
 
 **Spec:** docs/superpowers/specs/2026-04-19-paper-integration-design.md
+
+## 2026-04-19 — Track 3 Paper-Integration systemweit ABGESCHLOSSEN
+
+**5 Phasen fertig:**
+- Phase 1a: 11 Satelliten-Pages mit Factor-Exposure-Block (Commit 7ed5267)
+- Phase 1b: 6 defcon-Concepts + 8 bestehende Concepts mit Paper-Ankern (Commit 81fece3)
+- Phase 2: 2 Skills + 3 Tool-Dokus + INSTRUKTIONEN §§18/27/28/29 Querverweise (Commit a47cc28)
+- Phase 3: R5 Portfolio-Return-Persistenz aktiv (Commit f7920cf) — portfolio_returns.jsonl + benchmark-series.jsonl Daily-Schema v1.0, Trading-Date-Fix nach Codex-Review (5/5 Fixes)
+- Phase 4: §30 Live-Monitoring & Cadence (Commits c1f0f21 Draft + 96b0b69 Final nach Codex-Review 5/5 Fixes)
+
+**Skills repacked:** dynastie-depot + backtest-ready-forward-verify (v3.7.2 in-place, keine Version-Bump — Track 3 ist Doku-Refresh, kein funktionaler Change)
+
+**Interim-Gate 2027-10-19** (PBO-Smoke-Test + 18M-Dry-Run risk-metrics-calculation + FX-Conversion-Nachrüstung).
+**Review-Gate 2028-04-01** (Volle §29.1-3/6 Aktivierung nach 24+ Monaten Return-Serie).
+
+**Applied-Learning-Regel gewahrt:** Keine Scoring-Kern-Änderungen, nur Monitoring/Dokumentation/Infrastruktur/Validation-Vorbau. DEFCON unverändert v3.7.
+
+**Codex-Review-Gates (3×):** (1) Phase 1b Konsistenz-Pass — 3 Fixes (MSFT/TMO Plan-intendiert, CapEx-FLAG §29.3-Rückverweis ergänzt). (2) Phase 3 Code-Review — 5 Fixes (Trading-Date, dual-file Duplicate-Guard, Common-Date-Intersection, Mixed-Currency-Caveat, Schema-Doc-Wording). (3) Phase 4 §30-Formulierung — 5 Fixes (Drei-Ebenen-Disambiguierung, Score-Unverändbarkeit, Applied-Learning-Re-Review-Ablage, Forward-Dating-Pflicht, Schema-Watch-Klarstellung).
+
+**Commits:** 7ed5267 → 81fece3 → a47cc28 → f7920cf → c1f0f21 → 96b0b69 + Spec 976e67a + Plan ee61535.

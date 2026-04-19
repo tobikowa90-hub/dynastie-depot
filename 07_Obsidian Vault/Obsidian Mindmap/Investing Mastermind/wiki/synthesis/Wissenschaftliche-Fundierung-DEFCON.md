@@ -207,4 +207,6 @@ B15-B18 bilden zusammen das **formelle Gate-Framework** für jede zukünftige re
 
 Aktivierungs-Trigger: **Review 2028-04-01** oder erste DEFCON-Parameter-Variation. §29.5 Seven-Sins-Gate greift **bereits jetzt** bei Migration-Events.
 
+**§30 Live-Monitoring (seit 2026-04-19, R1 Paper-Integration Phase 4):** Operative Konsequenz aus Flint-Vermaak 2021 Investment-Faktor-Half-Life ~1M. Monthly-Refresh-Pflicht für **aktive Investment-FLAGs** (Scope: MSFT CapEx/OCF 83.6%). Keine Scoring-Änderung — nur Monitoring-Cadence. TMO fcf_trend_neg bleibt Schema-Watch (nicht-aktiviert). Details: INSTRUKTIONEN §30.
+
 Siehe [[Backtest-Methodik-Roadmap]] v2.0 für Detail-Logik der 4-Dim-Gate-Aktivierung.
