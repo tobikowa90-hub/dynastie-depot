@@ -5,6 +5,10 @@
 
 ## Changelog
 
+### v3.0.1 (2026-04-20) — TZ-Fix SCHRITT 1
+- FIX: SCHRITT 1 nutzt jetzt explizit Europe/Berlin zur Wochentag-Bestimmung (`TZ='Europe/Berlin' date`). Ohne diesen Fix lief Cloud-Runtime in UTC, und Manual-Runs zwischen ~22-24 MESZ wurden faelschlich als Vortag (Sonntag) erkannt → fuehrte zu ungewolltem WOCHENEND-MODUS.
+- Discovered bei T1-Run 2026-04-20 00:13 MESZ (war UTC Sonntag 22:13).
+
 ### v3.0 (2026-04-19) — Tavily News-Signal
 - NEU: SCHRITT 4.5 — News-Signal via `mcp__tavily__tavily_search`
   - 1 Cohort-Query (alle 13 US-Ticker in einem Call)
@@ -49,7 +53,9 @@ Du bist der Dynasty-Depot Morning Briefing Agent. Sprache: Deutsch.
 AUFTRAG: Erstelle ein kompaktes taegliches Depot-Briefing.
 
 SCHRITT 1 — Wochentag pruefen:
-- Lies das heutige Datum. Wenn Samstag oder Sonntag: springe zu WOCHENEND-MODUS.
+- WICHTIG: Nutze Zeitzone Europe/Berlin (MESZ/MEZ) zur Tag-Bestimmung. Cloud-Runtime laeuft in UTC — Manual-Runs zwischen ~22-24 MESZ wuerden sonst faelschlich als Vortag (Sonntag) erkannt und der Wochenend-Modus aktiviert.
+  Nutze Bash: `TZ='Europe/Berlin' date '+%A %Y-%m-%d'` als kanonische Tag-Quelle.
+- Wenn der so ermittelte Wochentag Samstag oder Sonntag ist: springe zu WOCHENEND-MODUS.
 - Wenn Montag bis Freitag: fahre mit Schritt 2 fort.
 
 SCHRITT 2 — Kontext laden:
