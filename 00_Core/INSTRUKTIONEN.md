@@ -726,4 +726,45 @@ Andere §§ die auf §29-Gates verweisen:
 - §30 Live-Monitoring → §29.3 Half-Life (ab Phase 4)
 
 ---
-*🦅 INSTRUKTIONEN.md v1.10 (§28-29 Migration + Retrospective-Gate) | Dynastie-Depot v3.7 | Stand: 19.04.2026*
+
+## 30. Live-Monitoring & Cadence
+
+> **Status:** `[AKTIV seit 19.04.2026]` für MSFT CapEx/OCF-FLAG. Weitere Faktor-Klassen nur nach Applied-Learning-Re-Review.
+
+Monatliche Refresh-Pflicht für **aktive Investment-FLAGs** zwischen Earnings-Terminen. Wissenschaftliche Basis: Flint-Vermaak 2021 — Investment-Faktor-Half-Life ≈ 1 Monat. Earnings-Trigger-Cadence (~3M) ist zu träge, wenn ein Investment-Signal bereits ausgelöst wurde.
+
+### 30.1 Trigger-Definition
+
+**"Aktiver FLAG"** (R1 pflicht) = binär ausgelöst in `05_Archiv/backtest-ready/flag_events.jsonl` ohne nachfolgenden `resolve`-Event.
+
+**"Schema-Watch (nicht FLAG-aktiv)"** (R1 NICHT automatisch) = schema-getriggert per FLAG_RULES, aber bewusst nicht aktiviert (z.B. TMO fcf_trend_neg FY25: WC-Delta erklärt FCF-Rückgang, kein struktureller Trend). Schema-Watch ist semantisch separat von STATE.md "Aktive Watches" (= allgemeine Beobachtungsnotizen).
+
+### 30.2 Aktuelle Scope (Stand 19.04.2026)
+
+| Ticker | Kategorie | §30 Pflicht |
+|--------|-----------|-------------|
+| MSFT | Aktiver FLAG (CapEx/OCF 83.6%) | ✅ Monthly-Refresh |
+| TMO | Schema-Watch (fcf_trend_neg WC-Noise) | ❌ Nicht automatisch (Q1 23.04. = natürliches Resolve-Gate) |
+
+### 30.3 Monthly-Refresh-Workflow
+
+1. **Trigger-Prüfung:** Aktueller FCF, CapEx, OpCF abrufen (Shibui oder yfinance)
+2. **FLAG-Re-Evaluation:** Threshold-Check gegen FLAG_RULES — hält FLAG? Auflösung?
+3. **FLAG-Event append** bei Zustandsänderung: `archive_flag.py resolve` oder erneuter `trigger`
+4. **CORE-MEMORY §5:** Zwischenupdate mit FLAG-Zustand
+5. **Kein Re-Score** der Ticker-Gesamt-DEFCON-Bewertung — nur Investment-Block-Observation
+
+### 30.4 Constraints (Applied-Learning-Wächter)
+
+- **Keine Auto-Rescore** — §30 prüft nur bestehende FLAG-Trigger, keine neue Punkte-Logik
+- **Keine Ausweitung** auf andere Faktor-Klassen (Quality/Value/Momentum) ohne Applied-Learning-Re-Review
+- **Ausweitung auf andere Ticker** innerhalb Investment-Klasse zulässig, sobald neue aktive Investment-FLAGs entstehen
+
+### 30.5 Wissenschaftliche Fundierung
+
+- [[Flint-Vermaak-2021-Decay]] — Investment-Half-Life ~1M
+- [[Factor-Information-Decay]] — Operative Konsequenzen
+- **Rückverweis:** §29.3 (Temporal-Konsistenz-Gate) — wissenschaftlicher Anker
+
+---
+*🦅 INSTRUKTIONEN.md v1.11 (§28-30 Migration + Retrospective-Gate + Live-Monitoring) | Dynastie-Depot v3.7 | Stand: 19.04.2026*
