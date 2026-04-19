@@ -4,7 +4,7 @@
 **Author:** Tobias Kowalski (via Claude + 2× Codex review rounds)
 **Status:** Awaiting approval → writing-plans
 **Target:** Morning Briefing Remote Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, prompt v2.2 → v3.0
-**Architecture:** **CLI via Bash/curl** (pivoted 2026-04-19 from MCP after discussion of autonomous-run robustness; MCP remains for interactive Claude Code)
+**Architecture:** **MCP via `mcp__tavily__tavily_search`** (CLI-Pivot wurde 2026-04-19 getestet, musste zurückgenommen werden — Tavily Dev-Keys haben REST-Host-Allowlist; nur MCP-Proxy-Pfad funktioniert ohne Paid-Plan. Siehe Appendix D.)
 **Spec location:** `03_Tools/specs/` (co-located with prompt files, not `docs/superpowers/specs/` — project has no `docs/` root)
 
 ---
@@ -63,11 +63,10 @@ Diese Features kommen nach Go-Live in v3.1 wenn gebraucht.
 - **Prompt-Size:** Kein dokumentiertes Limit bekannt; 32 MB Anthropic-Request-Cap. v2.2 ~5000 Zeichen, v3.0 ~6500 Zeichen — unkritisch.
 
 ### New Dependency
-- **Tavily REST API:** `https://api.tavily.com/search` (POST, `Authorization: Bearer <KEY>`)
-- **No MCP connector required** — Bash/curl in Remote Trigger Runtime
-- **Existing Yahoo-curl-Pattern wird erweitert** — kein neuer Architektur-Stil
-- **Claude-Agent parst JSON-Response in-prompt** — kein jq-Runtime-Dependency
-- **Historical note:** Tavily MCP war in Phase 0 verifiziert (UUID `4a633350-7128-4729-b8be-85373854fa4d`). CLI-Pivot in derselben Session nach Trade-off-Analyse — MCP-Connector bleibt in Claude.ai registriert (harmlos), kann manuell entfernt werden.
+- **Tavily MCP (hosted):** `https://mcp.tavily.com/mcp/?tavilyApiKey=<KEY>`
+- **Connector-UUID:** `4a633350-7128-4729-b8be-85373854fa4d` (registriert via Claude.ai Web-UI, 2026-04-19)
+- **Tool exposé:** `mcp__tavily__tavily_search` (empirisch verifiziert, Phase 0 Round 1 Test B)
+- **CLI-Pivot-Attempt (abgebrochen):** Direkte REST-Calls an `api.tavily.com` vom Remote-Trigger-Runtime schlagen fehl mit HTTP 403 "Host not in allowlist". Tavily Dev-Keys (Free-Tier only) sind auf MCP-Proxy beschränkt. Details in Appendix D.
 
 ---
 
@@ -91,27 +90,30 @@ Cron 0 8 * * *  (08:00 UTC = 10:00 MESZ)
     │
     ▼
 Remote Trigger  trig_01PyAVAxFpjbPkvXq7UrS2uG
-    ├─ mcp_connections:         (UNVERAENDERT)
-    │   └─ Shibui-Finance
-    ├─ session_context.allowed_tools:  (UNVERAENDERT)
-    │   └─ Bash, Read, Glob, Grep
+    ├─ mcp_connections:
+    │   ├─ Shibui-Finance  (UUID 3ecc8248-…)
+    │   └─ Tavily          (UUID 4a633350-…)  ← already attached via UI
+    ├─ session_context.allowed_tools:
+    │   ├─ Bash, Read, Glob, Grep
+    │   └─ mcp__tavily__tavily_search         ← NEU
     └─ events[0].data.message.content =
         Prompt v3.0
             ├─ Schritt 1-3: unveraendert (v2.2-Logik)
-            ├─ SCHRITT 4.5: NEUE News-Sektion
-            │   └─ Bash curl → https://api.tavily.com/search
-            │       (Authorization: Bearer tvly-...)
+            ├─ SCHRITT 4.5: NEUE News-Sektion via tavily_search
             └─ Schritt 4+: unveraendert, neue News-Section im Output
 ```
 
-### Change Summary (exactly 1)
-**`ccr.events[0].data.message.content`:** Replace with v3.0 prompt (v2.2 + neue SCHRITT 4.5 Bash-curl-News + neue Output-Sektion + "Keine News-Suche"-Zeile entfernt). **Keine Änderung** an `mcp_connections` oder `allowed_tools`.
+### Change Summary (exactly 2)
+1. **`ccr.session_context.allowed_tools`:** Append `"mcp__tavily__tavily_search"`
+2. **`ccr.events[0].data.message.content`:** Replace with v3.0 prompt (v2.2 + neue SCHRITT 4.5 MCP-basierte News + neue Output-Sektion + "Keine News-Suche"-Zeile entfernt)
 
-### CLI Design Rationale (vs. MCP)
-1. **Weniger Kaskaden-Failures:** Keine MCP-Connector-Init-Pfad → Connector-Offline-Risk (Codex Residual #5) eliminiert
-2. **Konsistenz:** Exakt das Pattern, das Yahoo-Kurs-Fetch in v2.2 schon nutzt
-3. **Auth in Header statt URL-Query:** Bearer-Token statt URL-Parameter (weniger Log/Snapshot-Exposure)
-4. **Keine Web-UI-Registrierung nötig:** Ein Konfig-Ort (Prompt-Text) statt zwei (Connector + Trigger)
+**Keine Änderung an `mcp_connections`** — Tavily-Connector bereits via Claude.ai Web-UI angehängt.
+
+### Design Rationale (MCP beibehalten, CLI verworfen)
+1. **Empirisch bewiesen:** Phase 0 Round 1 Tests A/B/C alle PASS (UUID-Binding, Tool-Connectivity, Fail-Open via HTTP 422)
+2. **Free-Tier-kompatibel:** Tavily Dev-Keys (Free-Plan 1000 Credits/Monat) akzeptieren ausschließlich den MCP-Proxy-Pfad
+3. **CLI-Alternative ging nicht:** REST `api.tavily.com` retourniert 403 "Host not in allowlist" für Dev-Keys (Phase 0 Round 2)
+4. **Residual-Trade-off:** Connector-Offline-Risk (MEDIUM) + URL-Query-Key-Exposure (HIGH, Dev-Key only, rotierbar) akzeptiert
 
 ### Isolation
 News-Sektion ist zwischen KURS-CHECK und NAECHSTE TRIGGER eingeschoben. Alle anderen Sektionen (FLAGS, WATCHES, VERALTETE SCORES, AKTIONEN, GROSSES EVENT, WOCHENEND-MODUS) unverändert. Shibui-MCP und Yahoo-curl bleiben wie in v2.2.
@@ -120,26 +122,22 @@ News-Sektion ist zwischen KURS-CHECK und NAECHSTE TRIGGER eingeschoben. Alle and
 
 ## 6. Components & Prompt Logic
 
-### New Section in Prompt v3.0: SCHRITT 4.5 — NEWS-SIGNAL (via curl)
+### New Section in Prompt v3.0: SCHRITT 4.5 — NEWS-SIGNAL (via mcp__tavily__tavily_search)
 
 ```
 SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
 
-(A) COHORT-QUERY — 1 curl-Call:
-  curl -sL -X POST "https://api.tavily.com/search" \
-    -H "Authorization: Bearer $TAVILY_KEY" \
-    -H "Content-Type: application/json" \
-    --max-time 20 \
-    -d '{
-      "query": "ASML AVGO MSFT TMO VEEV V APH COST MKL SNPS SPGI RACE ZTS earnings guidance news",
-      "search_depth": "basic",
-      "time_range": "day",
-      "max_results": 10,
-      "include_domains": [<ALLOWLIST>]
-    }'
+(A) COHORT-QUERY — 1 MCP-Tool-Call:
+  mcp__tavily__tavily_search(
+    query: "ASML AVGO MSFT TMO VEEV V APH COST MKL SNPS SPGI RACE ZTS earnings guidance news",
+    search_depth: "basic",
+    time_range: "day",
+    max_results: 10,
+    include_domains: [<ALLOWLIST>]
+  )
 
-  Response-Parsing: Claude-Agent liest JSON-Response direkt, extrahiert
-  title + url + source aus results[]. Keine jq-Dependency.
+  Response: MCP liefert strukturiertes JSON mit results[], jedes Element
+  enthält title, url, content, score. Agent extrahiert title + url pro Result.
 
 (B) TRIGGER-LISTE berechnen:
   triggered = [Ticker fuer Ticker in Portfolio if:
@@ -165,7 +163,7 @@ SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
     Pathology. Imminent-Earnings haben garantierte Slots auch bei aktiven FLAGs
     in anderen Tickern.
 
-(C) PER-TICKER-QUERIES — max 5 curl-Calls:
+(C) PER-TICKER-QUERIES — max 5 MCP-Tool-Calls:
   FOR t in triggered:
     QUERY_STRING muss MINDESTENS enthalten:
       - COMPANY_NAME(t) (aus Map unten) UND
@@ -173,17 +171,13 @@ SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
 
     Format: "<COMPANY_NAME(t)> <TICKER(t)> news"
 
-    curl -sL -X POST "https://api.tavily.com/search" \
-      -H "Authorization: Bearer $TAVILY_KEY" \
-      -H "Content-Type: application/json" \
-      --max-time 20 \
-      -d '{
-        "query": "<COMPANY_NAME> <TICKER> news",
-        "search_depth": "advanced",
-        "time_range": "day",
-        "max_results": 3,
-        "include_domains": [<ALLOWLIST>]
-      }'
+    mcp__tavily__tavily_search(
+      query: "<COMPANY_NAME> <TICKER> news",
+      search_depth: "advanced",
+      time_range: "day",
+      max_results: 3,
+      include_domains: [<ALLOWLIST>]
+    )
 
 (D) MATERIALITÄTS-FILTER (Codex Fix #2):
   PRO Headline im Response prüfen ob sie mindestens eines dieser Kriterien erfüllt:
@@ -204,32 +198,35 @@ SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
   Wenn KEINE material Headline zurückkommt: Ticker als "keine material News" behandeln.
   Zeige max 1 material Headline pro Ticker (die höchstgerangt ist).
 
-(E) FEHLER-HANDLING (erweitert für CLI, Codex Fix #4):
+(E) FEHLER-HANDLING (für MCP-Architektur, Codex Fix #4):
 
-  KLASSE 1 — curl exit code != 0 (Network/DNS/Timeout):
-    - Log "<TICKER> — n.v. (curl exit <code>)"
-    - Weiter mit nächstem Ticker
+  KLASSE 1 — MCP Connector-Fail / Runtime-Error:
+    - Tavily-MCP-Server nicht erreichbar, Connector-Init fehlschlägt
+    - Ist KEIN fail-open-Pfad — Runtime wirft typischerweise Tool-Error bevor Agent reagiert
+    - Mitigation: Monitoring erfasst fehlende News-Sektion; v3.1-Backlog für Healthcheck
 
-  KLASSE 2 — HTTP-Status != 200 (4xx/5xx):
-    - 401/403: "NEWS-SIGNAL: Auth-Fehler — Key rotieren" in Sektions-Header; alle weiteren Queries skippen
-    - 429: "NEWS-SIGNAL: Rate-Limit erreicht (Budget ausgeschöpft)"; alle weiteren Queries skippen
-    - 500+: "<TICKER> — n.v. (HTTP <code>)"; weiter
-    - 400/422: "<TICKER> — n.v. (bad request)"; weiter
+  KLASSE 2 — Tool-Error (tavily_search returns error structure):
+    - 401/403 (Auth): "NEWS-SIGNAL: Auth-Fehler — Key rotieren"; alle weiteren Queries skippen
+    - 429 (Rate-Limit): "NEWS-SIGNAL: Rate-Limit erreicht (Budget ausgeschöpft)"; alle weiteren Queries skippen
+    - 5xx (Tavily down): "<TICKER> — n.v. (Tavily <code>)"; weiter
+    - 400/422 (Bad params): "<TICKER> — n.v. (bad request)"; weiter
+    - Phase 0 Round 1 Test C bestätigt: 422 wird sauber gecatched, Run läuft durch
 
-  KLASSE 3 — Response-Body kein valides JSON / malformed:
+  KLASSE 3 — Response-Schema unerwartet:
+    - `results[]` fehlt oder malformed in JSON-Struktur
     - Log "<TICKER> — n.v. (parse-error)"
     - Weiter mit nächstem Ticker
 
-  KLASSE 4 — Valides JSON aber results[] leer:
+  KLASSE 4 — Valides Result aber results[] leer:
     - "<TICKER> — keine News" (kein Fehler, sondern normaler Zero-Match)
 
-  KLASSE 5 — Valides JSON, results[] nicht-leer, aber nach Materialitäts-Filter alles Noise:
+  KLASSE 5 — Valides Result, results[] nicht-leer, aber nach Materialitäts-Filter alles Noise:
     - "<TICKER> — keine material News"
 
   KLASSE 6 — Claude-Runtime-Timeout vor Schritt 4.5-Abschluss (>90s gesamt):
     - Ist KEIN fail-open-Pfad. Runtime-Fehler = Rollback-Trigger (siehe §11).
-    - Mitigation: Hard-Cap 6 curl-Calls, `--max-time 20` pro curl = max 120s theoretisch,
-      praktisch meist <30s. Wenn trotzdem Timeout: Spec-Revision in v3.1.
+    - Mitigation: Hard-Cap 6 Tool-Calls (~10s/Call worst-case), praktisch meist <30s.
+    - Wenn trotzdem Timeout: Spec-Revision in v3.1.
 
   Budget-Fallback (Codex Fix #4, partial):
     Wenn nach Cohort + 3 Per-Ticker-Queries die verbrauchte Zeit >60s:
@@ -237,14 +234,15 @@ SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
       - Log "NEWS-SIGNAL: Runtime-Budget gekappt, <n> Ticker nicht abgefragt"
       - Weiter mit Schritt 4
 
-  NIEMALS Run abbrechen (ausser Klasse 6 Runtime-Timeout, der ist außerhalb unserer Kontrolle).
+  NIEMALS Run abbrechen für Klassen 2-5 (Klasse 1 Connector-Fail und Klasse 6 Runtime-Timeout
+  sind außerhalb der Prompt-Kontrolle und lösen Rollback aus).
 ```
 
 ### Implizite Prompt-Änderung zu v2.2
 In der `WICHTIG`-Liste am Ende des v2.2-Prompts steht aktuell: `Keine News-Suche`. Diese Zeile MUSS in v3.0 entfernt werden, sonst kollidieren die Anweisungen.
 
 ### Query-Content-Assertion (Codex Fix #1, adressiert T3-Gap)
-In den PER-TICKER-Queries MUSS der `query`-String BEIDE enthalten: COMPANY_NAME UND TICKER. Nur COMPANY_NAME allein reicht nicht (bei Schneider "Schneider news" könnte Schneider-Electric vs. -Trucking disambiguiert werden, aber sicherer ist "Schneider Electric SU.PA news"). Test T3 verifiziert diese Assertion durch String-Content-Check am emittierten curl-Body.
+In den PER-TICKER-Queries MUSS der `query`-String BEIDE enthalten: COMPANY_NAME UND TICKER. Nur COMPANY_NAME allein reicht nicht (bei Schneider "Schneider news" könnte Schneider-Electric vs. -Trucking disambiguiert werden, aber sicherer ist "Schneider Electric SU.PA news"). Test T3 verifiziert diese Assertion durch String-Content-Check am emittierten tavily_search `query`-Parameter.
 
 ### Allowlist (hardcoded im Prompt)
 ```
@@ -321,10 +319,10 @@ Per Ticker (nur getriggert):
 
 4. Trigger-Liste berechnen (in-prompt, rein aus Schritt-1-Daten)
 
-5. Bash curl (Tavily REST API)       ← NEU (via curl, nicht MCP)
+5. Tavily MCP (mcp__tavily__tavily_search)       ← NEU
    ├─ Cohort-Query (1 Call, search_depth=basic)
    ├─ Per-Ticker-Queries (0..min(5, len(triggered)), search_depth=advanced)
-   └─ Claude-Agent parst JSON-Response in-prompt, applies Materialitäts-Filter
+   └─ Claude-Agent liest strukturiertes Result, applies Materialitäts-Filter
 
 6. Briefing-Assembly (in-prompt, keine weiteren Tool-Calls)
 ```
@@ -345,18 +343,18 @@ Siehe Section 6(E) für die vollständige Klassen-Taxonomie. Zusammenfassung:
 
 | Klasse | Beispiel | Verhalten | Output |
 |---|---|---|---|
-| 1. curl exit ≠ 0 | DNS/Network/Timeout | Catch, weiter | `[TICKER] — n.v. (curl exit <code>)` |
-| 2a. HTTP 401/403 | Auth-Fehler | Loud flag, alle weiteren Queries skippen | `NEWS-SIGNAL: Auth-Fehler — Key rotieren` |
-| 2b. HTTP 429 | Rate-Limit | Loud flag, alle weiteren Queries skippen | `NEWS-SIGNAL: Rate-Limit erreicht` |
-| 2c. HTTP 400/422 | Bad params | Catch, weiter | `[TICKER] — n.v. (bad request)` |
-| 2d. HTTP 500+ | Tavily down | Catch, weiter | `[TICKER] — n.v. (HTTP <code>)` |
-| 3. JSON malformed | Partial response | Catch, weiter | `[TICKER] — n.v. (parse-error)` |
+| 1. MCP Connector-Fail | `mcp.tavily.com` down, Connector-Init scheitert | Runtime-Error, Rollback-Trigger | — (prompt-unabfangbar) |
+| 2a. Tool-Error 401/403 | Auth-Fehler | Loud flag, alle weiteren Queries skippen | `NEWS-SIGNAL: Auth-Fehler — Key rotieren` |
+| 2b. Tool-Error 429 | Rate-Limit | Loud flag, alle weiteren Queries skippen | `NEWS-SIGNAL: Rate-Limit erreicht` |
+| 2c. Tool-Error 400/422 | Bad params | Catch, weiter (Phase 0 R1 T-C verifiziert) | `[TICKER] — n.v. (bad request)` |
+| 2d. Tool-Error 5xx | Tavily down | Catch, weiter | `[TICKER] — n.v. (Tavily <code>)` |
+| 3. Response-Schema unerwartet | `results[]` fehlt oder malformed | Catch, weiter | `[TICKER] — n.v. (parse-error)` |
 | 4. Empty results[] | Keine Treffer | Kein Fehler | `[TICKER] — keine News` |
 | 5. Materialitäts-Filter verwirft alles | Noise-only | Kein Fehler | `[TICKER] — keine material News` |
 | 6. Claude-Runtime-Timeout | >90s gesamt | Rollback-Trigger, NICHT fail-open | — (Run wird vom Runtime abgebrochen) |
 
-### Eliminated Failure Mode (vs. MCP-Architektur)
-**MCP Connector-Fail** (Codex' prior Residual-Risk #5) existiert in CLI-Architektur **nicht**. Kein extra Runtime-Dienst, der erreichbar sein muss — curl ist Bash-intrinsic.
+### Known Residual Risk
+**MCP Connector-Fail (Klasse 1)** wird in v3.0 nicht gemitigated (YAGNI). Falls `mcp.tavily.com` total offline ist, kann der Run bei Connector-Init fehlschlagen. Tavilys hosted MCP hat historisch hohe Verfügbarkeit (Anthropic-reviewed Vendor). Monitoring erfasst Degradation; Healthcheck-Fallback ist v3.1-Backlog-Kandidat.
 
 ### Post-Deployment Verification Step (Codex Fix #7)
 Nach jedem `RemoteTrigger update` auf Prod-Trigger:
@@ -387,29 +385,31 @@ Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh` wiederverwenden. Prompt je Test vi
 | T1 | Happy-Path | Voller v3.0-Prompt mit mock-STATE (1-2 Ticker mit FLAG/Earnings), echter Key | Cohort-curl + ≥1 Per-Ticker-curl, Allowlist-Domains only, material-Filter angewandt, kein Abbruch |
 | T2 | Empty-Trigger-List | mock-STATE ohne FLAGs/Earnings/stale Scores | News-Sektion zeigt nur Cohort, "Keine getriggerten Ticker" |
 | T3 | Symbol-Trap (adversarial, Codex Fix #1) | Per-Ticker-Query für SU.PA und RMS.PA erzwingen; **zusätzlich**: prüfe query-string in curl-Body (muss COMPANY_NAME UND TICKER enthalten); **und**: manueller Noise-Injection — Tester liest Output und verifiziert dass keine Suncor/Rockwell-Headlines durchgerutscht sind auch bei hoher Tavily-Rangliste für Homonyme | Results enthalten nur Schneider/Hermès-Headlines; curl-Body enthält beide Terme; manuelle Content-Prüfung findet keinen Trap-Durchschlag |
-| T4 | Fehler-Klassen | Prompt provoziert jede der Klassen 1-5 nacheinander (z.B. bad key → Klasse 2a; Rate-Limit-Sim schwierig, aber malformed JSON via Proxy geht) | Jede Klasse korrekt gecatched, Run läuft bis `---FERTIG---` durch (außer Klasse 6 — nicht testbar) |
+| T4 | Fehler-Klassen | Prompt provoziert Klassen 2c (bad params: `query=""`+`max_results=-1` analog Phase 0 Test C) und 4 (valid query mit sehr nischigen Term für results[]=[]) | Klasse 2c: Phase 0 R1 Test C bereits PASS; Klasse 4 sichtbar als "keine News"; Run läuft durch |
 | T5 | Post-Update Content-Verify (Codex Fix #7) | Nach `RemoteTrigger update`: `RemoteTrigger get` aufrufen, content grep auf `SCHRITT 4.5` + Negativ-Grep auf `Keine News-Suche` | Beide Checks PASS bevor Manual-Run getriggert wird |
 
 Alle 5 Tests müssen **PASS** bevor Prod-Update.
 
-### Phase 0 — Round 1 (MCP-Architektur, retrospektiv)
-
-Historischer Record. Getestet, dann verworfen durch CLI-Pivot:
+### Phase 0 — Round 1 (MCP-Architektur, FINAL aktiv)
 
 | # | Test | Ergebnis |
 |---|---|---|
 | A | API akzeptiert UUID-basierte MCP-Anbindung | ✅ HTTP 200 |
 | B | Tool-Name `mcp__tavily__tavily_search` + Connectivity | ✅ 2 Results, 0.88s |
-| C | Fail-Open bei MCP-Tool-Fehler | ✅ HTTP 422 gecatched |
+| C | Fail-Open bei MCP-Tool-Fehler | ✅ HTTP 422 gecatched, Run bis FERTIG |
 
-### Phase 0 — Round 2 (CLI-Architektur, vor Spec-Finalisierung erforderlich)
+### Phase 0 — Round 2 (CLI-Architektur, ABGEBROCHEN)
 
-| # | Test | Verifiziert |
+Durchgeführt 2026-04-19, Ergebnis führte zum Revert auf MCP:
+
+| # | Test | Ergebnis |
 |---|---|---|
-| A2 | curl verfügbar in Remote-Trigger-Runtime | (Yahoo-curl in v2.2 funktioniert bereits → implizit bestätigt) |
-| B2 | curl gegen `api.tavily.com/search` mit Bearer-Token liefert JSON | Minimal-Prompt auf Probe-Trigger |
-| C2 | Claude-Agent parst JSON-Response ohne jq | Prompt fordert title+url aus results[], Agent extrahiert korrekt |
-| D2 | Bad-Key-Pfad: HTTP 401/403 wird gecatched | Prompt mit `Bearer invalid-key`, prüfe "Auth-Fehler" Output |
+| A2 | curl verfügbar in Remote-Trigger-Runtime | ✅ (Yahoo-curl-Pattern aus v2.2) |
+| B2 | REST `api.tavily.com/search` mit Bearer-Token | ❌ **FAIL: HTTP 403 "Host not in allowlist"** |
+| C2 | Agent parst JSON ohne jq | — (nicht durchgeführt, B2 failed) |
+| D2 | HTTP 4xx wird gecatched | ✅ (HTTP 403 korrekt erkannt) |
+
+**Root-Cause B2:** Tavily Dev-Keys (Free-Tier only) sind auf MCP-Proxy-Pfad beschränkt. REST-Zugang nur mit Production-Keys (Paid-Plan). Key-Upgrade wurde gegen MCP-Residual-Risks abgewogen → MCP gewinnt. CLI-Architektur verworfen.
 
 ---
 
@@ -424,8 +424,8 @@ Historischer Record. Getestet, dann verworfen durch CLI-Pivot:
 4. Push zu GitHub (VOR 10:00 UTC — sonst liest Cron morgen alte Daten)
 5. RemoteTrigger update auf Prod-Trigger:
    - ccr.events[0].data.message.content = v3.0 prompt
-   - ccr.session_context.allowed_tools: UNVERÄNDERT (Bash,Read,Glob,Grep)
-   - ccr.mcp_connections: UNVERÄNDERT (Shibui only; Tavily-UUID harmlos falls noch drin)
+   - ccr.session_context.allowed_tools = ["Bash","Read","Glob","Grep","mcp__tavily__tavily_search"]
+   - ccr.mcp_connections: UNVERÄNDERT (Shibui + Tavily bereits via UI attached, Round 1)
 6. POST-UPDATE VERIFY (Codex Fix #7):
    - RemoteTrigger get trig_01PyAVAxFpjbPkvXq7UrS2uG
    - Assert content.contains("SCHRITT 4.5")
@@ -442,10 +442,9 @@ Historischer Record. Getestet, dann verworfen durch CLI-Pivot:
 ```
 
 ### Timing
-- Phase 0 Round 2: ~10 Min
-- Pre-deploy Tests T1-T5: ~20 Min
+- Pre-deploy Tests T1-T5: ~20 Min (Phase 0 Round 1 ist Baseline, Round 2 moot)
 - Prod-Update + Post-Update-Verify + Manual-Run: ~5 Min
-- Total: ~35 Min, keine Downtime
+- Total: ~25 Min, keine Downtime
 - Deployment-Fenster: bis 08:00 UTC am Deployment-Tag (damit 10:00-Cron die neue Version nimmt — obwohl wir das heute manuell triggern, nicht Cron)
 
 ---
@@ -484,7 +483,7 @@ body = {
     "ccr": {
       "environment_id": "env_01Ek3HiKjymFoWzrQoyvMTEk",
       "session_context": {
-        "allowed_tools": ["Bash", "Read", "Glob", "Grep"],
+        "allowed_tools": ["Bash", "Read", "Glob", "Grep"],       ← MCP-Tavily-Tool ENTFERNT
         "model": "claude-sonnet-4-6",
         "sources": [{"git_repository": {"url": "https://github.com/tobikowa90-hub/dynastie-depot"}}]
       },
@@ -504,6 +503,8 @@ body = {
   }
 }
 ```
+
+**Hinweis:** `ccr.mcp_connections` wird NICHT gesendet im Rollback-Payload — Anthropic-API behält bestehende mcp_connections wenn nicht explizit neu gesendet (das Tavily-Connector-UUID bleibt, aber ohne `mcp__tavily__tavily_search` in allowed_tools ist das Tool inert). Alternativ: mcp_connections explizit senden ohne Tavily-Entry — sauberer, aber nicht nötig für Funktions-Rollback.
 
 **SCHRITT 4: Update posten**
 ```
@@ -570,17 +571,16 @@ Konsolidiert aus Codex-Review Round 1 (`a6353fc19fe65e09a`) + Round 2 (pending) 
 
 | # | Risk | Severity | Status | Mitigation |
 |---|---|---|---|---|
-| 1 | MCP `connector_uuid` Requirement | CRITICAL | ✅ Moot (CLI-Pivot) | Architektur-Wechsel entfernt Risk |
-| 2 | MCP Tool-Name Korrektheit | HIGH | ✅ Moot (CLI-Pivot) | Architektur-Wechsel entfernt Risk |
-| 3 | Prompt-Fail-Open bei Tool-Fehler | HIGH | ✅ Resolved (Phase 0 R1 Test C, Pattern übernehmen in CLI) | curl-exit-Handling analog |
-| 4 | API-Key im Prompt-Text — Exposure | HIGH | ⚠️ Acknowledged, posture-only | Rotation nach Go-Live + monatlich; Dev-Key nur, separat vom Billing-Account |
-| 5 | MCP Connector-Level-Fail (MCP offline) | MEDIUM | ✅ Moot (CLI-Pivot) | curl nicht betroffen |
+| 1 | MCP `connector_uuid` Requirement | CRITICAL | ✅ Resolved (UI-Registrierung) | UUID `4a633350-…` via Claude.ai Web-UI |
+| 2 | MCP Tool-Name Korrektheit | HIGH | ✅ Resolved (Phase 0 R1 Test B) | `mcp__tavily__tavily_search` bestätigt |
+| 3 | Prompt-Fail-Open bei Tool-Fehler | HIGH | ✅ Resolved (Phase 0 R1 Test C) | HTTP 422 sauber gecatched, Run bis FERTIG |
+| 4 | API-Key in URL-Query — Exposure | HIGH | ⚠️ Acknowledged, posture-only | Rotation nach Go-Live + monatlich; Dev-Key separat vom Billing-Account |
+| 5 | MCP Connector-Level-Fail (MCP offline) | MEDIUM | ⚠️ Accepted for v3.0 | Healthcheck-Fallback v3.1-Backlog; Tavily-Hosted-Uptime historisch hoch |
 | 6 | Tavily-Behavior-Drift (third-party) | MEDIUM | ⚠️ Accepted | Monitoring erfasst Degradation |
 | 7 | Budget-Exhaust bei Retries | LOW | ⚠️ Accepted | Hard-Cap 6/Run + 60s-Runtime-Budget-Fallback |
-| **8** | **curl/Bash-Runtime in Remote Trigger** | MEDIUM | ✅ Resolved (Yahoo-curl in v2.2 funktioniert → implizit bestätigt) | — |
-| **9** | **JSON-Response-Parsing ohne jq** | MEDIUM | ⏳ Phase 0 Round 2 | Claude-Agent-Fähigkeit empirisch testen; Fallback: Regex-Extraction wie Yahoo |
-| **10** | **Claude-Runtime-Timeout (>90s)** | MEDIUM | ⚠️ Accepted, Rollback-Trigger | Budget-Fallback (60s-Gate) + --max-time 20 pro curl |
-| **11** | **Post-Update Cache-Interference** | LOW | ✅ Mitigated (Codex Fix #7) | Post-Update-Verify Gate vor Manual-Run |
+| **8** | **Dev-Key-Host-Allowlist (CLI-Pivot-Blocker)** | — | ✅ Resolved durch MCP-Beibehaltung | REST-API nicht genutzt; MCP-Proxy-Pfad umgeht Allowlist |
+| **9** | **Claude-Runtime-Timeout (>90s)** | MEDIUM | ⚠️ Accepted, Rollback-Trigger | Budget-Fallback (60s-Gate) + Hard-Cap 6 Tool-Calls |
+| **10** | **Post-Update Cache-Interference** | LOW | ✅ Mitigated (Codex Fix #7) | Post-Update-Verify Gate vor Manual-Run |
 
 ### Codex-Findings-Trace (Round 1, alle integriert)
 
@@ -653,7 +653,9 @@ Strukturell: v2.2 + neuer SCHRITT 4.5 + neue Output-Sektion. Alle anderen Teile 
 | 2026-04-19 (Phase 0 Round 1) | MCP-Architektur empirisch verifiziert | Nach Codex Round 1 | `connector_uuid`, `mcp__tavily__tavily_search`, 422-fail-open |
 | 2026-04-19 (Codex Round 1 bis) | 7 Gaps im MCP-Spec identifiziert | Nach Self-Review | Adversarial-T3, Materialitäts-Filter, Sort-Priority, Error-Taxonomy, Rollback-Runbook, Messbarkeit, Cache-Verify |
 | 2026-04-19 (User-Prompt) | Pivot MCP → CLI | Fragestellung "CLI vs. MCP" | Eliminiert Connector-Fail-Risk, matcht Yahoo-Pattern, Bearer-Header statt URL-Query |
-| 2026-04-19 (Revision) | Spec v2 mit CLI + 7 Codex-Fixes | Aktueller Stand | Siehe Sections 5-13 |
+| 2026-04-19 (Revision) | Spec v2 mit CLI + 7 Codex-Fixes | Zwischenstand | Siehe Git-History Commit `9df9e3d` |
+| 2026-04-19 (Phase 0 Round 2) | **Revert CLI → MCP** | B2 Test FAIL: Dev-Key rejected by REST `api.tavily.com` (HTTP 403 "Host not in allowlist"); Free-Tier bietet nur Dev-Keys, Production-Keys = Paid-Plan | Budget-vs-Nutzen-Analyse zeigt: MCP-Residual-Risks (Connector-Fail MEDIUM, Key-URL-Exposure HIGH mit Rotation-Mitigation) akzeptabler als Paid-Plan für News-Feature. Surgical Revert keeps Codex-Fixes #1-7 intact. |
+| 2026-04-19 (Final) | Spec v3 MCP-Architektur mit allen Codex-Fixes | AKTUELL | Siehe Sections 5-13 final |
 
 ### D. Referenzen
 
