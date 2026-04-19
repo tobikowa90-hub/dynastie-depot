@@ -185,6 +185,17 @@ Bei Unternehmen mit signifikanter Produktion in Risikoländern (Malaysia, Thaila
 → Tariff Exposure Score als Minus im Fundamental-Block
 → **Referenz:** AVGO (~35% Revenue US-Halbleiter, Produktion Malaysia/Thailand = -1 Punkt)
 
+### 4-Paper-Triage für §29 Retrospective-Gate (v3.7 — 19.04.2026)
+**Trigger:** User-geführte Triage 4 akademischer Paper (Bailey 2015 PBO/CSCV, Aghassi 2023 AQR Fact/Fiction, Flint/Vermaak 2021 Decay, Palomar 2025 Portfolio Optimization Ch 6 + 8).
+**Befund:** Keine der 4 Paper rechtfertigt Scoring-Schema-Änderung — Applied-Learning-Regel "Paper-Ingest ≠ System-Update" in allen 4 Fällen bestätigt. Wert liegt in neuem §29-Gate-Framework, nicht in DEFCON-Modifikation.
+**Regel:**
+→ `valuation_z_score` als Watch-Metric **verworfen** nach 3× Oszillation — Evidence-Mismatch (AQR-Value-Spread ist Long-Short-Cross-Section, unser Signal wäre Single-Ticker-MR mit schwächerer akademischer Basis). Statt Column: einzeilige !Analysiere-Checklist (Fwd P/E gegen eigene 5J-Range, keine Score-Wirkung).
+→ §28.3 war bereits belegt ("Nicht-Migration-Trigger") — neues §29 für Retrospective-Gate statt §28.4. Thematisch sauber (§28 = Migration-Workflow, §29 = Retrospective-Validation).
+→ Seven-Sins-Gate (§29.5) greift **bereits jetzt** bei Migration-Events — nicht erst 2028.
+→ Harvey/Liu/Zhu t-Stat ≥ 3 Hurdle (§29.4) greift **bereits jetzt** prospektiv auf alle neuen DEFCON-Sub-Komponenten.
+→ Risk-Metrics-Skill existiert bereits (`anthropic-skills:risk-metrics-calculation`) — Portfolio-Return-Persistenz-Setup JETZT starten (Sin #2 Look-Ahead proaktiv vermeiden), Aktivierung erst 2028.
+**Präzedenz:** 4-Paper-Triage-Workflow-Disziplin — Vault-first, dann System; Advisor-Validierung bei Oszillation; Locked-Wording vor Execution.
+
 ---
 
 ## 6. System-Upgrades & Versionsverlauf

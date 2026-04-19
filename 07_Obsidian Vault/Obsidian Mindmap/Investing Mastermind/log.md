@@ -436,3 +436,29 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Sync:** log.md + CORE-MEMORY.md + STATE.md + INSTRUKTIONEN.md + score_history.jsonl (unverändert, kein neuer Record) + alle Skill/Tool-Sources + 6 Vault-Pages. Kein FLAG-Event.
 - **Erster Real-Run der Skill-Pipeline:** TMO Q1 FY26 am 23.04.2026 (FLAG-Resolve-Gate + D2-Entscheidung).
 - **Briefing-Sync erforderlich** (00_Core/ geändert: CLAUDE.md + KONTEXT.md + CORE-MEMORY.md + STATE.md + INSTRUKTIONEN.md).
+
+## [2026-04-19] ingest | 4-Paper Backtest-Validation-Framework
+- **Scope:** 4 neue akademische Paper trianguliert — Bailey/Borwein/López de Prado/Zhu 2015 (PBO/CSCV), Aghassi/Asness/Fattouche/Moskowitz 2023 (AQR Fact/Fiction), Flint/Vermaak 2021 (Factor Information Decay), Palomar 2025 (Portfolio Optimization, Seven Sins). Advisor-validierte Triage + User-bestätigte Workflow-Reihenfolge (Vault-first, dann System).
+- **Pages created (9):**
+  - 4 Sources: [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]]
+  - 5 Concepts: [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]]
+- **Pages updated (2):**
+  - [[Backtest-Methodik-Roadmap]] v1.0 → v2.0 (4-Dim-Gate-Section ergänzt, frontmatter sources/related erweitert)
+  - [[Wissenschaftliche-Fundierung-DEFCON]] (B15-B18 in 14-Befunde-Tabelle, Quellen-Übersicht erweitert, §29-Validation-Gate-Section eingefügt, Änderungsprotokoll aktualisiert)
+- **Kernaussagen konsolidiert — 4-Dimensionen-Validation-Gate (§29):**
+  - §29.1 Methode (B15 Bailey): PBO < 0,05 via CSCV als Overfitting-Gate
+  - §29.2 Raum (B16 Aghassi): aggr. Portfolio-SR im AQR/Ilmanen-Multifaktor-Band
+  - §29.3 Zeit (B17 Flint/Vermaak): Cadence konsistent mit Faktor-Half-Life
+  - §29.4 Neue Parameter (B16 Harvey/Liu/Zhu): t-Stat ≥ 3 Pflicht
+  - §29.5 Sünden (B18 Palomar): 7-Punkt-Pre-Flight (Sin #7 n.a. Long-Only)
+  - §29.6 Portfolio-Metriken: Palomar Ch. 6 Formeln für `risk-metrics-calculation`-Skill
+- **Architektur-Entscheidungen:**
+  - §28.3 bereits belegt ("Nicht-Migration-Trigger") → neues §29 für Retrospective-Analyse-Gate
+  - FUTURE-ACTIVATION 2028-04-01 für §29.1-4 + §29.6; §29.5 Seven-Sins-Gate bereits jetzt aktiv bei Migration-Events
+  - valuation_z_score Watch-Metric **verworfen** nach Advisor-Feedback (evidence-mismatch zu AQR value-spread, Applied-Learning-Regel greift); stattdessen einzeilige !Analysiere-Checkliste
+  - Portfolio-Return-Persistenz via `03_Tools/portfolio_risk.py`-Erweiterung (Phase 3, wartet auf ETF/Gold-Ticker vom User)
+- **DEFCON-Faktor-Mapping dokumentiert:** DEFCON = impliziter Long-Only-Multi-Faktor-Selektor (Value/Quality/Momentum/Defensive + Insider als non-AQR-Edge). Size explizit verworfen (konsistent mit AQR).
+- **Phase 2 pending:** INSTRUKTIONEN §29-Draft + dynastie-depot SKILL.md Checklist + backtest-ready-forward-verify SKILL.md §8-Erweiterung + CLAUDE.md Applied-Learning-Bullet + STATE.md Interim-Gate (2027-10-19) + CORE-MEMORY §5-Lektion.
+- **Archive-Stand:** unverändert 27 Records. Scores/Sparraten unverändert. Kein FLAG-Event.
+- **Sync-Commit folgt:** Vault + System-Änderungen in einem Commit nach Phase 2 (§18 6-File-Sync für System, + 11 Vault-Pages für Ingest).
+- **Advisor-E2E-Verify Phase 1 (post-Write):** 1 Fix-Issue + 2 Deferred. Fix: `[[§29 Retrospective-Analyse-Gate]]` Phantom-Links in PBO-Backtest-Overfitting.md + Factor-Investing-Framework.md durch Plaintext-Verweise auf `00_Core/INSTRUKTIONEN.md` ersetzt. Deferred für nächste Lint-Session: (a) Autoren-Entity-Stubs für Asness, López de Prado, Palomar erwägen (schema-konform weil authors Plaintext, aber Prominenz-Klasse rechtfertigt Entity-Pages); (b) WIKI-SCHEMA-Klausel für akademische Paper-Sources: `url:`-Frontmatter ersetzt raw/-Backlink bei stabiler URL + Paywall-Verfügbarkeit (bewusste Entscheidung, Link-only statt Raw-Kopie — alle 4 neuen Source-Pages betroffen).

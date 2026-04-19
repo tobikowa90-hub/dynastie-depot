@@ -1,13 +1,13 @@
 ---
 title: "Backtest-Methodik-Roadmap"
 type: synthesis
-tags: [backtest, methodik, roadmap, zukunft, kern]
+tags: [backtest, methodik, roadmap, zukunft, kern, validation-gate]
 created: 2026-04-17
-updated: 2026-04-17
-version: v1.0
-sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha]
-related: [Backtest-Ready-Infrastructure, Score-Archiv, FLAG-Event-Log, Wissenschaftliche-Fundierung-DEFCON, DEFCON-System]
-wissenschaftlicher_anker: "Entscheidungsmatrix für 2028-Review — wann welcher der 4 Fundierungs-Papers als Benchmark anlegbar wird"
+updated: 2026-04-19
+version: v2.0
+sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha, Bailey-2015-PBO, Aghassi-2023-Fact-Fiction, Flint-Vermaak-2021-Decay, Palomar-2025-Portfolio-Optimization]
+related: [Backtest-Ready-Infrastructure, Score-Archiv, FLAG-Event-Log, Wissenschaftliche-Fundierung-DEFCON, DEFCON-System, PBO-Backtest-Overfitting, Factor-Investing-Framework, Factor-Information-Decay, Seven-Sins-Backtesting, Palomar-Methods-Reference]
+wissenschaftlicher_anker: "Entscheidungsmatrix für 2028-Review — wann welcher der 4 Fundierungs-Papers als Benchmark anlegbar wird + 4-Dimensionen-Validation-Gate (v2.0 seit 2026-04-19)"
 konfidenzstufe: synthese
 ---
 
@@ -91,6 +91,33 @@ Am 2028-04-01 Review-Sitzung mit folgender Check-Liste:
 Falls Gate NICHT bestanden: Review 2029-04-01 wiederholen, keine voreilige Validation.
 
 Falls Gate bestanden: Diese Roadmap entscheidet, welche Option(en) zuerst durchgeführt werden.
+
+## 4-Dimensionen-Validation-Gate (v2.0, 2026-04-19)
+
+Nach Triage von 4 weiteren Papern (Bailey/Borwein/López de Prado/Zhu 2015 + Aghassi/Asness/Fattouche/Moskowitz 2023 + Flint/Vermaak 2021 + Palomar 2025) verdichtet sich jede retrospektive Analyse auf **vier unabhängige Validations-Dimensionen**, die Options A–D oben ergänzen, nicht ersetzen.
+
+| Dimension | Was geprüft wird | Anker-Paper | Konzept-Seite |
+|---|---|---|---|
+| **Methode (Overfitting)** | PBO < 0,05 via CSCV | Bailey et al. 2015 | [[PBO-Backtest-Overfitting]] |
+| **Raum (External Bench)** | Portfolio-SR im AQR/Ilmanen-Multifaktor-Band | Aghassi et al. 2023 | [[Factor-Investing-Framework]] |
+| **Zeit (Temporal Decay)** | Cadence konsistent mit Faktor-Half-Life | Flint/Vermaak 2021 | [[Factor-Information-Decay]] |
+| **Sünden (Pre-Flight)** | 7-Punkt-Catalog vor jeder Analyse (#7 n.a. Long-Only) | Palomar 2025 Ch. 8.2 | [[Seven-Sins-Backtesting]] |
+
+**Aktivierungs-Reihenfolge bei Review 2028:**
+1. Sünden-Pre-Flight (Sin #1-#6) → erst wenn alle grün, weitergehen
+2. Methoden-Gate (PBO/CSCV, ggf. plus walk-forward nach Palomar Ch 8.4)
+3. External-Benchmark-Check (aggr. Portfolio-SR im Band)
+4. Temporal-Konsistenz-Check (Cadence vs. Half-Life)
+
+**Gatekeeper für Options A–D:** Eine Option kann erst verfolgt werden, wenn alle 4 Dimensionen geprüft sind. Das ersetzt nicht die n-basierten Gates (n ≥ 50 / n ≥ 10 / +180d), sondern ergänzt sie.
+
+### Harvey-Liu-Zhu Hurdle für neue DEFCON-Parameter (§29.4)
+
+**Unabhängig von Review 2028:** Jede neue Scoring-Sub-Komponente (neuer FLAG, neuer Sub-Score, neue Metrik) erfordert **t-Stat ≥ 3** (nicht 2,0). Begründung: 121 unabhängige Trials genügen für t=2-False-Positive, 393 für t=3 (Aghassi et al. 2023).
+
+### Investment-Faktor-Monthly-Observation offen
+
+Flint/Vermaak zeigen Investment-Faktor-Half-Life = 1 Monat. Aktive FLAGs (MSFT CapEx, TMO fcf_trend_neg) sind Investment-Klasse. **Offene Entscheidung Review 2028:** Monthly-Fundamentals-Refresh formalisieren oder bei Earnings-Trigger-Cadence bleiben? Aktuell keine Änderung — FLAG-Mechanik robust genug.
 
 ## Nicht-Ziele (explizit YAGNI)
 

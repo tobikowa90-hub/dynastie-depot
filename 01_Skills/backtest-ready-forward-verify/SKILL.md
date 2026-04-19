@@ -229,3 +229,4 @@ Diese Aktionen sind bewusst **nicht** Teil dieser Skill:
 - **STATE.md + Faktortabelle aktualisieren** — Caller schreibt nach Analyse, vor Commit
 - **FLAG-Event-Studies** — `flag_event_study.py`
 - **Scoring-Entscheidungen** — Skill persistiert nur, trifft keine inhaltlichen Urteile
+- **Retrospektive Analyse** (Strategie-Selection, Parameter-Tuning, Portfolio-Return-Validation) → §29-Gate-Framework (Bailey 2015 + Aghassi 2023 + Flint/Vermaak 2021 + Palomar 2025 Ch. 8). Aktivierung 2028-04-01 oder bei erster Parameter-Variation; §29.5 Seven-Sins-Gate bereits jetzt aktiv.

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-17 (Backtest-Ready Infrastructure — 88 Notes: 82 wiki + 6 raw)
+> Last updated: 2026-04-19 (4-Paper Backtest-Validation-Ingest — 97 Notes: 91 wiki + 6 raw)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -22,6 +22,12 @@
 - [[Piotroski-2000]] — Journal of Accounting Research: 9-Punkte-F-Score; High-F-Score Value +7,5% p.a. Outperformance (B12) ← NEU
 - [[Novy-Marx-2013]] — Journal of Financial Economics: Gross Profitability Premium ~gleich stark wie B/M (B13) ← NEU
 - [[Sloan-1996]] — The Accounting Review: Accruals-Anomalie +10,4% p.a. Low-Accrual-Premium (B14) ← NEU
+
+### Akademische Paper (Backtest-Validation-Framework — §29 Gate)
+- [[Bailey-2015-PBO]] — Journal of Computational Finance: PBO/CSCV als Overfitting-Gate (B15) ← NEU 2026-04-19
+- [[Aghassi-2023-Fact-Fiction]] — J. Portfolio Management (AQR): 4 Kanon-Faktoren, t-Stat≥3-Hurdle, externer Benchmark (B16) ← NEU 2026-04-19
+- [[Flint-Vermaak-2021-Decay]] — SSRN 3986499: Faktor-Half-Life, optimale Rebalance-Cadence (B17) ← NEU 2026-04-19
+- [[Palomar-2025-Portfolio-Optimization]] — Cambridge UP: Seven Sins + Methoden-Werkzeugkasten (B18) ← NEU 2026-04-19
 
 ### Datenquellen-APIs
 - [[defeatbeta]] — US-Fundamentals (Primär): Income, Cash Flow, ROIC, WACC, Geographic Revenue
@@ -108,6 +114,13 @@
 - [[F-Score-Quality-Signal]] — Piotroski 9-Kriterien-Score; ≥7 → +2 Pt. Fundamentals-Bonus (B12) ← NEU
 - [[Gross-Profitability-Premium]] — Novy-Marx GP/TA; eigenständiger Renditefaktor, +2 Pt. Fundamentals-Metrik (B13) ← NEU
 - [[Accruals-Anomalie-Sloan]] — Sloan 1996; Low-Accrual outperformt +10,4% p.a.; validiert v3.5-Schwellen (B14) ← NEU
+
+### Backtest-Validation-Framework (§29 Gate — FUTURE-ACTIVATION 2028-04-01)
+- [[PBO-Backtest-Overfitting]] — Bailey PBO/CSCV-Methode; §29.1 Methoden-Gate (B15) ← NEU 2026-04-19
+- [[Factor-Investing-Framework]] — AQR 4-Faktor-Kanon + DEFCON-Mapping; §29.2 External-Bench + §29.4 t-Stat≥3 (B16) ← NEU 2026-04-19
+- [[Factor-Information-Decay]] — Flint/Vermaak Half-Life pro Faktor; §29.3 Cadence-Check (B17) ← NEU 2026-04-19
+- [[Seven-Sins-Backtesting]] — Palomar Sünden-Katalog; §29.5 Pre-Flight-Gate (Sin #7 n.a. Long-Only) (B18) ← NEU 2026-04-19
+- [[Palomar-Methods-Reference]] — Palomar Ch 6 + 8.3-8.5 + 7.5 + 11 konsolidierte Methoden-Referenz ← NEU 2026-04-19
 
 ### Token-Effizienz & System
 - [[Token-Mechanik]] — Strukturiertes Token-Management; Snapshot-First, MCP-Minimalset

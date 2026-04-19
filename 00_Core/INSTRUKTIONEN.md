@@ -617,4 +617,99 @@ Für diese Fälle reicht: Commit + STATE.md-Update + CORE-MEMORY §5 Lektion, ke
 **Präzedenzfall:** 18.04.2026 TMO `fcf_trend_neg`-Disclosure (Option B) — struktureller FLAG ohne Score-Penalty, kein Version-Bump.
 
 ---
-*🦅 INSTRUKTIONEN.md v1.9 (§28 Scoring-Version-Migration-Workflow) | Dynastie-Depot v3.7 | Stand: 18.04.2026*
+
+## 29. Retrospective-Analyse-Gate
+
+> **`[FUTURE-ACTIVATION: 2028-04-01]` für §29.1-4 + §29.6. §29.5 Seven-Sins-Gate aktiv bereits jetzt bei Migration-Events.**
+
+Systemischer Gate für jede retrospektive Analyse der `score_history.jsonl` (Strategy-Selection, Parameter-Tuning, Portfolio-Return-Validation). Aktivierung: Review 2028-04-01 ODER erste DEFCON-Parameter-Variation. §28 (Migration-Workflow) ist **komplementär**, nicht konkurrierend: §28 schützt Versions-Sprünge, §29 schützt Retrospective-Auswertungen.
+
+**4-Dimensionen-Gate-Framework** (jede Dimension unabhängig validierbar):
+
+### 29.1 Methoden-Gate — Overfitting (Bailey et al. 2015)
+
+**Regel:** Vor jedem Strategy-Selection/Parameter-Tuning gegen `score_history.jsonl` PBO < 0,05 berechnen via CSCV.
+
+**Implementierung:** `03_Tools/backtest-ready/pbo_cscv.py` bei Aktivierung. S=16 Default (12.780 Logits), N≥10 Trials, T≥2×Modellwahl-Fenster. CRAN R-Package `pbo` als Referenz-Implementierung.
+
+**Komplementär:** walk-forward + k-fold + randomized backtests nach Palomar Ch 8.4 als Cross-Check (keine Ersetzung).
+
+Quelle: [[Bailey-2015-PBO]] / [[PBO-Backtest-Overfitting]]
+
+### 29.2 External-Benchmark-Gate (Aghassi et al. 2023)
+
+**Regel:** Aggregierte Satelliten-Portfolio-SR muss im Band der AQR/Ilmanen-Multifaktor-Benchmark liegen (Ilmanen et al. 2021 Century-Dataset). Bei signifikanter Abweichung: Ursache identifizieren (DEFCON-Mapping-Fehler, Selektions-Bias, echter Out-of-Band-Effekt).
+
+**DEFCON-Faktor-Mapping** (Referenz für Benchmark-Auswahl):
+- Fundamentals (Fwd P/E, P/FCF) → Value (HMLDEVIL)
+- Moat + Quality-Fundamentals → Quality (QMJ) / Defensive (BAB)
+- Technicals → Momentum (UMD)
+- Insider → non-AQR-Edge, keine Benchmark
+
+**Nicht anwendbar pro Ticker** — AQR-Value-Spread ist Long-Short-Cross-Section-Instrument, nicht Single-Stock.
+
+Quelle: [[Aghassi-2023-Fact-Fiction]] / [[Factor-Investing-Framework]]
+
+### 29.3 Temporal-Konsistenz (Flint & Vermaak 2021)
+
+**Regel:** Score-Cadence muss mit der Faktor-Half-Life des dominanten DEFCON-Block konsistent sein.
+
+| Faktor-Analog | Optimale Cadence | Unsere Cadence | Status |
+|---|---|---|---|
+| Value | 3-4M | Earnings-Trigger ~3M | ✅ aligned |
+| Quality | 4-5M | Earnings-Trigger + jährliche Vollanalyse | ✅ konservativ |
+| Momentum | 3M | Earnings-Trigger + Monitor | ✅ aligned |
+| Investment | **1M** | Earnings-Trigger (zu träge bei aktiven FLAGs) | ⚠️ Watch |
+| Insider | Real-time | OpenInsider | ✅ aligned |
+
+**Investment-Watch:** MSFT-CapEx-FLAG + TMO-fcf_trend_neg sind Investment-Klasse. Bei Review 2028 prüfen, ob Monthly-Fundamentals-Refresh aktiviert werden muss.
+
+Quelle: [[Flint-Vermaak-2021-Decay]] / [[Factor-Information-Decay]]
+
+### 29.4 Neue-Parameter-Gate — Harvey/Liu/Zhu-Hurdle
+
+**Regel:** Jede neue DEFCON-Sub-Komponente (neuer FLAG, Sub-Score, Metrik) muss **t-Stat ≥ 3** erreichen (nicht 2,0). Begründung: 121 unabh. Trials genügen für t=2-False-Positive, 393 für t=3. Academic Finance hat 400+ publizierte Faktoren — die meisten wären bei t≥3 verworfen.
+
+**Aktivierungs-Trigger:** SOFORT (nicht 2028) — prospektiv auf alle zukünftigen DEFCON-Erweiterungen anwendbar. Ergänzt §28.1 Step 1 (Paper/Evidence-Check) um formale Signifikanz-Schwelle.
+
+Quelle: [[Aghassi-2023-Fact-Fiction]] (zitiert Harvey/Liu/Zhu 2016)
+
+### 29.5 Seven-Sins-Pre-Flight-Gate (Palomar 2025 Ch 8.2)
+
+**Regel:** Vor jeder retrospektiven Analyse UND vor jedem Migration-Event (§28) folgende 7-Punkt-Checkliste:
+
+- [ ] **Sin #1 Survivorship Bias:** Reject-Set aus Quick-Screener-Historie rekonstruieren (sonst explizit dokumentieren)
+- [ ] **Sin #2 Look-Ahead Bias:** Nur `source=forward` Records, oder Backfill explizit deklariert
+- [ ] **Sin #3 Storytelling Bias:** Rationale ex-ante in CORE-MEMORY §5, nicht post-hoc
+- [ ] **Sin #4 Overfitting:** → §29.1 PBO<0,05
+- [ ] **Sin #5 Turnover & Transaction Cost:** Sparplan-Gebühren + Spread modelliert
+- [ ] **Sin #6 Outliers:** COVID 2020, Liberation Day 2026, GFC 2008 explizit behandelt
+- [ ] **Sin #7 Asymmetric Pattern & Shorting:** **n.a.** (Dynasty-Depot ist strikt Long-Only)
+
+**Aktivierungs-Trigger:** SOFORT bei Migration-Events. Bei retrospektiven Analysen ab 2028.
+
+Quelle: [[Palomar-2025-Portfolio-Optimization]] / [[Seven-Sins-Backtesting]]
+
+### 29.6 Portfolio-Return-Metrik-Layer (Palomar 2025 Ch 6)
+
+**Regel:** Bei Aktivierung `risk-metrics-calculation`-Skill (bestehend) gegen `05_Archiv/portfolio_returns.jsonl` (Phase 3, in Aufbau): Sortino/CVaR/Calmar/Max-DD/IR nach Palomar-Ch-6-Formel-Konventionen berechnen.
+
+**Voraussetzung:** portfolio_returns.jsonl-Persistenz ab Q2 2026 aktiv (Phase 3 dieses Plans).
+
+**Aktivierungs-Trigger:** Review 2028-04-01 ODER ≥24 Monate sauberer Return-Serie.
+
+**Interim-Gate:** 2027-10-19 Dry-Run für Data-Quality-Check.
+
+Quelle: [[Palomar-2025-Portfolio-Optimization]] / [[Palomar-Methods-Reference]]
+
+### 29.7 Aktivierungs-Reihenfolge bei Review 2028
+
+1. §29.5 Sünden-Pre-Flight (Sin #1-#6) — wenn nicht alle grün: Stopp
+2. §29.1 Methoden-Gate (PBO/CSCV, walk-forward Cross-Check)
+3. §29.2 External-Benchmark (AQR/Ilmanen-Band)
+4. §29.3 Temporal-Konsistenz (Cadence vs. Half-Life)
+5. §29.6 Portfolio-Return-Metriken
+6. Dann Options A–D aus [[Backtest-Methodik-Roadmap]] anwendbar
+
+---
+*🦅 INSTRUKTIONEN.md v1.10 (§28-29 Migration + Retrospective-Gate) | Dynastie-Depot v3.7 | Stand: 19.04.2026*

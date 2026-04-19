@@ -1,12 +1,12 @@
 ---
 title: "Wissenschaftliche Fundierung DEFCON v3.7"
 type: synthesis
-tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung]
-sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]]"
-concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]]"
-related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Non-US-Scoring]]"
+tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung, validation-gate]
+sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]]"
+concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]]"
+related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Non-US-Scoring]], [[Backtest-Methodik-Roadmap]]"
 entities: "[[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
-datum: 2026-04-17
+datum: 2026-04-19
 status: aktiv
 ---
 
@@ -51,6 +51,10 @@ status: aktiv
 | **B12** | F-Score ≥7 → +7,5% p.a. Outperformance bei Value-Aktien | [[Piotroski-2000]] | Fundamentals (Quality-Bonus) | Quality als PRÄDIKTOR (nicht nur Malus); 9-Kriterien-Score operationalisieren | v3.6: F-Score ≥7 → +2 Pt. Bonus Fundamentals; ≤3 → -1 Pt. Malus |
 | **B13** | GP/TA prognostiziert Returns ~gleich stark wie Book-to-Market | [[Novy-Marx-2013]] | Fundamentals (Profitability-Metrik) | Gross Profitability als eigenständiger Renditefaktor | v3.6: GP/TA als 2-Pt.-Metrik in Fundamentals-Block; GM-Trend im Moat-Block bleibt |
 | **B14** | Low-Accrual-Firmen outperformen High-Accrual um +10,4% p.a. | [[Sloan-1996]] | Fundamentals (Accrual Ratio) | Accrual-Schwellen (<5%/>10%) wissenschaftlich validiert | v3.5 Malus bleibt; v3.6-Erweiterung: <3% → +2 Pt. Bonus (Piotroski-Parallele) |
+| **B15** | PBO < 0,05 (CSCV) als Overfitting-Gate bei Strategy-Selection | [[Bailey-2015-PBO]] | Validation-Methode | Institutioneller Goldstandard; Pflicht bei Parameter-Tuning | §29.1 Retrospective-Analyse-Gate, Aktivierung 2028-04-01 |
+| **B16** | 4 Kanon-Faktoren (Value/Momentum/Quality/Defensive); Size verworfen; t-Stat≥3 Hurdle | [[Aghassi-2023-Fact-Fiction]] | Externer Benchmark + neue Parameter | DEFCON-Faktor-Mapping explizit; aggr. Portfolio-SR im AQR-Band prüfen | §29.2 External-Bench + §29.4 t-Stat-Hurdle |
+| **B17** | Faktor-Half-Life: Value 3–4M, Quality 4–5M, Momentum 3M, Investment 1M, LowVol 5–6M | [[Flint-Vermaak-2021-Decay]] | Cadence-Validation | Earnings-Trigger (~3M) wissenschaftlich fundiert; Investment-Klasse Watch | §29.3 Temporal-Konsistenz; keine System-Änderung |
+| **B18** | Seven Sins of Quantitative Investing (Overfitting + 6 weitere Biases) | [[Palomar-2025-Portfolio-Optimization]] | Pre-Flight-Validation | Pflicht-Checkliste vor jeder retrospektiven Analyse; Sin #7 n.a. Long-Only | §29.5 Seven-Sins-Gate aktiv auch bei Migration-Events |
 
 ---
 
@@ -80,6 +84,10 @@ status: aktiv
 | [[Piotroski-2000]] | 2000 | F-Score ≥7 → +7,5% p.a. bei Value-Aktien | Fundamentals (Quality-Bonus) | B12 ← NEU |
 | [[Novy-Marx-2013]] | 2013 | Gross Profitability = 2. Seite des Value-Faktors | Fundamentals (GP/TA) | B13 ← NEU |
 | [[Sloan-1996]] | 1996 | Accruals-Anomalie: +10,4% p.a. Low-Accrual-Premium | Fundamentals (Accrual Ratio) | B14 ← NEU |
+| [[Bailey-2015-PBO]] | 2015 | PBO/CSCV als Overfitting-Gate bei Strategy-Selection | Validation-Methode | B15 ← NEU |
+| [[Aghassi-2023-Fact-Fiction]] | 2023 | 4 Kanon-Faktoren validiert; Size verworfen; t-Stat≥3 | Externer Benchmark + neue Parameter | B16 ← NEU |
+| [[Flint-Vermaak-2021-Decay]] | 2021 | Faktor-Half-Life → optimale Rebalance-Cadence | Cadence-Validation | B17 ← NEU |
+| [[Palomar-2025-Portfolio-Optimization]] | 2025 | Seven Sins of Quantitative Investing | Pre-Flight-Validation | B18 ← NEU |
 
 ---
 
@@ -165,6 +173,7 @@ Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] �
 | 2026-04-16 | Erweitert — 3 neue Paper (Wolff/Echterling, Jadhav/Mirza, JPM vollständig eingebunden), 4 neue Befunde B8–B11, alle 11 Satelliten-Scores aktualisiert, Konzept-Karte erweitert |
 | 2026-04-16 | v3.4→v3.5 Audit — PT-Upside-Fix, Relative Stärke promoted, Floor-Klausel. 7-Fragen-Audit: 5×A, 1×B, 1×C |
 | 2026-04-17 | 3 Foundation-Papers integriert: Piotroski (F-Score, B12), Novy-Marx (GP-Premium, B13), Sloan (Accrual-Anomalie, B14). 7→10 Quellen, 11→14 Befunde. Vorbereitung für v3.6-Release: Quality-Bonus (+2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus <3%. System-Reife-Ceiling: 85% → geplant 92-95%. |
+| 2026-04-19 | 4 Backtest-Validation-Papers integriert: Bailey PBO/CSCV (B15), Aghassi AQR Fact/Fiction (B16), Flint/Vermaak Information Decay (B17), Palomar Seven Sins (B18). 10→14 Quellen, 14→18 Befunde. B15-B18 sind **keine Scoring-Änderungen**, sondern Validation-Gate-Framework — §29 (Retrospective-Analyse-Gate, FUTURE-ACTIVATION 2028-04-01). §29.5 Seven-Sins-Gate aktiv auch bei Migration-Events. Applied Learning verletzt NICHT — Paper-Ingest ≠ System-Update, nur Gate-Infrastruktur. |
 
 ## Validierung der Befunde (Backtest-Ready-Infrastructure, seit 2026-04-17)
 
@@ -181,3 +190,21 @@ Die 14 Befunde sind heute **nicht formal validiert** — das Scoring-System ist 
 **Explizit NICHT validiert:** B12-B14 (Piotroski, Novy-Marx, Sloan) — v3.6-Integration wurde 17.04.2026 verworfen (Double-Counting-Falle, Applied Learning). Die Befunde bleiben als Forschungskontext, aber sind **nicht Teil des operativen Scorings**.
 
 Infrastruktur-Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FLAG-Event-Log]].
+
+---
+
+## 4-Dimensionen-Validation-Gate (§29, seit 2026-04-19)
+
+B15-B18 bilden zusammen das **formelle Gate-Framework** für jede zukünftige retrospektive Analyse. Keine Scoring-Änderung — Gate-Infrastruktur oberhalb der Options A–D:
+
+| Dimension | Anker-Befund | Operative §-Komponente |
+|---|---|---|
+| Methode (Overfitting) | B15 Bailey | §29.1 PBO < 0,05 |
+| Raum (External Bench) | B16 Aghassi | §29.2 AQR/Ilmanen-Band-Check + §29.4 t-Stat-Hurdle |
+| Zeit (Temporal Decay) | B17 Flint/Vermaak | §29.3 Cadence-Konsistenz |
+| Sünden (Pre-Flight) | B18 Palomar | §29.5 Seven-Sins-Gate (Sin #7 n.a.) |
+| Portfolio-Metriken | — | §29.6 risk-metrics-calculation (Palomar Ch. 6 Formeln) |
+
+Aktivierungs-Trigger: **Review 2028-04-01** oder erste DEFCON-Parameter-Variation. §29.5 Seven-Sins-Gate greift **bereits jetzt** bei Migration-Events.
+
+Siehe [[Backtest-Methodik-Roadmap]] v2.0 für Detail-Logik der 4-Dim-Gate-Aktivierung.

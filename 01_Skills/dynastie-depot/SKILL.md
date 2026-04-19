@@ -306,6 +306,8 @@ Diese Skalen sind verbindlich. Bei Grenzfällen: konservativ scoren.
 
 Kontextfaktor: Für High-Growth (\>20% Rev-CAGR) darf +1 Punkt Bonus gegeben werden, wenn das PEG-Ratio \< 1.5 ist. Begründungspflicht.
 
+- **Fundamentals-Review:** Fwd P/E gegen eigene 5J-Range im Kommentartext anmerken, keine Score-Wirkung.
+
 **P/FCF (max. 8 Punkte):**
 | P/FCF | Score |
 | :--- | :--- |

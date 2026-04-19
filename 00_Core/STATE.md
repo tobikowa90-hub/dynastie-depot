@@ -63,6 +63,7 @@
 - **Morning Briefing:** Trigger v2.1 täglich 10:00 MESZ (16 Symbole, Yahoo-Gap BRK.B/RMS/SU).
 - **Backtest-Ready:** aktiv seit 17.04.2026 — **27 Score-Records** (24 Backfill + 3 Forward: V_vollanalyse 72 + V_rescoring 63 + **TMO_vollanalyse 64**) + 2 FLAG-Events. SKILL.md Schritt 7 Write-Pflicht. Review 2028-04-01, Interim-Gates 2026-10-17.
 - **Forward-Verify-Pipeline via Skill** (seit 19.04.2026, v3.7.2): `backtest-ready-forward-verify` kapselt Draft → Freshness + Tripwire + §28.2 Δ-Gate + Dry-Run + Append + git add. Aktiviert aus dynastie-depot Schritt 7 (programmatisch, keine Trigger-Words). First-Run: TMO Q1 23.04.2026.
+- **Interim-Gate 2027-10-19:** 18-Mo-Dry-Run `risk-metrics-calculation` + Data-Quality-Check auf `portfolio_returns.jsonl` (Phase 3 dieses Workflows). Review-Aktivierung 2028-04-01.
 
 ---
 
