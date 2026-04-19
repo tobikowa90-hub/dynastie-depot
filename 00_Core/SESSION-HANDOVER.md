@@ -1,164 +1,178 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 19.04.2026 (nach Implementation + Deployment) | **Für:** Nächste Session (TMO Q1 am 23.04. als erster Real-Run)
+**Aktualisiert:** 19.04.2026 Mittag (Tavily-Arc abgeschlossen bis Spec+Plan, Execution in neuer Session) | **Für:** Nächste Session — Tavily-Plan ausführen + 3 pending Tracks
 
 ---
 
-## ▶️ TRIGGER
+## ⚡ SESSION 19.04. MITTAG — PROGRESS SAVE (Context Full)
+
+### ✅ IN DIESER SESSION ABGESCHLOSSEN
+
+**Infrastruktur-Installs:**
+- `codex` Plugin (OpenAI Codex CLI 0.121.0, ChatGPT-Login aktiv) — Feedback-Memory `feedback_codex_over_advisor.md` setzt Codex als Default-Reviewer statt `advisor()` ab sofort.
+- `tavily-mcp` lokal via `claude mcp add --scope user` (hosted HTTP, Dev-Key, 1000 Credits/Mo Free-Tier).
+- Tavily-Connector in Claude.ai Web-UI registriert — UUID `4a633350-7128-4729-b8be-85373854fa4d`.
+- Karpathy/autoresearch **abgelehnt** nach Reality-Check (GPU-LLM-Training-Harness, passt nicht).
+
+**Tavily Morning-Briefing Integration — Design komplett:**
+
+| Artefakt | Pfad | Commit | Status |
+|---|---|---|---|
+| Spec (MCP-Architektur final) | `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` | `6bd32f4` | ✅ Codex-freigegeben (3 Rounds), user-approved |
+| Implementation Plan (13 Tasks) | `docs/superpowers/plans/2026-04-19-tavily-morning-briefing.md` | `d1b5bf7` (force-added, gitignored by default) | ✅ geschrieben, Execution pending |
+
+**Arc-History (für Transparenz):**
+- Initial MCP-Spec → Phase-0-R1 Tests (A/B/C) alle PASS → Codex-Review #1 identifizierte 7 Gaps → all fixed → User wollte CLI-Pivot testen → Phase-0-R2: REST `api.tavily.com` liefert HTTP 403 "Host not in allowlist" für Dev-Keys (Free-Tier) → **surgical revert zu MCP** (Codex-Fixes #1-7 behalten) → Codex-Review #2 fand 5 Inkonsistenzen nach Revert → all fixed → final.
+- Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh` bleibt inert (disabled, Cron 31.12., manuell triggerbar). Kann in Claude.ai gelöscht werden.
+
+**Infrastruktur-State (für nächste Session wichtig):**
+- Prod-Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG` hat jetzt Shibui + Tavily in `mcp_connections`, aber `allowed_tools` noch OHNE `mcp__tavily__tavily_search` → v2.2-Verhalten unverändert, Tavily inert bis Deploy
+- Tavily-Dev-Key liegt im prod-Trigger `mcp_connections.url` (abrufbar via `RemoteTrigger get`). **Key-Rotation empfohlen** nach Go-Live (siehe Plan-Anhang).
+
+---
+
+## 🔥 NÄCHSTE SESSION — 4 OFFENE TRACKS
+
+### TRACK 1 (PRIO) — Tavily-Plan ausführen
+
+**Start:** In neuer Session → `Session starten` (liest STATE) → Plan öffnen: `docs/superpowers/plans/2026-04-19-tavily-morning-briefing.md`
+
+**13 Tasks, ~60-90 Min Gesamtaufwand** inkl. manueller Desktop-App-Runs (T1/T3/T4 auf Probe, dann Prod-Deploy + T5 + Manual-Run + 3-Tage-Monitoring).
+
+**Execution-Entscheidung am Plan-Start:**
+- Subagent-Driven (recommended): fresh Subagent pro Task, schneller
+- Inline Executing-Plans: Batch-Execution mit Checkpoints
+
+Plan ist vollständig — Exakte RemoteTrigger-Payloads, exakter v3.0-Prompt-Content in Task 1, adversarial-T3 (Codex #1-Fix mit query-content-Assertion), rollback-runbook (Codex #5), Day-1-3-Monitoring (Codex #6).
+
+**Nach Go-Live:** Key-Rotation in 7 Tagen (Reminder-Task im Plan-Anhang).
+
+---
+
+### TRACK 2 (PENDING seit gestern Nacht) — Phase 4a Sync-Commit
+
+**Kontext:** Gestern Abend (18.04./19.04. Nacht) wurden Phase 1+2 des 4-Paper-Backtest-Validation-Frameworks durchgeführt, aber **noch nicht committed**.
+
+**Uncommitted State (bei Session-Start via `git status` verifizieren):**
+```
+M 00_Core/CORE-MEMORY.md              ← §5 Lektion "4-Paper-Triage für §29"
+M 00_Core/INSTRUKTIONEN.md            ← §29 eingefügt, Fußzeile v1.9→v1.10
+M 00_Core/STATE.md                    ← Interim-Gate 2027-10-19 Bullet
+M 01_Skills/backtest-ready-forward-verify/SKILL.md  ← §8 Retrospektive-Analyse-Bullet
+M 01_Skills/dynastie-depot/SKILL.md   ← Fundamentals-Review-Bullet
+M CLAUDE.md                           ← 4-Dim-Gate-Bullet + Counter 8/20→9/20
+M 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/index.md
+M 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md
+M 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Backtest-Methodik-Roadmap.md
+M 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md
+?? 07_Obsidian Vault/...wiki/concepts/Factor-Information-Decay.md        ← NEU
+?? 07_Obsidian Vault/...wiki/concepts/Factor-Investing-Framework.md      ← NEU
+?? 07_Obsidian Vault/...wiki/concepts/PBO-Backtest-Overfitting.md        ← NEU
+?? 07_Obsidian Vault/...wiki/concepts/Palomar-Methods-Reference.md       ← NEU
+?? 07_Obsidian Vault/...wiki/concepts/Seven-Sins-Backtesting.md          ← NEU
+?? 07_Obsidian Vault/...wiki/sources/Aghassi-2023-Fact-Fiction.md        ← NEU (Paper 1)
+?? 07_Obsidian Vault/...wiki/sources/Bailey-2015-PBO.md                  ← NEU (Paper 2)
+?? 07_Obsidian Vault/...wiki/sources/Flint-Vermaak-2021-Decay.md         ← NEU (Paper 3)
+?? 07_Obsidian Vault/...wiki/sources/Palomar-2025-Portfolio-Optimization.md  ← NEU (Paper 4)
+```
+
+**Commit-Message (vorformuliert):**
+```
+feat(vault+system): 4-Paper-Backtest-Validation-Framework — §29 Retrospective-Gate + Vault-Ingest (9 new Pages)
+```
+
+**Nach Commit:** `!SyncBriefing` (00_Core/ wurde geändert).
+
+**Warum dieser Track zuerst (vor Track 1):** Tavily-Plan-Execution modifiziert 00_Core/CORE-MEMORY.md, STATE.md und log.md (Housekeeping-Task 11). Wenn Phase 4a noch uncommitted ist, vermischen sich die Changesets. Saubere Reihenfolge: Track 2 commit → Track 1 ausführen.
+
+---
+
+### TRACK 3 (PENDING) — Paper-Integration systemweit
+
+**User-Statement (19.04. Mittag):** *"Die Integration der Paper, universelle Verbindung mit dem Vault und Nutzung für das gesamte System stehen auch noch aus und dürfen nicht vergessen werden"*
+
+**Interpretation (zu validieren mit User):**
+1. ✅ Papers ingested (Aghassi, Bailey, Flint-Vermaak, Palomar — alle in wiki/sources/ Stand 19.04. Nacht)
+2. ⏳ **Universelle Vault-Verbindung:** Cross-Linking zwischen neuen wiki/concepts/ (5 Notes) und wiki/sources/ (4 Papers) + Verknüpfung zu bestehenden Entity-Pages, Ticker-Dossiers, Factor-Pages. Backlinks pflegen. Index-Struktur aktualisieren.
+3. ⏳ **Systemweite Nutzung:** Die Paper-Insights (PBO, Factor-Decay, 7 Sins of Backtesting, Palomar-Methods) müssen operativ ins System einfließen jenseits §29 Retrospective-Gate:
+   - DEFCON-Scoring-System: Welche Paper-Findings ändern/validieren Scoring-Gewichte?
+   - Skill `backtest-ready-forward-verify`: 4-Dim-Gate-Integration (PBO + AQR-Bench + Half-Life + Seven Sins) — ist in CLAUDE.md Applied-Learning v2.1 erwähnt, aber Skill-Level-Integration unklar
+   - INSTRUKTIONEN.md §§: Braucht es eine §30 "Paper-gestützte Scoring-Anpassungen"?
+   - Rebalancing-Tool: Paper-basierte Regeln einführen?
+
+**Offene Fragen für User am Session-Start:**
+- Was genau heißt "universelle Verbindung" — nur Obsidian-Backlinks oder Index-Ebene / Entity-Pages / Ticker-Dossiers?
+- Welche Scope-Abgrenzung zu §29 (das bereits Retrospective-Gate integriert)?
+- Ist das eine eigene Spec-Würdige Arbeit oder organisch als Backlog-Items in v3.1+ aufnehmen?
+
+Vor Ausführung: **Brainstorming-Skill** ist Pflicht per CLAUDE.md (Creative Work).
+
+---
+
+### TRACK 4 (PENDING) — Phase 3 Infrastruktur (Portfolio-Risk-Tool erweitern)
+
+**Braucht User-Input am Session-Start:**
+- **ETF-Core-Ticker?** (IWDA.AS / SWDA.L / EUNL.DE / ähnlich — was im realen Depot?)
+- **Gold-Ticker?** (SGLD.DE / 4GLD.DE / GC=F / ähnlich?)
+
+Danach: `03_Tools/portfolio_risk.py` um ETF+Gold erweitern + `--persist weekly`-Modus für `05_Archiv/portfolio_returns.jsonl`. Erster Weekly-Snapshot-Run.
+
+**Abhängigkeit:** Keine zu Track 1/2/3. Kann jederzeit gemacht werden.
+
+---
+
+### TRACK 5 (DEFERRED, nach Track 1) — SEC EDGAR + FRED MCPs
+
+**Kontext:** In dieser Session diskutiert — wenn Tavily operativ läuft, sind SEC EDGAR und FRED die **nächsten Kandidaten** für System-Erweiterung.
+
+| MCP | Lücke im System | Geschätzter Nutzen |
+|---|---|---|
+| **SEC EDGAR MCP** | 10-K/10-Q Risk Factors, Footnotes, 8-K Events, Proxy (Exec-Comp) | Mittel-hoch — Quality-Trap + Moat-Validation mit echten Filing-Footnotes, komplementiert Insider-Intelligence (Form 4 only) |
+| **FRED MCP** | Macro-Daten (Fed Rates, Yield Curve, Inflation, GDP) | Niedrig-mittel — Sektor-spezifische DEFCON-Multiplikatoren (REITs/Banken/Utilities), aber optional |
+
+**Entscheidungs-Reihenfolge:** Tavily erst produktiv + 3 Tage stabil → dann SEC EDGAR (höherer Hebel) → FRED nur wenn Sektor-Mods geplant.
+
+**Install-Pfad (wenn soweit):** Analog Tavily — `claude mcp add` lokal + Claude.ai Connector-Registrierung + Remote-Trigger-mcp_connections-Update. Brainstorming-Skill vorher zwingend.
+
+---
+
+## ⚠️ OPEN RISKS / REMINDERS
+
+1. **Tavily Dev-Key Rotation:** Nach Tavily-Go-Live innerhalb 7 Tagen. Key liegt exponiert in mcp_connections.url. Workflow: Tavily-Dashboard → Delete old Key → New Key → `claude mcp remove/add` LOKAL + `RemoteTrigger update` für prod-Trigger-URL-Austausch.
+2. **Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh`:** Inert aber existiert. Kann in Claude.ai UI gelöscht werden falls störend. RemoteTrigger-API hat kein Delete-Endpoint.
+3. **Tavily-MCP-Connector in Claude.ai:** Bleibt aktiv, falls du manuell Tavily-Queries machen willst. Kann auch entfernt werden — Prod-Trigger hat unabhängig davon die Connector-UUID gespeichert.
+4. **Codex-Plugin:** Review-Gate NICHT aktiviert (würde jeden Session-Stop blocken — user-Entscheidung 19.04.). Codex wird on-demand aufgerufen wie advisor vorher.
+
+---
+
+## 💡 LEARNINGS SESSION 19.04. MITTAG
+
+**Codex als Reviewer (erste Real-Tests):**
+- **3 Rounds Codex-Review** über den Tavily-Arc — je ~17-20k Tokens, jedem Round fand substantielle Gaps
+- Codex erkennt **Terminology-Drift** nach Revert-Operationen exzellent (CLI-Residuen in MCP-Spec gefunden)
+- **Neues Pattern:** Empirische Tests (Phase 0) VOR tiefer Spec-Arbeit — Codex-Flag #1 war empirisch widerlegbar in 5 Min (Test A)
+- Reconcile-Call-Regel aus Feedback-Memory hat funktioniert (CLI-Fail war Primärevidenz → direkt Revert ohne Codex-Rückfrage)
+
+**Superpowers-Workflow (mit `brainstorming → writing-plans`-Kette):**
+- Brainstorming-Skill strikt gefolgt: 5 Clarifying-Questions → 2 Architektur-Varianten → 5 Design-Sektionen approval-pro-Sektion → Spec-Write → Self-Review → Codex → User-Review → Plan-Write
+- **HARD-GATE** vor Implementation-Action respected — kein Edit am Prod-Trigger bisher, alles in Probe + Spec + Plan
+- Plan-Skill produziert mit exakten RemoteTrigger-Payloads (13 Tasks, ~1100 Zeilen) — ausführbar mit minimalem Rückfrage-Budget
+
+**Revert-Muster:**
+- CLI→MCP-Pivot-Revert war ~30 Min Arbeit nachdem Phase-0-R2 failed; **keine architekturelle Überraschung** weil Codex-Fixes architekturneutral designt waren (dank frühem Codex-Pass)
+
+---
+
+## ▶️ TRIGGER (nächste Session)
 
 ```
 Session starten
 ```
 
-Claude liest automatisch `00_Core/STATE.md` (Single-Entry-Point). Keine Plan-Datei mehr zu laden — Implementation-Session ist abgeschlossen, v3.7.2 operativ.
+Claude liest `00_Core/STATE.md`. Dann hierher wechseln. Reihenfolge:
+1. **Track 2** (Phase 4a Sync-Commit) — sauberer Changeset-Reset
+2. **Track 1** (Tavily-Plan ausführen) — oder Track 3 wenn User Paper-Integration priorisiert
+3. **Track 4** (Portfolio-Risk ETF+Gold) — wann immer User-Input für Ticker da ist
+4. **Track 5** (SEC EDGAR / FRED) — nach Tavily stabil (3-Tage-Monitoring)
 
----
-
-## ✅ LETZTE SESSION (19.04.2026, Implementation + Deployment + Full Audit) — ERLEDIGT
-
-**Scope:** Plan `backtest-ready-forward-verify` → deployed + institutionalisiert. 12 Commits, keine Portfolio-Änderungen (reine Infrastruktur + Doku-Sync).
-
-### Kernergebnisse
-
-**1. Skill `backtest-ready-forward-verify` (v1.0) deployed — Forward-Run Pipeline-Kapsel**
-
-Pipeline P1-P6: Draft-Read → Freshness-Warn → STATE.md-Tripwire → §28.2 Δ-Gate (conditional) → Dry-Run → Real Append → git add. Stdout-Report mit 6 Fällen: OK / freshness / PFLICHT / STOP / duplicate / FAIL. `trigger_words: []` — aktiviert sich **nur programmatisch** aus dynastie-depot Schritt 7. ZIP gepackt + in Claude Desktop installiert.
-
-**Critical Files:**
-- `01_Skills/backtest-ready-forward-verify/SKILL.md` (230 Zeilen Prosa)
-- `01_Skills/backtest-ready-forward-verify/_smoke_test.py` (6 TDD-Cases, grün)
-- `03_Tools/backtest-ready/_forward_verify_helpers.py` (4 Funktionen: `parse_wrapper`, `parse_state_row`, `build_migration_event`, `check_freshness`)
-
-**2. Schema-Erweiterung `MigrationEvent` mit Self-Validators**
-
-`ScoreRecord.migration_event: Optional[MigrationEvent] = None`. MigrationEvent-Felder: from_version, to_version, algebra_score, forward_score, delta (signed), outcome (Literal accepted/log_only/block). **Zwei self-validators** als defense-in-depth gegen Builder-Bugs (append-only → korrupt Record permanent):
-- `_check_delta` — `delta == round(forward - algebra, 6)`
-- `_check_outcome_bucket` — §28.2 Bucketing (|Δ|≤2 → accepted | 3-5 → log_only | >5 → block)
-
-7/7 Smoke-Tests grün in `schemas.py`.
-
-**3. dynastie-depot v3.7.1 → v3.7.2 (Schritt 7 delegiert)**
-
-Kein DEFCON-Bump (§28.3 Nicht-Migration-Trigger — Scoring-Semantik unverändert v3.7). Schritt 7 ersetzt inline-`archive_score.py`-Aufruf durch:
-
-```
-Skill(skill="backtest-ready-forward-verify", args="<pfad-zum-draft>")
-```
-
-plus 6-Fall-Stdout-Parser in dynastie-depot SKILL.md Schritt 7.
-
-**4. Institutionalisierung**
-
-- INSTRUKTIONEN §18 v1.7 (score_history.jsonl-Write via Skill orchestriert)
-- CORE-MEMORY §1 Meilenstein 19.04.
-- STATE.md System-Zustand + Header-Stand
-- 5 Vault-Konzept-Pages (Score-Archiv / FLAG-Event-Log / Backtest-Ready-Infrastructure / Analyse-Pipeline / **DEFCON-System** v3.5→v3.7 Content-Update)
-- 2 Vault-Synthese-Pages (index / Investing-Mastermind-Index)
-- 1 Vault-Source-Page (dynastie-depot-skill — Monolith-Claim entfernt, Rechenbeispiel + Anker synchronisiert)
-- CLAUDE.md + KONTEXT.md + `03_Tools/backtest-ready/README.md` + PIPELINE.md
-- log.md 19.04. Session-Entry (§18-Pflicht)
-
-**5. Reviews & Gates**
-
-Pre-Gates A (git-Perf 34ms) + B (§-Citations §18/§27.4/§28.1/§28.2/§28.3) grün. Subagent-Driven-Development mit 2× Spec-Review + 2× Code-Quality-Review (1× Request-Changes, dann Re-Review approved). E2E-Verification 6 Szenarien: 5/6 ✓, 1 Gap (P2b fehlender Stopp-Vermerk) sofort gefixt.
-
-### Commits (12)
-
-```
-33cdd74  feat(schema): MigrationEvent field on ScoreRecord
-1bd50ac  feat(schema): MigrationEvent self-validating (delta + §28.2 bucket)
-2f3e828  chore(backtest-ready): _drafts/ ordner + gitignore
-7d43492  feat(skill): backtest-ready-forward-verify — Forward-Run Pipeline-Kapsel
-7e0b021  docs(skill): clarify P4 bare-record write
-603ea74  fix(skill): tighten (wrapper strict, P2b exact, porcelain, STOP float, assertion)
-018257e  refactor(dynastie-depot): Schritt 7 delegiert (v3.7.1 → v3.7.2)
-8b856b4  docs(core): skill backtest-ready-forward-verify institutionalisiert (§18/meilenstein/state)
-2d97ba1  docs(skill): P2b explicit Stopp-semantik (E2E-review gap)
-07431d0  docs: v3.7.2 version-sync (dynastie-depot header + 4 Vault concept pages)
-44e94f0  docs: v3.7.2 skill-deployment propagation (CLAUDE/KONTEXT/PIPELINE/README/Vault)
-6f6dced  docs(vault): DEFCON-System.md v3.5 → v3.7 content update (4-Fix-Tabelle)
-```
-
-### Deployment-Stand
-
-- ✅ Beide ZIPs (backtest-ready-forward-verify + dynastie-depot_v3.7.2) gepackt + in Desktop-App installiert
-- ✅ `06_Skills-Pakete/` nicht aktualisiert (alte `dynastie-depot_v3.7.1.zip` bleibt als Archiv-Referenz) — optional bei Gelegenheit nachziehen
-
----
-
-## 🎯 NÄCHSTER FOKUS
-
-### Priorität 1: TMO Q1 FY26 — erster Real-Run der Skill-Pipeline (23.04.2026)
-
-**Doppelte Bewährungsprobe:**
-1. **FLAG-Resolve-Gate `fcf_trend_neg`** — WC-Unwind + FCF-Recovery bestätigt → Disclosure bleibt Notiz; fehlende Reversibilität → FLAG-Trigger nachtragen (Option B aus 18.04.-Entscheidung greift dann nicht mehr).
-2. **D2-Entscheidung** — Score 64 ±1 bestätigt = D2 weiter; Score <60 = Ersatzvorbereitung ZTS aktivieren; Score ≥65 = D3-Recovery.
-3. **Skill-Pipeline-Live-Test** — dynastie-depot Schritt 7 soll Draft nach `_drafts/TMO_<datum>-<zeit>.json` schreiben, Skill invoken, Stdout-Report parsen. Erwartet: `OK record_id=2026-04-23_TMO_vollanalyse score=<N> defcon=<D>` + Exit 0. Bei unerwartetem STOP/FAIL: CORE-MEMORY §5 Befund loggen.
-
-**Merke:** Bei `[freshness: ...]`-Warnung prüfen, ob Schritte 0-6 vollständig liefen. Bei `FAIL phase=P2b score drift`: Draft vs. STATE.md-Stand prüfen — STATE muss vor Skill-Invocation aktualisiert sein (Schritt 6 regulär).
-
-### Priorität 2: Earnings-Trigger-Kette
-
-| Datum | Ticker | Klasse | Aktion |
-|---|---|---|---|
-| **23.04.** | **TMO** | **B** | Q1 FY26 — s.o. |
-| **28.04.** | **V** | **B** | Q2 FY26 — D2-Entscheidung (Technicals-Reversal bei Beat + Guidance-Bestätigung?) |
-| 28.04. | SNPS / SPGI | B | Watchlist-Review |
-| **29.04.** | **MSFT** | **C** | Q3 FY26 — CapEx/OCF FLAG-Review (bereinigt <60% = Auflösung) |
-| Mai | BRK.B / ZTS / PEGA | B | Q-Earnings + Slot-16-Kandidatur |
-
-### Optionale Engine-Arbeit (nicht blockierend)
-
-- `06_Skills-Pakete/dynastie-depot_v3.7.2.zip` + `backtest-ready-forward-verify.zip` als Deployment-Archiv ablegen (aktuell fehlen die v3.7.2-ZIPs dort, alte v3.7.1 noch vorhanden)
-- Rebalancing_Tool_v3.4 Sparraten-Spalte (Nenner 8.0 → 35,63€) manuell nachziehen falls noch nicht geschehen
-
----
-
-## 🧭 START-PROTOKOLL NÄCHSTE SESSION
-
-1. `Session starten` → `STATE.md` wird gelesen (Nenner 8.0, 35,63€/17,81€, v3.7.2)
-2. Bei TMO-Earnings (23.04.): `!Analysiere TMO` auslösen. Schritte 0-6 wie gewohnt.
-3. Schritt 7: Draft-Wrapper bauen + Skill invoken. Stdout-Report-Parsing folgt 6-Fall-Tabelle aus dynastie-depot SKILL.md.
-4. Sync-Commit alle 6 Dateien (§18).
-
----
-
-## 🚫 WAS NICHT ZU TUN
-
-- **Kein** inline-`archive_score.py`-Call mehr in Schritt 7 — Pfad geht jetzt ausschließlich über den Skill. Ausnahme: Backfill + manuelle Recovery nach partiellem P5-Abbruch (duplicate record_id).
-- **Kein** `migration_event` von Hand in den Draft schreiben — wenn `skill_meta` gesetzt, baut der Skill den MigrationEvent selbst.
-- **Kein** Append-Block bei `|Δ|>5` — Record wird trotzdem persistiert (Historie-Integrität). Nur Fan-Out über 7 Oberflächen wird blockiert.
-- **Kein** Multi-File-Drift-Check via Skill (§27.4 bleibt Human-Gate am „fertig"-Punkt).
-- **Kein** Re-Invoke nach `FAIL phase=P4 duplicate record_id` — manueller `git add 05_Archiv/score_history.jsonl` + direkter Sync-Commit.
-- **Kein** DEFCON-Bump bei reinen Skill-Paket-Updates (§28.3 Nicht-Migration-Trigger-Regel).
-
----
-
-## 📂 KRITISCHE DATEIEN (Navigation)
-
-- **Entry:** `00_Core/STATE.md` — Portfolio + Watches + Trigger (Stand 19.04., v3.7.2)
-- **Regeln:** `00_Core/INSTRUKTIONEN.md` (v1.9 + §18 v1.7) — §18 Sync-Pflicht (score_history.jsonl via Skill), §27.4 Multi-Source-Drift, §28.1 Migration-Checklist, §28.2 Δ-Tabelle, §28.3 Nicht-Migration-Trigger
-- **Architektur:** `00_Core/KONTEXT.md` §11 — 4-Layer-Architektur (State/Narrative/History/Projection)
-- **Lektionen:** `00_Core/CORE-MEMORY.md` §1 (Meilensteine ab 15.04., neuer Eintrag 19.04.), §5 (Scoring-Lektionen), §11 (Live-Verify-Protokoll)
-- **Skill-Haupt:** `01_Skills/dynastie-depot/SKILL.md` (v3.7.2 — Schritt 7 delegiert)
-- **Skill-Satellit:** `01_Skills/backtest-ready-forward-verify/SKILL.md` + `_smoke_test.py`
-- **Tools:** `03_Tools/backtest-ready/` — schemas.py (15 Modelle, 6 Validators), archive_score.py + archive_flag.py (CLI), `_forward_verify_helpers.py` (Skill-Helpers), README.md
-- **Archive:** `05_Archiv/score_history.jsonl` (27 Records) + `flag_events.jsonl` (2 Records)
-- **Draft-Handoff:** `03_Tools/backtest-ready/_drafts/` (ephemer, gitignored)
-
----
-
-## 🔬 System-Reife-Tracker
-
-- v3.5 (16.04.): 85%
-- v3.7 (17.04. Morgen): ~92%
-- Backtest-Ready (17.04. Abend): ~95%
-- Schema-SKILL-Aligned + Forward-Pipeline-bewährt (18.04. Abend): ~96%
-- Scoring-Version-Migration-Workflow formalisiert (18.04. Nacht): ~97%
-- Skill-Plan für Forward-Verify finalisiert (19.04. Morgen): ~97%
-- **Skill deployed + institutionalisiert + Vault-Schuld geschlossen (19.04. Abend): ~98%** — Engine "fertig genug", Fokus-Shift auf Content
-- Nach erfolgreichem TMO-Real-Run 23.04.: ~99% (empirische Validation der letzten Unsicherheit)
-
-### Outstanding Engine-Arbeit
-
-- Nur noch optionale Kosmetik (ZIP-Archive, Rebalancing_Tool-Spalte). **Kein blockierender Engine-Punkt mehr offen.** Ab hier: Content-Fokus — Earnings-Analysen, FLAG-Resolves, Slot-16-Suche.
+**Bei Start unbedingt klären:** Welcher Track heute? Track 3 (Paper-Integration) ist das am wenigsten spezifizierte und braucht erst Klärung des "universelle Verbindung"-Scopes.
