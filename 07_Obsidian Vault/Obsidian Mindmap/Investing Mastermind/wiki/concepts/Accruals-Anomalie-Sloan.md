@@ -89,3 +89,12 @@ Piotroski (2000) operationalisiert Sloan's Anomalie als binäres F-Score-Kriteri
 - [[QMJ-Faktor]] — Accrual-Qualität = Quality-Dimension in AQR-QMJ
 - [[DEFCON-System]] — Accrual Ratio wissenschaftlich fundiert, v3.6-Bonus-Erweiterung
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B14
+
+## Seven-Sins-Disziplin (Palomar 2025)
+
+Accruals-Anomalie (Sloan 1996) ist klassisches Look-Ahead-Bias-Risiko (Palomar Sin #2):
+- Wer Quality-Signale aus Accruals konstruiert, muss Point-in-Time-Disziplin wahren
+- DEFCON v3.7 nutzt keine Accruals-Score-Column (Session 2 verworfen)
+- Als Diagnose-Linse bleibt Sloan relevant
+
+→ [[Palomar-2025-Portfolio-Optimization]], [[Seven-Sins-Backtesting]], [[Sloan-1996]]

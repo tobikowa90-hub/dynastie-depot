@@ -462,3 +462,15 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Archive-Stand:** unverändert 27 Records. Scores/Sparraten unverändert. Kein FLAG-Event.
 - **Sync-Commit folgt:** Vault + System-Änderungen in einem Commit nach Phase 2 (§18 6-File-Sync für System, + 11 Vault-Pages für Ingest).
 - **Advisor-E2E-Verify Phase 1 (post-Write):** 1 Fix-Issue + 2 Deferred. Fix: `[[§29 Retrospective-Analyse-Gate]]` Phantom-Links in PBO-Backtest-Overfitting.md + Factor-Investing-Framework.md durch Plaintext-Verweise auf `00_Core/INSTRUKTIONEN.md` ersetzt. Deferred für nächste Lint-Session: (a) Autoren-Entity-Stubs für Asness, López de Prado, Palomar erwägen (schema-konform weil authors Plaintext, aber Prominenz-Klasse rechtfertigt Entity-Pages); (b) WIKI-SCHEMA-Klausel für akademische Paper-Sources: `url:`-Frontmatter ersetzt raw/-Backlink bei stabiler URL + Paywall-Verfügbarkeit (bewusste Entscheidung, Link-only statt Raw-Kopie — alle 4 neuen Source-Pages betroffen).
+
+## 2026-04-19 — Paper-Integration systemweit (Track 3)
+
+**Phase 1a+1b abgeschlossen:**
+- 11 Satelliten-Pages mit Factor-Exposure-Block (Aghassi 2023)
+- 6 defcon-Concepts mit §29-Rückverweisen + Paper-Ankern
+- 8 bestehende Concept-Pages mit "Wissenschaftliche Fundierung"-Abschnitt
+- index.md + log.md aktualisiert
+
+**Phase 2-4 pending:** Skill-Verankerung, R5 Portfolio-Return-Persistenz, R1 §30 Monthly-Refresh
+
+**Spec:** docs/superpowers/specs/2026-04-19-paper-integration-design.md

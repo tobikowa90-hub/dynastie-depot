@@ -64,3 +64,12 @@ Alle 11 Satelliten sind betroffen — FCF-Primacy gilt universal:
 - [[CapEx-FLAG]] — FCF-Qualität zentral für FLAG-Auslösung
 - [[DEFCON-System]] — Scoring-Gewichtung
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B2 + B3
+
+## Portfolio-Risk-Metriken (Palomar 2025)
+
+FCF als Primary-Cashflow-Kennzahl ist Basis für spätere Sortino/Calmar/Max-DD-Berechnung (Palomar Ch 6):
+- Sortino nutzt Downside-FCF-Volatilität
+- Calmar normalisiert auf Max-DD
+- → Phase 3 R5 persistiert Portfolio-Return-Serie auf FCF-basierter Bewertung
+
+Aktivierung der Risk-Metriken: Review 2028-04-01. → [[Palomar-2025-Portfolio-Optimization]], [[Palomar-Methods-Reference]]

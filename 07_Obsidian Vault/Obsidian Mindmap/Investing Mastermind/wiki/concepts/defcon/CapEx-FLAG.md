@@ -71,3 +71,16 @@ Jeder `capex_ocf`-Trigger wird in `05_Archiv/flag_events.jsonl` als unveränderl
 **Backfill-Stand 17.04.2026:** 2 capex_ocf-Trigger rekonstruiert (MSFT `83.6%` FY26 Q2, GOOGL FY26 Guidance Wert=null). APH (Score-basierter FLAG) ist nicht in der 4-Typ-Enum abbildbar → dokumentiert in `_parser_errors.log`.
 
 Details: [[FLAG-Event-Log]], [[Score-Archiv]].
+
+## Wissenschaftliche Fundierung (nachträglich 19.04.2026)
+
+Der CapEx-FLAG triggert Investment-Klasse-Beobachtung. Per Flint-Vermaak 2021 hat der Investment-Faktor die schnellste Half-Life aller AQR-Kanon-Faktoren (~1 Monat):
+
+- **Konsequenz:** Earnings-Trigger-Cadence (~3M) ist zu träge für aktive CapEx-FLAGs
+- **Monthly-Refresh-Pflicht** für aktive Investment-FLAGs → INSTRUKTIONEN.md §30 (ab Phase 4)
+- **Aktuelle Scope:** MSFT CapEx/OCF 83.6% FLAG aktiv → §30 pflicht
+- **Schema-Watch:** TMO fcf_trend_neg schema-getriggert, bewusst nicht aktiviert (WC-Noise) → §30 nicht automatisch
+
+**Rückverweise:** §29.3 (Half-Life-Cadence) liefert die wissenschaftliche Fundierung; §30 (Live-Monitoring) operationalisiert die Monthly-Refresh-Pflicht für aktive Investment-FLAGs.
+
+Quellen: [[Flint-Vermaak-2021-Decay]], [[Factor-Information-Decay]]

@@ -54,3 +54,13 @@ Validiert via Pydantic: Arithmetik-Check (`score_gesamt` = Summe 5 Blöcke), DEF
 ## Review 2028-04-01
 
 Wenn Forward-Historie (~15-25 Records pro Jahr) genug Sample-Size erreicht hat: Entscheidung über formalen Backtest — siehe [[Backtest-Methodik-Roadmap]].
+
+## Retrospective-Validation (§29 + Papers)
+
+Das Score-Archiv ist die Datengrundlage für §29-Retrospective-Analysen (ab 2028):
+
+- **§29.1 (PBO/CSCV)** — erfordert score_history.jsonl mit sauberen Forward-Records; PBO<0,05 als Reject-Schwelle, siehe [[Bailey-2015-PBO]] / [[PBO-Backtest-Overfitting]]
+- **§29.2 (AQR-Benchmark)** — Aggregiertes Portfolio-SR gegen AQR/Ilmanen-Band, siehe [[Aghassi-2023-Fact-Fiction]]
+- **§29.5 (Seven-Sins-Pre-Flight)** — Sin #2 Look-Ahead pflicht via `source="forward"` Records, siehe [[Seven-Sins-Backtesting]]
+
+→ Schema-Disziplin (siehe §18 + §28) schützt die Retrospective-Datenbasis.

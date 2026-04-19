@@ -76,3 +76,16 @@ Skill(skill="backtest-ready-forward-verify", args="<pfad-zum-draft>")
 Der Skill orchestriert Phasen P1-P6 (Schema-Validation → Freshness + STATE.md-Tripwire → §28.2 Δ-Gate conditional → Dry-Run → Append → git add). Stdout-Report mit 6 Fällen (OK / freshness / PFLICHT / STOP / duplicate / FAIL) — dynastie-depot-Handler routet weiter. Der Score-Record wird via Pydantic-Schema ([[Score-Archiv]]) validiert (Arithmetik, DEFCON-Konsistenz, Quality-Trap-Interaktion) und an `05_Archiv/score_history.jsonl` angehängt. Keine Ausnahme — jeder verpasste Append = irreversibler Historie-Verlust.
 
 Commit-Disziplin §18: Alle sechs Dateien (log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + ggf. flag_events.jsonl) in einem git-Commit.
+
+## Wissenschaftliche Fundierung (nachträglich 19.04.2026)
+
+Die 5-Block-Analyse-Pipeline (Fundamentals/Moat/Quality/Insider/Technicals) mappt auf AQR-Kanon (Aghassi 2023):
+
+- **Fundamentals** (Fwd P/E, P/FCF, Valuation-Z) → **Value**-Faktor, siehe [[Factor-Investing-Framework]]
+- **Moat + Quality-Fundamentals** → **Quality (QMJ)** + **Defensive (BAB)**, siehe [[QMJ-Faktor]], [[Moat-Taxonomie-Morningstar]]
+- **Technicals** → **Momentum**-Faktor (UMD)
+- **Insider** → non-AQR-Edge (kein direkter Faktor-Anker, Dynasty-Depot-spezifisch)
+
+**Seven-Sins-Pre-Flight (§29.5)** greift ab sofort bei Migration-Events (§28), bei Live-Analysen Backlog 2028.
+
+Quellen: [[Aghassi-2023-Fact-Fiction]], [[Factor-Investing-Framework]], [[Seven-Sins-Backtesting]]

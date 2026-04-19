@@ -63,3 +63,13 @@ python 03_Tools/backtest-ready/archive_flag.py resolve \
 ## Event-Study
 
 Deskriptive Auswertung: siehe [[Backtest-Methodik-Roadmap]] + `02_Analysen/flag_event_study_2026-04-17.md` (Einmal-Report n=2 Infrastruktur-Validation, Disclaimer: nicht statistisch belastbar).
+
+## Wissenschaftliche Fundierung (nachträglich 19.04.2026)
+
+Das FLAG-Event-Log ist Point-in-Time-Dokumentation und dient §29.5 Sin #2 Look-Ahead-Prevention:
+
+- **Sin #2 (Look-Ahead):** FLAG-Trigger muss in dem Moment persistiert werden, in dem die Daten vorlagen — keine rückwirkende "Ich hätte es wissen müssen"-Einträge
+- **Sin #3 (Storytelling):** Trigger-Rationale wird ex-ante im flag_events.jsonl-`notizen`-Feld dokumentiert, nicht post-hoc
+- **Kategorien-Trennung:** "Aktiver FLAG" vs. "Schema-Watch" (§30) — schema-getriggert-aber-nicht-aktiviert bekommt eigene Event-Klasse
+
+Quellen: [[Palomar-2025-Portfolio-Optimization]], [[Seven-Sins-Backtesting]]

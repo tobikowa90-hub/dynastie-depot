@@ -58,3 +58,12 @@ Diese Regel gilt bei:
 - [[Moat-Taxonomie-Morningstar]] — quality = Wide Moat
 - [[DEFCON-System]] — Dreiklang als Scoring-Fundament
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B5
+
+## Moderne Faktor-Decomposition (Aghassi 2023)
+
+Buffett-Alpha wird in akademischer Faktor-Sprache dekomponiert in:
+- **QMJ (Quality)** — Buffett's "wonderful companies at fair price"
+- **BAB (Betting against Beta)** — Low-Beta-Präferenz bei Leverage-Amplifikation
+- **Defensive** — Versicherungs-Float als low-cost leverage
+
+Aghassi 2023 validiert diese Faktoren als persistent. → [[Aghassi-2023-Fact-Fiction]], [[QMJ-Faktor]], [[Buffetts-Alpha]]

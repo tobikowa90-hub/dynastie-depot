@@ -43,3 +43,17 @@ Klasse-C-Events überschreiben alle anderen Klassen:
 - [[CapEx-FLAG]] — FLAG-Auslösung = Klasse-C-Event
 - [[Analyse-Pipeline]] — Stufe-0/1/2-Logik parallel zu Update-Klassen
 - [[Context-Hygiene]] — Klassen-Logik minimiert Token-Verbrauch
+
+## Wissenschaftliche Fundierung: Faktor-Half-Life (Flint-Vermaak 2021)
+
+Update-Klassen-Cadence wird durch Flint-Vermaak 2021 Half-Life-Tabelle gestützt:
+
+| DEFCON-Block | Faktor-Analog | Half-Life | Unsere Cadence | Status |
+|---|---|---|---|---|
+| Fundamentals | Value | 3-4M | Earnings (~3M) | ✅ aligned |
+| Moat/Quality | Quality | 4-5M | Earnings + Jahresanalyse | ✅ konservativ |
+| Technicals | Momentum | 3M | Earnings + Monitor | ✅ aligned |
+| **CapEx-FLAG** | **Investment** | **~1M** | Earnings (zu träge bei aktiven FLAGs) | ⚠️ §30 Monthly-Refresh |
+| Insider | — | Real-time | OpenInsider | ✅ aligned |
+
+→ [[Flint-Vermaak-2021-Decay]], [[Factor-Information-Decay]], INSTRUKTIONEN §30

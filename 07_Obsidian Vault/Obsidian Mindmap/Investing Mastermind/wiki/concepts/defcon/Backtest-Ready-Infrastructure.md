@@ -67,3 +67,14 @@ Entscheidung über formalen Backtest — erwartete Datenlage:
 - Plus Backfill-Historie (limitierte Präzision bei trigger-Datum-Proxies)
 
 Entscheidungsmatrix: [[Backtest-Methodik-Roadmap]].
+
+## Wissenschaftliche Fundierung (nachträglich 19.04.2026)
+
+Die Backtest-Ready-Infrastruktur ist Operationalisierung der in §29 spezifizierten Retrospective-Gates:
+
+- **Persistenz-Disziplin** validiert durch Palomar Ch 8.2 Sin #2 (Look-Ahead-Prevention), siehe [[Seven-Sins-Backtesting]]
+- **CSCV-Vorbereitung** (Bailey) — score_history.jsonl ist Input-Format für spätere PBO-Rechnung, siehe [[PBO-Backtest-Overfitting]]
+- **Komplementäre Methoden** (Palomar Ch 8.4): Walk-forward + k-fold + randomized nur im Retrospective-Kontext, nie Live, siehe [[Palomar-Methods-Reference]]
+
+→ Interim-Gate 2027-10-19: 18-Monats-Dry-Run mit `risk-metrics-calculation` + PBO-Smoke-Test.
+→ Review-Gate 2028-04-01: Volle §29-Aktivierung nach 24+ Monaten Return-Serie.

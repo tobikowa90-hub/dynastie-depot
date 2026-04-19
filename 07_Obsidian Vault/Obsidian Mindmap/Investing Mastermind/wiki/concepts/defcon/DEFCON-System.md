@@ -97,3 +97,14 @@ Das DEFCON-System hält seinen Zustand in vier getrennten Layern (siehe KONTEXT.
 | Projection | `STATE.md` | Aus State + Narrative synchronisiert |
 
 Jede Score/FLAG-Änderung triggert §18 Sync-Pflicht auf **alle sechs Dateien** im gleichen git-Commit. Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FLAG-Event-Log]].
+
+## Wissenschaftliche Fundierung (nachträglich 19.04.2026)
+
+Der DEFCON-Score wird durch 4-Paper-Framework (18./19.04.2026) methodisch validiert:
+
+- **Aghassi 2023** — Factor-Mapping (Value/Quality/Momentum/Defensive/Investment) validiert 5-Block-Scoring-Struktur, siehe [[Factor-Investing-Framework]]
+- **Bailey 2015** — PBO-Gate für spätere Strategy-Selection/Parameter-Tuning (Review 2028), siehe [[PBO-Backtest-Overfitting]]
+- **Flint-Vermaak 2021** — Half-Life-Konsistenz der Earnings-Trigger-Cadence (3M) mit Value/Quality/Momentum-Half-Lives (3-5M), siehe [[Factor-Information-Decay]]
+- **Palomar 2025** — Seven Sins of Backtesting als Pre-Flight für Migration-Events (§28/§29.5), siehe [[Seven-Sins-Backtesting]]
+
+→ Operatives Retrospective-Gate: INSTRUKTIONEN.md §29 (6 Sub-Gates, §29.4+§29.5 sofort aktiv)

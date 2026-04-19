@@ -82,3 +82,12 @@ get_stock_annual_balance_sheet (2 Jahre)    → Assets, LT Debt, Current Ratio, 
 - [[Buffett-Faktorlogik]] — F-Score operationalisiert den „quality"-Teil
 - [[DEFCON-System]] — neuer Quality-Bonus in Fundamentals-Block
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B12
+
+## Aghassi 2023 Context
+
+F-Score (Piotroski 2000) ist frühe Operationalisierung des Quality-Faktors. Aghassi 2023 validiert Quality akademisch, aber:
+- Piotroski-spezifische 9-Signale sind NICHT in DEFCON v3.7 integriert (Session 2 verworfen)
+- DEFCON-Quality-Logik nutzt eigene Metrik-Kombination (ROIC>WACC + Moat)
+- F-Score bleibt Referenz-Konzept, kein Live-Score-Input
+
+→ [[Aghassi-2023-Fact-Fiction]], [[Piotroski-2000]]

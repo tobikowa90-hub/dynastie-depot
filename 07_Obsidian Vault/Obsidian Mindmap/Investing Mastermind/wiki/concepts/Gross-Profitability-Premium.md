@@ -91,3 +91,11 @@ Costco hat GP/TA ~0,06 (strukturell niedrig durch Membership-Geschäftsmodell). 
 - [[QMJ-Faktor]] — Gross Profitability = Profitabilitäts-Dimension in QMJ
 - [[DEFCON-System]] — neue Fundamentals-Metrik (2 Pt.)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B13
+
+## Aghassi 2023 Context
+
+Gross Profitability (Novy-Marx 2013) ist eine QMJ-Unterkomponente nach Aghassi-Framework. Im DEFCON-System:
+- Nicht als eigenständige Score-Column integriert (Session 2 verworfen)
+- Indirekt abgedeckt via ROIC>WACC + Moat-Rating
+
+→ [[Aghassi-2023-Fact-Fiction]], [[QMJ-Faktor]], [[Novy-Marx-2013]]

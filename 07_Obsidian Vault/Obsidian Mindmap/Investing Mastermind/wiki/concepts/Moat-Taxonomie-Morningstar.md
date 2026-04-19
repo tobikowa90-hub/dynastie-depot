@@ -67,3 +67,10 @@ Drei objektive Auslöser für sofortigen !Analysiere:
 - [[DEFCON-System]] — Moat-Block (20 Pt.) operationalisiert daraus
 - [[ROIC-vs-WACC]] — Moat-Persistenz = ROIC > WACC langfristig
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B4 + B6
+
+## Wissenschaftliche Fundierung (19.04.2026)
+
+Morningstar-Moat-Rating ist qualitative Variante des akademischen **Quality (QMJ)**-Faktors:
+- Aghassi 2023 validiert Quality als robuster Faktor mit SR-Hurdle-Überschreitung (t-Stat >>3)
+- Moat-Breite (wide/narrow/none) korreliert mit QMJ-Komponenten (Profitability/Growth/Safety/Payout)
+- → [[Aghassi-2023-Fact-Fiction]], [[QMJ-Faktor]], [[Factor-Investing-Framework]]

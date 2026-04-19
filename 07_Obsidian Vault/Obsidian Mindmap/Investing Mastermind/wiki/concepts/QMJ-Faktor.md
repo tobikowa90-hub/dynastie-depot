@@ -51,3 +51,12 @@ Betting Against Beta (BAB) ergänzt QMJ:
 - [[Moat-Taxonomie-Morningstar]] — Qualitäts-Persistenz = Wide Moat
 - [[DEFCON-System]] — QMJ ist das konzeptuelle Fundament
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B5
+
+## Aghassi 2023 Validation
+
+Aghassi et al. 2023 bestätigen QMJ (Quality minus Junk) als einen der 4 Kanon-Faktoren mit:
+- **SR ~0,5** stand-alone US-Stocks 1926-2020
+- **t-Stat >>3** (Harvey/Liu/Zhu-Hurdle bestanden)
+- **~25% Decay post-publication** (McLean/Pontiff), aber Kern-Premium stabil
+
+→ Siehe [[Aghassi-2023-Fact-Fiction]], [[Factor-Investing-Framework]]
