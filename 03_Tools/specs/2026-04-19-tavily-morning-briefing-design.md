@@ -208,20 +208,24 @@ SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
   KLASSE 2 — Tool-Error (tavily_search returns error structure):
     - 401/403 (Auth): "NEWS-SIGNAL: Auth-Fehler — Key rotieren"; alle weiteren Queries skippen
     - 429 (Rate-Limit): "NEWS-SIGNAL: Rate-Limit erreicht (Budget ausgeschöpft)"; alle weiteren Queries skippen
-    - 5xx (Tavily down): "<TICKER> — n.v. (Tavily <code>)"; weiter
-    - 400/422 (Bad params): "<TICKER> — n.v. (bad request)"; weiter
+    - 5xx (Tavily down): "Cohort: n.v. (Tavily <code>)" bzw. "<TICKER> — n.v. (Tavily <code>)"; weiter
+    - 400/422 (Bad params): "Cohort: n.v. (bad request)" bzw. "<TICKER> — n.v. (bad request)"; weiter
+    - 2z (Generisch: MCP-Tool-Error ohne HTTP-Code, z.B. Protocol-Error,
+       Serialisation-Error, unbekannter Fehler): "Cohort: n.v. (tool-error: <kurz>)"
+       bzw. "<TICKER> — n.v. (tool-error)"; weiter
     - Phase 0 Round 1 Test C bestätigt: 422 wird sauber gecatched, Run läuft durch
 
   KLASSE 3 — Response-Schema unerwartet:
     - `results[]` fehlt oder malformed in JSON-Struktur
-    - Log "<TICKER> — n.v. (parse-error)"
+    - Log "Cohort: n.v. (parse-error)" bzw. "<TICKER> — n.v. (parse-error)"
     - Weiter mit nächstem Ticker
 
   KLASSE 4 — Valides Result aber results[] leer:
-    - "<TICKER> — keine News" (kein Fehler, sondern normaler Zero-Match)
+    - "Cohort: Keine material News" bzw. "<TICKER> — keine News"
+      (kein Fehler, sondern normaler Zero-Match)
 
   KLASSE 5 — Valides Result, results[] nicht-leer, aber nach Materialitäts-Filter alles Noise:
-    - "<TICKER> — keine material News"
+    - "Cohort: Keine material News" bzw. "<TICKER> — keine material News"
 
   KLASSE 6 — Claude-Runtime-Timeout vor Schritt 4.5-Abschluss (>90s gesamt):
     - Ist KEIN fail-open-Pfad. Runtime-Fehler = Rollback-Trigger (siehe §11).
@@ -346,11 +350,12 @@ Siehe Section 6(E) für die vollständige Klassen-Taxonomie. Zusammenfassung:
 | 1. MCP Connector-Fail | `mcp.tavily.com` down, Connector-Init scheitert | Runtime-Error, Rollback-Trigger | — (prompt-unabfangbar) |
 | 2a. Tool-Error 401/403 | Auth-Fehler | Loud flag, alle weiteren Queries skippen | `NEWS-SIGNAL: Auth-Fehler — Key rotieren` |
 | 2b. Tool-Error 429 | Rate-Limit | Loud flag, alle weiteren Queries skippen | `NEWS-SIGNAL: Rate-Limit erreicht` |
-| 2c. Tool-Error 400/422 | Bad params | Catch, weiter (Phase 0 R1 T-C verifiziert) | `[TICKER] — n.v. (bad request)` |
-| 2d. Tool-Error 5xx | Tavily down | Catch, weiter | `[TICKER] — n.v. (Tavily <code>)` |
-| 3. Response-Schema unerwartet | `results[]` fehlt oder malformed | Catch, weiter | `[TICKER] — n.v. (parse-error)` |
-| 4. Empty results[] | Keine Treffer | Kein Fehler | `[TICKER] — keine News` |
-| 5. Materialitäts-Filter verwirft alles | Noise-only | Kein Fehler | `[TICKER] — keine material News` |
+| 2c. Tool-Error 400/422 | Bad params | Catch, weiter (Phase 0 R1 T-C verifiziert) | Cohort: `Cohort: n.v. (bad request)` / Per-Ticker: `[TICKER] — n.v. (bad request)` |
+| 2d. Tool-Error 5xx | Tavily down | Catch, weiter | Cohort: `Cohort: n.v. (Tavily <code>)` / Per-Ticker: `[TICKER] — n.v. (Tavily <code>)` |
+| 2z. Generischer MCP-Tool-Error | Non-HTTP: Protocol, Serialisation, Unknown | Catch, weiter | Cohort: `Cohort: n.v. (tool-error)` / Per-Ticker: `[TICKER] — n.v. (tool-error)` |
+| 3. Response-Schema unerwartet | `results[]` fehlt oder malformed | Catch, weiter | Cohort: `Cohort: n.v. (parse-error)` / Per-Ticker: `[TICKER] — n.v. (parse-error)` |
+| 4. Empty results[] | Keine Treffer | Kein Fehler | Cohort: `Cohort: Keine material News` / Per-Ticker: `[TICKER] — keine News` |
+| 5. Materialitäts-Filter verwirft alles | Noise-only | Kein Fehler | Cohort: `Cohort: Keine material News` / Per-Ticker: `[TICKER] — keine material News` |
 | 6. Claude-Runtime-Timeout | >90s gesamt | Rollback-Trigger, NICHT fail-open | — (Run wird vom Runtime abgebrochen) |
 
 ### Known Residual Risk
@@ -382,9 +387,9 @@ Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh` wiederverwenden. Prompt je Test vi
 
 | # | Test | Setup | Pass-Kriterium |
 |---|---|---|---|
-| T1 | Happy-Path | Voller v3.0-Prompt mit mock-STATE (1-2 Ticker mit FLAG/Earnings), echter Key | Cohort-curl + ≥1 Per-Ticker-curl, Allowlist-Domains only, material-Filter angewandt, kein Abbruch |
+| T1 | Happy-Path | Voller v3.0-Prompt mit mock-STATE (1-2 Ticker mit FLAG/Earnings), Tavily-MCP attached | Cohort-`tavily_search` + ≥1 Per-Ticker-`tavily_search`, Allowlist-Domains only, material-Filter angewandt, kein Abbruch |
 | T2 | Empty-Trigger-List | mock-STATE ohne FLAGs/Earnings/stale Scores | News-Sektion zeigt nur Cohort, "Keine getriggerten Ticker" |
-| T3 | Symbol-Trap (adversarial, Codex Fix #1) | Per-Ticker-Query für SU.PA und RMS.PA erzwingen; **zusätzlich**: prüfe query-string in curl-Body (muss COMPANY_NAME UND TICKER enthalten); **und**: manueller Noise-Injection — Tester liest Output und verifiziert dass keine Suncor/Rockwell-Headlines durchgerutscht sind auch bei hoher Tavily-Rangliste für Homonyme | Results enthalten nur Schneider/Hermès-Headlines; curl-Body enthält beide Terme; manuelle Content-Prüfung findet keinen Trap-Durchschlag |
+| T3 | Symbol-Trap (adversarial, Codex Fix #1) | Per-Ticker-Query für SU.PA und RMS.PA erzwingen; **zusätzlich**: prüfe den emittierten `tavily_search.query`-Parameter (muss COMPANY_NAME UND TICKER enthalten); **und**: manuelle Noise-Injection — Tester liest Output und verifiziert dass keine Suncor/Rockwell-Headlines durchgerutscht sind auch bei hoher Tavily-Rangliste für Homonyme | Results enthalten nur Schneider/Hermès-Headlines; emittierter `query`-String enthält beide Terme; manuelle Content-Prüfung findet keinen Trap-Durchschlag |
 | T4 | Fehler-Klassen | Prompt provoziert Klassen 2c (bad params: `query=""`+`max_results=-1` analog Phase 0 Test C) und 4 (valid query mit sehr nischigen Term für results[]=[]) | Klasse 2c: Phase 0 R1 Test C bereits PASS; Klasse 4 sichtbar als "keine News"; Run läuft durch |
 | T5 | Post-Update Content-Verify (Codex Fix #7) | Nach `RemoteTrigger update`: `RemoteTrigger get` aufrufen, content grep auf `SCHRITT 4.5` + Negativ-Grep auf `Keine News-Suche` | Beide Checks PASS bevor Manual-Run getriggert wird |
 
@@ -418,27 +423,26 @@ Durchgeführt 2026-04-19, Ergebnis führte zum Revert auf MCP:
 ### Gate-Sequenz (alle Schritte müssen PASS)
 
 ```
-1. Phase 0 Round 2 (A2-D2) auf Probe-Trigger PASS
-2. T1-T5 auf Probe-Trigger PASS
-3. Prompt v3.0 committed nach 03_Tools/morning-briefing-prompt-v3.md
-4. Push zu GitHub (VOR 10:00 UTC — sonst liest Cron morgen alte Daten)
-5. RemoteTrigger update auf Prod-Trigger:
+1. T1-T5 auf Probe-Trigger PASS (Phase 0 Round 1 ist Baseline, Round 2 moot — siehe §15 App.C)
+2. Prompt v3.0 committed nach 03_Tools/morning-briefing-prompt-v3.md
+3. Push zu GitHub (VOR 10:00 UTC — sonst liest Cron morgen alte Daten)
+4. RemoteTrigger update auf Prod-Trigger:
    - ccr.events[0].data.message.content = v3.0 prompt
    - ccr.session_context.allowed_tools = ["Bash","Read","Glob","Grep","mcp__tavily__tavily_search"]
    - ccr.mcp_connections: UNVERÄNDERT (Shibui + Tavily bereits via UI attached, Round 1)
-6. POST-UPDATE VERIFY (Codex Fix #7):
+5. POST-UPDATE VERIFY (Codex Fix #7):
    - RemoteTrigger get trig_01PyAVAxFpjbPkvXq7UrS2uG
    - Assert content.contains("SCHRITT 4.5")
    - Assert NOT content.contains("Keine News-Suche")
    - Bei Assertion-Fail: RE-UPDATE nötig, KEIN Manual-Run
-7. Manueller "Jetzt ausführen" in Desktop App
-8. Output-Validierung:
+6. Manueller "Jetzt ausführen" in Desktop App
+7. Output-Validierung:
    - News-Sektion present?
    - Allowlist-Domains only?
    - Trigger-List respektiert (Slot-Struktur korrekt)?
    - Materialitäts-Filter greift (keine "TMO to report earnings"-Noise)?
-   - curl-Fehler-Pfad falls provoziert: catched?
-9. PASS → DONE. FAIL → Rollback (siehe §11).
+   - MCP-Tool-Fehlerpfad falls provoziert: catched?
+8. PASS → DONE. FAIL → Rollback (siehe §11).
 ```
 
 ### Timing
