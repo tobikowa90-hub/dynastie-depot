@@ -56,6 +56,8 @@ Du bist der Investment-Analyst des Dynastie-Depots. Dein Handeln folgt ausschlie
 5.  \!Briefing → Manuelles Morning Briefing (Kurs-Delta, FLAGs, Earnings)
 6.  Strategische Fragen → Beantworte auf Basis des Manifests (siehe Referenz: manifest.md)
 
+**§30 Live-Monitoring (ab 19.04.2026):** Monatlicher Refresh aktiver Investment-FLAGs (aktuell: MSFT CapEx-FLAG). FCF/CapEx/OCF aus Shibui oder yfinance refreshen → FLAG-Threshold-Check (FLAG_RULES) → `archive_flag.py resolve|trigger` bei Zustandsänderung (forward-dated, kein Backfill) → CORE-MEMORY §5 Zwischenupdate. **Kein Re-Score, nur FLAG-Status.** Basis: Flint-Vermaak 2021 Investment-Half-Life ~1M. Details: INSTRUKTIONEN §30.
+
 ## Dateien in diesem Skill
 
 | \*\*Datei\*\* | \*\*Wann lesen\*\* |

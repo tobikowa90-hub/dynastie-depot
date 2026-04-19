@@ -737,7 +737,9 @@ Monatliche Refresh-Pflicht für **aktive Investment-FLAGs** zwischen Earnings-Te
 
 **"Aktiver FLAG"** (R1 pflicht) = binär ausgelöst in `05_Archiv/backtest-ready/flag_events.jsonl` ohne nachfolgenden `resolve`-Event.
 
-**"Schema-Watch (nicht FLAG-aktiv)"** (R1 NICHT automatisch) = schema-getriggert per FLAG_RULES, aber bewusst nicht aktiviert (z.B. TMO fcf_trend_neg FY25: WC-Delta erklärt FCF-Rückgang, kein struktureller Trend). Schema-Watch ist semantisch separat von STATE.md "Aktive Watches" (= allgemeine Beobachtungsnotizen).
+**"Schema-Watch (nicht FLAG-aktiv)"** (R1 NICHT automatisch) = schema-getriggert per FLAG_RULES, aber bewusst nicht aktiviert (z.B. TMO fcf_trend_neg FY25: WC-Delta erklärt FCF-Rückgang, kein struktureller Trend). **Kein aktiver FLAG, kein R1, kein flag_events-Pfad.** Schema-Watch ist semantisch separat von STATE.md "Aktive Watches" (= allgemeine Beobachtungsnotizen).
+
+**Drei-Ebenen-Disambiguierung:** (1) "Aktiver FLAG" (§30, Monthly-Refresh pflicht, flag_events.jsonl-Trigger) ≠ (2) "Schema-Watch" (schema-getriggert-aber-nicht-aktiviert, kein flag_events) ≠ (3) STATE.md "Aktive Watches" (allgemeine Beobachtungsnotizen, kein FLAG-Pfad).
 
 ### 30.2 Aktuelle Scope (Stand 19.04.2026)
 
@@ -750,15 +752,16 @@ Monatliche Refresh-Pflicht für **aktive Investment-FLAGs** zwischen Earnings-Te
 
 1. **Trigger-Prüfung:** Aktueller FCF, CapEx, OpCF abrufen (Shibui oder yfinance)
 2. **FLAG-Re-Evaluation:** Threshold-Check gegen FLAG_RULES — hält FLAG? Auflösung?
-3. **FLAG-Event append** bei Zustandsänderung: `archive_flag.py resolve` oder erneuter `trigger`
+3. **FLAG-Event append** bei Zustandsänderung: `archive_flag.py resolve` oder erneuter `trigger`. **Nur forward-datierte Events (Refresh-Datum = Event-Datum), kein Backfill ohne explizite Kennzeichnung** (§29.5 Sin #2 Look-Ahead-Prevention).
 4. **CORE-MEMORY §5:** Zwischenupdate mit FLAG-Zustand
-5. **Kein Re-Score** der Ticker-Gesamt-DEFCON-Bewertung — nur Investment-Block-Observation
+5. **Kein Re-Score** der Ticker-Gesamt-DEFCON-Bewertung — nur Investment-Block-Observation. **FLAG-Events ändern nur FLAG-Status, niemals Score-Komponenten/-gewichte/-penalties.**
 
 ### 30.4 Constraints (Applied-Learning-Wächter)
 
 - **Keine Auto-Rescore** — §30 prüft nur bestehende FLAG-Trigger, keine neue Punkte-Logik
-- **Keine Ausweitung** auf andere Faktor-Klassen (Quality/Value/Momentum) ohne Applied-Learning-Re-Review
+- **Keine Ausweitung** auf andere Faktor-Klassen (Quality/Value/Momentum) ohne Applied-Learning-Re-Review — Re-Review-Entscheidung **dokumentiert in CORE-MEMORY §5** als Lektion
 - **Ausweitung auf andere Ticker** innerhalb Investment-Klasse zulässig, sobald neue aktive Investment-FLAGs entstehen
+- **Keine Score-Änderung via §30** — FLAG-Events ändern nur FLAG-Status, nie Score-Komponenten oder Gewichte
 
 ### 30.5 Wissenschaftliche Fundierung
 

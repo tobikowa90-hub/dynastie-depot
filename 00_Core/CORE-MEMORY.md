@@ -209,6 +209,19 @@ Bei Unternehmen mit signifikanter Produktion in Risikoländern (Malaysia, Thaila
 **Mixed-Currency-Caveat:** USD+EUR-Titel werden aktuell lokalwährungs-gemittelt (synthetischer Local-Return-Index). FX-Conversion vor §29.2 AQR-Benchmark-Vergleich pflicht → Interim-Gate 2027-10-19.
 **Präzedenz:** Sin #2 Look-Ahead-Prevention operational durch frühen Persistenz-Start (Codex-Scope-Review 19.04. identifizierte R5 als Blind-Spot in R1-R4-Liste). Codex-Code-Review 19.04. identifizierte zusätzlich Wall-Clock-Date-Bias (Sonntag-Tag mit Freitag-Daten) — Fix via yfinance-Trading-Date bestätigt die Wichtigkeit des Post-Hoc-Reviews.
 
+### R1 §30 Live-Monitoring aktiviert (v3.7.2 — 19.04.2026)
+**Trigger:** Phase 4 Paper-Integration systemweit (Spec 976e67a, Commit c1f0f21 Draft + Post-Codex-Revisions).
+**Befund:** §30 Live-Monitoring & Cadence aktiv in INSTRUKTIONEN.md (v1.11). Monthly-Refresh pflicht für aktive Investment-FLAGs (Flint-Vermaak Investment-Half-Life ~1M).
+**Regel:**
+→ **Aktuelle Scope:** MSFT CapEx/OCF 83.6% → Monthly-Refresh pflicht (erster Refresh ~19.05.2026, Zwischen-Refresh vor Q3-Earnings 29.04. nicht nötig — Earnings-Trigger deckt ab)
+→ **TMO** fcf_trend_neg bleibt **Schema-Watch**, keine §30-Pflicht (Q1 23.04. = natürliches Resolve-Gate)
+→ **§30-Ausweitung** auf weitere Faktor-Klassen (Quality/Value/Momentum) erfordert Applied-Learning-Re-Review — Re-Review-Entscheidung dokumentiert als eigene CORE-MEMORY §5-Lektion (Codex-Wächter 19.04.)
+→ **Drei-Ebenen-Semantik-Trennung:** "Aktiver FLAG" (§30, flag_events.jsonl-Trigger, Monthly-Refresh pflicht) ≠ "Schema-Watch" (schema-getriggert-nicht-aktiviert, kein flag_events-Pfad) ≠ STATE.md "Aktive Watches" (allgemeine Beobachtungsnotiz, kein FLAG-Mechanik)
+→ **FLAG-Events ändern nur FLAG-Status, niemals Score-Komponenten/-gewichte** — §30 ist Monitoring-Cadence-Regel, kein Scoring-Change
+→ **Forward-dating-Pflicht:** Monthly-Refresh-Events in flag_events.jsonl nur mit aktuellem Refresh-Datum (kein Backfill ohne Kennzeichnung — §29.5 Sin #2)
+**Codex-Review-Revisions appliziert (5/5):** Score-Unverändbarkeit (§30.3.5), Schema-Watch-Klarstellung (§30.1), Applied-Learning-Re-Review-Ablage (§30.4), Drei-Ebenen-Disambiguierung (§30.1), Forward-Dating-Anker (§30.3.3).
+**Präzedenz:** Applied-Learning "Paper-Ingest ≠ System-Update" in Monitoring-Layer operationalisiert. §30-Entscheidung ist NICHT Score-Update — die Monthly-Refresh ist neue Cadence-Regel, nicht neue DEFCON-Logik.
+
 ---
 
 ## 6. System-Upgrades & Versionsverlauf
