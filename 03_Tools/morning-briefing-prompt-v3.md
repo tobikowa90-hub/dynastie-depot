@@ -5,6 +5,10 @@
 
 ## Changelog
 
+### v3.0.2 (2026-04-20) — Sequenzierungs-Fix gegen Parallelisierungs-Retry
+- FIX: Explizite Anti-Parallelisierungs-Direktive zwischen SCHRITT 3 und SCHRITT 4.5. Discovered bei T1-Run #2 2026-04-20: Agent startete Yahoo-curl (SCHRITT 3c) und Tavily (SCHRITT 4.5) parallel, Yahoo-403-Failure killte Tavily-Call → Retry-Overhead trieb Gesamt-Laufzeit ueber 90s (Spec §6(E) Klasse 6 Rollback-Gate).
+- Codex-Caveat: Prompt-Wording kann Runtime-Parallelisierung reduzieren, nicht garantieren. Bei Re-Overshoot: strukturelle Loesung (Tool-Call-Reduktion).
+
 ### v3.0.1 (2026-04-20) — TZ-Fix SCHRITT 1
 - FIX: SCHRITT 1 nutzt jetzt explizit Europe/Berlin zur Wochentag-Bestimmung (`TZ='Europe/Berlin' date`). Ohne diesen Fix lief Cloud-Runtime in UTC, und Manual-Runs zwischen ~22-24 MESZ wurden faelschlich als Vortag (Sonntag) erkannt → fuehrte zu ungewolltem WOCHENEND-MODUS.
 - Discovered bei T1-Run 2026-04-20 00:13 MESZ (war UTC Sonntag 22:13).
@@ -109,6 +113,11 @@ CRITICAL GUARDS:
 - Bei fehlenden Daten: 'Datenquelle nicht verfuegbar' schreiben. KEINE Gruende erfinden.
 
 SCHRITT 4 — Briefing generieren (erstmal nur Grundstruktur, News kommt in 4.5 dazwischen):
+
+SEQUENZIERUNGS-DIREKTIVE (KRITISCH):
+SCHRITT 3 (Kurse: Shibui + Yahoo-curl) MUSS vollstaendig abgeschlossen sein, BEVOR SCHRITT 4.5 (Tavily-Calls) beginnt.
+Fuehre Shibui-Query und Yahoo-curl-Block nicht parallel mit Tavily aus. Grund: Yahoo-curl kann mit HTTP 403 fehlschlagen (Known Limitation #1); wenn parallel zu Tavily gestartet, kann die Runtime den Tavily-Call abbrechen und Retry-Overhead erzeugen, der das 90s-Laufzeit-Budget sprengt.
+Reihenfolge zwingend: 3a Shibui → 3b Delta → 3c Yahoo-curl → 4.5 Tavily (Cohort + Per-Ticker).
 
 SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
 
