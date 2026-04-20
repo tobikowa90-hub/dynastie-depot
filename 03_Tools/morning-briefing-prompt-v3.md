@@ -5,6 +5,12 @@
 
 ## Changelog
 
+### v3.0.3 (2026-04-20) — Yahoo-Gap-Elimination (Lever 1, Codex-approved)
+- FIX: SCHRITT 3c ersetzt den Yahoo-curl-Block durch deterministisches `n.v. [Yahoo 403 known]`-Output fuer BRK-B, RMS.PA, SU.PA. Grund: Yahoo-403 ist dokumentierte Cloud-Umgebungs-Limitation (Known Limitation #1, seit Wochen stabil). 3 Leerlauf-Calls × ~20-30s = 60-90s deterministische Runtime-Einsparung ohne News-Recall-Kosten.
+- FIX: Known Limitation #1 umformuliert — jetzt explizit "frozen known limitation" mit klarer Abgrenzung: es ist eine Kurs-Coverage-Einschraenkung, kein Material-News-Recall-Problem. Falls Yahoo spaeter doch erreichbar waere, wird das bewusst nicht getestet (deterministisches n.v. > spekulativer Retry).
+- NON-GOAL: Lever 2 (Cohort-Narrowing / OR-Batch / Cohort-Short-Circuit) bleibt REJECTED. User-Prinzip 2026-04-20: Korrektheit > Laufzeit. Per-Ticker-Tavily-Calls bleiben strikt erhalten, keine Recall-Regression akzeptabel.
+- Runtime-Erwartung nach v3.0.3: ~270s (statt 360s). Spec §6(E)/§11 wurde parallel auf Soft-Alert-Schema (<180s healthy / 180-400s observe / >400s alert) rebased — kein harter Auto-Rollback mehr via Runtime allein.
+
 ### v3.0.2 (2026-04-20) — Sequenzierungs-Fix gegen Parallelisierungs-Retry
 - FIX: Explizite Anti-Parallelisierungs-Direktive zwischen SCHRITT 3 und SCHRITT 4.5. Discovered bei T1-Run #2 2026-04-20: Agent startete Yahoo-curl (SCHRITT 3c) und Tavily (SCHRITT 4.5) parallel, Yahoo-403-Failure killte Tavily-Call → Retry-Overhead trieb Gesamt-Laufzeit ueber 90s (Spec §6(E) Klasse 6 Rollback-Gate).
 - Codex-Caveat: Prompt-Wording kann Runtime-Parallelisierung reduzieren, nicht garantieren. Bei Re-Overshoot: strukturelle Loesung (Tool-Call-Reduktion).
@@ -30,7 +36,7 @@
 
 ## Known Limitations v3.0
 
-1. **Yahoo 403** (unveraendert) — BRK.B/RMS/SU-Kurse nicht verfuegbar aus Cloud-Umgebung.
+1. **Yahoo 403** (v3.0.3: frozen known limitation, deterministisch behandelt) — BRK-B / RMS.PA / SU.PA Kurse sind in Cloud-Umgebung dauerhaft nicht abrufbar (Yahoo blockiert Datacenter-IPs). Der Morning-Briefing-Runtime-Pfad ruft fuer diese drei Symbole KEINEN Yahoo-curl mehr auf und gibt deterministisch `n.v. [Yahoo 403 known]` aus. Dies ist eine bewusste **Kurs-Coverage-Einschraenkung**, KEIN News-/Event-Recall-Problem (Tavily-Per-Ticker-Calls fuer diese Symbole bleiben unveraendert aktiv, wenn der Ticker getriggert ist). Wenn Yahoo temporaer doch erreichbar waere, wird das nicht getestet. V3.1-Backlog "Cloud-API fuer BRK.B/RMS/SU" bleibt der Weg zur echten Behebung.
 2. **Push-Notifications** (unveraendert) — wartet auf Anthropic iOS Routines-Support.
 3. **`RemoteTrigger run` API** (unveraendert) — noop fuer Cron-Trigger, manuell nur via Desktop App.
 4. **Kein Delta fuer Yahoo-Symbole** (unveraendert).
@@ -95,16 +101,21 @@ WICHTIG: Tabelle heisst stock_quotes (NICHT stock_prices).
 3b) Fuer Positionen mit Score-Datum VOR heute: berechne Kurs-Delta seit Score-Datum. Nutze dazu die close-Kurse aus Shibui am jeweiligen Score-Datum.
 - Wenn Score-Datum == heute: zeige 'Score heute' statt Delta-Prozent.
 
-3c) Yahoo-Kurse fuer 3 Sonderfaelle (Bash curl):
-Diese 3 Titel sind NICHT in Shibui. Hole sie via Yahoo Finance:
+3c) Yahoo-Sonderfaelle — deterministische Behandlung (v3.0.3):
 
-for SYM in 'BRK-B' 'RMS.PA' 'SU.PA'; do
-  echo "=== $SYM ==="
-  curl -sL "https://query1.finance.yahoo.com/v8/finance/chart/$SYM?interval=1d&range=5d" -H 'User-Agent: Mozilla/5.0' | grep -oE '"(regularMarketPrice|currency)":("?[^",}]*"?)'
-done
+Diese 3 Titel sind NICHT in Shibui. Sie sind als Known Limitation #1 (frozen) zu behandeln.
+Rufe fuer BRK-B, RMS.PA und SU.PA KEIN Yahoo-curl auf.
 
-Zuordnung: BRK-B = Berkshire Hathaway (USD), RMS.PA = Hermes International (EUR), SU.PA = Schneider Electric (EUR).
-Fuer diese 3: nur aktuellen Kurs anzeigen, kein Delta (Yahoo-Timeseries in V3).
+Gib fuer alle drei deterministisch aus:
+  - BRK-B  Kurs: n.v. [Yahoo 403 known]   (Berkshire Hathaway, USD)
+  - RMS.PA Kurs: n.v. [Yahoo 403 known]   (Hermes International, EUR)
+  - SU.PA  Kurs: n.v. [Yahoo 403 known]   (Schneider Electric, EUR — NICHT Suncor Energy!)
+
+WICHTIG:
+- Keine Symbol-Varianten ausprobieren, keine Retries, keine alternativen Yahoo-Endpunkte.
+- Delta-Spalte bleibt leer (kein Referenz-Kurs).
+- Tavily-Per-Ticker-Calls fuer diese Symbole bleiben davon UNBERUEHRT, wenn sie getriggert sind.
+- Es ist eine Kurs-Coverage-Einschraenkung, kein News-Recall-Problem.
 
 CRITICAL GUARDS:
 - NIEMALS 'SU' in einer Shibui-Query verwenden! Shibui code='SU' ist Suncor Energy (Kanada), NICHT Schneider Electric.
@@ -114,10 +125,11 @@ CRITICAL GUARDS:
 
 SCHRITT 4 — Briefing generieren (erstmal nur Grundstruktur, News kommt in 4.5 dazwischen):
 
-SEQUENZIERUNGS-DIREKTIVE (KRITISCH):
-SCHRITT 3 (Kurse: Shibui + Yahoo-curl) MUSS vollstaendig abgeschlossen sein, BEVOR SCHRITT 4.5 (Tavily-Calls) beginnt.
-Fuehre Shibui-Query und Yahoo-curl-Block nicht parallel mit Tavily aus. Grund: Yahoo-curl kann mit HTTP 403 fehlschlagen (Known Limitation #1); wenn parallel zu Tavily gestartet, kann die Runtime den Tavily-Call abbrechen und Retry-Overhead erzeugen, der das 90s-Laufzeit-Budget sprengt.
-Reihenfolge zwingend: 3a Shibui → 3b Delta → 3c Yahoo-curl → 4.5 Tavily (Cohort + Per-Ticker).
+SEQUENZIERUNGS-DIREKTIVE (KRITISCH, v3.0.3 aktualisiert):
+SCHRITT 3 (Kurse: Shibui + deterministische Yahoo-n.v.-Zuweisung) MUSS vollstaendig abgeschlossen sein, BEVOR SCHRITT 4.5 (Tavily-Calls) beginnt.
+Fuehre Shibui-Query und SCHRITT 3c NICHT parallel mit Tavily aus. Grund: Trennung verhindert generell Tool-Scheduler-Kollisionen und erzwingt Trigger-Liste-Finalisierung (abhaengig von Score-Alter aus Shibui-Response) vor Tavily-Per-Ticker-Dispatch.
+Hinweis: Ab v3.0.3 gibt es keinen Yahoo-curl-Call mehr, nur noch deterministische n.v.-Zuweisung fuer BRK-B/RMS.PA/SU.PA (siehe 3c). Die Sequenzierungs-Direktive bleibt trotzdem aktiv, weil auch ohne Yahoo ein paralleler Shibui-vs-Tavily-Start unvorhersehbares Tool-Scheduling ausloesen kann.
+Reihenfolge zwingend: 3a Shibui → 3b Delta → 3c Yahoo-n.v.-Zuweisung → 4.5 Tavily (Cohort + Per-Ticker).
 
 SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
 
@@ -253,7 +265,7 @@ Wenn mcp__tavily__tavily_search einen Fehler oder Error-Status zurueckgibt:
 
 NIEMALS den Run komplett abbrechen. Fehler in Schritt 4.5 duerfen nur die News-Sektion degradieren.
 
-Budget-Fallback: Wenn nach Cohort + 3 Per-Ticker-Queries bereits >60s Gesamt-Laufzeit vergangen sind (sichtbar am Agent-Timing), skippe die restlichen Per-Ticker-Queries und logge "NEWS-SIGNAL: Runtime-Budget gekappt, <n> Ticker nicht abgefragt".
+Runtime-Hinweis (v3.0.3): Fuehre ALLE geplanten Per-Ticker-Queries vollstaendig aus. KEIN Skip aus Runtime-Gruenden. Das frueher hier definierte 60s-Budget-Gate wurde in v3.0.3 entfernt, weil es Recall gegen Laufzeit eintauscht — unvereinbar mit dem Korrektheits-Prinzip. Laufzeit wird in der Spec §6(E) Klasse 6 nur beobachtet (Soft-Alert <180s / 180-400s / >400s), nicht mehr gekappt.
 
 SCHRITT 4 — Briefing generieren:
 Formatiere exakt so:

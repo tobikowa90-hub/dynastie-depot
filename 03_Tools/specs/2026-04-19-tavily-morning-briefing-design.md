@@ -1,11 +1,17 @@
 # Design Spec — Tavily Integration in Morning Briefing
 
-**Date:** 2026-04-19
-**Author:** Tobias Kowalski (via Claude + 2× Codex review rounds)
-**Status:** Awaiting approval → writing-plans
-**Target:** Morning Briefing Remote Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, prompt v2.2 → v3.0
+**Date:** 2026-04-19 (v3.0.3 rebase: 2026-04-20, siehe Revision Log unten)
+**Author:** Tobias Kowalski (via Claude + 2× Codex review rounds + v3.0.3 rebase review)
+**Status:** Implemented (v3.0 → v3.0.1 → v3.0.2 → v3.0.3 Soft-Alert-Rebase)
+**Target:** Morning Briefing Remote Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, prompt v2.2 → v3.0.3
 **Architecture:** **MCP via `mcp__tavily__tavily_search`** (CLI-Pivot wurde 2026-04-19 getestet, musste zurückgenommen werden — Tavily Dev-Keys haben REST-Host-Allowlist; nur MCP-Proxy-Pfad funktioniert ohne Paid-Plan. Siehe Appendix D.)
 **Spec location:** `03_Tools/specs/` (co-located with prompt files, not `docs/superpowers/specs/` — project has no `docs/` root)
+
+### Revision Log
+- **v3.0 (2026-04-19):** Initial MCP-based Tavily integration with hard 90s PASS / >90s×2 Rollback-Gate in §6(E) Klasse 6.
+- **v3.0.1 (2026-04-20):** TZ='Europe/Berlin' hotfix for weekday detection (prompt-level, no spec change).
+- **v3.0.2 (2026-04-20):** Sequenzierungs-Direktive SCHRITT 3 → 4.5 (prompt-level, no spec change).
+- **v3.0.3 (2026-04-20):** Lever-1 Yahoo-Gap-Elimination + Soft-Alert-Rebase. Rationale: T1-Rerun FAIL mit 360s bei funktional korrekter Ausgabe + User-Prinzip "Korrektheit > Laufzeit" (feedback_correctness_over_runtime memory). Hard 90s-Rollback-Gate in §6(E) Klasse 6 + 60s-Budget-Fallback ENTFERNT. Ersetzt durch Soft-Alert-Schema <180s healthy / 180-400s observe / >400s alert (kein Auto-Rollback). Per-Ticker-Calls laufen vollstaendig durch. §8 Error-Handling-Tabelle, §11 Rollback-Trigger, §12 Monitoring-Tabelle, §13 Risk #9 entsprechend aktualisiert.
 
 ---
 
@@ -227,19 +233,39 @@ SCHRITT 4.5 — NEWS-SIGNAL (nur Werktag):
   KLASSE 5 — Valides Result, results[] nicht-leer, aber nach Materialitäts-Filter alles Noise:
     - "Cohort: Keine material News" bzw. "<TICKER> — keine material News"
 
-  KLASSE 6 — Claude-Runtime-Timeout vor Schritt 4.5-Abschluss (>90s gesamt):
-    - Ist KEIN fail-open-Pfad. Runtime-Fehler = Rollback-Trigger (siehe §11).
-    - Mitigation: Hard-Cap 6 Tool-Calls (~10s/Call worst-case), praktisch meist <30s.
-    - Wenn trotzdem Timeout: Spec-Revision in v3.1.
+  KLASSE 6 — Runtime-Monitoring (v3.0.3 rebased: Soft-Alert statt Hard-Gate):
+    Grund fuer die Rebase: User-Prinzip 2026-04-20 "Korrektheit > Laufzeit". Runtime
+    allein darf NIE einen Rollback ausloesen solange die Ausgabe funktional korrekt
+    ist. Das urspruengliche <90s-Hard-Gate aus v3.0 erzwang implizit eine Tavily-
+    Per-Ticker-Kuerzung und kollidierte damit mit dem Korrektheits-Prinzip.
 
-  Budget-Fallback (Codex Fix #4, partial):
-    Wenn nach Cohort + 3 Per-Ticker-Queries die verbrauchte Zeit >60s:
-      - Skippe die restlichen Per-Ticker-Queries
-      - Log "NEWS-SIGNAL: Runtime-Budget gekappt, <n> Ticker nicht abgefragt"
-      - Weiter mit Schritt 4
+    SOFT-ALERT-SCHEMA:
+      - <180s:       HEALTHY — nicht logwuerdig
+      - 180s-400s:   OBSERVE — in Run-Log notieren, keine Aktion
+      - >400s:       ALERT — manuellen Review triggern (nicht automatisch rollback)
+      - Absoluter Oberrand: durch Desktop-App/Runtime-Limit gegeben (empirisch offen,
+        vermutlich ~600s) — wenn der Runtime selbst den Run killt, greift Klasse 1
+        (Runtime-Error) nicht Klasse 6.
 
-  NIEMALS Run abbrechen für Klassen 2-5 (Klasse 1 Connector-Fail und Klasse 6 Runtime-Timeout
-  sind außerhalb der Prompt-Kontrolle und lösen Rollback aus).
+    WICHTIG: Kein Tool-Call-Skip aus Runtime-Gruenden. Der frueher definierte 60s-
+    Budget-Fallback wird ebenfalls entfernt (s.u.), weil er Recall gegen Laufzeit
+    eintauscht. Per-Ticker-Calls laufen vollstaendig durch, solange der Runtime-
+    Timeout selbst nicht zuschlaegt.
+
+    Historie: v3.0 setzte <90s als PASS / >90s×2 als Rollback-Gate. v3.0.3 rebased
+    auf obiges Soft-Alert-Schema nach Codex-Review (T1-FAIL 2026-04-20 mit 360s bei
+    funktional korrekter Ausgabe).
+
+  Budget-Fallback (v3.0.3 ENTFERNT):
+    Der frueher definierte 60s-Budget-Fallback ("skippe restliche Per-Ticker-Queries
+    wenn >60s verbraucht") wurde mit v3.0.3 entfernt. Begruendung: er implementierte
+    Laufzeit-Gewinn durch Recall-Regression — ein getriggerter Ticker wurde bei knappem
+    Budget ohne Material-News-Check uebersprungen. Das widerspricht dem User-Prinzip
+    "Korrektheit > Laufzeit". Per-Ticker-Calls laufen jetzt vollstaendig durch.
+
+  NIEMALS Run abbrechen fuer Klassen 2-5. Klasse 1 (Connector-Fail) ist ausserhalb der
+  Prompt-Kontrolle (Runtime wirft Tool-Error). Klasse 6 (Runtime-Monitoring) triggert
+  KEINEN automatischen Rollback mehr (v3.0.3 Soft-Alert-Schema).
 ```
 
 ### Implizite Prompt-Änderung zu v2.2
@@ -356,7 +382,7 @@ Siehe Section 6(E) für die vollständige Klassen-Taxonomie. Zusammenfassung:
 | 3. Response-Schema unerwartet | `results[]` fehlt oder malformed | Catch, weiter | Cohort: `Cohort: n.v. (parse-error)` / Per-Ticker: `[TICKER] — n.v. (parse-error)` |
 | 4. Empty results[] | Keine Treffer | Kein Fehler | Cohort: `Cohort: Keine material News` / Per-Ticker: `[TICKER] — keine News` |
 | 5. Materialitäts-Filter verwirft alles | Noise-only | Kein Fehler | Cohort: `Cohort: Keine material News` / Per-Ticker: `[TICKER] — keine material News` |
-| 6. Claude-Runtime-Timeout | >90s gesamt | Rollback-Trigger, NICHT fail-open | — (Run wird vom Runtime abgebrochen) |
+| 6. Runtime-Monitoring (v3.0.3 rebased) | Soft-Alert-Schema: <180s healthy / 180-400s observe / >400s alert | KEIN Auto-Rollback aus Runtime allein — nur manueller Review-Trigger bei >400s | Log-Eintrag, keine User-Output-Degradation |
 
 ### Known Residual Risk
 **MCP Connector-Fail (Klasse 1)** wird in v3.0 nicht gemitigated (YAGNI). Falls `mcp.tavily.com` total offline ist, kann der Run bei Connector-Init fehlschlagen. Tavilys hosted MCP hat historisch hohe Verfügbarkeit (Anthropic-reviewed Vendor). Monitoring erfasst Degradation; Healthcheck-Fallback ist v3.1-Backlog-Kandidat.
@@ -375,7 +401,7 @@ Keine in-Prompt-Zählung (Tavily liefert keine Remaining-Header ohne Extra-API-C
 - Monatlich Tavily-Dashboard prüfen
 - Hard-Cap pro Run: 6 Queries (1 Cohort + max 5 Per-Ticker)
 - Hard-Cap pro Monat: 22 Werktage × 6 = 132/Monat worst-case (13.2% des Free-Tiers)
-- Zusätzlich Budget-Fallback (siehe 6E): wenn Runtime >60s, restliche Queries skippen
+- ~~Budget-Fallback (60s-Gate)~~ — v3.0.3 ENTFERNT (Recall-Regression-Risiko, siehe §6E Klasse 6). Per-Ticker-Calls laufen vollstaendig durch.
 
 ---
 
@@ -455,12 +481,12 @@ Durchgeführt 2026-04-19, Ergebnis führte zum Revert auf MCP:
 
 ## 11. Rollback Plan — Exact Runbook (Codex Fix #5)
 
-### Trigger-Bedingungen
+### Trigger-Bedingungen (v3.0.3 aktualisiert)
 - T1-T5 fail
 - Post-Update-Verify (Gate-Schritt 6) fail
-- Prod-Manual-Run fail (Gate-Schritt 8)
-- Tag 1-3 Post-Deploy Monitoring findet Regression
-- Claude-Runtime-Timeout (Fehlerklasse 6) tritt auf
+- Prod-Manual-Run fail (Gate-Schritt 8) — funktional, nicht Runtime
+- Tag 1-3 Post-Deploy Monitoring findet **Korrektheits**-Regression (nicht Runtime-Regression)
+- ~~Claude-Runtime-Timeout (Fehlerklasse 6)~~ — v3.0.3: ENTFERNT. Runtime allein triggert keinen automatischen Rollback mehr (Soft-Alert-Schema, siehe §6(E) Klasse 6). Nur wenn der Runtime SELBST den Run killt (Runtime-Fehler, nicht Klasse-6-Soft-Alert) und Output fehlerhaft ist, greift manueller Rollback-Review.
 
 ### Rollback-Runbook (EXAKT, in dieser Reihenfolge)
 
@@ -538,7 +564,7 @@ Assert NOT content.contains("SCHRITT 4.5")      ← kein v3.0-Reste
 | Tag | Check | Zeitpunkt | Rollback-Trigger |
 |---|---|---|---|
 | Tag 1 (Go-Live) | Full Output Review | Manueller Run direkt nach Deploy | Cohort+Triggered leer trotz passender Bedingung / Ticker-Trap trifft |
-| Tag 2 (Cron) | Output Review | Nach 10:00 MESZ | Runtime >60s / News-Sektion fehlt / Fehler nicht gecatched |
+| Tag 2 (Cron) | Output Review | Nach 10:00 MESZ | News-Sektion fehlt / Fehler nicht gecatched / Material-Recall verschlechtert. Runtime allein ist v3.0.3 KEIN Rollback-Trigger mehr — siehe §6E Klasse 6 Soft-Alert-Schema. |
 | Tag 3 (Cron) | Output Review + Tavily-Dashboard Quota | Nach 10:00 MESZ | >15 Queries/Tag / Low-Quality-Domains durchgerutscht |
 
 ### Quality-Kriterien (Codex Fix #6 — messbar statt subjektiv)
@@ -581,9 +607,9 @@ Konsolidiert aus Codex-Review Round 1 (`a6353fc19fe65e09a`) + Round 2 (pending) 
 | 4 | API-Key in URL-Query — Exposure | HIGH | ⚠️ Acknowledged, posture-only | Rotation nach Go-Live + monatlich; Dev-Key separat vom Billing-Account |
 | 5 | MCP Connector-Level-Fail (MCP offline) | MEDIUM | ⚠️ Accepted for v3.0 | Healthcheck-Fallback v3.1-Backlog; Tavily-Hosted-Uptime historisch hoch |
 | 6 | Tavily-Behavior-Drift (third-party) | MEDIUM | ⚠️ Accepted | Monitoring erfasst Degradation |
-| 7 | Budget-Exhaust bei Retries | LOW | ⚠️ Accepted | Hard-Cap 6/Run + 60s-Runtime-Budget-Fallback |
+| 7 | Budget-Exhaust bei Retries | LOW | ⚠️ Accepted | Hard-Cap 6 Queries/Run (1 Cohort + max 5 Per-Ticker). 60s-Runtime-Budget-Fallback v3.0.3 ENTFERNT (Recall-Regression). |
 | **8** | **Dev-Key-Host-Allowlist (CLI-Pivot-Blocker)** | — | ✅ Resolved durch MCP-Beibehaltung | REST-API nicht genutzt; MCP-Proxy-Pfad umgeht Allowlist |
-| **9** | **Claude-Runtime-Timeout (>90s)** | MEDIUM | ⚠️ Accepted, Rollback-Trigger | Budget-Fallback (60s-Gate) + Hard-Cap 6 Tool-Calls |
+| **9** | **Runtime-Monitoring** (v3.0.3 rebased) | LOW | ⚠️ Accepted, Soft-Alert only | Soft-Alert-Schema: <180s healthy / 180-400s observe / >400s alert. KEIN Auto-Rollback aus Runtime allein (User-Prinzip "Korrektheit > Laufzeit"). Budget-Fallback entfernt (war Recall-Regression). |
 | **10** | **Post-Update Cache-Interference** | LOW | ✅ Mitigated (Codex Fix #7) | Post-Update-Verify Gate vor Manual-Run |
 
 ### Codex-Findings-Trace (Round 1, alle integriert)
