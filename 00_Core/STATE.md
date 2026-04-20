@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 20.04.2026 (Track 1 T1-Rerun v3.0.3 PASS — 262s OBSERVE-Band, Yahoo-Gap-Elimination wirksam, Korrektheits-Prinzip in Spec verankert; Track 5a+5b Plans ready, Execution nach 3-Tage-Gate A ab ~24.04.; Track 3 Paper-Integration abgeschlossen — R5 Portfolio-Persistenz + §30 Live-Monitoring aktiv) | System: DEFCON v3.7 (unverändert)
+**Single Entry Point für Session-Start** | Stand: 20.04.2026 (Track 1 alle Pre-Prod-Tests PASS: T1 262s + T4 ~10s + T3 ~270s; v3.0.3 auf Probe bereit, **Prod-Deploy pending nächste Session**; Korrektheits-Prinzip in Spec §6(E) verankert; Track 5a+5b Plans ready, Execution nach 3-Tage-Gate A ab ~24.04.) | System: DEFCON v3.7 (unverändert)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`

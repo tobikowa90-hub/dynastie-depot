@@ -1,299 +1,137 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 (Mittags-Session v3.0.3 T1-PASS) | **Für:** Nächste Session — **T3/T4 Adversarial-Tests + 3-Tage-Gate A bis 24.04.**, danach Track 5a Execution
+**Aktualisiert:** 2026-04-20 (Mittags-Session, Pause-Cut) | **Für:** Nächste Session — **Prod-Deploy v3.0.3 + Gate-A-Start** (primär); dann Track 5a/5b Execution; Track 4 (ETF/Gold) ausstehend
 
 ---
 
-## ⚡ SESSION 20.04. (Mittags, nach T1-FAIL) — v3.0.3 DEPLOYED + T1-PASS
+## 📊 AKTUELLER PROJEKT-STAND (20.04.2026, Ende Mittags-Session)
 
-### Abgeschlossen
-- **v3.0.3 Prompt geschrieben:** Lever 1 Yahoo-Gap-Elimination (BRK.B/RMS.PA/SU.PA → deterministisch `n.v. [Yahoo 403 known]`, kein Yahoo-curl mehr), Budget-Fallback 60s-Gate aus SCHRITT 4.5(E) entfernt (war Recall-Regression). Commit `30b1867`.
-- **Spec §6(E)/§8/§10-12/§13 rebased auf Soft-Alert-Schema:** <180s healthy / 180-400s observe / >400s alert, KEIN Auto-Rollback aus Runtime allein. Revision-Log im Spec-Header ergänzt. Grund: User-Prinzip "Korrektheit > Laufzeit" (memory `feedback_correctness_over_runtime.md`).
-- **Codex-Thread 019da9fa:** Plan akzeptiert mit 2 Änderungen — (1) Lever-1-Downside als Kurs-Coverage-Limit umetikettiert (nicht News-Recall), (2) Gate-Rebase auf Soft-Alert statt harter 300s/400s-Ersatz-Gates. Memory `data-source-coverage.md` SU.PA (Schneider Electric, Euronext Paris) vs. bare SU (NYSE Suncor) geschärft.
-- **Probe-Trigger auf v3.0.3 deployed:** `RemoteTrigger update trig_01XYuQ5mugsvZGZD4K52rjXh` HTTP 200 @ 2026-04-20T08:48:01Z. Post-Update-Verify alle Assertions PASS.
-- **T1-Rerun PASS:** **262s (4:22)** — gegenüber v3.0.2-FAIL 360s = -98s / -27%. Soft-Alert-Band OBSERVE. 8/8 Sektionen, Yahoo-n.v. deterministisch, 4/4 Per-Ticker vollständig (MSFT/APH/AVGO/TMO), Material-Filter korrekt. Dokumentiert in `03_Tools/tests/tavily-probe-prompts/results/T1-2026-04-20-v3.0.3.md`.
+### Portfolio
+- 11 Satelliten, DEFCON v3.7, Sparraten 35,63€ / 17,81€ / 0€, Summe **285€** ✓ (Nenner 8.0)
+- Scores stabil seit 18.04.: V 63/D2, TMO 64/D2 (fcf_trend_neg schema-trigger nicht aktiviert), APH 63/D2 FLAG, MSFT 59/D2 FLAG
+- Keine Score-Änderungen in dieser Session
 
-### Gate A (3-Tage-Stabilität) — Ablauf fixiert via Codex-Review 2026-04-20
+### Morning-Briefing (Infrastruktur)
+- **v3.0.3 auf Probe-Trigger** `trig_01XYuQ5mugsvZGZD4K52rjXh` deployed + T1-Baseline-Content zurückgesetzt (clean, post-T3 aufgeräumt)
+- **Alle 3 Pre-Prod-Tests PASS:** T1 Happy-Path 262s, T4 Fail-Open ~10s (HTTP 422 gefangen), T3 Adversarial-Trap ~270s (dreifache Homonym-Absicherung verifiziert)
+- **Prod-Trigger** `trig_01PyAVAxFpjbPkvXq7UrS2uG` läuft noch v2.1 — **Deploy pending in nächster Session**
+- Korrektheits-Prinzip verankert: Spec §6(E)/§8/§11-13 auf Soft-Alert-Schema rebased (<180s healthy / 180-400s observe / >400s alert, KEIN Auto-Rollback aus Runtime)
+- v3.1 Deferred-Plan geschrieben: `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md` (2-Stage-Tavily-Cache, nur wenn 262s im Alltag stört)
 
-**Entscheidung:** Option (c) — T4 Fail-Open zuerst, dann T3 Adversarial-Trap, dann Prod-Deploy + Gate A parallel.
-
-**Sequencing** (Codex-Verfügung): T4 **vor** T3, weil T4 den Fail-Open-Pfad nach Budget-Fallback-Removal validiert — wenn dieser Pfad gebrochen ist, würden T3-Ergebnisse eine Disambiguation-Fehler-Maskierung durch MCP-Tool-State-Fehler produzieren.
-
-**Gate-A-Stabilitäts-Definition (ALIGNED MIT KORREKTHEITS-PRINZIP):** "Stabil" bedeutet **funktionale Korrektheit**, nicht Laufzeit. Konkret:
-- 8/8 Sektionen gerendert
-- Yahoo-Gap deterministisch als `n.v. [Yahoo 403 known]`
-- Material-Filter korrekt (keine Noise-Headlines durchgerutscht)
-- Triggered-Ticker-Slot-Struktur korrekt
-- News-Sektion nicht silent degradiert
-
-Laufzeit wird im Soft-Alert-Schema (<180s healthy / 180-400s observe / >400s alert) nur beobachtet — ist **kein** Gate-A-Kriterium. Laufzeit-Regression >400s triggert manuellen Review, nicht Rollback (User-Prinzip "Korrektheit > Laufzeit", memory `feedback_correctness_over_runtime.md`).
-
-**Reihenfolge:**
-1. T4 Fail-Open (heute/morgen) — auf Probe-Trigger mit v3.0.3
-2. T3 Adversarial Symbol-Trap (danach) — forciert SU.PA/RMS.PA-Queries auf Probe
-3. Prod-Deploy `trig_01PyAVAxFpjbPkvXq7UrS2uG` mit v3.0.3 (nach T4+T3 PASS)
-4. Gate A startet am Prod-Deploy-Tag, 3 konsekutive Cron-Runs mit Korrektheits-Check
-5. Track 5a Execution nach Gate-A-Abschluss
-
-### Noch offen im Tavily-Plan (`docs/superpowers/plans/2026-04-19-tavily-morning-briefing.md`)
-- Task 5: T3 Adversarial Symbol-Trap (RMS.PA + SU.PA forciert, Suncor/Rockwell-Durchschlag-Check)
-- Task 6: T4 Fail-Open (HTTP 422 Pattern gegen v3.0.3 bestätigen)
-- Task 7: Gate-Review (T1/T3/T4 alle PASS?)
-- Task 8: Prod-Deploy auf `trig_01PyAVAxFpjbPkvXq7UrS2uG`
-- Task 9: Post-Update-Content-Verify auf Prod
-- Task 10: Prod Manual-Run Verification
-- Task 11: Post-Deploy Housekeeping (briefing-config memory + CORE-MEMORY §10 + log.md)
-- Task 13: Day 1-3 Monitoring (Threshold 70% material)
-
-### v3.1 Deferred Plan
-Separater Plan-Write-Commit (2-Stage-Tavily-Cache via Cronjob 09:55 MESZ). Korrektheits-Risiken (Stale-Cache, Partial-Write, Schema-Mismatch) Codex-validiert mit Mitigation-Skizzen. **Nicht jetzt ausführen** — nur wenn 262s-Baseline im Alltag stört.
-
-### Key-Learnings
-- **User-Prinzip "Korrektheit > Laufzeit"** ist systemweit persistiert (memory `feedback_correctness_over_runtime.md`) und hat konkrete Entscheidungen verdrängt: hard-90s-Gate → Soft-Alert, 60s-Budget-Fallback → entfernt.
-- **Codex-Review-Pattern robust:** Claude-Vorschlag → Codex-Second-Opinion → Synthese. Bei v3.0.3-Plan: Codex hat Blind-Spot (Kurs-Coverage vs. News-Recall) korrigiert und härtere Gate-Zahlen durch Soft-Alert ersetzt — beides vom User über `Ja` validiert.
-- **Deployment-Pipeline funktioniert:** prompt-v3.md → git commit → RemoteTrigger update → Post-Update-Verify → Manual-Run-Test → Result-Doc. Mess-Baseline jetzt dokumentiert.
+### Gate A Definition (Codex-aligned)
+"Stabil" = funktionale Korrektheit (8/8 Sektionen, Yahoo-n.v.-deterministisch, Material-Filter korrekt, Slot-Struktur korrekt). **NICHT Laufzeit.** Laufzeit-Regressionen >400s triggern manuellen Review, nicht Rollback.
 
 ---
 
----
+## 🚀 NÄCHSTE SESSION — PRIMÄR-TRACK: PROD-DEPLOY
 
-## ⚡ SESSION 20.04. (späte Session) — TRACK 5 IMPLEMENTATION-PLANS BEREIT
+### Schritt-für-Schritt
 
-### Abgeschlossen
-- **Plan 5a geschrieben + Codex-reviewed + 4 Fixes eingepflegt:** `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks, ~540 Zeilen, force-added). Scope: SEC EDGAR Skill-Promotion + INSTRUKTIONEN §17-Update + _extern/-Superseded-Banner.
-- **Plan 5b geschrieben + Codex-reviewed + 7 Fixes + 1 Kompromiss eingepflegt:** `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks, ~1240 Zeilen, force-added). Scope: FRED Macro-Regime-Filter via β `fredapi`, ALFRED/FRED-Dual-Mode, Grid-Search 1620 Combos vectorized, INSTRUKTIONEN §31 + §22.1.
-- **§-Mismatch-Pattern etabliert:** Spec-§22 → Ist §17, Spec-§19 → Ist §8, Spec-§5-Audit → Ist §1. Header-Notice in beiden Plänen, Spec unverändert. Codex-Attestierung. Applied-Learning-Bullet #10 + Auto-Memory `feedback_spec_section_drift.md`.
+1. **Session starten** → STATE.md lesen → hierher wechseln
+2. **Prod-Trigger aktualisieren:**
+   ```
+   RemoteTrigger get trig_01PyAVAxFpjbPkvXq7UrS2uG
+   ```
+   (Baseline-Config zur Sicherheit speichern für potentiellen Rollback)
+3. **RemoteTrigger update** mit v3.0.3-Content (exakt der Probe-T1-Baseline-Prompt — bereits auf Probe-Trigger als Referenz-Implementierung):
+   - `environment_id`: `env_01Ek3HiKjymFoWzrQoyvMTEk` (unverändert)
+   - `allowed_tools`: `["Bash","Read","Glob","Grep","mcp__tavily__tavily_search"]`
+   - `events[0].data.message.content`: v3.0.3-Prompt aus `03_Tools/morning-briefing-prompt-v3.md` (Zeilen 60-338, innerhalb ``` ```)
+   - `session_context.model`: `claude-sonnet-4-6`
+   - `sources`: github `tobikowa90-hub/dynastie-depot`
+   - **mcp_connections NICHT im ccr-Pfad senden** — werden automatisch erhalten (Shibui + Tavily bleiben attached)
+4. **Post-Update-Verify (Spec §10):**
+   - `RemoteTrigger get trig_01PyAVAxFpjbPkvXq7UrS2uG`
+   - Assert content enthält `SCHRITT 4.5`, `v3.0.3`, `n.v. [Yahoo 403 known]`, `Runtime-Hinweis (v3.0.3)`
+   - Assert content enthält NICHT `Keine News-Suche` (v2.2-Reste)
+5. **Manual-Run-Verification auf Prod** (einmalig via Desktop-App "Jetzt ausführen" auf **Prod**-Trigger, nicht Probe): bestätigen dass Prod identische Output-Struktur wie T1-Baseline liefert.
+6. **Gate A startet** mit morgigem (21.04.) 10:00-MESZ-Cron-Run. 3 konsekutive Werktage (21./22./23.04.) mit Korrektheits-Check (nicht Laufzeit):
+   - Di 21.04. Cron-Run → Output checken auf 8/8 Sektionen + Yahoo-n.v. + Material-Filter
+   - Mi 22.04. Cron-Run → gleiche Checks
+   - Do 23.04. Cron-Run → gleiche Checks (zusätzlich: TMO Q1 Earnings-Event = Cohort/Per-Ticker-Load)
+7. **Post-Deploy Housekeeping** (in derselben Session commitbar): `memory/morning-briefing-config.md` ✓ bereits gemacht; zusätzlich Commit-Log-Entry in CORE-MEMORY §1 ergänzen nach Prod-PASS.
+8. Bei Prod-Regression in den 3 Tagen: **Rollback-Runbook** aus Spec §11 — `RemoteTrigger update` mit v2.1-Content aus `03_Tools/morning-briefing-prompt-v2.md`.
 
-### Track 5 Execution — Ablauf für 2026-04-21
-
-**Priorität 1 (Plan 5a zuerst — kleiner, sauberer Start):**
-1. `Session starten` → STATE.md lesen → Plan 5a laden
-2. Pre-Implementation-Gates A (Tavily-Stabilität) + B (Kollisionscheck verifiziert ✅) + C (Python-Env) + D (§-Mapping-Recheck) durchlaufen
-3. `superpowers:subagent-driven-development` für Task-by-Task-Execution (recommended) oder `executing-plans` für Inline
-4. Task 1 (Env + edgartools install) → Task 2 (SKILL.md) → Task 3 (smoke-test) → Task 4 (INSTRUKTIONEN §17) → Task 5 (Docs-Sync) → Task 6 (_extern Banner) → Task 7 (E2E 4 Use-Cases) → Task 8 (!SyncBriefing)
-5. Task 9 ist deferred (90-Tage-Audit 2026-07-19) — STATE-Trigger-Zeile beim Commit von Task 5 setzen
-
-**Priorität 2 (Plan 5b, danach):**
-1. Gate C (FRED-API-Key registrieren, ~5 Min bei https://fred.stlouisfed.org/docs/api/api_key.html) — **User-Aktion vor Task 1.3**
-2. Tasks 1-3 (Env + fred_client + Schema) → Tasks 4-8 (Backfill + Backtest + Grid-Search + Conservative-Choice + §31) → Task 9-11 (Daily-Run + Briefing-Integration + Docs-Sync) → Task 12 (!SyncBriefing) → Task 13 (Verification)
-3. Tasks 14-15 deferred (30-Tage ~2026-05-20 + Interim-Gate 2027-10-19)
-
-### Kritische Gates vor Start
-- **Gate A — Tavily-Go-Live 3-Tage-Stabilität:** Track 1 Phase 1 ist noch nicht abgeschlossen (T1-Rerun pending, siehe unten). Spec §4.1 verlangt Tavily-Stabilität vor Track-5-Start. User-Entscheidung: Track 5 parallel starten ODER warten auf T1-PASS?
-- **Gate C — FRED-API-Key beschaffen** (nur für Plan 5b, ~5 Min User-Aktion)
-
-### ⚠️ Zeitliche Abhängigkeitskette (Review-Einwand 2026-04-20)
-
-Track 5a hat eine **implizite Abhängigkeit von Tavily-Stabilität** die Gate A explizit festhält — daraus ergibt sich eine erzwungene Sequenz:
-
-```
-Morgen (21.04.):  Tavily Morning Briefing v3.0 Go-Live (T1-Rerun + T3 + T4 + Prod-Deploy)
-                          ↓
-+3 Tage (24.04.): Gate A freigegeben → Track 5a kann starten (sec-edgar-skill)
-                          ↓
-Nach Track 5a:    Track 5b (FRED Regime-Filter) — keine Tavily-Abhängigkeit,
-                  aber logisch nach 5a sinnvoller (kleinerer Scope zuerst)
-```
-
-**Konkrete Gefahr ohne diese Notiz:** Gate A wird in 3 Tagen "vergessen" und Track 5a beginnt entweder zu früh (vor Tavily-Stabilität) oder zu spät (weil kein Trigger vorhanden).
-
-**Empfehlung:** Am **24.04. morgens** beim Session-Start aktiv fragen: "Waren die letzten 3 Briefings (22./23./24.04.) stabil?" — Wenn ja: Gate A grün → Track 5a-Execution-Session starten.
-
-**Track 5b hat keine Tavily-Abhängigkeit** — könnte theoretisch parallel zu Track 5a laufen, aber die natürliche Sequenz (5a zuerst, kleiner + sauberer) bleibt empfohlen. Ausnahme: falls FRED-API-Key bereits vorliegt und Track 5b-Execution separat gewünscht wird.
-
-### Artefakte (beide in `docs/superpowers/plans/`, force-added per Konvention)
-- `2026-04-20-track5a-edgar-skill-promotion.md`
-- `2026-04-20-track5b-fred-regime-filter.md`
-- Spec (v1.0 frozen, archiviert 2026-04-20): `05_Archiv/TRACK5-SPEC-edgar-fred-v1.0.md` (Commit `22cdeb8`)
-
-### Nicht-Änderungen dieser Session
-- Keine Scores / FLAGs / Sparraten (reine Planungs-Artefakte)
-- Keine System-Code-Änderung (Plans sind Prosa, Implementation folgt 2026-04-21)
-- Keine Vault-Updates (Post-Execution-Phase — Wiki-Pages entstehen wenn §31/edgar-skill tatsächlich Outputs produzieren)
+### Deployment-Pipeline-Dokumentation
+Siehe memory `morning-briefing-config.md` für das wiederverwendbare 7-Schritt-Pattern (Edit → Commit → Push → Update → Verify → Manual-Run → Result-Doc).
 
 ---
 
----
+## 📅 NACH GATE-A-PASS (ab ~24.04.)
 
-## ⚡ SESSION 20.04. (00:13-00:40 MESZ) — TAVILY TRACK 1 PHASE 1 (Tasks 0-3 + T1 Probe-Iteration)
+### Track 5a — SEC EDGAR Skill-Promotion
+Plan ready: `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks, Codex-reviewed). Pre-Implementation-Gate A (Tavily-Stabilität 3-Tage) = jetzt am morgigen Prod-Deploy-Tag startend, frühester Start ~24.04.
 
-### Abgeschlossen
-- **Task 0:** `03_Tools/morning-briefing-prompt-v2.md` back-fill (Embedded v2.2 Prompt-Content für Rollback-Integrität). Commit `dd0cd62`.
-- **Task 1:** `03_Tools/morning-briefing-prompt-v3.md` geschrieben (v3.0 Base + Changelog + V3.1-Backlog). Commit `f5a0bba`.
-- **Task 2:** Probe-Test-Fixtures `03_Tools/tests/tavily-probe-prompts/` (README + T1/T3/T4). Commit `bde3aff`.
-- **Task 3:** Probe `trig_01XYuQ5mugsvZGZD4K52rjXh` konfiguriert (allowed_tools + Shibui + Tavily MCP, v3.0-Content geladen).
-- **v3.0.1 Hotfix:** SCHRITT 1 mit `TZ='Europe/Berlin'` explizit. Discovered bei T1-Run #1 (Agent sah UTC-Sonntag → WOCHENEND-MODUS statt Werktag). Commit `d0c25ba`.
-- **v3.0.2 Hotfix:** Sequenzierungs-Direktive SCHRITT 3 → 4.5 (Anti-Parallelisierung). Discovered bei T1-Run #2 (Agent startete Yahoo-curl + Tavily parallel → Yahoo-403 killte Tavily → Retry-Overhead >90s). Commit `a0311f2`.
+### Track 5b — FRED Macro-Regime-Filter
+Plan ready: `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks, Codex-reviewed). Vor Task 1.3: **User-Aktion** — FRED-API-Key registrieren (~5 Min: https://fred.stlouisfed.org/docs/api/api_key.html).
 
-### T1-Status: **FAIL** (per Codex-Review, spec §6(E) §11 hard-gate)
-- Funktional: ✅ PASS (8/8 Sektionen, Materialitäts-Filter arbeitet, Slot-Struktur 4/5 getriggert: MSFT/AVGO/APH/TMO, 0% material today)
-- Laufzeit: ❌ FAIL ("dauerte sehr lange") — Klasse 6 Runtime-Timeout-Risk
-- Codex-Caveat: Prompt-Sequenzierung reduziert, garantiert aber keine Runtime-Parallelisierung. Bei v3.0.2-Rerun Re-Overshoot → strukturelle Lösung nötig (Tool-Call-Reduktion).
+### Track 4 — Portfolio-Risk ETF+Gold-Erweiterung
+**Blockiert auf User-Input:**
+- ETF-Core-Ticker? (IWDA.AS / SWDA.L / EUNL.DE / …?)
+- Gold-Ticker? (SGLD.DE / 4GLD.DE / GC=F / …?)
 
-### Probe-Zustand jetzt
-- Trigger: `trig_01XYuQ5mugsvZGZD4K52rjXh`, **v3.0.2 live, T1-Happy-Path-Content geladen, ready for manual run**
-- Model: sonnet-4-6, allowed_tools: Bash+Read+Glob+Grep+mcp__tavily__tavily_search
-- MCP: Shibui + Tavily (Dev-Key tvly-dev-4PYXp... — unverändert)
+Nach Input: `03_Tools/portfolio_risk.py` um ETF+Gold erweitern, in `--persist daily`-Schema einbetten.
 
 ---
 
-## ▶️ NÄCHSTE SESSION — START
+## 📆 PORTFOLIO-TRIGGER (30 TAGE)
 
-### Priorität 1: T1-Rerun mit v3.0.2
-1. Desktop App → Routines → `tavily-probe` → "Jetzt ausführen"
-2. Laufzeit messen (Timer!). Pass-Kriterium: <90s
-3. Output komplett an Claude pasten
-4. Falls <90s UND funktional OK → T1 PASS → zu T3 weiter
-5. Falls weiterhin >90s → strukturelle Lösung (Codex konsultieren für Tool-Call-Reduktion-Optionen)
+| Datum | Ticker | Klasse | Aktion |
+|-------|--------|--------|--------|
+| **21.04.** | RMS.PA | — | **Ex-Dividend EUR 13,00** (automatische Gutschrift im aktiven Depot, kein Handlungsdruck) |
+| **23.04.** | **TMO** | **B** | **Q1 — D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind + FCF >$7,3B?)** |
+| **28.04.** | **V** | **B** | **Q2 FY26 — D2-Entscheidung (Technicals-Reversal?)** |
+| 28.04. | SNPS/SPGI | B | Watchlist-Review |
+| **29.04.** | **MSFT** | **C** | **Q3 FY26 — FLAG-Review CapEx/OCF <60%** |
+| Mai | BRK.B/ZTS/PEGA | B | Q-Earnings + Slot-16 |
 
-### Verbleibende Tasks im Plan
-- Task 4.6: T1-Result in `results/T1-YYYY-MM-DD.md` dokumentieren
-- Task 5: T3 Adversarial Symbol-Trap (RMS.PA + SU.PA forciert)
-- Task 6: T4 Fail-Open (HTTP 422 Pattern)
-- Task 7: Gate-Review (alle 3 PASS?)
-- Task 8: Prod-Deploy via RemoteTrigger update auf `trig_01PyAVAxFpjbPkvXq7UrS2uG`
-- Task 9: Post-Update-Content-Verify (4 Assertions auf Prod)
-- Task 10: Prod Manual-Run Verification (Tavily v3.0-First-Run)
-- Task 11: Post-Deploy Housekeeping (memory/morning-briefing-config.md + CORE-MEMORY §10 + log.md + STATE.md-Version)
-- Task 13: Day 1-3 Monitoring (Threshold 70% material)
-
-### Artefakte (stabil)
-- **Plan:** `docs/superpowers/plans/2026-04-19-tavily-morning-briefing.md`
-- **Spec:** `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` (Klasse 6 >90s = Rollback-Gate)
-- **v3.md:** `03_Tools/morning-briefing-prompt-v3.md` (v3.0.2 aktiv)
-- **v2.md:** `03_Tools/morning-briefing-prompt-v2.md` (Rollback-Ready)
-
----
-
-## ⚡ SESSION 20.04. (frühe Phase) — TOOL-EVALUATION ABGESCHLOSSEN
-
-### Kontext
-
-User hat eine Tool-Evaluation-Session durchgeführt mit der expliziten Bedingung: **"Wir nehmen nichts ins System auf, das dieses nicht wirklich besser macht."** Jedes Tool wurde durch dasselbe rigorose Prüfschema gezogen: Repo-Read → Claude-Analyse → Codex-Rescue Second-Opinion → gemeinsame Verdikt-Synthese.
-
-### Ergebnis: 5 Tools + 1 Meta-Frage geprüft, alle verworfen
-
-| Kandidat | Verdikt | Kern-Grund |
-|---|---|---|
-| **HKUDS/OpenSpace** (self-evolving skill MCP) | Reject | Trust-Boundary: LLM-self-confirm statt User-Gate, keine Git-Integration, broad-by-default Runtime. CLI vs. MCP = nur Invocation-Cosmetics. Separate Profil-Instanz wäre notwendige Grenze. |
-| **Eigen-Telemetrie-Hook + !EvolveSkill** | Reject | Scheinwerkzeug. Skills sind Markdown-Instruktionen, keine callable Functions — `PostToolUse` kann Skill-Invocations nicht zuverlässig tracken. Success/Failure semantisch matschig. |
-| **HKUDS/RAG-Anything** (multimodal RAG) | Reject | Drittes paralleles Wissenssystem würde Single-Source-of-Truth erodieren (CORE-MEMORY + Obsidian + RAG-Graph). 71-Note-Vault zu klein für Fixed-Overhead-Amortisation. MinerU/LibreOffice Ops-Ballast. |
-| **Swarms-Video (AI Impact School)** | Reject | Pattern ist valide, aber bereits vorhanden via `Agent`-Tool + `superpowers:dispatching-parallel-agents` + Codex-Rescue + Sync-Pflicht-Pattern. Rebranding. |
-| **Sequential-Thinking-MCP** | Reject | Scaffold-Overlay ohne Persistence. Opus-High-Effort + superpowers (`systematic-debugging`, `writing-plans`, `brainstorming`) decken strukturierten Denk-Scaffold bereits ab — semantisch reicher + persistent. |
-
-### Meta-Frage: "Gibt es überhaupt noch sinnvolle Tools?"
-
-Codex-Review identifizierte **einen plausiblen Kandidaten** und zwei Grenzfälle:
-
-- **FRED-MCP** (`dracepj/fred-mcp`) — **HIGH Fit falls gewollt**, sonst nicht. Macro-Regime-Daten (Credit-Spreads, Yield-Curve, Unemployment, ISM, Industrial Production). Gated on: "Soll Macro-Dimension in DEFCON einfließen?" Bottom-up-Only bleibt → nicht relevant.
-- **quantstats** (`ranaroussi/quantstats`) — MEDIUM Fit. Portfolio-Level-Risk-Tearsheets. Overlap mit existierendem `backtest-ready-forward-verify` + `portfolio_returns.jsonl` zu klären.
-- **edgartools** (`dgunning/edgartools`) — MEDIUM Fit. Strukturierte 10-K/10-Q/8-K/Form-4 via MCP. Overlap mit sec-edgar-skill (Eskalations-Fallback per INSTRUKTIONEN §19) + insider-intelligence.
-
-**Session-Konklusion beider Reviewer (Claude + Codex):** System ist für aktuellen Bottom-Up-Perimeter komplett. Weitere Tool-Evaluierung wäre Prokrastination gegenüber Pending-Work.
-
-### User-Erkenntnis
-
-> "Dachte eigentlich die hätten wir schon so halbwegs im System" (zu SEC EDGAR + FRED)
-
-**Teils korrekt:**
-- **SEC EDGAR:** ✅ partiell integriert — INSTRUKTIONEN §19 nennt SEC EDGAR als Fallback-Datenquelle (US), INSTRUKTIONEN §22 listet `sec-edgar-skill` als Eskalations-Fallback, WebFetch-Permission für `efts.sec.gov`. Track-5-Upgrade wäre von WebFetch→dedicated-MCP.
-- **FRED:** ❌ nicht im System — keine Macro-Signale, keine Permissions, keine Referenz. Strategische Greenfield-Entscheidung.
-
----
-
-## 🔥 NÄCHSTE SESSION — TRACK 1 TAVILY + MORNING BRIEFING
-
-### Start (User-Trigger)
-
-```
-Session starten
-```
-
-Claude liest `00_Core/STATE.md`. Dann hierher wechseln.
-
-### Artefakte
-
-- **Plan:** `docs/superpowers/plans/2026-04-19-tavily-morning-briefing.md` (Commit d1b5bf7)
-- **Spec:** `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` (Commit 6bd32f4)
-- **Umfang:** 13 Tasks, ~60-90 Min inkl. manueller Desktop-App-Runs
-
-### Dependency-Status aktualisiert
-
-**Track 3 Paper-Integration ist abgeschlossen** (verifiziert via Git-Log: e7ec96c, 67ed120, 96b0b69, c1f0f21, f7920cf). Blockade von Track 1 aufgelöst.
-
-### Schlüssel-Constraint
-
-- **Tavily Dev-Key Rotation innerhalb 7 Tagen nach Go-Live** — Kalender-Trigger setzen
-- **3-Tage-Monitoring** nach Tavily-Stabilität bevor Track 5 (SEC EDGAR + FRED) angegangen wird
-
----
-
-## 🎯 TRACK 5 — SEC EDGAR + FRED (nach Tavily-Stabilität)
-
-### Entscheidungs-Framework
-
-**Nicht "installieren ja/nein", sondern "welchen Hebel":**
-
-1. **SEC EDGAR-MCP** (z.B. `dgunning/edgartools`) — Upgrade von aktueller WebFetch-basierter Partial-Coverage zu strukturiertem Parser. **Höherer Hebel** laut Codex-Review. Konkrete Use-Cases: saubere 10-K/10-Q/8-K/Form-4-Objekte statt HTML-Scraping-Fallback.
-
-2. **FRED-MCP** (`dracepj/fred-mcp`) — Greenfield-Macro-Layer. **Nur sinnvoll wenn:** Macro-Dimension aktiv in DEFCON-Scoring aufgenommen werden soll. Aktuell bottom-up-only. Diese Entscheidung ist **strategisch** (nicht technisch) — Scoring-Erweiterung, keine Tool-Installation.
-
-### Reihenfolge (Codex-Empfehlung)
-
-1. SEC EDGAR zuerst (klarer Hebel, bereits partiell im System)
-2. FRED separat — erst wenn Macro-in-DEFCON-Strategie-Entscheidung getroffen ist
-
-### Vor Track 5 prüfen
-
-- Hat Tavily nach 3 Tagen stabil geliefert ohne Rate-Limit-/API-Ausfälle?
-- Ist Morning-Briefing-Workflow im Alltag etabliert und bringt Wert?
-- Falls nein zu einem der beiden: Tavily-Debugging vor Track 5 Priorität geben.
-
----
-
-## 📋 PENDING PARALLEL TRACKS
-
-### Track 4 — Portfolio-Risk-Tool ETF+Gold-Erweiterung
-
-**Braucht User-Input am Session-Start:**
-- **ETF-Core-Ticker?** (IWDA.AS / SWDA.L / EUNL.DE / ähnlich?)
-- **Gold-Ticker?** (SGLD.DE / 4GLD.DE / GC=F / ähnlich?)
-
-Danach: `03_Tools/portfolio_risk.py` um ETF+Gold erweitern. Natürliche Einbettung in `--persist daily`-Schema (aus Track 3 Phase 3).
+### Aktive Watches
+- **V D2-Kritik:** 6M RelStärke -14pp vs SPY. Q2 28.04. = Beat+Guidance → D3-Reversal, Miss → D1-Richtung.
+- **ASML Fwd P/E FY27 = 30,30:** Grenzfall, bei <30 Fix-1-Fwd-Zweig deaktiviert → Score +1/+2 (D3→D4-Kandidat).
+- **AVGO Insider $123M:** wahrscheinlich Post-Vesting. Vor FLAG: OpenInsider manuell prüfen.
+- **TMO Resolve-Gate:** Q1 23.04. — WC-Unwind + FCF-Recovery bestätigt → kein FLAG; fehlt → fcf_trend_neg nachtragen + Ersatz-ZTS-Vorbereitung eskalieren.
+- **MSFT FLAG-Pfad:** Q3 29.04. — bereinigtes CapEx/OCF <60% (Finance-Lease $19,5B raus) = Auflösung.
+- **RMS.PA Q1-Slowdown (NEU 20.04.):** Middle-East-Druck + Tourismus schwächer, Q1 Revenue-Miss vs. Erwartung. Watch-Notiz, kein Klasse-C-Event. H1-Trigger (Juli/Aug) möglich vorzuziehen falls Q2 bestätigt.
 
 ---
 
 ## ⚠️ OPEN RISKS / REMINDERS
 
-1. **Tavily Dev-Key Rotation** innerhalb 7 Tagen nach Go-Live (Track 1).
-2. **Codex-Plugin Review-Gate** NICHT aktiviert (User-Entscheidung 19.04.) — Codex nur on-demand via `codex:codex-rescue`.
-3. **Track-5-Entscheidung FRED** ist strategisch, nicht technisch — Macro-in-DEFCON-Frage vorher klären.
-4. **Tool-Evaluation-Pattern bestätigt:** System ist reif, externe Angebote clearen Schwelle selten. Gilt bis strategische Scope-Erweiterung (z.B. Macro-Dimension) eintritt.
+1. **Tavily Dev-Key Rotation** innerhalb 7 Tagen nach Prod-Go-Live (`tvly-dev-4PYXp...`)
+2. **Prod-Deploy-Rollback-Pfad:** `03_Tools/morning-briefing-prompt-v2.md` unverändert im Repo, Runbook in Spec §11
+3. **Codex-Plugin Review-Gate** NICHT aktiviert (User-Entscheidung 19.04.) — Codex nur on-demand via `codex:codex-rescue`
+4. **Track 5b FRED** ist strategische Greenfield-Entscheidung (Macro-Dimension in DEFCON?) — vor Execution klären
+5. **v3.1 Cache-Refactor** nur bei Bedarf — trigger: "262s zu lang im Alltag" oder ">400s-Alert-Schwelle wiederholt erreicht"
+6. **Korrektheits-Prinzip systemweit verankert** (memory `feedback_correctness_over_runtime.md`) — gilt auch für zukünftige Pipeline-Änderungen (Scoring, FLAG-Checks, Score-Archive). Runtime-Optimierungen nie auf Kosten von Recall.
 
 ---
 
-## 💡 LEARNINGS SESSION 20.04.
+## 🗂 ARTEFAKTE DIESER SESSION (20.04.2026 Mittags)
 
-**Codex als Reviewer (6 Runden in einer Session):**
-- Pattern `Claude-Position → Codex-Review → Synthese` bleibt robust und produktiv
-- Codex identifiziert systematisch epistemische Schwächen (z.B. "Opus native thinking besser" = Inferenz, nicht dokumentiert)
-- Bei Konvergenz beider Reviewer: klare Entscheidung ohne weitere Iteration
-- Agent-IDs für `--resume`: OpenSpace (abfe677f), CLI-Review (a5e83e92), Eigen-Build (a574d235), RAG-Anything (a45ff964), Sequential-Thinking (a817bf82), Meta-Frage (aa87fe68)
+### Dateien
+- `03_Tools/morning-briefing-prompt-v3.md` (v3.0.3)
+- `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` (Revision-Log v3.0.3)
+- `03_Tools/tests/tavily-probe-prompts/results/T1-2026-04-20-v3.0.3.md`
+- `03_Tools/tests/tavily-probe-prompts/results/T4-2026-04-20-v3.0.3.md`
+- `03_Tools/tests/tavily-probe-prompts/results/T3-2026-04-20-v3.0.3.md`
+- `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md` (deferred)
+- Memory: `feedback_correctness_over_runtime.md` (neu), `data-source-coverage.md` (SU.PA-Schärfung), `morning-briefing-config.md` (v3.0.3-Status)
 
-**Tool-Evaluation-Kriterium geschärft:**
-- Nicht "ist es sicher?" sondern "ersetzt es etwas Existierendes mit echtem Mehrwert oder dupliziert es es nur unter anderem Namen?"
-- Trust-Boundary + Skill-Modifikation = separate Risikoklasse (OpenSpace)
-- Additive Tools (RAG, Sequential-Thinking) werden primär auf ROI geprüft, nicht Sicherheit
-- Eigen-Build ist oft überengineered — Inferenz "ich kann das besser machen" stimmt selten bei reifen Systemen
+### Commits (chronologisch)
+- `30b1867` v3.0.3 prompt + spec rebase (Lever 1 + Soft-Alert)
+- `e5ba317` T1-Result + STATE + Handover
+- `42a82f4` v3.1 deferred cache-refactor plan
+- `c7c0c11` Gate-A-Korrektheits-Definition
+- `29d9cb0` T4 Fail-Open PASS
+- `7cafc78` T3 Adversarial-Trap PASS
 
-**Strategischer Insight:**
-- System-Reife wird sichtbar daran dass externe Angebote die Schwelle nicht mehr clearen
-- Das ist kein Stillstand — das ist Disziplin
-- Nächste echte Erweiterungen sind strategische Scope-Entscheidungen (Macro-Dimension?) nicht Tool-Installationen
+### Remote-Trigger-State
+- Probe `trig_01XYuQ5mugsvZGZD4K52rjXh`: clean v3.0.3 T1-Baseline-Content (post-T3-Reset), allowed_tools full, Shibui+Tavily MCPs attached
+- Prod `trig_01PyAVAxFpjbPkvXq7UrS2uG`: v2.1 (unverändert, Deploy pending)
 
 ---
 
-## ▶️ TRIGGER (nächste Session)
+## ▶️ TRIGGER NÄCHSTE SESSION
 
 ```
 Session starten
@@ -301,9 +139,9 @@ Session starten
 
 1. Claude liest `STATE.md`
 2. Wechsel hierher
-3. Primär-Track: **Track 1 Tavily + Morning Briefing Execution**
-4. Plan öffnen: `docs/superpowers/plans/2026-04-19-tavily-morning-briefing.md`
-5. `executing-plans`-Skill invoken
-6. Task 1 starten
+3. **Primär-Track: Prod-Deploy v3.0.3** (Schritte 2-6 oben)
+4. Bei abweichender User-Priorität: Track 4 (ETF/Gold-Input), oder Track 5a/5b (falls Gate A bereits abgeschlossen), oder Scoring-Session bei Marktbewegungen
 
-Bei abweichender User-Priorität: Track 4 oder Track 5 ebenfalls möglich, aber Tavily-Stabilität vor Track 5 beachten.
+---
+
+*Archiv-Verweis: Historische Session-Details (frühe 20.04.-Session Track-5-Plan-Writing, 00:13-MESZ-Session Tavily-Probe-Setup v3.0.1/v3.0.2, Tool-Evaluation-Runde) in `git log` ab `dd0cd62` sichtbar. Milestone-Chronik in `CORE-MEMORY.md §1`.*
