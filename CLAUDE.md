@@ -5,6 +5,7 @@
 **On-Demand-Lektüre** (nur wenn Kontext explizit gebraucht wird):
 - `CORE-MEMORY.md` — Scoring-Lektionen (§5), Positions-Entscheidungen (§3), Audit-Log (§10), aktuelle Meilensteine ab 15.04. (§1)
 - `INSTRUKTIONEN.md` — Scoring-Skalen, Sparplan-Formel, Workflows (bei `!Analysiere`, `!Rebalancing`)
+- `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` — **Status-Matrix** (Single Source of Truth für wissenschaftliche Befunde B1-B24+; automatisch aktiv via §4 Router in `!Analysiere`, via §28 bei Migration, via §29 bei Retrospective, via §33 bei Skill-Architektur-Proposals; nicht in mechanischen Workflows `!QuickCheck` / `!Rebalancing` / Screener)
 - `KONTEXT.md` — Strategie, Allokation, Slot-Zuteilung (bei Strategie-Fragen)
 - `Faktortabelle.md` — Detail-Metriken pro Ticker (bei Deep-Dive)
 - `SESSION-HANDOVER.md` — Last-Session-Kontext (bei Fortsetzung)

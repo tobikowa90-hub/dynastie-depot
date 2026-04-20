@@ -15,6 +15,8 @@ trigger_words: []
 **Aktivierung:** Ausschließlich programmatisch aus `dynastie-depot` Schritt 7.
 Keine direkten Trigger-Words. Nie manuell aufrufen.
 
+> **Future-Option (20.04.2026, §29 Retrospective-Gate):** Ab §29.1-Aktivierung (Review 2028-04-01 oder erste DEFCON-Parameter-Variation) kann **GT-Score Composite-Objective (B20 Sheppert 2026)** als zusätzlicher In-the-Loop-Acceptance-Check neben §28.2 Δ-Gate einklinken — komplementär zu Bailey PBO/CSCV. Nicht required in v1.0.0; Status-Matrix-Einordnung siehe [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix (B20 `meta-gate` → §29.1 + §29.6). Aktivierung erst bei Migration-Event via §28.1 Step 1 Paper/Evidence-Check.
+
 ---
 
 ## 1. Boundary — Scope dieser Skill

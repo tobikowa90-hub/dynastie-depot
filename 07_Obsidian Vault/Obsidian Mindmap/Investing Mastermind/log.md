@@ -620,3 +620,16 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **System-Reife:** Wissenschaftliche Fundierung ab heute **aktiv** im Workflow (vorher retroaktiv-dokumentarisch). B25+ landet automatisch in der Matrix oder Phase-1 gilt als incomplete.
 - **Scoring-Impact:** keiner. DEFCON v3.7 unverändert. Scores/Sparraten/FLAGs unverändert. Skill bleibt v3.7.2 (§28.3 Nicht-Migration-Trigger — Output-Format-Erweiterung ohne Funktions-Änderung).
 - **Archive-Stand:** unverändert 27 Records. Keine neuen FLAG-Events. Kein config.yaml-Touch.
+
+## [2026-04-20] projekt-abschluss | 6-Paper-Ingest-Projekt formal abgeschlossen
+- **Scope:** 6-Paper-Ingest-Projekt B19-B24 (20.04.2026) umfasste Phase 0 (Triage + 2 Codex-Rounds) + Phase 1a (🔴 B19+B20) + Phase 1b (🟡 B21-B24) + Phase 2 (System-Konsequenzen) + Phase 2.5 (Codex-Layer-Gate). Formal abgeschlossen mit Commit `89275e2` plus 3 Mini-Discoverability-Edits.
+- **Final-Edits Discoverability (O1+O2+O3):**
+  - `CLAUDE.md` — On-Demand-Lektüre um expliziten Pointer auf Status-Matrix erweitert (globale Verankerung auf Top-Level)
+  - `01_Skills/insider-intelligence/SKILL-insider-intelligence.md` — §33-Szenario-1-REJECT-Note (Form-4 bleibt XML, KG-Alternative verworfen)
+  - `01_Skills/backtest-ready-forward-verify/SKILL.md` — GT-Score Future-Option-Pointer (B20 Acceptance-Layer ab §29.1-Aktivierung)
+- **"Phase 2-6"-Formulierung dekonstruiert:** Die in Phase-1a-Log erwähnten "Phase 2-6" waren loser Platzhalter, nicht formale Struktur. Codex-Handover-Direktive war explizit nur Phase 2 + Phase 2.5. Kein Phase 3/4/5/6 existiert.
+- **Greift-Bereich der wissenschaftlichen Fundierung:** `!Analysiere` (via §4 Router + §2 Pipeline + SKILL.md Schritt 2.5) + §28 Migration + §29 Retrospective (ab 2028) + §33 Skill-Self-Audit. **Greift bewusst NICHT in:** `!QuickCheck` / `!Rebalancing` / Screener / Excel-Tiefenanalyse — das sind mechanische Workflows ohne wissenschaftlichen Urteils-Input.
+- **Gesamtprojekt-Delta:** 20 Quellen → 24 Befunde (vorher 16→20); 130 Wiki-Notes (vorher 107); 7 §§-Edits in INSTRUKTIONEN (§2/§4/§29.1/§29.5/§29.6/§33 + Versions-Banner v1.11→v1.12); 1 neue Synthesis [[Knowledge-Graph-Architektur-Roadmap]] v0.1; 3 Plan-Header-Notices; 3 Skill-Discoverability-Notes.
+- **Scoring-Impact Gesamt:** ZERO. DEFCON v3.7 unverändert. Scores/Sparraten/FLAGs aller 11 Satelliten unverändert. Skill bleibt v3.7.2. §28.3 Nicht-Migration-Trigger bestätigt über gesamtes Projekt.
+- **Next:** Prod-Deploy v3.0.3 Morning-Briefing (Primär-Track aus SESSION-HANDOVER), danach Track 5a + Track 5b nach Gate-A-PASS.
+- **Archive-Stand:** unverändert 27 Records. Kein FLAG-Event.
