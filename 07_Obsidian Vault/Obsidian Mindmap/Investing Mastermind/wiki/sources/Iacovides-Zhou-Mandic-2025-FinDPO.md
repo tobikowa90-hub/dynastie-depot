@@ -92,7 +92,7 @@ FinDPO-Portfolio-Evaluation: **Februar 2015 bis Juni 2021** (~6,4 Jahre), S&P-50
 
 ## Backlinks
 
-- [[FinDPO: Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs]] — Raw-Dokument (arxiv-HTML-Export in `raw/`)
+- [[FinDPO_ Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs]] — Raw-Dokument (arxiv-HTML-Export in `raw/`)
 - [[LLM-Preference-Optimization-Finance]] — Konzeptseite (DPO vs. SFT für Finance-LLMs)
 - [[Sentiment-Strength-Logit-Extraction]] — Konzeptseite (logit-to-score-Konverter)
 - [[LLM-Investing-Bias-Audit]] — Validation-Pflicht vor Adoption (FINSABER-Pattern)

@@ -63,7 +63,7 @@ Labre schlägt vor, in der Reflection-Loop **vor jeder Correction-LLM-Runde** ei
 
 ## Backlinks
 
-- [[A Look at FinReflectKG: AI-Driven Knowledge Graph in Finance]] — Raw-Dokument (Medium/Towards-AI-Clipping in `raw/`)
+- [[A Look at FinReflectKG_ AI-Driven Knowledge Graph in Finance]] — Raw-Dokument (Medium/Towards-AI-Clipping in `raw/`)
 - [[Arun-et-al-2025-FinReflectKG]] — das primäre Paper, kommentiert von Labre
 - [[Knowledge-Graph-Finance-Architecture]] — Konzeptseite
 - [[Agentic-Reflection-Pattern]] — Konzeptseite (mit Labre-Entropy-Caveat)

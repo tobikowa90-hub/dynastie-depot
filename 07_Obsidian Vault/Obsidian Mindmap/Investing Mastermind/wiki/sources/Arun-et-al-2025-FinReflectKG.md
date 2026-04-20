@@ -102,7 +102,7 @@ Reflection erzeugt **15,8 Triples/Chunk** (vs. 13,3 / 12,4), ECR 0,53 (vs. 0,30/
 
 ## Backlinks
 
-- [[FinReflectKG: Agentic Construction and Evaluation of Financial Knowledge Graphs]] — Raw-Dokument (arxiv-HTML-Export in `raw/`)
+- [[FinReflectKG_ Agentic Construction and Evaluation of Financial Knowledge Graphs]] — Raw-Dokument (arxiv-HTML-Export in `raw/`)
 - [[Labre-2025-FinReflectKG-Companion]] — Praktiker-Lens (towardsai Blog zum selben Paper)
 - [[Knowledge-Graph-Finance-Architecture]] — Konzeptseite (KG-Struktur für Finance)
 - [[Agentic-Reflection-Pattern]] — Konzeptseite (Critic-Corrector-Loop)
