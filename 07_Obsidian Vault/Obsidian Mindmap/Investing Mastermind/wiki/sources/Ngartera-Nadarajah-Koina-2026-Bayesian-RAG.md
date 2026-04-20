@@ -16,7 +16,7 @@ related: "[[RAG-Uncertainty-Quantification]], [[Knowledge-Graph-Finance-Architec
 
 ## Abstract (eigene Worte)
 
-Die Autoren lösen ein **Deployment-Problem** für RAG-Systeme in regulierten Finance-Kontexten: Deterministische Embeddings können **Unsicherheit nicht quantifizieren** → RAG-Systeme liefern überzeugende, aber falsche Antworten (Hallucinations) auf 10-K-Fragen. **Bayesian RAG** integriert **epistemische Unsicherheit** direkt in den Retrieval-Score via **Monte Carlo Dropout** auf Query- und Document-Embeddings. Scoring-Funktion $S_i = \mu_i - \lambda \cdot \sigma_i$ balanciert semantische Relevanz gegen Unsicherheit. Evaluation auf Apple + Microsoft 2023 10-K: **93,1% Accuracy**, +20,6% Precision@3, +22,7% MRR, +25,4% NDCG@10 vs. BM25; +26,8% bessere Uncertainty-Calibration (ECE 0,37 → 0,30); 27,8% weniger Hallucinations. 15ms Latency, 20,8 Queries/Sekunde — produktionsreif.
+Die Autoren lösen ein **Deployment-Problem** für RAG-Systeme in regulierten Finance-Kontexten: Deterministische Embeddings können **Unsicherheit nicht quantifizieren** → RAG-Systeme liefern überzeugende, aber falsche Antworten (Hallucinations) auf 10-K-Fragen. **Bayesian RAG** integriert **epistemische Unsicherheit** direkt in den Retrieval-Score via **Monte Carlo Dropout** auf Query- und Document-Embeddings. Scoring-Funktion $S_i = \mu_i - \lambda \cdot \sigma_i$ balanciert semantische Relevanz gegen Unsicherheit. Evaluation auf Apple + Microsoft 2023 10-K: **93,1% Accuracy** (Bayesian RAG + GPT Framework, Tab. Final-Results), +20,6% Precision@3, +22,7% MRR, +25,4% NDCG@10 vs. BM25 (Abstract); +26,8% bessere Uncertainty-Calibration gemäß Abstract (ECE 0,37 → 0,30 vs. BM25) bzw. -52% ECE gemäß Figure 2 (0,142 → 0,068 vs. Standard RAG) — **beide Zahlen stehen im Paper, verschiedene Baselines**; 27,8% weniger Hallucinations (Faithfulness-Metrik vs. best baseline). 15ms Latency, 20,8 Queries/Sekunde — produktionsreif.
 
 ## Kern-Innovation: Uncertainty-Aware Scoring
 
@@ -32,16 +32,37 @@ Klassisches Dense-RAG: cosine-similarity → Top-K → kontextualisiere LLM. **F
 
 ## Quantitative Befunde (Apple + MSFT 2023 10-K)
 
-| Metrik | BM25-Baseline | Dense Retrieval (DPR) | ColBERT | **Bayesian RAG** | Δ vs. BM25 |
-|---|---|---|---|---|---|
-| Precision@3 | baseline | +10,5% | +15,0% | **+20,6%** | +20,6% |
-| Recall@5 | baseline | +8,2% | +12,1% | **+15,2%** | +15,2% |
-| MRR | baseline | +12,0% | +18,1% | **+22,7%** | +22,7% |
-| NDCG@10 | baseline | +11,6% | +16,6% | **+25,4%** | +25,4% |
-| Uncertainty Calibration (ECE↓) | 0,37 | 0,35 | 0,33 | **0,30** | -26,8% |
-| Faithfulness (Hallucination-Reduktion) | baseline | +3,2% | +5,1% | **+6,1%** | -27,8% Halluzinationen |
+Das Paper gibt **mehrere Vergleichsebenen** — je nach Baseline unterschiedliche Prozentzahlen. Klar trennen:
+
+**Ebene 1: Bayesian RAG vs. BM25 (Abstract, Tab. 1 Haupt-Benchmark)**
+
+| Metrik | BM25-Baseline | **Bayesian RAG** | Δ |
+|---|---|---|---|
+| Precision@3 | baseline | +20,6% | +20,6% |
+| Recall@5 | baseline | +15,2% | +15,2% |
+| MRR | baseline | +22,7% | +22,7% |
+| NDCG@10 | baseline | +25,4% | +25,4% |
+| Uncertainty Calibration (ECE↓) | 0,37 | **0,30** | **-26,8%** |
+
+**Ebene 2: Bayesian RAG vs. Standard RAG (Figure 2 Six-Panel)**
+
+| Metrik | Standard RAG | **Bayesian RAG** | Δ |
+|---|---|---|---|
+| ECE | 0,142 | **0,068** | **-52%** |
+| Precision@1 | baseline | +33% | +33% |
+| Latency | 8ms | 15ms | +87,5% (akzeptierter Trade-off) |
+
+**Ebene 3: Bayesian RAG + GPT Framework (End-to-End)**
+
+| Metrik | Standard RAG + GPT | **Bayesian RAG + GPT** | Δ |
+|---|---|---|---|
+| Accuracy | ~85-88% | **93,1%** | +5-8pp |
+| ECE | 0,052 | **0,034** | -34,6% |
+| AUC | baseline | 0,961 | — |
 
 **Konkrete Zahlen-Extraction** (Section 5 Case Study): Bayesian RAG extrahiert korrekt "$211.915B Microsoft Revenue 2023" und "$383.285B Apple Revenue 2023" aus 10-K-Tabellen — BM25 und Dense-Retrieval scheitern oder produzieren Halluzinationen.
+
+**Wichtig für DEFCON-Kontext:** Die 26,8%-ECE-Reduktion (Abstract) und die 52%-ECE-Reduktion (Figure 2) sind **keine Widersprüche** — sie messen unterschiedliche Vergleiche (vs. BM25 vs. Standard-RAG). Beim Zitieren immer Baseline angeben.
 
 ## Beitrag zu DEFCON / Dynasty-Depot
 

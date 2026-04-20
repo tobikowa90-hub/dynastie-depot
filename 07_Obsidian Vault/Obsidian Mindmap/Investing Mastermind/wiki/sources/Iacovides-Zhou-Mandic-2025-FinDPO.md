@@ -66,7 +66,7 @@ FinDPO-Portfolio-Evaluation: **Februar 2015 bis Juni 2021** (~6,4 Jahre), S&P-50
 | Data-Snooping | ⚠️ 5bps-Schwelle wurde im Paper selbst ausgewählt — keine Hold-Out-Set für Cost-Level-Selection |
 | Regime-Asymmetrie | ⚠️ 2015-2021 Zeitraum enthält Bull-dominated Phase + COVID-Crash 2020 — Bull/Bear-Subsample-SR nicht reportet |
 
-**Verdikt:** FinDPO ist methodisch besser als die meisten Pre-2024-LLM-Trading-Papers, aber **noch nicht FINSABER-kompatibel gegen-evaluiert** (20-J Hold-Out, Bull/Bear-Subsample-Separation). Vor operativer Adoption: FinDPO-Code gegen FINSABER-Benchmark-Framework laufen lassen. Bis dahin: Interessantes SOTA-Paper, aber nicht belastbare "Evidenz" im DEFCON-Sinn.
+**Verdikt:** FinDPO ist methodisch besser als die meisten Pre-2024-LLM-Trading-Papers, aber **noch nicht FINSABER-kompatibel gegen-evaluiert** (20-J Hold-Out, Bull/Bear-Subsample-Separation). **Hypothetischer Zukunfts-Validierungs-Pfad (nicht geplant, nicht priorisiert):** Falls FinDPO jemals als Sentiment-Signal im Dynasty-Depot erwogen würde, müsste der FinDPO-Code gegen das FINSABER-Benchmark-Framework gelaufen werden. Dies ist **kein operativer Handlungsauftrag** — Dynasty-Depot ist Long-Only und bezieht Sentiment manuell über Analyst-Consensus, nicht über LLM-Klassifikation. Bis auf Weiteres: Interessantes SOTA-Paper, aber nicht belastbare "Evidenz" im DEFCON-Sinn.
 
 ## Relevanz für Dynasty-Depot
 
