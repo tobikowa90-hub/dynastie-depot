@@ -1,6 +1,45 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 (späte Session) | **Für:** Nächste Session — **Track 5a + 5b Execution** (primär) + Track 1 T1-Rerun (offen)
+**Aktualisiert:** 2026-04-20 (Mittags-Session v3.0.3 T1-PASS) | **Für:** Nächste Session — **T3/T4 Adversarial-Tests + 3-Tage-Gate A bis 24.04.**, danach Track 5a Execution
+
+---
+
+## ⚡ SESSION 20.04. (Mittags, nach T1-FAIL) — v3.0.3 DEPLOYED + T1-PASS
+
+### Abgeschlossen
+- **v3.0.3 Prompt geschrieben:** Lever 1 Yahoo-Gap-Elimination (BRK.B/RMS.PA/SU.PA → deterministisch `n.v. [Yahoo 403 known]`, kein Yahoo-curl mehr), Budget-Fallback 60s-Gate aus SCHRITT 4.5(E) entfernt (war Recall-Regression). Commit `30b1867`.
+- **Spec §6(E)/§8/§10-12/§13 rebased auf Soft-Alert-Schema:** <180s healthy / 180-400s observe / >400s alert, KEIN Auto-Rollback aus Runtime allein. Revision-Log im Spec-Header ergänzt. Grund: User-Prinzip "Korrektheit > Laufzeit" (memory `feedback_correctness_over_runtime.md`).
+- **Codex-Thread 019da9fa:** Plan akzeptiert mit 2 Änderungen — (1) Lever-1-Downside als Kurs-Coverage-Limit umetikettiert (nicht News-Recall), (2) Gate-Rebase auf Soft-Alert statt harter 300s/400s-Ersatz-Gates. Memory `data-source-coverage.md` SU.PA (Schneider Electric, Euronext Paris) vs. bare SU (NYSE Suncor) geschärft.
+- **Probe-Trigger auf v3.0.3 deployed:** `RemoteTrigger update trig_01XYuQ5mugsvZGZD4K52rjXh` HTTP 200 @ 2026-04-20T08:48:01Z. Post-Update-Verify alle Assertions PASS.
+- **T1-Rerun PASS:** **262s (4:22)** — gegenüber v3.0.2-FAIL 360s = -98s / -27%. Soft-Alert-Band OBSERVE. 8/8 Sektionen, Yahoo-n.v. deterministisch, 4/4 Per-Ticker vollständig (MSFT/APH/AVGO/TMO), Material-Filter korrekt. Dokumentiert in `03_Tools/tests/tavily-probe-prompts/results/T1-2026-04-20-v3.0.3.md`.
+
+### Gate A (3-Tage-Stabilität) — startet JETZT
+Morgen 21.04. + übermorgen 22.04. + 23.04. drei konsekutive Cron-Runs ohne Regression beobachten (Cron-Trigger ist der Prod-Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, aktuell noch v2.1 — muss vor Gate-A-Start auf v3.0.3 aktualisiert werden ODER Gate A bezieht sich weiter auf Probe-Trigger Manual-Runs).
+
+**Entscheidungsbedarf vor 21.04.:**
+- (a) Prod-Trigger jetzt auf v3.0.3 heben und Gate A auf Cron-Basis laufen lassen (rausrisk: Prod-Side-Effect bei Fehler), ODER
+- (b) Gate A auf Probe-Trigger Manual-Runs basieren (sicherer, 3× Manual-Effort erforderlich bis 24.04.), ODER
+- (c) T3/T4 zuerst auf Probe, dann Prod-Deploy + Gate A parallel (kombinierter Pfad).
+
+### Noch offen im Tavily-Plan (`docs/superpowers/plans/2026-04-19-tavily-morning-briefing.md`)
+- Task 5: T3 Adversarial Symbol-Trap (RMS.PA + SU.PA forciert, Suncor/Rockwell-Durchschlag-Check)
+- Task 6: T4 Fail-Open (HTTP 422 Pattern gegen v3.0.3 bestätigen)
+- Task 7: Gate-Review (T1/T3/T4 alle PASS?)
+- Task 8: Prod-Deploy auf `trig_01PyAVAxFpjbPkvXq7UrS2uG`
+- Task 9: Post-Update-Content-Verify auf Prod
+- Task 10: Prod Manual-Run Verification
+- Task 11: Post-Deploy Housekeeping (briefing-config memory + CORE-MEMORY §10 + log.md)
+- Task 13: Day 1-3 Monitoring (Threshold 70% material)
+
+### v3.1 Deferred Plan
+Separater Plan-Write-Commit (2-Stage-Tavily-Cache via Cronjob 09:55 MESZ). Korrektheits-Risiken (Stale-Cache, Partial-Write, Schema-Mismatch) Codex-validiert mit Mitigation-Skizzen. **Nicht jetzt ausführen** — nur wenn 262s-Baseline im Alltag stört.
+
+### Key-Learnings
+- **User-Prinzip "Korrektheit > Laufzeit"** ist systemweit persistiert (memory `feedback_correctness_over_runtime.md`) und hat konkrete Entscheidungen verdrängt: hard-90s-Gate → Soft-Alert, 60s-Budget-Fallback → entfernt.
+- **Codex-Review-Pattern robust:** Claude-Vorschlag → Codex-Second-Opinion → Synthese. Bei v3.0.3-Plan: Codex hat Blind-Spot (Kurs-Coverage vs. News-Recall) korrigiert und härtere Gate-Zahlen durch Soft-Alert ersetzt — beides vom User über `Ja` validiert.
+- **Deployment-Pipeline funktioniert:** prompt-v3.md → git commit → RemoteTrigger update → Post-Update-Verify → Manual-Run-Test → Result-Doc. Mess-Baseline jetzt dokumentiert.
+
+---
 
 ---
 
