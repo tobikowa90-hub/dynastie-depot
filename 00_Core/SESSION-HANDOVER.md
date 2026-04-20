@@ -32,7 +32,7 @@
 ### Artefakte (beide in `docs/superpowers/plans/`, force-added per Konvention)
 - `2026-04-20-track5a-edgar-skill-promotion.md`
 - `2026-04-20-track5b-fred-regime-filter.md`
-- Spec (unverändert): `00_Core/TRACK5-SPEC-edgar-fred.md` (Commit `22cdeb8`)
+- Spec (v1.0 frozen, archiviert 2026-04-20): `05_Archiv/TRACK5-SPEC-edgar-fred-v1.0.md` (Commit `22cdeb8`)
 
 ### Nicht-Änderungen dieser Session
 - Keine Scores / FLAGs / Sparraten (reine Planungs-Artefakte)
