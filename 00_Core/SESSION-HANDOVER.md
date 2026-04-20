@@ -1,29 +1,33 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 (Abend-Session-Cut nach Phase 1a Paper-Ingest) | **Für:** Nächste Session — **Gate 2 Codex-Review Phase 1a + Phase 1b** (primär, neu seit Mittag); **Prod-Deploy v3.0.3 + Gate-A-Start** läuft parallel; Track 5a/5b Execution PAUSIERT bis Paper-Ingest komplett (Phase 6); Track 4 (ETF/Gold) weiter ausstehend
+**Aktualisiert:** 2026-04-20 Abend-Spät (Session-Cut nach **Phase 1b Paper-Ingest komplett**) | **Für:** Nächste Session — **Codex Combined Gate 2 (Phase 1a+1b in einem Call via git show)** primär, dann Phase 2 System-Konsequenzen; **Prod-Deploy v3.0.3 + Gate-A-Start** läuft parallel; Track 5a/5b Execution PAUSIERT bis Phase 2 abgeschlossen; Track 4 (ETF/Gold) weiter ausstehend
 
 ---
 
-## 🆕 NEUER HAUPT-TRACK: 6-Paper-Ingest (Phase 1a DONE 2026-04-20 Abend)
+## 🆕 HAUPT-TRACK: 6-Paper-Ingest Phase 1 KOMPLETT (2026-04-20 Abend-Spät)
 
-**Scope-Entscheidung Mittag→Abend:** User hat 6 neue Finance/AI-Papers in `07_Obsidian Vault/.../raw/` hinzugefügt (3 PDFs + 3 .md). Nach 2 Codex-Review-Runden (Triage + Skill-Cross-Check) wurde entschieden: Track 5a/5b/Briefing-v3.1 **pausieren**, Paper-Ingest mit Palomar-Standard durchführen. v3.0.3 Prod-Deploy läuft **parallel** (nicht blockiert).
+**Scope-Entscheidung Mittag→Abend→Abend-Spät:** User hatte 6 neue Finance/AI-Papers in `07_Obsidian Vault/.../raw/` hinzugefügt (3 PDFs + 3 .md). Nach 2 Codex-Review-Runden (Triage + Skill-Cross-Check) wurde entschieden: Track 5a/5b/Briefing-v3.1 **pausieren**, Paper-Ingest mit Palomar-Standard durchführen. v3.0.3 Prod-Deploy läuft **parallel** (nicht blockiert). **Phase 1a + Phase 1b in derselben Tages-Session abgeschlossen** — User-Entscheidung zugunsten Codex-Combined-Review statt sequentieller Gate-Review-Runden.
 
-**Phase 1a abgeschlossen (Severity-🔴-Cluster):**
+**Phase 1a abgeschlossen (Severity-🔴-Cluster, Commit 7ec7b86):**
 - 2 Sources: [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] (KDD '26, B19), [[Sheppert-2026-GT-Score]] (JRFM 2026, B20)
 - 3 Concepts: [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]]
-- 5 Author-Entities: Waylon Li, Hyeonjun Kim, Mihai Cucuringu, Tiejun Ma, Alexander Pearson Sheppert
+- 5 Author-Entities: Weixian Waylon Li, Hyeonjun Kim, Mihai Cucuringu, Tiejun Ma, Alexander Pearson Sheppert
 - Updates: `Wissenschaftliche-Fundierung-DEFCON` (B19+B20), `Backtest-Methodik-Roadmap` v2.0→v2.1, `index.md`, `log.md`
 
+**Phase 1b abgeschlossen (Severity-🟡-Cluster, Commit folgt gleich nach diesem Edit):**
+- 4 Sources: [[Arun-et-al-2025-FinReflectKG]] (Domyn/arxiv 2508.17906, B21), [[Labre-2025-FinReflectKG-Companion]] (Towards AI, B22), [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] (Frontiers AI, B23), [[Iacovides-Zhou-Mandic-2025-FinDPO]] (Imperial/arxiv 2507.18417, B24)
+- 6 Concepts: [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[LLM-as-a-Judge-Evaluation]], [[RAG-Uncertainty-Quantification]], [[LLM-Preference-Optimization-Finance]], [[Sentiment-Strength-Logit-Extraction]]
+- 12 Author-Entities: Abhinav Arun, Fabrizio Dimino, Tejas Prakash Agarwal, Bhaskarjit Sarmah, Stefano Pasquali, Marcelo Labre, Lebede Ngartera, Saralees Nadarajah, Rodoumta Koina, Giorgos Iacovides, Wuyang Zhou, Danilo Mandic
+- 1 neue Synthesis: [[Knowledge-Graph-Architektur-Roadmap]] v0.1 (Entscheidungsvorlage KG vs. XML-Direkt-Parsing vs. Bayesian RAG; 3 Qualitäts-Gates; 3 konkrete Szenarien; Codex-Gate 2.5 eingeplant)
+- Updates: `Wissenschaftliche-Fundierung-DEFCON` (B21-B24, 20 Quellen / 24 Befunde), `index.md` (107→130 Notes), `log.md` — Phase 1b-Eintrag
+
 **Nächste Session — Reihenfolge:**
-1. **Gate 2 Codex-Review Phase 1a Output** — Codex prüft 2 Sources + 3 Concepts + Synthesis-Updates auf Akkuratesse, Cross-Link-Vollständigkeit, B19/B20-Mapping-Korrektheit
-2. **Phase 1b Vault-Ingest 🟡-Cluster:** FinReflectKG (#1) + Labre Companion (#2) + Bayesian RAG (#3) + FinDPO (#6) — 4 Sources + ~4-6 Concepts + neue [[Knowledge-Graph-Architektur-Roadmap]] v0.1 + Entscheidungsvorlage "KG-Mehrwert vs XML-Direkt-Parsing" für insider-intelligence
-3. **Hard-Checkpoint:** Vault → System nicht überspringen
-4. **Phase 2:** System-Konsequenzen — §29-Sub-Klausel-Mapping erweitern (29.1+29.2+29.5+29.6) + ggf. neue §33 Skill-Self-Audit + Plan-Diffs (Track 5a/5b/v3.1)
-5. **Phase 2.5 Codex-Skill-Audit-Gate** (kritisch — Anti-Creep-Mechanismus): trennt Audit-Methodik von Skill-Code-Change
+1. **Codex Combined Gate 2 Review (Phase 1a+1b)** — ein Codex-Call mit `git show <phase1b-hash> 7ec7b86`, prüft gesamtes Paper-Ingest-Output auf Akkuratesse + Cross-Link-Vollständigkeit + B19-B24-Mapping-Korrektheit (User-Direktive Abend-Spät: spart Review-Runde ggü. Sequential-Review)
+2. **Phase 2: System-Konsequenzen** — §29-Sub-Klausel-Mapping erweitern (29.1+29.2+29.5+29.6) + ggf. neue §33 Skill-Self-Audit + Plan-Diffs (Track 5a/5b/v3.1) + Entscheidung zu [[Knowledge-Graph-Architektur-Roadmap]]-Szenarien
+3. **Phase 2.5 Codex-Skill-Audit-Gate** (kritisch — Anti-Creep-Mechanismus): trennt Audit-Methodik von Skill-Code-Change
+4. **Parallel: Prod-Deploy v3.0.3 + Gate-A-Start** — unverändert (siehe Section unten)
 
 **Showstopper-Risk** (Codex Round 2): Vermischung Audit-Layer ↔ Produktions-Skill-Logik. Phase 2.5-Gate adressiert das explizit.
-
-**Konsens-Plan-Doc:** komplette Triage + Skill×Paper-Matrix + Phasen-Plan ist im aktuellen Conversation-Context (verloren bei /clear). Empfehlung: **Vor /clear den finalen Plan zusammenfassen** — z.B. als `docs/superpowers/plans/2026-04-20-paper-ingest-phases.md` oder in CORE-MEMORY §1.
 
 ---
 

@@ -566,3 +566,33 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Archive-Stand:** unverändert 27 Records. Scores/Sparraten unverändert. Kein FLAG-Event. Keine Skill-Code-Änderungen.
 - **Dokument-Status:** Phase 1a Vault-only (per Hard-Checkpoint Vault-first → System). Phase 2-6 in nächsten Sessions.
 - **Auto-Lint pending:** Orphans + broken Links Phase 1a-Pages prüfen vor Phase 1b.
+
+## [2026-04-20] ingest | Phase 1b — 6-Paper-Ingest Severity-🟡-Cluster: FinReflectKG + Labre-Companion + Bayesian-RAG + FinDPO
+- **Scope:** 4 von 6 neu hinzugefügten Papers abgearbeitet (🟡-Cluster). Komplettiert Phase 1 des 6-Paper-Ingest-Projekts. Papers: FinReflectKG (Arun/Dimino/Agarwal/Sarmah/Pasquali, Domyn 2025, arxiv 2508.17906v2), Labre-Companion (Marcelo Labre, Towards AI 2025-09-29), Bayesian RAG (Ngartera/Nadarajah/Koina, Frontiers AI Jan 2026, DOI 10.3389/frai.2025.1668172), FinDPO (Iacovides/Zhou/Mandic, Imperial 2025, arxiv 2507.18417v1).
+- **Pages created (23):**
+  - 4 Sources: [[Arun-et-al-2025-FinReflectKG]], [[Labre-2025-FinReflectKG-Companion]], [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]], [[Iacovides-Zhou-Mandic-2025-FinDPO]]
+  - 6 Concepts: [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[LLM-as-a-Judge-Evaluation]], [[RAG-Uncertainty-Quantification]], [[LLM-Preference-Optimization-Finance]], [[Sentiment-Strength-Logit-Extraction]]
+  - 12 Author-Entities: [[Abhinav Arun]], [[Fabrizio Dimino]], [[Tejas Prakash Agarwal]], [[Bhaskarjit Sarmah]], [[Stefano Pasquali]], [[Marcelo Labre]], [[Lebede Ngartera]], [[Saralees Nadarajah]], [[Rodoumta Koina]], [[Giorgos Iacovides]], [[Wuyang Zhou]], [[Danilo Mandic]]
+  - 1 neue Synthesis: [[Knowledge-Graph-Architektur-Roadmap]] v0.1 (Entscheidungsvorlage KG vs. XML-Direkt-Parsing vs. Bayesian RAG; 3 Qualitäts-Gates; 3 konkrete Szenarien)
+- **Pages updated (2):**
+  - [[Wissenschaftliche-Fundierung-DEFCON]] — B21-B24 in 20-Befunde-Matrix (jetzt 24), Quellen-Übersicht erweitert (16→20), Änderungsprotokoll-Eintrag 2026-04-20 Abend
+  - [[index.md]] — 23 neue Wiki-Pages + neue Gruppe "KG-/RAG-/LLM-Architektur (Phase 1b)" + Synthesis-Sektion erweitert + Header-Counter (107→130 Notes)
+- **Kernaussagen aus 4 Papers konsolidiert:**
+  - **B21 FinReflectKG (Domyn 2025):** Agentic-Reflection-Pattern (Extraction → Critic → Correction Loop) erreicht 64,8% All-Rules-Compliance (+22,5pp vs. Single-Pass 42,3%), 15,8 Triples/Chunk, ECR 0,53. 5-Tuple-Schema (Head Entity, Type, Relation, Tail Entity, Type). Qwen2.5-72B-Instruct + 3-Vote LLM-as-a-Judge-Evaluation.
+  - **B22 Labre-Companion (Towards AI 2025):** Praktiker-Lens zum FinReflectKG-Paper. Hauptbeitrag: **Reflection-Entropy-Paradox** (Coverage gewinnt, Shannon-Rel-Entropy verliert -22%) + Vorschlag Diversity-Monitor als Qualitäts-Gate vor Correction-LLM-Runde.
+  - **B23 Bayesian RAG (Frontiers AI 2026):** Epistemische Uncertainty via MC-Dropout auf Query/Doc-Embeddings. Score $S_i = \mu_i - \lambda \sigma_i$. +26,8% Uncertainty-Calibration, -27,8% Halluzinationen, 15ms Latency. In-Scoring statt post-hoc (architektonisch überlegen).
+  - **B24 FinDPO (Imperial 2025):** DPO-Alignment statt SFT für Finance-Sentiment. Llama-3-8B + LoRA r=16. +11% F1-Durchschnitt vs. FinGPT v3.3. Novel logit-to-score-Konverter enabled kontinuierliche Sentiment-Scores aus causal-LLMs → Long-Short-Portfolio mit 67% p.a. bei 5bps (einzige Methode, die bei realistischen Transaction Costs signifikant positiv bleibt).
+- **Architektur-Entscheidungen (konsolidiert in [[Knowledge-Graph-Architektur-Roadmap]] v0.1):**
+  - **Form-4 bleibt XML-Direkt-Parsing** (Codex Round 2 bestätigt: KG-Over-Engineering für strukturierte Daten)
+  - **10-K-KG FUTURE-Option, nicht priorisiert** (benötigt wiederkehrenden Cross-Entity-Use-Case)
+  - **Morning-Briefing v3.0.3 Korrektheits-Prinzip wissenschaftlich validiert** durch Bayesian-RAG-Paper — n.v.-Markierung + Soft-Alert-Schema sind aligned (3-Quellen-Triangulation als MC-Dropout-Proxy)
+  - **FinDPO orthogonal zu DEFCON** (Long-Short vs. Long-Only); Kontext für zukünftige Sentiment-Block-Revisionen
+  - **3 Qualitäts-Gates** für zukünftige KG/RAG-Erweiterungen definiert (Sinnhaftigkeit / Operationalisierung / Anti-Over-Engineering mit Codex-Review-Pflicht)
+- **Mappingvorschläge für Phase 2 (System-Konsequenzen, noch nicht ediert):**
+  - Keine neuen §-Einträge in INSTRUKTIONEN nötig — B21-B24 sind Architektur/Methoden, nicht Scoring
+  - Phase 2.5 Codex-Skill-Audit-Gate hat jetzt konkrete Szenarien (Szenario 1-3 in [[Knowledge-Graph-Architektur-Roadmap]])
+- **Codex-Review-Gate:**
+  - Post-Commit Combined-Review durch Codex via `git show <phase1b-hash> 7ec7b86` geplant — spart eine Review-Runde ggü. Sequential-Review (User-Direktive)
+- **Archive-Stand:** unverändert 27 Records. Scores/Sparraten unverändert. Kein FLAG-Event. Keine Skill-Code-Änderungen. Keine §-Edits in INSTRUKTIONEN.md.
+- **Dokument-Status:** Phase 1b Vault-only (per Hard-Checkpoint Vault-first → System). Phase 2-6 in nächsten Sessions. **Phase 1 des 6-Paper-Ingest-Projekts damit vollständig abgeschlossen.**
+- **Auto-Lint pending:** Orphans + broken Links Phase 1b-Pages prüfen vor Commit (Task #9).

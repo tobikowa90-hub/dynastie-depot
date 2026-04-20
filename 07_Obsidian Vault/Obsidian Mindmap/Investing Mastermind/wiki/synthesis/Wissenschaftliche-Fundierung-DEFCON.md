@@ -2,8 +2,8 @@
 title: "Wissenschaftliche Fundierung DEFCON v3.7"
 type: synthesis
 tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung, validation-gate]
-sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]]"
-concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]], [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]]"
+sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]], [[Arun-et-al-2025-FinReflectKG]], [[Labre-2025-FinReflectKG-Companion]], [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]], [[Iacovides-Zhou-Mandic-2025-FinDPO]]"
+concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]], [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]], [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[LLM-as-a-Judge-Evaluation]], [[RAG-Uncertainty-Quantification]], [[LLM-Preference-Optimization-Finance]], [[Sentiment-Strength-Logit-Extraction]]"
 related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Non-US-Scoring]], [[Backtest-Methodik-Roadmap]]"
 entities: "[[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
 datum: 2026-04-19
@@ -13,7 +13,8 @@ status: aktiv
 # Wissenschaftliche Fundierung DEFCON v3.7
 
 > Dieses Dokument belegt, dass das DEFCON-Scoring-System auf peer-reviewed Forschung basiert.
-> 10 Quellen → 14 Befunde → operative Konsequenzen für das Dynasty-Depot.
+> 20 Quellen → 24 Befunde → operative Konsequenzen für das Dynasty-Depot.
+> **Stand 2026-04-20 Abend nach Phase-1b-Ingest:** B21-B24 sind **keine Scoring-Änderungen**, sondern Architektur/Methoden-Befunde für zukünftige Skill-Erweiterungen + Validation-Pflichten.
 
 ---
 
@@ -57,6 +58,10 @@ status: aktiv
 | **B18** | Seven Sins of Quantitative Investing (Overfitting + 6 weitere Biases) | [[Palomar-2025-Portfolio-Optimization]] | Pre-Flight-Validation | Pflicht-Checkliste vor jeder retrospektiven Analyse; Sin #7 n.a. Long-Only | §29.5 Seven-Sins-Gate aktiv auch bei Migration-Events |
 | **B19** | LLM-Investing-Vorteile verschwinden unter 20-J/100+-Symbol-Eval mit Bias-Mitigation; Bull/Bear-Asymmetrie systematisch | [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] | Validation-Audit + Regime-Awareness | Skill-Self-Audit-Pflicht für DEFCON als Selection-Strategy; Bull/Bear-Subsample-SR-Trennung | §29.5 erweitert + ggf. §33 Skill-Self-Audit; Track 5b FRED wissenschaftlich verankert |
 | **B20** | Composite Anti-Overfitting Objective (Performance × Significance × Consistency × Downside-Risk) — In-the-Loop statt Post-hoc | [[Sheppert-2026-GT-Score]] | Validation-Methode (komplementär zu B15) | GT-Score-Aggregat als Tie-Break R0 in Track 5b Grid-Search (1620 Combos); Audit-Lens für DEFCON-Block-Gewichtungen | §29.1 erweitert + §29.6 Downside-Risk-Komponente |
+| **B21** | Reflection-Driven Agentic KG-Extraction (Critic-Corrector-Loop) erreicht 64,8% All-Rules-Compliance aus SEC 10-K-Filings, +22,5pp vs. Single-Pass; 5-Tuple-Schema mit 10 Entity-Types + 10 Relation-Types | [[Arun-et-al-2025-FinReflectKG]] | Architektur (nicht Scoring) | Anker für Entscheidung `insider-intelligence` KG-Erweiterung: Form-4 bleibt XML, 10-K-KG bleibt FUTURE-Option | Keine §-Änderung; neue Synthesis [[Knowledge-Graph-Architektur-Roadmap]] v0.1 |
+| **B22** | Reflection-Entropy-Paradox — Coverage-Gain geht einher mit Diversity-Reduktion (Shannon Rel. -22%); Praktiker-Mitigation via Pre-Correction-Entropy-Monitor | [[Labre-2025-FinReflectKG-Companion]] | Architektur-Caveat | Bei hypothetischer 10-K-KG: Entropy-Monitor als Qualitäts-Gate verpflichtend | Keine §-Änderung; dokumentiert in [[Knowledge-Graph-Architektur-Roadmap]] Gate 2 |
+| **B23** | Epistemic-Uncertainty-Quantification via Monte-Carlo-Dropout auf Embeddings; Score $S_i = \mu_i - \lambda \cdot \sigma_i$; -26,8% ECE, -27,8% Halluzinationen bei 15ms Latency | [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] | Architektur (nicht Scoring) | Wissenschaftliche Fundierung für v3.0.3 Morning-Briefing Korrektheits-Prinzip (n.v.-Markierung + Soft-Alert-Schema); keine operative Änderung heute (Tavily-API erlaubt kein MC-Dropout) | Keine §-Änderung; Alignment-Referenz für `feedback_correctness_over_runtime.md` |
+| **B24** | Direct-Preference-Optimization + Logit-to-Score-Konverter enables causal-LLM-Integration in Long-Short-Portfolios; +11% F1 vs. FinGPT v3.3 SOTA, 67% p.a. bei 5bps Transaction Costs | [[Iacovides-Zhou-Mandic-2025-FinDPO]] | Methoden-Kontext (nicht Dynasty-Depot-operativ) | Long-Short orthogonal zu DEFCON Long-Only; FINSABER-Audit-Pflicht (B19) vor Adoption; Future-Option für News-Sentiment-Block | Keine §-Änderung; dokumentiert als Wissenschaftskontext für zukünftige Sentiment-Revisionen |
 
 ---
 
@@ -72,7 +77,7 @@ status: aktiv
 
 ---
 
-## Quellen-Übersicht (10 Paper — Stand: 17.04.2026)
+## Quellen-Übersicht (20 Paper — Stand: 20.04.2026)
 
 | Quelle | Jahr | Kernthese | DEFCON-Block | Neue Befunde |
 |--------|------|-----------|--------------|-------------|
@@ -92,6 +97,10 @@ status: aktiv
 | [[Palomar-2025-Portfolio-Optimization]] | 2025 | Seven Sins of Quantitative Investing | Pre-Flight-Validation | B18 ← NEU |
 | [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] | 2026 | LLM-Investing-Vorteile verschwinden unter realistischer Eval; Bull/Bear-Asymmetrie | Validation-Audit + Regime-Awareness | B19 ← NEU 2026-04-20 |
 | [[Sheppert-2026-GT-Score]] | 2026 | Composite Anti-Overfitting Objective (in-the-loop) | Validation-Methode | B20 ← NEU 2026-04-20 |
+| [[Arun-et-al-2025-FinReflectKG]] | 2025 | Agentic Reflection-Pattern für Finance-KG-Extraction aus SEC 10-K | Architektur (nicht Scoring) | B21 ← NEU 2026-04-20 Phase 1b |
+| [[Labre-2025-FinReflectKG-Companion]] | 2025 | Praktiker-Lens + Entropy-Paradox-Mitigation für Reflection-KG | Architektur-Caveat | B22 ← NEU 2026-04-20 Phase 1b |
+| [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] | 2026 | Bayesian RAG mit MC-Dropout-Uncertainty für Finance-QA | Architektur-Referenz | B23 ← NEU 2026-04-20 Phase 1b |
+| [[Iacovides-Zhou-Mandic-2025-FinDPO]] | 2025 | DPO-Alignment + Logit-to-Score für Long-Short-Portfolios | Methoden-Kontext (nicht operativ) | B24 ← NEU 2026-04-20 Phase 1b |
 
 ---
 
@@ -179,6 +188,7 @@ Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] �
 | 2026-04-17 | 3 Foundation-Papers integriert: Piotroski (F-Score, B12), Novy-Marx (GP-Premium, B13), Sloan (Accrual-Anomalie, B14). 7→10 Quellen, 11→14 Befunde. Vorbereitung für v3.6-Release: Quality-Bonus (+2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus <3%. System-Reife-Ceiling: 85% → geplant 92-95%. |
 | 2026-04-19 | 4 Backtest-Validation-Papers integriert: Bailey PBO/CSCV (B15), Aghassi AQR Fact/Fiction (B16), Flint/Vermaak Information Decay (B17), Palomar Seven Sins (B18). 10→14 Quellen, 14→18 Befunde. B15-B18 sind **keine Scoring-Änderungen**, sondern Validation-Gate-Framework — §29 (Retrospective-Analyse-Gate, FUTURE-ACTIVATION 2028-04-01). §29.5 Seven-Sins-Gate aktiv auch bei Migration-Events. Applied Learning verletzt NICHT — Paper-Ingest ≠ System-Update, nur Gate-Infrastruktur. |
 | 2026-04-20 | **Phase 1a** des 6-Paper-Ingest-Projekts (siehe log.md): 2 Severity-🔴-Papers integriert — FINSABER (B19, Li/Kim/Cucuringu/Ma KDD '26) + GT-Score (B20, Sheppert JRFM 2026). 14→16 Quellen, 18→20 Befunde. B19+B20 sind **keine Scoring-Änderungen**, sondern: (1) Audit-Pflicht für DEFCON als Selection-Strategy via FINSABER-Pattern (§29.5 erweitert + ggf. neue §33 Skill-Self-Audit); (2) Composite-Anti-Overfitting-Lens für DEFCON-Block-Gewichtungen + Track 5b Grid-Search (§29.1 + §29.6 erweitert). Codex-Round-2-bestätigt: keine LLM-Sicherheitsdebatte, keine zwingenden Skill-Code-Changes. Phase 1b (4 Severity-🟡-Papers) folgt nächste Session. |
+| 2026-04-20 Abend | **Phase 1b** des 6-Paper-Ingest-Projekts: 4 Severity-🟡-Papers integriert — FinReflectKG (B21, Arun et al. Domyn 2025) + Labre-Companion (B22, Towards AI 2025) + Bayesian RAG (B23, Ngartera et al. Frontiers 2026) + FinDPO (B24, Iacovides et al. Imperial 2025). 16→20 Quellen, 20→24 Befunde. B21-B24 sind **keine Scoring-Änderungen**, sondern: (1) Architektur-Referenzen für zukünftige KG/RAG-Skill-Erweiterungen (neue Synthesis [[Knowledge-Graph-Architektur-Roadmap]] v0.1 mit Entscheidungsvorlage Gate 1-3); (2) wissenschaftliche Fundierung des v3.0.3 Morning-Briefing Korrektheits-Prinzips; (3) Methoden-Kontext für Future-News-Sentiment-Integration. **Vault-only-Phase** — DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert. Hard-Checkpoint vor Phase 2 (System-Konsequenzen) eingehalten. |
 
 ## Validierung der Befunde (Backtest-Ready-Infrastructure, seit 2026-04-17)
 

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-20 (Phase 1a of 6-Paper Ingest — FINSABER + GT-Score: +2 sources, +3 concepts, +5 entities = 107 Notes: 101 wiki + 6 raw-ingested; 4 raw pending Phase 1b)
+> Last updated: 2026-04-20 Abend (Phase 1b of 6-Paper Ingest — FinReflectKG + Labre + Bayesian RAG + FinDPO: +4 sources, +6 concepts, +12 entities, +1 synthesis = 130 Notes: 124 wiki + 6 raw-ingested; Phase 1a+1b komplett)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -30,6 +30,10 @@
 - [[Palomar-2025-Portfolio-Optimization]] — Cambridge UP: Seven Sins + Methoden-Werkzeugkasten (B18) ← NEU 2026-04-19
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — KDD '26: LLM-Investing-Vorteile verschwinden unter realistischer Eval; Bull/Bear-Asymmetrie (B19) ← NEU 2026-04-20
 - [[Sheppert-2026-GT-Score]] — JRFM 2026: Composite Anti-Overfitting Objective (in-the-loop, komplementär zu PBO) (B20) ← NEU 2026-04-20
+- [[Arun-et-al-2025-FinReflectKG]] — arXiv 2508.17906 (Domyn, 2025): Agentic-Reflection-Pattern für Finance-KG aus SEC 10-K; 64,8% All-Rules-Compliance (B21) ← NEU 2026-04-20 Phase 1b
+- [[Labre-2025-FinReflectKG-Companion]] — Towards AI (2025-09-29): Praktiker-Lens + Entropy-Paradox-Mitigation für Reflection-KG (B22) ← NEU 2026-04-20 Phase 1b
+- [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] — Frontiers AI (Jan 2026): MC-Dropout-Uncertainty für Finance-QA; -27,8% Halluzinationen (B23) ← NEU 2026-04-20 Phase 1b
+- [[Iacovides-Zhou-Mandic-2025-FinDPO]] — arXiv 2507.18417 (Imperial, 2025): DPO + Logit-to-Score für Long-Short-Portfolios; 67% p.a. bei 5bps (B24) ← NEU 2026-04-20 Phase 1b
 
 ### Datenquellen-APIs
 - [[defeatbeta]] — US-Fundamentals (Primär): Income, Cash Flow, ROIC, WACC, Geographic Revenue
@@ -63,6 +67,18 @@
 - [[Mihai Cucuringu]] — Co-Autor FINSABER (UCLA Math/Stats + Oxford OMI) ← NEU 2026-04-20
 - [[Tiejun Ma]] — Co-Autor FINSABER (Edinburgh AIAI, vermutlich Supervisor) ← NEU 2026-04-20
 - [[Alexander Pearson Sheppert]] — Alleinautor GT-Score (Capitol Tech U) ← NEU 2026-04-20
+- [[Abhinav Arun]] — Erstautor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
+- [[Fabrizio Dimino]] — Co-Autor FinReflectKG + Präsentator Quant x AI NY 2025 (Domyn NY) ← NEU 2026-04-20 Phase 1b
+- [[Tejas Prakash Agarwal]] — Co-Autor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
+- [[Bhaskarjit Sarmah]] — Co-Autor FinReflectKG (Domyn Gurgaon India) ← NEU 2026-04-20 Phase 1b
+- [[Stefano Pasquali]] — Senior Co-Autor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
+- [[Marcelo Labre]] — Praktiker/Blogger Towards AI, Quant x AI Event NY 2025 ← NEU 2026-04-20 Phase 1b
+- [[Lebede Ngartera]] — Erstautor Bayesian RAG (TeraSystemsAI Philadelphia) ← NEU 2026-04-20 Phase 1b
+- [[Saralees Nadarajah]] — Co-Autor Bayesian RAG (U Manchester Mathematics) ← NEU 2026-04-20 Phase 1b
+- [[Rodoumta Koina]] — Co-Autor Bayesian RAG (U N'Djamena Chad) ← NEU 2026-04-20 Phase 1b
+- [[Giorgos Iacovides]] — Erstautor FinDPO + FinLlama (Imperial College London) ← NEU 2026-04-20 Phase 1b
+- [[Wuyang Zhou]] — Co-Autor FinDPO (Imperial College London) ← NEU 2026-04-20 Phase 1b
+- [[Danilo Mandic]] — Senior-Author FinDPO, Professor Imperial College London ← NEU 2026-04-20 Phase 1b
 
 ### Satelliten (aktive Positionen)
 - [[AVGO]] — Broadcom Inc. | DEFCON 🟢 4 | Score 84 | Kalibrierungsanker #1 (v3.7)
@@ -132,6 +148,14 @@
 - [[Regime-Aware-LLM-Failure-Modes]] — FINSABER Bull/Bear-Asymmetrie; Anker für Track 5b FRED Regime-Filter (B19) ← NEU 2026-04-20
 - [[Composite-Anti-Overfitting-Objective]] — GT-Score-Pattern (in-the-loop); Tie-Break R0 für Track 5b Grid-Search (B20) ← NEU 2026-04-20
 
+### KG-/RAG-/LLM-Architektur (Phase 1b 6-Paper-Ingest — 2026-04-20)
+- [[Knowledge-Graph-Finance-Architecture]] — Schema-guided KG-Primitive für SEC-Filings; 5-Tuple + 10 Entity-Types + 10 Relation-Types (B21) ← NEU 2026-04-20 Phase 1b
+- [[Agentic-Reflection-Pattern]] — Critic-Corrector-Loop, +22,5pp All-Rules-Compliance; generisches Multi-Agent-Muster (B21) ← NEU 2026-04-20 Phase 1b
+- [[LLM-as-a-Judge-Evaluation]] — Ground-truth-agnostic Evaluation; 4 Dimensionen + 3-Vote-Consensus (B21) ← NEU 2026-04-20 Phase 1b
+- [[RAG-Uncertainty-Quantification]] — Bayesian-RAG-Pattern via MC-Dropout; epistemische Unsicherheit $S_i = \mu_i - \lambda \sigma_i$ (B23) ← NEU 2026-04-20 Phase 1b
+- [[LLM-Preference-Optimization-Finance]] — DPO statt SFT für Finance-LLMs; +11% F1 vs. FinGPT v3.3 (B24) ← NEU 2026-04-20 Phase 1b
+- [[Sentiment-Strength-Logit-Extraction]] — Kontinuierliche Sentiment-Scores aus causal-LLM-Logits; Long-Short-Enabler (B24) ← NEU 2026-04-20 Phase 1b
+
 ### Token-Effizienz & System
 - [[Token-Mechanik]] — Strukturiertes Token-Management; Snapshot-First, MCP-Minimalset
 - [[Context-Hygiene]] — On-demand Loading; Compact-Regeln; MCP-Session-Typen
@@ -156,6 +180,7 @@
 - [[Depot-State-April-2026]] — Monatlicher Snapshot; Sparplan-Verteilung; offene Entscheidungen
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 14-Befunde-Matrix: 10 Paper → operative Konsequenzen für DEFCON v3.5 (Stand 17.04.2026)
 - [[Backtest-Methodik-Roadmap]] — Entscheidungsmatrix für 2028-Review; Options A–D je nach Datenlage; welcher Paper als Benchmark wann anlegbar (neu 17.04.2026)
+- [[Knowledge-Graph-Architektur-Roadmap]] — v0.1 Entscheidungsvorlage KG/RAG vs. XML-Direkt-Parsing für insider-intelligence + zukünftige Skills; 3 Qualitäts-Gates + 3 konkrete Szenarien ← NEU 2026-04-20 Phase 1b
 
 ---
 
