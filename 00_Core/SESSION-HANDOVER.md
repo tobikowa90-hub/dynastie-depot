@@ -13,13 +13,27 @@
 - **Probe-Trigger auf v3.0.3 deployed:** `RemoteTrigger update trig_01XYuQ5mugsvZGZD4K52rjXh` HTTP 200 @ 2026-04-20T08:48:01Z. Post-Update-Verify alle Assertions PASS.
 - **T1-Rerun PASS:** **262s (4:22)** — gegenüber v3.0.2-FAIL 360s = -98s / -27%. Soft-Alert-Band OBSERVE. 8/8 Sektionen, Yahoo-n.v. deterministisch, 4/4 Per-Ticker vollständig (MSFT/APH/AVGO/TMO), Material-Filter korrekt. Dokumentiert in `03_Tools/tests/tavily-probe-prompts/results/T1-2026-04-20-v3.0.3.md`.
 
-### Gate A (3-Tage-Stabilität) — startet JETZT
-Morgen 21.04. + übermorgen 22.04. + 23.04. drei konsekutive Cron-Runs ohne Regression beobachten (Cron-Trigger ist der Prod-Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, aktuell noch v2.1 — muss vor Gate-A-Start auf v3.0.3 aktualisiert werden ODER Gate A bezieht sich weiter auf Probe-Trigger Manual-Runs).
+### Gate A (3-Tage-Stabilität) — Ablauf fixiert via Codex-Review 2026-04-20
 
-**Entscheidungsbedarf vor 21.04.:**
-- (a) Prod-Trigger jetzt auf v3.0.3 heben und Gate A auf Cron-Basis laufen lassen (rausrisk: Prod-Side-Effect bei Fehler), ODER
-- (b) Gate A auf Probe-Trigger Manual-Runs basieren (sicherer, 3× Manual-Effort erforderlich bis 24.04.), ODER
-- (c) T3/T4 zuerst auf Probe, dann Prod-Deploy + Gate A parallel (kombinierter Pfad).
+**Entscheidung:** Option (c) — T4 Fail-Open zuerst, dann T3 Adversarial-Trap, dann Prod-Deploy + Gate A parallel.
+
+**Sequencing** (Codex-Verfügung): T4 **vor** T3, weil T4 den Fail-Open-Pfad nach Budget-Fallback-Removal validiert — wenn dieser Pfad gebrochen ist, würden T3-Ergebnisse eine Disambiguation-Fehler-Maskierung durch MCP-Tool-State-Fehler produzieren.
+
+**Gate-A-Stabilitäts-Definition (ALIGNED MIT KORREKTHEITS-PRINZIP):** "Stabil" bedeutet **funktionale Korrektheit**, nicht Laufzeit. Konkret:
+- 8/8 Sektionen gerendert
+- Yahoo-Gap deterministisch als `n.v. [Yahoo 403 known]`
+- Material-Filter korrekt (keine Noise-Headlines durchgerutscht)
+- Triggered-Ticker-Slot-Struktur korrekt
+- News-Sektion nicht silent degradiert
+
+Laufzeit wird im Soft-Alert-Schema (<180s healthy / 180-400s observe / >400s alert) nur beobachtet — ist **kein** Gate-A-Kriterium. Laufzeit-Regression >400s triggert manuellen Review, nicht Rollback (User-Prinzip "Korrektheit > Laufzeit", memory `feedback_correctness_over_runtime.md`).
+
+**Reihenfolge:**
+1. T4 Fail-Open (heute/morgen) — auf Probe-Trigger mit v3.0.3
+2. T3 Adversarial Symbol-Trap (danach) — forciert SU.PA/RMS.PA-Queries auf Probe
+3. Prod-Deploy `trig_01PyAVAxFpjbPkvXq7UrS2uG` mit v3.0.3 (nach T4+T3 PASS)
+4. Gate A startet am Prod-Deploy-Tag, 3 konsekutive Cron-Runs mit Korrektheits-Check
+5. Track 5a Execution nach Gate-A-Abschluss
 
 ### Noch offen im Tavily-Plan (`docs/superpowers/plans/2026-04-19-tavily-morning-briefing.md`)
 - Task 5: T3 Adversarial Symbol-Trap (RMS.PA + SU.PA forciert, Suncor/Rockwell-Durchschlag-Check)
