@@ -1,6 +1,29 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 Nacht (Session-Cut nach **6-Paper-Ingest-Projekt FORMAL ABGESCHLOSSEN** — Phase 2 + Phase 2.5 + Final-Discoverability committed; Smoke-Test AVGO PASS) | **Für:** Nächste Session — **Prod-Deploy v3.0.3 Morning-Briefing + Gate-A-Start** (Primär-Track), **Track 5a/5b Execution** (nach Gate-A-PASS ~24.04.), Track 4 (ETF/Gold) weiter ausstehend
+**Aktualisiert:** 2026-04-20 Nacht-Spät (Session-Cut nach **6-Paper-Ingest-Projekt FORMAL ABGESCHLOSSEN** + **KG-Roadmap-Post-Gate Option D umgesetzt** — Synthesis bleibt `draft-frozen` statt v1.0; Track 5a/5b/Prod-Deploy nicht blockiert; Smoke-Test AVGO PASS) | **Für:** Nächste Session — **Prod-Deploy v3.0.3 Morning-Briefing + Gate-A-Start** (Primär-Track, CLEAR FREIGEGEBEN), **Track 5a/5b Execution** (nach Gate-A-PASS ~24.04.), Track 4 (ETF/Gold) weiter ausstehend
+
+## ✅ POST-GATE: KG-Roadmap v0.1 als `draft-frozen` markiert (2026-04-20 Nacht-Spät)
+
+**Commit:** `f13701a` docs(phase2-postgate): KG-Roadmap v0.1 als draft-frozen markiert (Codex Option D)
+
+**Auslöser:** Nach Closure des 6-Paper-Ingest-Projekts ergab User-Frage „macht KG-Roadmap-Ratifikation vor Track 5a/5b Re-Validation mehr Sinn?" eine Pre-Track-5-Architektur-Entscheidung. Codex-Review (Opus 4.7 + Codex Combined) verglich 3 Optionen (A Ratifikation v0.1→v1.0 / B Q1-Q3-Klärung / C beides) und empfahl **Option D** (`draft-frozen` belassen, Inhalte faktisch geltend, Re-Review-Trigger explizit dokumentiert).
+
+**Begründung:** Szenario 2 (10-K-KG) ist genuine `future-arch` ohne Usage-Evidence; v1.0 würde Konsens-Lock-in suggerieren. Q1-Q3 (Dataset-Größe / Lizenz-Legal / Score-Archiv-Integration) heute spekulativ beantwortbar, nicht release-blockierend, aber Q3-Design-Klarheit Pflicht **vor** operativer KG-Adoption.
+
+**Faktische Inhalte (gelten ab 20.04.2026 Nacht-Spät trotz `draft-frozen`):**
+- Form-4 Insider bleibt XML-Parsing (Szenario 1 REJECT bestätigt)
+- 10-K-KG bleibt `future-arch`, frühestens 2027+ (Szenario 2 DEFER)
+- Bayesian-RAG-Briefing-Rewrite verworfen wegen Tavily-API-MC-Dropout-Limitation (Szenario 3 DEFER)
+
+**Re-Review-Trigger:** konkreter Cross-Entity-/10-K-Narrativ-Bedarf ODER Score-Archiv-Interim-Gate **2026-10-17** (whichever first).
+
+**Scoring-Impact:** ZERO. DEFCON v3.7 unverändert, config.yaml unberührt, Skill bleibt v3.7.2, §28.3 Nicht-Migration-Trigger weiterhin gültig.
+
+**Track 5a/5b Re-Validation = trivial closed:** Roadmap-Verdikt ist die Referenz-Antwort — beide Pläne haben bereits passende Phase-1b/Phase-2-Header-Notices, brauchen körperlich keine Änderung.
+
+**Details:** log.md [2026-04-20] post-gate-d | CORE-MEMORY §1 Meilenstein 20.04.2026 Nacht-Spät | STATE.md System-Zustand-Eintrag KG-Roadmap | Synthesis-Frontmatter `status: draft-frozen` + Status-Banner.
+
+---
 
 ## ✅ ABGESCHLOSSEN: 6-Paper-Ingest-Projekt (2026-04-20 Nacht)
 

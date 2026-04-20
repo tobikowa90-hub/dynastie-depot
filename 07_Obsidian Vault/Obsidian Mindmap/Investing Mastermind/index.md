@@ -180,7 +180,7 @@
 - [[Depot-State-April-2026]] — Monatlicher Snapshot; Sparplan-Verteilung; offene Entscheidungen
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 14-Befunde-Matrix: 10 Paper → operative Konsequenzen für DEFCON v3.5 (Stand 17.04.2026)
 - [[Backtest-Methodik-Roadmap]] — Entscheidungsmatrix für 2028-Review; Options A–D je nach Datenlage; welcher Paper als Benchmark wann anlegbar (neu 17.04.2026)
-- [[Knowledge-Graph-Architektur-Roadmap]] — v0.1 Entscheidungsvorlage KG/RAG vs. XML-Direkt-Parsing für insider-intelligence + zukünftige Skills; 3 Qualitäts-Gates + 3 konkrete Szenarien ← NEU 2026-04-20 Phase 1b
+- [[Knowledge-Graph-Architektur-Roadmap]] — v0.1 `draft-frozen` (Codex-Verdikt Option D, 20.04.2026 Nacht-Spät): Entscheidungsvorlage KG/RAG vs. XML-Direkt-Parsing für insider-intelligence + zukünftige Skills; 3 Qualitäts-Gates + 3 Szenarien (Form-4-XML bleibt / 10-K-KG DEFER 2027+ / Bayesian-RAG-Briefing verworfen). Re-Review-Trigger: Cross-Entity-Bedarf ODER 2026-10-17 Score-Archiv-Interim-Gate.
 
 ---
 
