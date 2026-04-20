@@ -29,6 +29,25 @@
 - **Gate A — Tavily-Go-Live 3-Tage-Stabilität:** Track 1 Phase 1 ist noch nicht abgeschlossen (T1-Rerun pending, siehe unten). Spec §4.1 verlangt Tavily-Stabilität vor Track-5-Start. User-Entscheidung: Track 5 parallel starten ODER warten auf T1-PASS?
 - **Gate C — FRED-API-Key beschaffen** (nur für Plan 5b, ~5 Min User-Aktion)
 
+### ⚠️ Zeitliche Abhängigkeitskette (Review-Einwand 2026-04-20)
+
+Track 5a hat eine **implizite Abhängigkeit von Tavily-Stabilität** die Gate A explizit festhält — daraus ergibt sich eine erzwungene Sequenz:
+
+```
+Morgen (21.04.):  Tavily Morning Briefing v3.0 Go-Live (T1-Rerun + T3 + T4 + Prod-Deploy)
+                          ↓
++3 Tage (24.04.): Gate A freigegeben → Track 5a kann starten (sec-edgar-skill)
+                          ↓
+Nach Track 5a:    Track 5b (FRED Regime-Filter) — keine Tavily-Abhängigkeit,
+                  aber logisch nach 5a sinnvoller (kleinerer Scope zuerst)
+```
+
+**Konkrete Gefahr ohne diese Notiz:** Gate A wird in 3 Tagen "vergessen" und Track 5a beginnt entweder zu früh (vor Tavily-Stabilität) oder zu spät (weil kein Trigger vorhanden).
+
+**Empfehlung:** Am **24.04. morgens** beim Session-Start aktiv fragen: "Waren die letzten 3 Briefings (22./23./24.04.) stabil?" — Wenn ja: Gate A grün → Track 5a-Execution-Session starten.
+
+**Track 5b hat keine Tavily-Abhängigkeit** — könnte theoretisch parallel zu Track 5a laufen, aber die natürliche Sequenz (5a zuerst, kleiner + sauberer) bleibt empfohlen. Ausnahme: falls FRED-API-Key bereits vorliegt und Track 5b-Execution separat gewünscht wird.
+
 ### Artefakte (beide in `docs/superpowers/plans/`, force-added per Konvention)
 - `2026-04-20-track5a-edgar-skill-promotion.md`
 - `2026-04-20-track5b-fred-regime-filter.md`
