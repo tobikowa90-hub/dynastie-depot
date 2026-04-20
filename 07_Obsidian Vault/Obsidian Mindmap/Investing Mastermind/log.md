@@ -672,3 +672,23 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Multi-Source-Drift-Check:** STATE.md ↔ DEFCON-System.md ↔ Update-Klassen-DEFCON.md ↔ Depot-State-April-2026.md jetzt alignment auf Status-Matrix-SSoT; keine verwaiste Nenner-8.5-Referenz mehr im Vault.
 - **Scoring-Impact:** ZERO. DEFCON v3.7 unverändert. Scores/Sparraten/FLAGs aller 11 Satelliten unverändert. Skill bleibt v3.7.2. Archive-Stand unverändert 27 Records. Kein FLAG-Event.
 - **Next:** Manual-Run-Verification auf Prod via Desktop-App (User-Aktion), dann morgen 21.04. 10:00 MESZ erster Cron-Run Gate-A-Tag-1.
+
+## [2026-04-20] incident+rollback | 🔴 v3.0.3 Hallucination FAIL → Rollback auf v2.1
+
+- **Auslöser:** Manual-Run auf Prod (Desktop-App "Jetzt ausführen") ~720s Runtime (>2× Alert-Schwelle). Output meldete für 7 US-Ticker **Yahoo-Intraday-Kurse mit massiven Deltas** (AVGO $317,79 / -21,8%, APH -16,1%, TMO -9,9%, MSFT -9,7%).
+- **Broker-Verify durch User:** AVGO real €345,38 (Fr 17.04.) → €337,58 (Mo 20.04.) = **-2,26%**. Reported $317,79 ≈ €276, existiert nicht. Phantom-Kurs.
+- **Root Cause:** Shibui-EOD-Query gab 17.04. als `latest_date` (korrekt: Karfreitag + Osterwochenende, keine US-Börsensitzung 18/19.04., Montag 20.04. noch nicht in EOD). Agent interpretierte "stale data" und **improvisierte unautorisierten Yahoo-Intraday-Fallback-Pfad** via Tavily für US-Ticker. v3.0.3 Spec §3 hat keinen expliziten Guard gegen alternative Datenpfade — Critical Guards verbieten nur Halluzinierte-Gründe, nicht Phantom-Datenquellen.
+- **Was korrekt funktionierte:** Yahoo-n.v.-deterministic für BRK-B/RMS/SU (§3c), Material-Filter (alle 4 Per-Ticker "keine material News" korrekt begründet), Slot-Struktur 4≤5, 8/8 Sektionen, FLAGS/WATCHES/Trigger alignment mit STATE.md.
+- **Rollback-Execution:** RemoteTrigger.update mit v2.1-Content aus `03_Tools/morning-briefing-prompt-v2.md`, allowed_tools `[Bash,Read,Glob,Grep]` (Tavily raus, MCP-Connector bleibt attached aber ungenutzt). updated_at 2026-04-20T15:13:12Z. next_run 21.04.2026 10:01 MESZ läuft wieder v2.1 (keine News, reine Shibui+Yahoo-curl-Kurs-Extraktion, stable seit 14.04.).
+- **Gate A ausgesetzt** bis v3.0.4-Hotfix. Hotfix-Spec-Draft in nächster Session:
+  - §3a expliziter Guard: "Shibui `latest_date` = autoritativ. Wochenend-/Feiertags-Lag = NORMAL. KEIN alternativer Live-Preis-Pfad für US-Ticker."
+  - Delta-Spalte zeigt "(Score-Datum-Close)" wenn heute-Close nicht verfügbar
+  - Neuer Probe-Test T5 Adversarial-Stale-Shibui (Simulate 3-Tage-Lag → verifizieren kein Fallback-Trigger)
+  - Gate A Re-Start erst nach T5-PASS + T1/T3/T4 Retest
+- **Pages updated outside Vault (3):**
+  - `00_Core/STATE.md` — Header + Morning-Briefing-Eintrag auf Rollback-Status
+  - `00_Core/CORE-MEMORY.md` §1 — Incident-Meilenstein-Eintrag (20.04.2026 Nacht-Spät Post-Deploy-Fail, oberhalb Deploy-Success-Eintrag zeitlich einsortiert)
+  - Memory `morning-briefing-config.md` — Incident-Sektion + v3.0.4-Hotfix-Spec
+- **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten aller 11 Satelliten unverändert (Infrastruktur-Ereignis, keine Score-Neuberechnung).
+- **Lesson Learned:** Anti-Hallucination-Guards müssen nicht nur Begründungen, sondern auch alternative Datenpfade explizit verbieten. "KEINE Gründe erfinden" ist notwendig, aber nicht hinreichend — braucht Ergänzung "KEINE unautorisierten Datenquellen nutzen, auch wenn autorisierte Quelle scheinbar stale ist".
+- **Implication für v3.0.4:** Probe-Tests müssen Adversarial-Stale-Shibui abdecken (bisher nicht getestet — T1 war Happy-Path mit frischem Freitag-EOD).
