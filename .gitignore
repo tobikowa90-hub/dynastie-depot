@@ -38,3 +38,6 @@ __pycache__/
 
 # Backtest-Ready ephemere Draft-Handoffs (Skill backtest-ready-forward-verify)
 03_Tools/backtest-ready/_drafts/*.json
+
+# Obsidian per-Session UI state (tabs, layout, pan/zoom) — ephemeral, not shared config
+07_Obsidian Vault/Obsidian Mindmap/.obsidian/workspace.json
