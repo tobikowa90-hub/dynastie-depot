@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 Abend-Spät (Session-Cut nach **Phase 1b Paper-Ingest komplett**) | **Für:** Nächste Session — **Codex Combined Gate 2 (Phase 1a+1b in einem Call via git show)** primär, dann Phase 2 System-Konsequenzen; **Prod-Deploy v3.0.3 + Gate-A-Start** läuft parallel; Track 5a/5b Execution PAUSIERT bis Phase 2 abgeschlossen; Track 4 (ETF/Gold) weiter ausstehend
+**Aktualisiert:** 2026-04-20 Abend-Spät (Session-Cut nach **Phase 1b Paper-Ingest komplett + Codex Gate 2 PASS nach Fix-Commit**) | **Für:** Nächste Session — **Phase 2 System-Konsequenzen** (primär), **Prod-Deploy v3.0.3 + Gate-A-Start** parallel; Track 5a/5b Execution PAUSIERT bis Phase 2 abgeschlossen; Track 4 (ETF/Gold) weiter ausstehend
 
 ---
 
@@ -21,11 +21,18 @@
 - 1 neue Synthesis: [[Knowledge-Graph-Architektur-Roadmap]] v0.1 (Entscheidungsvorlage KG vs. XML-Direkt-Parsing vs. Bayesian RAG; 3 Qualitäts-Gates; 3 konkrete Szenarien; Codex-Gate 2.5 eingeplant)
 - Updates: `Wissenschaftliche-Fundierung-DEFCON` (B21-B24, 20 Quellen / 24 Befunde), `index.md` (107→130 Notes), `log.md` — Phase 1b-Eintrag
 
+**Codex Combined Gate 2 Ergebnis (post-commit 40fbcdd + Fix-Commit 3f11b63):**
+- Cross-Links, B-Mapping, Architektur-Roadmap, Instruktion-Alignment → **PASS**
+- Akkuratesse → CONDITIONAL (B23 ECE-Baseline unklar) → **behoben** in `3f11b63` (Ebene 1/2/3 Baselines explizit getrennt)
+- Showstopper-Risk → CONDITIONAL (B24 "Vor operativer Adoption"-Formulierung) → **behoben** in `3f11b63` (als hypothetisch markiert)
+- **Phase-2-Ready: JA**
+
+**Plus späte Obsidian-Graph-Lesson** (`addc33b` + `1590816`): Raw-Backlinks brauchen Datei-Stem-Link im Body (Frontmatter-`raw:`-String ist kein Graph-Edge). Lesson in memory `feedback_raw_backlink_pflicht.md`.
+
 **Nächste Session — Reihenfolge:**
-1. **Codex Combined Gate 2 Review (Phase 1a+1b)** — ein Codex-Call mit `git show <phase1b-hash> 7ec7b86`, prüft gesamtes Paper-Ingest-Output auf Akkuratesse + Cross-Link-Vollständigkeit + B19-B24-Mapping-Korrektheit (User-Direktive Abend-Spät: spart Review-Runde ggü. Sequential-Review)
-2. **Phase 2: System-Konsequenzen** — §29-Sub-Klausel-Mapping erweitern (29.1+29.2+29.5+29.6) + ggf. neue §33 Skill-Self-Audit + Plan-Diffs (Track 5a/5b/v3.1) + Entscheidung zu [[Knowledge-Graph-Architektur-Roadmap]]-Szenarien
-3. **Phase 2.5 Codex-Skill-Audit-Gate** (kritisch — Anti-Creep-Mechanismus): trennt Audit-Methodik von Skill-Code-Change
-4. **Parallel: Prod-Deploy v3.0.3 + Gate-A-Start** — unverändert (siehe Section unten)
+1. **Phase 2: System-Konsequenzen** — §29-Sub-Klausel-Mapping erweitern (29.1+29.2+29.5+29.6) + ggf. neue §33 Skill-Self-Audit + Plan-Diffs (Track 5a/5b/v3.1) + Entscheidung zu [[Knowledge-Graph-Architektur-Roadmap]]-Szenarien
+2. **Phase 2.5 Codex-Skill-Audit-Gate** (kritisch — Anti-Creep-Mechanismus): trennt Audit-Methodik von Skill-Code-Change
+3. **Parallel: Prod-Deploy v3.0.3 + Gate-A-Start** — unverändert (siehe Section unten)
 
 **Showstopper-Risk** (Codex Round 2): Vermischung Audit-Layer ↔ Produktions-Skill-Logik. Phase 2.5-Gate adressiert das explizit.
 
