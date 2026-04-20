@@ -22,9 +22,11 @@
 ```
 Impuls / Idee
      ↓
-[STUFE 0]  Quick-Screener     → 🟢 weiter | 🟡 Watchlist | 🔴 aussortieren
+[STUFE 0]  Quick-Screener      → 🟢 weiter | 🟡 Watchlist | 🔴 aussortieren
      ↓ nur 🟢
 [STUFE 1]  Stock Report        → Intelligence-Report (Datei)
+     ↓
+[BEFUNDE]  Status-Matrix-Check → active-scoring identifizieren (§4 Router)
      ↓
 [STUFE 2]  !Analysiere         → DEFCON 100-Punkte-Score
      ↓ nur Score ≥ 80 + kein FLAG
@@ -33,7 +35,9 @@ Impuls / Idee
 [ENTSCHEIDUNG] Einstieg / Watchlist / Veto
 ```
 
-**Grundprinzip:** Jede Stufe ist ein Tor. Wer es nicht passiert, kommt nicht weiter.
+**Grundprinzip:** Jede Stufe 0/1/2/3 ist ein Tor. Wer es nicht passiert, kommt nicht weiter.
+
+**[BEFUNDE]-Schritt** ist **kein** Filter-Tor, sondern **Pflicht-Vorbereitung** für Stufe 2: Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON]] lesen, die für diesen Ticker relevanten `active-scoring`-Befunde identifizieren. Ohne diesen Schritt kein konsistentes DEFCON-Scoring (B10 Chain-of-Thought-Prinzip). Details siehe §4 Befunde-Router.
 
 ---
 
@@ -56,24 +60,25 @@ Impuls / Idee
 
 ## 4. STUFE 2 — DEFCON-Scoring (100-Punkte-Matrix)
 
-### Befunde-Priming (Pflicht vor jedem Scoring-Start)
+### Befunde-Router (Pflicht vor jedem Scoring-Start)
 
-**Lies `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` — Befunde-Matrix B1–B11.**
-Benenne im Analyse-Output explizit, welche Befunde auf diesen Ticker zutreffen und wie sie das Scoring beeinflussen.
+**Single Source of Truth:** Die kanonische **Status-Matrix** in `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` §Status-Matrix klassifiziert jeden wissenschaftlichen Befund (aktuell B1–B24, jeder zukünftige Befund BxN) mit einem von vier Status-Labels. §4 ist **nur der Router** — Befund-Content wird nicht hier dupliziert.
 
-| Befund | Kern | Wirkt auf |
-|--------|------|-----------|
-| B1 | 5J-Fenster > Spot-Werte | Fundamentals — Trendperspektive |
-| B2 | FCF + GM = stabilste Prädiktoren | Fundamentals — Metrik-Priorisierung |
-| B3 | Earnings-Quality > Value (Accrual Ratio) | Fundamentals — Qualitäts-Check |
-| B4 | 8 Moat-Quellen operativ | Moat-Block |
-| B5 | cheap + safe + quality Dreiklang | Gesamt-Urteil |
-| B6 | Moat allein ≠ Excess Return (Quality Trap) | Moat + Bewertung kombiniert |
-| B7 | Fundamentals > Sentiment > Technicals | Gewichtungs-Disziplin |
-| B8 | ROIC + FCF + OpMargin top-ranked (ML) | ROIC-vs-WACC — Malus zwingend |
-| B9 | EPS-Growth + Low Leverage stabil | Bilanz-Block + EPS Revision |
-| B10 | Chain-of-Thought vor Scoring → bessere Konsistenz | Workflow — erst Reasoning, dann Score |
-| B11 | News-Daten: Positivity-Bias; Analyst 43% Strong Buy | Sentiment-Cap 10 Pt. — Korrektiv |
+| Status | Aktion in !Analysiere |
+|--------|-----------------------|
+| `active-scoring` | **Pflicht-Anwendung** im zugehörigen DEFCON-Block; Nennung im Output-Block "Befunde angewendet" (SKILL.md-Template) |
+| `meta-gate` | **Nicht verwenden** in per-Ticker-Analyse — feuert ausschließlich bei Migration (§28), Retrospective (§29), Skill-Self-Audit (§33) |
+| `design-rejected` | **Nicht reaktivieren** — bei Rückfrage "warum fehlt X?" Rejection-Begründung aus Status-Matrix zitieren (nicht ad-hoc einführen) |
+| `future-arch` | **Keine Adoption im aktiven Scoring** — Bewertung ausschließlich via §33 Skill-Self-Audit-Gate |
+
+**Pflicht-Abfolge bei jedem Scoring-Start:**
+
+1. **Status-Matrix lesen** (Synthesis-Link oben) — verifizieren, welche Befunde `active-scoring` sind und welchen DEFCON-Block sie adressieren.
+2. **Ticker-Befunde-Mapping**: Aus den `active-scoring`-Befunden alle identifizieren, die für diesen Ticker substantiv greifen (z.B. B4 Moat-Quellen greift nur bei Ticker mit nicht-trivialem Moat-Rating; B6 Quality-Trap greift nur wenn Wide Moat + teure Bewertung kombiniert vorliegen).
+3. **B10 Chain-of-Thought**: Vor der Punktvergabe pro DEFCON-Block die zutreffenden Befunde durchdenken. Reasoning vor Score, nicht Score vor Reasoning.
+4. **Output-Block "Befunde angewendet"** pro DEFCON-Block die angewandten Befund-IDs listen (SKILL.md-Template — reine Transparenz, kein Score-Impact).
+
+**Neue Befunde (B25+):** Werden in der Synthesis-Matrix klassifiziert, nicht in §4 dupliziert. §4 bleibt Router, wächst nicht mit neuen Papers mit.
 
 ### Scoring-Skalen, DEFCON-Schwellen, FLAGs
 
@@ -640,7 +645,9 @@ Systemischer Gate für jede retrospektive Analyse der `score_history.jsonl` (Str
 
 **Komplementär:** walk-forward + k-fold + randomized backtests nach Palomar Ch 8.4 als Cross-Check (keine Ersetzung).
 
-Quelle: [[Bailey-2015-PBO]] / [[PBO-Backtest-Overfitting]]
+**In-the-Loop-Alternative (Sheppert 2026, B20):** GT-Score Composite-Objective (Performance × Significance × Consistency × Downside-Risk) als **Objective-Function während** Strategy-Selection — komplementär, nicht ersetzend zu PBO. PBO ist Post-hoc-Filter (Kandidat → Test), GT-Score ist In-the-Loop-Objective (Kandidat-Generierung optimiert bereits gegen Anti-Overfitting-Aggregat). Bei DEFCON-Parameter-Tuning ab 2028: beide Layer lauffähig — GT-Score als Tie-Break innerhalb PBO-Kandidatenmenge.
+
+Quelle: [[Bailey-2015-PBO]] / [[PBO-Backtest-Overfitting]] / [[Sheppert-2026-GT-Score]] / [[Composite-Anti-Overfitting-Objective]]
 
 ### 29.2 External-Benchmark-Gate (Aghassi et al. 2023)
 
@@ -696,6 +703,18 @@ Quelle: [[Aghassi-2023-Fact-Fiction]] (zitiert Harvey/Liu/Zhu 2016)
 
 Quelle: [[Palomar-2025-Portfolio-Optimization]] / [[Seven-Sins-Backtesting]]
 
+**Regime-Audit-Addendum (B19 FINSABER-Extension, 2026-04-20):**
+
+Ergänzung zu Sin #4 (Overfitting) + Sin #6 (Outliers) bei Migration- und Retrospective-Events. FINSABER zeigt, dass LLM-Backtest-Vorteile unter realistischer Evaluation (20-Jahres-Fenster, 100+ Symbole, Bias-Mitigation) verschwinden und dass Bull/Bear-Subsample-SR-Divergenzen systematisch sind.
+
+- [ ] **Bull/Bear-Subsample-SR-Trennung:** Score-Performance in Bull-Phasen (SPY > 200MA) und Bear-Phasen (SPY < 200MA) getrennt ausweisen. Divergenzen >2σ SR dokumentieren.
+- [ ] **Symbol-Breite-Deklaration:** Backtest-Universum explizit benennen. Bei Universen <100 Symbole ("Dynasty-Satelliten-Cluster n=11") keine Skalierungs-Ansprüche formulieren.
+- [ ] **Zeitfenster-Deklaration:** Backtest-Zeiträume <5 Jahre als "Proof-of-Concept" einordnen, nicht als strategische Evidenz.
+
+**Aktivierungs-Trigger:** SOFORT bei Migration-Events (identisch mit §29.5-Kern). Skill-Self-Audit-Dimension in §33 adressiert.
+
+Quelle: [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] / [[LLM-Investing-Bias-Audit]] / [[Regime-Aware-LLM-Failure-Modes]]
+
 ### 29.6 Portfolio-Return-Metrik-Layer (Palomar 2025 Ch 6)
 
 **Regel:** Bei Aktivierung `risk-metrics-calculation`-Skill (bestehend) gegen `05_Archiv/portfolio_returns.jsonl` (Phase 3, in Aufbau): Sortino/CVaR/Calmar/Max-DD/IR nach Palomar-Ch-6-Formel-Konventionen berechnen.
@@ -706,7 +725,9 @@ Quelle: [[Palomar-2025-Portfolio-Optimization]] / [[Seven-Sins-Backtesting]]
 
 **Interim-Gate:** 2027-10-19 Dry-Run für Data-Quality-Check.
 
-Quelle: [[Palomar-2025-Portfolio-Optimization]] / [[Palomar-Methods-Reference]]
+**Composite-Objective-Alignment (B20 GT-Score, 2026-04-20):** Die Downside-Risk-Komponente des GT-Score-Composite-Objectives (Performance × Significance × Consistency × Downside-Risk) ist konzeptuell deckungsgleich mit Palomar Sortino/CVaR/Max-DD — downside-deviation-basierte Risk-Metriken. Bei §29.1/§29.6-Co-Aktivierung (ab 2028-04-01): GT-Score operationalisiert die vier Dimensionen als **In-the-Loop-Objective** während Strategy-Selection; Palomar liefert die mathematische Berechnungs-Konvention für die Einzel-Metrik-Ebene. Gemeinsamer Zweck: Score-Serie gegen Downside-Asymmetrien absichern, nicht nur Mean-Return optimieren.
+
+Quelle: [[Palomar-2025-Portfolio-Optimization]] / [[Palomar-Methods-Reference]] / [[Sheppert-2026-GT-Score]] / [[Composite-Anti-Overfitting-Objective]]
 
 ### 29.7 Aktivierungs-Reihenfolge bei Review 2028
 
@@ -770,4 +791,79 @@ Monatliche Refresh-Pflicht für **aktive Investment-FLAGs** zwischen Earnings-Te
 - **Rückverweis:** §29.3 (Temporal-Konsistenz-Gate) — wissenschaftlicher Anker
 
 ---
-*🦅 INSTRUKTIONEN.md v1.11 (§28-30 Migration + Retrospective-Gate + Live-Monitoring) | Dynastie-Depot v3.7 | Stand: 19.04.2026*
+
+## 33. Skill-Self-Audit-Gate (Anti-Creep für KG/RAG/Agentic-Architekturen)
+
+> **Status:** `[AKTIV seit 2026-04-20]` für zukünftige Architektur-Erweiterungen. **Nicht retroaktiv** — bestehende Skills (insider-intelligence, dynastie-depot, backtest-ready-forward-verify, quick-screener, non-us-fundamentals) bleiben unberührt.
+>
+> **Numerierung:** §§31-32 reserviert für Track 5b Macro-Regime-Filter und Track 5a EDGAR-Skill-Promotion (nicht ausgeführt). §33 jetzt als Phase-1b-Paper-Ingest-Konsequenz.
+
+Systemischer Gate vor jeder neuen Skill-Erweiterung in Richtung Knowledge-Graph-Extraction, Uncertainty-Aware-Retrieval (Bayesian RAG) oder Agentic-Reflection-Pattern. Wissenschaftliche Basis: B19-B24 (Phase-1b-Ingest 2026-04-20) + Synthesis [[Knowledge-Graph-Architektur-Roadmap]] v0.1.
+
+**Scope — gilt bei jedem Proposal für:**
+- Knowledge-Graph-Extraktion aus unstrukturierten Dokumenten (10-K MD&A, Earnings-Transkripte, Analyst-Reports)
+- LLM-basierte Retrieval-Augmented-Generation mit Unsicherheits-Quantifizierung (MC-Dropout, Bayesian RAG)
+- Agentic-Reflection-Loops (Critic-Corrector-Pattern) in Scoring/Analyse
+- DPO-Alignment oder vergleichbare Preference-Optimization für Sentiment-Blocks
+- Alles, was über heutige API/XML-Direkt-Parsing-Architektur hinausgeht
+
+**Nicht-Scope:**
+- Scoring-Parameter-Änderungen (→ §28 Migration-Workflow)
+- Daten-Quellen-Ergänzungen (→ §8 Datenquellen-Logik)
+- Runtime-Optimierungen (→ memory `feedback_correctness_over_runtime.md`)
+
+### 33.1 Gate 1 — Sinnhaftigkeits-Check
+
+Vor Architektur-Erweiterung schriftlich begründen:
+
+1. **Konkrete Frage, die heute nicht beantwortbar ist?** — Valide: "Welche Satelliten haben Zulieferer-Exposure zu TSMC?" (nur via Multi-Hop-Cross-Entity-Query). Invalide: "Könnte vielleicht nützlich sein für Cross-Reference."
+2. **Wiederkehrender Bedarf?** — Einmalige Ad-hoc-Frage rechtfertigt keine Infrastruktur-Investition.
+3. **Kein API-/XML-Ersatz möglich?** — Yahoo/Shibui/SEC-EDGAR liefern strukturierte Daten; dann API, nicht KG.
+
+### 33.2 Gate 2 — Operationalisierungs-Check
+
+1. **Self-hosted-Capability verfügbar?** — Bayesian RAG braucht Dropout-fähige Embedding-Modelle (Tavily/OpenAI-APIs sind raus). KG-Extraktion braucht LLM-Inferenz-Budget 2-3×/Chunk.
+2. **Evaluation-Plan definiert?** — LLM-as-a-Judge-Pattern + CheckRules + Entropy-Monitor (B22 Labre). Ohne Eval-Plan keine Adoption.
+3. **Maintenance-Budget realistisch?** — KG braucht Re-Extraction bei jedem neuen Filing (quarterly/annual) + Schema-Evolution. Bayesian RAG braucht Embedding-Re-Training-Cadence.
+
+### 33.3 Gate 3 — Anti-Over-Engineering-Check
+
+1. **Codex-Review Pflicht** (memory `feedback_codex_over_advisor.md`): Jede Architektur-Erweiterung braucht externe Bestätigung gegen Own-Bias ("LLM-Hype-FOMO").
+2. **3-Monats-Observation-Period:** Vor Produktions-Adoption 3 Monate Parallelbetrieb mit bestehender Architektur.
+3. **Rollback-Plan:** Jede Erweiterung muss ohne Daten-/State-Verlust zurücknehmbar sein.
+
+### 33.4 Decision-Output
+
+Jeder Gate-Durchgang endet mit einer von drei Entscheidungen:
+
+- **ADOPT:** Alle 3 Gates grün, Codex-Review PASS. Implementation via §28 Migration-Workflow.
+- **DEFER:** Mindestens ein Gate conditional/blockierend. Proposal in [[Knowledge-Graph-Architektur-Roadmap]] als `future-arch`-Szenario archivieren mit Re-Review-Datum.
+- **REJECT:** Sinnhaftigkeits-Check (Gate 1) negativ. Proposal abgeschlossen; nicht wieder aufrollen ohne neue Evidenz.
+
+### 33.5 Dokumentation
+
+Jeder §33-Durchgang wird geloggt in:
+- **CORE-MEMORY §5** als Lektion (Datum, Proposer, Decision, Rationale)
+- **[[Knowledge-Graph-Architektur-Roadmap]]** als Szenario-Eintrag (Anhang Versions-Historie)
+
+### 33.6 Beispiel-Anwendung (Phase-1b 2026-04-20)
+
+Drei Szenarien wurden bei Paper-Ingest evaluiert:
+
+| Szenario | Gate 1 | Gate 2 | Gate 3 | Decision |
+|----------|--------|--------|--------|----------|
+| Form-4 Insider-Daten via KG | ❌ (XML genügt, Schema stabil) | — | — | **REJECT** |
+| 10-K-KG für Cross-Entity-Queries | ⚠️ (hypothetisch, kein akuter Bedarf) | ⚠️ (Budget unklar, Eval-Plan offen) | ⚠️ (3M-Period nicht gestartet) | **DEFER** (frühestens 2027+) |
+| Morning-Briefing via Bayesian RAG | ✅ (Quality-Signal wertvoll) | ❌ (Tavily-API erlaubt kein MC-Dropout) | — | **DEFER** (bei Self-hosted-Embedding-Wechsel) |
+
+### 33.7 Rückverweise
+
+- **§28.1 Step 1** (Paper/Evidence-Check) — §33-Gates komplementär zu §28 für Skill-Architektur-Wechsel (nicht Scoring-Parameter)
+- **§29.5 Regime-Audit-Addendum** (B19 FINSABER) — Skill-Self-Audit-Dimension
+- **Status-Matrix** in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix — `future-arch`-klassifizierte Befunde werden nur über §33 bewertbar
+- **`feedback_codex_over_advisor.md`** — Codex-Review-Pflicht aus Gate 3.1
+
+Quelle: [[Knowledge-Graph-Architektur-Roadmap]] / [[Arun-et-al-2025-FinReflectKG]] / [[Labre-2025-FinReflectKG-Companion]] / [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] / [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] / [[Iacovides-Zhou-Mandic-2025-FinDPO]]
+
+---
+*🦅 INSTRUKTIONEN.md v1.12 (§4 Router-Umbau + §2 Befunde-Check + §29.5/.6 B19/B20-Extensions + §33 Skill-Self-Audit) | Dynastie-Depot v3.7 | Stand: 20.04.2026 Phase-2-Complete*

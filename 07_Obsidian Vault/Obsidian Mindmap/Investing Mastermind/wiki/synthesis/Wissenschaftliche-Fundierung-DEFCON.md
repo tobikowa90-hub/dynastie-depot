@@ -34,7 +34,7 @@ status: aktiv
 
 ---
 
-## 11-Befunde Entscheidungsmatrix (Stand: 16.04.2026)
+## 24-Befunde Entscheidungsmatrix (Stand: 20.04.2026, post Phase-1b-Ingest)
 
 | # | Befund | Quelle | Block | Empfehlung | Konsequenz |
 |---|--------|--------|-------|------------|------------|
@@ -62,6 +62,59 @@ status: aktiv
 | **B22** | Reflection-Entropy-Paradox — Coverage-Gain geht einher mit Diversity-Reduktion (Shannon Rel. -22%); Praktiker-Mitigation via Pre-Correction-Entropy-Monitor | [[Labre-2025-FinReflectKG-Companion]] | Architektur-Caveat | Bei hypothetischer 10-K-KG: Entropy-Monitor als Qualitäts-Gate verpflichtend | Keine §-Änderung; dokumentiert in [[Knowledge-Graph-Architektur-Roadmap]] Gate 2 |
 | **B23** | Epistemic-Uncertainty-Quantification via Monte-Carlo-Dropout auf Embeddings; Score $S_i = \mu_i - \lambda \cdot \sigma_i$; -26,8% ECE vs. BM25 bzw. -52% ECE vs. Standard RAG (Paper-Baseline-abhängig), -27,8% Halluzinationen bei 15ms Latency | [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] | Architektur (nicht Scoring) | Wissenschaftliche Fundierung für v3.0.3 Morning-Briefing Korrektheits-Prinzip (n.v.-Markierung + Soft-Alert-Schema); keine operative Änderung heute (Tavily-API erlaubt kein MC-Dropout) | Keine §-Änderung; Alignment-Referenz für `feedback_correctness_over_runtime.md` |
 | **B24** | Direct-Preference-Optimization + Logit-to-Score-Konverter enables causal-LLM-Integration in Long-Short-Portfolios; +11% F1 vs. FinGPT v3.3 SOTA, 67% p.a. bei 5bps Transaction Costs | [[Iacovides-Zhou-Mandic-2025-FinDPO]] | Methoden-Kontext (nicht Dynasty-Depot-operativ) | Long-Short orthogonal zu DEFCON Long-Only; FINSABER-Audit-Pflicht (B19) vor Adoption; Future-Option für News-Sentiment-Block | Keine §-Änderung; dokumentiert als Wissenschaftskontext für zukünftige Sentiment-Revisionen |
+
+---
+
+## Status-Matrix (operative Aktivierungs-Klassifikation)
+
+> **Single Source of Truth für §4-Router (INSTRUKTIONEN.md).** Jeder Befund bekommt ein Status-Label, das mechanisch bestimmt, wann und wo er in Workflow/Scoring/Gate eingreift. Ohne Status-Klassifikation kein Phase-1-Complete bei zukünftigen Paper-Ingests (B25+).
+
+### Legende
+
+- **`active-scoring`** — wirkt per-Ticker im DEFCON-Scoring; Pflicht-Nennung im !Analysiere-Output pro DEFCON-Block (B1-B11 + B14-implicit)
+- **`meta-gate`** — feuert bei Migration (§28), Retrospective (§29) oder Skill-Self-Audit (§33); **nicht** per-Ticker
+- **`design-rejected`** — bewusst NICHT integriert (§27.1 Double-Counting); Wiedereinführung nur mit formaler §27.1-Revision; Rejection-Begründung MUSS erhalten bleiben
+- **`future-arch`** — Architektur-Option für zukünftige Skill-Erweiterungen; Bewertung ausschließlich via §33 Skill-Self-Audit-Gate
+
+### Matrix
+
+| Befund | Status | Aktivierungs-Stelle | Anmerkung |
+|--------|--------|---------------------|-----------|
+| B1 | `active-scoring` | Fundamentals-Block — 5J-Trendperspektive | — |
+| B2 | `active-scoring` | Fundamentals-Block — FCF + GM Primärmetriken | Trailing P/E de-priorisiert |
+| B3 | `active-scoring` | Fundamentals-Block — Earnings-Quality | — |
+| B4 | `active-scoring` | Moat-Block — 8-Quellen-Pflichtcheck | — |
+| B5 | `active-scoring` | Gesamt-Urteil — DEFCON-4-Kriterium (cheap+safe+quality) | — |
+| B6 | `active-scoring` | Quality-Trap-Interaktionsterm v3.7 (Moat × Fundamentals) | Subscore-Deckel statt additiver Malus |
+| B7 | `active-scoring` | Block-Gewichtung 50/20/10/10/10 | Pflicht-Nennung in !Analysiere |
+| B8 | `active-scoring` | Fundamentals-Block — ROIC-vs-WACC + OpM TTM | v3.7 OpM als eigene Metrik |
+| B9 | `active-scoring` | Fundamentals-Block — Bilanz + EPS Revision | — |
+| B10 | `active-scoring` | Workflow — Reasoning vor Score | Implementiert via §4 Router + §2 Befunde-Check |
+| B11 | `active-scoring` | Sentiment-Block — Cap 10 Pt. + Analyst-Bias-Kalibrierung | v3.7 Crowd-Consensus-Malus |
+| B12 | `design-rejected` | — | F-Score-Komponenten (ROIC/FCF/Leverage) bereits dekomponiert → §27.1 Double-Counting. Rejection-Datum: 17.04.2026 (v3.6→v3.7). |
+| B13 | `design-rejected` | — | GM-Trend im Moat-Block + OpM TTM → §27.1 Double-Counting. Rejection-Datum: 17.04.2026 (v3.6→v3.7). |
+| B14 | `active-scoring` (implicit) | Fundamentals-Block — Accruals-Ratio Earnings-Quality-Pfad | B14-Bonus (+2 Pt. <3%) rejected § 27.1, aber Accruals-Ratio-Malus bleibt aus v3.5-Erbe aktiv |
+| B15 | `meta-gate` | §29.1 Methoden-Gate — PBO/CSCV | Aktivierung 2028-04-01 oder erste Parameter-Variation |
+| B16 | `meta-gate` | §29.2 External-Benchmark + §29.4 t-Hurdle | §29.4 SOFORT aktiv (nicht 2028) |
+| B17 | `meta-gate` | §29.3 Temporal-Konsistenz — Half-Life × Cadence | — |
+| B18 | `meta-gate` | §29.5 Seven-Sins Pre-Flight | SOFORT aktiv bei Migration-Events |
+| B19 | `meta-gate` | §29.5 + §33 Skill-Self-Audit | Regime-Awareness, Bull/Bear-Asymmetrie |
+| B20 | `meta-gate` | §29.1 + §29.6 — In-the-Loop-Objective + Downside-Risk | — |
+| B21 | `future-arch` | [[Knowledge-Graph-Architektur-Roadmap]] Szenario 2 | 10-K-KG frühestens 2027+ |
+| B22 | `future-arch` | [[Knowledge-Graph-Architektur-Roadmap]] Gate 2 | Entropy-Monitor bei hypothetischer 10-K-KG |
+| B23 | `future-arch` | [[Knowledge-Graph-Architektur-Roadmap]] Szenario 3 | Tavily-API erlaubt kein MC-Dropout; Alignment-Anker für `feedback_correctness_over_runtime.md` |
+| B24 | `future-arch` | [[Knowledge-Graph-Architektur-Roadmap]] Szenario 3-Erweiterung | Long-Short orthogonal zu DEFCON Long-Only |
+
+### Aktivierungs-Regeln (bindend)
+
+1. **`active-scoring`:** Pflicht-Nennung im !Analysiere-Output pro DEFCON-Block (SKILL.md-Output-Template). Neue active-scoring-Befunde nur über §28.1 Migration-Workflow einführbar (inkl. §29.4 t≥3 Hurdle).
+2. **`meta-gate`:** Aktiv nur bei den in "Aktivierungs-Stelle" genannten §§. Kein Zugriff aus per-Ticker-!Analysiere. Wenn Migration ansteht: §28.1 Step 1 (Paper/Evidence-Check) verweist auf diese Matrix.
+3. **`design-rejected`:** Wiederaufnahme NUR nach formaler Überarbeitung von §27.1 Double-Counting-Definition. Wenn in !Analysiere die Frage auftaucht "warum fehlt F-Score/GP/TA?" → Antwort aus Rejection-Begründung zitieren, nicht ad-hoc einführen.
+4. **`future-arch`:** Bewertung ausschließlich via §33 Skill-Self-Audit-Gate (3 Qualitäts-Gates aus [[Knowledge-Graph-Architektur-Roadmap]]). Keine stille Adoption in bestehende Skills.
+
+### Regel für neue Befunde (B25+)
+
+Jeder zukünftige Befund MUSS bei Ingest in diese Matrix eingetragen werden mit Status-Label + Aktivierungs-Stelle + Begründung. Status-Klassifikation ist Teil von Phase-1-Complete (Codex-Gate 2).
 
 ---
 

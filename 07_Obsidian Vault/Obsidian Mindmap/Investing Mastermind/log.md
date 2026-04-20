@@ -596,3 +596,27 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Archive-Stand:** unverändert 27 Records. Scores/Sparraten unverändert. Kein FLAG-Event. Keine Skill-Code-Änderungen. Keine §-Edits in INSTRUKTIONEN.md.
 - **Dokument-Status:** Phase 1b Vault-only (per Hard-Checkpoint Vault-first → System). Phase 2-6 in nächsten Sessions. **Phase 1 des 6-Paper-Ingest-Projekts damit vollständig abgeschlossen.**
 - **Auto-Lint pending:** Orphans + broken Links Phase 1b-Pages prüfen vor Commit (Task #9).
+
+## [2026-04-20] phase2 | System-Konsequenzen der wissenschaftlichen Fundierung — Hybrid A+B+C implementiert
+- **Auslöser:** User-Frage "Fließt die Wissenschaftliche-Fundierung-DEFCON automatisch in jede Analyse ein oder ist das toter Content?" — Drift identifiziert: §4 Befunde-Priming listete nur B1-B11, B12-B24 waren passiv.
+- **Codex-Konsultation (Agent `af272d556e2707209`):** Hybrid A+B+C empfohlen (Synthesis = kanonische SSoT, §4 = Router, SKILL.md-Output = Transparenz-Block, §2 Pipeline = expliziter Befunde-Check).
+- **Implementierung (Phase 2 — docs + SKILL.md-Output-Only, KEIN Scoring-Impact):**
+  - `07_Obsidian Vault/.../wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` — neue **Status-Matrix** mit 4 Labels (`active-scoring` / `meta-gate` / `design-rejected` / `future-arch`) für B1-B24, Aktivierungs-Regeln bindend, Regel für neue Befunde (B25+)
+  - `00_Core/INSTRUKTIONEN.md` v1.12:
+    - §2 Pipeline — neuer [BEFUNDE]-Schritt zwischen Stufe 1 und Stufe 2
+    - §4 **Router-Umbau** — Mini-Tabelle B1-B11 raus, Status-Router + Pflicht-Abfolge rein
+    - §29.1 + B20 GT-Score In-the-Loop-Objective (komplementär zu PBO)
+    - §29.5 + B19 FINSABER Regime-Audit-Addendum (Bull/Bear-Subsample-SR, Symbol-Breite, Zeitfenster)
+    - §29.6 + B20 Composite-Objective-Alignment (Downside-Risk = Palomar Sortino/CVaR)
+    - **§33 NEU Skill-Self-Audit-Gate** — Gates 1/2/3 aus Roadmap, ADOPT/DEFER/REJECT-Decision, 3 Beispiel-Szenarien dokumentiert
+  - `00_Core/CORE-MEMORY.md` §5 — neue Lektion "Phase-2-System-Konsequenzen der wissenschaftlichen Fundierung"
+  - `00_Core/STATE.md` — Header + System-Zustand Phase-2-Eintrag
+  - `01_Skills/dynastie-depot/SKILL.md` — neuer Schritt 2.5 Befunde-Check + "Befunde angewendet:"-Zeilen im Output-Template pro DEFCON-Block (reine Transparenz)
+  - `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` — Header-Notice (FinReflectKG DEFER via §33)
+  - `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` — Header-Notice (B19+B20 als Plan-Anker)
+  - `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md` — Header-Notice (Bayesian RAG DEFER via §33)
+- **Szenario-Entscheidungen aus [[Knowledge-Graph-Architektur-Roadmap]] via §33-Gate:** Form-4-KG REJECT (Gate 1 negativ), 10-K-KG DEFER 2027+ (alle 3 Gates conditional), Bayesian-RAG-Briefing DEFER (Gate 2 negativ Tavily-API-Limit).
+- **Phase 2.5 Codex-Gate (Agent `ab8cde5ab598bb656`):** CONDITIONAL → PASS nach Bereinigung der pre-existing .obsidian/*.json workspace-state-Files (nicht Teil der Implementation). Layer-Trennung verifiziert: Docs/Audit / SKILL.md-Output / config.yaml unberührt. §28.3 Nicht-Migration-Trigger bestätigt (kein Scoring-Impact).
+- **System-Reife:** Wissenschaftliche Fundierung ab heute **aktiv** im Workflow (vorher retroaktiv-dokumentarisch). B25+ landet automatisch in der Matrix oder Phase-1 gilt als incomplete.
+- **Scoring-Impact:** keiner. DEFCON v3.7 unverändert. Scores/Sparraten/FLAGs unverändert. Skill bleibt v3.7.2 (§28.3 Nicht-Migration-Trigger — Output-Format-Erweiterung ohne Funktions-Änderung).
+- **Archive-Stand:** unverändert 27 Records. Keine neuen FLAG-Events. Kein config.yaml-Touch.

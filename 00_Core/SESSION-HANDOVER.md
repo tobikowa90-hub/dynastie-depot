@@ -1,6 +1,25 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 Abend-Spät (Session-Cut nach **Phase 1b Paper-Ingest komplett + Codex Gate 2 PASS nach Fix-Commit**) | **Für:** Nächste Session — **Phase 2 System-Konsequenzen** (primär), **Prod-Deploy v3.0.3 + Gate-A-Start** parallel; Track 5a/5b Execution PAUSIERT bis Phase 2 abgeschlossen; Track 4 (ETF/Gold) weiter ausstehend
+**Aktualisiert:** 2026-04-20 Nacht (Session-Cut nach **Phase 2 System-Konsequenzen IMPLEMENTIERT — Hybrid A+B+C + Codex-Gate-2.5 PASS nach .obsidian-Bereinigung**) | **Für:** Nächste Session — **Prod-Deploy v3.0.3 + Gate-A-Start** (primär), **Track 5a/5b Execution** (nach Gate-A-PASS), Track 4 (ETF/Gold) weiter ausstehend
+
+## 🆕 HAUPT-TRACK (aktualisiert): Phase 2 Wissenschaftliche-Fundierung-Integration IMPLEMENTIERT (2026-04-20 Nacht)
+
+Hybrid A+B+C aus Codex-Konsultation (`af272d556e2707209`) umgesetzt — wissenschaftliche Fundierung fließt ab sofort **aktiv** in jede Analyse, nicht mehr retroaktiv-dokumentarisch.
+
+**Deliverables:**
+- Status-Matrix B1-B24 in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix (4 Labels: active-scoring/meta-gate/design-rejected/future-arch)
+- INSTRUKTIONEN v1.12: §2 [BEFUNDE]-Pipeline-Schritt + §4 Router-Umbau + §29.5-Regime-Audit + §29.6-Composite-Alignment + §33 NEU Skill-Self-Audit-Gate
+- SKILL.md Schritt 2.5 Befunde-Check + "Befunde angewendet:"-Zeilen pro DEFCON-Block (Output-Transparenz, kein Scoring-Impact)
+- CORE-MEMORY §5 Lektion + log.md Phase-2-Eintrag
+- Plan-Header-Notices Track 5a/5b/v3.1
+
+**Codex-Gate 2.5 Ergebnis:** CONDITIONAL → PASS nach .obsidian-State-Bereinigung. Layer-Trennung sauber: Docs/Audit / SKILL.md-Output / config.yaml unberührt. **§28.3 Nicht-Migration-Trigger** — DEFCON v3.7 unverändert, Skill bleibt v3.7.2.
+
+**Szenario-Entscheidungen via §33-Gate:** Form-4-KG REJECT, 10-K-KG DEFER 2027+, Bayesian-RAG-Briefing DEFER (Tavily-API-Limit). Alles dokumentiert in [[Knowledge-Graph-Architektur-Roadmap]].
+
+**Commit pending** — wird direkt im Anschluss an diese Handover-Update gesetzt. Branch `main`.
+
+---
 
 ---
 

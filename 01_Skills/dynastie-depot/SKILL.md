@@ -181,6 +181,14 @@ IF Non-US-Ticker: ASML, RMS, SU
 | \*\*Keine PTs als Bewertungsbasis\*\* | Analysten-Ziele nur im Sentiment-Block |
 | \*\*Zweifel\*\* | Nachfragen – niemals raten oder schätzen |
 
+### Schritt 2.5: Befunde-Check (Phase-2 2026-04-20)
+
+**Pflicht vor Scoring-Start.** Status-Matrix lesen in `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` §Status-Matrix.
+
+Nur `active-scoring`-klassifizierte Befunde in die Analyse einbeziehen. `meta-gate`/`design-rejected`/`future-arch` werden NICHT per-Ticker angewandt (Details: INSTRUKTIONEN §4 Befunde-Router + §28/§29/§33-Gates).
+
+Im Output-Template pro DEFCON-Block eine **Befunde:**-Zeile mit den angewandten Befund-IDs ausweisen. Ticker-spezifische Befunde: z.B. B6 Quality-Trap nur bei Wide Moat × teurer Bewertung kombiniert; B4 8-Quellen-Check pro Moat-Analyse. Reasoning vor Score (B10 Chain-of-Thought-Prinzip).
+
 ### Schritt 3: 100-Punkte-Matrix scoren
 
 Verwende die **Scoring-Skalen** (siehe nächster Abschnitt) und gib das Ergebnis in exakt diesem Format aus:
@@ -203,21 +211,31 @@ Verwende die **Scoring-Skalen** (siehe nächster Abschnitt) und gib das Ergebnis
 
 \[Tabelle mit 6 Metriken, je Score + Begründung + web:Quelle\]
 
+\*\*Befunde angewendet:\*\* B1 (5J-Trend), B2 (FCF+GM-Primacy), B3 (Earnings-Quality), B8 (ROIC-vs-WACC + OpM TTM), B9 (Bilanz/EPS), B14 (Accruals-Ratio implicit) \[+ B6 Quality-Trap bei Wide Moat × teurer Bewertung\]
+
 \#\#\#\# 🏰 Economic Moat: XX/20
 
 \[Wide/Narrow/None + Begründung\] \[web:Quelle\]
+
+\*\*Befunde angewendet:\*\* B4 (8-Quellen-Check), B5 (cheap+safe+quality-Dreiklang) \[+ B6 Quality-Trap-Interaktion, wenn aktiv\]
 
 \#\#\#\# 📉 Technicals: X/10
 
 \[RSI, MACD, MA-Lage, DCF-Fair-Value vs. Kurs\] \[web:Quelle\]
 
+\*\*Befunde angewendet:\*\* — \(B7 Datenhierarchie validiert Block-Gewichtung 10 Pt.\)
+
 \#\#\#\# 🔴 Insider: X/10
 
 \[Net Buy/Sell, Ownership %, diskretionäres Selling \>$20M?\] \[web:Quelle\]
 
+\*\*Befunde angewendet:\*\* — \(Disziplin-Regel, nicht Paper-abgeleitet\)
+
 \#\#\#\# 📊 Sentiment: X/10
 
 \[Analyst-Rating, Ø PT, Anzahl Analysten, Sell-Ratio\] \[web:Quelle\]
+
+\*\*Befunde angewendet:\*\* B11 (News-Positivity-Bias + Analyst-Bias-Kalibrierung, Cap 10 Pt.)
 
 \#\#\# 2. Gesamt-Score
 

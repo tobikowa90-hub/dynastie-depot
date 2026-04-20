@@ -2,6 +2,12 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Phase-1b-Paper-Ingest-Header-Notice (2026-04-20):** Zwei Befunde verstärken den wissenschaftlichen Anker dieses Plans:
+> - **B19 FINSABER** (Li-Kim-Cucuringu-Ma 2026) → Bull/Bear-Asymmetrie ist systematisch und Regime-bewusste Strategien schlagen Regime-blinde. Direkter Anker für §31 Regime-Modulation-Logik. Neues **§29.5-Regime-Audit-Addendum** verlangt Bull/Bear-Subsample-SR-Trennung im Backtest (Task 3.x bei Grid-Search-Implementierung beachten).
+> - **B20 GT-Score** (Sheppert 2026) → Composite Anti-Overfitting Objective (Performance × Significance × Consistency × Downside-Risk) als **Tie-Break R0** in Grid-Search (1620 Kombinationen). Ergänzt §29.1 PBO-Gate um In-the-Loop-Objective. Task 3.x prüft, ob GT-Score als zweite Objective-Schicht neben aggregierter Sharpe-Ratio einbezogen wird.
+>
+> **Track 5b-Scope durch Phase-1b nicht geändert** — die Papers verankern die Plan-Methodik, erzwingen aber keine Struktur-Änderung am §31-Ruleset-Design.
+
 **Goal:** Drei FRED-Macro-Serien (HY-OAS / 10Y-2Y Treasury-Curve / ISM-PMI) als mechanischen Sparraten-Regime-Modulator (`normal` / `risk_off`) aktivieren — basierend auf einem Grid-Search-kalibrierten §31-Ruleset, ohne Eingriff in DEFCON-Scoring und ohne diskretionären Override. Sparraten-Modulation erfolgt auf Einzelraten-Ebene via `sparraten_factor ∈ {1.00, <1.00}`, respektiert den 8.0-Nenner aus STATE.md.
 
 **Architecture:**

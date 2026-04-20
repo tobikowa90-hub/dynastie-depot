@@ -224,6 +224,33 @@ Bei Unternehmen mit signifikanter Produktion in Risikoländern (Malaysia, Thaila
 **Codex-Review-Revisions appliziert (5/5):** Score-Unverändbarkeit (§30.3.5), Schema-Watch-Klarstellung (§30.1), Applied-Learning-Re-Review-Ablage (§30.4), Drei-Ebenen-Disambiguierung (§30.1), Forward-Dating-Anker (§30.3.3).
 **Präzedenz:** Applied-Learning "Paper-Ingest ≠ System-Update" in Monitoring-Layer operationalisiert. §30-Entscheidung ist NICHT Score-Update — die Monthly-Refresh ist neue Cadence-Regel, nicht neue DEFCON-Logik.
 
+### Phase-2-System-Konsequenzen der wissenschaftlichen Fundierung (20.04.2026)
+
+**Auslöser:** User-Frage "Fließt die Wissenschaftliche-Fundierung-DEFCON automatisch in jede Analyse ein, oder ist das toter Content?" — ergab, dass §4 Befunde-Priming nur B1-B11 abfragte (stale seit Phase-1a+1b-Ingest = B12-B24). Codex-konsultiertes Setup (`codex-rescue` Agent `af272d556e2707209`): Hybrid A+B+C-Architektur.
+
+**Systemkonsequenzen (Phase 2, docs + SKILL.md-Output-Only, KEIN Scoring-Impact):**
+
+1. **Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix** — kanonische Klassifikation jedes Befunds (B1-B24+) mit 4 Labels: `active-scoring` / `meta-gate` / `design-rejected` / `future-arch`. Single Source of Truth; ohne Status-Label kein Phase-1-Complete bei zukünftigem Ingest.
+2. **INSTRUKTIONEN §4 Befunde-Router** — Mini-Tabelle B1-B11 durch Status-Router ersetzt (Aktion pro Label, Pflicht-Abfolge 4 Schritte, §4 wächst nicht mehr mit neuen Papers mit).
+3. **INSTRUKTIONEN §2 Pipeline-Schritt [BEFUNDE]** — Status-Matrix-Check explizit zwischen Stufe 1 und Stufe 2 sichtbar; kein Filter-Tor, sondern Pflicht-Vorbereitung für Scoring.
+4. **INSTRUKTIONEN §29.5 Regime-Audit-Addendum (B19 FINSABER)** — Bull/Bear-Subsample-SR-Trennung + Symbol-Breite + Zeitfenster-Deklaration bei Migration-/Retrospective-Events.
+5. **INSTRUKTIONEN §29.6 Composite-Objective-Alignment (B20 GT-Score)** — Downside-Risk-Komponente konzeptuell deckungsgleich mit Palomar Sortino/CVaR; GT-Score als In-the-Loop-Objective, Palomar als Einzel-Metrik-Rechnung.
+6. **INSTRUKTIONEN §33 NEU Skill-Self-Audit-Gate** — Gates 1/2/3 aus [[Knowledge-Graph-Architektur-Roadmap]] kodifiziert, Scope = KG/RAG/Agentic-Reflection/DPO-Architekturen; Decision-Output ADOPT/DEFER/REJECT; 3 Beispiel-Anwendungen aus Phase-1b (Form-4-KG REJECT, 10-K-KG DEFER, Bayesian-RAG-Briefing DEFER). §§31-32 als Track-5b/5a-Reservierung dokumentiert.
+7. **SKILL.md dynastie-depot — Schritt 2.5 Befunde-Check + Output-Template-Erweiterung** — pro DEFCON-Block "**Befunde angewendet:**"-Zeile im Analyse-Output; Transparenz-Only, kein Score-Impact.
+
+**Szenario-Entscheidungen aus [[Knowledge-Graph-Architektur-Roadmap]] v0.1** (via §33 Skill-Self-Audit-Gate):
+- **Szenario 1 (Form-4 Insider bleibt XML):** **REJECT** — Gate 1 negativ (XML genügt, Schema stabil); Status quo bestätigt.
+- **Szenario 2 (10-K-KG für Cross-Entity-Queries):** **DEFER** frühestens 2027+ — Gate 1/2/3 alle conditional; Re-Review bei konkretem Multi-Hop-Bedarf.
+- **Szenario 3 (Bayesian RAG im Morning-Briefing):** **DEFER** bis Self-hosted-Embedding-Wechsel — Gate 2 negativ (Tavily-API erlaubt kein MC-Dropout).
+
+**Constraint eingehalten:** Kein Touch an `01_Skills/dynastie-depot/config.yaml`; keine DEFCON-Parameter-Änderung; keine v3.8-Migration nötig (v3.7 bleibt). Skill-Version **bleibt v3.7.2** (Output-Format-Erweiterung ohne Funktions-Änderung, §28.3 Nicht-Migration-Trigger).
+
+**Phase-2.5 Codex-Gate:** Separates Codex-Review bestätigt Layer-Trennung Docs/Audit ↔ Skill-Output ↔ config.yaml unberührt (ausstehend zum Zeitpunkt der Lektions-Anlage).
+
+**Applied Learning:** Wissenschaftliche Fundierung wird **aktiv** genutzt, wenn (1) jeder Befund per Status-Matrix klassifiziert ist, (2) der Router in §4 mechanisch auf das Status-Label reagiert, (3) der Analyse-Output die Anwendung sichtbar macht. Dead reference wird so strukturell unmöglich — B25+ landet automatisch in der Matrix oder Phase-1 gilt als incomplete.
+
+**Präzedenz:** Erste formale Aktivierung der wissenschaftlichen Fundierung auf Workflow-Ebene. Vorher waren Papers Anker für §§ (retroaktiv), jetzt sind sie Input-Layer des Scoring-Starts (proaktiv).
+
 ---
 
 ## 6. System-Upgrades & Versionsverlauf

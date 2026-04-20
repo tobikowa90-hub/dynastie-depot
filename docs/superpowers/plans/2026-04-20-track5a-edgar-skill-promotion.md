@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Phase-1b-Paper-Ingest-Header-Notice (2026-04-20):** FinReflectKG (Arun et al. 2025, B21) zeigt eine Alternative zum klassischen XBRL-Scraping: Reflection-basierte LLM-KG-Extraction mit 5-Tuple-Schema + Critic-Corrector-Loop. **Geprüft und als `future-arch` DEFERRED** via §33 Skill-Self-Audit-Gate (Gate 2 conditional — Budget/Eval-Plan offen; Gate 3 3-Monats-Observation nicht gestartet). XBRL-Scraping via `edgartools` bleibt Primär-Architektur für Track 5a. FinReflectKG-Szenario archiviert in [[Knowledge-Graph-Architektur-Roadmap]] Szenario 2 für Re-Review 2027+. Track 5a-Scope durch Phase-1b **nicht geändert**.
+
 **Goal:** Promote `_extern/sec-edgar-skill/SKILL-sec-edgar-skill.md` zum aktiven Eskalations-Fallback-Skill `01_Skills/sec-edgar-skill/SKILL.md`, mit `edgartools` installiert, `set_identity()` konkret konfiguriert und INSTRUKTIONEN §17-Tabelle aktualisiert.
 
 **Architecture:** Satelliten-Skill neben `insider-intelligence`/`non-us-fundamentals`/`quick-screener`. Eskalations-getriggert (Daten-Konflikt / 10-K-Textsuche / Form-4-Eskalation / Multi-Period-Trend), **nicht** automatisch in `!Analysiere`-Workflow eingebunden. Primärquellen defeatbeta (US-Fundamentals) und Shibui (Technicals) bleiben unverändert. `insider_intel.py`-Form-4-Pipeline bleibt parallel.
