@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 19.04.2026 (Track 3 Paper-Integration systemweit abgeschlossen — R5 Portfolio-Persistenz + §30 Live-Monitoring aktiv) | System: DEFCON v3.7 (unverändert)
+**Single Entry Point für Session-Start** | Stand: 20.04.2026 (Track 5a+5b Implementation-Plans geschrieben + Codex-reviewed, Execution 2026-04-21; Track 1 T1-Rerun offen; Track 3 Paper-Integration abgeschlossen — R5 Portfolio-Persistenz + §30 Live-Monitoring aktiv) | System: DEFCON v3.7 (unverändert)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`
@@ -65,6 +65,7 @@
 - **Forward-Verify-Pipeline via Skill** (seit 19.04.2026, v3.7.2): `backtest-ready-forward-verify` kapselt Draft → Freshness + Tripwire + §28.2 Δ-Gate + Dry-Run + Append + git add. Aktiviert aus dynastie-depot Schritt 7 (programmatisch, keine Trigger-Words). First-Run: TMO Q1 23.04.2026.
 - **R5 Portfolio-Return-Persistenz aktiv** (seit 19.04.2026, Track 3 Phase 3): `05_Archiv/portfolio_returns.jsonl` + `benchmark-series.jsonl` Daily-Schema v1.0 (trading-date, cashflow-separated post-NAV, equal-weight 11-Satelliten). Erster Record 2026-04-17 (10.173,42 EUR notional, SPY 710,14). Append via `python 03_Tools/portfolio_risk.py --persist daily --cashflow <euro>`.
 - **§30 Live-Monitoring aktiv** (seit 19.04.2026, Track 3 Phase 4): Monthly-Refresh pflicht für MSFT CapEx-FLAG (Flint-Vermaak Investment-Half-Life ~1M). TMO Schema-Watch (keine §30-Pflicht). INSTRUKTIONEN v1.11. Erster MSFT-Refresh ~19.05.2026 (Zwischen-Refresh vor Q3 29.04. nicht nötig, Earnings deckt ab).
+- **Track 5 Pläne bereit** (seit 20.04.2026): `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks) + `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks), beide Codex-reviewed + fix-eingepflegt. Execution geplant 2026-04-21, Track 5a zuerst. Keine Scores/FLAGs/Sparraten-Änderungen durch Plan-Writing.
 - **Interim-Gate 2027-10-19:** 18-Mo-Dry-Run `risk-metrics-calculation` + Data-Quality-Check auf `portfolio_returns.jsonl` (R5 Phase 3, inkl. FX-Conversion-Nachrüstung für Mixed-Currency-Basket). Review-Aktivierung 2028-04-01.
 
 ---

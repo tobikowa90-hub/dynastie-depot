@@ -1,6 +1,45 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 20.04.2026 00:40 MESZ | **Für:** Nächste Session — Track 1 T1-Rerun + T3/T4
+**Aktualisiert:** 2026-04-20 (späte Session) | **Für:** Nächste Session — **Track 5a + 5b Execution** (primär) + Track 1 T1-Rerun (offen)
+
+---
+
+## ⚡ SESSION 20.04. (späte Session) — TRACK 5 IMPLEMENTATION-PLANS BEREIT
+
+### Abgeschlossen
+- **Plan 5a geschrieben + Codex-reviewed + 4 Fixes eingepflegt:** `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks, ~540 Zeilen, force-added). Scope: SEC EDGAR Skill-Promotion + INSTRUKTIONEN §17-Update + _extern/-Superseded-Banner.
+- **Plan 5b geschrieben + Codex-reviewed + 7 Fixes + 1 Kompromiss eingepflegt:** `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks, ~1240 Zeilen, force-added). Scope: FRED Macro-Regime-Filter via β `fredapi`, ALFRED/FRED-Dual-Mode, Grid-Search 1620 Combos vectorized, INSTRUKTIONEN §31 + §22.1.
+- **§-Mismatch-Pattern etabliert:** Spec-§22 → Ist §17, Spec-§19 → Ist §8, Spec-§5-Audit → Ist §1. Header-Notice in beiden Plänen, Spec unverändert. Codex-Attestierung. Applied-Learning-Bullet #10 + Auto-Memory `feedback_spec_section_drift.md`.
+
+### Track 5 Execution — Ablauf für 2026-04-21
+
+**Priorität 1 (Plan 5a zuerst — kleiner, sauberer Start):**
+1. `Session starten` → STATE.md lesen → Plan 5a laden
+2. Pre-Implementation-Gates A (Tavily-Stabilität) + B (Kollisionscheck verifiziert ✅) + C (Python-Env) + D (§-Mapping-Recheck) durchlaufen
+3. `superpowers:subagent-driven-development` für Task-by-Task-Execution (recommended) oder `executing-plans` für Inline
+4. Task 1 (Env + edgartools install) → Task 2 (SKILL.md) → Task 3 (smoke-test) → Task 4 (INSTRUKTIONEN §17) → Task 5 (Docs-Sync) → Task 6 (_extern Banner) → Task 7 (E2E 4 Use-Cases) → Task 8 (!SyncBriefing)
+5. Task 9 ist deferred (90-Tage-Audit 2026-07-19) — STATE-Trigger-Zeile beim Commit von Task 5 setzen
+
+**Priorität 2 (Plan 5b, danach):**
+1. Gate C (FRED-API-Key registrieren, ~5 Min bei https://fred.stlouisfed.org/docs/api/api_key.html) — **User-Aktion vor Task 1.3**
+2. Tasks 1-3 (Env + fred_client + Schema) → Tasks 4-8 (Backfill + Backtest + Grid-Search + Conservative-Choice + §31) → Task 9-11 (Daily-Run + Briefing-Integration + Docs-Sync) → Task 12 (!SyncBriefing) → Task 13 (Verification)
+3. Tasks 14-15 deferred (30-Tage ~2026-05-20 + Interim-Gate 2027-10-19)
+
+### Kritische Gates vor Start
+- **Gate A — Tavily-Go-Live 3-Tage-Stabilität:** Track 1 Phase 1 ist noch nicht abgeschlossen (T1-Rerun pending, siehe unten). Spec §4.1 verlangt Tavily-Stabilität vor Track-5-Start. User-Entscheidung: Track 5 parallel starten ODER warten auf T1-PASS?
+- **Gate C — FRED-API-Key beschaffen** (nur für Plan 5b, ~5 Min User-Aktion)
+
+### Artefakte (beide in `docs/superpowers/plans/`, force-added per Konvention)
+- `2026-04-20-track5a-edgar-skill-promotion.md`
+- `2026-04-20-track5b-fred-regime-filter.md`
+- Spec (unverändert): `00_Core/TRACK5-SPEC-edgar-fred.md` (Commit `22cdeb8`)
+
+### Nicht-Änderungen dieser Session
+- Keine Scores / FLAGs / Sparraten (reine Planungs-Artefakte)
+- Keine System-Code-Änderung (Plans sind Prosa, Implementation folgt 2026-04-21)
+- Keine Vault-Updates (Post-Execution-Phase — Wiki-Pages entstehen wenn §31/edgar-skill tatsächlich Outputs produzieren)
+
+---
 
 ---
 

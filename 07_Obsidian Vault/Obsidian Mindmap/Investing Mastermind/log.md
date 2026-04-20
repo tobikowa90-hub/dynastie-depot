@@ -494,3 +494,40 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 **Codex-Review-Gates (3×):** (1) Phase 1b Konsistenz-Pass — 3 Fixes (MSFT/TMO Plan-intendiert, CapEx-FLAG §29.3-Rückverweis ergänzt). (2) Phase 3 Code-Review — 5 Fixes (Trading-Date, dual-file Duplicate-Guard, Common-Date-Intersection, Mixed-Currency-Caveat, Schema-Doc-Wording). (3) Phase 4 §30-Formulierung — 5 Fixes (Drei-Ebenen-Disambiguierung, Score-Unverändbarkeit, Applied-Learning-Re-Review-Ablage, Forward-Dating-Pflicht, Schema-Watch-Klarstellung).
 
 **Commits:** 7ed5267 → 81fece3 → a47cc28 → f7920cf → c1f0f21 → 96b0b69 + Spec 976e67a + Plan ee61535.
+
+## 2026-04-20 — Track 5 Implementation-Plans geschrieben (5a + 5b, Execution-deferred auf 2026-04-21)
+
+**Session-Scope:** Zwei Implementation-Plans zum TRACK5-SPEC v1.0 (Commit `22cdeb8`) via `superpowers:writing-plans`. Keine Code-Execution, reine Planungs-Artefakte. Vault-Updates folgen Post-Execution.
+
+**Artefakte (beide force-added, `docs/superpowers/` ist gitignored per Konvention):**
+- `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (~540 Zeilen, 9 Tasks inkl. 90-Tage-Audit-Review deferred auf 2026-07-19)
+- `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (~1240 Zeilen, 15 Tasks inkl. 30-Tage-Stabilität deferred auf 2026-05-20 + Interim-Gate 2027-10-19)
+
+**Plan 5a (EDGAR Skill-Promotion):**
+- Promote `01_Skills/_extern/sec-edgar-skill/SKILL-sec-edgar-skill.md` → `01_Skills/sec-edgar-skill/SKILL.md`
+- `pip install edgartools` + `set_identity("Tobias Kowalski tobikowa90@gmail.com")`
+- Eskalations-Fallback: Daten-Konflikt-Arbitrage / 10-K-Textsuche / Form-4-Eskalation / Multi-Period-Trend
+- Frontmatter-Trigger-Words nach Codex-P0-Fix gekürzt (Auto-Load-Risiko in !Analysiere eliminiert)
+- INSTRUKTIONEN §17-Zeile 248 Update + CORE-MEMORY §1 Meilenstein + _extern/ Superseded-Banner
+
+**Plan 5b (FRED Macro-Regime-Filter):**
+- β `fredapi` + `python-dotenv`, ALFRED-first-release (Backfill) + FRED-latest-release (Live) Dual-Mode-Adapter `fred_client.py`
+- Historical-Backfill `macro_regime_historical.jsonl` 1997+ (~7500 Records) mit Codex-Data-Quality-Gate
+- Grid-Search 1620 Combos über (hy_oas × curve × ism × persistence × operator × factor), vectorized via Pre-Compute-Cache (180:1620 Cache-Hit-Ratio = O(1) inner-loop)
+- Utility-Primärmetrik `1 - avg_filtered/avg_unfiltered` + Codex-Sekundär-Diagnose `forward_6m_hit_rate` (Spec-§3.3.1-Verbalisierung-Check)
+- Konservative Parameter-Wahl via 5-Regel-Tie-Break R1→R5 (Lexikographie, total-ordering-Fallback)
+- Single-Source-of-Truth `03_Tools/macro_regime_config.py` (daily-run importiert, §31.2 referenziert)
+- Neue INSTRUKTIONEN §31 (Trigger-Regeln + Sparraten-Modulation + Revision-Invarianz + Kill-Switch)
+- Neue INSTRUKTIONEN §22.1 (Manual-Read-Workflow; kein programmatischer Sparplan-Enforcer, Enforcement deferred)
+- Daily-Run integriert in CCR-Remote-Trigger via Prompt-Template-SCHRITT-0-Prepend (full-replace)
+
+**Codex-Review-Gates (3×):**
+- Pre-Plan §-Mismatch-Entscheidung: Option 1 bestätigt (Plan-Header-Notice, Spec frozen)
+- Plan 5a Review: 2 P0 (1 Dissens — bash/PowerShell — System-Prompt bestätigt bash korrekt; 1 ACCEPT — Trigger-Words verengt), 3 P1 (90-Tage-Audit-Task, PyYAML-Dep-Entfernung via Regex-Check, Token-Budget 400/1200 → 500/1500 +25% Puffer)
+- Plan 5b Review: 0 P0, 8 P1 + 1 Kompromiss — alle 7 Fixes eingepflegt (Enforcement-Deferral / Persistence-Contiguity-Guard / Tie-Break-R5 / CCR-Remote-Pfad / Q3-ALFRED-Alignment / macro_regime_config.py Single-Source / NYSE-Approximation-Wording) + forward_6m_hit_rate als Sekundär-Diagnose (Primärmetrik-Dissens gelöst durch Zusatzspalte statt Formel-Umbau)
+
+**§-Mismatch-Fixes (beide Pläne):** TRACK5-SPEC v1.0 referenziert in §2.5/§2.6/§3.2.4/§3.3.2/§3.4/§3.5 veraltete INSTRUKTIONEN/CORE-MEMORY-§-Nummern. Plan-Header-Notice dokumentiert: Spec-§22 → Ist §17 / Spec-§19 → Ist §8 / Spec-§5 Deployment-Audit → Ist §1 Meilensteine. Spec bleibt frozen, Codex-Attestierung 2026-04-20. Neu als Applied-Learning-Bullet #10 + Auto-Memory-File.
+
+**Scope-Änderungen System:** Keine Scores. Keine FLAGs. Keine Sparraten-Änderung. Reine Artefakt-Vorbereitung vor Execution. DEFCON v3.7 unverändert.
+
+**Next:** 2026-04-21 Execution-Start — Track 5a zuerst (kleiner, sauberer), dann 5b. Track 1 T1-Rerun bleibt parallel offen (siehe `SESSION-HANDOVER.md`).
