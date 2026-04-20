@@ -1,23 +1,20 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 Nacht (Session-Cut nach **Phase 2 System-Konsequenzen IMPLEMENTIERT — Hybrid A+B+C + Codex-Gate-2.5 PASS nach .obsidian-Bereinigung**) | **Für:** Nächste Session — **Prod-Deploy v3.0.3 + Gate-A-Start** (primär), **Track 5a/5b Execution** (nach Gate-A-PASS), Track 4 (ETF/Gold) weiter ausstehend
+**Aktualisiert:** 2026-04-20 Nacht (Session-Cut nach **6-Paper-Ingest-Projekt FORMAL ABGESCHLOSSEN** — Phase 2 + Phase 2.5 + Final-Discoverability committed; Smoke-Test AVGO PASS) | **Für:** Nächste Session — **Prod-Deploy v3.0.3 Morning-Briefing + Gate-A-Start** (Primär-Track), **Track 5a/5b Execution** (nach Gate-A-PASS ~24.04.), Track 4 (ETF/Gold) weiter ausstehend
 
-## 🆕 HAUPT-TRACK (aktualisiert): Phase 2 Wissenschaftliche-Fundierung-Integration IMPLEMENTIERT (2026-04-20 Nacht)
+## ✅ ABGESCHLOSSEN: 6-Paper-Ingest-Projekt (2026-04-20 Nacht)
 
-Hybrid A+B+C aus Codex-Konsultation (`af272d556e2707209`) umgesetzt — wissenschaftliche Fundierung fließt ab sofort **aktiv** in jede Analyse, nicht mehr retroaktiv-dokumentarisch.
+**Commits:**
+- `89275e2` Phase 2 Hybrid A+B+C — Status-Matrix + §4 Router + §33 Skill-Self-Audit + SKILL.md-Output-Block (10 Dateien, +275/-27)
+- `5f6dc62` Final-Discoverability — CLAUDE.md-Pointer + insider-intelligence §33-Note + backtest-ready-forward-verify GT-Score-Pointer + log.md Closure-Entry (4 Dateien, +18)
 
-**Deliverables:**
-- Status-Matrix B1-B24 in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix (4 Labels: active-scoring/meta-gate/design-rejected/future-arch)
-- INSTRUKTIONEN v1.12: §2 [BEFUNDE]-Pipeline-Schritt + §4 Router-Umbau + §29.5-Regime-Audit + §29.6-Composite-Alignment + §33 NEU Skill-Self-Audit-Gate
-- SKILL.md Schritt 2.5 Befunde-Check + "Befunde angewendet:"-Zeilen pro DEFCON-Block (Output-Transparenz, kein Scoring-Impact)
-- CORE-MEMORY §5 Lektion + log.md Phase-2-Eintrag
-- Plan-Header-Notices Track 5a/5b/v3.1
+**Wissenschaftliche Fundierung aktiv in:** !Analysiere (§4 Router + §2 Pipeline + SKILL.md Schritt 2.5 + Output-Block) + §28 Migration + §29 Retrospective (ab 2028) + §33 Skill-Self-Audit. Bewusst passiv in !QuickCheck/!Rebalancing/Screener (mechanische Workflows).
 
-**Codex-Gate 2.5 Ergebnis:** CONDITIONAL → PASS nach .obsidian-State-Bereinigung. Layer-Trennung sauber: Docs/Audit / SKILL.md-Output / config.yaml unberührt. **§28.3 Nicht-Migration-Trigger** — DEFCON v3.7 unverändert, Skill bleibt v3.7.2.
+**Scoring-Impact gesamt:** ZERO. DEFCON v3.7 unverändert, alle 11 Satelliten-Scores/Sparraten/FLAGs unverändert, config.yaml unberührt. §28.3 Nicht-Migration-Trigger über gesamtes Projekt bestätigt. Skill bleibt v3.7.2.
 
-**Szenario-Entscheidungen via §33-Gate:** Form-4-KG REJECT, 10-K-KG DEFER 2027+, Bayesian-RAG-Briefing DEFER (Tavily-API-Limit). Alles dokumentiert in [[Knowledge-Graph-Architektur-Roadmap]].
+**Smoke-Test AVGO (2026-04-20 Nacht):** Schritt 2.5 + Output-Template funktionieren — Befunde-Labels ticker-spezifisch (B6 Quality-Trap-Nicht-Aktivierung sauber ausgewiesen), traceable, kompakt. Erster Live-Test natürlich bei TMO Q1 23.04.2026.
 
-**Commit pending** — wird direkt im Anschluss an diese Handover-Update gesetzt. Branch `main`.
+**Details:** log.md [2026-04-20] phase2 + [2026-04-20] projekt-abschluss | CORE-MEMORY §5 "Phase-2-System-Konsequenzen" | Synthesis §Status-Matrix.
 
 ---
 
