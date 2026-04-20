@@ -3,11 +3,11 @@ title: "Backtest-Methodik-Roadmap"
 type: synthesis
 tags: [backtest, methodik, roadmap, zukunft, kern, validation-gate]
 created: 2026-04-17
-updated: 2026-04-19
-version: v2.0
-sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha, Bailey-2015-PBO, Aghassi-2023-Fact-Fiction, Flint-Vermaak-2021-Decay, Palomar-2025-Portfolio-Optimization]
-related: [Backtest-Ready-Infrastructure, Score-Archiv, FLAG-Event-Log, Wissenschaftliche-Fundierung-DEFCON, DEFCON-System, PBO-Backtest-Overfitting, Factor-Investing-Framework, Factor-Information-Decay, Seven-Sins-Backtesting, Palomar-Methods-Reference]
-wissenschaftlicher_anker: "Entscheidungsmatrix für 2028-Review — wann welcher der 4 Fundierungs-Papers als Benchmark anlegbar wird + 4-Dimensionen-Validation-Gate (v2.0 seit 2026-04-19)"
+updated: 2026-04-20
+version: v2.1
+sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha, Bailey-2015-PBO, Aghassi-2023-Fact-Fiction, Flint-Vermaak-2021-Decay, Palomar-2025-Portfolio-Optimization, Li-Kim-Cucuringu-Ma-2026-FINSABER, Sheppert-2026-GT-Score]
+related: [Backtest-Ready-Infrastructure, Score-Archiv, FLAG-Event-Log, Wissenschaftliche-Fundierung-DEFCON, DEFCON-System, PBO-Backtest-Overfitting, Factor-Investing-Framework, Factor-Information-Decay, Seven-Sins-Backtesting, Palomar-Methods-Reference, LLM-Investing-Bias-Audit, Regime-Aware-LLM-Failure-Modes, Composite-Anti-Overfitting-Objective]
+wissenschaftlicher_anker: "Entscheidungsmatrix für 2028-Review — wann welcher Fundierungs-Paper als Benchmark anlegbar wird + 4-Dimensionen-Validation-Gate (v2.0 seit 2026-04-19, v2.1 erweitert 2026-04-20 um FINSABER-Bias-Audit + GT-Score In-the-Loop-Komponente)"
 konfidenzstufe: synthese
 ---
 
@@ -118,6 +118,39 @@ Nach Triage von 4 weiteren Papern (Bailey/Borwein/López de Prado/Zhu 2015 + Agh
 ### Investment-Faktor-Monthly-Observation offen
 
 Flint/Vermaak zeigen Investment-Faktor-Half-Life = 1 Monat. Aktive FLAGs (MSFT CapEx, TMO fcf_trend_neg) sind Investment-Klasse. **Offene Entscheidung Review 2028:** Monthly-Fundamentals-Refresh formalisieren oder bei Earnings-Trigger-Cadence bleiben? Aktuell keine Änderung — FLAG-Mechanik robust genug.
+
+## v2.1-Erweiterung (2026-04-20) — FINSABER + GT-Score
+
+### Neue Validations-Dimensionen
+
+| Dimension | Anker-Paper | Konzept-Seite | §-Konsequenz |
+|---|---|---|---|
+| **Bias-Audit (Selection-Strategy)** | Li/Kim/Cucuringu/Ma 2026 (FINSABER) | [[LLM-Investing-Bias-Audit]] | §29.5 erweitert um Reject-Set/Iteration-Count/Hold-Out-Audit; ggf. neue §33 Skill-Self-Audit |
+| **Regime-Asymmetrie (Bull/Bear)** | Li et al. 2026 (FINSABER Section: Regime Analysis) | [[Regime-Aware-LLM-Failure-Modes]] | §29.2 erweitert um Bull/Bear-Subsample-SR-Trennung; Track 5b FRED wissenschaftlich verankert |
+| **Composite-Optimization (in-the-loop)** | Sheppert 2026 (GT-Score) | [[Composite-Anti-Overfitting-Objective]] | §29.1 erweitert um GT-Score (komplementär zu PBO/CSCV); Track 5b Grid-Search Tie-Break R0 |
+
+### Konsequenzen für 2028-Review-Aktivierung
+
+Die ursprüngliche **4-Dimensionen-Gate** (Methode/Raum/Zeit/Sünden) wird zur **5-Dimensionen-Gate**:
+
+1. **Sünden-Pre-Flight (B18 + B19)** — Palomar Seven Sins **erweitert um FINSABER-Audit-Fragen**
+2. **Methoden-Gate (B15 + B20)** — Bailey PBO/CSCV **plus GT-Score In-the-Loop wenn Optimierung beteiligt**
+3. **External-Benchmark (B16)** — AQR Faktor-Bench, **mit Bull/Bear-Subsample-SR-Trennung (B19)**
+4. **Temporal-Konsistenz (B17)** — Flint/Vermaak Half-Life
+5. **Portfolio-Metriken (Palomar Ch 6 + B20 Downside-Risk)** — risk-metrics-calculation Aktivierung
+
+### Track-5b-Spezifischer Anwendungs-Pfad
+
+Track 5b FRED Macro-Regime-Filter (Plan 2026-04-20) nutzt FINSABER+GT-Score doppelt:
+
+| Element | FINSABER-Bezug | GT-Score-Bezug |
+|---|---|---|
+| Regime-Detection als Pre-Decision-Layer | **direkter Anker** für Bull/Bear-Asymmetrie-Adressierung | — |
+| Grid-Search 1620 Combos | Bias-Audit-Pflicht (Multiple-Testing) | **Tie-Break R0** vor R1-R5 |
+| Sparraten-Modulation Bull/Bear | Empirische Validierung der Asymmetrie | — |
+| `forward_6m_hit_rate` Sekundär-Diagnose | Bull/Bear-Subsample-Validation | Significance-Komponente |
+
+→ Track 5b ist nicht heuristisch, sondern adressiert eine **empirisch dokumentierte Failure-Mode aller untersuchten LLM-Investing-Strategien**. Wissenschaftlicher Anker-Wert hoch.
 
 ## Nicht-Ziele (explizit YAGNI)
 

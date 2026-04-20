@@ -2,8 +2,8 @@
 title: "Wissenschaftliche Fundierung DEFCON v3.7"
 type: synthesis
 tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung, validation-gate]
-sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]]"
-concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]]"
+sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]]"
+concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]], [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]]"
 related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Non-US-Scoring]], [[Backtest-Methodik-Roadmap]]"
 entities: "[[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
 datum: 2026-04-19
@@ -55,6 +55,8 @@ status: aktiv
 | **B16** | 4 Kanon-Faktoren (Value/Momentum/Quality/Defensive); Size verworfen; t-Stat≥3 Hurdle | [[Aghassi-2023-Fact-Fiction]] | Externer Benchmark + neue Parameter | DEFCON-Faktor-Mapping explizit; aggr. Portfolio-SR im AQR-Band prüfen | §29.2 External-Bench + §29.4 t-Stat-Hurdle |
 | **B17** | Faktor-Half-Life: Value 3–4M, Quality 4–5M, Momentum 3M, Investment 1M, LowVol 5–6M | [[Flint-Vermaak-2021-Decay]] | Cadence-Validation | Earnings-Trigger (~3M) wissenschaftlich fundiert; Investment-Klasse Watch | §29.3 Temporal-Konsistenz; keine System-Änderung |
 | **B18** | Seven Sins of Quantitative Investing (Overfitting + 6 weitere Biases) | [[Palomar-2025-Portfolio-Optimization]] | Pre-Flight-Validation | Pflicht-Checkliste vor jeder retrospektiven Analyse; Sin #7 n.a. Long-Only | §29.5 Seven-Sins-Gate aktiv auch bei Migration-Events |
+| **B19** | LLM-Investing-Vorteile verschwinden unter 20-J/100+-Symbol-Eval mit Bias-Mitigation; Bull/Bear-Asymmetrie systematisch | [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] | Validation-Audit + Regime-Awareness | Skill-Self-Audit-Pflicht für DEFCON als Selection-Strategy; Bull/Bear-Subsample-SR-Trennung | §29.5 erweitert + ggf. §33 Skill-Self-Audit; Track 5b FRED wissenschaftlich verankert |
+| **B20** | Composite Anti-Overfitting Objective (Performance × Significance × Consistency × Downside-Risk) — In-the-Loop statt Post-hoc | [[Sheppert-2026-GT-Score]] | Validation-Methode (komplementär zu B15) | GT-Score-Aggregat als Tie-Break R0 in Track 5b Grid-Search (1620 Combos); Audit-Lens für DEFCON-Block-Gewichtungen | §29.1 erweitert + §29.6 Downside-Risk-Komponente |
 
 ---
 
@@ -88,6 +90,8 @@ status: aktiv
 | [[Aghassi-2023-Fact-Fiction]] | 2023 | 4 Kanon-Faktoren validiert; Size verworfen; t-Stat≥3 | Externer Benchmark + neue Parameter | B16 ← NEU |
 | [[Flint-Vermaak-2021-Decay]] | 2021 | Faktor-Half-Life → optimale Rebalance-Cadence | Cadence-Validation | B17 ← NEU |
 | [[Palomar-2025-Portfolio-Optimization]] | 2025 | Seven Sins of Quantitative Investing | Pre-Flight-Validation | B18 ← NEU |
+| [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] | 2026 | LLM-Investing-Vorteile verschwinden unter realistischer Eval; Bull/Bear-Asymmetrie | Validation-Audit + Regime-Awareness | B19 ← NEU 2026-04-20 |
+| [[Sheppert-2026-GT-Score]] | 2026 | Composite Anti-Overfitting Objective (in-the-loop) | Validation-Methode | B20 ← NEU 2026-04-20 |
 
 ---
 
@@ -174,6 +178,7 @@ Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] �
 | 2026-04-16 | v3.4→v3.5 Audit — PT-Upside-Fix, Relative Stärke promoted, Floor-Klausel. 7-Fragen-Audit: 5×A, 1×B, 1×C |
 | 2026-04-17 | 3 Foundation-Papers integriert: Piotroski (F-Score, B12), Novy-Marx (GP-Premium, B13), Sloan (Accrual-Anomalie, B14). 7→10 Quellen, 11→14 Befunde. Vorbereitung für v3.6-Release: Quality-Bonus (+2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus <3%. System-Reife-Ceiling: 85% → geplant 92-95%. |
 | 2026-04-19 | 4 Backtest-Validation-Papers integriert: Bailey PBO/CSCV (B15), Aghassi AQR Fact/Fiction (B16), Flint/Vermaak Information Decay (B17), Palomar Seven Sins (B18). 10→14 Quellen, 14→18 Befunde. B15-B18 sind **keine Scoring-Änderungen**, sondern Validation-Gate-Framework — §29 (Retrospective-Analyse-Gate, FUTURE-ACTIVATION 2028-04-01). §29.5 Seven-Sins-Gate aktiv auch bei Migration-Events. Applied Learning verletzt NICHT — Paper-Ingest ≠ System-Update, nur Gate-Infrastruktur. |
+| 2026-04-20 | **Phase 1a** des 6-Paper-Ingest-Projekts (siehe log.md): 2 Severity-🔴-Papers integriert — FINSABER (B19, Li/Kim/Cucuringu/Ma KDD '26) + GT-Score (B20, Sheppert JRFM 2026). 14→16 Quellen, 18→20 Befunde. B19+B20 sind **keine Scoring-Änderungen**, sondern: (1) Audit-Pflicht für DEFCON als Selection-Strategy via FINSABER-Pattern (§29.5 erweitert + ggf. neue §33 Skill-Self-Audit); (2) Composite-Anti-Overfitting-Lens für DEFCON-Block-Gewichtungen + Track 5b Grid-Search (§29.1 + §29.6 erweitert). Codex-Round-2-bestätigt: keine LLM-Sicherheitsdebatte, keine zwingenden Skill-Code-Changes. Phase 1b (4 Severity-🟡-Papers) folgt nächste Session. |
 
 ## Validierung der Befunde (Backtest-Ready-Infrastructure, seit 2026-04-17)
 
@@ -193,19 +198,21 @@ Infrastruktur-Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FL
 
 ---
 
-## 4-Dimensionen-Validation-Gate (§29, seit 2026-04-19)
+## 4-Dimensionen-Validation-Gate (§29, seit 2026-04-19, erweitert 2026-04-20)
 
-B15-B18 bilden zusammen das **formelle Gate-Framework** für jede zukünftige retrospektive Analyse. Keine Scoring-Änderung — Gate-Infrastruktur oberhalb der Options A–D:
+B15-B20 bilden zusammen das **formelle Gate-Framework** für jede zukünftige retrospektive Analyse. Keine Scoring-Änderung — Gate-Infrastruktur oberhalb der Options A–D:
 
 | Dimension | Anker-Befund | Operative §-Komponente |
 |---|---|---|
-| Methode (Overfitting) | B15 Bailey | §29.1 PBO < 0,05 |
+| Methode (Overfitting, post-hoc) | B15 Bailey | §29.1 PBO < 0,05 via CSCV |
+| Methode (Overfitting, in-the-loop) | **B20 Sheppert** | **§29.1 erweitert um GT-Score-Composite (Tie-Break R0 für Optimization-Loops)** |
 | Raum (External Bench) | B16 Aghassi | §29.2 AQR/Ilmanen-Band-Check + §29.4 t-Stat-Hurdle |
 | Zeit (Temporal Decay) | B17 Flint/Vermaak | §29.3 Cadence-Konsistenz |
 | Sünden (Pre-Flight) | B18 Palomar | §29.5 Seven-Sins-Gate (Sin #7 n.a.) |
-| Portfolio-Metriken | — | §29.6 risk-metrics-calculation (Palomar Ch. 6 Formeln) |
+| **Sünden (Selection-Strategy-Audit)** | **B19 FINSABER** | **§29.5 erweitert um Bias-Audit (Reject-Set, Iteration-Count, Bull/Bear-Subsample) + ggf. §33 Skill-Self-Audit** |
+| Portfolio-Metriken | — + B20 Downside-Comp. | §29.6 risk-metrics-calculation (Palomar Ch. 6 Formeln + GT-Score Downside-Komponente) |
 
-Aktivierungs-Trigger: **Review 2028-04-01** oder erste DEFCON-Parameter-Variation. §29.5 Seven-Sins-Gate greift **bereits jetzt** bei Migration-Events.
+Aktivierungs-Trigger: **Review 2028-04-01** oder erste DEFCON-Parameter-Variation. §29.5 Seven-Sins-Gate greift **bereits jetzt** bei Migration-Events. **B19/B20-Mapping ist Phase-2-Konsequenz aus 2026-04-20-Ingest** — formelle INSTRUKTIONEN-Edits folgen nach Phase 2.5 Codex-Skill-Audit-Gate.
 
 **§30 Live-Monitoring (seit 2026-04-19, R1 Paper-Integration Phase 4):** Operative Konsequenz aus Flint-Vermaak 2021 Investment-Faktor-Half-Life ~1M. Monthly-Refresh-Pflicht für **aktive Investment-FLAGs** (Scope: MSFT CapEx/OCF 83.6%). Keine Scoring-Änderung — nur Monitoring-Cadence. TMO fcf_trend_neg bleibt Schema-Watch (nicht-aktiviert). Details: INSTRUKTIONEN §30.
 

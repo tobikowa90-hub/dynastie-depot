@@ -531,3 +531,38 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 **Scope-Änderungen System:** Keine Scores. Keine FLAGs. Keine Sparraten-Änderung. Reine Artefakt-Vorbereitung vor Execution. DEFCON v3.7 unverändert.
 
 **Next:** 2026-04-21 Execution-Start — Track 5a zuerst (kleiner, sauberer), dann 5b. Track 1 T1-Rerun bleibt parallel offen (siehe `SESSION-HANDOVER.md`).
+
+## [2026-04-20] ingest | Phase 1a — 6-Paper-Ingest Severity-🔴-Cluster: FINSABER + GT-Score
+- **Scope:** 2 von 6 neu hinzugefügten Papers (Severity-First-Order nach 2-Runden Codex-Triage-Review). FINSABER (Li/Kim/Cucuringu/Ma KDD '26, arxiv 2505.07078v5) + GT-Score (Sheppert JRFM 2026, arxiv 2602.00080v1). Phase 1b (4 Severity-🟡: FinReflectKG + Labre Companion + Bayesian RAG + FinDPO) folgt nächste Session.
+- **Pages created (10):**
+  - 2 Sources: [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]]
+  - 3 Concepts: [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]]
+  - 5 Author-Entities: [[Weixian Waylon Li]], [[Hyeonjun Kim]], [[Mihai Cucuringu]], [[Tiejun Ma]], [[Alexander Pearson Sheppert]]
+- **Pages updated (3):**
+  - [[Wissenschaftliche-Fundierung-DEFCON]] — B19+B20 in 18-Befunde-Matrix (jetzt 20), Quellen-Übersicht erweitert (14→16), 4-Dimensionen-Validation-Gate erweitert um GT-Score-In-the-Loop und FINSABER-Selection-Strategy-Audit, Änderungsprotokoll Eintrag 2026-04-20
+  - [[Backtest-Methodik-Roadmap]] — v2.0 → v2.1, neue Sektion "v2.1-Erweiterung" mit FINSABER+GT-Score-Validation-Dimensionen + Track-5b-Spezifischer-Anwendungs-Pfad-Tabelle
+  - [[index.md]] — 10 neue Wiki-Pages indiziert + Header-Counter aktualisiert (97→107 Notes)
+- **Kernaussagen aus 2 Papers konsolidiert:**
+  - **B19 FINSABER (KDD '26):** LLM-Investing-Vorteile aus Vorpapern (FinMem/FinAgent/FinRobot/TradExpert/FinCon/TradingAgents/MarketSenseAI 2.0) verschwinden unter 20-J/100+-Symbol-Eval mit expliziter Bias-Mitigation (Survivorship/Look-Ahead/Data-Snooping). Bull/Bear-Asymmetrie systematisch dokumentiert: zu konservativ in Bull (underperform passive), zu aggressiv in Bear (heavy losses). Empfehlung: Trend-Detection + regime-aware Risk-Controls > Framework-Komplexität.
+  - **B20 GT-Score (JRFM 2026):** Composite Anti-Overfitting Objective (Performance × Significance × Consistency × Downside-Risk) integriert Anti-Overfitting in den Optimization-Loop, statt nur post-hoc via Deflated Sharpe. Walk-Forward (9 Splits) + Monte-Carlo (15 Seeds) auf 50 S&P-500 / 2010-2024. +98% Generalization-Ratio vs Sortino/Simple. p<0,01 — Effect-Size klein. Komplementär zu Bailey PBO/CSCV.
+- **Architektur-Entscheidungen (Codex Round 2 bestätigt):**
+  - DEFCON ist regelbasiert, NICHT LLM-Inferenz — aber als Selection-Strategy-Output trotzdem bias-anfällig → FINSABER-Pattern ist als Audit-Methodik anwendbar (kein LLM-Sicherheitsproblem-Framing)
+  - GT-Score primär **Audit-Methodik**, kein zwingender Skill-Code-Change in DEFCON oder backtest-ready-forward-verify (außer optional als Acceptance-Layer)
+  - **Kein neuer Skill** — Erweiterungen als Add-Ons in bestehende Skills oder als externe Audit-Artefakte
+  - FinReflectKG aus initial vermutetem 🔴-Cluster auf 🟡 revidiert (Form-4 ist XML, KG-Mehrwert nur für Cross-Entity-Relations)
+- **Mappingvorschläge für Phase 2 (System-Konsequenzen, noch nicht ediert):**
+  - §29.1 erweitert um GT-Score (komplementär zu Bailey PBO)
+  - §29.2 erweitert um Bull/Bear-Subsample-SR-Trennung (FINSABER)
+  - §29.5 erweitert um FINSABER-Bias-Audit-Fragen (Reject-Set/Iteration-Count/Hold-Out-Definition)
+  - §29.6 erweitert um GT-Score-Downside-Risk-Komponente
+  - **Neu möglich:** §33 Skill-Self-Audit (DEFCON als Selection-Strategy formell dokumentieren) — Codex-Gate Phase 2.5 entscheidet
+- **Plan-Diff-Vorschläge für Phase 3 (noch nicht ediert):**
+  - Track 5a EDGAR: NICHT rewriten (Codex-bestätigt) — extension seams für ggf. Track 5c
+  - Track 5b FRED: GT-Score-Aggregat als Tie-Break R0 vor R1-R5; FINSABER-Anker im Plan-Header
+  - Briefing v3.1: FinDPO erst nach Phase 1b ingest, hinter FINSABER-Validation-Gate
+- **Codex-Review-Gates (2 in Phase 0, je 1 vor Phase 1a-Start und Phase 1b-Start geplant):**
+  - Round 1 (Triage + Severity): 1/4/5 = 🔴 bestätigt; 2/3/6 = 🟡; FinReflectKG-Track-5a-Rewrite ablehnt (extension seams + ggf. Track 5c iff ≥3 Use-Cases); kein neuer Skill; 2-Sessions-Split; 7 Lücken im initialen Phasen-Plan identifiziert
+  - Round 2 (Skill×Paper-Cross-Check): 10 überschätzte Zellen korrigiert + 1 übersehene ergänzt + Framing "DEFCON ist LLM-Strategie" bereinigt zu "regelbasiertes Composite mit Audit-Pflicht"; Phase 2.5 Codex-Skill-Audit-Gate als Anti-Creep-Mechanismus eingeführt; Showstopper-Risk dokumentiert ("Vermischung Audit-Layer ↔ Produktions-Skill-Logik")
+- **Archive-Stand:** unverändert 27 Records. Scores/Sparraten unverändert. Kein FLAG-Event. Keine Skill-Code-Änderungen.
+- **Dokument-Status:** Phase 1a Vault-only (per Hard-Checkpoint Vault-first → System). Phase 2-6 in nächsten Sessions.
+- **Auto-Lint pending:** Orphans + broken Links Phase 1a-Pages prüfen vor Phase 1b.

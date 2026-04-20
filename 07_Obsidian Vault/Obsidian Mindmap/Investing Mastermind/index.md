@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-19 (4-Paper Backtest-Validation-Ingest — 97 Notes: 91 wiki + 6 raw)
+> Last updated: 2026-04-20 (Phase 1a of 6-Paper Ingest — FINSABER + GT-Score: +2 sources, +3 concepts, +5 entities = 107 Notes: 101 wiki + 6 raw-ingested; 4 raw pending Phase 1b)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -28,6 +28,8 @@
 - [[Aghassi-2023-Fact-Fiction]] — J. Portfolio Management (AQR): 4 Kanon-Faktoren, t-Stat≥3-Hurdle, externer Benchmark (B16) ← NEU 2026-04-19
 - [[Flint-Vermaak-2021-Decay]] — SSRN 3986499: Faktor-Half-Life, optimale Rebalance-Cadence (B17) ← NEU 2026-04-19
 - [[Palomar-2025-Portfolio-Optimization]] — Cambridge UP: Seven Sins + Methoden-Werkzeugkasten (B18) ← NEU 2026-04-19
+- [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — KDD '26: LLM-Investing-Vorteile verschwinden unter realistischer Eval; Bull/Bear-Asymmetrie (B19) ← NEU 2026-04-20
+- [[Sheppert-2026-GT-Score]] — JRFM 2026: Composite Anti-Overfitting Objective (in-the-loop, komplementär zu PBO) (B20) ← NEU 2026-04-20
 
 ### Datenquellen-APIs
 - [[defeatbeta]] — US-Fundamentals (Primär): Income, Cash Flow, ROIC, WACC, Geographic Revenue
@@ -56,6 +58,11 @@
 - [[Fabian Echterling]] — Co-Autor "Stock picking with machine learning" (Wiley)
 - [[Aakanksha Jadhav]] — Co-Autorin "Large Language Models in equity markets" (PMC Survey, 84 Studien)
 - [[Vishal Mirza]] — Co-Autor "Large Language Models in equity markets" (PMC Survey, 84 Studien)
+- [[Weixian Waylon Li]] — Erstautor FINSABER (Edinburgh AIAI) ← NEU 2026-04-20
+- [[Hyeonjun Kim]] — Co-Autor FINSABER (Sungkyunkwan) ← NEU 2026-04-20
+- [[Mihai Cucuringu]] — Co-Autor FINSABER (UCLA Math/Stats + Oxford OMI) ← NEU 2026-04-20
+- [[Tiejun Ma]] — Co-Autor FINSABER (Edinburgh AIAI, vermutlich Supervisor) ← NEU 2026-04-20
+- [[Alexander Pearson Sheppert]] — Alleinautor GT-Score (Capitol Tech U) ← NEU 2026-04-20
 
 ### Satelliten (aktive Positionen)
 - [[AVGO]] — Broadcom Inc. | DEFCON 🟢 4 | Score 84 | Kalibrierungsanker #1 (v3.7)
@@ -121,6 +128,9 @@
 - [[Factor-Information-Decay]] — Flint/Vermaak Half-Life pro Faktor; §29.3 Cadence-Check (B17) ← NEU 2026-04-19
 - [[Seven-Sins-Backtesting]] — Palomar Sünden-Katalog; §29.5 Pre-Flight-Gate (Sin #7 n.a. Long-Only) (B18) ← NEU 2026-04-19
 - [[Palomar-Methods-Reference]] — Palomar Ch 6 + 8.3-8.5 + 7.5 + 11 konsolidierte Methoden-Referenz ← NEU 2026-04-19
+- [[LLM-Investing-Bias-Audit]] — FINSABER-Pattern (Survivorship/Look-Ahead/Data-Snooping) für DEFCON-Self-Audit (B19) ← NEU 2026-04-20
+- [[Regime-Aware-LLM-Failure-Modes]] — FINSABER Bull/Bear-Asymmetrie; Anker für Track 5b FRED Regime-Filter (B19) ← NEU 2026-04-20
+- [[Composite-Anti-Overfitting-Objective]] — GT-Score-Pattern (in-the-loop); Tie-Break R0 für Track 5b Grid-Search (B20) ← NEU 2026-04-20
 
 ### Token-Effizienz & System
 - [[Token-Mechanik]] — Strukturiertes Token-Management; Snapshot-First, MCP-Minimalset

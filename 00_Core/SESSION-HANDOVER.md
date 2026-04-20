@@ -1,6 +1,31 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 (Mittags-Session, Pause-Cut) | **Für:** Nächste Session — **Prod-Deploy v3.0.3 + Gate-A-Start** (primär); dann Track 5a/5b Execution; Track 4 (ETF/Gold) ausstehend
+**Aktualisiert:** 2026-04-20 (Abend-Session-Cut nach Phase 1a Paper-Ingest) | **Für:** Nächste Session — **Gate 2 Codex-Review Phase 1a + Phase 1b** (primär, neu seit Mittag); **Prod-Deploy v3.0.3 + Gate-A-Start** läuft parallel; Track 5a/5b Execution PAUSIERT bis Paper-Ingest komplett (Phase 6); Track 4 (ETF/Gold) weiter ausstehend
+
+---
+
+## 🆕 NEUER HAUPT-TRACK: 6-Paper-Ingest (Phase 1a DONE 2026-04-20 Abend)
+
+**Scope-Entscheidung Mittag→Abend:** User hat 6 neue Finance/AI-Papers in `07_Obsidian Vault/.../raw/` hinzugefügt (3 PDFs + 3 .md). Nach 2 Codex-Review-Runden (Triage + Skill-Cross-Check) wurde entschieden: Track 5a/5b/Briefing-v3.1 **pausieren**, Paper-Ingest mit Palomar-Standard durchführen. v3.0.3 Prod-Deploy läuft **parallel** (nicht blockiert).
+
+**Phase 1a abgeschlossen (Severity-🔴-Cluster):**
+- 2 Sources: [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] (KDD '26, B19), [[Sheppert-2026-GT-Score]] (JRFM 2026, B20)
+- 3 Concepts: [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]]
+- 5 Author-Entities: Waylon Li, Hyeonjun Kim, Mihai Cucuringu, Tiejun Ma, Alexander Pearson Sheppert
+- Updates: `Wissenschaftliche-Fundierung-DEFCON` (B19+B20), `Backtest-Methodik-Roadmap` v2.0→v2.1, `index.md`, `log.md`
+
+**Nächste Session — Reihenfolge:**
+1. **Gate 2 Codex-Review Phase 1a Output** — Codex prüft 2 Sources + 3 Concepts + Synthesis-Updates auf Akkuratesse, Cross-Link-Vollständigkeit, B19/B20-Mapping-Korrektheit
+2. **Phase 1b Vault-Ingest 🟡-Cluster:** FinReflectKG (#1) + Labre Companion (#2) + Bayesian RAG (#3) + FinDPO (#6) — 4 Sources + ~4-6 Concepts + neue [[Knowledge-Graph-Architektur-Roadmap]] v0.1 + Entscheidungsvorlage "KG-Mehrwert vs XML-Direkt-Parsing" für insider-intelligence
+3. **Hard-Checkpoint:** Vault → System nicht überspringen
+4. **Phase 2:** System-Konsequenzen — §29-Sub-Klausel-Mapping erweitern (29.1+29.2+29.5+29.6) + ggf. neue §33 Skill-Self-Audit + Plan-Diffs (Track 5a/5b/v3.1)
+5. **Phase 2.5 Codex-Skill-Audit-Gate** (kritisch — Anti-Creep-Mechanismus): trennt Audit-Methodik von Skill-Code-Change
+
+**Showstopper-Risk** (Codex Round 2): Vermischung Audit-Layer ↔ Produktions-Skill-Logik. Phase 2.5-Gate adressiert das explizit.
+
+**Konsens-Plan-Doc:** komplette Triage + Skill×Paper-Matrix + Phasen-Plan ist im aktuellen Conversation-Context (verloren bei /clear). Empfehlung: **Vor /clear den finalen Plan zusammenfassen** — z.B. als `docs/superpowers/plans/2026-04-20-paper-ingest-phases.md` oder in CORE-MEMORY §1.
+
+---
 
 ---
 
