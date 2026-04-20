@@ -2,7 +2,8 @@
 title: "Update-Klassen DEFCON (A/B/C/D)"
 type: concept
 tags: [defcon, update, prozess, token-effizienz, workflow]
-related: "[[DEFCON-System]], [[CapEx-FLAG]], [[Context-Hygiene]], [[Analyse-Pipeline]], [[Token-Mechanik]]"
+updated: 2026-04-20
+related: "[[DEFCON-System]], [[CapEx-FLAG]], [[Context-Hygiene]], [[Analyse-Pipeline]], [[Token-Mechanik]], [[Wissenschaftliche-Fundierung-DEFCON]], [[Regime-Aware-LLM-Failure-Modes]]"
 defcon_block: "Update-Prozess"
 operative_regel: "Klasse C (Event-getriggert) hat Vorrang — Insider >$20M oder Moat-Downgrade löst Sofortupdate aus, Score-Alter irrelevant."
 ---
@@ -57,3 +58,12 @@ Update-Klassen-Cadence wird durch Flint-Vermaak 2021 Half-Life-Tabelle gestützt
 | Insider | — | Real-time | OpenInsider | ✅ aligned |
 
 → [[Flint-Vermaak-2021-Decay]], [[Factor-Information-Decay]], INSTRUKTIONEN §30
+
+## Klasse-C-Erweiterungs-Potenzial (Meta-Gate, aktuell nicht aktiv)
+
+Zwei Befunde aus der 6-Paper-Ingest (20.04.2026) stehen als **konditionale Klasse-C-Erweiterungen** in der Status-Matrix, aktivieren aber keine neuen Trigger solange DEFCON v3.7 unverändert bleibt:
+
+- **B17 (Flint-Vermaak 2021) — CapEx-Half-Life ~1M:** motiviert den §30-Monthly-Refresh (schon oben verzeichnet). Bei künftiger Aktivierung eines zweiten Investment-Faktors (z.B. R&D-Intensity-FLAG) würde der §30-Rhythmus auf Klasse C gehoben, nicht auf D.
+- **B19 (Li-Kim-Cucuringu-Ma 2026 — Regime-Aware-LLM-Failure-Modes):** potenzieller Klasse-C-Trigger "Regime-Shift-Audit" bei abrupten Makro-Regime-Wechseln (Rate-Cut-Zyklus, Recession-Call, Tariff-Schock). Operationalisierung abhängig von Track 5b (FRED Macro-Regime-Filter) — vor Aktivierung bleibt B19 Meta-Gate-Status `active-audit` in der Status-Matrix.
+
+**Status-Matrix (kanonische SSoT):** [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]]

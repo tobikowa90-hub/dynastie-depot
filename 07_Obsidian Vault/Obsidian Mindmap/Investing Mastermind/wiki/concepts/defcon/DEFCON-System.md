@@ -3,13 +3,13 @@ title: "DEFCON-System"
 type: concept
 tags: [konzept, defcon, scoring, kern]
 created: 2026-04-08
-updated: 2026-04-19
+updated: 2026-04-20
 version: v3.7
-stand: 2026-04-19
+stand: 2026-04-20
 sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha, llms-for-equity-stock-ratings, Wolff-Echterling-2023, Jadhav-Mirza-2025, Piotroski-F-Score, Novy-Marx-Gross-Profitability, Sloan-Accruals]
-wissenschaftlicher_anker: "B1–B14 (alle 10 Paper) — vollständige wissenschaftliche Fundierung in [[Wissenschaftliche-Fundierung-DEFCON]]"
+wissenschaftlicher_anker: "B1–B24 (20 Quellen / 24 Befunde) — kanonische Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]]"
 konfidenzstufe: peer-reviewed
-related: [CapEx-FLAG, ROIC-vs-WACC, Analyse-Pipeline, Tariff-Exposure-Regel, Non-US-Scoring, Update-Klassen-DEFCON, Backtest-Ready-Infrastructure, Score-Archiv, FLAG-Event-Log]
+related: [CapEx-FLAG, ROIC-vs-WACC, Analyse-Pipeline, Tariff-Exposure-Regel, Non-US-Scoring, Update-Klassen-DEFCON, Backtest-Ready-Infrastructure, Score-Archiv, FLAG-Event-Log, Knowledge-Graph-Architektur-Roadmap, Wissenschaftliche-Fundierung-DEFCON]
 ---
 
 # DEFCON-System — 100-Punkte-Scoring-Matrix (v3.7)
@@ -98,13 +98,20 @@ Das DEFCON-System hält seinen Zustand in vier getrennten Layern (siehe KONTEXT.
 
 Jede Score/FLAG-Änderung triggert §18 Sync-Pflicht auf **alle sechs Dateien** im gleichen git-Commit. Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FLAG-Event-Log]].
 
-## Wissenschaftliche Fundierung (nachträglich 19.04.2026)
+## Wissenschaftliche Fundierung (nachträglich 19.04.2026, erweitert 20.04.2026)
 
-Der DEFCON-Score wird durch 4-Paper-Framework (18./19.04.2026) methodisch validiert:
+Der DEFCON-Score wird durch ein erweitertes Paper-Framework methodisch validiert. **Kanonische Single-Source-of-Truth ist die Status-Matrix** in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]] (24 Befunde aus 20 Quellen, Stand 20.04.2026 Nacht nach 6-Paper-Ingest-Closure).
 
-- **Aghassi 2023** — Factor-Mapping (Value/Quality/Momentum/Defensive/Investment) validiert 5-Block-Scoring-Struktur, siehe [[Factor-Investing-Framework]]
-- **Bailey 2015** — PBO-Gate für spätere Strategy-Selection/Parameter-Tuning (Review 2028), siehe [[PBO-Backtest-Overfitting]]
-- **Flint-Vermaak 2021** — Half-Life-Konsistenz der Earnings-Trigger-Cadence (3M) mit Value/Quality/Momentum-Half-Lives (3-5M), siehe [[Factor-Information-Decay]]
-- **Palomar 2025** — Seven Sins of Backtesting als Pre-Flight für Migration-Events (§28/§29.5), siehe [[Seven-Sins-Backtesting]]
+**Kern-Framework (B1-B18, active-scoring / active-audit):**
+- **Aghassi 2023** (B12) — Factor-Mapping (Value/Quality/Momentum/Defensive/Investment) validiert 5-Block-Scoring-Struktur, siehe [[Factor-Investing-Framework]]
+- **Bailey 2015** (B15) — PBO-Gate für spätere Strategy-Selection/Parameter-Tuning (Review 2028), siehe [[PBO-Backtest-Overfitting]]
+- **Flint-Vermaak 2021** (B17) — Half-Life-Konsistenz der Earnings-Trigger-Cadence (3M) mit Value/Quality/Momentum-Half-Lives (3-5M), siehe [[Factor-Information-Decay]]
+- **Palomar 2025** (B18) — Seven Sins of Backtesting als Pre-Flight für Migration-Events (§28/§29.5), siehe [[Seven-Sins-Backtesting]]
 
-→ Operatives Retrospective-Gate: INSTRUKTIONEN.md §29 (6 Sub-Gates, §29.4+§29.5 sofort aktiv)
+**Ingest-Erweiterung 20.04.2026 (B19-B24, Meta-Gate-Status):**
+- **B19 Li-Kim-Cucuringu-Ma 2026 (🔴) + B20 Sheppert 2026 (🔴)** — Regime-Aware-LLM-Failure-Modes + GT-Score-Anti-Overfitting-Objective. Meta-Gate für §29 Retrospective + §33 Skill-Self-Audit, nicht in aktiver Scoring-Pipeline.
+- **B21-B24 (🟡)** — FinReflectKG / Bayesian-RAG / FinDPO. `future-arch` in [[Knowledge-Graph-Architektur-Roadmap]] (v0.1 `draft-frozen`), keine aktuelle Scoring-Konsequenz.
+
+**DEFCON v3.7 unverändert** nach gesamtem 6-Paper-Ingest. §28.3 Nicht-Migration-Trigger bestätigt.
+
+→ Operative Gates: INSTRUKTIONEN.md §29 (6 Sub-Gates, §29.4+§29.5 sofort aktiv), §33 (Skill-Self-Audit), §4 !Analysiere-Router.

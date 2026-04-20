@@ -2,13 +2,24 @@
 tags: [synthese, depot-state, monatlich]
 stand: 2026-04-10
 version: April-2026
+updated: 2026-04-20
 ---
 
 # Depot-State — April 2026
 
-> ⚠️ **Historischer Snapshot-Zeitstand: 10.04.2026 (pre-v3.7).** Live-Stand (Nenner 8.5, Rate 33,53€/16,76€, TMO D2, ASML 68) → `00_Core/STATE.md`. Dieser Snapshot bleibt als April-Monatsarchiv erhalten.
+> ⚠️ **Historischer Snapshot-Zeitstand: 10.04.2026 (pre-v3.7).** Live-Stand (Nenner **8.0**, Rate **35,63€/17,81€/0€**, 11 Satelliten, DEFCON v3.7, 6-Paper-Ingest SSoT aktiv) → `00_Core/STATE.md`. Dieser Snapshot bleibt als April-Monatsarchiv erhalten.
 > Monatlicher Snapshot. Nach jeder !Analysiere-Session aktualisieren.
 > Nächste Vollaktualisierung: Mai 2026 (nach TMO + MSFT Earnings)
+
+## Post-Snapshot-Events (11.-20.04.2026)
+
+Chronologischer Abriss der zwischen 10.04. und Monats-Cutoff erfolgten System-Events — keine Änderung am 10.04.-Snapshot, nur Drift-Dokumentation:
+
+- **17.04.2026** — DEFCON v3.7 System-Gap-Release: 4 strukturelle Fixes (Quality-Trap-Interaktionsterm, OpM-TTM, Analyst-Bias-Kalibrierung, Fundamentals-Cap 50). Siehe [[DEFCON-System]].
+- **18.04.2026** — V-Forward-Vollanalyse 86→63 (D2), Schema-Threshold-Drift-Fix auf SKILL.md aligned: **Nenner 9.0→8.0, Rate 31,67€/15,83€ → 35,63€/17,81€**. TMO D2 (64, fcf_trend_neg nicht aktiviert). Ersatzbank-Scope auf 5 Titel (MKL/SNPS/SPGI/RACE/ZTS).
+- **19.04.2026** — Backtest-Ready Skill-Orchestrator v3.7.2 (programmatische Forward-Verify-Pipeline), R5 Portfolio-Return-Persistenz aktiv (`portfolio_returns.jsonl`), §30 Live-Monitoring pflicht für MSFT CapEx-FLAG (Flint-Vermaak B17 Half-Life ~1M).
+- **20.04.2026 Mittag/Abend/Nacht** — v3.0.3 Probe-Trigger T1/T3/T4 PASS (262s OBSERVE-Band); 6-Paper-Ingest Phase 1a+1b (Befunde B19-B24) + Phase 2 Hybrid A+B+C formal abgeschlossen (Commits `89275e2`+`5f6dc62`). **Status-Matrix** in [[Wissenschaftliche-Fundierung-DEFCON]] = kanonische SSoT. [[Knowledge-Graph-Architektur-Roadmap]] v0.1 `draft-frozen` (Codex Option D). DEFCON v3.7 unverändert — ZERO Scoring-Impact des gesamten Ingest-Projekts.
+- **20.04.2026 Nacht-Spät** — Morning-Briefing Prod-Trigger v2.1→**v3.0.3 deployed** (`trig_01PyAVAxFpjbPkvXq7UrS2uG`), Gate-A-Start 21.04. 10:00 MESZ (3-Tage-Korrektheits-Check, kein Auto-Rollback aus Runtime).
 
 ## Allokation
 
