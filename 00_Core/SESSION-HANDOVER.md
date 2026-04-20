@@ -1,6 +1,57 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 Nacht-Spät (Session-Cut nach **6-Paper-Ingest-Projekt FORMAL ABGESCHLOSSEN** + **KG-Roadmap-Post-Gate Option D umgesetzt** — Synthesis bleibt `draft-frozen` statt v1.0; Track 5a/5b/Prod-Deploy nicht blockiert; Smoke-Test AVGO PASS) | **Für:** Nächste Session — **Prod-Deploy v3.0.3 Morning-Briefing + Gate-A-Start** (Primär-Track, CLEAR FREIGEGEBEN), **Track 5a/5b Execution** (nach Gate-A-PASS ~24.04.), Track 4 (ETF/Gold) weiter ausstehend
+**Aktualisiert:** 2026-04-20 **Nacht-Spät POST-INCIDENT** (v3.0.3 Prod-Deploy SHORT-LIVED: 14:36 UTC deployed → Manual-Run FAIL mit Halluzination → **Rollback v2.1 15:13 UTC**. Prod-Cron läuft stable seit 14.04.; Gate A ausgesetzt; v3.0.4-Hotfix-Plan in `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` geschrieben) | **Für:** Nächste Session — **v3.0.4-Hotfix-Execution** (Primär-Track, ~90 Min fokussierte Session), danach Gate-A-Re-Start, danach Track 5a/5b, Track 4 weiter ausstehend
+
+## 🔴 POST-INCIDENT: v3.0.3 Rollback auf v2.1 (2026-04-20 15:13 UTC)
+
+**Commits:** `4cfa421` (incident+rollback), `b466f2e` (Applied-Learning 11/20)
+
+**Was passierte:** Manual-Run auf Prod (20.04. nachmittags) ~720s Runtime, Output meldete für 7 US-Ticker massive Intraday-Deltas (AVGO -21,8%, APH -16,1%, MSFT -9,7%, TMO -9,9%). Broker-Verify durch User: AVGO real -2,26%. **Phantom-Kurse — Halluzination.**
+
+**Root Cause:** Shibui-EOD-Query gab 17.04. als `latest_date` (korrekt: Karfreitag + Osterwochenende + Montag-before-EOD). Agent interpretierte das als "stale data" und improvisierte unautorisierten Yahoo-Intraday-Fallback-Pfad via Tavily. Spec §3 hatte keinen expliziten Guard gegen alternative Datenpfade.
+
+**Was korrekt funktionierte:** Yahoo-n.v.-deterministic für BRK-B/RMS/SU (§3c), Material-Filter Slot-Struktur, 8/8 Sektionen, FLAGS/WATCHES/Trigger-Alignment. **T1/T3/T4-Happy-Path-Tests hatten diesen Edge-Case nie getriggert** (immer fresh Shibui-EOD).
+
+**Rollback-Execution:** RemoteTrigger.update mit v2.1-Content aus `03_Tools/morning-briefing-prompt-v2.md`, allowed_tools zurück auf `[Bash,Read,Glob,Grep]` (Tavily raus, MCP-Connector bleibt attached aber ungenutzt). Prod läuft wieder v2.1 stable.
+
+**v3.0.4-Hotfix-Plan:** `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, T5 Adversarial-Stale-Shibui-Test neu, ~90 Min geschätzt).
+
+## 🚀 NÄCHSTE SESSION — PRIMÄR-TRACK: v3.0.4 HOTFIX
+
+### Schritt-für-Schritt
+
+1. **Session starten** → STATE.md lesen → hierher wechseln
+2. **Hotfix-Plan lesen:** `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md`
+3. **Spec-Update** (Task 1): Revision-Log v3.0.4 + §3a `AUTORITATIVE-DATA-QUELLE-REGEL` + `VERBOTENE-FALLBACK-PFADE` + Critical Guards erweitert
+4. **Prompt-Update** (Task 2): `03_Tools/morning-briefing-prompt-v3.md` §3a-Wording + erweiterte Guards
+5. **Probe-Trigger Update + Verify** (Task 3-4): `RemoteTrigger update` mit v3.0.4-Content, assert Keywords
+6. **T5 Test schreiben + Run** (Task 5-6): Adversarial-Stale-Shibui, assert keine Fallback-Improvisation
+7. **T1/T3/T4 Retest** (Task 7-9): auf v3.0.4, kein Regression
+8. **Gate-A-Re-Start-Kriterien prüfen** (Task 10): alle 4 Tests PASS
+9. **Prod-Deploy v3.0.4** (Task 11): `RemoteTrigger update` mit v3.0.4-Content
+10. **Manual-Run auf Prod als finale Verifikation** (Task 12) — dieses Mal MUSS korrekt sein
+11. **Gate A Tag 1 starten** (Task 13): naechster Werktag 10:00 MESZ Cron
+12. **Bei v3.0.4 FAIL:** Rollback-Pfad auf v2.1 bleibt aktiv, keine Production-Regression
+
+### Gate A Definition (unverändert)
+"Stabil" = funktionale Korrektheit (8/8 Sektionen, Yahoo-n.v.-deterministisch, Material-Filter, Slot-Struktur, KEINE Phantom-Kurse). **NICHT Laufzeit.** Laufzeit-Regressionen >400s triggern manuellen Review, nicht Rollback.
+
+---
+
+## 🧠 KEY LESSONS LEARNED (für v3.0.4-Arbeit)
+
+1. **Anti-Hallucination-Guards müssen zweigleisig sein** (Applied Learning 11/20):
+   - (a) "KEINE Gründe erfinden" — gegen fabrizierte Narrativen
+   - (b) "KEINE unautorisierten Datenquellen" — gegen improvisierte Datenpfade
+2. **Edge-Case-Definitionen explizit:** "stale" vs "Wochenend-Lag" vs "Feiertags-Lag" dürfen nicht Agent-Interpretation überlassen werden.
+3. **Autoritative Datenquellen als Sprach-Anker:** "Shibui-latest_date ist per Definition autoritativ" schließt Improvisationen aus.
+4. **Probe-Tests müssen Adversarial-Scenarios abdecken:** T1 Happy + T3 Homonym + T4 Fail-Open ist nicht ausreichend. T5 Stale-Source wird nach diesem Incident permanent Teil des Test-Gates.
+
+---
+
+## ~~ALTE HANDOVER-SECTION~~ (historisch, pre-Incident Kontext)
+
+> Die folgenden Sections (KG-Roadmap Option D, 6-Paper-Ingest-Closure, Gate-A-Definition, alte Deploy-Schritte etc.) bleiben für Kontext erhalten, sind aber **nicht mehr aktive Handlungsanweisung**. Der Primär-Track hat sich verschoben auf v3.0.4-Hotfix.
 
 ## ✅ POST-GATE: KG-Roadmap v0.1 als `draft-frozen` markiert (2026-04-20 Nacht-Spät)
 

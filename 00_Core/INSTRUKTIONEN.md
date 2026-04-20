@@ -136,12 +136,12 @@ Impuls / Idee
 
 **Formel:** `Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht`
 
-**Rechenbeispiel (aktueller Stand 17.04.2026: 8× D4/D3 + 1× D2 aktiv, 2× 🔴 eingefroren):**
-- Nenner = (8 × 1.0) + (1 × 0.5) = **8.5**
-- D4/D3-Einzelrate = 285€ / 8.5 × 1.0 = **33,53€**
-- D2-Einzelrate (TMO) = 285€ / 8.5 × 0.5 = **16,76€**
+**Rechenbeispiel (aktueller Stand 18.04.2026: 7× D4/D3 + 2× D2 aktiv (V+TMO), 2× 🔴 eingefroren (MSFT+APH)):**
+- Nenner = (7 × 1.0) + (2 × 0.5) = **8.0**
+- D4/D3-Einzelrate = 285€ / 8.0 × 1.0 = **35,63€**
+- D2-Einzelrate (V, TMO) = 285€ / 8.0 × 0.5 = **17,81€**
 - 🔴/D1-Rate (MSFT, APH) = **0€**
-- Summencheck: 8 × 33,53€ + 16,76€ + 0 + 0 = 285€ ✓
+- Summencheck: 7 × 35,63€ + 2 × 17,81€ + 0 + 0 = 249,41 + 35,62 = 285,03€ (≈285€, 3 ct Rundung) ✓
 
 4. **Steuer-Bremse**: Niemals durch Verkauf rebalancen → Sparplan umleiten
 5. US-Cap prüfen: Bleibt US-Exposure unter 63%?
@@ -322,27 +322,29 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 
 ---
 
-## 22. Sparplan-Formel (aktuell 17.04.2026, v3.7)
+## 22. Sparplan-Formel (aktuell 18.04.2026, v3.7)
 
 **Formel:** `Einzelrate = 285€ / Σ Gewichte × Eigengewicht`
 **Gewichte:** D4/D3 (kein 🔴)=1,0 | D2 (kein 🔴)=0,5 | D1/🔴 FLAG=0,0
 
 | Position | Score | DEFCON | Gewicht | Rate |
 |----------|-------|--------|---------|------|
-| AVGO | 84 | 🟢 4 | 1,0 | 33,53€ |
-| ASML | 68 | 🟡 3 | 1,0 | 33,53€ |
+| AVGO | 84 | 🟢 4 | 1,0 | 35,63€ |
+| ASML | 68 | 🟡 3 | 1,0 | 35,63€ |
 | MSFT | 59 | 🟠 2 | 0,0 | 0€ (🔴 FLAG) |
-| RMS | 68 | 🟢 4 | 1,0 | 33,53€ |
-| VEEV | 74 | 🟢 4 | 1,0 | 33,53€ |
-| SU | 69 | 🟢 4 | 1,0 | 33,53€ |
-| BRK.B | 75 | 🟢 4 | 1,0 | 33,53€ |
-| V | 86 | 🟢 4 | 1,0 | 33,53€ |
-| TMO | 63 | 🟠 2 | 0,5 | 16,76€ |
-| APH | 63 | 🟡 3 | 0,0 | 0€ (🔴 FLAG) |
-| COST | 69 | 🟢 4 | 1,0 | 33,53€ |
+| RMS | 68 | 🟡 3 | 1,0 | 35,63€ |
+| VEEV | 74 | 🟡 3 | 1,0 | 35,63€ |
+| SU | 69 | 🟡 3 | 1,0 | 35,63€ |
+| BRK.B | 75 | 🟡 3 | 1,0 | 35,63€ |
+| V | 63 | 🟠 2 | 0,5 | 17,81€ |
+| TMO | 64 | 🟠 2 | 0,5 | 17,81€ |
+| APH | 63 | 🟠 2 | 0,0 | 0€ (🔴 FLAG score-basiert) |
+| COST | 69 | 🟡 3 | 1,0 | 35,63€ |
 
-**Summe:** 8×1,0 + 1×0,5 = 8,5 | **Volle Rate:** 33,53€ | **D2-Rate (TMO):** 16,76€ | **Eingefroren (MSFT, APH):** 0€
-**Check:** 8×33,53 + 1×16,76 = 268,24 + 16,76 = 285,00€ ✓
+**Summe:** 7×1,0 + 2×0,5 = 8,0 | **Volle Rate:** 35,63€ | **D2-Rate (V, TMO):** 17,81€ | **Eingefroren (MSFT, APH):** 0€
+**Check:** 7×35,63 + 2×17,81 = 249,41 + 35,62 = 285,03€ (≈285€, 3 ct Rundung) ✓
+
+> **Hinweis Schema-Threshold-Drift 18.04.:** 5 Tickers (BRK.B/VEEV/SU/COST/RMS) wurden beim Aligning der Schema-SKILL-Thresholds von D4→D3 korrigiert. Label-Fix, Sparrate unverändert (D4 + D3 teilen Gewicht 1,0).
 
 ---
 
