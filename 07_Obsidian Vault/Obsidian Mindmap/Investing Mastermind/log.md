@@ -633,3 +633,26 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Scoring-Impact Gesamt:** ZERO. DEFCON v3.7 unverändert. Scores/Sparraten/FLAGs aller 11 Satelliten unverändert. Skill bleibt v3.7.2. §28.3 Nicht-Migration-Trigger bestätigt über gesamtes Projekt.
 - **Next:** Prod-Deploy v3.0.3 Morning-Briefing (Primär-Track aus SESSION-HANDOVER), danach Track 5a + Track 5b nach Gate-A-PASS.
 - **Archive-Stand:** unverändert 27 Records. Kein FLAG-Event.
+
+## [2026-04-20] post-gate-d | KG-Roadmap v0.1 als `draft-frozen` markiert (Codex-Verdikt Option D)
+- **Auslöser:** User-Frage "Macht Punkt 3 (KG-Roadmap-Ratifikation) zuvor mehr Sinn als Track 5a/5b Re-Validation?" — bejaht (Roadmap ist upstream).
+- **Entscheidungs-Optionen:**
+  - **A** v0.1→v1.0 Ratifikation, Szenarien 1-3 als bestätigt
+  - **B** Q1-Q3 (Dataset-Größe / Lizenz-Legal / Score-Archiv-Integration) klären
+  - **C** beides
+  - **D** (neu via Codex): `draft-frozen` belassen, Inhalte faktisch geltend, Re-Review-Trigger explizit
+- **Codex-Review-Verdikt (Opus 4.7 + Codex Combined):** Empfehlung **Option D**. Begründung: Szenario 2 (10-K-KG) ist genuine `future-arch` ohne Usage-Evidence; v1.0 würde Konsens-Lock-in suggerieren. Q1-Q3 heute spekulativ beantwortbar, nicht release-blockierend, aber Q3 (Score-Archiv-Integration) braucht Design-Klarheit **vor** operativer KG-Adoption (Point-in-Time-Append-only-Natur von `score_history.jsonl`).
+- **Pages updated (1 in Vault):**
+  - [[Knowledge-Graph-Architektur-Roadmap]] — Frontmatter erweitert (`status: draft-frozen` + `re_review_trigger`); Status-Banner direkt nach Frontmatter; Offene-Fragen-Abschnitt um Governance-Hinweis + Per-Frage-Status erweitert; Versionshistorie um v0.1-`draft-frozen`-Zeile ergänzt
+- **Pages updated outside Vault (3):**
+  - `00_Core/STATE.md` — System-Zustand-Eintrag „KG-Roadmap v0.1 `draft-frozen`" mit Re-Review-Trigger; Header-Stand 20.04.2026 Nacht-Spät
+  - `00_Core/CORE-MEMORY.md` §1 — neuer Meilenstein-Eintrag (20.04.2026 Nacht-Spät) mit Codex-Verdikt-Begründung + Präzedenz-Note
+  - `07_Obsidian Vault/.../log.md` — dieser Eintrag
+- **Re-Review-Trigger:** konkreter Cross-Entity-/10-K-Narrativ-Bedarf ODER Score-Archiv-Interim-Gate **2026-10-17** (whichever first)
+- **Faktische Inhalte (gelten ab heute trotz `draft-frozen`):**
+  - Form-4 Insider bleibt XML-Parsing (Szenario 1 REJECT bestätigt)
+  - 10-K-KG bleibt `future-arch`, frühestens 2027+ (Szenario 2 DEFER)
+  - Bayesian-RAG-Briefing-Rewrite verworfen wegen Tavily-API-MC-Dropout-Limitation (Szenario 3 DEFER)
+- **Scoring-Impact:** ZERO. DEFCON v3.7 unverändert. config.yaml unberührt. Skill bleibt v3.7.2. §28.3 Nicht-Migration-Trigger weiterhin gültig. **Track 5a/5b und v3.0.3-Prod-Deploy nicht blockiert.**
+- **Präzedenz:** Erste Anwendung von `draft-frozen`-Status für Synthesis-Dokumente — etabliert legitimen Zwischen-Status zwischen v0.1 (Draft) und v1.0 (Ratified), wenn Szenarien faktisch decided sind, aber Usage-Evidence für formale Promotion fehlt.
+- **Archive-Stand:** unverändert 27 Records.

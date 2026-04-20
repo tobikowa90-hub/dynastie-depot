@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 20.04.2026 Nacht (v3.0.3 Prod-Deploy pending; **6-Paper-Ingest-Projekt FORMAL ABGESCHLOSSEN** — Commits `89275e2` + `5f6dc62`; Smoke-Test AVGO PASS; Track 5a/5b bereit für Execution nach Gate-A-PASS) | System: DEFCON v3.7 (unverändert)
+**Single Entry Point für Session-Start** | Stand: 20.04.2026 Nacht-Spät (v3.0.3 Prod-Deploy pending; **6-Paper-Ingest-Projekt FORMAL ABGESCHLOSSEN** — Commits `89275e2` + `5f6dc62`; **KG-Roadmap v0.1 `draft-frozen`** post-gate, Codex-Verdikt Option D; Smoke-Test AVGO PASS; Track 5a/5b bereit für Execution nach Gate-A-PASS) | System: DEFCON v3.7 (unverändert)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`
@@ -69,6 +69,7 @@
 - **6-Paper-Ingest Phase 1 KOMPLETT + Codex Gate 2 PASS** (20.04.2026 Abend-Spät): B19-B24 als Befunde in Wissenschaftliche-Fundierung-DEFCON (20 Quellen / 24 Befunde); neue Synthesis `Knowledge-Graph-Architektur-Roadmap` v0.1 mit 3 Qualitäts-Gates. **Vault-only**, DEFCON v3.7 unverändert, keine Score/FLAG/Sparraten-Änderungen. Detail in `SESSION-HANDOVER.md` + `log.md`.
 - **6-Paper-Ingest-Projekt FORMAL ABGESCHLOSSEN** (20.04.2026 Nacht, Commits `89275e2` + `5f6dc62`): Phase 0 (Codex-Triage Rounds 1+2) + Phase 1a (B19/B20 Severity-🔴) + Phase 1b (B21-B24 Severity-🟡) + Phase 2 (System-Konsequenzen Hybrid A+B+C) + Phase 2.5 (Codex-Layer-Gate PASS) + Final-Discoverability (CLAUDE.md + insider-intelligence + backtest-ready-forward-verify). **Status-Matrix in `Wissenschaftliche-Fundierung-DEFCON.md` = kanonische SSoT**; aktiv in !Analysiere (§4 Router + §2 Pipeline + SKILL.md Schritt 2.5 + Output-Block), §28 (Migration), §29 (Retrospective ab 2028), §33 (Skill-Self-Audit). Bewusst passiv in !QuickCheck/!Rebalancing/Screener. **DEFCON v3.7 unverändert**, keine Score/FLAG/Sparraten-Änderung, config.yaml unberührt, §28.3 Nicht-Migration-Trigger bestätigt. Skill bleibt v3.7.2. **Smoke-Test AVGO PASS** (Befunde-Labels traceable, B6 Quality-Trap-Nicht-Aktivierung sauber ausgewiesen). Erster echter Live-Test: TMO Q1 23.04.2026.
 - **Interim-Gate 2027-10-19:** 18-Mo-Dry-Run `risk-metrics-calculation` + Data-Quality-Check auf `portfolio_returns.jsonl` (R5 Phase 3, inkl. FX-Conversion-Nachrüstung für Mixed-Currency-Basket). Review-Aktivierung 2028-04-01.
+- **KG-Roadmap v0.1 `draft-frozen`** (seit 20.04.2026 Nacht, Codex-Verdikt Option D): `07_Obsidian Vault/.../synthesis/Knowledge-Graph-Architektur-Roadmap.md` — Szenario 1 Form-4 XML bleibt, Szenario 3 Bayesian-RAG-Briefing verworfen, Szenario 2 10-K-KG `future-arch`. Keine v1.0-Ratifikation ohne Usage-Evidence. **Re-Review-Trigger:** konkreter Cross-Entity-/10-K-Narrativ-Bedarf ODER Score-Archiv-Interim-Gate **2026-10-17** (whichever first). Q1-Q3 offen, nicht release-blockierend. Track 5a/5b und v3.0.3-Prod-Deploy nicht blockiert.
 
 ---
 

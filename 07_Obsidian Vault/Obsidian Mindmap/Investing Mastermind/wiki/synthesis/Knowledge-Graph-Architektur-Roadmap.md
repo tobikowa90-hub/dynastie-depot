@@ -5,11 +5,15 @@ tags: [knowledge-graph, architektur, entscheidungsvorlage, insider-intelligence,
 created: 2026-04-20
 updated: 2026-04-20
 version: v0.1
+status: draft-frozen
+re_review_trigger: "Konkreter Cross-Entity-/10-K-Narrativ-Bedarf ODER Score-Archiv-Interim-Gate 2026-10-17 (whichever first)"
 sources: [Arun-et-al-2025-FinReflectKG, Labre-2025-FinReflectKG-Companion, Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]
 related: [Knowledge-Graph-Finance-Architecture, Agentic-Reflection-Pattern, RAG-Uncertainty-Quantification, LLM-as-a-Judge-Evaluation, insider-intelligence, dynastie-depot-skill, Backtest-Methodik-Roadmap]
 wissenschaftlicher_anker: "FinReflectKG (Arun et al. 2025) + Labre-Companion (2025) + Bayesian RAG (Ngartera et al. 2026) — drei komplementäre Papers zur Finance-KG/RAG-Architektur"
 konfidenzstufe: synthese-entscheidungsvorlage
 ---
+
+> **Status (2026-04-20 Nacht):** `draft-frozen` — inhaltliche Schlussfolgerungen gelten faktisch (Szenario 1 Form-4 XML bleibt, Szenario 3 Bayesian-RAG-Briefing-Rewrite verworfen, Szenario 2 10-K-KG bleibt `future-arch`), aber keine formale v1.0-Ratifikation ohne Usage-Evidence. Codex-Verdikt Option D (siehe CORE-MEMORY §1 Meilenstein 2026-04-20 Nacht). Re-Review-Trigger: konkreter Cross-Entity-/10-K-Narrativ-Bedarf ODER Score-Archiv-Interim-Gate **2026-10-17** (whichever first). Q1-Q3 bleiben explizit offen, nicht release-blockierend.
 
 # Knowledge-Graph-Architektur-Roadmap
 
@@ -137,15 +141,18 @@ Die beiden Pre-Paper-Pläne (Track 5a EDGAR + Track 5b FRED) werden durch 6-Pape
 
 ## Offene Fragen (explizit adressiert in Phase 2 oder später)
 
-1. **Wann ist ein Dataset groß genug für einen KG-Ansatz?** — FinReflectKG nutzt S&P-100 × 10-K = ~100 Dokumente. Dynasty-Depot hat 11 Satelliten + 9 Ersatzbank = 20 Dokumente. **Zu klein für eigenen KG, aber genug für Konsumption eines externen KG** (z.B. FinReflectKG-Dataset selbst).
-2. **Lizenz-/Legal-Fragen bei LLM-Extraction aus SEC-Filings:** SEC-Filings sind Public Domain, aber Extraktionen könnten Copyright-Implikationen haben. **Zu klären vor Produktion.**
-3. **Integration mit bestehendem Score-Archiv (`score_history.jsonl`):** Falls KG-Befunde in DEFCON einfließen, wie werden sie versioniert? **Offene Design-Frage.**
+> **Governance-Hinweis (2026-04-20 Nacht):** Alle drei Fragen sind **heute ungeklärt, aber nicht release-blockierend**. Sie adressieren Architektur-Entscheidungen, die erst bei konkretem Trigger-Event (Szenario 2 / 3 oder externer Konsumption) sinnvoll beantwortbar sind. Heutige Antworten wären spekulativ. Re-Evaluation am Re-Review-Trigger (siehe Frontmatter).
+
+1. **Wann ist ein Dataset groß genug für einen KG-Ansatz?** — FinReflectKG nutzt S&P-100 × 10-K = ~100 Dokumente. Dynasty-Depot hat 11 Satelliten + 9 Ersatzbank = 20 Dokumente. **Zu klein für eigenen KG, aber genug für Konsumption eines externen KG** (z.B. FinReflectKG-Dataset selbst). *Status: ungeklärt, nicht release-blockierend — braucht konkreten Konsumptions-Use-Case.*
+2. **Lizenz-/Legal-Fragen bei LLM-Extraction aus SEC-Filings:** SEC-Filings sind Public Domain, aber Extraktionen könnten Copyright-Implikationen haben. **Zu klären vor Produktion.** *Status: ungeklärt, nicht release-blockierend — braucht Produktions-Intent (Szenario 2-Aktivierung).*
+3. **Integration mit bestehendem Score-Archiv (`score_history.jsonl`):** Falls KG-Befunde in DEFCON einfließen, wie werden sie versioniert? **Offene Design-Frage.** *Status: ungeklärt, nicht release-blockierend heute — aber Design-Klarheit Pflicht vor operativer KG-Adoption (Point-in-Time-Append-only-Natur von `score_history.jsonl` + strikte §18/§28.2 Sync-Regeln).*
 
 ## Versions-Historie
 
 | Version | Datum | Änderung |
 |---|---|---|
 | v0.1 | 2026-04-20 | Erstellt aus 6-Paper-Ingest Phase 1b. Drei Architekturen (A/B/C), Entscheidungsmatrix pro Use-Case, drei Qualitäts-Gates, drei konkrete Szenarien. Codex Round 2 Verdikte einbezogen. |
+| v0.1 `draft-frozen` | 2026-04-20 Nacht | Status-Markierung: keine v1.0-Ratifikation ohne Usage-Evidence. Szenario 1+3 faktisch bestätigt, Szenario 2 als `future-arch` mit Re-Review-Trigger. Q1-Q3 bleiben ungeklärt, explizit nicht release-blockierend. Codex-Verdikt Option D (Opus 4.7 + Codex Combined Review). |
 
 ## Backlinks
 
