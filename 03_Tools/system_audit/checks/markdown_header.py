@@ -116,8 +116,9 @@ def run(
 
     for path, kind in targets:
         if not path.exists():
+            path_str = str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
             failures.append(FailureDetail(
-                location=str(path), expected="file present", actual="missing",
+                location=path_str, expected="file present", actual="missing",
                 severity="warning", hint="Target fehlt — Struktur geaendert?",
             ))
             continue

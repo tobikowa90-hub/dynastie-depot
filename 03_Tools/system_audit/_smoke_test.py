@@ -205,6 +205,17 @@ def test_markdown_header_fail_on_stale() -> None:
     assert result.status == "FAIL"
     assert any(f.severity == "error" for f in result.failures)
 
+def test_markdown_header_warn_on_lag() -> None:
+    from system_audit.checks.markdown_header import run
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "markdown_header"
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx, targets_override=[
+        (fx / "state_warn.md", "state"),
+    ])
+    assert result.status == "WARN"
+    assert all(f.severity == "warning" for f in result.failures)
+    assert len(result.failures) == 1
+
 
 if __name__ == "__main__":
     test_check_result_pass_semantics()
@@ -225,4 +236,5 @@ if __name__ == "__main__":
     print("[OK] store_freshness smoke tests passed")
     test_markdown_header_pass_on_aligned()
     test_markdown_header_fail_on_stale()
+    test_markdown_header_warn_on_lag()
     print("[OK] markdown_header smoke tests passed")
