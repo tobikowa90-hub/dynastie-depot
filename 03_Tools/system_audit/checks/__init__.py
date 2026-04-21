@@ -7,5 +7,6 @@ from __future__ import annotations
 
 CORE: dict[str, str] = {
     "jsonl_schema": "system_audit.checks.jsonl_schema:run",
+    "store_freshness": "system_audit.checks.store_freshness:run",
 }      # name → "system_audit.checks.<module>:run"
 OPTIONAL: dict[str, str] = {}  # same shape, activated via --full / --vault

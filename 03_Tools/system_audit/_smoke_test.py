@@ -137,6 +137,52 @@ def test_jsonl_schema_skip_on_missing_file(tmp_path=None) -> None:
     assert all(f.severity == "warning" for f in result.failures)
 
 
+def test_store_freshness_warn_on_stale() -> None:
+    import tempfile, json, datetime
+    from system_audit.checks.store_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        pr = tdp / "portfolio_returns.jsonl"
+        bs = tdp / "benchmark-series.jsonl"
+        stale = (datetime.date.today() - datetime.timedelta(days=14)).isoformat()
+        pr.write_text(json.dumps({"schema_version":"1.0","date":stale}) + "\n", encoding="utf-8")
+        bs.write_text(json.dumps({"schema_version":"1.0","date":stale}) + "\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+        result = run(REPO_ROOT, ctx, stores_override={
+            "portfolio_returns": pr,
+            "benchmark_series": bs,
+        })
+    assert result.status == "WARN"
+    assert all(f.severity == "warning" for f in result.failures)
+    assert len(result.failures) == 2
+
+def test_store_freshness_pass_on_fresh() -> None:
+    import tempfile, json, datetime
+    from system_audit.checks.store_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        pr = tdp / "portfolio_returns.jsonl"
+        bs = tdp / "benchmark-series.jsonl"
+        today = datetime.date.today().isoformat()
+        pr.write_text(json.dumps({"schema_version":"1.0","date":today}) + "\n", encoding="utf-8")
+        bs.write_text(json.dumps({"schema_version":"1.0","date":today}) + "\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+        result = run(REPO_ROOT, ctx, stores_override={
+            "portfolio_returns": pr, "benchmark_series": bs,
+        })
+    assert result.status == "PASS"
+    assert result.failures == []
+
+def test_store_freshness_skip_on_missing() -> None:
+    from system_audit.checks.store_freshness import run
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx, stores_override={
+        "portfolio_returns": REPO_ROOT / "does-not-exist-1.jsonl",
+        "benchmark_series": REPO_ROOT / "does-not-exist-2.jsonl",
+    })
+    assert result.status == "SKIP"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -150,3 +196,7 @@ if __name__ == "__main__":
     test_jsonl_schema_fail_on_bad_fixture()
     test_jsonl_schema_skip_on_missing_file()
     print("[OK] jsonl_schema smoke tests passed")
+    test_store_freshness_warn_on_stale()
+    test_store_freshness_pass_on_fresh()
+    test_store_freshness_skip_on_missing()
+    print("[OK] store_freshness smoke tests passed")
