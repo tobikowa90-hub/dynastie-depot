@@ -405,6 +405,39 @@ def test_log_lag_fail_on_stale() -> None:
     assert result.status == "FAIL"
 
 
+def test_report_human_format_contains_summary() -> None:
+    from system_audit.report import render_human
+    results = [
+        CheckResult(name="jsonl_schema", status="PASS", n_checked=27, n_passed=27,
+                    failures=[], duration_ms=128, category="core"),
+        CheckResult(name="cross_source", status="FAIL", n_checked=11, n_passed=10,
+                    failures=[FailureDetail(
+                        location="00_Core/STATE.md:18",
+                        expected="AVGO Score=84", actual="Score=85",
+                        severity="error", hint="STATE.md-Zeile aktualisieren",
+                    )], duration_ms=91, category="core"),
+    ]
+    text = render_human(results, timestamp_utc="2026-04-21T14:32:41Z")
+    assert "Check-1" in text or "jsonl_schema" in text
+    assert "✅" in text or "PASS" in text
+    assert "❌" in text or "FAIL" in text
+    assert "AVGO" in text
+    assert "Exit-Code: 1" in text
+
+def test_report_json_format_is_valid() -> None:
+    import json
+    from system_audit.report import render_json
+    results = [
+        CheckResult(name="a", status="PASS", n_checked=1, n_passed=1,
+                    failures=[], duration_ms=10, category="core"),
+    ]
+    text = render_json(results, timestamp_utc="2026-04-21T14:32:41Z")
+    data = json.loads(text)
+    assert data["summary"]["passed"] == 1
+    assert data["exit_code"] == 0
+    assert data["checks"][0]["name"] == "a"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -445,3 +478,6 @@ if __name__ == "__main__":
     test_log_lag_live_repo_pass()
     test_log_lag_fail_on_stale()
     print("[OK] log_lag smoke tests passed")
+    test_report_human_format_contains_summary()
+    test_report_json_format_is_valid()
+    print("[OK] report smoke tests passed")
