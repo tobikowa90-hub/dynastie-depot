@@ -11,5 +11,6 @@ CORE: dict[str, str] = {
     "markdown_header": "system_audit.checks.markdown_header:run",
     "cross_source": "system_audit.checks.cross_source:run",
     "existence": "system_audit.checks.existence:run",
+    "skill_version": "system_audit.checks.skill_version:run",
 }      # name → "system_audit.checks.<module>:run"
 OPTIONAL: dict[str, str] = {}  # same shape, activated via --full / --vault

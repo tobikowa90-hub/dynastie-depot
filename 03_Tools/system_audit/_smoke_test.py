@@ -285,6 +285,74 @@ def test_existence_pass_on_existing_paths() -> None:
     assert not any("target.py" in f.actual for f in result.failures)
 
 
+def _make_skill(root: Path, name: str, version: str) -> None:
+    d = root / "01_Skills" / name
+    d.mkdir(parents=True)
+    (d / "SKILL.md").write_text(
+        f"---\nname: {name}\nversion: {version}\n---\n\n# {name}\n",
+        encoding="utf-8",
+    )
+
+def _make_zip(root: Path, name: str, version: str) -> None:
+    (root / "06_Skills-Pakete").mkdir(parents=True, exist_ok=True)
+    (root / "06_Skills-Pakete" / f"{name}_v{version}.zip").write_text("", encoding="utf-8")
+
+def test_skill_version_pass_fixture() -> None:
+    """PASS: SKILL.md == ZIP version."""
+    import tempfile
+    from system_audit.checks.skill_version import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        _make_skill(tdp, "demo", "1.0.0")
+        _make_zip(tdp, "demo", "1.0.0")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+    assert result.failures == []
+
+def test_skill_version_warn_on_unpacked_newer_fixture() -> None:
+    """WARN: SKILL.md v2.0.0 aber hoechste ZIP nur v1.9.0 (ungepackt)."""
+    import tempfile
+    from system_audit.checks.skill_version import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        _make_skill(tdp, "demo", "2.0.0")
+        _make_zip(tdp, "demo", "1.9.0")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any("1.9.0" in f.actual for f in result.failures)
+
+def test_skill_version_warn_on_orphan_zip_fixture() -> None:
+    """WARN: ZIP ohne passendes 01_Skills/<name>/."""
+    import tempfile
+    from system_audit.checks.skill_version import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "01_Skills").mkdir()
+        (tdp / "06_Skills-Pakete").mkdir()
+        (tdp / "06_Skills-Pakete" / "ghost_v1.0.0.zip").write_text("", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any("orphan" in (f.actual + (f.hint or "")).lower() or "ghost" in f.location for f in result.failures)
+
+def test_skill_version_skip_on_missing_frontmatter_fixture() -> None:
+    """EDGE: SKILL.md ohne version-Frontmatter -> nicht gecheckt, kein Fail."""
+    import tempfile
+    from system_audit.checks.skill_version import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "demo"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text("# demo — no frontmatter\n", encoding="utf-8")
+        (tdp / "06_Skills-Pakete").mkdir()
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status in ("PASS", "SKIP"), f"got {result.status}"
+    assert not any(f.severity == "error" for f in result.failures)
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -313,3 +381,8 @@ if __name__ == "__main__":
     print("[OK] cross_source smoke tests passed")
     test_existence_pass_on_existing_paths()
     print("[OK] existence smoke tests passed")
+    test_skill_version_pass_fixture()
+    test_skill_version_warn_on_unpacked_newer_fixture()
+    test_skill_version_warn_on_orphan_zip_fixture()
+    test_skill_version_skip_on_missing_frontmatter_fixture()
+    print("[OK] skill_version smoke tests passed")
