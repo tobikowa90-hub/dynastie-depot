@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 21.04.2026 Nachmittag-Spät (**Phase A+B+C+D alle committed** — Systemhygiene-Sync-Welle `8acb13c` + Spec v0.1 `7218a85` + **Spec v0.2 ratified `82482d7`** mit 6 Codex-Patches & 7/7 Open-Qs resolved. **Next: Phase E** — `superpowers:writing-plans` → Plan `docs/superpowers/plans/2026-04-21-system-audit-tool.md` → TDD-Build `03_Tools/system_audit.py` + `/SystemAudit`. Spec-Input: `docs/superpowers/specs/2026-04-21-system-audit-tool-design.md`. Dann Phase F (Provenance-Plan) + Phase G (TMO Q1 23.04.). **Drift-Migration 27/27 PASS** steht; v3.0.4 Briefing-Hotfix weiter pending) | System: DEFCON v3.7 (unverändert)
+**Single Entry Point für Session-Start** | Stand: 21.04.2026 Nacht (**Phase E 14/19 Tasks done** — Task 14 Optional Checks 8/9 `vault_backlinks` + `status_matrix` committed `510cbbf`; Fix-Welle C `68d58ab` gegen 2 Code-Review-Blocker + 1 Important; Re-Review APPROVED. Live `--full` rc=1, Check-8 29ms → <5s-Gate PASS, Task-15-subprocess-Backlog nicht nötig. **Next: Task 15** Smoke-Test temp-repo-copy (Plan 3109-3246). Task-Backlog: #4 vault_backlinks Robustness-Pass (Important #4-7 deferred). Phase F (Provenance-Plan) + Phase G (TMO Q1 23.04.) folgen nach Phase E. v3.0.4 Briefing-Hotfix weiter pending) | System: DEFCON v3.7 (unverändert)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`
@@ -61,7 +61,7 @@
 
 ### 🔴 Unmittelbar / Primär-Track
 
-1. **Systemhygiene-Welle Phase A-E (SSoT-Aufbau + Audit-Tool-Bau)** — Session 21.-22.04.2026. Phase A+B+C (Sync-Sweep) `in_progress`; Phase D (Brainstorming Sub-Spec `system_audit.py`) + Phase E (Plan + TDD-Build) stehen direkt danach. Quell-Dokument: `SESSION-HANDOVER.md`.
+1. **Systemhygiene-Welle Phase A-E (SSoT-Aufbau + Audit-Tool-Bau)** — Session 21.-22.04.2026. Phase A+B+C+D ✅ committed. Phase E 14/19: Tasks 1-14 done (Task 14 via Implementer-Subagent + Spec-Review + Code-Review + Fix-Welle C + Re-Review APPROVED). Next: Task 15 (Smoke-Test temp-repo-copy, Spec §7.4). Quell-Dokument: `SESSION-HANDOVER.md`.
 2. **Morning Briefing v3.0.4 Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft v2.1 (Rollback nach Halluzinations-Incident 20.04.). Hotfix ergänzt §3a Anti-Fallback-Guard + neuer Test T5 Adversarial-Stale-Shibui. Gate A erst nach v3.0.4-PASS.
 3. **Score-Append Provenance-Gate** — Plan v2 `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks, 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. Critical **vor** TMO Q1 23.04. (erster echter Forward-Run durch neue Pipeline mit P3.5 fail-close). Execution in Phase F dieser Session-Sequenz.
 4. **System-Audit-Tool `03_Tools/system_audit.py` + Slash-Command `/SystemAudit`** — Sub-Spec + Plan + Build in Phase D+E dieser Session-Sequenz. Scope: JSONL-Schema + Markdown-Cross-Drift + Existence-Check + Skill-Version + Pipeline-SSoT-Consistency (Kern); Vault-Backlinks + Status-Matrix (Optional mit Timeout).
