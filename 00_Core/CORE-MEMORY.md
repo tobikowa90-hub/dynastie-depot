@@ -417,6 +417,29 @@ Summe: 7×1,0 + 1×0,5 = 7,5 | Einheits-Rate: 38,00€ | D2-Rate: 19,00€ | Che
 
 **Lesson:** Tool-Bugs (Check-3 + Check-5) wurden nur durch Live-Baseline-Run im temp-Repo entdeckt — in-process Fixtures waren synthetisch und haben den Future-Date-Bug nicht getriggert. Generalisiert: synthetische Test-Fixtures decken Parser-Bugs nicht ab, die erst mit realem Content triggern. → Applied Learning Kandidat.
 
+### 22.04.2026 Spät — Task 19 Verification + Fix-Welle E (Phase E ~95%, Closure pending CR-Re-Run)
+
+**Scope:** Acceptance-Matrix gegen Spec §12 (11 Items), 2. obligatorischer 4-Wege-Review-Pass (Codex + CodeRabbit). Final-Closure aufgehoben bis CodeRabbit-Re-Run nach Cooldown.
+
+**Acceptance-Matrix-Resultat:** 9/11 ✅ PASS, 2 dokumentierte WARNs.
+- ⚠️ Item 2 (`--core` rc=0): Drift, `--core` rc=1 wegen bekannter Tool-Bugs Check-3 + Check-5 → `--minimal-baseline` rc=0 ist pragmatischer Regression-Gate per §27.5 + Plan-Header-Notice Task 17. Codex-Verdikt: legitim dokumentiert.
+- ⚠️ Item 9 (`--full` 9 Checks): Tatsächlich 10 Checks im Output (1.5 als verstecktem Sub-Check + Optional 8/9 + Check-10). Codex-Verdikt: Notation-Drift, kein substantive Issue. **Check-10 status_matrix Over-Strict-Bug entdeckt** (Regex `\bB(\d+)\b` fängt narrative B-Refs in Status-Matrix-Section als Duplicates → Codex-Empfehlung Regex-Scope auf `### Matrix`-Subsection einengen, Post-Closure-Welle).
+
+**Codex-Reconciliation-Verdikt:** **RECONCILED_WITH_FOLLOWUPS**.
+- Plan-Header-Notices nach `feedback_spec_section_drift.md`-Pattern PASS.
+- §27.5-Wortlaut konsistent zu §27.4-Präzedenz PASS.
+- 3 Codex-Follow-ups: (a) Backlog Check-3+existence-Cleanup → §27.5 Guard auf `--core` hochziehen; (b) Post-Closure Check-10 Regex-Scope; (c) §27.5-Kommentar-Update nach (a).
+
+**CodeRabbit-Pass:** 6 Findings in Run-1, davon 4 sichtbar (tail-Truncation): 3 valide auf `_smoke_temp_repo.py` ✅ FIXED in Fix-Welle E `e3ba381` (Docstring-Korrektheit „60s"→„120s" Inkonsistenz zur assert delta<120, `import re` Modul-Level-Hub, redundanter Inline-Import-Block aus `smoke_seeded_drift()` entfernt). 1 Finding `flag_events.jsonl:2` pre-existing OOS. Re-Runs: Run-2 zeigte 1 Finding (Subset, Non-Determinismus); Run-3 rate-limited (~46 min). 2 truncated Findings unklar → Re-Verify als Backlog-Punkt gegen `e3ba381` als neue Base.
+
+**Closure-Entscheidung (advisor-validiert):** Final-Commit `log(phase-e-done)` aufgehoben — Closure-mit-2-unbekannten-CodeRabbit-Findings widerspricht `feedback_correctness_over_runtime.md`. Re-Run nach Cooldown ist „one cache miss buys certainty".
+
+**Commits dieser Sub-Session (2):** `e3ba381` (Fix-Welle E) + dieser Sync-Welle-Commit.
+
+**Lesson:** Bei Multi-Tool-Reviews (Codex + CodeRabbit) Run-Output IMMER in File persistieren (`> /tmp/cr_*.txt 2>&1`), nicht nur tail-Inspect. Run-1 Truncation hätte vermieden werden können — Bash-tail wegen Grenzwert + Re-Run Non-Determinismus + Rate-Limit = perfect storm. → Applied Learning Kandidat: „Review-Tool-Output frühzeitig File-persistieren".
+
+**Next:** CodeRabbit-Re-Run gegen `e3ba381` nach Cooldown (>22.04. ~23:23 UTC). Bei keinen neuen Blockern: Final-Commit `log(phase-e-done)` + Banner 19/19 + Übergang zu Phase F (Provenance-Plan-Execution) bzw. direkt Phase G (TMO Q1 23.04.).
+
 ### IFRS 16 vs. ASC 842 — Strukturelle OCF-Differenz (Non-US Pflicht-Wissen)
 Bei ASML (und allen IFRS-Titeln die auch US-ADR haben): yfinance zieht IFRS-EU-Meldung (ASML.AS Amsterdam).
 Unter IFRS 16 → Leasingzahlungen (Tilgung) als Finanzierungs-CF → senkt OCF vs. US GAAP (ASC 842).

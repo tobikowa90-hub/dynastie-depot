@@ -771,3 +771,14 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten aller 11 Satelliten unverändert.
 - **Follow-up-Tasks offen:** #2 Check-3 future-date-exclude, #4 vault_backlinks Robustness-Pass (Important #4-7 aus Fix-Welle-C-Review), existence-Cleanup-Welle.
 - **Next:** Task 19 Verification-Before-Completion Acceptance-Matrix + obligatorischer 2. 4-Wege-Review-Pass (Codex + CodeRabbit sequenziert für Meilenstein-Abschluss). Dann Phase F (Provenance-Plan Execution vor TMO Q1 23.04.).
+
+## [2026-04-22 Spät] system-audit | Task 19 Verification + Fix-Welle E (Phase E ~95%)
+
+- **Acceptance-Matrix gegen Spec §12:** 9/11 ✅, 2 dokumentierte WARNs (Item 2 `--core` rc=1 wg. bekannter Tool-Bugs → `--minimal-baseline` rc=0 ist pragmatischer Gate; Item 9 `--full` zeigt 10 Checks statt 9 + Check-10 status_matrix Over-Strict-Bug entdeckt).
+- **Codex-Reconciliation:** RECONCILED_WITH_FOLLOWUPS — 3 deferred Follow-ups (Check-3 future-date / existence-Cleanup → §27.5-Guard auf `--core` hochziehen; Check-10 Regex-Scope auf `### Matrix`-Subsection; §27.5 Kommentar-Update nach Cleanup).
+- **CodeRabbit-Pass:** Run-1 = 6 Findings, davon 4 sichtbar (tail-Truncation). 3 valide auf `_smoke_temp_repo.py` ✅ FIXED in Fix-Welle E `e3ba381` (Docstring „60s"→„120s" Korrektheits-Drift, `import re` Modul-Level-Hub, redundanter Inline-Import-Block aus `smoke_seeded_drift()`). 1 OOS pre-existing `flag_events.jsonl:2`. 2 Findings unklar durch Truncation; CR-CLI rate-limited (~46 min) → Re-Verify-Backlog gegen `e3ba381` als neue Base.
+- **Closure-Entscheidung (advisor-validiert):** Final-Commit `log(phase-e-done)` aufgehoben — Closure-mit-2-unbekannten-Findings widerspricht `feedback_correctness_over_runtime.md`.
+- **Commits dieser Sub-Session (2):** `e3ba381` Fix-Welle E + dieser Sync-Welle-Commit.
+- **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten unverändert.
+- **Lesson:** Multi-Tool-Reviews → Run-Output IMMER File-persistieren (nicht nur tail-Inspect), sonst Truncation + Non-Determinismus + Rate-Limit = perfect storm. Applied-Learning-Kandidat.
+- **Next:** CR-Re-Run gegen `e3ba381` nach Cooldown (>22.04. ~23:23 UTC). Bei keinen neuen Blockern: Phase-E-Closure + Phase F oder direkt Phase G (TMO Q1 23.04.).

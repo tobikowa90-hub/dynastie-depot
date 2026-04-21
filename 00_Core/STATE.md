@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 22.04.2026 (**Phase E 18/19 Tasks done** — Task 15 Smoke temp-repo `486f2c1` (Codex-Reconciliation Option 2 rc∈{0,1}), Task 16 `/SystemAudit` `fa238bf`, Task 17 INSTRUKTIONEN §27.5 Migration-Regression-Guard + initialer Last-Audit-Block 3/3 PASS `ab7ae19`, Task 18 Sync-Welle (diese Commit-Sequenz). Scope-Drift `--core`→`--minimal-baseline` als Plan-Header-Notice dokumentiert; Rollback-Pfad an Check-3-Follow-up + existence-Cleanup gekoppelt. **Next: Task 19** Verification-Before-Completion Acceptance-Matrix + 2. obligatorischer 4-Wege-Review-Pass (Codex + CodeRabbit sequenziert). Task-Backlog: #2 Check-3 future-date-exclude, #4 vault_backlinks Robustness-Pass. Phase F (Provenance-Plan) + Phase G (TMO Q1 23.04.) folgen. v3.0.4 Briefing-Hotfix weiter pending) | System: DEFCON v3.7 (unverändert)
+**Single Entry Point für Session-Start** | Stand: 22.04.2026 (**Phase E ~95% — Tasks 15-19 substantive done + Fix-Welle E `e3ba381`, CodeRabbit Re-Verify pending** — Tasks 15-18 Commits siehe Handover. Task 19 Acceptance-Matrix gegen Spec §12 erhoben (9/11 ✅, 2 dokumentierte WARNs: Item 2 `--core` rc=1 weil bekannte Tool-Bugs Check-3+Check-5 → `--minimal-baseline` rc=0 ist pragmatischer Regression-Gate per §27.5 + Plan-Header-Notice; Item 9 `--full` zeigt 10 Checks statt geplanter 9 + Check-10 status_matrix Over-Strict-Bug bei narrative B-Referenzen). Codex-Pass = **RECONCILED_WITH_FOLLOWUPS** (3 Codex-Follow-ups: Check-3+existence-Cleanup → §27.5 Guard auf `--core` hochziehen, Check-10 Regex auf `### Matrix`-Subsection einengen). CodeRabbit-Pass = 4 valide Findings sichtbar, davon 3 fixed in Fix-Welle E (`_smoke_temp_repo.py` Docstring-Korrektheit + 2 Inline-Imports), 1 pre-existing out-of-scope (`flag_events.jsonl:2`); 2 weitere Findings durch tail-Truncation unklar + CR-CLI rate-limited (~46 min Cooldown) → Re-Run als Backlog-Punkt. **Final-Closure-Commit `log(phase-e-done)` aufgehoben bis Re-Verify**. Phase F (Provenance-Plan) + Phase G (TMO Q1 23.04.) folgen. v3.0.4 Briefing-Hotfix weiter pending) | System: DEFCON v3.7 (unverändert)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`
@@ -61,7 +61,7 @@
 
 ### 🔴 Unmittelbar / Primär-Track
 
-1. **Systemhygiene-Welle Phase A-E (SSoT-Aufbau + Audit-Tool-Bau)** — Session 21.-22.04.2026. Phase A+B+C+D ✅ committed. Phase E 18/19: Tasks 1-18 done (Task 15/16/17/18 Codex-reviewed, Task 14 via 3-Wege-Review Fix-Welle C). Next: **Task 19** Verification-Before-Completion Acceptance-Matrix + obligatorischer 2. 4-Wege-Review-Pass (Meilenstein-Abschluss: Codex + CodeRabbit sequenziert). Quell-Dokument: `SESSION-HANDOVER.md`.
+1. **Systemhygiene-Welle Phase A-E (SSoT-Aufbau + Audit-Tool-Bau)** — Session 21.-22.04.2026. Phase A+B+C+D ✅ committed. Phase E ~95%: Tasks 1-19 substantive done + Fix-Welle E `e3ba381` (CodeRabbit-Style/Korrektheits-Findings auf `_smoke_temp_repo.py`). Codex-Pass RECONCILED_WITH_FOLLOWUPS, CodeRabbit-Pass 4/6 sichtbar fixed. **Final-Closure aufgehoben bis CodeRabbit-Re-Run nach Cooldown** (TodoWrite Task #6). 3 Codex-Follow-ups (Check-3 future-date / existence-Cleanup-Welle → §27.5-Guard hochziehen / Check-10 status_matrix Regex-Scope). Quell-Dokument: `SESSION-HANDOVER.md`.
 2. **Morning Briefing v3.0.4 Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft v2.1 (Rollback nach Halluzinations-Incident 20.04.). Hotfix ergänzt §3a Anti-Fallback-Guard + neuer Test T5 Adversarial-Stale-Shibui. Gate A erst nach v3.0.4-PASS.
 3. **Score-Append Provenance-Gate** — Plan v2 `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks, 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. Critical **vor** TMO Q1 23.04. (erster echter Forward-Run durch neue Pipeline mit P3.5 fail-close). Execution in Phase F dieser Session-Sequenz.
 4. ~~System-Audit-Tool~~ **DONE 2026-04-22** — `03_Tools/system_audit.py` v1.0 + `/SystemAudit` deployed. Baseline `--minimal-baseline` 3/3 PASS (Check-1 jsonl_schema + Check-6 pipeline_ssot + Check-7 log_lag). `--core` 4/8 PASS mit 2 known Tool-Bugs (Check-3 future-date → Follow-up-Task, Check-5 existence → Post-Task-17-Follow-up-Welle). `03_Tools/backtest-ready/schemas.py` um `PortfolioReturnRecord` + `BenchmarkReturnRecord` erweitert. INSTRUKTIONEN §27.5 Migration-Regression-Guard nachgetragen. Spec v0.2 + Plan `docs/superpowers/plans/2026-04-21-system-audit-tool.md` archiviert mit Plan-Header-Notices (Task 15 rc∈{0,1}-Relaxation + Task 17 `--minimal-baseline`-Scope).
@@ -140,7 +140,7 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-21T22:19:55Z
+**Timestamp (UTC):** 2026-04-21T22:41:25Z
 **Result:** 3/3 PASS
 **Run:** `python 03_Tools/system_audit.py --minimal-baseline`
 **Full-Report:** stdout (kein Archiv-File)

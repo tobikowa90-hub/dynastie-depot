@@ -1,25 +1,73 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-22 (**Phase E 18/19 Tasks done** — Tasks 15/16/17/18 committed; nur **Task 19** (Verification-Before-Completion Acceptance-Matrix + 2. obligatorischer 4-Wege-Review-Pass) offen).
-**Vorherige Aktualisierungen:** 2026-04-21 Nacht — Task 14 Optional Checks + Fix-Welle C+D (`ab6b3f5`) · 2026-04-21 Abend-Spät — Task 13 (`4a9168e`/`4dc8825`/`0dbd8f2`) · 2026-04-21 Abend — Fix-Welle A (`7cea0e0`) · 2026-04-21 Nachmittag-Spät — Spec v0.2 ratified (`82482d7`).
+**Aktualisiert:** 2026-04-22 Spät (**Phase E ~95% — Tasks 15-19 substantive done + Fix-Welle E `e3ba381`, CodeRabbit-Re-Verify pending**). Task 19 Acceptance-Matrix + Codex-RECONCILED_WITH_FOLLOWUPS + 4/6 sichtbare CodeRabbit-Findings adressiert; 2 truncated Findings + Rate-Limit (~46 min) → Final-Closure aufgehoben bis Re-Run.
+**Vorherige Aktualisierungen:** 2026-04-22 Mittag — Tasks 15-18 (`486f2c1`/`fa238bf`/`ab7ae19`/`ca35f62` + Handover `51f5719`) · 2026-04-21 Nacht — Task 14 Optional Checks + Fix-Welle C+D (`ab6b3f5`) · 2026-04-21 Abend-Spät — Task 13 (`4a9168e`/`4dc8825`/`0dbd8f2`) · 2026-04-21 Abend — Fix-Welle A (`7cea0e0`) · 2026-04-21 Nachmittag-Spät — Spec v0.2 ratified (`82482d7`).
 
-> **Progress-Banner (Phase A-G):** ✅ A+B+C (Sync-Welle `8acb13c`) · ✅ D (Spec v0.2 `82482d7`) · 🟡 **E 18/19** (Tasks 1-18 done, 19 open) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04.).
+> **Progress-Banner (Phase A-G):** ✅ A+B+C (Sync-Welle `8acb13c`) · ✅ D (Spec v0.2 `82482d7`) · 🟡 **E ~95%** (Tasks 1-19 substantive + Fix-Welle E, Final-Closure pending CR-Re-Verify) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04.).
 
-## 🚀 NÄCHSTE SESSION — Direkter Einstieg
+## 🚀 NÄCHSTE SESSION — Direkter Einstieg (Phase-E-Closure-Pfad)
 
-**Trigger:** `Session starten` → STATE.md lesen → `superpowers:subagent-driven-development` Skill aktivieren → **Task 19 in_progress setzen** → Plan-Lesen Zeilen 3467-3501 (Acceptance-Matrix) + `docs/superpowers/specs/2026-04-21-system-audit-tool-design.md` §12.
+**Trigger:** `Session starten` → STATE.md lesen → CodeRabbit-Cooldown geprüft (>46 min seit 22:37 UTC 22.04.) → **CodeRabbit-Re-Run via WSL** → bei keinen neuen Blockern: Final-Commit `log(phase-e-done)`.
 
-**Command zur schnellen Lageprüfung:**
+**Re-Run-Command:**
+```bash
+wsl.exe -- bash -lc "cd '/mnt/c/Users/tobia/OneDrive/Desktop/Claude Stuff' && /home/tobiatobia/.local/bin/coderabbit review --base e3ba381 --plain > /tmp/cr_phase_e_final.txt 2>&1"
+# Base = e3ba381 (post-Fix-Welle-E), nicht ab6b3f5 — vermeidet Re-Findings auf gefixten Zeilen
+grep -nE '^File:|^Line:|^Type:|Review completed' /tmp/cr_phase_e_final.txt
+```
+
+**Erwartung Re-Run:** ≤2 neue/verbliebene Findings (die 2 truncated Findings aus Run-1, falls noch valide nach Fix-Welle E). Falls Blocker → Fix-Welle F + Re-Review. Falls Style/Nitpick → dokumentieren + close.
+
+**Vor Re-Run / Lageprüfung:**
 ```bash
 cd "C:\Users\tobia\OneDrive\Desktop\Claude Stuff"
 python 03_Tools/system_audit/_smoke_test.py          # muss 14/14 [OK]
-python 03_Tools/system_audit/_smoke_temp_repo.py     # muss 2× [OK] (baseline + seeded-drift)
-python 03_Tools/backtest-ready/schemas.py            # muss "all schema smoke tests passed"
-python 03_Tools/system_audit.py --minimal-baseline   # rc=0, 3/3 PASS, schreibt Last-Audit-Block
-python 03_Tools/system_audit.py --full --no-write    # rc=1 (known bugs) — NICHT fixen, Context-Info
-git log --oneline ab6b3f5..HEAD | head -6            # 4 neue Commits
-git status --short                                   # nur Vault-Noise (pre-existing, User-seitig)
+python 03_Tools/system_audit/_smoke_temp_repo.py     # muss 2× [OK]
+python 03_Tools/backtest-ready/schemas.py            # muss 10/10 PASS
+python 03_Tools/system_audit.py --minimal-baseline   # rc=0, 3/3 PASS
+git log --oneline ab6b3f5..HEAD                      # 6 neue Commits inkl. Fix-Welle E
 ```
+
+---
+
+---
+
+## 📋 Was in Session 22.04. Spät passiert ist (Task 19 + Fix-Welle E)
+
+**Acceptance-Matrix (Spec §12, 11 Items):** 9/11 ✅ PASS, 2 dokumentierte WARNs.
+
+| # | Status | Note |
+|---|---|---|
+| 1 Schemas+Tests | ✅ | schemas.py 10/10 |
+| 2 `--core` rc=0 | ⚠️ DRIFT | `--core` rc=1 (Check-3 future-date + Check-5 existence). `--minimal-baseline` rc=0 ist pragmatischer Gate per §27.5 + Plan-Header-Notice Task 17. Codex: WARN, legitim dokumentiert. |
+| 3 /SystemAudit + Last-Audit | ✅ | STATE.md:138 Marker |
+| 4 7 Kern-Checks + ≥3 Fixtures | ✅* | 14/14 _smoke_test.py; nur 4 Fixture-Dirs (Rest inline) |
+| 5 Parser-Golden-Tests | ✅ | _smoke_test.py-Output |
+| 6 Integration + temp-repo | ✅ | 2× [OK] |
+| 7 rc 0/1/2 differenziert | ✅ | minimal-baseline rc=0, --core rc=1 verifiziert |
+| 8 INSTRUKTIONEN §27.5 | ✅ | Zeile 562 |
+| 9 Optional Vault + Status-Matrix | ⚠️ DRIFT | `--full` zeigt **10 Checks** (Plan sagte 9 — Notation-Drift wegen 1.5-Zählung, Codex: kein substantive Drift). Check-9 vault_backlinks FAIL (Follow-up #4). **Check-10 status_matrix Over-Strict** (Regex `\bB(\d+)\b` fängt narrative B-Refs in Status-Matrix-Section als Duplicates → Codex-Empfehlung: Regex auf `### Matrix`-Subsection einengen, **Post-Closure-Welle**). |
+| 10 Duration <30s --core | ✅ | 155-216ms |
+| 11 STATE.md Pipeline-SSoT | ✅ | Commit `ca35f62` |
+
+**Codex-Reconciliation (Meilenstein):** **RECONCILED_WITH_FOLLOWUPS**.
+- Plan-Header-Notices (Task 15 rc∈{0,1} + Task 17 `--minimal-baseline`-Scope) sind nach `feedback_spec_section_drift.md`-Pattern dokumentiert (PASS).
+- §27.5-Wortlaut konsistent zu §27.4-Präzedenz (PASS).
+- Item-2-Drift: legitim, aber Spec-§12-Bullet 2 formal nicht voll erfüllt → WARN bleibt offen bis Check-3 + existence-Cleanup behoben.
+- Item-9-Drift: Notation, kein substantive Issue.
+- Check-10 Over-Strict: Follow-up, kein Phase-E-Blocker.
+
+**Codex-Follow-ups (3, alle deferred):**
+1. **Backlog:** Check-3 future-date-exclude + existence-Cleanup; danach §27.5 Guard von `--minimal-baseline` auf `--core` hochziehen.
+2. **Post-Closure-Welle:** `03_Tools/system_audit/checks/status_matrix.py` Regex-Scope auf `### Matrix`-Subsection bzw. Tabellenzeilen begrenzen.
+3. **INSTRUKTIONEN-§-Update:** Nach (1) §27.5 Kommentar von `--minimal-baseline` auf `--core` aktualisieren.
+
+**CodeRabbit-Pass (Run-1, sichtbare Findings):** 4/6 lesbar (tail-Truncation).
+- ✅ FIXED in Fix-Welle E `e3ba381`: `_smoke_temp_repo.py` Docstring „60s"→„120s" (Korrektheits-Drift zur Assertion delta<120), `import re` Modul-Level-Hub, redundanter Inline-Block `import json, shutil, subprocess, sys, tempfile` aus `smoke_seeded_drift()` entfernt.
+- ⏭️ OUT-OF-SCOPE: `05_Archiv/flag_events.jsonl:2` null `metrik.wert` mit `event_typ=trigger` — pre-existing, nicht Phase-E-Scope.
+- ❓ UNKLAR: 2 weitere Findings durch Truncation nicht lesbar; Re-Run Run-2 zeigte nur 1 Finding (Subset), Run-3 rate-limited (~46 min Cooldown). **Re-Verify als Backlog-Punkt** (TodoWrite Task #6) gegen `e3ba381` als neue Base.
+
+**Closure-Entscheidung (advisor-validiert):** Final-Commit `log(phase-e-done)` aufgehoben bis CodeRabbit-Re-Run nach Cooldown — verhindert Closure-mit-2-unbekannten-Findings (correctness > runtime, `feedback_correctness_over_runtime.md`-Konsistenz).
 
 ---
 
@@ -114,20 +162,16 @@ Housekeeping-Skill `system-state-guardian` — Opus-Vorschlag 2026-04-21 Abend. 
 ## 🌐 Session-Übergabe-Protokoll
 
 **Vor Session-Clear empfehlenswert:**
-1. `!SyncBriefing` ausführen (CLAUDE.md §25) — pushed `00_Core/` ins GitHub-Repo, damit Remote-Trigger (10:00 Morning Briefing) aktuellen Stand liest. **Review-Gate Pflicht** (explizite User-Bestätigung), nicht auto-push. Aktuelle Commits unpushed: `486f2c1`, `fa238bf`, `ab7ae19`, `ca35f62` — und jetziger Handover-Update-Commit.
+1. `!SyncBriefing` ausführen (CLAUDE.md §25) — pushed `00_Core/` ins GitHub-Repo. **Review-Gate Pflicht** (explizite User-Bestätigung), nicht auto-push. Unpushed-Commits: `486f2c1`, `fa238bf`, `ab7ae19`, `ca35f62`, `51f5719`, `e3ba381` (Fix-Welle E) — und jetziger Handover-Sync-Commit.
 2. Vault-Noise im Working-Tree bleibt unangetastet (pre-existing `.obsidian/graph.json` + 3 Untracked-Vault-Files vom User).
 
-**Nach Session-Clear — erste Session-Start-Sequenz:**
-1. `Session starten` → STATE.md lesen.
-2. `superpowers:subagent-driven-development` Skill aktivieren.
-3. Handover lesen (diese Datei) — besonders Baseline-Realität + Item-2-Drift-Handling.
-4. Plan Task 19 (Plan-Zeilen 3467-3501) lesen.
-5. Spec §12 lesen (`docs/superpowers/specs/2026-04-21-system-audit-tool-design.md`).
-6. Lageprüfung-Command-Block oben ausführen.
-7. Task 19 in_progress setzen.
-8. Acceptance-Matrix abhaken (Evidence-Commands pro Item ausführen, Drift-Notes dokumentieren für Item 2).
-9. Codex-Pass dispatchen (via `codex:rescue` Fresh-Thread).
-10. CodeRabbit-Pass via WSL.
-11. Fix-Welle falls Findings.
-12. Final-Commit Task 19.
-13. Optional: Briefing-Sync abschließen falls noch offen.
+**Nach Session-Clear — erste Session-Start-Sequenz (Phase-E-Closure-Pfad):**
+1. `Session starten` → STATE.md lesen (Banner sagt „Phase E ~95% pending CR-Re-Verify").
+2. Handover lesen (diese Datei) — besonders „Was in Session 22.04. Spät passiert ist" + Re-Run-Block oben.
+3. Cooldown-Check: Re-Run frühestens 22.04. ~23:23 UTC (>46 min seit 22:37 Rate-Limit).
+4. CodeRabbit-Re-Run gegen `e3ba381` ausführen (Command oben).
+5. Findings triagieren: Blocker → Fix-Welle F + Re-Review; Style/Nitpick → dokumentieren + close; OOS → notieren.
+6. Final-Commit `log(phase-e-done): Phase E 19/19 RECONCILED` mit Acceptance-WARN Item 2 + 9 + Codex-Follow-up-Liste im Body.
+7. STATE.md Banner updaten („Phase E 19/19 done") + Pipeline-SSoT-Punkt 1 closure + CORE-MEMORY §10 Final-Eintrag.
+8. Optional: Briefing-Sync wenn 00_Core/ touched.
+9. Übergang zu Phase F (Provenance-Plan-Execution) ODER Phase G (TMO Q1 23.04. — natürlicher First-Live-Test der Provenance-Pipeline).
