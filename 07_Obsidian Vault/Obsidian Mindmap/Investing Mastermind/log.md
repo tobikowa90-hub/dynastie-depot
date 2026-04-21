@@ -692,3 +692,23 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten aller 11 Satelliten unverändert (Infrastruktur-Ereignis, keine Score-Neuberechnung).
 - **Lesson Learned:** Anti-Hallucination-Guards müssen nicht nur Begründungen, sondern auch alternative Datenpfade explizit verbieten. "KEINE Gründe erfinden" ist notwendig, aber nicht hinreichend — braucht Ergänzung "KEINE unautorisierten Datenquellen nutzen, auch wenn autorisierte Quelle scheinbar stale ist".
 - **Implication für v3.0.4:** Probe-Tests müssen Adversarial-Stale-Shibui abdecken (bisher nicht getestet — T1 war Happy-Path mit frischem Freitag-EOD).
+
+## [2026-04-21] drift-migration | score_history.jsonl 12/27 → 27/27 + System-Audit-Lesson
+
+- **Auslöser:** Pre-Check vor Provenance-Gate-Plan-Execution (heute geschriebene Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` + Plan `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md`) deckte 12 von 27 Records in `05_Archiv/score_history.jsonl` als schema-inkonsistent auf — alle defcon_level-Drift seit der 18.04.2026-SKILL-Threshold-Migration auf 80/65/50.
+- **Migration-Tool:** `03_Tools/backtest-ready/migrate_defcon_drift.py` (~70 Zeilen, idempotent, atomar via .tmp + os.replace). Dry-Run + Apply: 12 Records korrigiert (Score 71-76 D4→D3, Score 61-63 D3→D2). Re-Validate: **27/27 PASS**. Notably: Zeile 25 V_vollanalyse 17.04. Score 72/D4→D3 = der Auslöser-Fall der Provenance-Spec.
+- **Audit-Sweep auf andere Stores (Stufe-1-Quick-Check):**
+  - `flag_events.jsonl` 2/2 PASS ✓
+  - `config.yaml` Score+DEFCON 11/11 == STATE.md ✓
+  - `portfolio_returns.jsonl` + `benchmark-series.jsonl` je 1 Record (17.04.) — **stale seit 4 Tagen**, R5-Phase-3 ist seit 19.04. „aktiv" laut STATE.md aber Daily-Append-Cron existiert nicht (Manual-Trigger-Pflicht vergessen). Backlog-Item für Track 4.
+- **Codex-Verdikt (heute):** Sequenzierung β (Provenance-Plan zuerst, Audit-Tool danach als eigene Sub-Spec). Automatismus: Slash-Command `/SystemAudit` + STATE.md-Section „Last Audit", **kein SessionStart-Hook** (kollidiert mit CLAUDE.md SESSION-INITIALISIERUNG „nur STATE.md lesen"). Memory-Promotion: noch nicht neuer §, aber **§27.4 Vertikal-Drift-Klausel ergänzt** (Schema-Migration-Drift als zweite Klasse neben Multi-Source-Horizontal-Drift). Sub-Spec `system_audit.py` in nächster Session.
+- **Pages updated outside Vault (5):**
+  - `00_Core/STATE.md` — Header auf 21.04. Mittag aktualisiert; Backtest-Ready-Eintrag um Drift-Migration ergänzt; **neuer Open-Backlog-Block** mit 2 Items (Daily-Persist + Audit-Tool).
+  - `00_Core/INSTRUKTIONEN.md §27.4` — neue Klausel „Zweite Klasse — Vertikal-Drift" + Präzedenzfall 21.04.2026.
+  - `CLAUDE.md` Applied Learning Bullet 12/20 — „Drift-Check = exhaustive Schema-Validation aller Records, nicht Spot-Check".
+  - Memory `feedback_exhaustive_drift_check.md` (NEU, Tier 1).
+  - Memory `MEMORY.md` Index — 13 topic files.
+  - `03_Tools/backtest-ready/migrate_defcon_drift.py` (NEU, idempotent One-Shot-Tool).
+- **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores aller 11 Satelliten unverändert (Migration nur defcon_level recompute aus score_gesamt). Skill bleibt v3.7.2.
+- **Lesson Learned:** Spot-Check über STATE.md-Snapshot ist KEIN Drift-Check. Schema-Migration tickt vorwärts, Altdaten bleiben silent stale, jeder zukünftige Validator-Test wird toxisch verzerrt. Pflichtreflex bei „Hygiene"/„Drift"-Aufträgen: Re-Validate-Sweep über alle Stores, „N/M PASS" explizit.
+- **Next:** Provenance-Plan-Patches (4 Codex-Punkte: Task 0 Baseline-Check + Task 2 Re-Validate-Step + Task 3 Granularitäts-Split + Task 6 CORE-MEMORY §10 Timing-Fix), dann Plan-Execution. Sub-Spec für `system_audit.py` in nächster Session als β-Pfad.

@@ -550,6 +550,10 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 
 **Präzedenzfall:** 18.04.2026 Schema-SKILL-Threshold-Drift — Fix in schemas.py alleine hätte 5 Vault-Pages und beide Tools veraltet zurückgelassen. Kaskaden-Sync war Pflicht.
 
+**Zweite Klasse — Vertikal-Drift (Schema-Migration auf Altdaten):** Bei Wortwahl „Drift-Check"/„Hygiene"/„System-Sanity"-Auftrag ODER bei jedem Schema-/Threshold-Migration-Commit zusätzlich Re-Validate-Sweep aller persistierten Records (`05_Archiv/*.jsonl`) gegen aktuelles Schema durchführen. Spot-Check über Wahrheitsquellen (oben) deckt nur Horizontal-Drift; vertikale Drift entsteht silent wenn Validator-Threshold tickt aber alte Records nicht migriert werden. **Resultat als „N/M PASS" explizit ausschreiben**, niemals weichgespültes „sieht gut aus". Bei FAIL: idempotente Snap-to-Schema-Migration als separater Commit VOR weiterer Arbeit.
+
+**Präzedenzfall (vertikal):** 21.04.2026 Pre-Check vor Provenance-Gate-Plan — 12/27 Records in `score_history.jsonl` waren seit 18.04.-Threshold-Migration silent inkonsistent, nie aufgefallen, weil zwischendurch nur Spot-Check auf Forward-Pfad lief (`feedback_exhaustive_drift_check.md`).
+
 **Wissenschaftlicher Anker:** Double-Counting-Vermeidung und Bonus-Cap-Check verhindern False-Positives unterhalb §29.4 t-Stat ≥ 3 Hurdle (Harvey/Liu/Zhu). Jede neue Sub-Komponente muss t≥3 erreichen. → §29.4 / [[Aghassi-2023-Fact-Fiction]]
 
 ---
