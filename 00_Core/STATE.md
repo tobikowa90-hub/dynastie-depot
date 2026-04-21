@@ -135,4 +135,16 @@
 **Briefing-Sync:** `!SyncBriefing` vor Session-Ende, wenn 00_Core/ geändert wurde (§25).
 
 ---
+<!-- system-audit:last-audit:start -->
+---
+
+## 🔍 Last Audit
+
+**Timestamp (UTC):** 2026-04-21T22:15:18Z
+**Result:** 3/3 PASS
+**Run:** `python 03_Tools/system_audit.py --minimal-baseline`
+**Full-Report:** stdout (kein Archiv-File)
+
+<!-- system-audit:last-audit:end -->
+
 *🦅 STATE.md v1.0 | Dynasty-Depot | Entry-Point statt 1.200-Zeilen-Auto-Read*

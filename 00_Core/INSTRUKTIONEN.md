@@ -559,6 +559,31 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 
 **Wissenschaftlicher Anker:** Double-Counting-Vermeidung und Bonus-Cap-Check verhindern False-Positives unterhalb §29.4 t-Stat ≥ 3 Hurdle (Harvey/Liu/Zhu). Jede neue Sub-Komponente muss t≥3 erreichen. → §29.4 / [[Aghassi-2023-Fact-Fiction]]
 
+### 27.5 Migration-Regression-Guard (22.04.2026, system-audit v1.0)
+
+**Regel:** Nach jedem Lauf eines `03_Tools/backtest-ready/migrate_*.py`-Helpers MUSS
+`python 03_Tools/system_audit.py --minimal-baseline` Exit-Code 0 zeigen
+(strukturelle Integrity: `jsonl_schema` + `pipeline_ssot` + `log_lag`).
+Ein FAIL nach Migration bedeutet: Migration unvollständig oder neuer Schema-Drift
+eingeführt. Der Migration-Commit darf nicht gepusht werden, bevor dieser
+Regression-Guard grün ist.
+
+**Scope-Entscheidung `--minimal-baseline` statt `--core`:** Plan 2026-04-21
+sah `--core` vor; in Praxis blockiert pre-existing Drift in Check-3
+(`markdown_header` Future-Date-Bug, Follow-up-Task) und Check-5 (`existence`,
+~54 CLAUDE.md-Pfadreferenzen deferred auf Post-Task-17-Follow-up-Welle) den
+Baseline-Gate. `--minimal-baseline` isoliert die 3 Checks, die Migrationen
+tatsächlich gefährden können, ohne Drift-Noise. Sobald Check-3-Fix + existence-
+Cleanup committed sind, wird der Guard auf `--core` hochgezogen (Migration-
+Kommentar in dieser Regel).
+
+**Rationale:** Drift-Migration 21.04.2026 (12/27 defcon-silent-Drift) bewies,
+dass einzelne Migrations-Helper nur ihre Ziel-Klasse fixen. Der Audit-Gesamtblick
+fängt Cross-Store-Drift, die ein spezialisiertes Tool nicht sieht. Schema-Re-
+Validation (Check-1) + Pipeline-Plan-Existenz (Check-6) + log-Aktualität (Check-7)
+sind die minimalen strukturellen Invarianten, die ein Migrations-Run nicht
+brechen darf.
+
 ---
 
 ## 28. Scoring-Version-Migration-Workflow
