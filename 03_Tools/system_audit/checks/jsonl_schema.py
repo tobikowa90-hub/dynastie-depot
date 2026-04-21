@@ -24,7 +24,9 @@ def run(
 ) -> CheckResult:
     start = time.monotonic()
 
-    sys.path.insert(0, str(repo_root / "03_Tools" / "backtest-ready"))
+    _backtest_path = str(repo_root / "03_Tools" / "backtest-ready")
+    if _backtest_path not in sys.path:
+        sys.path.insert(0, _backtest_path)
     from schemas import (
         BenchmarkReturnRecord,
         FlagEvent,
@@ -41,7 +43,7 @@ def run(
 
     if stores_override:
         models = {k: v[1] for k, v in default_stores.items()}
-        stores = {k: (p, models[k]) for k, p in stores_override.items()}
+        stores = {k: (p, models[k]) for k, p in stores_override.items() if k in models}
     else:
         stores = default_stores
 
@@ -51,9 +53,10 @@ def run(
     any_parsed = False
 
     for store_name, (path, model) in stores.items():
+        path_str = str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
         if not path.exists():
             failures.append(FailureDetail(
-                location=str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path),
+                location=f"{store_name}:{path_str}",
                 expected="file present",
                 actual="missing",
                 severity="warning",
@@ -62,7 +65,7 @@ def run(
             continue
         if path.stat().st_size == 0:
             failures.append(FailureDetail(
-                location=str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path),
+                location=f"{store_name}:{path_str}",
                 expected="non-empty store",
                 actual="empty",
                 severity="warning",
@@ -80,11 +83,17 @@ def run(
                     model.model_validate(json.loads(line))
                     n_passed += 1
                 except ValidationError as e:
-                    first_err = str(e).split("\n")[1][:140] if "\n" in str(e) else str(e)[:140]
+                    errs = e.errors()
+                    if errs:
+                        first = errs[0]
+                        loc_path = ".".join(str(p) for p in first["loc"]) or "<root>"
+                        actual = f"{loc_path}: {first['msg']}"[:140]
+                    else:
+                        actual = str(e)[:140]
                     failures.append(FailureDetail(
                         location=f"{path.relative_to(repo_root)}:{lineno}",
                         expected=f"{model.__name__} valid",
-                        actual=first_err,
+                        actual=actual,
                         severity="error",
                         hint="Migration-Helper ausfuehren oder Backfill re-run",
                     ))
