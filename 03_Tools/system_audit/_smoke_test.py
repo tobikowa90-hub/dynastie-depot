@@ -383,6 +383,28 @@ def test_pipeline_ssot_fail_on_broken_ref() -> None:
     assert any("nonexistent.md" in f.actual for f in result.failures)
 
 
+def test_log_lag_live_repo_pass() -> None:
+    from system_audit.checks.log_lag import run
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx)
+    assert result.status in ("PASS", "SKIP"), f"failures={result.failures}"
+
+def test_log_lag_fail_on_stale() -> None:
+    import tempfile, subprocess
+    from system_audit.checks.log_lag import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        subprocess.run(["git", "init", "-q"], cwd=tdp, check=True)
+        subprocess.run(["git", "-c", "user.name=T", "-c", "user.email=t@t", "commit",
+                        "--allow-empty", "-m", "init"], cwd=tdp, check=True, capture_output=True)
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki"
+        vault.mkdir(parents=True)
+        (vault / "log.md").write_text("## [2020-01-01] historical\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -420,3 +442,6 @@ if __name__ == "__main__":
     test_pipeline_ssot_pass_on_live_state()
     test_pipeline_ssot_fail_on_broken_ref()
     print("[OK] pipeline_ssot smoke tests passed")
+    test_log_lag_live_repo_pass()
+    test_log_lag_fail_on_stale()
+    print("[OK] log_lag smoke tests passed")

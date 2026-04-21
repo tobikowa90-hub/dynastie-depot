@@ -13,5 +13,6 @@ CORE: dict[str, str] = {
     "existence": "system_audit.checks.existence:run",
     "skill_version": "system_audit.checks.skill_version:run",
     "pipeline_ssot": "system_audit.checks.pipeline_ssot:run",
+    "log_lag": "system_audit.checks.log_lag:run",
 }      # name → "system_audit.checks.<module>:run"
 OPTIONAL: dict[str, str] = {}  # same shape, activated via --full / --vault
