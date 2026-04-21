@@ -719,7 +719,6 @@ def _smoke_tests() -> None:
 
     # Case 4: Quality-Trap violation — moat=wide, fwd_pe_roh=35, fundamentals.fwd_pe=4
     # Build from scratch to avoid shared nested-dict mutation.
-    import copy
     qt = copy.deepcopy(avgo)
     qt["metriken_roh"]["fwd_pe"] = 35.0  # > 30 → fwd_pe score must be 0
     qt["scores"]["fundamentals"]["fwd_pe"] = 4
