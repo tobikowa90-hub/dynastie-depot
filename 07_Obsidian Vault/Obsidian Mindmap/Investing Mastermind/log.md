@@ -728,3 +728,29 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Phase B — Handover-Update:** SESSION-HANDOVER.md erhält einen kleinen „A+B+C completed, D next" Hinweis (diese Wiki-log.md-Zeile ist der zweite Teil von Phase B).
 - **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten aller 11 Satelliten unverändert. Reine Dokumentations-Kohärenz-Wiederherstellung.
 - **Next:** Phase D — Brainstorming-Skill → Sub-Spec `docs/superpowers/specs/2026-04-22-system-audit-tool-design.md` (Scope Codex-aligned, JSONL-Schema + Markdown-Cross-Drift Kern, Vault-Backlinks optional).
+
+## [2026-04-21] implementation | Task 14 System-Audit Optional Checks 8/9 + Fix-Welle C+D
+
+- **Kontext:** Phase E Tasks 1-13 bereits in dieser Session fertig (Task-13 CLI-Orchestrator + Fix-Welle A+B + Pre-Task-14-Hygiene committed). Task 14 = letzter Build-Schritt vor Task 15 (Smoke-Temp-Repo) / Task 19 (Acceptance-Matrix).
+- **Task 14 Scope (Plan 2837-3113, Spec §5.2):** Check-8 `vault_backlinks.py` (Obsidian `[[Wikilink]]`-Resolver, 20s Timeout, SKIP on missing vault) + Check-9 `status_matrix.py` (B1..BN Monotonicity + No-Duplicate-Gate auf `Wissenschaftliche-Fundierung-DEFCON.md`) als Optional-Checks (`--full`/`--vault`-Scope).
+- **Methodik (Review-Matrix-konform, `feedback_review_stack.md`):** Implementer-Subagent (Sonnet) via `subagent-driven-development` → Spec-Compliance-Review (Subagent) → Claude-Code-Quality-Review (Subagent) → Fix-Welle C (TDD RED-GREEN) → Codex Post-Impl-Reconciliation (Pflicht-Gate) → CodeRabbit-CLI-Review via WSL → Fix-Welle D.
+- **Pflicht-Quick-Win Session-Start (Task-1 aus SESSION-HANDOVER-Backlog):** `jsonl_schema.py:83` `json.loads + model_validate` → `model_validate_json` (Pydantic v2, ein Pass). Bonus-Fix in Fix-Welle C: `errs[0]["type"] == "json_invalid"`-Branch für differenzierten Hint (verhindert misleading "Migration-Helper"-Empfehlung bei echtem JSON-Parse-Fehler).
+- **Code-Review-Findings + Fixes (Fix-Welle C):**
+  - Blocker #1 (status_matrix): Section-Isolation matched first textual "Status-Matrix" in Prosa, nicht den Header → silent PASS bei Dokumenten die "Status-Matrix" in Prosa vor dem echten Header erwähnen. Fix: `HEADER_RE = ^#{1,6}\s+...Status-Matrix...$` MULTILINE + level-aware Terminator (same-or-higher Heading-Level ohne Status-Matrix-Match). Subsections-Preservation via Regression-Test locked.
+  - Blocker #2 (status_matrix): `n_passed = len(numbers) - len(failures)` doppelte Abzug-Fehler — gap-failures referenzieren B-Nummern die gar nicht in `numbers` sind. Fix: `len(numbers) - len(dup_numbers)` (nur Duplikate reduzieren n_passed; Gaps sind unabhängige Failures). Counter ersetzt O(n²) count-Loop.
+  - Important #3 (jsonl_schema): Hint differenziert zwischen JSON-Parse-Error (type=`json_invalid`) und Schema-Drift.
+  - Deferred Important #4-7 (vault_backlinks Robustness-Pass): stem-collisions, timeout-granularity, SKIP+warning-Mix, dedup — als Task #4 Follow-up getrackt, einzeln deferrable.
+- **Codex Post-Impl-Reconciliation-Verdikt: RECONCILED** — alle 5 Spec-Drift-Punkte + 3 Info-Loss-Punkte COMPLIANT/ACCEPTABLE_DEVIATION/PRESERVED. Kein DRIFT_FIX_REQUIRED. Non-blocking Nit: `--vault` CLI-Help-Text war stale (Fix-Welle D).
+- **CodeRabbit-CLI-Verdikt (via WSL `wsl.exe -- bash -lc 'coderabbit review --base f99571e --plain'`):** 7 Findings. Adressiert: (1) `vault_backlinks.py` docstring-Falschheit "Hardcoded 20s" → "context.vault_timeout_s"; (2) `status_matrix.py:17` unused `context`-Param → noqa-Doku-Kommentar. Deferred nach Task #4: `WIKILINK_RE [[C#]]`-Edge-Case + Timeout-Granularity-per-File (deckt Important #5). Ignoriert: 2× Vault-Noise (Unbenannt.*-Dateien aus User-Vault).
+- **Pages updated outside Vault (7):**
+  - `03_Tools/system_audit/checks/vault_backlinks.py` (NEW, 62 LOC)
+  - `03_Tools/system_audit/checks/status_matrix.py` (NEW, 64 LOC post-Fix-Welle-C+D)
+  - `03_Tools/system_audit/checks/jsonl_schema.py` (model_validate_json + json_invalid-branching)
+  - `03_Tools/system_audit/checks/__init__.py` (OPTIONAL registry populated)
+  - `03_Tools/system_audit/_smoke_test.py` (+10 Fixtures: 6 Task-14-Spec + 4 Fix-Welle-C-Regression)
+  - `03_Tools/system_audit.py` (--vault-Filter-Bug-Fix + Help-Text-Update)
+  - `00_Core/STATE.md` + `00_Core/SESSION-HANDOVER.md` (Phase E 13→14/19 + Task-4-Follow-up + float→Decimal Long-Term-Gate)
+- **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten aller 11 Satelliten unverändert. Reine Tooling-Arbeit.
+- **Commits dieser Session (6):** `510cbbf` (Feature) · `68d58ab` (Fix-Welle C) · `6926f58` (STATE Long-Term-Gate) · `9a3906f` (Handover-Sync) · `b1b41d1` (Fix-Welle D).
+- **Lesson Learned (Kandidat für Applied Learning):** Fixture-green ≠ live-correct bei Parser/Regex-Scope-Fixes. Blocker-#1-Fix (header-anchored HEADER_RE) war grün auf 3 Fixtures, aber der initial zu enge End-Terminator hätte Live-Drift übersehen (status_matrix 1/1 statt 21/25). Entdeckt nur via `--full` Live-Run — Regression-Test `test_status_matrix_subsections_are_scanned` lockt das Verhalten jetzt.
+- **Next:** Task 15 Smoke-Test temp-repo-copy (Plan 3109-3246, Spec §7.4). Dann Tasks 16-19 (Slash-Command `/SystemAudit`, INSTRUKTIONEN §27.4 Regression-Guard, Pipeline-SSoT-Sync, Acceptance-Matrix).
