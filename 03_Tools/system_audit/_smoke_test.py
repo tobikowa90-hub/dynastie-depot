@@ -184,6 +184,28 @@ def test_store_freshness_skip_on_missing() -> None:
     assert result.status == "SKIP"
 
 
+def test_markdown_header_pass_on_aligned() -> None:
+    from system_audit.checks.markdown_header import run
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "markdown_header"
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx, targets_override=[
+        (fx / "state_ok.md", "state"),
+        (fx / "core_memory_ok.md", "core_memory"),
+        (fx / "faktortabelle_ok.md", "faktortabelle"),
+    ])
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_markdown_header_fail_on_stale() -> None:
+    from system_audit.checks.markdown_header import run
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "markdown_header"
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx, targets_override=[
+        (fx / "state_stale.md", "state"),
+    ])
+    assert result.status == "FAIL"
+    assert any(f.severity == "error" for f in result.failures)
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -201,3 +223,6 @@ if __name__ == "__main__":
     test_store_freshness_pass_on_fresh()
     test_store_freshness_skip_on_missing()
     print("[OK] store_freshness smoke tests passed")
+    test_markdown_header_pass_on_aligned()
+    test_markdown_header_fail_on_stale()
+    print("[OK] markdown_header smoke tests passed")
