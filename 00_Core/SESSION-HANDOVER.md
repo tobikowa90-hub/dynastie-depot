@@ -1,110 +1,133 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-21 Nacht (**Phase E 14/19 Tasks done** — Task 14 Optional Checks 8/9 + Fix-Welle C committed; 2 Blocker + 1 Important aus Code-Review behoben, 4 Important-Findings deferred als Follow-up-Task).
-**Vorherige Aktualisierungen:** 2026-04-21 Abend-Spät — Task 13 (`4a9168e`/`4dc8825`/`0dbd8f2`) · 2026-04-21 Abend — Fix-Welle A (`7cea0e0`) · 2026-04-21 Nachmittag-Spät — Spec v0.2 ratified (`82482d7`).
+**Aktualisiert:** 2026-04-22 (**Phase E 18/19 Tasks done** — Tasks 15/16/17/18 committed; nur **Task 19** (Verification-Before-Completion Acceptance-Matrix + 2. obligatorischer 4-Wege-Review-Pass) offen).
+**Vorherige Aktualisierungen:** 2026-04-21 Nacht — Task 14 Optional Checks + Fix-Welle C+D (`ab6b3f5`) · 2026-04-21 Abend-Spät — Task 13 (`4a9168e`/`4dc8825`/`0dbd8f2`) · 2026-04-21 Abend — Fix-Welle A (`7cea0e0`) · 2026-04-21 Nachmittag-Spät — Spec v0.2 ratified (`82482d7`).
 
-> **Progress-Banner (Phase A-G):** ✅ A+B+C (Sync-Welle `8acb13c`) · ✅ D (Spec v0.2 `82482d7`) · 🟡 **E 14/19** (Tasks 1-14 done, 15-19 open) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04.).
+> **Progress-Banner (Phase A-G):** ✅ A+B+C (Sync-Welle `8acb13c`) · ✅ D (Spec v0.2 `82482d7`) · 🟡 **E 18/19** (Tasks 1-18 done, 19 open) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04.).
 
 ## 🚀 NÄCHSTE SESSION — Direkter Einstieg
 
-**Trigger:** `Session starten` → STATE.md lesen → `superpowers:subagent-driven-development` + `superpowers:test-driven-development` Skills aktivieren → **Task 15 in_progress setzen** → Plan-Lesen Zeilen 3117-3246 (Smoke-Test gegen temp-repo-copy, Spec §7.4).
+**Trigger:** `Session starten` → STATE.md lesen → `superpowers:subagent-driven-development` Skill aktivieren → **Task 19 in_progress setzen** → Plan-Lesen Zeilen 3467-3501 (Acceptance-Matrix) + `docs/superpowers/specs/2026-04-21-system-audit-tool-design.md` §12.
 
 **Command zur schnellen Lageprüfung:**
 ```bash
 cd "C:\Users\tobia\OneDrive\Desktop\Claude Stuff"
-python 03_Tools/system_audit/_smoke_test.py           # muss 14/14 [OK] zeigen (Task 14: vault_backlinks + status_matrix dazugekommen)
-python 03_Tools/backtest-ready/schemas.py             # muss "all schema smoke tests passed"
-python 03_Tools/system_audit.py --full --no-write     # rc=1 (echte Drift), Check-1..10 alle laufen
-git log --oneline 34090f2..HEAD | head -15            # 6 neue Commits (Task 13 + Fix-B + hygiene + Task 14 + Fix-C + state-long-term-gate)
-git status --short                                    # clean auf Tool-Seite (Vault-Noise kann bleiben)
+python 03_Tools/system_audit/_smoke_test.py          # muss 14/14 [OK]
+python 03_Tools/system_audit/_smoke_temp_repo.py     # muss 2× [OK] (baseline + seeded-drift)
+python 03_Tools/backtest-ready/schemas.py            # muss "all schema smoke tests passed"
+python 03_Tools/system_audit.py --minimal-baseline   # rc=0, 3/3 PASS, schreibt Last-Audit-Block
+python 03_Tools/system_audit.py --full --no-write    # rc=1 (known bugs) — NICHT fixen, Context-Info
+git log --oneline ab6b3f5..HEAD | head -6            # 4 neue Commits
+git status --short                                   # nur Vault-Noise (pre-existing, User-seitig)
 ```
 
 ---
 
-## 📋 Was in Session 21.04. Nacht passiert ist (Task 14 done)
+## 📋 Was in Session 22.04. passiert ist (Tasks 15/16/17/18 done)
 
-**Task 14 vollständig abgeschlossen mit 3-Wege-Review (Implementer-Subagent + Spec-Review + Code-Quality-Review → Fix-Welle C → Re-Review APPROVED).** TDD RED→GREEN durchgezogen auch in Fix-Welle (failing regression tests first).
+**4 Commit-Wellen, alle Codex-reviewed bei Spec-Drift, keine Code-Quality-Pässe bei Minor-Tasks (per `feedback_review_stack.md` Matrix). Fix-Pattern für nächste Session: Task 19 braucht BEIDES (Codex + CodeRabbit) als Meilenstein-Abschluss.**
 
-| Commit | Inhalt |
-|--------|--------|
-| `6926f58` | docs(state): float→Decimal Migration Long-Term-Gate 2027-10-19 (User-Punkt 1) |
-| `68d58ab` | fix: Fix-Welle C — Code-Review Blocker #1 (Status-Matrix Prose-Match false-negative, jetzt Header-anchored + level-aware terminator) + Blocker #2 (n_passed = len(numbers) - len(dup_numbers) statt - len(failures)) + Important #3 (jsonl_schema json_invalid-Hint differenziert gegen Schema-Drift). 4 neue Regression-Tests (smoke 14/14). |
-| `510cbbf` | feat: Check-8 vault_backlinks + Check-9 status_matrix (optional) — TDD RED-GREEN via Implementer-Subagent. Live duration Check-8 = 29ms → <5s-Gate PASS. Orchestrator `--vault`-Filter-Bug (pre-existing) als Korrektheits-Prereq mit-gefixt. jsonl_schema model_validate_json-Quick-Win (Task-1 Pflicht) gebundled. |
+| Commit | Task | Inhalt |
+|--------|------|--------|
+| `486f2c1` | **15** | Smoke `_smoke_temp_repo.py` (120 LOC) — temp-repo + seeded-drift integration. Codex-Reconciliation Option 2: `rc == 0` → `rc ∈ {0, 1}` (Plan-Header-Notice dokumentiert). 3 Plattform-Fixes (Py 3.14 sys.path-Guard, Windows cp1252 encoding). Live: `[OK]` 2×. |
+| `fa238bf` | **16** | `.claude/commands/SystemAudit.md` (15 LOC) — Slash-Command-Wrapper `$ARGUMENTS`-Passthrough, Default `--core`. Interaktiver Slash-Trigger-Test **offen** (kann in nächster Session via `/SystemAudit --minimal-baseline` verifiziert werden). |
+| `ab7ae19` | **17** | INSTRUKTIONEN §27.5 Migration-Regression-Guard + initialer Baseline-Run. Scope `--minimal-baseline` statt Plan-ursprünglich `--core` (Plan-Header-Notice dokumentiert Rollback-Pfad an Check-3-Fix + existence-Cleanup). STATE.md bekommt ersten ehrlichen Last-Audit-Block 3/3 PASS. |
+| `ca35f62` | **18** | Sync-Welle: STATE.md Banner 18/19 + Pipeline-SSoT Punkt 4 DONE + Backlog „Audit-Tool fehlt" → deployed + Last-Audit refreshed 22:19:55Z; CORE-MEMORY §10 Sub-Section 22.04. mit Check-Status-Tabelle + Plan-Header-Notices-Verweis + Lesson (Fixtures vs Live-Content); log.md Entry `[2026-04-22] deployment`. |
 
-**Session-Start Pflicht-Quick-Win (Task-1) erledigt:** `json.loads + model_validate` → `model_validate_json` in `jsonl_schema.py`. Bonus-Fix in Fix-Welle C: `json_invalid` type-branch für differenzierten Hint.
+**Baseline-Realität (wichtig für Task 19):**
+- `--minimal-baseline` (Check-1 jsonl_schema + Check-6 pipeline_ssot + Check-7 log_lag) = **3/3 PASS, rc=0** — das ist der Regression-Guard-Gate.
+- `--core` = 4/8 PASS, rc=1 mit 2 known Tool-Bugs:
+  - **Check-3 `markdown_header` Future-Date-Bug** — Long-Term-Gate-Rows (2028-04-01 Review-Gate §29.6, 2027-10-19 R5-Interim, 2026-10-17 Score-Archiv-Interim) werden als "newest event" gewertet → falsches FAIL auf STATE.md + Faktortabelle. Tool-Bug, nicht echte Drift. **Follow-up-Task #2 offen.**
+  - **Check-5 `existence`** — 54/186 CLAUDE.md-Pfadreferenzen ohne `00_Core/`-Prefix. Per SESSION-HANDOVER-Vorgänger-Zeile 100 explizit auf **post-Task-17 Follow-up-Welle deferred** (~135 existence-FAILs werden per Tool aufgeräumt, nicht in dieser Session-Sequenz).
 
-**Code-Review-Outcome:** 2 Blocker + 5 Important/Nit gefunden. 2 Blocker + Important #3 sofort gefixt. Important #4-7 (vault_backlinks: stem-collisions / timeout-granularity / SKIP+warning-Mix / dedup) deferred als Task #4 `Follow-up: vault_backlinks Robustness-Pass` — einzeln deferrable, nicht Task-14-blocking.
-
-**Deferred-Entscheidung Check-10 `header_footer_stand_consistency`:** NICHT in Task 14 gebundled — bleibt Mini-Task nach Task 19. Begründung: Task 14 Scope ist in Spec §5.2 auf Checks 8/9 gepinnt, Check-10 wäre Spec-Drift ohne neuen Advisor-Durchgang.
-
-**Fix-Welle-C-Details (`68d58ab`):**
-- Blocker #1: `HEADER_RE = r"^#{1,6}\s+...Status-Matrix...$"` + `term_pattern` dynamisch level-aware (Heading-Level aus matched line extrahiert, Terminator matched nur gleiche-oder-höhere Levels ohne "Status-Matrix").
-- Blocker #2: `n_passed = len(numbers) - len(dup_numbers)` (gap-failures referenzieren B-Nummern die gar nicht in `numbers` sind → dürfen nicht abziehen). `collections.Counter` ersetzt O(n²)-count-Loop.
-- Important #3: `is_json_error = errs[0].get("type") == "json_invalid"` → hint differenziert "Record manuell pruefen / entfernen" vs "Migration-Helper".
-- 4 neue Regression-Fixtures: `test_status_matrix_header_anchored_not_prose_match`, `test_status_matrix_subsections_are_scanned`, `test_status_matrix_n_passed_arithmetic_with_gaps`, `test_jsonl_schema_malformed_json_hint`.
+**Plan-Header-Notices (Spec-Drift-Dokumentation, Spec v0.2 frozen):** 2 Stück im Plan-File `docs/superpowers/plans/2026-04-21-system-audit-tool.md` (gitignored, liegt on-disk). Keine Spec-v0.3-PR nötig — User-Entscheidung A pragmatisch + Codex-Reconciliation RECONCILED.
 
 ---
 
-## 🎯 Task 14 — Pre-Notes + User-5-Punkte-Ausfalloffene
+## 🎯 Task 19 Details — Acceptance-Matrix + 2. 4-Wege-Review-Pass
 
-**Task 14 (Plan 2829-3107):** Optional Checks 8/9 — Vault-Backlinks + Status-Matrix. 20s Timeout, 6 Fixtures (Codex-P5).
+**Plan 3467-3501 + Spec §12.** Step 19.1 = 11 Acceptance-Items verifizieren, Step 19.2 = Execution-Report an User.
 
-**Session-Start Pflicht-Quick-Win (User-Finding 2, 2026-04-21):**
+### Acceptance-Matrix (Spec §12) — erwartete Outcomes pro Item
 
-`03_Tools/system_audit/checks/jsonl_schema.py:83` nutzt `model.model_validate(json.loads(line))` — doppeltes Parsing-Anti-Pattern. Pydantic v2 `model_validate_json(line)` macht beides rust-nativ in einem Pass. ~2 Min Fix, bestehender Test `test_jsonl_schema_fail_on_bad_fixture` ist das Safety-Net. Bonus: `json.JSONDecodeError` wird zu `ValidationError type='json_invalid'` (einheitliche Fehlerbehandlung).
+| # | Acceptance | Erwartung 22.04. | Evidence |
+|---|---|---|---|
+| 1 | `PortfolioReturnRecord` + `BenchmarkReturnRecord` + Tests | ✅ PASS — 8-10/10 | `python 03_Tools/backtest-ready/schemas.py` |
+| 2 | Tool Exit-Code 0 auf Baseline | **⚠️ Drift** — `--core` rc=1 wg. Tool-Bugs. `--minimal-baseline` rc=0 ist der pragmatische Gate. | Plan-Header-Notice Task 15 + Task 17 |
+| 3 | `/SystemAudit` funktional, STATE.md Last-Audit-Block | ✅ PASS | `grep '<!-- system-audit:last-audit:start -->' 00_Core/STATE.md` |
+| 4 | 7 Kern-Checks + 1.5 + ≥3 Fixtures/Check | ✅ PASS | `_smoke_test.py` 14/14 |
+| 5 | Parser-Golden-Tests | ✅ PASS | `_smoke_test.py`-Output |
+| 6 | Integration (Baseline + Seeded-Drift + temp-repo-Smoke) | ✅ PASS — 2× `[OK]` | `_smoke_temp_repo.py` |
+| 7 | Exit-Codes 0/1/2 differenziert | Manuell-Test in 19.1 (für rc=2 Tool-Bug-Injection) | — |
+| 8 | INSTRUKTIONEN §27 Regression-Guard | ✅ PASS — §27.5 | `grep -n 'Migration-Regression-Guard' 00_Core/INSTRUKTIONEN.md` |
+| 9 | Optional-Checks Vault + Status-Matrix mit Timeout | ✅ PASS | `--full` zeigt 9 Checks (Check-8 29ms, Check-9 grün) |
+| 10 | Duration <30s auf `--core` | ✅ PASS — 210ms | Live-Output Task 18 |
+| 11 | STATE.md Pipeline-SSoT-Section updatet | ✅ PASS | Commit `ca35f62` |
 
-**Check-8-Time-Monotonic-Gate (User-Finding 3, 2026-04-21):**
+**Item-2-Handling:** Drift explizit als Acceptance-Note ausweisen: `--core` rc=0 ist aufgeschoben (abhängig von Follow-up-Task #2 Check-3-Fix + existence-Cleanup). `--minimal-baseline` rc=0 erfüllt den strukturellen Invarianten-Gate (jsonl_schema + pipeline_ssot + log_lag). Siehe Plan-Header-Notices + STATE.md Last-Audit-Block.
 
-Bei Task-14-Implementation Check-8 Vault-Backlinks mit `time.monotonic()` Start-Ende-Messung einbauen. Zwei Pragma-Gates für Live-Run-Entscheidung:
-- **<5s live-run** → sync-Implementation bleibt, keine Aktion.
-- **>10s** → **Task-15-Backlog: subprocess-Isolation mit hard-kill-Timeout** (deckt sich mit Daemon-Thread-Docstring-Notiz aus Fix-Welle B Finding A).
+### 2. 4-Wege-Review-Pass (Meilenstein-Abschluss, `feedback_review_stack.md` Matrix)
 
-**Check-10-Kandidat (neu aus Hygiene-Welle 21.04. Abend-Spät):**
+**Sequenz:** Codex → CodeRabbit (NICHT invertiert — kein Security-Refactor).
 
-`header_footer_stand_consistency` — Scan aller `00_Core/*.md` nach Header-`**Stand:**` und Footer-`Stand:` (unter 🦅-Sentinel), flag wenn beide vorhanden + unterschiedlich. Heutige Drift-Welle deckte 3/5 Files auf (CORE-MEMORY 4d, INSTRUKTIONEN 1d, KONTEXT 13d). Trivial via Regex implementierbar, <50 LOC. Entscheidung: als Check-10 in Task 14 mit einbauen ODER als eigenen Mini-Task nach Task 14.
+**Codex-Pass (Meilenstein-Reconciliation):** Gegen gesamte Task-15-bis-18-Delta (`git diff ab6b3f5..HEAD`).
+- Fokus: Spec-Drift-Dokumentations-Qualität der 2 Plan-Header-Notices, Acceptance-Matrix-Coverage vs Spec §12, §27.5-Klausel-Wortlaut vs §27.4-Präzedenz-Struktur.
+- Dispatch via `codex:rescue` mit `--fresh` (neue Thread, nicht Reconciliation-Continuation).
+
+**CodeRabbit-Pass:** `wsl.exe -- bash -lc 'coderabbit review --base ab6b3f5 --plain'` (kanonisch, memory `coderabbit_cli_via_wsl.md`).
+- Fokus: Style-/Security-/Correctness-Findings im Code-Delta (`_smoke_temp_repo.py`, `.claude/commands/SystemAudit.md`).
+- Erwartung: 2-5 Findings (Task 14 hatte 7 in ähnlichem Scope), wahrscheinlich Minor (nit/warning-Severity).
+
+**Fix-Welle falls Findings:** Separate Fix-Commits `fix(system-audit): Fix-Welle E — ...`, dann Re-Review falls Blocker.
+
+**Final-Commit Task 19:** `log(phase-e-done): Task 19 Acceptance-Matrix PASS + 2. 4-Wege-Review RECONCILED` mit Execution-Report im Commit-Body.
 
 ---
 
-## 🧠 User-5-Punkte-Session-Diskussion (2026-04-21 Abend-Spät)
-
-User brachte 5 technische Punkte nach Task-13-Abschluss ein, validiert via CodeRabbit-CLI-Run gegen `schemas.py` + `jsonl_schema.py` (Commit `0dbd8f2` lesbar).
-
-**Kalibrierungs-Outcome:** CodeRabbit-CLI flaggte weder Punkt 1 noch Punkt 2 — Domain-Pattern-Detection ist schwach bei CLI, stark bei Syntax-Idiomen. Learning in `coderabbit_cli_via_wsl.md` Memory persistiert.
-
-| Punkt | Thema | Status | Handoff-Action |
-|-------|-------|--------|----------------|
-| 1 | `float → Decimal` für PortfolioReturnRecord + Position + BenchmarkReturnRecord | **Backlog mit Deadline 2027-10-19** (R5-Interim-Gate 18-Mo-Dry-Run braucht exakte Zahlen für Sharpe/Sortino/Beta) | Eigener kurzer Migration-Plan ~1 Session; blockt nicht Task 14-19. STATE.md Long-Term-Gate-Eintrag nachtragen. |
-| 2 | `model_validate_json()` statt `json.loads + model_validate` | **Pflicht-Quick-Win Session-Start** | Siehe oben. |
-| 3 | Async/Detached für Check-8 (Vault-Scaling) | **Conditional — Time-Monotonic-Gate** | Siehe oben. |
-| 4 | Context Eviction + Exit-Code-Kontrakt | Bestätigung meiner Choices, keine Aktion | — |
-| 5 | HTML-Marker + frozen=True | Bestätigung meiner Choices, keine Aktion | — |
-
----
-
-## 📊 Commit-Graph (seit letztem Handover `34090f2`)
+## 📊 Commit-Graph (seit letztem Handover `ab6b3f5`)
 
 ```
-0dbd8f2 chore(hygiene): pre-Task-14 cleanup — CodeRabbit-CLI Quick-Wins + Stand-Sync
-4dc8825 fix(system-audit): Fix-Welle B — Codex + CodeRabbit-CLI 4-Wege-Review-Findings
-4a9168e feat(system-audit): CLI orchestrator --core/--full/--vault/--minimal-baseline
-34090f2 (baseline) handover(phase-e-mid): Tasks 1-12 + Fix-Welle A
+ca35f62 handover(system-audit): Task 18 Sync-Welle — Pipeline-SSoT + §10-Audit + log.md
+ab7ae19 chore(docs): Task 17 INSTRUKTIONEN §27.5 Migration-Regression-Guard + Baseline
+fa238bf feat(system-audit): Task 16 /SystemAudit slash-command wrapper
+486f2c1 test(system-audit): Task 15 temp-repo smoke + seeded-drift integration
+ab6b3f5 (baseline) log(task-14): Task 14 System-Audit Optional Checks + Fix-Welle C+D
 ```
 
 ---
 
-## 🎯 Remaining Tasks 15-19 (Phase E Abschluss)
+## 🎯 Follow-up-Tasks (TodoWrite gepflegt, offen)
 
-- ✅ **14 Optional Check-8/9** `vault_backlinks` + `status_matrix` — committed `510cbbf` (TDD-Build) + `68d58ab` (Fix-Welle C: 2 Blocker + Important #3 aus Code-Review). Live-duration Check-8 = 29-32ms → Task-15-subprocess-isolation NICHT nötig (<5s-Gate). Deferred: Task #4 (vault_backlinks Robustness-Pass für Important #4-7 aus Code-Review — stem-collisions, timeout-granularity, SKIP+warning semantics, dedup — einzeln deferrable).
-- **15 Smoke-Test temp-repo-copy** (Plan 3109-3246). Spec §7.4.
-- **16 Slash-Command `/SystemAudit`** (Plan 3248-3299).
-- **17 INSTRUKTIONEN §27.4 Regression-Guard + Live-Baseline-Run** (Plan 3301-3370). Task-17-Baseline-Scope-Entscheidung (A/B aus ursprünglichem Handover): **A pragmatisch** (`--minimal-baseline` als Gate — 3 Checks strukturelle Integrity). Die ~135 existence-FAILs werden per Tool in Follow-up-Welle aufgeräumt.
-- **18 Pipeline-SSoT + CORE-MEMORY + log.md + Briefing-Sync** (Plan 3372-3436).
-- **19 Verification-Before-Completion Acceptance-Matrix** (Plan 3438-Ende, Spec §12). **Zweiter obligatorischer 4-Wege-Review-Pass** (Matrix-Zeile "Meilenstein/PR-Abschluss = BEIDE sequenziert").
+- **#2** Check-3 `markdown_header` future-date-exclude (eigener Task, nicht Task-15/17-Bundle). Bug in `03_Tools/system_audit/checks/markdown_header.py:51-63` `_newest_event_date_state` — Future-Dates aus Event-Kandidaten ausschließen. In-process-Fixtures synthetisch → Bug-Trigger erst mit realem Content.
+- **#4** vault_backlinks Robustness-Pass (Important #4-7 aus Task-14-Code-Review: stem-collisions, timeout-granularity, SKIP+warning-Mix, dedup). Einzeln deferrable.
+- **existence-Cleanup-Welle** (Post-Task-17, ~54 CLAUDE.md-Pfadreferenzen ohne `00_Core/`-Prefix). Quelle: CLAUDE.md oder existence-Check-Logik anpassen.
+- **Daily-Persist-Auto-Trigger** (Track 4 ETF/Gold-Erweiterung): Cron/Hook für `portfolio_returns.jsonl` + `benchmark-series.jsonl` — 1 Record seit 17.04. stale.
 
 ---
 
 ## 🧠 Deferred: Skill-Frage für nach Task 19
 
-Housekeeping-Skill `system-state-guardian` — Opus-Vorschlag aus User-Parallelgespräch 2026-04-21 Abend. Kernpunkte: (a) Kategorie Housekeeping (Meta-Ebene, analog skill-creator), NICHT Analyse-Pipeline. (b) Strikte Trennung: Housekeeping wartet State, Analyse-Skills benutzen State. (c) Aktivierungspfade: Session-Start Silent-Mode, `!HygieneCheck` manuell, nach skill-creator-Modifikationen. NICHT aus dynastie-depot heraus. (d) Auto-Fix-Whitelist vs User-Eskalation hart definiert. (e) Audit-Trail `hygiene_log.jsonl`. (f) Dry-Run-Pflicht erste 2-4 Wochen. (g) Erst Python-API einfrieren → dann SKILL.md als dünne Kapsel drüber.
+Housekeeping-Skill `system-state-guardian` — Opus-Vorschlag 2026-04-21 Abend. Ausgelagert in vorherigen Handover für Persistenz; **Entscheidung weiterhin auf nach Task 19 aufgehoben**.
 
-**Entschieden:** Skill-Entscheidung **auf nach Task 19 aufgehoben.** Ausgelagert in diesen Handover für Persistenz über Sessions.
+---
+
+## 🌐 Session-Übergabe-Protokoll
+
+**Vor Session-Clear empfehlenswert:**
+1. `!SyncBriefing` ausführen (CLAUDE.md §25) — pushed `00_Core/` ins GitHub-Repo, damit Remote-Trigger (10:00 Morning Briefing) aktuellen Stand liest. **Review-Gate Pflicht** (explizite User-Bestätigung), nicht auto-push. Aktuelle Commits unpushed: `486f2c1`, `fa238bf`, `ab7ae19`, `ca35f62` — und jetziger Handover-Update-Commit.
+2. Vault-Noise im Working-Tree bleibt unangetastet (pre-existing `.obsidian/graph.json` + 3 Untracked-Vault-Files vom User).
+
+**Nach Session-Clear — erste Session-Start-Sequenz:**
+1. `Session starten` → STATE.md lesen.
+2. `superpowers:subagent-driven-development` Skill aktivieren.
+3. Handover lesen (diese Datei) — besonders Baseline-Realität + Item-2-Drift-Handling.
+4. Plan Task 19 (Plan-Zeilen 3467-3501) lesen.
+5. Spec §12 lesen (`docs/superpowers/specs/2026-04-21-system-audit-tool-design.md`).
+6. Lageprüfung-Command-Block oben ausführen.
+7. Task 19 in_progress setzen.
+8. Acceptance-Matrix abhaken (Evidence-Commands pro Item ausführen, Drift-Notes dokumentieren für Item 2).
+9. Codex-Pass dispatchen (via `codex:rescue` Fresh-Thread).
+10. CodeRabbit-Pass via WSL.
+11. Fix-Welle falls Findings.
+12. Final-Commit Task 19.
+13. Optional: Briefing-Sync abschließen falls noch offen.
