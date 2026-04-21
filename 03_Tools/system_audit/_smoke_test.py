@@ -438,6 +438,60 @@ def test_report_json_format_is_valid() -> None:
     assert data["checks"][0]["name"] == "a"
 
 
+def test_state_writer_first_run_inserts_before_footer() -> None:
+    import tempfile
+    from system_audit.state_writer import write_last_audit
+    with tempfile.TemporaryDirectory() as td:
+        p = Path(td) / "STATE.md"
+        p.write_text(
+            "# STATE\n\n## Section A\nContent\n\n---\n*🦅 STATE.md v1.0 | Footer*\n",
+            encoding="utf-8",
+        )
+        write_last_audit(p, timestamp_utc="2026-04-21T14:32:41Z",
+                         summary="7/7 PASS", run_cmd="python 03_Tools/system_audit.py --core")
+        text = p.read_text(encoding="utf-8")
+    assert "<!-- system-audit:last-audit:start -->" in text
+    assert "<!-- system-audit:last-audit:end -->" in text
+    assert "## 🔍 Last Audit" in text
+    assert "2026-04-21T14:32:41Z" in text
+    assert text.index("<!-- system-audit:last-audit:end -->") < text.index("🦅 STATE.md v1.0")
+
+def test_state_writer_second_run_replaces_block() -> None:
+    import tempfile
+    from system_audit.state_writer import write_last_audit
+    with tempfile.TemporaryDirectory() as td:
+        p = Path(td) / "STATE.md"
+        p.write_text(
+            "# STATE\n\n---\n*🦅 STATE.md v1.0*\n",
+            encoding="utf-8",
+        )
+        write_last_audit(p, timestamp_utc="2026-04-21T14:32:41Z",
+                         summary="7/7 PASS", run_cmd="x")
+        write_last_audit(p, timestamp_utc="2026-04-22T09:00:00Z",
+                         summary="6/7 PASS (1 FAIL)", run_cmd="x")
+        text = p.read_text(encoding="utf-8")
+    assert text.count("<!-- system-audit:last-audit:start -->") == 1
+    assert "2026-04-22T09:00:00Z" in text
+    assert "2026-04-21T14:32:41Z" not in text
+    assert "6/7 PASS" in text
+
+def test_state_writer_raises_on_orphan_start_marker() -> None:
+    import tempfile
+    from system_audit.state_writer import write_last_audit
+    with tempfile.TemporaryDirectory() as td:
+        p = Path(td) / "STATE.md"
+        p.write_text(
+            "# STATE\n<!-- system-audit:last-audit:start -->\n(missing end)\n*🦅 Footer*\n",
+            encoding="utf-8",
+        )
+        try:
+            write_last_audit(p, timestamp_utc="x", summary="x", run_cmd="x")
+        except RuntimeError as e:
+            assert "inkonsistent" in str(e).lower() or "marker" in str(e).lower()
+        else:
+            raise AssertionError("expected RuntimeError on orphan marker")
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -481,3 +535,7 @@ if __name__ == "__main__":
     test_report_human_format_contains_summary()
     test_report_json_format_is_valid()
     print("[OK] report smoke tests passed")
+    test_state_writer_first_run_inserts_before_footer()
+    test_state_writer_second_run_replaces_block()
+    test_state_writer_raises_on_orphan_start_marker()
+    print("[OK] state_writer smoke tests passed")
