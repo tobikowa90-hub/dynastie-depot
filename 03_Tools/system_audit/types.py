@@ -32,7 +32,11 @@ class CheckResult:
 
 @dataclass
 class AuditContext:
-    """Read-only context passed to every check.run(repo_root, context)."""
+    """Context passed to every check.run(repo_root, context).
+
+    Mutable by design — orchestrator sets include_optional / vault_timeout_s
+    per run before dispatching. Checks treat it as read-only.
+    """
     repo_root: Path
     include_optional: bool = False
     vault_timeout_s: int = 20
