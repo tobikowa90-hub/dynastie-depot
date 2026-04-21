@@ -1,9 +1,16 @@
 # System-Audit-Tool — Design Spec
 
 **Datum:** 2026-04-21 (Nachmittag)
-**Status:** draft (Spec-Review pending — User + Codex parallel)
+**Status:** **v0.2 ratified** (User + Codex Joint-Review 2026-04-21 Nachmittag, alle 7 Open Questions resolved, 6 Patches eingepflegt)
 **Scope-ID:** B1 (internes Drift-Audit-Tool, intern gebaut statt codebase-memory-mcp)
 **Nachfolge-Artefakt:** Implementation-Plan `docs/superpowers/plans/2026-04-21-system-audit-tool.md` (Phase E dieser Session-Sequenz)
+
+### Review-Chronik
+
+| Runde | Reviewer | Verdict | Action |
+|---|---|---|---|
+| 1 | Claude Opus 4.7 Self-Review | Minor | Check-6 Forward-Direction verworfen (6/11 Plan-Files würden FAIL-Noise produzieren) → MVP Reverse-Only |
+| 2 | Codex + User Joint-Review | YELLOW | 6 Patches + 3 Anmerkungen eingepflegt (v0.1 → v0.2) |
 
 ---
 
@@ -133,7 +140,7 @@ Mit:
 @dataclass
 class CheckResult:
     name: str                 # e.g. "jsonl_schema"
-    status: Literal["PASS", "FAIL", "SKIP"]
+    status: Literal["PASS", "WARN", "FAIL", "SKIP"]
     n_checked: int
     n_passed: int
     failures: list[FailureDetail]  # empty if status == PASS
@@ -145,9 +152,17 @@ class FailureDetail:
     location: str             # file:line or file:record_id
     expected: str             # human-readable what-should-be
     actual: str               # human-readable what-is
-    severity: Literal["error", "warning"]  # warning = non-blocking für Exit-Code
+    severity: Literal["error", "warning"]  # error → FAIL-Contribution; warning → WARN-Contribution
     hint: str | None          # suggested remediation (z.B. „run migrate_defcon_drift.py")
 ```
+
+**Status-Semantik (Codex-Patch v0.2):**
+- `PASS` → alle Checks grün, keine Failures mit `severity="warning"`.
+- `WARN` → alle `severity="error"` sauber, aber ≥1 `severity="warning"` vorhanden. **Exit-Code bleibt 0** (warnings sind non-blocking), aber Report zeigt WARN-Status explizit.
+- `FAIL` → ≥1 Failure mit `severity="error"`. Exit-Code 1.
+- `SKIP` → Check konnte nicht laufen (Missing-Dependency, Missing-File, Timeout). Exit-Code bleibt 0, Summary zeigt SKIP-Count.
+
+**Aggregations-Regel:** Tool-Exit-Code = 0 wenn kein Check `status="FAIL"` hat. WARN + SKIP beide exit 0. Nur FAIL → exit 1. IO/Parse-Tool-Error → exit 2.
 
 Dieser Contract ermöglicht: Report-Aggregation uniform, Test-Fixtures uniform, neuer Check = neue Datei + Registry-Eintrag (keine Refactorings am Orchestrator).
 
@@ -164,27 +179,51 @@ Dieser Contract ermöglicht: Report-Aggregation uniform, Test-Fixtures uniform, 
 **Stores:**
 - `05_Archiv/score_history.jsonl` → `schemas.ScoreRecord.model_validate(line)`
 - `05_Archiv/flag_events.jsonl` → `schemas.FlagEvent.model_validate(line)`
-- `05_Archiv/portfolio_returns.jsonl` → `PortfolioReturnRecord.model_validate(line)` (Schema neu einzuführen — derzeit nur Daily-Schema v1.0 als Docstring in `portfolio_risk.py`)
-- `05_Archiv/benchmark-series.jsonl` → `BenchmarkReturnRecord.model_validate(line)` (analog)
+- `05_Archiv/portfolio_returns.jsonl` → `schemas.PortfolioReturnRecord.model_validate(line)` (**Schema in Plan Task 1 nachzurüsten** — derzeit nur Daily-Schema v1.0 als Docstring in `portfolio_risk.py`)
+- `05_Archiv/benchmark-series.jsonl` → `schemas.BenchmarkReturnRecord.model_validate(line)` (analog, Plan Task 1)
 
 **Fail-Mode:**
-- Pydantic `ValidationError` pro Zeile → 1 `FailureDetail` mit `location=file:lineno`, `expected=field-error-message`, `hint="re-run backfill oder migration-tool"`.
-- Leere Datei: SKIP (nicht FAIL), Warnung im Report.
+- Pydantic `ValidationError` pro Zeile → 1 `FailureDetail` mit `severity="error"`, `location=file:lineno`, `expected=field-error-message`, `hint="re-run backfill oder migration-tool"`.
+- Missing-File → `status=SKIP` mit `severity="warning"` Notiz „Store nicht vorhanden — Backfill ausstehend?".
+- Empty-File → `status=SKIP` mit `severity="warning"` Notiz „Store leer".
 
-**Soft-Coupling:** Wenn Pydantic-Modelle für portfolio_returns / benchmark-series noch nicht existieren — **Check-1.3 und Check-1.4 laufen als SKIP mit Warnung**, bis Plan eine Migration nachholt. Verhindert false-negatives durch fehlendes Schema.
+**Codex-Patch v0.2 (Q1 resolved YES):** Kein SKIP-Fallback wegen fehlendem Pydantic-Modell. Plan Task 1 rüstet `PortfolioReturnRecord` + `BenchmarkReturnRecord` in `03_Tools/backtest-ready/schemas.py` nach **vor** Check-1-Implementation. SKIP bleibt **ausschließlich** für Missing-File / Empty-File reserviert. Verhindert konservierten Blind-Spot.
+
+#### Check-1.5: Store Freshness (Codex-Patch v0.2, P1)
+
+**Zweck:** Staleness-Detection für Daily-Persist-Stores. STATE-Backlog 21.04. dokumentiert: `portfolio_returns.jsonl` + `benchmark-series.jsonl` seit 17.04. je nur 1 Record — Daily-Append-Cron existiert nicht, Manual-Trigger-Pflicht wurde vergessen. Audit-Tool muss das sichtbar machen, darf aber nicht FAIL werfen, solange Track 4 nicht aufgelöst ist.
+
+**Regel:**
+- Extrahiere `date` (oder `timestamp`) des letzten Records aus `portfolio_returns.jsonl` und `benchmark-series.jsonl`.
+- Bestimme `last_business_day`: letzter Mon-Fri vor heute (oder heute, wenn Mon-Fri).
+- `last_record_date < last_business_day - N Werktage` → `severity="warning"` (WARN, nicht FAIL).
+- Initial N = 3 Werktage (Puffer für Karfreitag/Oster-Phänomene).
+
+**Verhalten:**
+- `severity="warning"` → Check-1.5 trägt WARN bei. Exit-Code bleibt 0.
+- **Eskalations-Trigger für Verschärfung auf error:** Sobald Track 4 ETF+Gold-Erweiterung + Auto-Persist-Cron implementiert ist, severity auf `error` erhöhen (dann FAIL). Bis dahin Persistenz-Pflicht = User-Erinnerung.
+- Score-Stores (`score_history.jsonl`, `flag_events.jsonl`) **nicht** in Check-1.5 — diese sind Event-getriggert, nicht Daily-getriggert, Staleness ist dort nicht sinnvoll definiert.
+
+**Fail-Mode (WARN):** „`portfolio_returns.jsonl` letzter Record YYYY-MM-DD, last_business_day YYYY-MM-DD (Lag N Tage). Daily-Append-Cron fehlt — Track 4 öffnet das auf."
+
+**Edge-Case:** Bei US-Feiertagen (Thanksgiving, Christmas) kann 3-Werktage-Puffer zu kurz sein. Puffer ist bewusst großzügig gewählt (3 statt 1); Feiertags-Kalender-Support als Future-Work wenn Noise real wird.
 
 #### Check-2: Markdown Header-Stand-Drift
 
 **Zweck:** Dokumentations-Aktualität (21.04. CORE-MEMORY 4 Tage stale).
 
-**Targets:**
-- `00_Core/STATE.md` → Header-Zeile Regex `\*\*Stand:\*\*\s*([0-9]{2}\.[0-9]{2}\.[0-9]{4})` vs. jüngste Portfolio-State-Zeile-Implied-Date (aus Commit-Author-Date oder log.md-Tail — whichever ist jünger).
-- `00_Core/CORE-MEMORY.md` → `**Stand:**` vs. letzter §1 Tabellen-Eintrag-Datum.
+**Targets (Codex-Patch v0.2 P6 — Event-Date-aus-Markdown-Content, NICHT commit-author-date):**
+- `00_Core/STATE.md` → Header-Zeile Regex `\*\*Stand:\*\*\s*([0-9]{2}\.[0-9]{2}\.[0-9]{4})` vs. jüngste Event-Date aus Markdown-Content (z.B. „Stand:" im Header-Kommentar, oder Pipeline-SSoT-Section-Termine).
+- `00_Core/CORE-MEMORY.md` → `**Stand:**` vs. letzter §1 Tabellen-Eintrag-Datum (erste Spalte der §1-Tabelle).
 - `00_Core/Faktortabelle.md` → `**Stand:**` vs. jüngstes `Score-Datum`-Feld in Haupttabelle.
 
-**Threshold:** `stand - neueste_event_date > 2 Werktage` → FAIL. (Wochenenden nicht gezählt.)
+**Werktag-Definition (Codex-Patch v0.2 P6):** Mon-Fri. Feiertage werden ignoriert, solange kein Feiertags-Kalender existiert (Future-Work falls Noise real wird). Rationale: Holiday-Calendar wäre US+DE+FR-Hybrid (ASML EU, V US, SU FR) — zu komplex für MVP.
 
-**Fail-Mode:** 1 FailureDetail pro Datei mit Hint „Header-Zeile aktualisieren".
+**Threshold:** `stand - neueste_event_date > 2 Werktage` → `severity="error"` (FAIL). 1-2 Werktage Lag = `severity="warning"` (WARN).
+
+**Rationale gegen Commit-Author-Date:** Mass-Edit-Commits (z.B. heutiger A+B+C Sync-Commit berührte 5 Dateien) würden alle Files als „gerade geändert" markieren, ohne dass Content-Stand tatsächlich gepflegt wurde. Event-Date aus parse-barem Markdown-Content ist zuverlässiger.
+
+**Fail-Mode:** 1 FailureDetail pro Datei mit Hint „Header-Zeile aktualisieren auf YYYY-MM-DD".
 
 **Edge-Case:** Wenn kein Parse-Match → FAIL mit „Regex matched 0 Zeilen, Datei-Struktur geändert?"
 
@@ -207,16 +246,32 @@ Dieser Contract ermöglicht: Report-Aggregation uniform, Test-Fixtures uniform, 
 
 **Fail-Mode:** Pro Ticker eine FailureDetail mit Form `AVGO: config.yaml=84/D4 vs STATE.md=85/D4`.
 
-**Edge-Case:** FLAG-Semantic-Divergence (z.B. config.yaml `flag: false`, STATE.md `🔴 Score-basiert`) — Mapping-Table definieren: `flag:true ↔ 🔴`, `flag:false ↔ ✅|⚠️`, `⚠️` = Warning nicht FAIL.
+**FLAG-Parsing-Semantik (Codex-Patch v0.2 P3 — präziser als v0.1):**
+
+Beobachtete STATE.md-Werte: `✅`, `⚠️ Insider-Review`, `✅ Insurance Exception`, `✅ Screener-Exception`, `🔴 Score-basiert`, `🔴 CapEx/OCF 83.6%`.
+
+**Parse-Regel:** Icon ist Status, Suffix-Text ist Reason (optional, nicht Teil des Match).
+
+| config.yaml `flag:` | STATE.md Icon | Urteil | Severity |
+|---|---|---|---|
+| `false` | `✅` (mit oder ohne Exception-Suffix) | Match | — (PASS-Contribution) |
+| `false` | `⚠️` | Match (Warning-Watch aktiv) | `warning` (WARN-Contribution) |
+| `false` | `🔴` | **Mismatch: config sagt kein FLAG, STATE sagt FLAG** | `error` (FAIL-Contribution) |
+| `true` | `🔴` (mit Reason-Suffix) | Match | — (PASS-Contribution) |
+| `true` | `✅` oder `⚠️` | **Mismatch: config sagt FLAG, STATE sagt kein FLAG** | `error` (FAIL-Contribution) |
+
+Die Ausnahme-Suffixe (`Insurance Exception`, `Screener-Exception`) sind informationell, werden nicht gegen config.yaml gematcht (bewusst, weil config.yaml keine Exception-Felder führt).
+
+**Edge-Case:** STATE.md zeigt nur Icon ohne Text (z.B. `✅`) — das ist der Normal-Fall und Match-fähig. Text-Extraktion optional für Report-Hint.
 
 #### Check-4: Existence-Check (Pfad-Referenzen)
 
 **Zweck:** Verhindert, dass Pläne/Handover auf nicht-existierende Dateien verweisen.
 
-**Scan-Quellen:**
+**Scan-Quellen (Codex-Patch v0.2 — kanonisch qualifiziert):**
 - `CLAUDE.md` (project + user's auto-memory MEMORY.md referenzierte Pfade).
 - `00_Core/STATE.md` (alle backtick-wrapped Pfade `\`03_Tools/x.py\``).
-- `00_Core/SESSION-HANDOVER.md` (analog).
+- `00_Core/SESSION-HANDOVER.md` (kanonischer Pfad — **nicht** Root-Level `SESSION-HANDOVER.md`; wenn Root-File als Alt-Referenz auftaucht, FailureDetail mit Hint „kanonischer Pfad `00_Core/...`").
 - `docs/superpowers/plans/*.md` (falls in STATE.md Pipeline-SSoT-Section referenziert).
 
 **Extraction:** Regex ``([^\s`]+\.(py|md|yaml|yml|jsonl|xlsx|zip))``; ignoriere URLs (http*), Wikilinks (`[[...]]`) und Code-Fences.
@@ -379,9 +434,10 @@ Exit-Code: 1
 
 ### 6.5 STATE.md „Last Audit"-Section (idempotent)
 
-Tool fügt (oder ersetzt) am Ende von STATE.md unmittelbar vor dem `*🦅 STATE.md v1.0 ...` Footer:
+Tool fügt (oder ersetzt) am Ende von STATE.md unmittelbar vor dem `*🦅 STATE.md v1.0 ...` Footer einen durch HTML-Kommentare eingefassten Block:
 
 ```markdown
+<!-- system-audit:last-audit:start -->
 ---
 
 ## 🔍 Last Audit
@@ -390,11 +446,21 @@ Tool fügt (oder ersetzt) am Ende von STATE.md unmittelbar vor dem `*🦅 STATE.
 **Result:** 6/7 PASS (1 FAIL: cross_source)
 **Run:** `python 03_Tools/system_audit.py --core`
 **Full-Report:** stdout (kein Archiv-File)
+
+<!-- system-audit:last-audit:end -->
 ```
 
-**Idempotenz:** Bei wiederholtem Run → ersetzt bestehenden Block (Marker-Regex `## 🔍 Last Audit` bis nächste `^## ` oder `^---`).
+**Idempotenz (Codex-Patch v0.2 P5):** Bei wiederholtem Run → ersetzt bestehenden Block durch **explizite Begin-/End-Marker** statt fragiler Regex `## 🔍 Last Audit bis ^##`. Rationale: Regex-Marker bricht, wenn User später weitere Sections unterhalb einfügt oder den `---`-Separator verschiebt. HTML-Kommentare sind unsichtbar im gerenderten Markdown + definieren einen eindeutigen Ersetzungs-Bereich.
 
-**Opt-Out:** `--no-write` Flag überspringt State-Update.
+**Algorithmus:**
+1. Lese STATE.md.
+2. Wenn `<!-- system-audit:last-audit:start -->` vorhanden: finde korrespondierenden End-Marker, ersetze gesamten Block inklusive beider Marker.
+3. Wenn nicht vorhanden: erster Run — fügt Block vor dem Footer-Zeile `*🦅 STATE.md v1.0` ein.
+4. Atomic-Write (tmp + `os.replace`).
+
+**Fail-Mode:** Wenn Start-Marker vorhanden aber End-Marker fehlt (korrupter Zustand) → Exit-Code 2 mit Fehlermeldung „STATE.md Marker-Block inkonsistent — manuell fixen"; **kein** Blind-Append (würde Duplikate produzieren).
+
+**Opt-Out:** `--no-write` Flag überspringt State-Update komplett.
 
 ---
 
@@ -410,12 +476,28 @@ Jeder Check hat `test_<check>.py` mit mindestens 3 Fixtures:
 ### 7.2 Integration-Test
 
 `test_integration.py`:
-- **Baseline-Run:** Aktueller Repo-Stand → erwartet PASS auf allen Kern-Checks.
-- **Seeded-Drift-Run:** Temporäres Repo-Copy mit injizierter Drift (z.B. defcon_level=4 bei Score 70 in `score_history.jsonl`) → erwartet FAIL auf Check-1.
+- **Baseline-Run:** Aktueller Repo-Stand → erwartet Exit-Code 0 auf allen Kern-Checks. **Wichtig:** `status="WARN"` für Check-1.5 ist erwartet (Daily-Persist-Stale aus Track-4-Backlog), exit-code trotzdem 0.
+- **Seeded-Drift-Run:** Temporäres Repo-Copy mit injizierter Drift (z.B. defcon_level=4 bei Score 70 in `score_history.jsonl`) → erwartet Exit-Code 1 auf Check-1 mit präziser Failure-Location.
 
-### 7.3 Smoke-Test
+### 7.3 Parser-Golden-Tests (Codex-Patch v0.2)
 
-`smoke_test.sh`: Lauf gegen aktuellen Repo, erwartet `exit 0` + „Last Audit"-Zeile in STATE.md geschrieben.
+Separate Tests für die brüchigsten Parse-Punkte:
+- **STATE-Pipeline-Section-Parser:** Fixtures mit diversen Pipeline-Section-Varianten (leer / nur 🔴 / mit ⏰-Subtabelle / unterbrochen durch Nebensections) → Parser liefert korrekte Plan-Referenz-Liste.
+- **FLAG-Variants-Parser:** Alle 6 beobachteten STATE.md-FLAG-Werte (`✅`, `⚠️ Insider-Review`, `✅ Insurance Exception`, `✅ Screener-Exception`, `🔴 Score-basiert`, `🔴 CapEx/OCF 83.6%`) als Input → Icon-Extraktion korrekt.
+- **Last-Audit-Idempotenz:** Mehrfacher Run gegen gleiche STATE.md → exakt ein `<!-- system-audit:last-audit:start -->` Block vorhanden; Content wird ersetzt, nicht dupliziert.
+
+### 7.4 Smoke-Test (Codex-Patch v0.2 — temp-repo-copy)
+
+`smoke_test.sh` / `smoke_test.py`: Tool läuft gegen **temp-repo-copy** (kopiert das echte Repo in `tmpdir`, führt `system_audit.py --core --write` dort aus), prüft:
+- Exit-Code 0.
+- `<!-- system-audit:last-audit:start -->` Block vorhanden in temp-STATE.md.
+- Timestamp im Block ist innerhalb der letzten 60 Sekunden.
+
+**Rationale:** Smoke-Test darf **nicht** die echte STATE.md dirtien (sonst muss der Test-Runner jedes Mal reverten). Temp-Copy ist sauber + reproduzierbar + CI-fähig.
+
+### 7.5 Regression-Guard
+
+Nach jedem `migrate_*.py` muss `system_audit.py --core` Exit-Code 0 zeigen — explizite Regel in INSTRUKTIONEN §27.4 nachzutragen (Plan Task 8).
 
 ### 7.4 Regression-Guard
 
@@ -465,21 +547,19 @@ Kein SessionStart-Hook, kein Cron, kein Pre-Commit-Default. User-Agency bleibt z
 
 ---
 
-## 10. Open Questions (für Spec-Review)
+## 10. Open Questions — Resolved (Joint-Review 2026-04-21 Nachmittag)
 
-1. **Portfolio-Returns-Schema:** Soll Spec vorschreiben, dass Plan zuerst `PortfolioReturnRecord`-Pydantic-Modell in `schemas.py` hinzufügt (bevor Check-1.3/1.4 aus SKIP-Zustand kommen)? **Vorschlag:** Ja, als Task 1 im Plan. Alternative: Als Future-Work separat planen.
+Alle 7 Fragen durch User + Codex **aligned** entschieden. Keine offenen Punkte mehr.
 
-2. **Vault-Backlinks Timeout:** 20s wie spezifiziert, oder flexibler (env-var `SYSTEM_AUDIT_VAULT_TIMEOUT`)? **Vorschlag:** Start-hardcoded 20s, später flexibilisieren falls echte Vault-Größe Problem macht.
-
-3. **Status-Matrix-Check:** Gehört in Kern oder Optional? **Vorschlag:** Optional, weil Status-Matrix inhaltlich weniger kritisch als JSONL-Drift ist — wenn B-Nummerierung driftet, ist das eine Doku-Inkonsistenz, kein Scoring-Risk.
-
-4. **STATE.md-Last-Audit-Update bei FAIL:** Soll die Last-Audit-Zeile auch bei FAIL geschrieben werden? **Vorschlag:** Ja (Transparenz > Cosmetics) — Zeile zeigt dann „❌ 6/7 PASS, 1 FAIL". Alternative: Nur bei PASS schreiben (dann weiß man, dass letzte grüne Audit-Zeit älter ist als hier behauptet).
-
-5. **Check-6 Plan-Status-Label:** MVP läuft Reverse-Only (Spec-§5.1 Check-6 reflektiert das). Status-Label-Nachrüstung für alle 11 bestehenden Pläne + Forward-Direction als separater Follow-up-Plan — wahrscheinlich ~45 Min Edit-Aufwand (11 Dateien × Frontmatter-Addition) + Check-6.2-Implementation. **Vorschlag:** Follow-up nicht in dieser Phase-E-Plan, sondern in einer späteren Session nach Phase-G-Abschluss (keine Blockade für TMO Q1).
-
-6. **Pydantic-Models-Location:** Neue Models (PortfolioReturnRecord, BenchmarkReturnRecord) nach `03_Tools/backtest-ready/schemas.py` (bestehender Hub) oder separate Datei? **Vorschlag:** schemas.py (bestehender Hub, INSTRUKTIONEN §18 referenziert dort).
-
-7. **CI-Integration:** Exit-Code 1 bei FAIL ist CI-ready — aber gibt es aktuell keinen CI-Runner. Soll Plan GitHub-Actions-Workflow als Task 10/11 nachziehen? **Vorschlag:** Nein (YAGNI), erst wenn GitHub-Actions tatsächlich genutzt werden. Exit-Code bleibt.
+| # | Frage | Resolution | Downstream |
+|---|-------|------------|------------|
+| **Q1** | PortfolioReturnRecord / BenchmarkReturnRecord Pydantic-Models nachrüsten? | **YES** — Plan Task 1 pflichtig **vor** Check-1-Implementation. SKIP-Fallback bei fehlendem Schema wurde aus §5.1 entfernt (Codex-Patch P2). | Plan Task 1 |
+| **Q2** | Vault-Timeout env-var? | **NO** — hardcoded 20s, Future-Work wenn Noise. | §5.2 unverändert |
+| **Q3** | Status-Matrix Kern oder Optional? | **Optional** — Doku-Integrität ≠ Scoring-Risk. | §5.2 Check-9 |
+| **Q4** | Last-Audit-Zeile auch bei FAIL schreiben? | **YES** — Transparenz > green-only Cosmetics. Zeile zeigt dann exit_code + WARN/FAIL-Counts. | §6.5 |
+| **Q5** | Plan-Status-Frontmatter Follow-up-Timing? | **YES defer** — nach Phase-G (TMO Q1 23.04.). Keine Blockade. | Follow-up-Plan TBD |
+| **Q6** | Neue Models in schemas.py? | **YES schemas.py** (bestehender Hub, INSTRUKTIONEN §18 referenziert). | Plan Task 1 |
+| **Q7** | GitHub-Actions-Workflow? | **NO** YAGNI — kein CI-Runner aktiv, Exit-Codes genügen. | §3 Non-Goal bestätigt |
 
 ---
 
@@ -496,15 +576,18 @@ Kein SessionStart-Hook, kein Cron, kein Pre-Commit-Default. User-Agency bleibt z
 
 ## 12. Acceptance-Kriterien (für Implementation-Plan)
 
-- [ ] Tool läuft gegen aktuellen Repo-Stand mit `exit 0` (Baseline).
-- [ ] `/SystemAudit` Slash-Command funktional, STATE.md-„Last Audit"-Zeile geschrieben.
-- [ ] Alle 7 Kern-Checks implementiert mit ≥ 3 Unit-Test-Fixtures pro Check (PASS / FAIL / EDGE).
-- [ ] Integration-Test PASS (Baseline + Seeded-Drift).
-- [ ] Exit-Codes 0/1/2 korrekt differenziert (Smoke-Test).
-- [ ] INSTRUKTIONEN §27.4 um Regression-Guard-Regel ergänzt („nach jedem migrate_*.py → system_audit.py --core PASS").
+- [ ] **Task 1:** `schemas.PortfolioReturnRecord` + `schemas.BenchmarkReturnRecord` in `03_Tools/backtest-ready/schemas.py` nachgerüstet + Unit-Tests für beide Models.
+- [ ] Tool läuft gegen aktuellen Repo-Stand mit Exit-Code 0 (Baseline). Check-1.5 darf `status="WARN"` zeigen (Daily-Persist-Stale), das ist Soll-Zustand bis Track 4.
+- [ ] `/SystemAudit` Slash-Command funktional, STATE.md-„Last Audit"-Block (HTML-Comment-Marker) geschrieben.
+- [ ] Alle 7 Kern-Checks inkl. Check-1.5 implementiert mit ≥ 3 Unit-Test-Fixtures pro Check (PASS / FAIL / EDGE).
+- [ ] Parser-Golden-Tests für STATE-Pipeline-Section, FLAG-Variants, Last-Audit-Idempotenz.
+- [ ] Integration-Test (Baseline + Seeded-Drift) + Smoke-Test (temp-repo-copy).
+- [ ] Exit-Codes 0/1/2 korrekt differenziert: 0 = all PASS/WARN/SKIP, 1 = ≥1 FAIL, 2 = IO/Tool-Error.
+- [ ] INSTRUKTIONEN §27.4 um Regression-Guard-Regel ergänzt („nach jedem migrate_*.py → system_audit.py --core Exit 0").
 - [ ] Optional-Checks (Vault + Status-Matrix) implementiert mit Timeout-Handling.
 - [ ] Duration <30s bei --core auf aktuellem Repo-Stand (Performance-Budget).
+- [ ] STATE.md `🗺 Aktive Pipeline (SSoT)`-Section um Plan-Referenz für dieses Tool updatet, sobald Plan geschrieben (Pipeline-SSoT-Pflege-Pattern).
 
 ---
 
-*Spec v0.1 draft | Spec-Review: User + Codex parallel | Nach Approval → Plan-Writing Phase E*
+*Spec v0.2 ratified (Codex + User Joint-Review 2026-04-21) | Nächster Schritt: Plan-Writing (Phase E) via `superpowers:writing-plans`-Skill*
