@@ -79,6 +79,7 @@ def run(
                 if any(raw.startswith(p) for p in WHITELIST_PREFIXES):
                     continue
                 if raw.endswith("SESSION-HANDOVER.md") and "00_Core" not in raw and legacy_handover.exists():
+                    n_checked += 1
                     failures.append(FailureDetail(
                         location=f"{src.relative_to(repo_root) if src.is_relative_to(repo_root) else src}:{lineno}",
                         expected="00_Core/SESSION-HANDOVER.md (canonical path)",
