@@ -3,11 +3,15 @@ from __future__ import annotations
 
 import re
 import time
+from collections import Counter
 from pathlib import Path
 
 from system_audit.types import AuditContext, CheckResult, FailureDetail
 
 B_LABEL_RE = re.compile(r"\bB(\d+)\b")
+# Header-anchored match prevents false-negatives when "Status-Matrix" appears
+# in prose before the actual heading (Code-Review Blocker #1).
+HEADER_RE = re.compile(r"^#{1,6}\s+[^\n]*Status-Matrix[^\n]*$", re.MULTILINE | re.IGNORECASE)
 
 
 def run(repo_root: Path, context: AuditContext) -> CheckResult:
@@ -18,25 +22,37 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
                            failures=[], duration_ms=0, category="optional")
 
     text = target.read_text(encoding="utf-8")
-    m = re.search(r"Status-Matrix", text, re.IGNORECASE)
+    m = HEADER_RE.search(text)
     if not m:
         return CheckResult(name="status_matrix", status="SKIP", n_checked=0, n_passed=0,
                            failures=[], duration_ms=int((time.monotonic() - start) * 1000),
                            category="optional")
     section_start = m.start()
     after = text[section_start:]
-    next_h = re.search(r"^##\s+(?!Status)", after, re.MULTILINE)
-    section = after[:next_h.start()] if next_h else after
+    # Skip the matched header line itself when searching for the next heading,
+    # otherwise the Status-Matrix heading would match against its own exclusion.
+    body_start = m.end() - m.start()
+    # Terminate at the next heading of the SAME OR HIGHER level (fewer or
+    # equal `#`) that isn't itself a Status-Matrix heading. Subsections
+    # (deeper level) must stay inside the section so `### Matrix` etc. get
+    # scanned. Without level-awareness the first `###` would prematurely cut.
+    header_line = m.group(0)
+    level = len(header_line) - len(header_line.lstrip("#"))
+    term_pattern = rf"^#{{1,{level}}}\s+(?!.*Status-Matrix)"
+    next_h = re.search(term_pattern, after[body_start:], re.MULTILINE | re.IGNORECASE)
+    section = after[:body_start + next_h.start()] if next_h else after
 
-    numbers = sorted(set(int(lm.group(1)) for lm in B_LABEL_RE.finditer(section)))
+    all_nums = [int(lm.group(1)) for lm in B_LABEL_RE.finditer(section)]
+    numbers = sorted(set(all_nums))
     failures: list[FailureDetail] = []
+    dup_numbers: set[int] = set()
     if numbers:
-        all_nums = [int(lm.group(1)) for lm in B_LABEL_RE.finditer(section)]
-        dup = {n for n in all_nums if all_nums.count(n) > 1}
-        for n in sorted(dup):
+        counts = Counter(all_nums)
+        dup_numbers = {n for n, c in counts.items() if c > 1}
+        for n in sorted(dup_numbers):
             failures.append(FailureDetail(
                 location=str(target.relative_to(repo_root)),
-                expected=f"B{n} unique", actual=f"B{n} appears {all_nums.count(n)}×",
+                expected=f"B{n} unique", actual=f"B{n} appears {counts[n]}×",
                 severity="error", hint="Duplicate B-Nummer in Status-Matrix",
             ))
         for i in range(numbers[0], numbers[-1]):
@@ -49,9 +65,13 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
 
     has_error = any(f.severity == "error" for f in failures)
     status = "FAIL" if has_error else "PASS"
+    # n_passed counts unique B-numbers that are not duplicated. Gap-failures
+    # reference numbers that are NOT in `numbers` by definition, so they must
+    # not reduce n_passed — otherwise `B1 B3 B5` (3 unique, 2 gaps) yields
+    # n_passed=1 instead of the correct 3.
     return CheckResult(
         name="status_matrix", status=status,  # type: ignore[arg-type]
-        n_checked=len(numbers), n_passed=len(numbers) - len(failures),
+        n_checked=len(numbers), n_passed=len(numbers) - len(dup_numbers),
         failures=failures, duration_ms=int((time.monotonic() - start) * 1000),
         category="optional",
     )

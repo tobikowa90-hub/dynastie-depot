@@ -83,6 +83,9 @@ def run(
                     n_passed += 1
                 except ValidationError as e:
                     errs = e.errors()
+                    # Pydantic v2 marks JSON parse errors with type='json_invalid';
+                    # those are not schema-drift and need a different remediation.
+                    is_json_error = bool(errs) and errs[0].get("type") == "json_invalid"
                     if errs:
                         first = errs[0]
                         loc_path = ".".join(str(p) for p in first["loc"]) or "<root>"
@@ -91,10 +94,14 @@ def run(
                         actual = str(e)[:140]
                     failures.append(FailureDetail(
                         location=f"{path.relative_to(repo_root)}:{lineno}",
-                        expected=f"{model.__name__} valid",
+                        expected="valid JSON" if is_json_error else f"{model.__name__} valid",
                         actual=actual,
                         severity="error",
-                        hint="Migration-Helper ausfuehren oder Backfill re-run",
+                        hint=(
+                            "Record manuell pruefen / entfernen"
+                            if is_json_error
+                            else "Migration-Helper ausfuehren oder Backfill re-run"
+                        ),
                     ))
 
     has_error = any(f.severity == "error" for f in failures)

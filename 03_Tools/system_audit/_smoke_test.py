@@ -772,6 +772,112 @@ def test_vault_backlinks_skip_on_missing_vault() -> None:
     assert result.status == "SKIP"
 
 
+def test_status_matrix_header_anchored_not_prose_match() -> None:
+    """Code-Review Blocker #1: Section-isolation muss auf Header anker, nicht Prosa-Match.
+    Pathologie: 'Status-Matrix' taucht in Prosa VOR dem echten Header auf — der alte
+    Plain-Match würde section_start auf die Prosa setzen, der next-heading-Cut kappt
+    VOR dem echten Header, und die Status-Matrix wird nie gescannt → silent PASS.
+    """
+    import tempfile
+    from system_audit.checks.status_matrix import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "# Titel\n\nDiese Seite enthält eine **Status-Matrix** mit B-Nummern.\n\n"
+            "## Einleitung\n\nVorbemerkung.\n\n"
+            "## Status-Matrix\n\n- B1\n- B3\n\n## Andere Sektion\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=True)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL", f"prose-match-false-negative: status={result.status}"
+    assert any("B2" in f.actual for f in result.failures), (
+        f"echte Status-Matrix muss gescannt + Gap B2 gefunden werden; failures={result.failures}"
+    )
+
+
+def test_status_matrix_subsections_are_scanned() -> None:
+    """Regression: Subsections unterhalb des Status-Matrix-Headers (tiefer level)
+    müssen IN der Section bleiben — sonst kappt '### Legende' direkt hinter
+    dem '## Status-Matrix'-Header den eigentlichen B-Label-Scan weg.
+    """
+    import tempfile
+    from system_audit.checks.status_matrix import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "## Status-Matrix\n\n"
+            "### Legende\n\nDoc.\n\n"
+            "### Matrix\n\n- B1\n- B2\n- B3\n\n"
+            "## Nachfolgender Abschnitt\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=True)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"failures={result.failures}"
+    assert result.n_checked == 3, f"alle 3 B-Labels aus Subsection erwartet, got {result.n_checked}"
+
+
+def test_status_matrix_n_passed_arithmetic_with_gaps() -> None:
+    """Code-Review Blocker #2: n_passed = len(numbers) - len(failures) ist falsch,
+    weil gap-failures B-Nummern referenzieren, die gar nicht in 'numbers' sind.
+    Beispiel B1 B3 B5 → numbers=[1,3,5] (3 unique), 2 gaps (B2,B4).
+    Alt: n_passed = 3 - 2 = 1 (falsch, alle 3 sind unique/well-formed).
+    Richtig: n_passed = |numbers| - |duplicates| = 3 - 0 = 3.
+    """
+    import tempfile
+    from system_audit.checks.status_matrix import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "## Status-Matrix\n\n- B1\n- B3\n- B5\n\n## Other\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=True)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert result.n_checked == 3, f"expected 3 unique B-numbers, got {result.n_checked}"
+    assert result.n_passed == 3, (
+        f"alle 3 sind unique (keine dups) → n_passed muss 3 sein, got {result.n_passed}"
+    )
+
+
+def test_jsonl_schema_malformed_json_hint() -> None:
+    """Code-Review Important #3: nach model_validate_json-Refactor muss malformed JSON
+    den alten 'Record manuell pruefen' hint kriegen, nicht den
+    'Migration-Helper'-hint (der für echte Schema-Drift gedacht ist).
+    Pydantic v2 type='json_invalid' markiert JSON-Parse-Fehler.
+    """
+    import tempfile
+    from system_audit.checks.jsonl_schema import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        bad = tdp / "bad.jsonl"
+        bad.write_text("{not valid json\n", encoding="utf-8")
+        empty = tdp / "empty.jsonl"
+        empty.write_text("", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, stores_override={
+            "score_history": bad,
+            "flag_events": empty,
+            "portfolio_returns": empty,
+            "benchmark_series": empty,
+        })
+    assert result.status == "FAIL"
+    json_failures = [f for f in result.failures if f.severity == "error"]
+    assert len(json_failures) >= 1
+    assert any(
+        f.hint is not None and "manuell" in f.hint.lower()
+        for f in json_failures
+    ), f"malformed JSON erwartet 'manuell pruefen/entfernen' hint; got hints={[f.hint for f in json_failures]}"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -784,6 +890,7 @@ if __name__ == "__main__":
     test_jsonl_schema_pass_on_good_fixture()
     test_jsonl_schema_fail_on_bad_fixture()
     test_jsonl_schema_skip_on_missing_file()
+    test_jsonl_schema_malformed_json_hint()
     print("[OK] jsonl_schema smoke tests passed")
     test_store_freshness_warn_on_stale()
     test_store_freshness_pass_on_fresh()
@@ -836,4 +943,7 @@ if __name__ == "__main__":
     test_status_matrix_pass_fixture()
     test_status_matrix_fail_on_gap()
     test_status_matrix_fail_on_duplicate()
+    test_status_matrix_header_anchored_not_prose_match()
+    test_status_matrix_subsections_are_scanned()
+    test_status_matrix_n_passed_arithmetic_with_gaps()
     print("[OK] status_matrix smoke tests passed")
