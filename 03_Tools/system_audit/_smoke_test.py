@@ -353,6 +353,36 @@ def test_skill_version_skip_on_missing_frontmatter_fixture() -> None:
     assert not any(f.severity == "error" for f in result.failures)
 
 
+def test_pipeline_ssot_parser_three_variants() -> None:
+    """Spec §7.3 Parser-Golden-Test."""
+    from system_audit.checks.pipeline_ssot import extract_plan_refs
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "pipeline_ssot"
+    full = extract_plan_refs((fx / "state_full.md").read_text(encoding="utf-8"))
+    assert set(full) == {
+        "docs/superpowers/plans/2026-04-21-foo.md",
+        "docs/superpowers/plans/2026-04-20-bar.md",
+        "docs/superpowers/plans/2026-04-20-baz.md",
+    }
+    empty = extract_plan_refs((fx / "state_empty.md").read_text(encoding="utf-8"))
+    assert empty == []
+    broken = extract_plan_refs((fx / "state_broken.md").read_text(encoding="utf-8"))
+    assert broken == ["docs/superpowers/plans/2099-12-31-nonexistent.md"]
+
+def test_pipeline_ssot_pass_on_live_state() -> None:
+    from system_audit.checks.pipeline_ssot import run
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx)
+    assert result.status == "PASS", f"failures={result.failures}"
+
+def test_pipeline_ssot_fail_on_broken_ref() -> None:
+    from system_audit.checks.pipeline_ssot import run
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "pipeline_ssot"
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx, state_path_override=fx / "state_broken.md")
+    assert result.status == "FAIL"
+    assert any("nonexistent.md" in f.actual for f in result.failures)
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -386,3 +416,7 @@ if __name__ == "__main__":
     test_skill_version_warn_on_orphan_zip_fixture()
     test_skill_version_skip_on_missing_frontmatter_fixture()
     print("[OK] skill_version smoke tests passed")
+    test_pipeline_ssot_parser_three_variants()
+    test_pipeline_ssot_pass_on_live_state()
+    test_pipeline_ssot_fail_on_broken_ref()
+    print("[OK] pipeline_ssot smoke tests passed")
