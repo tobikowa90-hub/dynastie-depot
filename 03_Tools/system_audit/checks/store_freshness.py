@@ -37,6 +37,11 @@ def business_days_between(start: datetime.date, end: datetime.date) -> int:
 
 
 def _last_record_date(path: Path) -> datetime.date | None:
+    """Parse last non-empty JSONL line; return date or None on any parse failure.
+
+    Non-blocking by contract (severity='warning' only); unparseable records are
+    treated as not-checkable and the store is silently skipped by the caller.
+    """
     last_line = None
     with path.open("r", encoding="utf-8") as fh:
         for line in fh:
@@ -44,8 +49,11 @@ def _last_record_date(path: Path) -> datetime.date | None:
                 last_line = line
     if not last_line:
         return None
-    rec = json.loads(last_line)
-    return datetime.date.fromisoformat(rec["date"])
+    try:
+        rec = json.loads(last_line)
+        return datetime.date.fromisoformat(rec["date"])
+    except (json.JSONDecodeError, KeyError, ValueError, TypeError):
+        return None
 
 
 def run(

@@ -144,6 +144,7 @@ def test_store_freshness_warn_on_stale() -> None:
         tdp = Path(td)
         pr = tdp / "portfolio_returns.jsonl"
         bs = tdp / "benchmark-series.jsonl"
+        # 14 calendar days = ≥10 business days, robust to long-weekend execution
         stale = (datetime.date.today() - datetime.timedelta(days=14)).isoformat()
         pr.write_text(json.dumps({"schema_version":"1.0","date":stale}) + "\n", encoding="utf-8")
         bs.write_text(json.dumps({"schema_version":"1.0","date":stale}) + "\n", encoding="utf-8")
