@@ -1,293 +1,177 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-21 Nachmittag-Spät (**Phase A+B+C+D alle COMPLETED** in Session 21.04. Nachmittag — siehe Commits `8acb13c` sync-wave + `7218a85` spec v0.1 + `82482d7` spec v0.2 ratified mit 6 Codex-Patches. **Next: Phase E — Plan-Writing + TDD-Build von `system_audit.py`** via `superpowers:writing-plans`-Skill, neue Session nach `/clear`.)
-**Vorherige Aktualisierungen:** 2026-04-21 Mittag — Systemhygiene-Pivot nach 12/27 Drift-Entdeckung · 2026-04-21 Nachmittag — A+B+C Abschluss · 2026-04-21 Nachmittag-Spät — D Abschluss (diese Zeile).
+**Aktualisiert:** 2026-04-21 Abend (**Phase E 12/19 Tasks committed + Codex-Review-Härtungswelle** in Session 21.04. Nachmittag-Abend — siehe Commit-Graph `f0f707e..7cea0e0`, 23 Commits auf main. **Next: Phase E fortsetzen ab Task 13 (CLI-Orchestrator)** — Opus-Implementer, einziger Koppelpunkt des Audit-Tools.)
+**Vorherige Aktualisierungen:** 2026-04-21 Nachmittag-Spät — Spec v0.2 ratified + Plan v0.2 Codex-reviewed · 2026-04-21 Abend — Fix-Welle A committed (`7cea0e0`).
 
-> **Progress-Banner (Phase A-G):** ✅ A (CORE-MEMORY) · ✅ B (log.md + Handover) · ✅ C (STATE.md Pipeline-SSoT) · ✅ D (Spec v0.2 ratified) · 🟡 **E next** (Plan + TDD-Build Audit-Tool) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04. First-Live-Run)
+> **Progress-Banner (Phase A-G):** ✅ A+B+C (Sync-Welle `8acb13c`) · ✅ D (Spec v0.2 `82482d7`) · 🟡 **E 12/19** (Tasks 1-12 done, 13-19 open) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04.).
 
-## 🚀 NÄCHSTE SESSION — Einstieg nach `/clear`
+## 🚀 NÄCHSTE SESSION — Direkter Einstieg
 
-**Trigger:** `Session starten` → Claude liest STATE.md, erkennt Phase D ✅ committed, setzt direkt bei **Phase E** an.
+**Trigger:** `Session starten` → STATE.md lesen → `superpowers:subagent-driven-development`-Skill aktivieren → TodoWrite zeigt 12 completed, 7 pending → **Task 13 in_progress setzen** → Plan-Lesen Zeilen 2641-2827.
 
-**Phase E — Plan + Build `system_audit.py` (~90-120 Min):**
-
-1. **Skill-Aktivierung:** `superpowers:writing-plans`.
-2. **Input-Artefakte:**
-   - Spec (ratified): `docs/superpowers/specs/2026-04-21-system-audit-tool-design.md` (Commit `82482d7`)
-   - Acceptance-Kriterien: Spec §12 (10 Checkboxes)
-   - 7 Kern-Checks + 2 Optional + Check-1.5 Freshness (neu durch Codex-Patch P1)
-3. **Output-Artefakt:** `docs/superpowers/plans/2026-04-21-system-audit-tool.md`
-4. **Erwartete Task-Struktur (Plan schlägt ~10-12 TDD-Tasks vor):**
-   - **Task 1:** `PortfolioReturnRecord` + `BenchmarkReturnRecord` in `03_Tools/backtest-ready/schemas.py` (Pflicht vor Check-1)
-   - **Task 2:** CLI-Skeleton + CheckResult-Contract + Registry-Pattern
-   - **Tasks 3-9:** je ein TDD-Task pro Kern-Check (jsonl_schema / markdown_header / cross_source / existence / skill_version / pipeline_ssot / log_lag) — **parallelisierbar via Subagents** (isolierte Check-Module)
-   - **Task 10:** Check-1.5 Store-Freshness (WARN-Severity)
-   - **Task 11:** Optional-Checks (Vault-Backlinks + Status-Matrix mit Timeout)
-   - **Task 12:** Report-Aggregator + State-Writer (HTML-Comment-Marker) + Slash-Command `.claude/commands/SystemAudit.md`
-   - **Task 13:** Integration-Test + Smoke-Test (temp-repo-copy) + Parser-Golden-Tests
-   - **Task 14:** INSTRUKTIONEN §27.4 Regression-Guard-Regel nachtragen + STATE.md Pipeline-SSoT Plan-Referenz einbauen
-5. **Codex-Review nach Plan-Draft** (analog Phase D Joint-Review).
-6. **Execution-Modus:** Subagent-Driven für Checks (Task 3-9 parallel), sequentiell für Schemas/Skeleton/Aggregator.
-7. **First-Run gegen aktuellen Repo:** Erwartung Exit-Code 0 mit Check-1.5 = WARN (Daily-Persist-Stale — Soll-Zustand bis Track 4).
-8. **Post-Build:** STATE.md „Last Audit"-Block wird vom Tool selbst geschrieben (idempotent via HTML-Comment-Marker).
-
-**Phase F (danach, wahrscheinlich gleiche Session):** `/SystemAudit` als Pre-Check → Provenance-Gate-Plan-Execution (`docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md`, 7 Tasks, 40 Steps).
-
-**Phase G (23.04. natürlicher Trigger):** TMO Q1-Earnings First-Live-Run.
-
----
-
-## 📋 Historie (was heute gemacht wurde — durable)
-
-**Für nächste Session:** **Phase E+F+G in dieser Reihenfolge** (Audit-Tool + Provenance-Execution + TMO Q1). Phase A-D abgeschlossen.
-
----
-
-## 🎯 WICHTIGSTE AUSSAGE ZUERST
-
-Heute wurde durch einen Pre-Check entdeckt, dass **„Systemhygiene" und „Drift-Check" in den letzten 3 Tagen selektiv statt exhaustive durchgeführt wurden.** Konkret 12 von 27 Records silent schema-inkonsistent (alle defcon_level-Drift seit 18.04.-Threshold-Migration), CORE-MEMORY-Header stale, Pipeline-Aufgaben über 4+ Quellen fragmentiert statt als SSoT.
-
-User-Mandat: **„Nichts darf vergessen werden. Alles up-to-date halten. WIRKLICH das gesamte System nachziehen."**
-
-**Externes Tool `codebase-memory-mcp` wurde evaluiert und verworfen** — löst Code-AST-Index-Problem, nicht unser Markdown/YAML/JSONL-Drift-Problem. Externer SQLite-Cache wäre zusätzliche Drift-Quelle (Ironie).
-
-**Konsequenz:** Internes `03_Tools/system_audit.py` bauen + Slash-Command `/SystemAudit` + STATE.md-Section „Last Audit", aber **zuerst manueller Sync-Sweep** (sonst baut das Tool gegen kaputte Baseline).
-
----
-
-## 🚀 NÄCHSTE SESSION — Sequenzielle Primär-Pipeline
-
-### Phase A: CORE-MEMORY nachziehen (~15 Min)
-
-**Warum:** Header sagt `Stand: 17.04.2026` — real ist 21.04. Letzter §1-Eintrag ist 20.04. Nacht-Spät; heutige Events (21.04. Drift-Migration, Provenance-Spec+Plan, §27.4-Schärfung) fehlen vollständig.
-
-Schritte:
-1. `00_Core/CORE-MEMORY.md` Header-Zeile `**Stand:**` auf `21.04.2026 Mittag` setzen
-2. §1 System-Meilensteine drei neue Einträge am Ende der Tabelle anfügen:
-   - **21.04.2026 Mittag — Drift-Migration score_history.jsonl 12/27 → 27/27** (commit `ca76114`): Pre-Check vor Provenance-Gate-Plan-Execution deckte 12 Records silent defcon-Drift seit 18.04.-Threshold-Migration auf. `migrate_defcon_drift.py` idempotent + atomar, 12 defcon_level-Korrekturen (Score 71-76 D4→D3, Score 61-63 D3→D2). Snap-to-Schema erfolgreich; re-validate 27/27 PASS. Zeile 25 V_vollanalyse 17.04. 72/D4→D3 = genauer Auslöser-Fall der Provenance-Spec.
-   - **21.04.2026 Mittag — Score-Append Provenance-Gate Spec + Plan v2 ratifiziert** (commit `206c0a1`): Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` Architektur-Variante E (Hybrid Pipeline-Gate B + reduzierter Schema-Guard D) nach 5 Codex-Sparring-Runden. Plan v2 mit 4 Codex-Patches: Task 0 Pre-Execution-Baseline-Check + Task 2 Step 2.7 Re-Validate-Sweep + Task 3 Step 3.1a-d Granularitäts-Split + Task 6 CORE-MEMORY-§10-Timing-Fix. 7 Tasks, 40 Steps, First-Live-Test geplant TMO Q1 23.04.
-   - **21.04.2026 Mittag — §27.4 Vertikal-Drift-Klausel + Applied Learning 12/20 + Systemhygiene-Pivot:** INSTRUKTIONEN §27.4 um „Zweite Klasse — Vertikal-Drift (Schema-Migration auf Altdaten)" erweitert mit Präzedenzfall 21.04.2026. CLAUDE.md Applied Learning v2.4 Bullet 12/20 („Drift-Check = exhaustive Schema-Validation aller Records, nicht Spot-Check"). Memory `feedback_exhaustive_drift_check.md` NEU (Tier 1, Index 13/13). Systemhygiene zu TOP-Priority gemacht — interner System-Audit-Tool-Bau in nächster Session.
-
-3. §10 API-Audit-Log einen neuen Eintrag anfügen:
-   - **2026-04-21 Mittag — Drift-Audit-Sweep Ergebnis:**
-     - score_history.jsonl: 12 FAIL (alle defcon_level-Drift) → migriert → 27/27 PASS
-     - flag_events.jsonl: 2/2 PASS
-     - config.yaml Satelliten Score+DEFCON: 11/11 == STATE.md
-     - portfolio_returns.jsonl + benchmark-series.jsonl: je 1 Record (17.04.), **stale seit 4 Tagen** (R5-Phase-3 „aktiv" laut STATE.md aber Daily-Append-Cron existiert nicht; Manual-Trigger-Pflicht vergessen; Track-4-Backlog-Item)
-     - **Systemweiter Audit NICHT durchgeführt** (Markdown-Cross-Source, Existence-Check, Skill-Versions, Vault-Backlinks, docs/superpowers-vs-STATE-Referenzen) — das macht erst `system_audit.py` in Phase E.
-
-4. Falls §3 Aktive Positions-Entscheidungen „Stand: 04.04.2026 — pre-v3.7"-Label **bewusst historisch** ist (wahrscheinlich, da sie den pre-v3.7-Zustand dokumentieren): Label auf `Historisch, pre-v3.7 — aktuelle Positions-Realität in STATE.md + Faktortabelle.md` schärfen. Falls nicht historisch gedacht: nachziehen auf aktuellen Stand.
-
-### Phase B: SESSION-HANDOVER-Nacharbeit + log.md (~10 Min)
-
-**Warum:** Dieser Handover-Stand ist nach Phase A+C technisch nicht mehr aktuell — Header dann alt, weil A+B+C durchgeführt. Aber Phase B ist trivial, weil dieser Handover bereits der neue Zustand ist.
-
-Schritte:
-1. Nach Phase A+C und Phase D-Start: kleiner Handover-Update „A+B+C completed, D in progress".
-2. Wiki `log.md` Eintrag für die Sync-Welle (analog zu heutigem drift-migration-Eintrag, aber für „A+B+C Sync-Welle post-Drift-Migration").
-
-### Phase C: STATE.md Pipeline-SSoT-Section (~15 Min)
-
-**Warum:** User hat eine 7-Punkte-Pipeline-Übersicht synthetisiert, die nirgendwo zentral lebt. Fragmentiert über STATE.md + SESSION-HANDOVER.md + Plan-Files + Memory. Jedes Mal rekonstruieren wir das aus 4 Quellen — genau der Anti-Pattern unserer Lesson.
-
-Schritte: in `00_Core/STATE.md` nach „Nächste kritische Trigger (30 Tage)"-Section eine neue Section `## 🗺 Aktive Pipeline (SSoT)` einfügen, strukturiert als:
-
-```markdown
-## 🗺 Aktive Pipeline (SSoT)
-
-### 🔴 Unmittelbar / Primär-Track
-1. **Morning Briefing v3.0.4 Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft v2.1 (Rollback nach Halluzinations-Incident 20.04.). Hotfix ergänzt §3a Anti-Fallback-Guard + neuer Test T5 Adversarial-Stale-Shibui. Gate A erst nach v3.0.4-PASS.
-2. **Score-Append Provenance-Gate** — Plan v2 `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. Critical vor TMO Q1 23.04. (erster echter Forward-Run durch neue Pipeline mit P3.5 fail-close).
-3. **System-Audit-Tool `03_Tools/system_audit.py`** — Sub-Spec + Plan in dieser Session (siehe Phase D+E).
-
-### 🟠 Portfolio — Kritische Triggers 10 Tage
-- **23.04. TMO Q1** — D2-Entscheidung + fcf_trend_neg Resolve-Gate. Erster Live-Test Provenance-Gate + §4-Router Status-Matrix B1-B24 + backtest-ready-forward-verify.
-- **28.04. V Q2 FY26** — D2-Entscheidung (Technicals-Reversal?)
-- **29.04. MSFT Q3 FY26** — FLAG-Review CapEx/OCF
-
-### 🟡 Bereit, wartet auf Gate A (~24.04. frühestens nach v3.0.4-Deploy)
-4. **Track 5a SEC EDGAR Skill-Promotion** — Plan `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks). Re-Validation-Check nach 6-Paper-Ingest B21-B24 möglicherweise nötig.
-5. **Track 5b FRED Macro-Regime-Filter** — Plan `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks). User-Aktion vor Start: FRED-API-Key registrieren. B19 (LLM-Regime-Shift-Bias) stärkt wissenschaftliche Begründung.
-
-### 🔵 Deferred / Explizit zurückgestellt
-6. **v3.1 Cache-Refactor** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md`. Trigger: „262s im Alltag stört" oder „>400s-Alert wiederholt".
-7. **Track 4 ETF+Gold-Erweiterung** — Blockiert auf User-Input (ETF-Ticker IWDA.AS/SWDA.L/EUNL.DE? Gold-Ticker SGLD.DE/4GLD.DE/GC=F?). Gleichzeitig **Open-Backlog-Item Daily-Persist-Stale** auflösen (portfolio_returns.jsonl seit 4 Tagen stale).
-8. **KG-Roadmap v0.1** — `draft-frozen`. Re-Review-Trigger: Cross-Entity-Bedarf ODER Score-Archiv-Interim-Gate 2026-10-17.
-
-### ⏰ Long-Term-Gates
-- **AVGO OpenInsider Manual-Check** — vor FLAG-Aktivierung (Watch aktiv, kein Termin)
-- **Tavily Dev-Key Rotation** — innerhalb 7 Tagen nach Prod-Deploy v3.0.4 (~bis 28.04. falls Deploy am 22.04.)
-- **Track 5a 90-Tage-Audit** — 2026-07-19
-- **Score-Archiv-Interim-Gate** — 2026-10-17
-- **R5 Interim-Gate** — 2027-10-19
-- **Review-Gate §29.6** — 2028-04-01
+**Command zur schnellen Lageprüfung:**
+```bash
+cd "C:\Users\tobia\OneDrive\Desktop\Claude Stuff"
+python 03_Tools/system_audit/_smoke_test.py    # muss 11 [OK]-Zeilen zeigen
+git log --oneline f0f707e..HEAD | head -25     # 23 Commits
+git status --short                              # clean
 ```
 
-**Pflege-Pattern (nach Aufbau):** Diese Section ist Pflicht-Update bei jedem Plan-Commit + jedem Gate-Passage. §18 Sync-Pflicht-Liste erweitert um diese Section.
+---
 
-### Phase D: Sub-Spec für `system_audit.py` (~60 Min)
+## 📋 Was in Session 21.04. Abend passiert ist
 
-**Ablauf:** Brainstorming-Skill → Spec → Codex-Review → Ratifikation.
+**Phase E Tasks 1-12 vollständig umgesetzt** nach superpowers:subagent-driven-development — pro Task Implementer-Subagent + Spec-Reviewer + Code-Quality-Reviewer (Codex-Rescue wo Architektur-Entscheidungen anstanden):
 
-**Scope (Codex-aligned Quality-Gates):**
-- **Kern (Pflicht):**
-  - JSONL Schema-Validation (alle 4 Stores `score_history` + `flag_events` + `portfolio_returns` + `benchmark-series` gegen Pydantic-Schemas wo vorhanden; strukturelle Keys-Konsistenz wo kein Schema)
-  - Markdown Header-Stand-Drift (`Stand:`-Feld in STATE.md + CORE-MEMORY.md + Faktortabelle.md vs neueste §1/§10/Entry-Datum — bei Differenz >2 Tage FAIL)
-  - Cross-Source Score/DEFCON/Sparrate (STATE.md ↔ Faktortabelle.md ↔ config.yaml ↔ Vault-Entities)
-  - Existence-Check (alle in CLAUDE.md/STATE.md/Handover referenzierten Pfade müssen existieren)
-  - Skill-Version `01_Skills/*/SKILL.md` frontmatter `version:` vs `06_Skills-Pakete/*.zip`-Name-Pattern
-  - Pipeline-SSoT-Consistency (alle Pläne in `docs/superpowers/plans/` müssen in STATE.md-Pipeline-SSoT referenziert sein; Reverse: alle Referenzen in STATE.md-Pipeline müssen existierende Plan-Files sein)
-  - log.md letzter Eintrag Datum vs neuester git-commit-Datum (max 1 Tag Lag)
-- **Optional (mit Timeout):**
-  - Vault-Backlink-Integrity (130 Notes — separater Check mit Timeout/Caching; nicht im Standard-Run)
-  - Obsidian B-Nummerierung Status-Matrix-Konsistenz
-- **Output:** strukturiert `N/M PASS` + Kategorie-FAIL-Listen. Exit-Codes: 0 PASS / 1 FAIL / 2 IO-Fehler.
-- **Invocation:** CLI `python 03_Tools/system_audit.py [--core | --full]` + Slash-Command `/SystemAudit` (Config über `.claude/`-Command-Datei).
-- **STATE.md-Integration:** Section „Last Audit: YYYY-MM-DD HH:MM — N/M PASS" wird vom Tool selbst am Ende des Runs aktualisiert.
+| Task | Commits | Inhalt |
+|------|---------|--------|
+| 1 | `404b057` + `e673916` + `afbf52c` | PortfolioReturnRecord + BenchmarkReturnRecord (schemas.py) |
+| 2 | `fa3d10a` + `cb44af7` + `651b1cc` | system_audit-Package + types.py + Registry-Skeleton |
+| 3 | `5d4cc44` + `47e0695` | Check-1 JSONL-Schema (+ robustness fixes: sys.path idempotent, structured errors, stores_override filter) |
+| 4 | `ab58c12` + `dbaba27` | Check-1.5 Store-Freshness (WARN-Severity) |
+| 5 | `5c969af` + `e065f6a` | Check-2 Markdown-Header-Drift (event-date-based, Codex-P6) |
+| 6 | `f0e89fd` + `aa010c7` | Check-3 Cross-Source (header-driven Faktortabelle-Parser nach Codex-Live-Find) |
+| 7 | `d8f046f` + `67fefc2` | Check-4 Existence (Backtick-path-refs + Codex-P3 scope-limit) |
+| 8 | `8a37b24` | Check-5 Skill-Version (4 fixture-tests, Codex-P4) |
+| 9 | `4d94932` | Check-6 Pipeline-SSoT + `extract_plan_refs` (Forward-Dep für Check-4) |
+| 10 | `f813c2c` | Check-7 log.md-vs-git-HEAD (+ 3rd candidate path für Live-Repo) |
+| 11 | `1066bce` | report.py render_human + render_json + compute_exit_code |
+| 12 | `c8900bd` | state_writer.py idempotent (HTML-Marker, atomic, Codex-P5) |
+| Fix-A | `7cea0e0` | Robustness-Härtung nach Codex-Full-Review (82%→~93% Confidence) |
 
-**Codex-bestätigte Anti-Pattern:**
-- KEIN SessionStart-Hook (kollidiert mit CLAUDE.md SESSION-INITIALISIERUNG „zuerst nur STATE.md lesen")
-- KEIN Pre-Commit-Hook als Default (Friction-Risiko; optional später als opt-in)
-- SessionEnd-Hook höchstens als leichter Warnung-Hinweis, nicht Voll-Audit
-
-### Phase E: Plan + Build Audit-Tool (~90-120 Min)
-
-**Ablauf:** writing-plans-Skill → Plan-File → Subagent-Driven Execution oder Inline.
-
-**Erwartete Struktur (geschätzt):**
-- Task 0: Test-Fixtures-Setup + CLI-Skeleton
-- Tasks 1-7: ein Task pro Kern-Check (je TDD: failing test → min impl → green → commit)
-- Task 8: Aggregator + Strukturiertes Report-Format
-- Task 9: Slash-Command `.claude/commands/SystemAudit.md` + STATE.md-Last-Audit-Section-Writer
-- Task 10: (Optional) Vault-Backlink-Subcommand mit Timeout
-- Task 11: First-Run gegen aktuelles Repo → baseline
-
-**Nach Phase E Ende:** `/SystemAudit` läuft, STATE.md hat initiale „Last Audit"-Zeile.
-
-### Phase F: Provenance-Plan Execution (~60-90 Min)
-
-**Ablauf:**
-1. `/SystemAudit` laufen lassen — Pre-Check analog Task 0 im Provenance-Plan.
-2. Falls PASS: Subagent-Driven oder Inline-Execution des Provenance-Plans (docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md).
-3. Plan enthält 4 Codex-Patches: Task 0 Baseline-Check + Step 2.7 Re-Validate-Sweep + Task 3.1a-d Granularitäts-Split + Task 6 CORE-MEMORY §10 Timing-Fix.
-4. Nach Plan-Completion (alle 6 Task-Commits): `/SystemAudit` erneut für Verifikation.
-
-**Erwartete Artefakte nach Phase F:**
-- `03_Tools/backtest-ready/versions.py` (SSoT DEFCON_ACTIVE_VERSION)
-- `03_Tools/backtest-ready/provenance_gate.py` (Schicht B, 8 Checks, 9 Smoke-Tests)
-- `03_Tools/backtest-ready/schemas.py` erweitert (Schicht D Block-Coverage-Validator)
-- `01_Skills/backtest-ready-forward-verify/SKILL.md` mit Phase P3.5
-- `01_Skills/backtest-ready-forward-verify/_smoke_test.py` mit Case 7 Integration-Test
-- STATE.md + INSTRUKTIONEN §18 + CORE-MEMORY §10 Go-Live-Einträge
-
-### Phase G: TMO Q1 23.04. — First-Live-Run
-
-Natürlicher Trigger. Full Pipeline end-to-end: P1→P2a→P2b→**P3.5 NEU** (8 Checks fail-close)→P3 (Δ-Gate fcf_trend_neg-Resolve)→P4/P5/P6. Zweiter CORE-MEMORY §10-Eintrag mit konkretem Result folgt.
+**Codex-Sparring-Review nach Task 12 identifizierte 5 messbare Confidence-Gaps** → Fix-Welle A committed:
+- `errors="replace"` in allen `read_text`-Aufrufen (BOM/weird encoding tolerant)
+- cross_source.py: `yaml.YAMLError`-catch + Satelliten-KeyError/TypeError-guard per-entry
+- state_writer.py: Duplicate-Marker-Detection (n_start/n_end > 1 = RuntimeError)
+- existence.py: PATH_RE Space-Rejection explizit dokumentiert + 1 neuer smoke-test
+- markdown_header.py: `n_checked == 0` → SKIP (vorher fälschlich PASS)
 
 ---
 
-## 📊 VOLLSTÄNDIGE AGENDA-INVENTUR (Stand 21.04.2026 Mittag)
-
-### Aktive Pläne in `docs/superpowers/plans/`
-| Plan-File | Status | Tasks | Blocker |
-|---|---|---|---|
-| `2026-04-20-briefing-v3.0.4-hotfix.md` | ready for execution | 13 | keiner, nur Priorität (verschoben wegen v2.1-Stabilität post-Incident) |
-| `2026-04-21-score-append-provenance-gate.md` | v2 ready (Codex-patched) | 7 Tasks 40 Steps | pending Systemhygiene-Sweep (Phase A-E) |
-| `2026-04-20-track5a-edgar-skill-promotion.md` | Codex-reviewed | 9 | pending Gate A (v3.0.4 3-Tage-Stabilität) + optionale Re-Validation-Check nach 6-Paper-Ingest |
-| `2026-04-20-track5b-fred-regime-filter.md` | Codex-reviewed | 15 | User-Aktion FRED-API-Key + pending Gate A |
-| `2026-04-20-briefing-v3.1-cache-refactor.md` | deferred | — | Trigger: 262s stört im Alltag / >400s-Alert wiederholt |
-
-### Heute NEU geschrieben
-| Datei | Status | Kontext |
-|---|---|---|
-| `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` | draft, commit `206c0a1` | Architektur-Variante E (Hybrid B+D), 5 Codex-Sparring-Runden |
-| `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` | v2, commit `206c0a1` | 4 Codex-Patches eingearbeitet |
-| `03_Tools/backtest-ready/migrate_defcon_drift.py` | executed + committed `ca76114` | One-Shot-Tool idempotent, 12/27 → 27/27 |
-| `00_Core/INSTRUKTIONEN.md §27.4` | erweitert commit `ca76114` | Vertikal-Drift-Klausel neu |
-| `CLAUDE.md` Applied Learning 12/20 | commit `ca76114` | v2.4-Historie-Eintrag |
-| Memory `feedback_exhaustive_drift_check.md` | NEU (Tier 1) | Exhaustive-Drift-Check-Regel |
-| `07_Obsidian Vault/.../log.md` | Eintrag heute commit `ca76114` | Drift-Migration + System-Audit-Lesson |
-
-### Heute NICHT geschrieben (aber entschieden für nächste Session)
-- Sub-Spec `docs/superpowers/specs/2026-04-22-system-audit-tool-design.md` (Phase D)
-- Plan `docs/superpowers/plans/2026-04-22-system-audit-tool.md` (Phase E)
-- Tool selbst `03_Tools/system_audit.py` + Slash-Command `.claude/commands/SystemAudit.md` (Phase E)
-- `00_Core/CORE-MEMORY.md` 21.04. Sync (Phase A — siehe oben für genaue Schritte)
-- `00_Core/STATE.md` Pipeline-SSoT-Section (Phase C — siehe oben für Struktur)
-
-### Open Backlog (aus STATE.md + heutigem Audit)
-1. **Daily-Persist seit 4 Tagen stale** — `portfolio_returns.jsonl` + `benchmark-series.jsonl` je 1 Record (17.04.). R5-Phase-3 „aktiv" aber Daily-Append-Cron existiert nicht. Auflösung: in Track 4 mit ETF/Gold-Erweiterung + Cron-/Hook-Mechanismus.
-2. **System-Audit-Tool fehlt** — wird Phase D+E nachgeholt.
-3. **Codex Round 2 für Tavily-Spec** (stand als PENDING vor v3.0.4-Hotfix-Plan) — überholt durch v3.0.4-Plan der dieselbe Spec überarbeitet. **Status: formal erledigt.**
-
----
-
-## 🧠 HEUTIGE LESSONS LEARNED (persistent)
-
-1. **„Drift-Check" = exhaustive, nicht Spot-Check.** Applied Learning 12/20. Memory `feedback_exhaustive_drift_check.md`. §27.4 Vertikal-Drift-Klausel. Trigger: bei „Hygiene"/„Drift"-Wortwahl + bei jedem Schema-/Threshold-Migration-Commit Re-Validate-Sweep über alle persistierten Stores.
-
-2. **Pain-Point-Driven Self-Improvement schlägt Meta-Framework.** Externe Tools (codebase-memory-mcp) lösen oft andere Problemklasse + erzeugen eigene Drift-Flächen (externer SQLite-State). Domain-spezifische interne Helper-Skripte (~200-300 LOC) sind präziser.
-
-3. **Horizontal-Drift + Vertikal-Drift sind verschiedene Klassen:**
-   - Horizontal: Multi-Source-SSoT-Divergenz (§27.4 ursprünglich, INSTRUKTIONEN/CORE-MEMORY/config.yaml/Vault-Entities erzählen unterschiedliche Stories)
-   - Vertikal: Schema-Migration tickt vorwärts, Altdaten bleiben silent inkonsistent (§27.4 neue Klausel 21.04.)
-   - **Beide brauchen exhaustive Sweep, nicht Spot-Check.**
-
-4. **Sequenzierungs-Entscheidungen sind Evidenz-abhängig.** Codex empfahl β (Provenance zuerst) basierend auf dem Stand vor CORE-MEMORY-Header-Drift-Entdeckung. Mit neuer Evidenz war γ (Systemhygiene zuerst) richtig. Codex-Verdikte sind nicht lock-in — bei neuer Evidenz Re-Evaluation.
-
-5. **SessionStart-Hooks für Systemchecks kollidieren mit CLAUDE.md SESSION-INITIALISIERUNG** (Pflicht „zuerst nur STATE.md lesen"). Slash-Commands sind sauberer.
-
----
-
-## 📚 REFERENZEN (heute Session-relevant)
-
-### Git-Commits 21.04.2026 Mittag
-- `ca76114` drift-migration+system-hygiene — 6 files, 140 insertions
-- `206c0a1` plan+spec(provenance-gate) — 2 files, 1524 insertions (force-added trotz .gitignore docs/superpowers)
-
-### Memory-Files (user's ~/.claude/projects/.../memory/)
-- `feedback_exhaustive_drift_check.md` NEU — exhaustive Validation-Regel
-- `MEMORY.md` Index auf 13 topic files aktualisiert
-
-### Codex-Runden heute
-- **Codex Run 1 (Plan-Review):** YELLOW auf 4 Punkte — alle adressiert (Task 0 + Step 2.7 + 3.1a-d Split + Task 6 §10 Timing)
-- **Codex Run 2 (Audit-Strategie):** Sequenzierung β, Automatismus Slash-Command + STATE.md-Section, Memory-Promotion §27.4-Schärfung statt neuer §, Audit-Tool-Risiko = Scope-Creep. Empfehlung dann durch User-CORE-MEMORY-Drift-Entdeckung auf γ revidiert.
-
-### Externe Tool-Evaluation (verworfen)
-- `github.com/DeusData/codebase-memory-mcp` — falsche Scope (Code-AST statt Markdown/YAML/JSONL), externer SQLite-Cache = neue Drift-Quelle, Windows-SmartScreen-Install-Friction. Internes `system_audit.py` präziser.
-
----
-
-## ▶️ TRIGGER NÄCHSTE SESSION
+## 🎯 Live-Audit-Probelauf (21.04. Abend) — ECHTE Drift-Findings
 
 ```
-Session starten
+PASS  jsonl_schema         31/31          84ms
+PASS  store_freshness       2/2             0ms
+FAIL  markdown_header       1/3   (2 err)   6ms   ← 2/3 Core-Files Stand-Drift
+WARN  cross_source         22/22  (1 warn) 172ms  ← AVGO ⚠️ Insider-Review (benign)
+FAIL  existence            70/231 (161 err) 13ms  ← massive Backtick-path-Drift
+WARN  skill_version         1/2  (1 warn)    3ms  ← backtest-ready ungepackt (bekannt)
+PASS  pipeline_ssot         3/3             0ms
+PASS  log_lag               1/1            19ms
 ```
 
-1. Claude liest `STATE.md` (wird post-Phase-C aktualisiert sein durch diese Session-Arbeit)
-2. Wechsel hierher
-3. **Phase A starten** — CORE-MEMORY-Header + §1 + §10 nachziehen (~15 Min)
-4. **Phase B** — log.md + kleiner Handover-Hinweis (~10 Min)
-5. **Phase C** — STATE.md Pipeline-SSoT-Section einbauen (~15 Min)
-6. Nach A+B+C: einen Sync-Commit (analog `ca76114`-Pattern)
-7. **Phase D** — System-Audit-Tool Sub-Spec mit Brainstorming-Skill (~60 Min)
-8. **Phase E** — Plan + Build mit writing-plans-Skill (~90-120 Min)
-9. **Phase F** — Provenance-Plan-Execution (~60-90 Min)
-10. **Phase G am 23.04.** — TMO Q1 First-Live-Run (natürlicher Trigger)
+**161 existence-FAILs sind ECHTE Drift, nicht Bugs** — genau der Tool-Zweck. Mehrheit: veraltete Backtick-Referenzen in CLAUDE.md/STATE.md/SESSION-HANDOVER + Pipeline-Plans, die nicht mehr existieren (Track-4-Notizen, alte Tool-Pfade).
 
-**Bei Abweichung:** Portfolio-Ereignis (Earnings-Beat/Miss), Markt-Bewegung, oder User-Interrupt → Flex-Routing, aber A+B+C bleiben Pflicht vor Tool-Bau.
+**Bekanntes Terminal-Encoding-Problem:** `render_human`-`print` crashed in Windows cp1252 wegen 🔍-Emoji. Tool-Output selbst OK (String wird korrekt erzeugt). **Task 13 muss `sys.stdout.reconfigure(encoding="utf-8", errors="replace")` in main() setzen.**
 
 ---
 
-## ⚠️ OPEN RISKS / REMINDERS
+## 🔨 Task 13 — Opus-Task, Pre-Notes aus Codex-Review
 
-1. **TMO Q1 am 23.04.** — Erster echter Live-Test aller neuen Infrastruktur. Bei Tool-Bau-Verzögerung muss spätestens Mi 22.04. Abend Provenance-Plan durchgelaufen sein.
-2. **v3.0.4 Briefing-Hotfix bleibt pending** — v2.1 Prod läuft stabil (heute morgen Stale-Shibui-Konstellation sauber durchlaufen). v3.0.4 kann nach Audit-Tool in einer eigenen Session.
-3. **Tavily Dev-Key Rotation** — ab v3.0.4-Deploy-Datum läuft 7-Tage-Uhr (`tvly-dev-4PYXp...`).
-4. **Track 4 ETF/Gold-Input** — User-Decision weiter ausstehend; auflösen in einer dedizierten Session.
-5. **CORE-MEMORY §3 Stand 04.04.** — prüfen ob bewusst historisch oder Drift; Phase A Schritt 4.
-6. **Multi-Source-Drift-Prevention §27.4 horizontal** — weiterhin Pflicht (unverändert); plus neue Vertikal-Klausel.
+**Task 13:** `03_Tools/system_audit.py` CLI-Orchestrator. Plan Zeilen 2641-2827. **Opus-Implementer** (einziger Task mit Design-Judgement-Koppelung — Exit-Code-Kontrakt + Timeout-Dispatch + argparse).
+
+**Pre-besorgte Entscheidungen aus Codex-Review vor Task 13 Dispatch:**
+
+1. **`sys.stdout.reconfigure(encoding="utf-8", errors="replace")`** direkt in `main()` vor Rendering, mit Fallback wenn stdout kein reconfigure hat (`hasattr`-Check).
+2. **Per-Check-Timeouts via `ThreadPoolExecutor(max_workers=1)` + `future.result(timeout=...)`.** Timeout = synthetischer `CheckResult(status="FAIL", severity="error")`. Interne Tool-Exception getrennt als rc=2.
+3. **Exit-Code-Trennung (Codex-P1):**
+   - Orchestrator sammelt `internal_errors: list[Exception]`
+   - Nicht leer → rc=2 (tool bug)
+   - Sonst `report.compute_exit_code(results)` → rc=1 bei FAIL, rc=0 bei PASS/WARN/SKIP
+4. **Argparse-Design:**
+   - Mutually-exclusive Scope-Group: `--core` default, `--full`, `--minimal-baseline`
+   - `--format human|json`, `--timeout-per-check=20`, `--write-state/--no-write-state`
+   - `--minimal-baseline` = nur jsonl_schema + pipeline_ssot + log_lag (für Task-17-Gate, wenn Drift-Aufräumung noch nicht passiert ist)
+5. **STATE.md-Write default on** (Spec §6.5), aber bei rc=2 NICHT schreiben (corrupted tool-state soll keine STATE.md dirty machen). Bei rc=1 schreiben — echte Drift soll sichtbar bleiben.
+6. **Importlib-based Registry-Dispatch:** `"module:function"` string → `importlib.import_module(module)` → `getattr(fn)` → call.
+
+**Task-17-Baseline-Scope-Entscheidung (aus Codex-Review, von User noch nicht bestätigt):** Mit 161 echten existence-FAILs erreicht Live-Baseline heute nicht Exit-Code 0. Zwei Optionen:
+- **A)** Task 17 nutzt `--minimal-baseline` als Gate (nur strukturelle Integrity — kein content-drift). Die 161 Findings werden mit dem Tool systematisch abgearbeitet, dann `--core` als Ziel.
+- **B)** Die 161 Drifts jetzt als separate Aufräum-Welle vor Task 17 abarbeiten (~30-60 Min).
+
+Empfehlung: A pragmatisch. B auf die Nachsession-Liste.
 
 ---
 
-*Alles aus heutiger Session durable persistiert. Nichts schwebt im Speicher. Phase A-G klar sequenziert. TMO Q1 Deadline 23.04. erreichbar.*
+## 🧠 Deferred: Skill-Frage für nach Task 19
+
+User hat parallel mit Opus an anderer Stelle philosophiert, ob aus dem System-Audit-Python-Code ein **Housekeeping-Skill `system-state-guardian`** (Name Opus-Vorschlag) gebaut werden sollte — analog zur `backtest-ready-forward-verify`-Kapsel.
+
+**Kernpunkte aus dem Opus-Gespräch (per User-Einlage):**
+
+- **Kategorie:** Housekeeping-Skill (Meta-Ebene, analog zu `skill-creator`), NICHT Analyse-Pipeline-Skill wie backtest-ready.
+- **Strikte Trennung:** Housekeeping wartet State, Analyse-Skills benutzen State. Keine Rückkopplung in Analyse-Pipelines (sonst Zirkular-Abhängigkeit).
+- **Aktivierungspfade:** (a) Session-Start Silent-Mode, (b) `!HygieneCheck` manuell Vollreport, (c) nach skill-creator-Modifikationen. **NICHT** aus dynastie-depot heraus.
+- **Auto-Fix-Whitelist** vs. **User-Eskalation** hart definiert (Auto nur bei reinem Informations-Erhalt).
+- **Audit-Trail** `hygiene_log.jsonl` mit Action/Target/Hash-Pre/Post/Grund.
+- **Dry-Run-Pflicht** erste 2-4 Wochen.
+- **Kritisch:** „Baue den Skill erst, wenn der Python-Code stabil ist" (Opus-Einwand). Faustregel: Erst Python-API eingefroren → SKILL.md als dünne Kapsel drüber.
+
+**Entschieden:** Skill-Entscheidung **auf nach Task 19 aufgehoben.** Wenn das Tool operational ist + erste Woche Live-Probeläufe gezeigt haben, welche Aktivierungspfade tatsächlich gebraucht werden → dann v1.0-SKILL.md.
+
+Dieser Handover persistiert die Opus-Gesprächs-Kernpunkte für die nachfolgende Skill-Session. Vollständiger Brainstorm-Text liegt in der User-Message dieser Session (ggf. vor Kontext-Cut abspeichern).
+
+---
+
+## 📊 Commit-Graph (23 Commits)
+
+```
+7cea0e0 refactor(system-audit): robustness hardening pre-Task-13 (Codex-Review)
+c8900bd feat(system-audit): state_writer idempotent HTML-marker block
+1066bce feat(system-audit): report.py human + JSON renderer
+f813c2c feat(system-audit): Check-7 log.md vs git-HEAD lag
+4d94932 feat(system-audit): Check-6 pipeline-ssot reverse-only + parser golden tests
+8a37b24 feat(system-audit): Check-5 skill-version (SKILL.md vs ZIP)
+67fefc2 fix(system-audit): Check-4 n_checked counts legacy SESSION-HANDOVER hits
+d8f046f feat(system-audit): Check-4 existence (backtick-wrapped paths)
+aa010c7 fix(system-audit): Check-3 Faktortabelle parser header-driven + live-structure
+f0e89fd feat(system-audit): Check-3 cross-source (config↔STATE↔Faktortabelle↔Vault)
+e065f6a test(system-audit): Check-2 WARN fixture + path consistency
+5c969af feat(system-audit): Check-2 markdown header-stand drift (event-date based)
+dbaba27 refactor(system-audit): Check-1.5 defensive parse + test comment
+ab58c12 feat(system-audit): Check-1.5 store freshness (WARN, non-blocking)
+47e0695 refactor(system-audit): Check-1 robustness fixes (quality review)
+5d4cc44 feat(system-audit): Check-1 JSONL schema revalidation + 3 fixtures
+651b1cc refactor(system-audit): relative import + docstring fix + test coverage
+cb44af7 style(system-audit): __future__ annotations consistency in __init__.py
+fa3d10a feat(system-audit): package skeleton + CheckResult/FailureDetail contract
+afbf52c refactor(schemas): Remove redundant inline import copy in _smoke_tests
+e673916 fix(schemas): __all__ alphabetische Reihenfolge PortfolioReturnRecord/Position
+404b057 feat(schemas): PortfolioReturnRecord + BenchmarkReturnRecord nachgeruestet
+f0f707e (baseline) handover-sync(phase-d-closure): Pre-/clear Handover-Update
+```
+
+---
+
+## 🎯 Remaining Tasks 13-19 (Phase E Abschluss)
+
+- **13 CLI-Orchestrator** `system_audit.py` — **Opus**-Implementer, Codex-Pre-Notes oben
+- **14 Optional Check-8/9** — Vault-Backlinks + Status-Matrix (20s Timeout, 6 Fixtures Codex-P5)
+- **15 Smoke-Test temp-repo-copy** — strict rc=0 gegen Repo-Baseline-Kopie (Codex-P2)
+- **16 Slash-Command** `.claude/commands/SystemAudit.md` — dünner Wrapper
+- **17 INSTRUKTIONEN §27.5 + Live-Baseline-Run** — **Task-17-Scope-Frage (A vs B) mit User klären vor Dispatch**
+- **18 Pipeline-SSoT + Memory-Sync** — STATE.md Pipeline-#4 → ✅-Archiv, CORE-MEMORY §10, log.md, !SyncBriefing
+- **19 Acceptance-Matrix Spec §12** — Verification-Before-Completion
+
+**Geschätzter Aufwand Tasks 13-19:** ~90-120 Min in nächster Session (Task 13 ist der größte, ~30-45 Min inkl. Review-Loop; 14-18 je 10-20 Min; 19 ~15-20 Min Acceptance-Walkthrough).
+
+---
+
+## 📎 Fortlaufende Kontext-Erinnerungen
+
+- **User-Consent für Main-direct-Commits** ist für diese Execution-Sequenz erteilt. Atomare Task-Commits gewünscht. Kein Worktree.
+- **Modell-Plan C** aktiv: Sonnet 4.6 für alle Subagents (Implementer + Reviewer), Opus 4.7 nur für Task 13 Orchestrator + Final-Review falls Acceptance-Matrix Unklarheiten.
+- **Codex statt Advisor** für Second-Opinion (Memory `feedback_codex_over_advisor.md`).
+- **Applied Learning §Exhaustive-Drift-Check** hat bei Task 6 direkt gegriffen — Live-Faktortabelle-Parser-Fix war ein echter Treffer gegen die 21.04.-Lesson.
+- **Python 3.14.3 / PyYAML 6.0.3** — Keine neuen Dependencies eingeführt. `types.py` shadowed stdlib `types` bei Direct-Script-Invocation → `sys.path.pop`-Guard in _smoke_test.py bleibt (Python-3.14-Specific, dokumentiert).
+
+---
+
+## Referenzen
+
+- Plan v0.2: `docs/superpowers/plans/2026-04-21-system-audit-tool.md` (Commit `7218a85` + Codex-Patches in `82482d7`)
+- Spec v0.2: `docs/superpowers/specs/2026-04-21-system-audit-tool-design.md`
+- Aktives Package: `03_Tools/system_audit/`
+- Live-Smoke: `03_Tools/system_audit/_smoke_test.py` (11 Groups)
+- Archiv-Stores: `05_Archiv/score_history.jsonl` (27 Records), `flag_events.jsonl` (2 Records), `portfolio_returns.jsonl` + `benchmark-series.jsonl` (je 1 Record, 17.04. stale)
