@@ -271,6 +271,20 @@ def test_flag_mismatch_matrix() -> None:
     assert compare_flag(True, "warn") == "error"
 
 
+def test_existence_pass_on_existing_paths() -> None:
+    import tempfile
+    from system_audit.checks.existence import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "target.py").write_text("", encoding="utf-8")
+        (tdp / "doc.md").write_text("Siehe `target.py` und `absent.py`.", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, scan_files_override=[tdp / "doc.md"])
+    assert result.status == "FAIL"
+    assert any("absent.py" in f.actual for f in result.failures)
+    assert not any("target.py" in f.actual for f in result.failures)
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -297,3 +311,5 @@ if __name__ == "__main__":
     test_flag_parser_all_six_variants()
     test_flag_mismatch_matrix()
     print("[OK] cross_source smoke tests passed")
+    test_existence_pass_on_existing_paths()
+    print("[OK] existence smoke tests passed")
