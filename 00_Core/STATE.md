@@ -91,6 +91,7 @@
 | 2026-07-19 | Track 5a 90-Tage-Audit | EDGAR-Skill Performance-Review (falls promoted) |
 | 2026-10-17 | Score-Archiv-Interim-Gate | 6-Monats-Sanity-Check `score_history.jsonl` (Forward-Window + Duplicate-Guard) |
 | 2027-10-19 | R5 Interim-Gate | 18-Mo-Dry-Run `risk-metrics-calculation` + Data-Quality `portfolio_returns.jsonl` (inkl. FX-Conversion-Check) |
+| 2027-10-19 | `float → Decimal` Migration | `PortfolioReturnRecord` + `Position` + `BenchmarkReturnRecord` auf `Decimal` umstellen — R5-Interim-Gate braucht exakte Arithmetik für Sharpe/Sortino/Beta (Backlog-Punkt 1 aus User-Diskussion 21.04.2026; eigener Migration-Plan ~1 Session, blockt Task 14-19 nicht) |
 | 2028-04-01 | Review-Gate §29.6 | Aktivierung formales 2J-System-Review |
 | offen | AVGO OpenInsider Manual-Check | Vor FLAG-Aktivierung (Watch aktiv, kein Termin — $123M/90d Post-Vesting-Verdacht) |
 
