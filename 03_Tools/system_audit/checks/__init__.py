@@ -1,0 +1,9 @@
+"""Check registry. Each check exports `run(repo_root, context) -> CheckResult`.
+
+Populated incrementally as checks are implemented. Orchestrator imports CORE/
+OPTIONAL dicts and dispatches them.
+"""
+from __future__ import annotations
+
+CORE: dict[str, str] = {}      # name → "system_audit.checks.<module>:run"
+OPTIONAL: dict[str, str] = {}  # same shape, activated via --full / --vault
