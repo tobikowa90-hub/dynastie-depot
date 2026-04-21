@@ -44,7 +44,7 @@ def _parse_state_table(path: Path) -> dict[str, dict]:
     """Parse 'Ticker | Score | DEFCON | Rate | FLAG | ...' markdown table."""
     out: dict[str, dict] = {}
     in_table = False
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
         if re.match(r"^\|\s*Ticker\s*\|\s*Score\s*\|\s*DEFCON", line):
             in_table = True
             continue
@@ -80,7 +80,7 @@ def _parse_faktortabelle(path: Path) -> dict[str, dict]:
     col_idx: dict[str, int] | None = None
     saw_sep = False
 
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
         stripped = line.strip()
 
         # Skip HTML comments between header-separator and/or data rows
@@ -161,7 +161,7 @@ def _parse_vault_entities(entities_dir: Path) -> dict[str, dict]:
     if not entities_dir.exists():
         return out
     for md in entities_dir.glob("*.md"):
-        text = md.read_text(encoding="utf-8")
+        text = md.read_text(encoding="utf-8", errors="replace")
         if not text.startswith("---"):
             continue
         try:
@@ -213,17 +213,41 @@ def run(
             category="core",
         )
 
-    config = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
+    try:
+        config = yaml.safe_load(cfg_path.read_text(encoding="utf-8", errors="replace")) or {}
+    except yaml.YAMLError as e:
+        return CheckResult(
+            name="cross_source", status="FAIL", n_checked=0, n_passed=0,
+            failures=[FailureDetail(
+                location=str(cfg_path.relative_to(repo_root)) if cfg_path.is_relative_to(repo_root) else str(cfg_path),
+                expected="valid YAML",
+                actual=f"YAMLError: {str(e)[:120]}",
+                severity="error",
+                hint="config.yaml manuell pruefen",
+            )],
+            duration_ms=int((time.monotonic() - start) * 1000),
+            category="core",
+        )
     satelliten = config.get("satelliten", [])
     state_by_ticker = _parse_state_table(sources["state"]) if sources.get("state") and sources["state"].exists() else {}
     fakt_by_ticker = _parse_faktortabelle(sources["faktortabelle"]) if sources.get("faktortabelle") and sources["faktortabelle"].exists() else {}
     vault_by_ticker = _parse_vault_entities(sources["vault_entities_dir"]) if sources.get("vault_entities_dir") else {}
 
     for sat in satelliten:
-        ticker = sat["ticker"]
-        c_score = sat["score"]
-        c_defcon = sat["defcon"]
-        c_flag = bool(sat.get("flag", False))
+        try:
+            ticker = sat["ticker"]
+            c_score = sat["score"]
+            c_defcon = sat["defcon"]
+            c_flag = bool(sat.get("flag", False))
+        except (KeyError, TypeError) as e:
+            failures.append(FailureDetail(
+                location=f"config.yaml: {sat if isinstance(sat, str) else sat.get('ticker', '<unknown>')}",
+                expected="ticker+score+defcon keys",
+                actual=f"malformed entry: {str(e)[:80]}",
+                severity="error",
+                hint="config.yaml-Entry strukturell defekt",
+            ))
+            continue
 
         for mirror_name, mirror in [("STATE.md", state_by_ticker), ("Faktortabelle.md", fakt_by_ticker), ("Vault", vault_by_ticker)]:
             if ticker not in mirror:

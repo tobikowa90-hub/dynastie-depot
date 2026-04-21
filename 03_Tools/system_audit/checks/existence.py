@@ -12,6 +12,9 @@ from pathlib import Path
 
 from system_audit.types import AuditContext, CheckResult, FailureDetail
 
+# PATH_RE rejects whitespace in paths by design — backtick-path-refs in Dynasty-Depot
+# Konvention nutzen keine Spaces. Pfade mit Spaces (e.g. "07_Obsidian Vault/...") werden
+# nicht gecheckt — das ist bewusst, verhindert false-positives auf prose-text-matches.
 PATH_RE = re.compile(r"`([^\s`]+\.(py|md|yaml|yml|jsonl|xlsx|zip|sh|ps1))`")
 WIKILINK_RE = re.compile(r"\[\[[^\]]+\]\]")
 

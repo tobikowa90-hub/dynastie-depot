@@ -285,6 +285,26 @@ def test_existence_pass_on_existing_paths() -> None:
     assert not any("target.py" in f.actual for f in result.failures)
 
 
+def test_existence_ignores_paths_with_spaces() -> None:
+    """PATH_RE by design ignores space-containing paths (e.g. '07_Obsidian Vault/...')."""
+    import tempfile
+    from system_audit.checks.existence import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "doc.md").write_text(
+            "Backtick ref without spaces: `foo.py`\n"
+            "Backtick ref WITH spaces: `07_Obsidian Vault/log.md`\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, scan_files_override=[tdp / "doc.md"])
+    # foo.py is missing → 1 error; space-ref is not detected at all → no second error
+    assert result.status == "FAIL"
+    assert len([f for f in result.failures if f.severity == "error"]) == 1
+    assert any("foo.py" in f.actual for f in result.failures)
+    assert not any("Obsidian" in f.actual for f in result.failures)
+
+
 def _make_skill(root: Path, name: str, version: str) -> None:
     d = root / "01_Skills" / name
     d.mkdir(parents=True)
@@ -519,6 +539,7 @@ if __name__ == "__main__":
     test_flag_mismatch_matrix()
     print("[OK] cross_source smoke tests passed")
     test_existence_pass_on_existing_paths()
+    test_existence_ignores_paths_with_spaces()
     print("[OK] existence smoke tests passed")
     test_skill_version_pass_fixture()
     test_skill_version_warn_on_unpacked_newer_fixture()

@@ -74,7 +74,7 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             category="core",
         )
 
-    text = log_path.read_text(encoding="utf-8")
+    text = log_path.read_text(encoding="utf-8", errors="replace")
     log_date = _most_recent_log_date(text)
     head_date = _git_head_date(repo_root)
 

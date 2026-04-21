@@ -34,12 +34,18 @@ def write_last_audit(
     summary: str,
     run_cmd: str,
 ) -> None:
-    text = state_path.read_text(encoding="utf-8")
-    has_start = START_MARKER in text
-    has_end = END_MARKER in text
+    text = state_path.read_text(encoding="utf-8", errors="replace")
+    n_start = text.count(START_MARKER)
+    n_end = text.count(END_MARKER)
+    has_start = n_start > 0
+    has_end = n_end > 0
     if has_start and not has_end:
         raise RuntimeError(
             f"STATE.md Marker-Block inkonsistent (start-Marker ohne end-Marker) — manuell fixen: {state_path}"
+        )
+    if n_start > 1 or n_end > 1:
+        raise RuntimeError(
+            f"STATE.md duplicate Marker (start={n_start}, end={n_end}) — manuell fixen: {state_path}"
         )
 
     block = _build_block(timestamp_utc, summary, run_cmd)

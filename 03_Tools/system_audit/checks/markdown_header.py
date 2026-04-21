@@ -122,7 +122,7 @@ def run(
                 severity="warning", hint="Target fehlt — Struktur geaendert?",
             ))
             continue
-        text = path.read_text(encoding="utf-8")
+        text = path.read_text(encoding="utf-8", errors="replace")
         stand = _stand_date(text)
         newest = PARSERS[kind](text)
 
@@ -161,7 +161,14 @@ def run(
 
     has_error = any(f.severity == "error" for f in failures)
     has_warn = any(f.severity == "warning" for f in failures)
-    status = "FAIL" if has_error else ("WARN" if has_warn else "PASS")
+    if n_checked == 0:
+        status = "SKIP"
+    elif has_error:
+        status = "FAIL"
+    elif has_warn:
+        status = "WARN"
+    else:
+        status = "PASS"
 
     return CheckResult(
         name="markdown_header",

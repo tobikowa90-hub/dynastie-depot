@@ -58,7 +58,7 @@ def run(
             category="core",
         )
 
-    text = state_path.read_text(encoding="utf-8")
+    text = state_path.read_text(encoding="utf-8", errors="replace")
     refs = extract_plan_refs(text)
     failures: list[FailureDetail] = []
     n_checked = len(refs)
