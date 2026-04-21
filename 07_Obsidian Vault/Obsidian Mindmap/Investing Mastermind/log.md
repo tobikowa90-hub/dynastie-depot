@@ -754,3 +754,20 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Commits dieser Session (6):** `510cbbf` (Feature) · `68d58ab` (Fix-Welle C) · `6926f58` (STATE Long-Term-Gate) · `9a3906f` (Handover-Sync) · `b1b41d1` (Fix-Welle D).
 - **Lesson Learned (Kandidat für Applied Learning):** Fixture-green ≠ live-correct bei Parser/Regex-Scope-Fixes. Blocker-#1-Fix (header-anchored HEADER_RE) war grün auf 3 Fixtures, aber der initial zu enge End-Terminator hätte Live-Drift übersehen (status_matrix 1/1 statt 21/25). Entdeckt nur via `--full` Live-Run — Regression-Test `test_status_matrix_subsections_are_scanned` lockt das Verhalten jetzt.
 - **Next:** Task 15 Smoke-Test temp-repo-copy (Plan 3109-3246, Spec §7.4). Dann Tasks 16-19 (Slash-Command `/SystemAudit`, INSTRUKTIONEN §27.4 Regression-Guard, Pipeline-SSoT-Sync, Acceptance-Matrix).
+
+## [2026-04-22] deployment | System-Audit-Tool v1.0 deployed (Phase E 15-18/19)
+
+- **Scope:** Tasks 15-18 der Systemhygiene-Phase-E committed. Tool live, `--minimal-baseline`-Regression-Guard in INSTRUKTIONEN §27.5 verankert. Erster Last-Audit-Block (3/3 PASS) in STATE.md persistiert.
+- **Methodik:** Subagent-driven-development + Codex-Reconciliation (keine CodeRabbit-Pässe bei Minor-Tasks, siehe feedback_review_stack.md Matrix).
+- **Commits (4):**
+  - `486f2c1` **Task 15** Smoke temp-repo + seeded-drift. Codex-Reconciliation Option 2: Baseline-Assertion `rc == 0` → `rc ∈ {0, 1}` (Plan-Header-Notice dokumentiert). 3 Plattform-Fixes (Py 3.14 `sys.path`-Guard, Windows `encoding="utf-8"` + `stdout.reconfigure`). [OK] 2× live.
+  - `fa238bf` **Task 16** `/SystemAudit` Slash-Command-Wrapper (`.claude/commands/SystemAudit.md`, 15 LOC). `$ARGUMENTS`-Passthrough, Default `--core`.
+  - `ab7ae19` **Task 17** INSTRUKTIONEN §27.5 Migration-Regression-Guard + initialer Baseline-Run. Scope-Drift `--core` → `--minimal-baseline` dokumentiert (pre-existing Tool-Bugs Check-3 future-date + Check-5 existence blockieren `--core`). Rollback-Pfad an Follow-up-Tasks gekoppelt.
+  - (dieser Commit) **Task 18** Sync-Welle: STATE.md Pipeline-SSoT Punkt 4 auf DONE, Open-Backlog Punkt „System-Audit-Tool fehlt" → deployed, Phase-E-Banner 14/19 → 18/19, CORE-MEMORY §10 Sub-Section mit Check-Status-Tabelle, diese log-Zeile.
+- **Baseline-Realität:** `--minimal-baseline` 3/3 PASS. `--core` 4/8 PASS mit 2 known Tool-Bugs.
+  - Check-2 `markdown_header`: Future-Date-Bug (Long-Term-Gate-Rows 2028-04-01 / 2027-10-19 als Event gewertet) → Follow-up-Task #2.
+  - Check-4 `existence`: 54 CLAUDE.md-Pfadreferenzen ohne `00_Core/`-Prefix → deferred Post-Task-17-Cleanup-Welle.
+- **Spec-§-Drift-Handling:** 2 Plan-Header-Notices dokumentieren die `rc`-Relaxation (Task 15) + Scope-Flag (Task 17). Spec v0.2 bleibt frozen (`82482d7`). Pattern: `feedback_spec_section_drift.md`.
+- **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten aller 11 Satelliten unverändert.
+- **Follow-up-Tasks offen:** #2 Check-3 future-date-exclude, #4 vault_backlinks Robustness-Pass (Important #4-7 aus Fix-Welle-C-Review), existence-Cleanup-Welle.
+- **Next:** Task 19 Verification-Before-Completion Acceptance-Matrix + obligatorischer 2. 4-Wege-Review-Pass (Codex + CodeRabbit sequenziert für Meilenstein-Abschluss). Dann Phase F (Provenance-Plan Execution vor TMO Q1 23.04.).

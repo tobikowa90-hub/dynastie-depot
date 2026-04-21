@@ -390,6 +390,33 @@ Summe: 7×1,0 + 1×0,5 = 7,5 | Einheits-Rate: 38,00€ | D2-Rate: 19,00€ | Che
 
 **Lesson Learned:** „Drift-Check" war bisher implizit Spot-Check (Sampling prominenter Zeilen). 12/27 silent-Drift beweist, dass nur exhaustive Schema-Validation aller Records zuverlässig ist → §27.4 Vertikal-Drift-Klausel.
 
+### 22.04.2026 — System-Audit-Tool v1.0 deployed (Phase E 18/19)
+
+**Scope:** Exhaustive Drift-Audit via `03_Tools/system_audit.py` + Slash-Command `/SystemAudit` + INSTRUKTIONEN §27.5 Migration-Regression-Guard. Spec v0.2 ratified `82482d7`; Plan `docs/superpowers/plans/2026-04-21-system-audit-tool.md` Tasks 1-18 done (Task 19 Acceptance-Matrix offen).
+
+| Check | Kategorie | Status Baseline |
+|-------|-----------|----------------|
+| Check-1 `jsonl_schema` | Core | ✅ PASS 31/31 |
+| Check-1.5 `store_freshness` | Core | ✅ PASS 2/2 (WARN-Severity bei Daily-Persist-Stale) |
+| Check-2 `markdown_header` | Core | ❌ FAIL 1/3 — Future-Date-Bug (Long-Term-Gate-Rows als Event gewertet); Follow-up-Task #2 |
+| Check-3 `cross_source` | Core | ⚠️ WARN 22/22 (Watch-informativ) |
+| Check-4 `existence` | Core | ❌ FAIL 54/186 — CLAUDE.md-Pfadreferenzen ohne `00_Core/`-Prefix; deferred Post-Task-17-Cleanup-Welle |
+| Check-5 `skill_version` | Core | ⚠️ WARN 1/2 (ZIP-Packaging ausstehend) |
+| Check-6 `pipeline_ssot` | Core | ✅ PASS 3/3 |
+| Check-7 `log_lag` | Core | ✅ PASS 1/1 |
+| Check-8 `vault_backlinks` | Optional | ✅ PASS (29ms) |
+| Check-9 `status_matrix` | Optional | ✅ PASS |
+
+**Pragmatischer Regression-Gate:** `--minimal-baseline` (Check-1 + Check-6 + Check-7) = 3/3 PASS, rc=0. Das sind die 3 strukturellen Invarianten, die ein `migrate_*.py`-Run nicht brechen darf. `--core` erst nach Check-3-Fix + existence-Cleanup als Gate hochgezogen (Rollback-Pfad in §27.5-Body dokumentiert).
+
+**Plan-Header-Notices dokumentiert 2 Spec-Drifts (Spec v0.2 frozen):**
+1. Task 15 Baseline-Smoke rc==0 → rc∈{0,1} (Codex-Reconciliation Option 2, Commit `486f2c1`).
+2. Task 17 Regression-Guard `--core` → `--minimal-baseline` (User-Entscheidung A pragmatisch per SESSION-HANDOVER, Commit `ab7ae19`).
+
+**Codex-Reconciliation-Verdikt:** RECONCILED. Keine Spec-v0.3-PR nötig. Erster echter Tool-Einsatz: Pre-TMO-Q1 23.04.2026 + jede Folge-Migration.
+
+**Lesson:** Tool-Bugs (Check-3 + Check-5) wurden nur durch Live-Baseline-Run im temp-Repo entdeckt — in-process Fixtures waren synthetisch und haben den Future-Date-Bug nicht getriggert. Generalisiert: synthetische Test-Fixtures decken Parser-Bugs nicht ab, die erst mit realem Content triggern. → Applied Learning Kandidat.
+
 ### IFRS 16 vs. ASC 842 — Strukturelle OCF-Differenz (Non-US Pflicht-Wissen)
 Bei ASML (und allen IFRS-Titeln die auch US-ADR haben): yfinance zieht IFRS-EU-Meldung (ASML.AS Amsterdam).
 Unter IFRS 16 → Leasingzahlungen (Tilgung) als Finanzierungs-CF → senkt OCF vs. US GAAP (ASC 842).
