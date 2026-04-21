@@ -5,5 +5,7 @@ OPTIONAL dicts and dispatches them.
 """
 from __future__ import annotations
 
-CORE: dict[str, str] = {}      # name → "system_audit.checks.<module>:run"
+CORE: dict[str, str] = {
+    "jsonl_schema": "system_audit.checks.jsonl_schema:run",
+}      # name → "system_audit.checks.<module>:run"
 OPTIONAL: dict[str, str] = {}  # same shape, activated via --full / --vault

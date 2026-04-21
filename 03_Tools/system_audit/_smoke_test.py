@@ -97,6 +97,46 @@ def test_check_result_failures_mutable() -> None:
     assert len(r.failures) == 1
 
 
+def test_jsonl_schema_pass_on_good_fixture() -> None:
+    from system_audit.checks.jsonl_schema import run
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "jsonl_schema"
+    result = run(REPO_ROOT, ctx, stores_override={
+        "score_history": fx / "good_score.jsonl",
+        "flag_events": fx / "empty.jsonl",
+        "portfolio_returns": fx / "empty.jsonl",
+        "benchmark_series": fx / "empty.jsonl",
+    })
+    assert result.status in ("PASS", "WARN", "SKIP"), f"expected PASS/WARN/SKIP, got {result.status}"
+    assert all(f.severity != "error" for f in result.failures)
+
+def test_jsonl_schema_fail_on_bad_fixture() -> None:
+    from system_audit.checks.jsonl_schema import run
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "jsonl_schema"
+    result = run(REPO_ROOT, ctx, stores_override={
+        "score_history": fx / "bad_score.jsonl",
+        "flag_events": fx / "empty.jsonl",
+        "portfolio_returns": fx / "empty.jsonl",
+        "benchmark_series": fx / "empty.jsonl",
+    })
+    assert result.status == "FAIL"
+    assert any(f.severity == "error" for f in result.failures)
+    assert any("bad_score.jsonl:1" in f.location for f in result.failures)
+
+def test_jsonl_schema_skip_on_missing_file(tmp_path=None) -> None:
+    from system_audit.checks.jsonl_schema import run
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx, stores_override={
+        "score_history": REPO_ROOT / "does" / "not" / "exist.jsonl",
+        "flag_events": REPO_ROOT / "no.jsonl",
+        "portfolio_returns": REPO_ROOT / "no.jsonl",
+        "benchmark_series": REPO_ROOT / "no.jsonl",
+    })
+    assert result.status == "SKIP"
+    assert all(f.severity == "warning" for f in result.failures)
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -106,3 +146,7 @@ if __name__ == "__main__":
     test_check_result_skip_status()
     test_check_result_failures_mutable()
     print("[OK] types smoke tests passed")
+    test_jsonl_schema_pass_on_good_fixture()
+    test_jsonl_schema_fail_on_bad_fixture()
+    test_jsonl_schema_skip_on_missing_file()
+    print("[OK] jsonl_schema smoke tests passed")
