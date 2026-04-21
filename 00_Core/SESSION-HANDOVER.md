@@ -1,11 +1,45 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-21 Nachmittag (**Phase A+B+C COMPLETED** in Session 21.04. Nachmittag — CORE-MEMORY nachgezogen, log.md sync-wave Eintrag, STATE.md Pipeline-SSoT-Section eingebaut, INSTRUKTIONEN §18 Zusatz-Trigger, Commit pending. **Next: Phase D** (Brainstorming Sub-Spec `system_audit.py`) ab jetzt in dieser selben Session.)
-**Vorherige Aktualisierung:** 2026-04-21 Mittag — Pivot zu Systemhygiene-TOP-Priority nach Entdeckung 12/27 silent defcon-Drift + CORE-MEMORY-Header-Stand-Drift + Pipeline-SSoT-Lücke.
+**Aktualisiert:** 2026-04-21 Nachmittag-Spät (**Phase A+B+C+D alle COMPLETED** in Session 21.04. Nachmittag — siehe Commits `8acb13c` sync-wave + `7218a85` spec v0.1 + `82482d7` spec v0.2 ratified mit 6 Codex-Patches. **Next: Phase E — Plan-Writing + TDD-Build von `system_audit.py`** via `superpowers:writing-plans`-Skill, neue Session nach `/clear`.)
+**Vorherige Aktualisierungen:** 2026-04-21 Mittag — Systemhygiene-Pivot nach 12/27 Drift-Entdeckung · 2026-04-21 Nachmittag — A+B+C Abschluss · 2026-04-21 Nachmittag-Spät — D Abschluss (diese Zeile).
 
-> **Progress-Banner (Phase A-G):** ✅ A (CORE-MEMORY) · ✅ B (log.md + Handover) · ✅ C (STATE.md Pipeline-SSoT) · 🟡 D (in progress, Brainstorming) · ⏳ E (Plan + Build Audit-Tool) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04. First-Live-Run)
+> **Progress-Banner (Phase A-G):** ✅ A (CORE-MEMORY) · ✅ B (log.md + Handover) · ✅ C (STATE.md Pipeline-SSoT) · ✅ D (Spec v0.2 ratified) · 🟡 **E next** (Plan + TDD-Build Audit-Tool) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04. First-Live-Run)
 
-**Für nächste Session:** **Phase A+B+C+D+E+F in dieser Reihenfolge** (komplette Systemhygiene-Welle + Audit-Tool-Bau + Provenance-Plan-Execution, noch in time für TMO Q1 am 23.04.)
+## 🚀 NÄCHSTE SESSION — Einstieg nach `/clear`
+
+**Trigger:** `Session starten` → Claude liest STATE.md, erkennt Phase D ✅ committed, setzt direkt bei **Phase E** an.
+
+**Phase E — Plan + Build `system_audit.py` (~90-120 Min):**
+
+1. **Skill-Aktivierung:** `superpowers:writing-plans`.
+2. **Input-Artefakte:**
+   - Spec (ratified): `docs/superpowers/specs/2026-04-21-system-audit-tool-design.md` (Commit `82482d7`)
+   - Acceptance-Kriterien: Spec §12 (10 Checkboxes)
+   - 7 Kern-Checks + 2 Optional + Check-1.5 Freshness (neu durch Codex-Patch P1)
+3. **Output-Artefakt:** `docs/superpowers/plans/2026-04-21-system-audit-tool.md`
+4. **Erwartete Task-Struktur (Plan schlägt ~10-12 TDD-Tasks vor):**
+   - **Task 1:** `PortfolioReturnRecord` + `BenchmarkReturnRecord` in `03_Tools/backtest-ready/schemas.py` (Pflicht vor Check-1)
+   - **Task 2:** CLI-Skeleton + CheckResult-Contract + Registry-Pattern
+   - **Tasks 3-9:** je ein TDD-Task pro Kern-Check (jsonl_schema / markdown_header / cross_source / existence / skill_version / pipeline_ssot / log_lag) — **parallelisierbar via Subagents** (isolierte Check-Module)
+   - **Task 10:** Check-1.5 Store-Freshness (WARN-Severity)
+   - **Task 11:** Optional-Checks (Vault-Backlinks + Status-Matrix mit Timeout)
+   - **Task 12:** Report-Aggregator + State-Writer (HTML-Comment-Marker) + Slash-Command `.claude/commands/SystemAudit.md`
+   - **Task 13:** Integration-Test + Smoke-Test (temp-repo-copy) + Parser-Golden-Tests
+   - **Task 14:** INSTRUKTIONEN §27.4 Regression-Guard-Regel nachtragen + STATE.md Pipeline-SSoT Plan-Referenz einbauen
+5. **Codex-Review nach Plan-Draft** (analog Phase D Joint-Review).
+6. **Execution-Modus:** Subagent-Driven für Checks (Task 3-9 parallel), sequentiell für Schemas/Skeleton/Aggregator.
+7. **First-Run gegen aktuellen Repo:** Erwartung Exit-Code 0 mit Check-1.5 = WARN (Daily-Persist-Stale — Soll-Zustand bis Track 4).
+8. **Post-Build:** STATE.md „Last Audit"-Block wird vom Tool selbst geschrieben (idempotent via HTML-Comment-Marker).
+
+**Phase F (danach, wahrscheinlich gleiche Session):** `/SystemAudit` als Pre-Check → Provenance-Gate-Plan-Execution (`docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md`, 7 Tasks, 40 Steps).
+
+**Phase G (23.04. natürlicher Trigger):** TMO Q1-Earnings First-Live-Run.
+
+---
+
+## 📋 Historie (was heute gemacht wurde — durable)
+
+**Für nächste Session:** **Phase E+F+G in dieser Reihenfolge** (Audit-Tool + Provenance-Execution + TMO Q1). Phase A-D abgeschlossen.
 
 ---
 
