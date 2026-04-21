@@ -52,7 +52,7 @@ def _load_run(spec: str) -> Callable[[Path, AuditContext], CheckResult]:
 def _build_scoped_checks(args: argparse.Namespace) -> list[ScopedCheck]:
     """Select (name, spec, category) tuples based on mutually-exclusive scope flag."""
     if args.vault:
-        return [(k, v, "optional") for k, v in OPTIONAL.items() if "vault" in k]
+        return [(k, v, "optional") for k, v in OPTIONAL.items()]
     if args.full:
         return (
             [(k, v, "core") for k, v in CORE.items()]

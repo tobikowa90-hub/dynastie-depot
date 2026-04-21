@@ -15,4 +15,7 @@ CORE: dict[str, str] = {
     "pipeline_ssot": "system_audit.checks.pipeline_ssot:run",
     "log_lag": "system_audit.checks.log_lag:run",
 }      # name → "system_audit.checks.<module>:run"
-OPTIONAL: dict[str, str] = {}  # same shape, activated via --full / --vault
+OPTIONAL: dict[str, str] = {
+    "vault_backlinks": "system_audit.checks.vault_backlinks:run",
+    "status_matrix": "system_audit.checks.status_matrix:run",
+}  # same shape, activated via --full / --vault

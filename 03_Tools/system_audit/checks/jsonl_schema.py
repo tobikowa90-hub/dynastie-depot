@@ -6,7 +6,6 @@ line → FailureDetail(severity="error"). No SKIP-fallback for missing models
 """
 from __future__ import annotations
 
-import json
 import sys
 import time
 from pathlib import Path
@@ -80,7 +79,7 @@ def run(
                     continue
                 n_checked += 1
                 try:
-                    model.model_validate(json.loads(line))
+                    model.model_validate_json(line)
                     n_passed += 1
                 except ValidationError as e:
                     errs = e.errors()
@@ -96,14 +95,6 @@ def run(
                         actual=actual,
                         severity="error",
                         hint="Migration-Helper ausfuehren oder Backfill re-run",
-                    ))
-                except json.JSONDecodeError as e:
-                    failures.append(FailureDetail(
-                        location=f"{path.relative_to(repo_root)}:{lineno}",
-                        expected="valid JSON",
-                        actual=f"JSONDecodeError: {e.msg}",
-                        severity="error",
-                        hint="Record manuell pruefen / entfernen",
                     ))
 
     has_error = any(f.severity == "error" for f in failures)

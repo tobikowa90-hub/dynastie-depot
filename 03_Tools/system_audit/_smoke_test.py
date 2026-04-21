@@ -634,8 +634,9 @@ def test_orchestrator_minimal_baseline_scope() -> None:
     assert names == {"jsonl_schema", "pipeline_ssot", "log_lag"}, f"got {names}"
 
 
-def test_orchestrator_vault_empty_registry_emits_skip() -> None:
-    """Pre-Task-14: OPTIONAL registry empty; --vault must SKIP explicitly, not silent PASS.
+def test_orchestrator_vault_runs_optional_checks() -> None:
+    """Post-Task-14: OPTIONAL registry has vault_backlinks + status_matrix; --vault must
+    run exactly those two checks. rc in {0, 1} because live vault may have real drift.
 
     rc-check precedes json.loads so an unexpected rc=2 surfaces the real failure
     instead of a confusing JSONDecodeError on stderr content (CodeRabbit-CLI CR-1).
@@ -644,13 +645,13 @@ def test_orchestrator_vault_empty_registry_emits_skip() -> None:
     import subprocess
     out = subprocess.run(
         [sys.executable, "03_Tools/system_audit.py", "--vault", "--no-write", "--json"],
-        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20,
+        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60,
     )
-    assert out.returncode == 0, f"rc={out.returncode}, stderr={out.stderr[:500]}"
+    assert out.returncode in (0, 1), f"rc={out.returncode}, stderr={out.stderr[:500]}"
     data = json.loads(out.stdout)
-    assert len(data["checks"]) == 1
-    assert data["checks"][0]["name"] == "no_checks_registered"
-    assert data["checks"][0]["status"] == "SKIP"
+    names = {c["name"] for c in data["checks"]}
+    assert names == {"vault_backlinks", "status_matrix"}, f"got {names}"
+    assert len(data["checks"]) == 2
 
 
 def test_orchestrator_invalid_timeout_rejected() -> None:
@@ -679,6 +680,96 @@ def test_state_writer_raises_on_orphan_start_marker() -> None:
             assert "inkonsistent" in str(e).lower() or "marker" in str(e).lower()
         else:
             raise AssertionError("expected RuntimeError on orphan marker")
+
+
+def test_vault_backlinks_pass_fixture() -> None:
+    """PASS: [[Note]] zeigt auf existierende Note."""
+    import tempfile
+    from system_audit.checks.vault_backlinks import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind"
+        (vault / "notes").mkdir(parents=True)
+        (vault / "notes" / "Alpha.md").write_text("content", encoding="utf-8")
+        (vault / "notes" / "Beta.md").write_text("Siehe [[Alpha]] für mehr.", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=True, vault_timeout_s=10)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"failures={result.failures}"
+
+def test_vault_backlinks_fail_on_missing() -> None:
+    """FAIL: [[Missing]] hat keinen Target."""
+    import tempfile
+    from system_audit.checks.vault_backlinks import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind"
+        (vault / "notes").mkdir(parents=True)
+        (vault / "notes" / "A.md").write_text("Link zu [[Nonexistent]].", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=True, vault_timeout_s=10)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any("Nonexistent" in f.expected or "Nonexistent" in f.actual for f in result.failures)
+
+def test_status_matrix_pass_fixture() -> None:
+    """PASS: B1-B5 lückenlos, keine Duplikate."""
+    import tempfile
+    from system_audit.checks.status_matrix import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "# Doc\n\n## Status-Matrix\n\n- B1 first\n- B2 second\n- B3 third\n- B4 fourth\n- B5 fifth\n\n## Anderer Abschnitt\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=True)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"failures={result.failures}"
+
+def test_status_matrix_fail_on_gap() -> None:
+    """FAIL: B3 fehlt zwischen B2 und B4."""
+    import tempfile
+    from system_audit.checks.status_matrix import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "## Status-Matrix\n\n- B1\n- B2\n- B4\n- B5\n\n## Other\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=True)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any("B3" in f.actual for f in result.failures)
+
+def test_status_matrix_fail_on_duplicate() -> None:
+    """FAIL: B2 erscheint 2×."""
+    import tempfile
+    from system_audit.checks.status_matrix import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "## Status-Matrix\n\n- B1\n- B2\n- B2\n- B3\n\n## Other\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=True)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any("B2" in f.actual and "2" in f.actual for f in result.failures)
+
+
+def test_vault_backlinks_skip_on_missing_vault() -> None:
+    """EDGE: Kein Vault-Verzeichnis → SKIP ohne Failures."""
+    import tempfile
+    from system_audit.checks.vault_backlinks import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=True, vault_timeout_s=10)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
 
 
 if __name__ == "__main__":
@@ -734,7 +825,15 @@ if __name__ == "__main__":
     test_orchestrator_dry_run_on_live_repo()
     test_orchestrator_duration_budget_core()
     test_orchestrator_minimal_baseline_scope()
-    test_orchestrator_vault_empty_registry_emits_skip()
+    test_orchestrator_vault_runs_optional_checks()
     test_orchestrator_invalid_timeout_rejected()
     test_main_rc2_emits_partial_json_and_preserves_diagnosis()
     print("[OK] orchestrator smoke tests passed")
+    test_vault_backlinks_pass_fixture()
+    test_vault_backlinks_fail_on_missing()
+    test_vault_backlinks_skip_on_missing_vault()
+    print("[OK] vault_backlinks smoke tests passed")
+    test_status_matrix_pass_fixture()
+    test_status_matrix_fail_on_gap()
+    test_status_matrix_fail_on_duplicate()
+    print("[OK] status_matrix smoke tests passed")
