@@ -440,6 +440,28 @@ Summe: 7×1,0 + 1×0,5 = 7,5 | Einheits-Rate: 38,00€ | D2-Rate: 19,00€ | Che
 
 **Next:** CodeRabbit-Re-Run gegen `e3ba381` nach Cooldown (>22.04. ~23:23 UTC). Bei keinen neuen Blockern: Final-Commit `log(phase-e-done)` + Banner 19/19 + Übergang zu Phase F (Provenance-Plan-Execution) bzw. direkt Phase G (TMO Q1 23.04.).
 
+### 22.04.2026 Spät-Nacht — Phase E 19/19 DONE ✅ + Pfad-2-Entscheidung
+
+**CodeRabbit-Re-Run (post-Cooldown 23:25 UTC gegen `e3ba381`):** **1 Finding total**, nitpick-severity.
+- `03_Tools/Output/PORTFOLIO-RISK-2026-04-17.md:39`: „Top-3 Risk-**Treiber**" vs „Risk Drivers" (DE/EN-Mix)
+- **Scope:** Out-of-Scope Phase E — File ist Auto-Output von `portfolio_risk.py` vom 17.04., nicht von Tasks 15-19 berührt
+- **Triage:** dokumentieren + close (Ästhetik-Nitpick, Projekt ist bewusst DE/EN-gemischt; Fix müsste im Generator sein, nicht im Auto-Output)
+- 2 truncated Findings aus Run-1 haben sich durch Fix-Welle E aufgelöst (wären sonst wieder aufgetaucht)
+
+**Phase E Final-Status:**
+- Tasks 1-19 substantive done
+- Codex-Pass RECONCILED_WITH_FOLLOWUPS (3 deferred Follow-ups)
+- CodeRabbit-Pass: 4 Phase-E-Findings in Fix-Welle E fixed (`e3ba381`), 1 OOS-Nitpick + 1 pre-existing OOS dokumentiert
+- Acceptance-Matrix Spec §12: 9/11 ✅ + 2 dokumentierte WARNs
+
+**Pfad-2-Entscheidung (Provenance-Plan-Timing):** User-Kontext „Weekly-Limit bei 93%, Reset Do 23.04. 22:00 CEST" + TMO-Earnings-Zeit **Do 14:30 CEST (8:30 AM ET, pre-market + Conference-Call gleichzeitig)** = Minimal-Modus-Fenster deckt TMO-Analyse-Zeit vollständig ab. **Entscheidung:** TMO Q1 mit Old-Pipeline Pre-Reset, Provenance-Plan-Execution Post-Reset (Do Abend 22:00+ oder Fr 24.04.), Retro-Migration des TMO-Records im neuen Format. Lektion: „Critical vor TMO Q1"-Formulierung war Self-Imposed-Gate — Provenance-Gate-Nutzen ist in zukünftigen Appends, nicht retrospektiv.
+
+**Vault-Hygiene-Zwischen-Commit (`09e629f`):** `.obsidian/graph.json` untrackt + gitignored (analog `workspace.json` `5623f03`), 3 leere User-Stub-Files gelöscht (`2026-04-21.md` 0 B, `Unbenannt.base` 41 B, `Unbenannt.canvas` 2 B — User-Bestätigung „versehentlich angeklickt"). Ermöglicht sauberen git-Status für Phase-E-Closure.
+
+**Commits dieser Sub-Session (2):** `09e629f` (Vault-Hygiene) + Closure-Commit (dieser).
+
+**Konsolidierungstag Fr 24.04.** geplant (User-Initiative, nach intensiver 5-Tages-Arbeitsphase 18.-22.04.): Backlog-Cleanup-only — Check-3-Fix + existence-Cleanup + Daily-Persist-Auto-Hook-Baustein + Morning-Briefing-v3.0.4-Hotfix + Tavily-Key-Rotation. Kein Neu-Scope. Entspricht Applied-Learning-Verhindung des „Deferred-deferred-deferred"-Anti-Patterns (3x-Aufschub von Check-3 + existence-Cleanup war Warning-Signal).
+
 ### IFRS 16 vs. ASC 842 — Strukturelle OCF-Differenz (Non-US Pflicht-Wissen)
 Bei ASML (und allen IFRS-Titeln die auch US-ADR haben): yfinance zieht IFRS-EU-Meldung (ASML.AS Amsterdam).
 Unter IFRS 16 → Leasingzahlungen (Tilgung) als Finanzierungs-CF → senkt OCF vs. US GAAP (ASC 842).
