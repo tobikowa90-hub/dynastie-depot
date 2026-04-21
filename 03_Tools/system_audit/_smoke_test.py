@@ -458,6 +458,95 @@ def test_report_json_format_is_valid() -> None:
     assert data["checks"][0]["name"] == "a"
 
 
+def test_main_rc2_emits_partial_json_and_preserves_diagnosis() -> None:
+    """Info-preservation: when a check raises an uncaught exception, main() must
+    (a) still render JSON on stdout with partial=True + internal_errors[],
+    (b) emit traceback on stderr, (c) return rc=2, (d) NOT write STATE.md
+    (corrupted state must not be persisted). Regression-gate for Codex Finding E."""
+    import contextlib
+    import importlib.util
+    import io
+    import json as _json
+    import types as stdlib_types
+
+    main_spec = importlib.util.spec_from_file_location(
+        "_sa_main_under_test", str(REPO_ROOT / "03_Tools" / "system_audit.py"),
+    )
+    assert main_spec is not None and main_spec.loader is not None
+    main_mod = importlib.util.module_from_spec(main_spec)
+    main_spec.loader.exec_module(main_mod)
+
+    broken_mod = stdlib_types.ModuleType("_sa_broken_check_under_test")
+    def _boom(_root, _ctx):
+        raise RuntimeError("synthetic boom for rc=2 test")
+    broken_mod.run = _boom  # type: ignore[attr-defined]
+    sys.modules["_sa_broken_check_under_test"] = broken_mod
+
+    from system_audit import checks as checks_mod
+    original_core = dict(checks_mod.CORE)
+    checks_mod.CORE.clear()
+    checks_mod.CORE["broken_test"] = "_sa_broken_check_under_test:run"
+
+    stdout_buf = io.StringIO()
+    stderr_buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(stdout_buf), contextlib.redirect_stderr(stderr_buf):
+            rc = main_mod.main(["--core", "--no-write", "--json"])
+        assert rc == 2
+
+        data = _json.loads(stdout_buf.getvalue())
+        assert data["partial"] is True
+        assert data["exit_code"] == 2
+        assert len(data["internal_errors"]) == 1
+        ierr = data["internal_errors"][0]
+        assert ierr["check"] == "broken_test"
+        assert ierr["type"] == "RuntimeError"
+        assert "synthetic boom" in ierr["msg"]
+
+        stderr_out = stderr_buf.getvalue()
+        assert "synthetic boom" in stderr_out, "traceback with exception msg must reach stderr"
+    finally:
+        checks_mod.CORE.clear()
+        checks_mod.CORE.update(original_core)
+        sys.modules.pop("_sa_broken_check_under_test", None)
+
+
+def test_render_json_partial_flag_emits_internal_errors() -> None:
+    """With internal_errors supplied, render_json marks payload partial, overrides
+    exit_code to 2, and attaches the error list for automation consumers."""
+    import json as _json
+    from system_audit.report import render_json
+    from system_audit.types import CheckResult
+    results = [CheckResult(name="dummy", status="PASS", n_checked=1, n_passed=1)]
+    out = render_json(
+        results,
+        timestamp_utc="2026-04-21T00:00:00Z",
+        internal_errors=[("broken_check", "ImportError", "No module named 'nope'")],
+    )
+    data = _json.loads(out)
+    assert data["partial"] is True
+    assert data["exit_code"] == 2
+    assert data["internal_errors"] == [
+        {"check": "broken_check", "type": "ImportError", "msg": "No module named 'nope'"}
+    ]
+    # Existing results must still be present (info preservation).
+    assert len(data["checks"]) == 1
+
+
+def test_render_json_without_internal_errors_is_non_partial() -> None:
+    """Backward-compat: absence of internal_errors must yield partial=False and no
+    internal_errors key. Exit-code remains 0/1 per existing FAIL semantics."""
+    import json as _json
+    from system_audit.report import render_json
+    from system_audit.types import CheckResult
+    results = [CheckResult(name="dummy", status="PASS", n_checked=1, n_passed=1)]
+    out = render_json(results, timestamp_utc="2026-04-21T00:00:00Z")
+    data = _json.loads(out)
+    assert data["partial"] is False
+    assert "internal_errors" not in data
+    assert data["exit_code"] == 0
+
+
 def test_state_writer_first_run_inserts_before_footer() -> None:
     import tempfile
     from system_audit.state_writer import write_last_audit
@@ -514,15 +603,20 @@ def test_orchestrator_dry_run_on_live_repo() -> None:
 
 
 def test_orchestrator_duration_budget_core() -> None:
-    """Spec §12 Acceptance: <30s auf --core."""
+    """Spec §12 Acceptance: <30s auf --core. Guards against silent rc=2 false-pass:
+    if the orchestrator crashes immediately, the duration assertion alone would
+    pass misleadingly (CodeRabbit-subagent Finding K)."""
     import subprocess
     import time
     t0 = time.monotonic()
-    subprocess.run(
+    out = subprocess.run(
         [sys.executable, "03_Tools/system_audit.py", "--core", "--no-write"],
         cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45,
     )
     elapsed = time.monotonic() - t0
+    assert out.returncode in (0, 1), (
+        f"rc={out.returncode} (2=tool-bug), stderr={out.stderr[:500]}"
+    )
     assert elapsed < 30.0, f"took {elapsed:.1f}s, budget 30s"
 
 
@@ -541,15 +635,19 @@ def test_orchestrator_minimal_baseline_scope() -> None:
 
 
 def test_orchestrator_vault_empty_registry_emits_skip() -> None:
-    """Pre-Task-14: OPTIONAL registry empty; --vault must SKIP explicitly, not silent PASS."""
+    """Pre-Task-14: OPTIONAL registry empty; --vault must SKIP explicitly, not silent PASS.
+
+    rc-check precedes json.loads so an unexpected rc=2 surfaces the real failure
+    instead of a confusing JSONDecodeError on stderr content (CodeRabbit-CLI CR-1).
+    """
     import json
     import subprocess
     out = subprocess.run(
         [sys.executable, "03_Tools/system_audit.py", "--vault", "--no-write", "--json"],
         cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20,
     )
+    assert out.returncode == 0, f"rc={out.returncode}, stderr={out.stderr[:500]}"
     data = json.loads(out.stdout)
-    assert out.returncode == 0
     assert len(data["checks"]) == 1
     assert data["checks"][0]["name"] == "no_checks_registered"
     assert data["checks"][0]["status"] == "SKIP"
@@ -626,6 +724,8 @@ if __name__ == "__main__":
     print("[OK] log_lag smoke tests passed")
     test_report_human_format_contains_summary()
     test_report_json_format_is_valid()
+    test_render_json_partial_flag_emits_internal_errors()
+    test_render_json_without_internal_errors_is_non_partial()
     print("[OK] report smoke tests passed")
     test_state_writer_first_run_inserts_before_footer()
     test_state_writer_second_run_replaces_block()
@@ -636,4 +736,5 @@ if __name__ == "__main__":
     test_orchestrator_minimal_baseline_scope()
     test_orchestrator_vault_empty_registry_emits_skip()
     test_orchestrator_invalid_timeout_rejected()
+    test_main_rc2_emits_partial_json_and_preserves_diagnosis()
     print("[OK] orchestrator smoke tests passed")

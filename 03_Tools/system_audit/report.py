@@ -49,8 +49,21 @@ def render_human(results: Sequence[CheckResult], *, timestamp_utc: str) -> str:
     return "\n".join(lines)
 
 
-def render_json(results: Sequence[CheckResult], *, timestamp_utc: str) -> str:
-    exit_code = 1 if any(r.status == "FAIL" for r in results) else 0
+def render_json(
+    results: Sequence[CheckResult],
+    *,
+    timestamp_utc: str,
+    internal_errors: Sequence[tuple[str, str, str]] | None = None,
+) -> str:
+    """Render audit results as JSON.
+
+    internal_errors: list of (check_name, exception_type, message) tuples. When
+    non-empty, marks the payload partial, overrides exit_code to 2, and attaches
+    an internal_errors array. STATE.md write is caller's responsibility — it
+    must skip on partial so no corrupted audit state is persisted.
+    """
+    partial = bool(internal_errors)
+    exit_code = 2 if partial else (1 if any(r.status == "FAIL" for r in results) else 0)
     summary = {
         "total": len(results),
         "passed": sum(1 for r in results if r.status == "PASS"),
@@ -58,11 +71,17 @@ def render_json(results: Sequence[CheckResult], *, timestamp_utc: str) -> str:
         "warned": sum(1 for r in results if r.status == "WARN"),
         "skipped": sum(1 for r in results if r.status == "SKIP"),
     }
-    payload = {
+    payload: dict = {
         "audit_timestamp_utc": timestamp_utc,
         "summary": summary,
         "exit_code": exit_code,
+        "partial": partial,
         "duration_ms": sum(r.duration_ms for r in results),
         "checks": [asdict(r) for r in results],
     }
+    if partial:
+        payload["internal_errors"] = [
+            {"check": name, "type": etype, "msg": emsg}
+            for name, etype, emsg in internal_errors
+        ]
     return json.dumps(payload, ensure_ascii=False, indent=2)

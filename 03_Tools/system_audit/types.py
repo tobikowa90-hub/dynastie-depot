@@ -39,4 +39,4 @@ class AuditContext:
     """
     repo_root: Path
     include_optional: bool = False
-    vault_timeout_s: int = 20
+    vault_timeout_s: float = 20.0

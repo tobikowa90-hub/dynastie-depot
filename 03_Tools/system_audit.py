@@ -24,6 +24,7 @@ import sys
 import traceback
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from pathlib import Path
+from typing import Callable
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "03_Tools"))
@@ -31,48 +32,69 @@ sys.path.insert(0, str(REPO_ROOT / "03_Tools"))
 from system_audit.checks import CORE, OPTIONAL  # noqa: E402
 from system_audit.report import compute_exit_code, render_human, render_json  # noqa: E402
 from system_audit.state_writer import write_last_audit  # noqa: E402
-from system_audit.types import AuditContext, CheckResult, FailureDetail  # noqa: E402
+from system_audit.types import AuditContext, Category, CheckResult, FailureDetail  # noqa: E402
 
 MINIMAL_BASELINE_KEYS = ("jsonl_schema", "pipeline_ssot", "log_lag")
 
+# (name, spec, category) — category travels with the check so even a never-run
+# (timed-out) check still carries the correct core/optional label in downstream
+# aggregation (Codex Finding F: pre-fix, category was hardcoded "core").
+ScopedCheck = tuple[str, str, Category]
 
-def _load_run(spec: str):
+
+def _load_run(spec: str) -> Callable[[Path, AuditContext], CheckResult]:
     mod_name, func_name = spec.split(":")
     mod = importlib.import_module(mod_name)
     return getattr(mod, func_name)
 
 
-def _build_registry(args: argparse.Namespace) -> tuple[dict[str, str], str]:
-    """Select check-registry subset based on mutually-exclusive scope flag.
-
-    Returns (registry, scope_label). scope_label used for run_cmd-annotation only.
-    """
+def _build_scoped_checks(args: argparse.Namespace) -> list[ScopedCheck]:
+    """Select (name, spec, category) tuples based on mutually-exclusive scope flag."""
     if args.vault:
-        return {k: v for k, v in OPTIONAL.items() if "vault" in k}, "--vault"
+        return [(k, v, "optional") for k, v in OPTIONAL.items() if "vault" in k]
     if args.full:
-        return {**CORE, **OPTIONAL}, "--full"
+        return (
+            [(k, v, "core") for k, v in CORE.items()]
+            + [(k, v, "optional") for k, v in OPTIONAL.items()]
+        )
     if args.minimal_baseline:
-        return {k: CORE[k] for k in MINIMAL_BASELINE_KEYS if k in CORE}, "--minimal-baseline"
-    return dict(CORE), "--core"
+        return [(k, CORE[k], "core") for k in MINIMAL_BASELINE_KEYS if k in CORE]
+    return [(k, v, "core") for k, v in CORE.items()]
 
 
 def _run_one(
-    name: str, spec: str, context: AuditContext, timeout_s: float
+    name: str,
+    spec: str,
+    context: AuditContext,
+    timeout_s: float,
+    category: Category,
 ) -> tuple[CheckResult | None, Exception | None]:
     """Dispatch a single check with a per-call timeout.
 
-    Returns (result, None) on clean completion or timeout (synthetic FAIL result),
-    (None, exc) on tool-internal exception (rc=2 case).
+    Returns (result, None) on normal completion or on a timeout (converted into
+    a synthetic FAIL CheckResult). Returns (None, exc) on any tool-internal
+    exception — either resolve-time (ImportError/AttributeError/ValueError on
+    the module:function spec) or an uncaught exception raised inside the check.
+    The caller must propagate such errors to rc=2.
 
-    Fresh ThreadPoolExecutor per call to avoid __exit__-hang when a check times
-    out: `with`-form would block in __exit__ waiting for the abandoned thread.
+    Timeout is SOFT: `future.result(timeout=...)` only stops waiting. The
+    underlying worker thread keeps running (Python does not cancel a running
+    task in a ThreadPoolExecutor, and setting `daemon=True` on an already-
+    started thread raises RuntimeError in Py 3.11+). `shutdown(wait=False)`
+    prevents `__exit__`-block on the abandoned worker. In practice this is
+    acceptable because the audit tool is a one-shot CLI — the leaked thread
+    dies with the process. Do NOT invoke this from a long-running service
+    or test-loop without first isolating via subprocess (Codex + CodeRabbit
+    Finding A — backlog: subprocess-based hard timeout for Task 14/15).
     """
     try:
         fn = _load_run(spec)
     except (ImportError, AttributeError, ValueError) as e:
         return None, e
 
-    executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix=f"audit-{name}")
+    executor = ThreadPoolExecutor(
+        max_workers=1, thread_name_prefix=f"audit-{name}",
+    )
     try:
         future = executor.submit(fn, REPO_ROOT, context)
         try:
@@ -85,13 +107,13 @@ def _run_one(
                 n_passed=0,
                 failures=[FailureDetail(
                     location=name,
-                    expected=f"complete within {timeout_s:.0f}s",
+                    expected=f"complete within {timeout_s:g}s",
                     actual="timeout",
                     severity="error",
                     hint=f"check hung; raise --timeout-per-check or investigate {spec}",
                 )],
                 duration_ms=int(timeout_s * 1000),
-                category="core",
+                category=category,
             )
             return synthetic, None
         except Exception as e:  # noqa: BLE001 — uncaught check exception = tool bug (rc=2)
@@ -167,19 +189,19 @@ def main(argv: list[str] | None = None) -> int:
               file=sys.stderr)
         return 2
 
-    registry, _scope_label = _build_registry(args)
+    scoped_checks = _build_scoped_checks(args)
     include_optional = args.full or args.vault
     context = AuditContext(
         repo_root=REPO_ROOT,
         include_optional=include_optional,
-        vault_timeout_s=int(args.timeout_per_check),
+        vault_timeout_s=args.timeout_per_check,
     )
-    timestamp_utc = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    timestamp_utc = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     results: list[CheckResult] = []
     internal_errors: list[tuple[str, Exception]] = []
 
-    if not registry:
+    if not scoped_checks:
         # --vault with no OPTIONAL registered (pre-Task-14) lands here — degenerate case.
         # Emit explicit SKIP so exit-code is 0 AND the user sees "nothing ran", not
         # a silent "all green".
@@ -199,8 +221,10 @@ def main(argv: list[str] | None = None) -> int:
             category="optional",
         ))
     else:
-        for name, spec in registry.items():
-            result, err = _run_one(name, spec, context, args.timeout_per_check)
+        for name, spec, category in scoped_checks:
+            result, err = _run_one(
+                name, spec, context, args.timeout_per_check, category,
+            )
             if err is not None:
                 internal_errors.append((name, err))
                 continue
@@ -208,6 +232,22 @@ def main(argv: list[str] | None = None) -> int:
             results.append(result)
 
     if internal_errors:
+        # Info-preservation (Codex Finding E): render the partial audit to stdout
+        # (with partial=True + internal_errors[] in JSON) BEFORE escalating to rc=2
+        # so automation + humans can still see what did complete. STATE.md stays
+        # unwritten — corrupted audit state must not be persisted.
+        ierrs_payload = [
+            (name, type(exc).__name__, str(exc)) for name, exc in internal_errors
+        ]
+        if args.json:
+            print(render_json(
+                results, timestamp_utc=timestamp_utc, internal_errors=ierrs_payload,
+            ))
+        else:
+            print(render_human(results, timestamp_utc=timestamp_utc))
+            print("", file=sys.stderr)
+            print("[partial] tool-internal errors encountered — results above are "
+                  "incomplete:", file=sys.stderr)
         for name, exc in internal_errors:
             print(
                 f"[error] check '{name}' tool-internal failure: "
