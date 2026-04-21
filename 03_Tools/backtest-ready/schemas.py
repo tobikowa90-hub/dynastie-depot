@@ -14,6 +14,7 @@ DEFCON v3.7 alignment:
 
 from __future__ import annotations
 
+import copy
 import re
 from datetime import date
 from typing import Final, Literal, Optional
@@ -485,10 +486,65 @@ class FlagEvent(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Daily Portfolio & Benchmark Snapshots (persist_daily_snapshot in portfolio_risk.py)
+# ---------------------------------------------------------------------------
+
+
+class Position(BaseModel):
+    """Equal-weight Satellite position — Dynasty-Depot 11-Satelliten-Basket."""
+    model_config = ConfigDict(extra="forbid")
+
+    ticker: str
+    weight_eod: float = Field(..., ge=0.0, le=1.0)
+    price_eod: float = Field(..., gt=0.0)
+    value_eod: float = Field(..., ge=0.0)
+
+
+class PortfolioReturnRecord(BaseModel):
+    """Row of 05_Archiv/portfolio_returns.jsonl (see portfolio_risk.persist_daily_snapshot).
+
+    Schema v1.0 — Daily equal-weight 11-Satelliten-Basket. Mixed-Currency-Local-Return
+    (not FX-adjusted; siehe Docstring portfolio_risk.py + Interim-Gate 2027-10-19).
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    schema_version: Literal["1.0"]
+    date: date
+    portfolio_value_gross: float = Field(..., ge=0.0)
+    cashflow_net: float  # signed
+    portfolio_return: float  # daily fraction, signed
+    benchmark_value: float = Field(..., ge=0.0)
+    benchmark_return: float  # signed
+    positions: list[Position] = Field(..., min_length=1)
+
+    @model_validator(mode="after")
+    def _check_weight_sum(self) -> "PortfolioReturnRecord":
+        total = sum(p.weight_eod for p in self.positions)
+        if abs(total - 1.0) > 0.005:  # 0.5% toleranz fuer Rundungen
+            raise ValueError(
+                f"positions weight_eod must sum to ~1.0, got {total:.6f} "
+                f"over {len(self.positions)} positions"
+            )
+        return self
+
+
+class BenchmarkReturnRecord(BaseModel):
+    """Row of 05_Archiv/benchmark-series.jsonl. Currently SPY only; Multi-Benchmark = future."""
+    model_config = ConfigDict(extra="forbid")
+
+    schema_version: Literal["1.0"]
+    date: date
+    benchmark: str = Field(..., min_length=1)
+    value: float = Field(..., gt=0.0)
+    daily_return: float  # signed
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
 __all__ = [
+    "BenchmarkReturnRecord",
     "FLAG_RULES",
     "FUNDAMENTALS_CAP",
     "FUNDAMENTALS_FLOOR",
@@ -502,6 +558,8 @@ __all__ = [
     "MigrationEvent",
     "MetrikenRoh",
     "MoatScore",
+    "Position",
+    "PortfolioReturnRecord",
     "Quellen",
     "ScoreRecord",
     "Scores",
@@ -733,6 +791,48 @@ def _smoke_tests() -> None:
     assert rec_mig.migration_event is not None
     assert rec_mig.migration_event.outcome == "block"
     print("  [7/7] ScoreRecord with migration_event parsed")
+
+    # Case 8: PortfolioReturnRecord valid
+    port_valid = {
+        "schema_version": "1.0",
+        "date": "2026-04-17",
+        "portfolio_value_gross": 10173.42,
+        "cashflow_net": 0.0,
+        "portfolio_return": 0.01734,
+        "benchmark_value": 710.14,
+        "benchmark_return": 0.01209,
+        "positions": [
+            {"ticker": t, "weight_eod": 0.090909, "price_eod": 100.0, "value_eod": 924.86}
+            for t in ["V","AVGO","BRK.B","VEEV","COST","TMO","APH","MSFT","ASML","RMS","SU"]
+        ],
+    }
+    pr = PortfolioReturnRecord.model_validate(port_valid)
+    assert pr.date.isoformat() == "2026-04-17"
+    assert len(pr.positions) == 11
+    print("  [8/10] PortfolioReturnRecord parsed")
+
+    # Case 9: PortfolioReturnRecord weight-sum guard
+    bad_weights = copy.deepcopy(port_valid)
+    bad_weights["positions"][0]["weight_eod"] = 0.5  # sum no longer ~1.0
+    try:
+        PortfolioReturnRecord.model_validate(bad_weights)
+    except ValidationError as e:
+        assert "weight" in str(e).lower(), f"wrong error: {e}"
+        print("  [9/10] Portfolio weight-sum guard raised")
+    else:
+        raise AssertionError("expected weight-sum ValueError")
+
+    # Case 10: BenchmarkReturnRecord valid
+    bench_valid = {
+        "schema_version": "1.0",
+        "date": "2026-04-17",
+        "benchmark": "SPY",
+        "value": 710.14,
+        "daily_return": 0.01209,
+    }
+    br = BenchmarkReturnRecord.model_validate(bench_valid)
+    assert br.benchmark == "SPY"
+    print("  [10/10] BenchmarkReturnRecord parsed")
 
     try:
         print("\u2705 all schema smoke tests passed")
