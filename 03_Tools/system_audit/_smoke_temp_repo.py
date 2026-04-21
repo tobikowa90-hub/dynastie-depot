@@ -3,7 +3,7 @@
 Verifies:
 - Exit-Code ∈ {0, 1}
 - STATE.md gets Last-Audit block written
-- Timestamp within last 60 seconds
+- Timestamp within last 120 seconds
 """
 from __future__ import annotations
 
@@ -31,6 +31,8 @@ for _stream in (sys.stdout, sys.stderr):
         pass
 
 import datetime
+import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -74,8 +76,7 @@ def main() -> int:
         assert "<!-- system-audit:last-audit:start -->" in state_text, "marker missing"
         assert "<!-- system-audit:last-audit:end -->" in state_text, "end-marker missing"
 
-        # Timestamp within 60s
-        import re
+        # Timestamp within 120s (relaxed for temp-repo overhead)
         m = re.search(r"Timestamp \(UTC\):\*\*\s*(\S+)", state_text)
         assert m, "timestamp not found in STATE.md"
         ts = datetime.datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc)
@@ -88,7 +89,6 @@ def main() -> int:
 
 def smoke_seeded_drift() -> int:
     """Seed a defcon-drift into score_history.jsonl, expect exit-code 1 + FAIL Check-1."""
-    import json, shutil, subprocess, sys, tempfile
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td) / "repo"
         shutil.copytree(REPO_ROOT, tdp, ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc"))
