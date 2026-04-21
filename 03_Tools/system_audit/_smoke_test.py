@@ -217,6 +217,60 @@ def test_markdown_header_warn_on_lag() -> None:
     assert len(result.failures) == 1
 
 
+def test_cross_source_pass_on_aligned() -> None:
+    from system_audit.checks.cross_source import run
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "cross_source"
+    ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+    result = run(REPO_ROOT, ctx, sources_override={
+        "config": fx / "config.yaml",
+        "state": fx / "state.md",
+        "faktortabelle": fx / "faktortabelle.md",
+        "vault_entities_dir": None,
+    })
+    assert result.status in ("PASS", "WARN"), f"got {result.status}, failures={result.failures}"
+    assert all(f.severity != "error" for f in result.failures)
+
+def test_cross_source_fail_on_divergence() -> None:
+    import shutil, tempfile
+    from system_audit.checks.cross_source import run
+    fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "cross_source"
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        shutil.copy(fx / "config.yaml", tdp / "config.yaml")
+        shutil.copy(fx / "faktortabelle.md", tdp / "faktortabelle.md")
+        state = (fx / "state.md").read_text(encoding="utf-8").replace("AVGO | 84", "AVGO | 85")
+        (tdp / "state.md").write_text(state, encoding="utf-8")
+        ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
+        result = run(REPO_ROOT, ctx, sources_override={
+            "config": tdp / "config.yaml",
+            "state": tdp / "state.md",
+            "faktortabelle": tdp / "faktortabelle.md",
+            "vault_entities_dir": None,
+        })
+    assert result.status == "FAIL"
+    assert any("AVGO" in f.actual for f in result.failures)
+
+def test_flag_parser_all_six_variants() -> None:
+    """Spec §7.3 Parser-Golden-Test: alle 6 beobachteten FLAG-Strings."""
+    from system_audit.checks.cross_source import parse_flag_icon
+    assert parse_flag_icon("✅") == ("ok", None)
+    assert parse_flag_icon("⚠️ Insider-Review") == ("warn", "Insider-Review")
+    assert parse_flag_icon("✅ Insurance Exception") == ("ok", "Insurance Exception")
+    assert parse_flag_icon("✅ Screener-Exception") == ("ok", "Screener-Exception")
+    assert parse_flag_icon("🔴 Score-basiert") == ("flag", "Score-basiert")
+    assert parse_flag_icon("🔴 CapEx/OCF 83.6%") == ("flag", "CapEx/OCF 83.6%")
+
+def test_flag_mismatch_matrix() -> None:
+    """Spec §5.1 Check-3 FLAG-Matrix."""
+    from system_audit.checks.cross_source import compare_flag
+    assert compare_flag(False, "ok") == "match"
+    assert compare_flag(False, "warn") == "warning"
+    assert compare_flag(False, "flag") == "error"
+    assert compare_flag(True, "flag") == "match"
+    assert compare_flag(True, "ok") == "error"
+    assert compare_flag(True, "warn") == "error"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -238,3 +292,8 @@ if __name__ == "__main__":
     test_markdown_header_fail_on_stale()
     test_markdown_header_warn_on_lag()
     print("[OK] markdown_header smoke tests passed")
+    test_cross_source_pass_on_aligned()
+    test_cross_source_fail_on_divergence()
+    test_flag_parser_all_six_variants()
+    test_flag_mismatch_matrix()
+    print("[OK] cross_source smoke tests passed")

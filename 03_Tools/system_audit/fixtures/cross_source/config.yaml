@@ -1,0 +1,13 @@
+satelliten:
+  - ticker: AVGO
+    score: 84
+    defcon: 4
+    flag: false
+  - ticker: MSFT
+    score: 59
+    defcon: 2
+    flag: true
+  - ticker: V
+    score: 63
+    defcon: 2
+    flag: false
