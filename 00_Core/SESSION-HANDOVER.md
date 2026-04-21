@@ -1,6 +1,10 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-21 Mittag (**Pivot zu Systemhygiene-TOP-Priority** nach Entdeckung massiverer Drift als vermutet: 12/27 Records silent defcon-Drift + CORE-MEMORY-Header-Stand-Drift + Pipeline-SSoT-Lücke)
+**Aktualisiert:** 2026-04-21 Nachmittag (**Phase A+B+C COMPLETED** in Session 21.04. Nachmittag — CORE-MEMORY nachgezogen, log.md sync-wave Eintrag, STATE.md Pipeline-SSoT-Section eingebaut, INSTRUKTIONEN §18 Zusatz-Trigger, Commit pending. **Next: Phase D** (Brainstorming Sub-Spec `system_audit.py`) ab jetzt in dieser selben Session.)
+**Vorherige Aktualisierung:** 2026-04-21 Mittag — Pivot zu Systemhygiene-TOP-Priority nach Entdeckung 12/27 silent defcon-Drift + CORE-MEMORY-Header-Stand-Drift + Pipeline-SSoT-Lücke.
+
+> **Progress-Banner (Phase A-G):** ✅ A (CORE-MEMORY) · ✅ B (log.md + Handover) · ✅ C (STATE.md Pipeline-SSoT) · 🟡 D (in progress, Brainstorming) · ⏳ E (Plan + Build Audit-Tool) · ⏳ F (Provenance-Plan-Execution) · ⏳ G (TMO Q1 23.04. First-Live-Run)
+
 **Für nächste Session:** **Phase A+B+C+D+E+F in dieser Reihenfolge** (komplette Systemhygiene-Welle + Audit-Tool-Bau + Provenance-Plan-Execution, noch in time für TMO Q1 am 23.04.)
 
 ---

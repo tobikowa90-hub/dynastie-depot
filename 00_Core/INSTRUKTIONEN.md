@@ -281,9 +281,12 @@ Ein Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 **Wissenschaftlicher Anker:** Die Point-in-Time-Persistenz aller sechs Dateien schützt vor §29.5 Sin #2 (Look-Ahead Bias). Jeder Record muss zum Zeitpunkt der Daten-Sichtung geschrieben werden, nicht rückwirkend. → §29.5 / [[Seven-Sins-Backtesting]]
 
+**Zusatz-Trigger für STATE.md (seit 21.04.2026, Section „Aktive Pipeline (SSoT)"):** Unabhängig von der 6-File-Sync-Welle ist STATE.md zusätzlich zu pflegen bei (a) jedem neuen Plan-Commit in `docs/superpowers/plans/`, (b) jedem Gate-Passage (Deploy, Freeze, Promotion), (c) jeder Status-Transition (ready→in-progress→done, deferred→active). Zweck: Pipeline-SSoT verhindert Re-Fragmentierung über STATE.md + SESSION-HANDOVER + Plan-Files + Memory. Pflege allein via STATE.md-Edit — keine Propagation zu den anderen 5 Dateien notwendig, wenn nur Plan-Status-Shift.
+
 **Änderungsprotokoll:**
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
 - v1.6 → v1.7 (2026-04-19): Schritt 5 (score_history.jsonl) wird via Skill `backtest-ready-forward-verify` orchestriert — Pipeline-Kapsel statt Inline-CLI-Call in dynastie-depot Schritt 7.
+- v1.7 → v1.8 (2026-04-21): Zusatz-Trigger für STATE.md Pipeline-SSoT-Section ergänzt (Plan-Commit / Gate-Passage / Status-Transition). Kein Impact auf die 6-File-Liste selbst.
 
 ---
 

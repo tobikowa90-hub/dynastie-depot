@@ -712,3 +712,19 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores aller 11 Satelliten unverändert (Migration nur defcon_level recompute aus score_gesamt). Skill bleibt v3.7.2.
 - **Lesson Learned:** Spot-Check über STATE.md-Snapshot ist KEIN Drift-Check. Schema-Migration tickt vorwärts, Altdaten bleiben silent stale, jeder zukünftige Validator-Test wird toxisch verzerrt. Pflichtreflex bei „Hygiene"/„Drift"-Aufträgen: Re-Validate-Sweep über alle Stores, „N/M PASS" explizit.
 - **Next:** Provenance-Plan-Patches (4 Codex-Punkte: Task 0 Baseline-Check + Task 2 Re-Validate-Step + Task 3 Granularitäts-Split + Task 6 CORE-MEMORY §10 Timing-Fix), dann Plan-Execution. Sub-Spec für `system_audit.py` in nächster Session als β-Pfad.
+
+## [2026-04-21] sync-wave | Systemhygiene-Sweep Phase A+B+C post-Drift-Migration
+
+- **Kontext:** Fortsetzung der Systemhygiene-Pivot-Entscheidung aus Mittag — Phase A (CORE-MEMORY) + B (log.md + Handover) + C (STATE.md Pipeline-SSoT) als manueller Sync-Sweep **vor** Build des `system_audit.py` (Phase D+E). Grund: Tool gegen kaputte Baseline zu bauen würde bestehende Drift-Stellen als FAIL persistieren lassen — erst Ground-Truth herstellen, dann Audit-Tool gegen saubere Baseline trainieren.
+- **Phase A — `00_Core/CORE-MEMORY.md` nachgezogen:**
+  - Header-Stand `17.04.2026` → `21.04.2026 Mittag` (stale, 4 Tage hinter Realität).
+  - §1 System-Meilensteine: **3 neue Einträge** am Tabellenende — (1) Drift-Migration 12/27→27/27 (Commit `ca76114`), (2) Score-Append Provenance-Gate Spec + Plan v2 (Commit `206c0a1`, Architektur-Variante E nach 5 Codex-Sparring-Runden), (3) §27.4 Vertikal-Drift-Klausel + Applied Learning 12/20 + Systemhygiene-Pivot (Phase A-G Sequenz in SESSION-HANDOVER).
+  - §10 API-Audit-Log: neue Sub-Sektion „21.04.2026 Mittag — Drift-Audit-Sweep" mit strukturiertem 5-Store-Ergebnis (score_history ↺ 27/27, flag_events 2/2, config.yaml 11/11, portfolio_returns + benchmark-series stale seit 4 Tagen).
+  - §3 Label geschärft: von „Stand: 04.04.2026 — pre-v3.7" auf „Historisch, pre-v3.7 — aktuelle Positions-Realität in `00_Core/STATE.md` + `Faktortabelle.md`" + Callout um 18.04.-Shifts (V Vollanalyse, 5× Threshold-Drift-Fix, Nenner 8.5→8.0) ergänzt.
+- **Phase C — `00_Core/STATE.md` Pipeline-SSoT-Section eingebaut:**
+  - Neue Section `## 🗺 Aktive Pipeline (SSoT)` nach „Nächste kritische Trigger (30 Tage)" mit 4 Kategorien: 🔴 Unmittelbar (3 Items) / 🟠 Portfolio 10-Tage / 🟡 Bereit wartet-auf-Gate-A (2 Items) / 🔵 Deferred (3 Items) + ⏰ Long-Term-Gates.
+  - Zweck: verhindert Fragmentierung über STATE.md+SESSION-HANDOVER+Plan-Files+Memory (4 Quellen, die jedes Mal rekonstruiert werden mussten). Single-Source-of-Truth für alle offenen Pläne + Termine.
+  - §18 Sync-Pflicht-Liste erweitert (Pipeline-SSoT bei jedem Plan-Commit + jedem Gate-Passage mitpflegen).
+- **Phase B — Handover-Update:** SESSION-HANDOVER.md erhält einen kleinen „A+B+C completed, D next" Hinweis (diese Wiki-log.md-Zeile ist der zweite Teil von Phase B).
+- **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten aller 11 Satelliten unverändert. Reine Dokumentations-Kohärenz-Wiederherstellung.
+- **Next:** Phase D — Brainstorming-Skill → Sub-Spec `docs/superpowers/specs/2026-04-22-system-audit-tool-design.md` (Scope Codex-aligned, JSONL-Schema + Markdown-Cross-Drift Kern, Vault-Backlinks optional).

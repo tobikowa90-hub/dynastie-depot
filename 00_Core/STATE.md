@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 21.04.2026 Mittag (**Drift-Migration 12/27 → 27/27 PASS** in `score_history.jsonl`, snap-to-schema via `migrate_defcon_drift.py`; **Provenance-Gate-Spec + Plan** geschrieben für nächste Execution; **§27.4 Vertikal-Drift-Klausel** ergänzt; Backlog +2 (Daily-Persist stale + System-Audit-Tool needed); v3.0.4 Briefing-Hotfix weiter Pending; v2.1 Prod stable — heutiger Manual-Run hat Stale-Shibui-Konstellation sauber durchlaufen) | System: DEFCON v3.7 (unverändert)
+**Single Entry Point für Session-Start** | Stand: 21.04.2026 Nachmittag (**Systemhygiene-Sync-Welle Phase A+B+C committed** — CORE-MEMORY Header/§1/§3/§10 nachgezogen + log.md sync-wave Eintrag + **neue Section „🗺 Aktive Pipeline (SSoT)"** unten eingebaut; Phase D (Brainstorming `system_audit.py` Sub-Spec) + Phase E (Plan + TDD-Build) stehen als nächstes an, dann Phase F (Provenance-Plan-Execution) vor TMO Q1 23.04.; **Drift-Migration 12/27 → 27/27 PASS** in `score_history.jsonl` steht; v3.0.4 Briefing-Hotfix weiter pending; v2.1 Prod stable) | System: DEFCON v3.7 (unverändert)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`
@@ -51,6 +51,48 @@
 | 28.04. | SNPS/SPGI | B | Watchlist-Review |
 | **29.04.** | **MSFT** | **C** | **Q3 FY26 — FLAG-Review** |
 | Mai | BRK.B/ZTS/PEGA | B | Q-Earnings + Slot-16 |
+
+---
+
+## 🗺 Aktive Pipeline (SSoT)
+
+> **Zweck:** Single-Source-of-Truth für alle offenen Pläne, Gates und Termine. Ersetzt die bisherige Fragmentierung über STATE.md + SESSION-HANDOVER.md + Plan-Files + Memory (jedes Mal aus 4 Quellen rekonstruiert — exakter Anti-Pattern der 21.04.-Drift-Lesson).
+> **Pflege-Pflicht:** Update bei (a) jedem neuen Plan-Commit in `docs/superpowers/plans/`, (b) jedem Gate-Passage, (c) jeder Status-Transition (ready→in-progress→done, deferred→active). Parallel zur §18-Sync-Welle (aber eigener Trigger — Plan-Commit ist nicht automatisch Score-Change).
+
+### 🔴 Unmittelbar / Primär-Track
+
+1. **Systemhygiene-Welle Phase A-E (SSoT-Aufbau + Audit-Tool-Bau)** — Session 21.-22.04.2026. Phase A+B+C (Sync-Sweep) `in_progress`; Phase D (Brainstorming Sub-Spec `system_audit.py`) + Phase E (Plan + TDD-Build) stehen direkt danach. Quell-Dokument: `SESSION-HANDOVER.md`.
+2. **Morning Briefing v3.0.4 Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft v2.1 (Rollback nach Halluzinations-Incident 20.04.). Hotfix ergänzt §3a Anti-Fallback-Guard + neuer Test T5 Adversarial-Stale-Shibui. Gate A erst nach v3.0.4-PASS.
+3. **Score-Append Provenance-Gate** — Plan v2 `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks, 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. Critical **vor** TMO Q1 23.04. (erster echter Forward-Run durch neue Pipeline mit P3.5 fail-close). Execution in Phase F dieser Session-Sequenz.
+4. **System-Audit-Tool `03_Tools/system_audit.py` + Slash-Command `/SystemAudit`** — Sub-Spec + Plan + Build in Phase D+E dieser Session-Sequenz. Scope: JSONL-Schema + Markdown-Cross-Drift + Existence-Check + Skill-Version + Pipeline-SSoT-Consistency (Kern); Vault-Backlinks + Status-Matrix (Optional mit Timeout).
+
+### 🟠 Portfolio — Kritische Triggers 10 Tage
+
+- **23.04. TMO Q1** — D2-Entscheidung + fcf_trend_neg Resolve-Gate. Erster Live-Test Provenance-Gate + §4-Router Status-Matrix B1-B24 + backtest-ready-forward-verify.
+- **28.04. V Q2 FY26** — D2-Entscheidung (Technicals-Reversal?).
+- **29.04. MSFT Q3 FY26** — FLAG-Review CapEx/OCF (bereinigt <60% = Auflösung, >60% = Veto-Verschärfung).
+
+### 🟡 Bereit, wartet auf Gate A (~24.04. frühestens nach v3.0.4-Deploy)
+
+5. **Track 5a SEC EDGAR Skill-Promotion** — Plan `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks). Re-Validation-Check nach 6-Paper-Ingest B21-B24 möglicherweise nötig.
+6. **Track 5b FRED Macro-Regime-Filter** — Plan `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks). User-Aktion vor Start: FRED-API-Key registrieren. B19 (LLM-Regime-Shift-Bias) stärkt wissenschaftliche Begründung.
+
+### 🔵 Deferred / Explizit zurückgestellt
+
+7. **v3.1 Cache-Refactor** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md`. Trigger: „262s im Alltag stört" ODER „>400s-Alert wiederholt".
+8. **Track 4 ETF+Gold-Erweiterung** — Blockiert auf User-Input (ETF-Ticker IWDA.AS/SWDA.L/EUNL.DE? Gold-Ticker SGLD.DE/4GLD.DE/GC=F?). Gleichzeitig **Open-Backlog-Item Daily-Persist-Stale** auflösen (`portfolio_returns.jsonl` + `benchmark-series.jsonl` je 1 Record seit 17.04. — Cron-/Hook-Mechanismus für Auto-Persist einbauen).
+9. **KG-Roadmap v0.1 `draft-frozen`** (`07_Obsidian Vault/.../synthesis/Knowledge-Graph-Architektur-Roadmap.md`). Re-Review-Trigger: Cross-Entity-Bedarf ODER Score-Archiv-Interim-Gate 2026-10-17.
+
+### ⏰ Long-Term-Gates (chronologisch)
+
+| Datum | Gate | Owner-Aktion |
+|-------|------|--------------|
+| ~28.04.2026 | Tavily Dev-Key Rotation | User: Key `tvly-dev-4PYXp...` in Dashboard rotieren (7-Tage-Uhr ab v3.0.4-Prod-Deploy) |
+| 2026-07-19 | Track 5a 90-Tage-Audit | EDGAR-Skill Performance-Review (falls promoted) |
+| 2026-10-17 | Score-Archiv-Interim-Gate | 6-Monats-Sanity-Check `score_history.jsonl` (Forward-Window + Duplicate-Guard) |
+| 2027-10-19 | R5 Interim-Gate | 18-Mo-Dry-Run `risk-metrics-calculation` + Data-Quality `portfolio_returns.jsonl` (inkl. FX-Conversion-Check) |
+| 2028-04-01 | Review-Gate §29.6 | Aktivierung formales 2J-System-Review |
+| offen | AVGO OpenInsider Manual-Check | Vor FLAG-Aktivierung (Watch aktiv, kein Termin — $123M/90d Post-Vesting-Verdacht) |
 
 ---
 
