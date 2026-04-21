@@ -495,6 +495,77 @@ def test_state_writer_second_run_replaces_block() -> None:
     assert "2026-04-21T14:32:41Z" not in text
     assert "6/7 PASS" in text
 
+def test_orchestrator_dry_run_on_live_repo() -> None:
+    """Dev-Smoke: akzeptiert rc in {0, 1} weil Live-Repo noch Drift haben kann
+    (pre-Task-17 existence-Cleanup). Hard-Baseline-Gate ist Task 17/15."""
+    import json
+    import subprocess
+    out = subprocess.run(
+        [sys.executable, "03_Tools/system_audit.py", "--core", "--no-write", "--json"],
+        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60,
+    )
+    assert out.returncode in (0, 1), (
+        f"rc={out.returncode} (2=tool-bug)\nstdout={out.stdout[:500]}\nstderr={out.stderr[:500]}"
+    )
+    data = json.loads(out.stdout)
+    assert "summary" in data
+    assert "checks" in data
+    assert len(data["checks"]) >= 7, f"expected >=7 core checks, got {len(data['checks'])}"
+
+
+def test_orchestrator_duration_budget_core() -> None:
+    """Spec §12 Acceptance: <30s auf --core."""
+    import subprocess
+    import time
+    t0 = time.monotonic()
+    subprocess.run(
+        [sys.executable, "03_Tools/system_audit.py", "--core", "--no-write"],
+        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45,
+    )
+    elapsed = time.monotonic() - t0
+    assert elapsed < 30.0, f"took {elapsed:.1f}s, budget 30s"
+
+
+def test_orchestrator_minimal_baseline_scope() -> None:
+    """--minimal-baseline runs exactly jsonl_schema + pipeline_ssot + log_lag."""
+    import json
+    import subprocess
+    out = subprocess.run(
+        [sys.executable, "03_Tools/system_audit.py", "--minimal-baseline", "--no-write", "--json"],
+        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30,
+    )
+    assert out.returncode in (0, 1), f"rc={out.returncode}\nstderr={out.stderr[:500]}"
+    data = json.loads(out.stdout)
+    names = {c["name"] for c in data["checks"]}
+    assert names == {"jsonl_schema", "pipeline_ssot", "log_lag"}, f"got {names}"
+
+
+def test_orchestrator_vault_empty_registry_emits_skip() -> None:
+    """Pre-Task-14: OPTIONAL registry empty; --vault must SKIP explicitly, not silent PASS."""
+    import json
+    import subprocess
+    out = subprocess.run(
+        [sys.executable, "03_Tools/system_audit.py", "--vault", "--no-write", "--json"],
+        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20,
+    )
+    data = json.loads(out.stdout)
+    assert out.returncode == 0
+    assert len(data["checks"]) == 1
+    assert data["checks"][0]["name"] == "no_checks_registered"
+    assert data["checks"][0]["status"] == "SKIP"
+
+
+def test_orchestrator_invalid_timeout_rejected() -> None:
+    """--timeout-per-check <= 0 must return rc=2."""
+    import subprocess
+    out = subprocess.run(
+        [sys.executable, "03_Tools/system_audit.py",
+         "--core", "--no-write", "--timeout-per-check", "0"],
+        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20,
+    )
+    assert out.returncode == 2, f"rc={out.returncode}, stderr={out.stderr[:200]}"
+
+
 def test_state_writer_raises_on_orphan_start_marker() -> None:
     import tempfile
     from system_audit.state_writer import write_last_audit
@@ -560,3 +631,9 @@ if __name__ == "__main__":
     test_state_writer_second_run_replaces_block()
     test_state_writer_raises_on_orphan_start_marker()
     print("[OK] state_writer smoke tests passed")
+    test_orchestrator_dry_run_on_live_repo()
+    test_orchestrator_duration_budget_core()
+    test_orchestrator_minimal_baseline_scope()
+    test_orchestrator_vault_empty_registry_emits_skip()
+    test_orchestrator_invalid_timeout_rejected()
+    print("[OK] orchestrator smoke tests passed")
