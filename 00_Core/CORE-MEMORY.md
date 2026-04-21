@@ -437,4 +437,4 @@ Entscheidungsmatrix wird in `07_Obsidian Vault/.../synthesis/Backtest-Methodik-R
 - README: `03_Tools/backtest-ready/README.md`
 
 ---
-*🦅 CORE-MEMORY.md v1.8 (§11 Backtest-Ready Infrastructure + §4 Pointer) | Dynastie-Depot | Stand: 17.04.2026*
+*🦅 CORE-MEMORY.md v1.8 (§11 Backtest-Ready Infrastructure + §4 Pointer) | Dynastie-Depot | Stand: 21.04.2026 Mittag*

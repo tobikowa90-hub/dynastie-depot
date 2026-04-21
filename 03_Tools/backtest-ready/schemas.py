@@ -518,7 +518,7 @@ class PortfolioReturnRecord(BaseModel):
     positions: list[Position] = Field(..., min_length=1)
 
     @model_validator(mode="after")
-    def _check_weight_sum(self) -> "PortfolioReturnRecord":
+    def _check_weight_sum(self) -> PortfolioReturnRecord:
         total = sum(p.weight_eod for p in self.positions)
         if abs(total - 1.0) > 0.005:  # 0.5% toleranz fuer Rundungen
             raise ValueError(
@@ -555,8 +555,8 @@ __all__ = [
     "InsiderScore",
     "Kurs",
     "MarketCap",
-    "MigrationEvent",
     "MetrikenRoh",
+    "MigrationEvent",
     "MoatScore",
     "PortfolioReturnRecord",
     "Position",

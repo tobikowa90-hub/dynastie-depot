@@ -1,5 +1,5 @@
 # ⚙️ INSTRUKTIONEN.md — Handlungsanweisungen & Skill-Guidance
-**Version:** 1.11 (§28-30 Migration + Retrospective-Gate + Live-Monitoring) | **Stand:** 19.04.2026
+**Version:** 1.11 (§28-30 Migration + Retrospective-Gate + Live-Monitoring) | **Stand:** 20.04.2026 Phase-2-Complete
 > Dieses Dokument beschreibt das WIE — User-Workflows, Befehle, Meta-Regeln.
 > Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 

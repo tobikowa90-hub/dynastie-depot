@@ -18,13 +18,14 @@ ueber Spec §6.1 (Spec frozen v0.2).
 from __future__ import annotations
 
 import argparse
+import contextlib
 import datetime
 import importlib
 import sys
 import traceback
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from pathlib import Path
-from typing import Callable
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "03_Tools"))
@@ -145,10 +146,8 @@ def _reconfigure_stdout_utf8() -> None:
     for stream in (sys.stdout, sys.stderr):
         reconfigure = getattr(stream, "reconfigure", None)
         if callable(reconfigure):
-            try:
+            with contextlib.suppress(ValueError, OSError):
                 reconfigure(encoding="utf-8", errors="replace")
-            except (ValueError, OSError):
-                pass  # non-reconfigurable stream (e.g. redirected buffer)
 
 
 def _build_run_cmd(argv: list[str] | None) -> str:

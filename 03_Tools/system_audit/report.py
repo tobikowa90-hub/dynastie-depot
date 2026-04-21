@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 """Human + JSON renderer for audit results. Spec §6.3 / §6.4."""
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from dataclasses import asdict
-from typing import Sequence
 
 from system_audit.types import CheckResult
 

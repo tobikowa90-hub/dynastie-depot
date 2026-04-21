@@ -1,5 +1,5 @@
 # 🏛️ KONTEXT.md — Dynastie-Depot Strategie-Kontext
-**Version:** 1.0 | **Stand:** 04.04.2026 | **Zieljahr:** 2058
+**Version:** 1.0 | **Stand:** 17.04.2026 | **Zieljahr:** 2058
 > Dieses Dokument beschreibt das WAS und WARUM des Projekts.
 > Für das WIE → INSTRUKTIONEN.md | Für Erinnerungen → CORE-MEMORY.md
 
