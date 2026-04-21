@@ -1,259 +1,222 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-20 **Nacht-Spät POST-INCIDENT** (v3.0.3 Prod-Deploy SHORT-LIVED: 14:36 UTC deployed → Manual-Run FAIL mit Halluzination → **Rollback v2.1 15:13 UTC**. Prod-Cron läuft stable seit 14.04.; Gate A ausgesetzt; v3.0.4-Hotfix-Plan in `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` geschrieben) | **Für:** Nächste Session — **v3.0.4-Hotfix-Execution** (Primär-Track, ~90 Min fokussierte Session), danach Gate-A-Re-Start, danach Track 5a/5b, Track 4 weiter ausstehend
-
-## 🔴 POST-INCIDENT: v3.0.3 Rollback auf v2.1 (2026-04-20 15:13 UTC)
-
-**Commits:** `4cfa421` (incident+rollback), `b466f2e` (Applied-Learning 11/20)
-
-**Was passierte:** Manual-Run auf Prod (20.04. nachmittags) ~720s Runtime, Output meldete für 7 US-Ticker massive Intraday-Deltas (AVGO -21,8%, APH -16,1%, MSFT -9,7%, TMO -9,9%). Broker-Verify durch User: AVGO real -2,26%. **Phantom-Kurse — Halluzination.**
-
-**Root Cause:** Shibui-EOD-Query gab 17.04. als `latest_date` (korrekt: Karfreitag + Osterwochenende + Montag-before-EOD). Agent interpretierte das als "stale data" und improvisierte unautorisierten Yahoo-Intraday-Fallback-Pfad via Tavily. Spec §3 hatte keinen expliziten Guard gegen alternative Datenpfade.
-
-**Was korrekt funktionierte:** Yahoo-n.v.-deterministic für BRK-B/RMS/SU (§3c), Material-Filter Slot-Struktur, 8/8 Sektionen, FLAGS/WATCHES/Trigger-Alignment. **T1/T3/T4-Happy-Path-Tests hatten diesen Edge-Case nie getriggert** (immer fresh Shibui-EOD).
-
-**Rollback-Execution:** RemoteTrigger.update mit v2.1-Content aus `03_Tools/morning-briefing-prompt-v2.md`, allowed_tools zurück auf `[Bash,Read,Glob,Grep]` (Tavily raus, MCP-Connector bleibt attached aber ungenutzt). Prod läuft wieder v2.1 stable.
-
-**v3.0.4-Hotfix-Plan:** `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, T5 Adversarial-Stale-Shibui-Test neu, ~90 Min geschätzt).
-
-## 🚀 NÄCHSTE SESSION — PRIMÄR-TRACK: v3.0.4 HOTFIX
-
-### Schritt-für-Schritt
-
-1. **Session starten** → STATE.md lesen → hierher wechseln
-2. **Hotfix-Plan lesen:** `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md`
-3. **Spec-Update** (Task 1): Revision-Log v3.0.4 + §3a `AUTORITATIVE-DATA-QUELLE-REGEL` + `VERBOTENE-FALLBACK-PFADE` + Critical Guards erweitert
-4. **Prompt-Update** (Task 2): `03_Tools/morning-briefing-prompt-v3.md` §3a-Wording + erweiterte Guards
-5. **Probe-Trigger Update + Verify** (Task 3-4): `RemoteTrigger update` mit v3.0.4-Content, assert Keywords
-6. **T5 Test schreiben + Run** (Task 5-6): Adversarial-Stale-Shibui, assert keine Fallback-Improvisation
-7. **T1/T3/T4 Retest** (Task 7-9): auf v3.0.4, kein Regression
-8. **Gate-A-Re-Start-Kriterien prüfen** (Task 10): alle 4 Tests PASS
-9. **Prod-Deploy v3.0.4** (Task 11): `RemoteTrigger update` mit v3.0.4-Content
-10. **Manual-Run auf Prod als finale Verifikation** (Task 12) — dieses Mal MUSS korrekt sein
-11. **Gate A Tag 1 starten** (Task 13): naechster Werktag 10:00 MESZ Cron
-12. **Bei v3.0.4 FAIL:** Rollback-Pfad auf v2.1 bleibt aktiv, keine Production-Regression
-
-### Gate A Definition (unverändert)
-"Stabil" = funktionale Korrektheit (8/8 Sektionen, Yahoo-n.v.-deterministisch, Material-Filter, Slot-Struktur, KEINE Phantom-Kurse). **NICHT Laufzeit.** Laufzeit-Regressionen >400s triggern manuellen Review, nicht Rollback.
+**Aktualisiert:** 2026-04-21 Mittag (**Pivot zu Systemhygiene-TOP-Priority** nach Entdeckung massiverer Drift als vermutet: 12/27 Records silent defcon-Drift + CORE-MEMORY-Header-Stand-Drift + Pipeline-SSoT-Lücke)
+**Für nächste Session:** **Phase A+B+C+D+E+F in dieser Reihenfolge** (komplette Systemhygiene-Welle + Audit-Tool-Bau + Provenance-Plan-Execution, noch in time für TMO Q1 am 23.04.)
 
 ---
 
-## 🧠 KEY LESSONS LEARNED (für v3.0.4-Arbeit)
+## 🎯 WICHTIGSTE AUSSAGE ZUERST
 
-1. **Anti-Hallucination-Guards müssen zweigleisig sein** (Applied Learning 11/20):
-   - (a) "KEINE Gründe erfinden" — gegen fabrizierte Narrativen
-   - (b) "KEINE unautorisierten Datenquellen" — gegen improvisierte Datenpfade
-2. **Edge-Case-Definitionen explizit:** "stale" vs "Wochenend-Lag" vs "Feiertags-Lag" dürfen nicht Agent-Interpretation überlassen werden.
-3. **Autoritative Datenquellen als Sprach-Anker:** "Shibui-latest_date ist per Definition autoritativ" schließt Improvisationen aus.
-4. **Probe-Tests müssen Adversarial-Scenarios abdecken:** T1 Happy + T3 Homonym + T4 Fail-Open ist nicht ausreichend. T5 Stale-Source wird nach diesem Incident permanent Teil des Test-Gates.
+Heute wurde durch einen Pre-Check entdeckt, dass **„Systemhygiene" und „Drift-Check" in den letzten 3 Tagen selektiv statt exhaustive durchgeführt wurden.** Konkret 12 von 27 Records silent schema-inkonsistent (alle defcon_level-Drift seit 18.04.-Threshold-Migration), CORE-MEMORY-Header stale, Pipeline-Aufgaben über 4+ Quellen fragmentiert statt als SSoT.
 
----
+User-Mandat: **„Nichts darf vergessen werden. Alles up-to-date halten. WIRKLICH das gesamte System nachziehen."**
 
-## ~~ALTE HANDOVER-SECTION~~ (historisch, pre-Incident Kontext)
+**Externes Tool `codebase-memory-mcp` wurde evaluiert und verworfen** — löst Code-AST-Index-Problem, nicht unser Markdown/YAML/JSONL-Drift-Problem. Externer SQLite-Cache wäre zusätzliche Drift-Quelle (Ironie).
 
-> Die folgenden Sections (KG-Roadmap Option D, 6-Paper-Ingest-Closure, Gate-A-Definition, alte Deploy-Schritte etc.) bleiben für Kontext erhalten, sind aber **nicht mehr aktive Handlungsanweisung**. Der Primär-Track hat sich verschoben auf v3.0.4-Hotfix.
-
-## ✅ POST-GATE: KG-Roadmap v0.1 als `draft-frozen` markiert (2026-04-20 Nacht-Spät)
-
-**Commit:** `f13701a` docs(phase2-postgate): KG-Roadmap v0.1 als draft-frozen markiert (Codex Option D)
-
-**Auslöser:** Nach Closure des 6-Paper-Ingest-Projekts ergab User-Frage „macht KG-Roadmap-Ratifikation vor Track 5a/5b Re-Validation mehr Sinn?" eine Pre-Track-5-Architektur-Entscheidung. Codex-Review (Opus 4.7 + Codex Combined) verglich 3 Optionen (A Ratifikation v0.1→v1.0 / B Q1-Q3-Klärung / C beides) und empfahl **Option D** (`draft-frozen` belassen, Inhalte faktisch geltend, Re-Review-Trigger explizit dokumentiert).
-
-**Begründung:** Szenario 2 (10-K-KG) ist genuine `future-arch` ohne Usage-Evidence; v1.0 würde Konsens-Lock-in suggerieren. Q1-Q3 (Dataset-Größe / Lizenz-Legal / Score-Archiv-Integration) heute spekulativ beantwortbar, nicht release-blockierend, aber Q3-Design-Klarheit Pflicht **vor** operativer KG-Adoption.
-
-**Faktische Inhalte (gelten ab 20.04.2026 Nacht-Spät trotz `draft-frozen`):**
-- Form-4 Insider bleibt XML-Parsing (Szenario 1 REJECT bestätigt)
-- 10-K-KG bleibt `future-arch`, frühestens 2027+ (Szenario 2 DEFER)
-- Bayesian-RAG-Briefing-Rewrite verworfen wegen Tavily-API-MC-Dropout-Limitation (Szenario 3 DEFER)
-
-**Re-Review-Trigger:** konkreter Cross-Entity-/10-K-Narrativ-Bedarf ODER Score-Archiv-Interim-Gate **2026-10-17** (whichever first).
-
-**Scoring-Impact:** ZERO. DEFCON v3.7 unverändert, config.yaml unberührt, Skill bleibt v3.7.2, §28.3 Nicht-Migration-Trigger weiterhin gültig.
-
-**Track 5a/5b Re-Validation = trivial closed:** Roadmap-Verdikt ist die Referenz-Antwort — beide Pläne haben bereits passende Phase-1b/Phase-2-Header-Notices, brauchen körperlich keine Änderung.
-
-**Details:** log.md [2026-04-20] post-gate-d | CORE-MEMORY §1 Meilenstein 20.04.2026 Nacht-Spät | STATE.md System-Zustand-Eintrag KG-Roadmap | Synthesis-Frontmatter `status: draft-frozen` + Status-Banner.
+**Konsequenz:** Internes `03_Tools/system_audit.py` bauen + Slash-Command `/SystemAudit` + STATE.md-Section „Last Audit", aber **zuerst manueller Sync-Sweep** (sonst baut das Tool gegen kaputte Baseline).
 
 ---
 
-## ✅ ABGESCHLOSSEN: 6-Paper-Ingest-Projekt (2026-04-20 Nacht)
+## 🚀 NÄCHSTE SESSION — Sequenzielle Primär-Pipeline
 
-**Commits:**
-- `89275e2` Phase 2 Hybrid A+B+C — Status-Matrix + §4 Router + §33 Skill-Self-Audit + SKILL.md-Output-Block (10 Dateien, +275/-27)
-- `5f6dc62` Final-Discoverability — CLAUDE.md-Pointer + insider-intelligence §33-Note + backtest-ready-forward-verify GT-Score-Pointer + log.md Closure-Entry (4 Dateien, +18)
+### Phase A: CORE-MEMORY nachziehen (~15 Min)
 
-**Wissenschaftliche Fundierung aktiv in:** !Analysiere (§4 Router + §2 Pipeline + SKILL.md Schritt 2.5 + Output-Block) + §28 Migration + §29 Retrospective (ab 2028) + §33 Skill-Self-Audit. Bewusst passiv in !QuickCheck/!Rebalancing/Screener (mechanische Workflows).
+**Warum:** Header sagt `Stand: 17.04.2026` — real ist 21.04. Letzter §1-Eintrag ist 20.04. Nacht-Spät; heutige Events (21.04. Drift-Migration, Provenance-Spec+Plan, §27.4-Schärfung) fehlen vollständig.
 
-**Scoring-Impact gesamt:** ZERO. DEFCON v3.7 unverändert, alle 11 Satelliten-Scores/Sparraten/FLAGs unverändert, config.yaml unberührt. §28.3 Nicht-Migration-Trigger über gesamtes Projekt bestätigt. Skill bleibt v3.7.2.
+Schritte:
+1. `00_Core/CORE-MEMORY.md` Header-Zeile `**Stand:**` auf `21.04.2026 Mittag` setzen
+2. §1 System-Meilensteine drei neue Einträge am Ende der Tabelle anfügen:
+   - **21.04.2026 Mittag — Drift-Migration score_history.jsonl 12/27 → 27/27** (commit `ca76114`): Pre-Check vor Provenance-Gate-Plan-Execution deckte 12 Records silent defcon-Drift seit 18.04.-Threshold-Migration auf. `migrate_defcon_drift.py` idempotent + atomar, 12 defcon_level-Korrekturen (Score 71-76 D4→D3, Score 61-63 D3→D2). Snap-to-Schema erfolgreich; re-validate 27/27 PASS. Zeile 25 V_vollanalyse 17.04. 72/D4→D3 = genauer Auslöser-Fall der Provenance-Spec.
+   - **21.04.2026 Mittag — Score-Append Provenance-Gate Spec + Plan v2 ratifiziert** (commit `206c0a1`): Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` Architektur-Variante E (Hybrid Pipeline-Gate B + reduzierter Schema-Guard D) nach 5 Codex-Sparring-Runden. Plan v2 mit 4 Codex-Patches: Task 0 Pre-Execution-Baseline-Check + Task 2 Step 2.7 Re-Validate-Sweep + Task 3 Step 3.1a-d Granularitäts-Split + Task 6 CORE-MEMORY-§10-Timing-Fix. 7 Tasks, 40 Steps, First-Live-Test geplant TMO Q1 23.04.
+   - **21.04.2026 Mittag — §27.4 Vertikal-Drift-Klausel + Applied Learning 12/20 + Systemhygiene-Pivot:** INSTRUKTIONEN §27.4 um „Zweite Klasse — Vertikal-Drift (Schema-Migration auf Altdaten)" erweitert mit Präzedenzfall 21.04.2026. CLAUDE.md Applied Learning v2.4 Bullet 12/20 („Drift-Check = exhaustive Schema-Validation aller Records, nicht Spot-Check"). Memory `feedback_exhaustive_drift_check.md` NEU (Tier 1, Index 13/13). Systemhygiene zu TOP-Priority gemacht — interner System-Audit-Tool-Bau in nächster Session.
 
-**Smoke-Test AVGO (2026-04-20 Nacht):** Schritt 2.5 + Output-Template funktionieren — Befunde-Labels ticker-spezifisch (B6 Quality-Trap-Nicht-Aktivierung sauber ausgewiesen), traceable, kompakt. Erster Live-Test natürlich bei TMO Q1 23.04.2026.
+3. §10 API-Audit-Log einen neuen Eintrag anfügen:
+   - **2026-04-21 Mittag — Drift-Audit-Sweep Ergebnis:**
+     - score_history.jsonl: 12 FAIL (alle defcon_level-Drift) → migriert → 27/27 PASS
+     - flag_events.jsonl: 2/2 PASS
+     - config.yaml Satelliten Score+DEFCON: 11/11 == STATE.md
+     - portfolio_returns.jsonl + benchmark-series.jsonl: je 1 Record (17.04.), **stale seit 4 Tagen** (R5-Phase-3 „aktiv" laut STATE.md aber Daily-Append-Cron existiert nicht; Manual-Trigger-Pflicht vergessen; Track-4-Backlog-Item)
+     - **Systemweiter Audit NICHT durchgeführt** (Markdown-Cross-Source, Existence-Check, Skill-Versions, Vault-Backlinks, docs/superpowers-vs-STATE-Referenzen) — das macht erst `system_audit.py` in Phase E.
 
-**Details:** log.md [2026-04-20] phase2 + [2026-04-20] projekt-abschluss | CORE-MEMORY §5 "Phase-2-System-Konsequenzen" | Synthesis §Status-Matrix.
+4. Falls §3 Aktive Positions-Entscheidungen „Stand: 04.04.2026 — pre-v3.7"-Label **bewusst historisch** ist (wahrscheinlich, da sie den pre-v3.7-Zustand dokumentieren): Label auf `Historisch, pre-v3.7 — aktuelle Positions-Realität in STATE.md + Faktortabelle.md` schärfen. Falls nicht historisch gedacht: nachziehen auf aktuellen Stand.
 
----
+### Phase B: SESSION-HANDOVER-Nacharbeit + log.md (~10 Min)
 
----
+**Warum:** Dieser Handover-Stand ist nach Phase A+C technisch nicht mehr aktuell — Header dann alt, weil A+B+C durchgeführt. Aber Phase B ist trivial, weil dieser Handover bereits der neue Zustand ist.
 
-## 🆕 HAUPT-TRACK: 6-Paper-Ingest Phase 1 KOMPLETT (2026-04-20 Abend-Spät)
+Schritte:
+1. Nach Phase A+C und Phase D-Start: kleiner Handover-Update „A+B+C completed, D in progress".
+2. Wiki `log.md` Eintrag für die Sync-Welle (analog zu heutigem drift-migration-Eintrag, aber für „A+B+C Sync-Welle post-Drift-Migration").
 
-**Scope-Entscheidung Mittag→Abend→Abend-Spät:** User hatte 6 neue Finance/AI-Papers in `07_Obsidian Vault/.../raw/` hinzugefügt (3 PDFs + 3 .md). Nach 2 Codex-Review-Runden (Triage + Skill-Cross-Check) wurde entschieden: Track 5a/5b/Briefing-v3.1 **pausieren**, Paper-Ingest mit Palomar-Standard durchführen. v3.0.3 Prod-Deploy läuft **parallel** (nicht blockiert). **Phase 1a + Phase 1b in derselben Tages-Session abgeschlossen** — User-Entscheidung zugunsten Codex-Combined-Review statt sequentieller Gate-Review-Runden.
+### Phase C: STATE.md Pipeline-SSoT-Section (~15 Min)
 
-**Phase 1a abgeschlossen (Severity-🔴-Cluster, Commit 7ec7b86):**
-- 2 Sources: [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] (KDD '26, B19), [[Sheppert-2026-GT-Score]] (JRFM 2026, B20)
-- 3 Concepts: [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]]
-- 5 Author-Entities: Weixian Waylon Li, Hyeonjun Kim, Mihai Cucuringu, Tiejun Ma, Alexander Pearson Sheppert
-- Updates: `Wissenschaftliche-Fundierung-DEFCON` (B19+B20), `Backtest-Methodik-Roadmap` v2.0→v2.1, `index.md`, `log.md`
+**Warum:** User hat eine 7-Punkte-Pipeline-Übersicht synthetisiert, die nirgendwo zentral lebt. Fragmentiert über STATE.md + SESSION-HANDOVER.md + Plan-Files + Memory. Jedes Mal rekonstruieren wir das aus 4 Quellen — genau der Anti-Pattern unserer Lesson.
 
-**Phase 1b abgeschlossen (Severity-🟡-Cluster, Commit folgt gleich nach diesem Edit):**
-- 4 Sources: [[Arun-et-al-2025-FinReflectKG]] (Domyn/arxiv 2508.17906, B21), [[Labre-2025-FinReflectKG-Companion]] (Towards AI, B22), [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] (Frontiers AI, B23), [[Iacovides-Zhou-Mandic-2025-FinDPO]] (Imperial/arxiv 2507.18417, B24)
-- 6 Concepts: [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[LLM-as-a-Judge-Evaluation]], [[RAG-Uncertainty-Quantification]], [[LLM-Preference-Optimization-Finance]], [[Sentiment-Strength-Logit-Extraction]]
-- 12 Author-Entities: Abhinav Arun, Fabrizio Dimino, Tejas Prakash Agarwal, Bhaskarjit Sarmah, Stefano Pasquali, Marcelo Labre, Lebede Ngartera, Saralees Nadarajah, Rodoumta Koina, Giorgos Iacovides, Wuyang Zhou, Danilo Mandic
-- 1 neue Synthesis: [[Knowledge-Graph-Architektur-Roadmap]] v0.1 (Entscheidungsvorlage KG vs. XML-Direkt-Parsing vs. Bayesian RAG; 3 Qualitäts-Gates; 3 konkrete Szenarien; Codex-Gate 2.5 eingeplant)
-- Updates: `Wissenschaftliche-Fundierung-DEFCON` (B21-B24, 20 Quellen / 24 Befunde), `index.md` (107→130 Notes), `log.md` — Phase 1b-Eintrag
+Schritte: in `00_Core/STATE.md` nach „Nächste kritische Trigger (30 Tage)"-Section eine neue Section `## 🗺 Aktive Pipeline (SSoT)` einfügen, strukturiert als:
 
-**Codex Combined Gate 2 Ergebnis (post-commit 40fbcdd + Fix-Commit 3f11b63):**
-- Cross-Links, B-Mapping, Architektur-Roadmap, Instruktion-Alignment → **PASS**
-- Akkuratesse → CONDITIONAL (B23 ECE-Baseline unklar) → **behoben** in `3f11b63` (Ebene 1/2/3 Baselines explizit getrennt)
-- Showstopper-Risk → CONDITIONAL (B24 "Vor operativer Adoption"-Formulierung) → **behoben** in `3f11b63` (als hypothetisch markiert)
-- **Phase-2-Ready: JA**
+```markdown
+## 🗺 Aktive Pipeline (SSoT)
 
-**Plus späte Obsidian-Graph-Lesson** (`addc33b` + `1590816`): Raw-Backlinks brauchen Datei-Stem-Link im Body (Frontmatter-`raw:`-String ist kein Graph-Edge). Lesson in memory `feedback_raw_backlink_pflicht.md`.
+### 🔴 Unmittelbar / Primär-Track
+1. **Morning Briefing v3.0.4 Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft v2.1 (Rollback nach Halluzinations-Incident 20.04.). Hotfix ergänzt §3a Anti-Fallback-Guard + neuer Test T5 Adversarial-Stale-Shibui. Gate A erst nach v3.0.4-PASS.
+2. **Score-Append Provenance-Gate** — Plan v2 `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. Critical vor TMO Q1 23.04. (erster echter Forward-Run durch neue Pipeline mit P3.5 fail-close).
+3. **System-Audit-Tool `03_Tools/system_audit.py`** — Sub-Spec + Plan in dieser Session (siehe Phase D+E).
 
-**Nächste Session — Reihenfolge:**
-1. **Phase 2: System-Konsequenzen** — §29-Sub-Klausel-Mapping erweitern (29.1+29.2+29.5+29.6) + ggf. neue §33 Skill-Self-Audit + Plan-Diffs (Track 5a/5b/v3.1) + Entscheidung zu [[Knowledge-Graph-Architektur-Roadmap]]-Szenarien
-2. **Phase 2.5 Codex-Skill-Audit-Gate** (kritisch — Anti-Creep-Mechanismus): trennt Audit-Methodik von Skill-Code-Change
-3. **Parallel: Prod-Deploy v3.0.3 + Gate-A-Start** — unverändert (siehe Section unten)
+### 🟠 Portfolio — Kritische Triggers 10 Tage
+- **23.04. TMO Q1** — D2-Entscheidung + fcf_trend_neg Resolve-Gate. Erster Live-Test Provenance-Gate + §4-Router Status-Matrix B1-B24 + backtest-ready-forward-verify.
+- **28.04. V Q2 FY26** — D2-Entscheidung (Technicals-Reversal?)
+- **29.04. MSFT Q3 FY26** — FLAG-Review CapEx/OCF
 
-**Showstopper-Risk** (Codex Round 2): Vermischung Audit-Layer ↔ Produktions-Skill-Logik. Phase 2.5-Gate adressiert das explizit.
+### 🟡 Bereit, wartet auf Gate A (~24.04. frühestens nach v3.0.4-Deploy)
+4. **Track 5a SEC EDGAR Skill-Promotion** — Plan `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks). Re-Validation-Check nach 6-Paper-Ingest B21-B24 möglicherweise nötig.
+5. **Track 5b FRED Macro-Regime-Filter** — Plan `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks). User-Aktion vor Start: FRED-API-Key registrieren. B19 (LLM-Regime-Shift-Bias) stärkt wissenschaftliche Begründung.
 
----
+### 🔵 Deferred / Explizit zurückgestellt
+6. **v3.1 Cache-Refactor** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md`. Trigger: „262s im Alltag stört" oder „>400s-Alert wiederholt".
+7. **Track 4 ETF+Gold-Erweiterung** — Blockiert auf User-Input (ETF-Ticker IWDA.AS/SWDA.L/EUNL.DE? Gold-Ticker SGLD.DE/4GLD.DE/GC=F?). Gleichzeitig **Open-Backlog-Item Daily-Persist-Stale** auflösen (portfolio_returns.jsonl seit 4 Tagen stale).
+8. **KG-Roadmap v0.1** — `draft-frozen`. Re-Review-Trigger: Cross-Entity-Bedarf ODER Score-Archiv-Interim-Gate 2026-10-17.
 
----
+### ⏰ Long-Term-Gates
+- **AVGO OpenInsider Manual-Check** — vor FLAG-Aktivierung (Watch aktiv, kein Termin)
+- **Tavily Dev-Key Rotation** — innerhalb 7 Tagen nach Prod-Deploy v3.0.4 (~bis 28.04. falls Deploy am 22.04.)
+- **Track 5a 90-Tage-Audit** — 2026-07-19
+- **Score-Archiv-Interim-Gate** — 2026-10-17
+- **R5 Interim-Gate** — 2027-10-19
+- **Review-Gate §29.6** — 2028-04-01
+```
 
-## 📊 AKTUELLER PROJEKT-STAND (20.04.2026, Ende Mittags-Session)
+**Pflege-Pattern (nach Aufbau):** Diese Section ist Pflicht-Update bei jedem Plan-Commit + jedem Gate-Passage. §18 Sync-Pflicht-Liste erweitert um diese Section.
 
-### Portfolio
-- 11 Satelliten, DEFCON v3.7, Sparraten 35,63€ / 17,81€ / 0€, Summe **285€** ✓ (Nenner 8.0)
-- Scores stabil seit 18.04.: V 63/D2, TMO 64/D2 (fcf_trend_neg schema-trigger nicht aktiviert), APH 63/D2 FLAG, MSFT 59/D2 FLAG
-- Keine Score-Änderungen in dieser Session
+### Phase D: Sub-Spec für `system_audit.py` (~60 Min)
 
-### Morning-Briefing (Infrastruktur)
-- **v3.0.3 auf Probe-Trigger** `trig_01XYuQ5mugsvZGZD4K52rjXh` deployed + T1-Baseline-Content zurückgesetzt (clean, post-T3 aufgeräumt)
-- **Alle 3 Pre-Prod-Tests PASS:** T1 Happy-Path 262s, T4 Fail-Open ~10s (HTTP 422 gefangen), T3 Adversarial-Trap ~270s (dreifache Homonym-Absicherung verifiziert)
-- **Prod-Trigger** `trig_01PyAVAxFpjbPkvXq7UrS2uG` läuft noch v2.1 — **Deploy pending in nächster Session**
-- Korrektheits-Prinzip verankert: Spec §6(E)/§8/§11-13 auf Soft-Alert-Schema rebased (<180s healthy / 180-400s observe / >400s alert, KEIN Auto-Rollback aus Runtime)
-- v3.1 Deferred-Plan geschrieben: `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md` (2-Stage-Tavily-Cache, nur wenn 262s im Alltag stört)
+**Ablauf:** Brainstorming-Skill → Spec → Codex-Review → Ratifikation.
 
-### Gate A Definition (Codex-aligned)
-"Stabil" = funktionale Korrektheit (8/8 Sektionen, Yahoo-n.v.-deterministisch, Material-Filter korrekt, Slot-Struktur korrekt). **NICHT Laufzeit.** Laufzeit-Regressionen >400s triggern manuellen Review, nicht Rollback.
+**Scope (Codex-aligned Quality-Gates):**
+- **Kern (Pflicht):**
+  - JSONL Schema-Validation (alle 4 Stores `score_history` + `flag_events` + `portfolio_returns` + `benchmark-series` gegen Pydantic-Schemas wo vorhanden; strukturelle Keys-Konsistenz wo kein Schema)
+  - Markdown Header-Stand-Drift (`Stand:`-Feld in STATE.md + CORE-MEMORY.md + Faktortabelle.md vs neueste §1/§10/Entry-Datum — bei Differenz >2 Tage FAIL)
+  - Cross-Source Score/DEFCON/Sparrate (STATE.md ↔ Faktortabelle.md ↔ config.yaml ↔ Vault-Entities)
+  - Existence-Check (alle in CLAUDE.md/STATE.md/Handover referenzierten Pfade müssen existieren)
+  - Skill-Version `01_Skills/*/SKILL.md` frontmatter `version:` vs `06_Skills-Pakete/*.zip`-Name-Pattern
+  - Pipeline-SSoT-Consistency (alle Pläne in `docs/superpowers/plans/` müssen in STATE.md-Pipeline-SSoT referenziert sein; Reverse: alle Referenzen in STATE.md-Pipeline müssen existierende Plan-Files sein)
+  - log.md letzter Eintrag Datum vs neuester git-commit-Datum (max 1 Tag Lag)
+- **Optional (mit Timeout):**
+  - Vault-Backlink-Integrity (130 Notes — separater Check mit Timeout/Caching; nicht im Standard-Run)
+  - Obsidian B-Nummerierung Status-Matrix-Konsistenz
+- **Output:** strukturiert `N/M PASS` + Kategorie-FAIL-Listen. Exit-Codes: 0 PASS / 1 FAIL / 2 IO-Fehler.
+- **Invocation:** CLI `python 03_Tools/system_audit.py [--core | --full]` + Slash-Command `/SystemAudit` (Config über `.claude/`-Command-Datei).
+- **STATE.md-Integration:** Section „Last Audit: YYYY-MM-DD HH:MM — N/M PASS" wird vom Tool selbst am Ende des Runs aktualisiert.
 
----
+**Codex-bestätigte Anti-Pattern:**
+- KEIN SessionStart-Hook (kollidiert mit CLAUDE.md SESSION-INITIALISIERUNG „zuerst nur STATE.md lesen")
+- KEIN Pre-Commit-Hook als Default (Friction-Risiko; optional später als opt-in)
+- SessionEnd-Hook höchstens als leichter Warnung-Hinweis, nicht Voll-Audit
 
-## 🚀 NÄCHSTE SESSION — PRIMÄR-TRACK: PROD-DEPLOY
+### Phase E: Plan + Build Audit-Tool (~90-120 Min)
 
-### Schritt-für-Schritt
+**Ablauf:** writing-plans-Skill → Plan-File → Subagent-Driven Execution oder Inline.
 
-1. **Session starten** → STATE.md lesen → hierher wechseln
-2. **Prod-Trigger aktualisieren:**
-   ```
-   RemoteTrigger get trig_01PyAVAxFpjbPkvXq7UrS2uG
-   ```
-   (Baseline-Config zur Sicherheit speichern für potentiellen Rollback)
-3. **RemoteTrigger update** mit v3.0.3-Content (exakt der Probe-T1-Baseline-Prompt — bereits auf Probe-Trigger als Referenz-Implementierung):
-   - `environment_id`: `env_01Ek3HiKjymFoWzrQoyvMTEk` (unverändert)
-   - `allowed_tools`: `["Bash","Read","Glob","Grep","mcp__tavily__tavily_search"]`
-   - `events[0].data.message.content`: v3.0.3-Prompt aus `03_Tools/morning-briefing-prompt-v3.md` (Zeilen 60-338, innerhalb ``` ```)
-   - `session_context.model`: `claude-sonnet-4-6`
-   - `sources`: github `tobikowa90-hub/dynastie-depot`
-   - **mcp_connections NICHT im ccr-Pfad senden** — werden automatisch erhalten (Shibui + Tavily bleiben attached)
-4. **Post-Update-Verify (Spec §10):**
-   - `RemoteTrigger get trig_01PyAVAxFpjbPkvXq7UrS2uG`
-   - Assert content enthält `SCHRITT 4.5`, `v3.0.3`, `n.v. [Yahoo 403 known]`, `Runtime-Hinweis (v3.0.3)`
-   - Assert content enthält NICHT `Keine News-Suche` (v2.2-Reste)
-5. **Manual-Run-Verification auf Prod** (einmalig via Desktop-App "Jetzt ausführen" auf **Prod**-Trigger, nicht Probe): bestätigen dass Prod identische Output-Struktur wie T1-Baseline liefert.
-6. **Gate A startet** mit morgigem (21.04.) 10:00-MESZ-Cron-Run. 3 konsekutive Werktage (21./22./23.04.) mit Korrektheits-Check (nicht Laufzeit):
-   - Di 21.04. Cron-Run → Output checken auf 8/8 Sektionen + Yahoo-n.v. + Material-Filter
-   - Mi 22.04. Cron-Run → gleiche Checks
-   - Do 23.04. Cron-Run → gleiche Checks (zusätzlich: TMO Q1 Earnings-Event = Cohort/Per-Ticker-Load)
-7. **Post-Deploy Housekeeping** (in derselben Session commitbar): `memory/morning-briefing-config.md` ✓ bereits gemacht; zusätzlich Commit-Log-Entry in CORE-MEMORY §1 ergänzen nach Prod-PASS.
-8. Bei Prod-Regression in den 3 Tagen: **Rollback-Runbook** aus Spec §11 — `RemoteTrigger update` mit v2.1-Content aus `03_Tools/morning-briefing-prompt-v2.md`.
+**Erwartete Struktur (geschätzt):**
+- Task 0: Test-Fixtures-Setup + CLI-Skeleton
+- Tasks 1-7: ein Task pro Kern-Check (je TDD: failing test → min impl → green → commit)
+- Task 8: Aggregator + Strukturiertes Report-Format
+- Task 9: Slash-Command `.claude/commands/SystemAudit.md` + STATE.md-Last-Audit-Section-Writer
+- Task 10: (Optional) Vault-Backlink-Subcommand mit Timeout
+- Task 11: First-Run gegen aktuelles Repo → baseline
 
-### Deployment-Pipeline-Dokumentation
-Siehe memory `morning-briefing-config.md` für das wiederverwendbare 7-Schritt-Pattern (Edit → Commit → Push → Update → Verify → Manual-Run → Result-Doc).
+**Nach Phase E Ende:** `/SystemAudit` läuft, STATE.md hat initiale „Last Audit"-Zeile.
 
----
+### Phase F: Provenance-Plan Execution (~60-90 Min)
 
-## 📅 NACH GATE-A-PASS (ab ~24.04.)
+**Ablauf:**
+1. `/SystemAudit` laufen lassen — Pre-Check analog Task 0 im Provenance-Plan.
+2. Falls PASS: Subagent-Driven oder Inline-Execution des Provenance-Plans (docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md).
+3. Plan enthält 4 Codex-Patches: Task 0 Baseline-Check + Step 2.7 Re-Validate-Sweep + Task 3.1a-d Granularitäts-Split + Task 6 CORE-MEMORY §10 Timing-Fix.
+4. Nach Plan-Completion (alle 6 Task-Commits): `/SystemAudit` erneut für Verifikation.
 
-### Track 5a — SEC EDGAR Skill-Promotion
-Plan ready: `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks, Codex-reviewed). Pre-Implementation-Gate A (Tavily-Stabilität 3-Tage) = jetzt am morgigen Prod-Deploy-Tag startend, frühester Start ~24.04.
+**Erwartete Artefakte nach Phase F:**
+- `03_Tools/backtest-ready/versions.py` (SSoT DEFCON_ACTIVE_VERSION)
+- `03_Tools/backtest-ready/provenance_gate.py` (Schicht B, 8 Checks, 9 Smoke-Tests)
+- `03_Tools/backtest-ready/schemas.py` erweitert (Schicht D Block-Coverage-Validator)
+- `01_Skills/backtest-ready-forward-verify/SKILL.md` mit Phase P3.5
+- `01_Skills/backtest-ready-forward-verify/_smoke_test.py` mit Case 7 Integration-Test
+- STATE.md + INSTRUKTIONEN §18 + CORE-MEMORY §10 Go-Live-Einträge
 
-### Track 5b — FRED Macro-Regime-Filter
-Plan ready: `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks, Codex-reviewed). Vor Task 1.3: **User-Aktion** — FRED-API-Key registrieren (~5 Min: https://fred.stlouisfed.org/docs/api/api_key.html).
+### Phase G: TMO Q1 23.04. — First-Live-Run
 
-### Track 4 — Portfolio-Risk ETF+Gold-Erweiterung
-**Blockiert auf User-Input:**
-- ETF-Core-Ticker? (IWDA.AS / SWDA.L / EUNL.DE / …?)
-- Gold-Ticker? (SGLD.DE / 4GLD.DE / GC=F / …?)
-
-Nach Input: `03_Tools/portfolio_risk.py` um ETF+Gold erweitern, in `--persist daily`-Schema einbetten.
-
----
-
-## 📆 PORTFOLIO-TRIGGER (30 TAGE)
-
-| Datum | Ticker | Klasse | Aktion |
-|-------|--------|--------|--------|
-| **21.04.** | RMS.PA | — | **Ex-Dividend EUR 13,00** (automatische Gutschrift im aktiven Depot, kein Handlungsdruck) |
-| **23.04.** | **TMO** | **B** | **Q1 — D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind + FCF >$7,3B?)** |
-| **28.04.** | **V** | **B** | **Q2 FY26 — D2-Entscheidung (Technicals-Reversal?)** |
-| 28.04. | SNPS/SPGI | B | Watchlist-Review |
-| **29.04.** | **MSFT** | **C** | **Q3 FY26 — FLAG-Review CapEx/OCF <60%** |
-| Mai | BRK.B/ZTS/PEGA | B | Q-Earnings + Slot-16 |
-
-### Aktive Watches
-- **V D2-Kritik:** 6M RelStärke -14pp vs SPY. Q2 28.04. = Beat+Guidance → D3-Reversal, Miss → D1-Richtung.
-- **ASML Fwd P/E FY27 = 30,30:** Grenzfall, bei <30 Fix-1-Fwd-Zweig deaktiviert → Score +1/+2 (D3→D4-Kandidat).
-- **AVGO Insider $123M:** wahrscheinlich Post-Vesting. Vor FLAG: OpenInsider manuell prüfen.
-- **TMO Resolve-Gate:** Q1 23.04. — WC-Unwind + FCF-Recovery bestätigt → kein FLAG; fehlt → fcf_trend_neg nachtragen + Ersatz-ZTS-Vorbereitung eskalieren.
-- **MSFT FLAG-Pfad:** Q3 29.04. — bereinigtes CapEx/OCF <60% (Finance-Lease $19,5B raus) = Auflösung.
-- **RMS.PA Q1-Slowdown (NEU 20.04.):** Middle-East-Druck + Tourismus schwächer, Q1 Revenue-Miss vs. Erwartung. Watch-Notiz, kein Klasse-C-Event. H1-Trigger (Juli/Aug) möglich vorzuziehen falls Q2 bestätigt.
+Natürlicher Trigger. Full Pipeline end-to-end: P1→P2a→P2b→**P3.5 NEU** (8 Checks fail-close)→P3 (Δ-Gate fcf_trend_neg-Resolve)→P4/P5/P6. Zweiter CORE-MEMORY §10-Eintrag mit konkretem Result folgt.
 
 ---
 
-## ⚠️ OPEN RISKS / REMINDERS
+## 📊 VOLLSTÄNDIGE AGENDA-INVENTUR (Stand 21.04.2026 Mittag)
 
-1. **Tavily Dev-Key Rotation** innerhalb 7 Tagen nach Prod-Go-Live (`tvly-dev-4PYXp...`)
-2. **Prod-Deploy-Rollback-Pfad:** `03_Tools/morning-briefing-prompt-v2.md` unverändert im Repo, Runbook in Spec §11
-3. **Codex-Plugin Review-Gate** NICHT aktiviert (User-Entscheidung 19.04.) — Codex nur on-demand via `codex:codex-rescue`
-4. **Track 5b FRED** ist strategische Greenfield-Entscheidung (Macro-Dimension in DEFCON?) — vor Execution klären
-5. **v3.1 Cache-Refactor** nur bei Bedarf — trigger: "262s zu lang im Alltag" oder ">400s-Alert-Schwelle wiederholt erreicht"
-6. **Korrektheits-Prinzip systemweit verankert** (memory `feedback_correctness_over_runtime.md`) — gilt auch für zukünftige Pipeline-Änderungen (Scoring, FLAG-Checks, Score-Archive). Runtime-Optimierungen nie auf Kosten von Recall.
+### Aktive Pläne in `docs/superpowers/plans/`
+| Plan-File | Status | Tasks | Blocker |
+|---|---|---|---|
+| `2026-04-20-briefing-v3.0.4-hotfix.md` | ready for execution | 13 | keiner, nur Priorität (verschoben wegen v2.1-Stabilität post-Incident) |
+| `2026-04-21-score-append-provenance-gate.md` | v2 ready (Codex-patched) | 7 Tasks 40 Steps | pending Systemhygiene-Sweep (Phase A-E) |
+| `2026-04-20-track5a-edgar-skill-promotion.md` | Codex-reviewed | 9 | pending Gate A (v3.0.4 3-Tage-Stabilität) + optionale Re-Validation-Check nach 6-Paper-Ingest |
+| `2026-04-20-track5b-fred-regime-filter.md` | Codex-reviewed | 15 | User-Aktion FRED-API-Key + pending Gate A |
+| `2026-04-20-briefing-v3.1-cache-refactor.md` | deferred | — | Trigger: 262s stört im Alltag / >400s-Alert wiederholt |
+
+### Heute NEU geschrieben
+| Datei | Status | Kontext |
+|---|---|---|
+| `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` | draft, commit `206c0a1` | Architektur-Variante E (Hybrid B+D), 5 Codex-Sparring-Runden |
+| `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` | v2, commit `206c0a1` | 4 Codex-Patches eingearbeitet |
+| `03_Tools/backtest-ready/migrate_defcon_drift.py` | executed + committed `ca76114` | One-Shot-Tool idempotent, 12/27 → 27/27 |
+| `00_Core/INSTRUKTIONEN.md §27.4` | erweitert commit `ca76114` | Vertikal-Drift-Klausel neu |
+| `CLAUDE.md` Applied Learning 12/20 | commit `ca76114` | v2.4-Historie-Eintrag |
+| Memory `feedback_exhaustive_drift_check.md` | NEU (Tier 1) | Exhaustive-Drift-Check-Regel |
+| `07_Obsidian Vault/.../log.md` | Eintrag heute commit `ca76114` | Drift-Migration + System-Audit-Lesson |
+
+### Heute NICHT geschrieben (aber entschieden für nächste Session)
+- Sub-Spec `docs/superpowers/specs/2026-04-22-system-audit-tool-design.md` (Phase D)
+- Plan `docs/superpowers/plans/2026-04-22-system-audit-tool.md` (Phase E)
+- Tool selbst `03_Tools/system_audit.py` + Slash-Command `.claude/commands/SystemAudit.md` (Phase E)
+- `00_Core/CORE-MEMORY.md` 21.04. Sync (Phase A — siehe oben für genaue Schritte)
+- `00_Core/STATE.md` Pipeline-SSoT-Section (Phase C — siehe oben für Struktur)
+
+### Open Backlog (aus STATE.md + heutigem Audit)
+1. **Daily-Persist seit 4 Tagen stale** — `portfolio_returns.jsonl` + `benchmark-series.jsonl` je 1 Record (17.04.). R5-Phase-3 „aktiv" aber Daily-Append-Cron existiert nicht. Auflösung: in Track 4 mit ETF/Gold-Erweiterung + Cron-/Hook-Mechanismus.
+2. **System-Audit-Tool fehlt** — wird Phase D+E nachgeholt.
+3. **Codex Round 2 für Tavily-Spec** (stand als PENDING vor v3.0.4-Hotfix-Plan) — überholt durch v3.0.4-Plan der dieselbe Spec überarbeitet. **Status: formal erledigt.**
 
 ---
 
-## 🗂 ARTEFAKTE DIESER SESSION (20.04.2026 Mittags)
+## 🧠 HEUTIGE LESSONS LEARNED (persistent)
 
-### Dateien
-- `03_Tools/morning-briefing-prompt-v3.md` (v3.0.3)
-- `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` (Revision-Log v3.0.3)
-- `03_Tools/tests/tavily-probe-prompts/results/T1-2026-04-20-v3.0.3.md`
-- `03_Tools/tests/tavily-probe-prompts/results/T4-2026-04-20-v3.0.3.md`
-- `03_Tools/tests/tavily-probe-prompts/results/T3-2026-04-20-v3.0.3.md`
-- `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md` (deferred)
-- Memory: `feedback_correctness_over_runtime.md` (neu), `data-source-coverage.md` (SU.PA-Schärfung), `morning-briefing-config.md` (v3.0.3-Status)
+1. **„Drift-Check" = exhaustive, nicht Spot-Check.** Applied Learning 12/20. Memory `feedback_exhaustive_drift_check.md`. §27.4 Vertikal-Drift-Klausel. Trigger: bei „Hygiene"/„Drift"-Wortwahl + bei jedem Schema-/Threshold-Migration-Commit Re-Validate-Sweep über alle persistierten Stores.
 
-### Commits (chronologisch)
-- `30b1867` v3.0.3 prompt + spec rebase (Lever 1 + Soft-Alert)
-- `e5ba317` T1-Result + STATE + Handover
-- `42a82f4` v3.1 deferred cache-refactor plan
-- `c7c0c11` Gate-A-Korrektheits-Definition
-- `29d9cb0` T4 Fail-Open PASS
-- `7cafc78` T3 Adversarial-Trap PASS
+2. **Pain-Point-Driven Self-Improvement schlägt Meta-Framework.** Externe Tools (codebase-memory-mcp) lösen oft andere Problemklasse + erzeugen eigene Drift-Flächen (externer SQLite-State). Domain-spezifische interne Helper-Skripte (~200-300 LOC) sind präziser.
 
-### Remote-Trigger-State
-- Probe `trig_01XYuQ5mugsvZGZD4K52rjXh`: clean v3.0.3 T1-Baseline-Content (post-T3-Reset), allowed_tools full, Shibui+Tavily MCPs attached
-- Prod `trig_01PyAVAxFpjbPkvXq7UrS2uG`: v2.1 (unverändert, Deploy pending)
+3. **Horizontal-Drift + Vertikal-Drift sind verschiedene Klassen:**
+   - Horizontal: Multi-Source-SSoT-Divergenz (§27.4 ursprünglich, INSTRUKTIONEN/CORE-MEMORY/config.yaml/Vault-Entities erzählen unterschiedliche Stories)
+   - Vertikal: Schema-Migration tickt vorwärts, Altdaten bleiben silent inkonsistent (§27.4 neue Klausel 21.04.)
+   - **Beide brauchen exhaustive Sweep, nicht Spot-Check.**
+
+4. **Sequenzierungs-Entscheidungen sind Evidenz-abhängig.** Codex empfahl β (Provenance zuerst) basierend auf dem Stand vor CORE-MEMORY-Header-Drift-Entdeckung. Mit neuer Evidenz war γ (Systemhygiene zuerst) richtig. Codex-Verdikte sind nicht lock-in — bei neuer Evidenz Re-Evaluation.
+
+5. **SessionStart-Hooks für Systemchecks kollidieren mit CLAUDE.md SESSION-INITIALISIERUNG** (Pflicht „zuerst nur STATE.md lesen"). Slash-Commands sind sauberer.
+
+---
+
+## 📚 REFERENZEN (heute Session-relevant)
+
+### Git-Commits 21.04.2026 Mittag
+- `ca76114` drift-migration+system-hygiene — 6 files, 140 insertions
+- `206c0a1` plan+spec(provenance-gate) — 2 files, 1524 insertions (force-added trotz .gitignore docs/superpowers)
+
+### Memory-Files (user's ~/.claude/projects/.../memory/)
+- `feedback_exhaustive_drift_check.md` NEU — exhaustive Validation-Regel
+- `MEMORY.md` Index auf 13 topic files aktualisiert
+
+### Codex-Runden heute
+- **Codex Run 1 (Plan-Review):** YELLOW auf 4 Punkte — alle adressiert (Task 0 + Step 2.7 + 3.1a-d Split + Task 6 §10 Timing)
+- **Codex Run 2 (Audit-Strategie):** Sequenzierung β, Automatismus Slash-Command + STATE.md-Section, Memory-Promotion §27.4-Schärfung statt neuer §, Audit-Tool-Risiko = Scope-Creep. Empfehlung dann durch User-CORE-MEMORY-Drift-Entdeckung auf γ revidiert.
+
+### Externe Tool-Evaluation (verworfen)
+- `github.com/DeusData/codebase-memory-mcp` — falsche Scope (Code-AST statt Markdown/YAML/JSONL), externer SQLite-Cache = neue Drift-Quelle, Windows-SmartScreen-Install-Friction. Internes `system_audit.py` präziser.
 
 ---
 
@@ -263,11 +226,30 @@ Nach Input: `03_Tools/portfolio_risk.py` um ETF+Gold erweitern, in `--persist da
 Session starten
 ```
 
-1. Claude liest `STATE.md`
+1. Claude liest `STATE.md` (wird post-Phase-C aktualisiert sein durch diese Session-Arbeit)
 2. Wechsel hierher
-3. **Primär-Track: Prod-Deploy v3.0.3** (Schritte 2-6 oben)
-4. Bei abweichender User-Priorität: Track 4 (ETF/Gold-Input), oder Track 5a/5b (falls Gate A bereits abgeschlossen), oder Scoring-Session bei Marktbewegungen
+3. **Phase A starten** — CORE-MEMORY-Header + §1 + §10 nachziehen (~15 Min)
+4. **Phase B** — log.md + kleiner Handover-Hinweis (~10 Min)
+5. **Phase C** — STATE.md Pipeline-SSoT-Section einbauen (~15 Min)
+6. Nach A+B+C: einen Sync-Commit (analog `ca76114`-Pattern)
+7. **Phase D** — System-Audit-Tool Sub-Spec mit Brainstorming-Skill (~60 Min)
+8. **Phase E** — Plan + Build mit writing-plans-Skill (~90-120 Min)
+9. **Phase F** — Provenance-Plan-Execution (~60-90 Min)
+10. **Phase G am 23.04.** — TMO Q1 First-Live-Run (natürlicher Trigger)
+
+**Bei Abweichung:** Portfolio-Ereignis (Earnings-Beat/Miss), Markt-Bewegung, oder User-Interrupt → Flex-Routing, aber A+B+C bleiben Pflicht vor Tool-Bau.
 
 ---
 
-*Archiv-Verweis: Historische Session-Details (frühe 20.04.-Session Track-5-Plan-Writing, 00:13-MESZ-Session Tavily-Probe-Setup v3.0.1/v3.0.2, Tool-Evaluation-Runde) in `git log` ab `dd0cd62` sichtbar. Milestone-Chronik in `CORE-MEMORY.md §1`.*
+## ⚠️ OPEN RISKS / REMINDERS
+
+1. **TMO Q1 am 23.04.** — Erster echter Live-Test aller neuen Infrastruktur. Bei Tool-Bau-Verzögerung muss spätestens Mi 22.04. Abend Provenance-Plan durchgelaufen sein.
+2. **v3.0.4 Briefing-Hotfix bleibt pending** — v2.1 Prod läuft stabil (heute morgen Stale-Shibui-Konstellation sauber durchlaufen). v3.0.4 kann nach Audit-Tool in einer eigenen Session.
+3. **Tavily Dev-Key Rotation** — ab v3.0.4-Deploy-Datum läuft 7-Tage-Uhr (`tvly-dev-4PYXp...`).
+4. **Track 4 ETF/Gold-Input** — User-Decision weiter ausstehend; auflösen in einer dedizierten Session.
+5. **CORE-MEMORY §3 Stand 04.04.** — prüfen ob bewusst historisch oder Drift; Phase A Schritt 4.
+6. **Multi-Source-Drift-Prevention §27.4 horizontal** — weiterhin Pflicht (unverändert); plus neue Vertikal-Klausel.
+
+---
+
+*Alles aus heutiger Session durable persistiert. Nichts schwebt im Speicher. Phase A-G klar sequenziert. TMO Q1 Deadline 23.04. erreichbar.*
