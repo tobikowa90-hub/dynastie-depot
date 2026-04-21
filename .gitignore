@@ -41,3 +41,4 @@ __pycache__/
 
 # Obsidian per-Session UI state (tabs, layout, pan/zoom) — ephemeral, not shared config
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/workspace.json
+07_Obsidian Vault/Obsidian Mindmap/.obsidian/graph.json
