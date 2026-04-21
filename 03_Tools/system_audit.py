@@ -166,7 +166,7 @@ def main(argv: list[str] | None = None) -> int:
     scope = parser.add_mutually_exclusive_group()
     scope.add_argument("--core", action="store_true", help="Run core checks (default)")
     scope.add_argument("--full", action="store_true", help="Run core + optional checks")
-    scope.add_argument("--vault", action="store_true", help="Run only vault-optional checks")
+    scope.add_argument("--vault", action="store_true", help="Run only optional checks (vault_backlinks + status_matrix)")
     scope.add_argument(
         "--minimal-baseline", action="store_true",
         help="Run minimal structural checks only (jsonl_schema + pipeline_ssot + log_lag) — "

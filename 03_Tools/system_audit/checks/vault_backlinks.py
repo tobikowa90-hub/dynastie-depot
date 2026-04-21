@@ -1,4 +1,8 @@
-"""Optional Check-8: Obsidian wikilinks [[Note]] must resolve. Hardcoded 20s timeout."""
+"""Optional Check-8: Obsidian wikilinks [[Note]] must resolve.
+
+Timeout is sourced from context.vault_timeout_s (AuditContext default 20s,
+overridable per orchestrator invocation).
+"""
 from __future__ import annotations
 
 import re
