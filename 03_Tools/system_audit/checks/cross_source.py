@@ -68,29 +68,91 @@ def _parse_state_table(path: Path) -> dict[str, dict]:
 
 
 def _parse_faktortabelle(path: Path) -> dict[str, dict]:
+    """Parse live Faktortabelle.md — header-driven column lookup.
+
+    Live structure has 11+ columns including FCF-Marge, ROIC, Gross Margin,
+    Debt/EBITDA, Moat before Score/DEFCON/FLAG. HTML-Comment-Rows between
+    data rows (<!-- DATA:... -->) must be skipped, not treated as table-end.
+    FLAG cell uses the same icon format as STATE.md (✅/⚠️/🔴 + reason text),
+    not a boolean — convert via parse_flag_icon.
+    """
     out: dict[str, dict] = {}
-    in_table = False
+    col_idx: dict[str, int] | None = None
+    saw_sep = False
+
     for line in path.read_text(encoding="utf-8").splitlines():
-        if re.match(r"^\|\s*Position\s*\|.*Score.*DEFCON", line):
-            in_table = True
+        stripped = line.strip()
+
+        # Skip HTML comments between header-separator and/or data rows
+        if stripped.startswith("<!--"):
             continue
-        if in_table:
-            if not line.strip().startswith("|"):
-                break
+
+        if col_idx is None:
+            # Still searching for header
+            if re.match(r"^\|\s*Position\s*\|", line):
+                cells = [c.strip() for c in stripped.strip("|").split("|")]
+                col_idx = {name: i for i, name in enumerate(cells)}
+                continue
+            continue
+
+        if not saw_sep:
+            # Next non-empty | line after header should be the separator
             if re.match(r"^\|\s*-+", line):
+                saw_sep = True
                 continue
-            cells = [c.strip() for c in line.strip().strip("|").split("|")]
-            if len(cells) < 4:
+            # Tolerant: if we hit a data row without explicit sep, proceed
+            if not stripped.startswith("|"):
                 continue
-            ticker = cells[0].replace("**", "").strip()
+            saw_sep = True  # best-effort
+
+        if not stripped.startswith("|"):
+            break  # end of table
+
+        cells = [c.strip() for c in stripped.strip("|").split("|")]
+
+        def get(name: str) -> str | None:
+            i = col_idx.get(name) if col_idx else None
+            return cells[i] if i is not None and i < len(cells) else None
+
+        def strip_bold(s: str | None) -> str:
+            return (s or "").replace("**", "").strip()
+
+        ticker_raw = strip_bold(get("Position"))
+        if not ticker_raw or ticker_raw.startswith("-"):
+            continue
+
+        score_raw = strip_bold(get("Score"))
+        defcon_raw = strip_bold(get("DEFCON"))
+        flag_raw = strip_bold(get("FLAG"))
+        if score_raw is None or defcon_raw is None:
+            continue
+
+        try:
+            score_m = re.search(r"\d+", score_raw)
+            score = int(score_m.group(0)) if score_m else None
+            defcon_m = re.search(r"\d+", defcon_raw)
+            defcon = int(defcon_m.group(0)) if defcon_m else None
+        except ValueError:
+            continue
+
+        if score is None or defcon is None:
+            continue
+
+        # FLAG via icon parser; fallback boolean form for legacy/test fixtures
+        flag_value: bool | None = None
+        if flag_raw:
             try:
-                score = int(re.sub(r"\D", "", cells[1]))
-                defcon = int(re.sub(r"\D", "", cells[2]))
-                flag_raw = cells[3].strip().lower()
-                flag = flag_raw in ("true", "ja", "yes")
-            except (ValueError, IndexError):
-                continue
-            out[ticker] = {"score": score, "defcon": defcon, "flag": flag}
+                icon, _reason = parse_flag_icon(flag_raw)
+                flag_value = (icon == "flag")
+            except ValueError:
+                low = flag_raw.lower()
+                if low in ("true", "ja", "yes"):
+                    flag_value = True
+                elif low in ("false", "nein", "no"):
+                    flag_value = False
+
+        out[ticker_raw] = {"score": score, "defcon": defcon, "flag": flag_value}
+
     return out
 
 
@@ -187,11 +249,14 @@ def run(
                     hint=f"{mirror_name}-Zeile aktualisieren, config.yaml ist Wahrheitsquelle",
                 ))
                 continue
-            if m.get("defcon") != c_defcon:
+            # Skip DEFCON mismatch for Vault when defcon is absent (valid when entity carries only score)
+            if mirror_name == "Vault" and m.get("defcon") is None:
+                pass  # DEFCON not required in Vault frontmatter
+            elif m.get("defcon") != c_defcon:
                 failures.append(FailureDetail(
                     location=f"{mirror_name}: {ticker}",
                     expected=f"defcon={c_defcon}",
-                    actual=f"defcon={m.get('defcon')}",
+                    actual=f"{ticker} defcon={m.get('defcon')}",
                     severity="error",
                     hint=f"DEFCON-Mismatch — {mirror_name} syncen",
                 ))
