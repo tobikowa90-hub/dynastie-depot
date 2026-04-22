@@ -20,6 +20,8 @@
 
 **Trigger:** `!Analysiere TMO` nach Earnings-Release
 
+> **📋 Pre-Earnings-Briefing vorab erstellt:** [`02_Analysen/TMO_pre-earnings_2026-04-23.md`](../02_Analysen/TMO_pre-earnings_2026-04-23.md) — via `earnings-preview`-Skill am Vortag (22.04. Spät-Nacht). Enthält Consensus ($5,24 EPS / $10,86B Revenue), Beat-Track 4/4, Analysten-Sentiment 24/26 Buy, Quartals-Trajektorie FCF/ΔWC/OpInc für `fcf_trend_neg` Resolve-Gate + **Entscheidungs-Matrix Miss/In-Line/Beat**. **Morgen als Basis nutzen, nicht neu fetchen** (Token-Spar).
+
 **Spezifische Gates für TMO:**
 - **D2-Entscheidung:** Score 64 aktuell, Live-Forward-Lauf gegen Q1-Actuals
 - **`fcf_trend_neg` Resolve-Gate:** FY25 FCF -13,4% YoY war schema-getriggert aber Option-B-dokumentiert (WC-Delta -1766M erklärt). Q1 = natürlicher Resolve-Gate:
