@@ -64,7 +64,7 @@
 1. ~~**Systemhygiene-Welle Phase A-E (SSoT-Aufbau + Audit-Tool-Bau)**~~ **DONE 2026-04-22 Spät-Nacht.** Phase A+B+C+D ✅ committed. Phase E 19/19: Tasks 1-19 substantive + Fix-Welle E `e3ba381` + CR-Re-Run gegen `e3ba381` = 1 OOS-Nitpick (DE/EN-Mix auf 17.04. Auto-Output). Codex RECONCILED_WITH_FOLLOWUPS. **3 Codex-Follow-ups** (bleiben als Backlog-Tasks — werden am Konsolidierungstag Fr 24.04. zusammen mit v3.0.4 + Tavily-Key gelöst): (a) Check-3 future-date-exclude + existence-Cleanup (~54 CLAUDE.md-Pfad-Refs) → §27.5-Guard auf `--core` hochziehen; (b) Check-10 `status_matrix` Regex-Scope auf `### Matrix`-Subsection einengen; (c) §27.5-Kommentar-Update nach (a). **CodeRabbit-OOS** dokumentiert: `flag_events.jsonl:2` null-metrik.wert (pre-existing), `PORTFOLIO-RISK-2026-04-17.md:39` DE/EN-Mix (Auto-Output).
 2. **Morning Briefing v3.0.4 Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft v2.1 (Rollback nach Halluzinations-Incident 20.04.). Hotfix ergänzt §3a Anti-Fallback-Guard + neuer Test T5 Adversarial-Stale-Shibui. Gate A erst nach v3.0.4-PASS. **Gate für Dashboard v2 Tavily-Integration + Track 5a/5b.**
 3. **Score-Append Provenance-Gate** — Plan v2 `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks, 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. **Pfad-2-Entscheidung 22.04. Spät-Nacht:** TMO Q1 23.04. läuft mit **Old-Pipeline** (Weekly-Limit 93%, Reset Do 22:00 CEST — kein Raum für 7-Tasks/40-Steps-Execution im Minimal-Modus). TMO-Record im Old-Pipeline-Format archiviert, **Retro-Migration post-Reset** (Do Abend 22:00+ ODER Fr 24.04. Konsolidierungstag). „Critical vor TMO Q1"-Formulierung war Self-Imposed-Gate, kein echter Blocker — Provenance-Gate-Nutzen ist in zukünftigen Appends, nicht retrospektiv.
-4. ~~System-Audit-Tool~~ **DONE 2026-04-22** — `03_Tools/system_audit.py` v1.0 + `/SystemAudit` deployed. Baseline `--minimal-baseline` 3/3 PASS (Check-1 jsonl_schema + Check-6 pipeline_ssot + Check-7 log_lag). `--core` 4/8 PASS mit 2 known Tool-Bugs (Check-3 future-date → Follow-up-Task, Check-5 existence → Post-Task-17-Follow-up-Welle). Live-Audit 22.04. bestätigt: 4/8 PASS, 2 FAIL (known), 2 WARN (known). **2 Audit-Tool-Verbesserungen (Opus-Advisory 22.04.) → Konsolidierungstag Fr 24.04. Block 1:** (a) Check-5 Batch-Output gruppiert nach Sektion; (b) Check-4 WARN-Semantik `⚠️ Informativ` vs. `🔴 Funktional` trennen.
+4. ~~System-Audit-Tool~~ **DONE 2026-04-22** — `03_Tools/system_audit.py` v1.0 + `/SystemAudit` deployed. Baseline `--minimal-baseline` 3/3 PASS (Check-1 jsonl_schema + Check-6 pipeline_ssot + Check-7 log_lag). `--core` 4/8 PASS mit 2 known Tool-Bugs (Check-3 future-date → Follow-up-Task, Check-5 existence → Post-Task-17-Follow-up-Welle). Live-Audit 22.04. bestätigt: 4/8 PASS, 2 FAIL (known), 2 WARN (known). ~~**2 Audit-Tool-Verbesserungen (Opus-Advisory 22.04.) → Konsolidierungstag Fr 24.04. Block 1:** (a) Check-5 Batch-Output gruppiert nach Sektion; (b) Check-4 WARN-Semantik `⚠️ Informativ` vs. `🔴 Funktional` trennen.~~ **→ DONE 23.04.2026 Abend** via Patch in `03_Tools/system_audit/report.py` — pro-failure severity-icons (🔴/⚠️/ℹ️) + gruppiertes Batch-Output (Sektion = location-Prefix bis erster Colon, mit Singleton-Only-Fallback auf Flat). Neuer Regression-Test `test_report_human_severity_icons_and_grouping`, 59/59 Smoke-Tests PASS, `--minimal-baseline` 3/3 PASS.
 
 ### 🟠 Portfolio — Kritische Triggers 10 Tage
 
@@ -147,9 +147,9 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-23T20:08:37Z
-**Result:** 4/8 PASS (2 FAIL, 2 WARN)
-**Run:** `python 03_Tools/system_audit.py --core`
+**Timestamp (UTC):** 2026-04-23T20:21:43Z
+**Result:** 3/3 PASS
+**Run:** `python 03_Tools/system_audit.py --minimal-baseline`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->

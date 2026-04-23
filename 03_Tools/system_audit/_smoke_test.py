@@ -514,6 +514,56 @@ def test_report_human_format_contains_summary() -> None:
     assert "AVGO" in text
     assert "Exit-Code: 1" in text
 
+def test_report_human_severity_icons_and_grouping() -> None:
+    """Regression-gate: WARN-Semantik pro-failure (⚠️/🔴/ℹ️) + Batch-Output
+    gruppiert nach Sektion bei >3 Failures mit mind. einer Section-Count>1.
+    Singleton-only-Gruppierung faellt auf Flat zurueck (keine verbose Wrapper).
+    """
+    from system_audit.report import render_human
+
+    mixed = [
+        FailureDetail(location="STATE.md: A", expected="x", actual="y",
+                      severity="error", hint=None),
+        FailureDetail(location="STATE.md: B", expected="x", actual="y",
+                      severity="warning", hint=None),
+    ]
+    grouped = [
+        FailureDetail(location=f"CLAUDE.md:{i}", expected="x", actual=f"p{i}",
+                      severity="error", hint=None)
+        for i in range(5)
+    ] + [
+        FailureDetail(location="STATE.md:1", expected="x", actual="z",
+                      severity="error", hint=None)
+    ]
+    singletons = [
+        FailureDetail(location=f"pkg/{name}.zip", expected="x", actual="orphan",
+                      severity="warning", hint=None)
+        for name in ("a", "b", "c", "d")
+    ]
+    results = [
+        CheckResult(name="c1", status="FAIL", n_checked=2, n_passed=0,
+                    failures=mixed, duration_ms=1, category="core"),
+        CheckResult(name="c2", status="FAIL", n_checked=6, n_passed=0,
+                    failures=grouped, duration_ms=1, category="core"),
+        CheckResult(name="c3", status="WARN", n_checked=4, n_passed=4,
+                    failures=singletons, duration_ms=1, category="core"),
+    ]
+    text = render_human(results, timestamp_utc="2026-04-23T20:00:00Z")
+
+    # Pro-failure severity-icons (Check-4 WARN-Semantik)
+    assert "🔴 STATE.md: A" in text, "error failure must carry 🔴"
+    assert "⚠️ STATE.md: B" in text, "warning failure must carry ⚠️"
+
+    # Grouping when section-count > 1 exists (Check-5 Batch-Output)
+    assert "[CLAUDE.md] 5 finding(s) — 5🔴" in text
+    assert "[STATE.md] 1 finding(s)" in text
+    assert "... 3 more in [CLAUDE.md]" in text
+
+    # Fallback to flat when all groups would be singletons
+    assert "[pkg/a.zip]" not in text, "singleton-only groups must render flat"
+    assert "⚠️ pkg/a.zip" in text
+
+
 def test_report_json_format_is_valid() -> None:
     import json
     from system_audit.report import render_json
