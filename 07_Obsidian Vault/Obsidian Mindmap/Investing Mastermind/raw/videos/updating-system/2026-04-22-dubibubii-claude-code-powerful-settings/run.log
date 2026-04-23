@@ -1,0 +1,14 @@
+# run.log for 2026-04-22-dubibubii-claude-code-powerful-settings
+started: 2026-04-23
+[step 0] url_reachable=True (0.2s)
+[version] yt-dlp: 2026.03.17
+[version] whisper: openai-whisper 20250625
+[version] ffmpeg: ffmpeg version 8.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+[step 1] yt-dlp: yt-dlp -x --audio-format m4a --no-playlist --write-info-json -o C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-04-22-dubibubii-claude-code-powerful-settings\%(id)s.%(ext)s https://www.youtube.com/watch?v=VIbew55IpE4
+[step 1] exit=0, dt=19.4s
+[info] duration_min=10.2, chapters=True, video_id=VIbew55IpE4
+[step 2] whisper: whisper C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-04-22-dubibubii-claude-code-powerful-settings\VIbew55IpE4.m4a --model small --language en --output_format json --output_dir C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-04-22-dubibubii-claude-code-powerful-settings
+[step 2] exit=0, dt=403.3s
+[step 3] removed audio file VIbew55IpE4.m4a
+[step 4] transcript_sha256=eaefdcd7f0a3871b..., info_sha256=479c03d474fb8895...
+[step 5] quality_gate: passed=True, fails=[], warns=[]

@@ -1,0 +1,37 @@
+[
+  {
+    "start_time": 0.0,
+    "title": "Intro + Bonus Tip",
+    "end_time": 55.0
+  },
+  {
+    "start_time": 55.0,
+    "title": "Tip 1 - Boris's Favourite New Feature",
+    "end_time": 124.0
+  },
+  {
+    "start_time": 124.0,
+    "title": "Tip 2 - Effort Levels",
+    "end_time": 279.0
+  },
+  {
+    "start_time": 279.0,
+    "title": "Tip 3 - Trust in Claude",
+    "end_time": 344.0
+  },
+  {
+    "start_time": 344.0,
+    "title": "Tip 4 - Boris's Favourite Skill",
+    "end_time": 406.0
+  },
+  {
+    "start_time": 406.0,
+    "title": "Tip 5 - New Opus 4.7 Feature",
+    "end_time": 468.0
+  },
+  {
+    "start_time": 468.0,
+    "title": "Tip 6 - How Boris gets 3x more out of Claude",
+    "end_time": 615
+  }
+]

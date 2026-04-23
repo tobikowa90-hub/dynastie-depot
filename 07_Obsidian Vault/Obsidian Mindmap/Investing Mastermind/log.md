@@ -890,3 +890,16 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
   - P4-bis Duplicate-Guard gegen echtes Archiv — PASS (erwartete `DuplicateRecordError`, beweist Self-Defense)
 - **Ergebnis:** Skill-Pipeline hätte den Record sauber validiert und angehängt. Real-Append nicht ausgeführt — Record existiert bereits, Informationsverlust-Aversion > Ästhetik (kein `git revert` der Zeile). **Erster echter Skill-Forward-Run bleibt V Q2 FY26 28.04.2026.**
 - **Folge-Schritt:** XLSX-Tools-Update (Rebalancing_Tool + Satelliten_Monitor) unblockiert — separater Commit.
+
+## [2026-04-23] ingest-video second-run + adoption-decision | Dubibubii "Powerful Settings"
+- **Video:** [[Claude Code's Creator Reveals His Most POWERFUL Settings]] — Dubibubii, 10,2 min, YouTube Standard-Video (kein Short), upload 2026-04-22, Chapters vorhanden.
+- **Pipeline-Lauf (`ingest-video` Skill Second-Run post-Pilot):** yt-dlp 19,4s + whisper-small 403s (≈0,66× realtime — sublinear, schneller per-Minute als 2-min-Pilot mit 1,2× realtime) + quality-gate PASS ohne Warns + 219 Segmente + Chapters.json persistiert. Artefakte `raw/videos/updating-system/2026-04-22-dubibubii-claude-code-powerful-settings/`.
+- **Skill-Bewertung (Pilot+Second-Run zusammen):**
+  - ✅ Deterministisch, robust — 2/2 Runs PASS, inkl. Chapters-Detection für Long-Form
+  - ✅ SHA256-Provenance (transcript, info, chapters), Version-Pinning (yt-dlp 2026.03.17, whisper 20250625, ffmpeg 8.1), `run.log`
+  - ✅ `updating-system`-Kategorie trägt ihren Zweck („Adoption-Evaluation" ≠ „Wissensquelle") — Framing-Klarheit nach User-Korrektur 23.04.
+  - ⚠️ Metadata-Gap bestätigt: `--channel`, `--topic`, `--upload-date` müssen manuell, obwohl `info.json` `uploader`, `title`, `upload_date` enthält → Reibung bei Bulk, lohnt bei ≥5 Videos/Session Auto-Derivation zu bauen
+  - ⚠️ Whisper-`small` reicht für Transkript-Textur + Adoption-Entscheidungen; für inhaltstiefere Wissensquellen-Ingests Upgrade auf `large-v3` empfehlenswert (Runtime ×3-4)
+- **Content-Adoption-Decision (siehe Source-Page-Adoption-Matrix):** 4 REJECT (Auto Mode, Focus Mode, Slash-go ×1) / 2 OBSERVE (Effort Levels, Recaps) / 1 ADOPT-READY (`fewer-permission-prompts` — bereits installiert, einmaliger Run am Konsolidierungstag).
+- **Meta-Learning:** Neue Memory `feedback_friction_as_evidence.md` — Creator-Videos framen Friction-Reduction-Mechaniken als Gewinn; in Dynasty-Depot ist Friction (Permissions, Intermediate-Visibility, Prompt-Detail) der Evidenz-Kanal für Halluzinations-Erkennung (v3.0.3-Präzedenz). Adoption-Default skeptisch, Re-Eval nur bei Scope-Erweiterung auf echte Multi-Agent-Automatisierung.
+- **System-Impact:** Null System-Änderung, keine Config/Skill-Commits. Quellen-Gewinn: dokumentierte Präzedenz für künftige Broad-Audience-Creator-Video-Ingests (Negative-Reference + Matrix-Template).
