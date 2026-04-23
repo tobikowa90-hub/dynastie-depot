@@ -114,7 +114,7 @@
 - **Open Backlog (NEU 21.04.2026, aus System-Drift-Audit):**
   - ~~**Daily-Persist seit 4 Tagen stale**~~ **→ resolved 23.04.2026 Abend** — `portfolio_risk.py` `--as-of`-Backfill-Flag implementiert (Codex-Audit Option A gehärtet: Gap-Enforcement via yfinance-sessions + strict-chronology-Validator + Atomic-Write mit Size-Rollback), 4 Records 2026-04-20 bis 2026-04-23 chronologisch appendet. Archive 5/5 Records, NAV-Chain mathematisch validiert. CodeRabbit-Bug-Hunt: 1 in-scope Major (Hard-Crash-Atomarität) — als Follow-up Deferred #10 dokumentiert (Solo-Betrieb 1×/Tag → B-Entscheidung). Langfrist: Track 4 Auto-Hook (Cron/Hook nutzt jetzt vorhandenes `--as-of $(date -I)`).
   - ~~**Check-6 False Positive**~~ **→ resolved 23.04.2026 Spät.** `skill_version.py` akzeptiert jetzt bare-name ZIPs (`<skill>.zip`) + Orphan-Detection erweitert auf bare-name ZIPs inkl. `_extern/`-Awareness. Codex-Pre-Commit-Review NO-GO (Spec-Drift + Orphan-False-Negative) beide adressiert: Spec-Drift via Plan-Header-Notice (Memory `feedback_spec_section_drift.md`), Orphan-False-Negative via Code-Fix. 3 neue Smoke-Tests. Audit deckt jetzt 4 echte Orphan-ZIPs auf → neuer Backlog-Item.
-  - **06_Skills-Pakete orphan ZIPs (NEU 23.04.):** Check-6 legt nach bare-name-Fix 4 Orphan-ZIPs offen: `adaptationio-fmp-api.zip`, `defeat-beta-defeatbeta-analyst.zip`, `neversight-sec-edgar-skill.zip`, `qualitative-valuation.zip`. Konsolidierungstag Fr 24.04.: prüfen → archivieren/löschen wenn legacy, oder in `_extern/` materialisieren wenn noch genutzt.
+  - ~~**06_Skills-Pakete orphan ZIPs (NEU 23.04.)**~~ **→ resolved 23.04.2026 Abend.** Alle 4 Orphan-ZIPs nach `05_Archiv/skills-legacy/` verschoben (Informationsverlust-Aversion statt delete). Triage: `fmp-api` + `qualitative-valuation` legacy per PIPELINE.md-Rejection; `defeatbeta-analyst` + `sec-edgar-skill` Publisher-Prefix-Duplikate zu bereits materialisierten `_extern/`-Skills. README mit Rationale + Recovery-Anleitung in `05_Archiv/skills-legacy/README.md`. Check-6 jetzt ✅ PASS 2/2 (vorher ⚠️ WARN 2/2 mit 4 Orphans).
   - ~~**Check-3 future-date-Bug**~~ **→ resolved 23.04.2026 Spät.** `markdown_header.py` filtert Datums > today vor `max()`-Newest-Event-Berechnung. STATE.md + Faktortabelle.md nicht mehr False-FAIL durch Long-Term-Gates / zukünftige Earnings-Dates. CORE-MEMORY.md-Lag bleibt als legitime WARN (Content-Sync-Todo). Plan-Header-Notice + 1 Smoke-Test mit frozen today.
   - **Check-3 Test time-coupling (NEU 23.04., nicht-blocking):** `test_markdown_header_*_fixture`-Tests rufen `run()` ohne `today`-Override → real `date.today()`. Pre-existing Coupling. Hardening Fr 24.04. mit `today=_dt.date(2026,4,21)`-Freeze.
   - ~~**System-Audit-Tool fehlt**~~ **→ deployed 22.04.2026** — `03_Tools/system_audit.py` v1.0 + `/SystemAudit`-Slash-Command + `--minimal-baseline`-Regression-Guard in INSTRUKTIONEN §27.5. Spec v0.2 + Plan `2026-04-21-system-audit-tool.md` archiviert. Follow-up-Tasks in Task-Backlog: #2 Check-3 future-date-exclude, #4 vault_backlinks Robustness-Pass (Important #4-7), post-Task-17 existence-Cleanup-Welle (~54 CLAUDE.md-Pfadreferenzen).
@@ -147,9 +147,9 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-23T20:21:43Z
-**Result:** 3/3 PASS
-**Run:** `python 03_Tools/system_audit.py --minimal-baseline`
+**Timestamp (UTC):** 2026-04-23T20:28:24Z
+**Result:** 5/8 PASS (2 FAIL, 1 WARN)
+**Run:** `python 03_Tools/system_audit.py --core -v`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->
