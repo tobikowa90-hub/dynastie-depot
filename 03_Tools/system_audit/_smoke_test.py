@@ -217,6 +217,31 @@ def test_markdown_header_warn_on_lag() -> None:
     assert len(result.failures) == 1
 
 
+def test_markdown_header_excludes_future_dates() -> None:
+    """Long-Term-Gates (2028-04-01) + Earnings-Dates (next-week) must not count
+    as 'newest event' — Stand is journal-catch-up, not future-planning-foresight."""
+    import datetime as _dt
+    import tempfile
+    from system_audit.checks.markdown_header import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        doc = tdp / "state_with_future.md"
+        doc.write_text(
+            "# STATE\n"
+            "**Stand:** 23.04.2026\n\n"
+            "Latest update was 23.04.2026. Pipeline contains 2028-04-01 Review-Gate "
+            "and 29.04.2026 MSFT earnings as future planning markers.\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        # Freeze "today" to 2026-04-23 so both 29.04.2026 and 2028-04-01 are future
+        result = run(tdp, ctx,
+                     targets_override=[(doc, "state")],
+                     today=_dt.date(2026, 4, 23))
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+    assert result.failures == []
+
+
 def test_cross_source_pass_on_aligned() -> None:
     from system_audit.checks.cross_source import run
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "cross_source"
@@ -356,6 +381,51 @@ def test_skill_version_warn_on_orphan_zip_fixture() -> None:
         result = run(tdp, ctx)
     assert result.status == "WARN"
     assert any("orphan" in (f.actual + (f.hint or "")).lower() or "ghost" in f.location for f in result.failures)
+
+def test_skill_version_pass_on_bare_zip_fixture() -> None:
+    """PASS: SKILL.md vN.N.N + non-versioned <name>.zip (accepted convention)."""
+    import tempfile
+    from system_audit.checks.skill_version import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        _make_skill(tdp, "demo", "1.0.0")
+        (tdp / "06_Skills-Pakete").mkdir(parents=True, exist_ok=True)
+        (tdp / "06_Skills-Pakete" / "demo.zip").write_text("", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+    assert result.failures == []
+
+
+def test_skill_version_warn_on_orphan_bare_zip_fixture() -> None:
+    """WARN: bare-name ZIP ohne passendes 01_Skills/<name>/ oder _extern/<name>/."""
+    import tempfile
+    from system_audit.checks.skill_version import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "01_Skills").mkdir()
+        (tdp / "06_Skills-Pakete").mkdir()
+        (tdp / "06_Skills-Pakete" / "ghost-bare.zip").write_text("", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any("ghost-bare" in f.location for f in result.failures)
+
+
+def test_skill_version_pass_on_extern_bare_zip_fixture() -> None:
+    """PASS: bare-ZIP deren Name = _extern/<name>/-Subfolder matcht → kein Orphan."""
+    import tempfile
+    from system_audit.checks.skill_version import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "01_Skills" / "_extern" / "external-skill").mkdir(parents=True)
+        (tdp / "06_Skills-Pakete").mkdir()
+        (tdp / "06_Skills-Pakete" / "external-skill.zip").write_text("", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+    assert result.failures == []
+
 
 def test_skill_version_skip_on_missing_frontmatter_fixture() -> None:
     """EDGE: SKILL.md ohne version-Frontmatter -> nicht gecheckt, kein Fail."""
@@ -899,6 +969,7 @@ if __name__ == "__main__":
     test_markdown_header_pass_on_aligned()
     test_markdown_header_fail_on_stale()
     test_markdown_header_warn_on_lag()
+    test_markdown_header_excludes_future_dates()
     print("[OK] markdown_header smoke tests passed")
     test_cross_source_pass_on_aligned()
     test_cross_source_fail_on_divergence()
@@ -911,6 +982,9 @@ if __name__ == "__main__":
     test_skill_version_pass_fixture()
     test_skill_version_warn_on_unpacked_newer_fixture()
     test_skill_version_warn_on_orphan_zip_fixture()
+    test_skill_version_pass_on_bare_zip_fixture()
+    test_skill_version_warn_on_orphan_bare_zip_fixture()
+    test_skill_version_pass_on_extern_bare_zip_fixture()
     test_skill_version_skip_on_missing_frontmatter_fixture()
     print("[OK] skill_version smoke tests passed")
     test_pipeline_ssot_parser_three_variants()

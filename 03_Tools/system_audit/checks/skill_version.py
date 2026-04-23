@@ -48,6 +48,13 @@ def _zip_versions(packages_dir: Path, skill_name: str) -> list[tuple[int, int, i
     return sorted(out)
 
 
+def _has_bare_zip(packages_dir: Path, skill_name: str) -> bool:
+    """Non-versioned ``<name>.zip`` is the accepted packaging convention for
+    most skills; only a few use the versioned ``_vX.Y.Z.zip`` suffix.
+    """
+    return (packages_dir / f"{skill_name}.zip").exists()
+
+
 def run(repo_root: Path, context: AuditContext) -> CheckResult:
     start = time.monotonic()
 
@@ -77,14 +84,19 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             continue
         n_checked += 1
         zip_vers = _zip_versions(packages_dir, skill_name)
-        if not zip_vers:
+        bare_zip = _has_bare_zip(packages_dir, skill_name)
+        if not zip_vers and not bare_zip:
             failures.append(FailureDetail(
                 location=f"01_Skills/{skill_name}/SKILL.md",
-                expected=f"ZIP 06_Skills-Pakete/{skill_name}_v{'.'.join(map(str, md_ver))}.zip",
+                expected=f"ZIP 06_Skills-Pakete/{skill_name}.zip or {skill_name}_v{'.'.join(map(str, md_ver))}.zip",
                 actual="no ZIPs found",
                 severity="warning",
                 hint="Skill-Packaging ausstehend",
             ))
+            continue
+        if not zip_vers:
+            # Only bare-name ZIP exists — accepted convention, version unknowable.
+            n_passed += 1
             continue
         highest = zip_vers[-1]
         if highest < md_ver:
@@ -100,12 +112,24 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
 
     if packages_dir.exists():
         existing_skill_names = {d.name for d in skills_dir.iterdir() if d.is_dir()}
-        for zf in packages_dir.glob("*_v*.zip"):
-            m = re.match(r"^(.+?)_v\d+\.\d+\.\d+\.zip$", zf.name)
-            if m and m.group(1) not in existing_skill_names:
+        # Include `_extern/<name>/` skills so bona-fide extern-sourced ZIPs
+        # don't flag as orphan (pairs with bare-ZIP accept above).
+        extern_dir = skills_dir / "_extern"
+        if extern_dir.exists() and extern_dir.is_dir():
+            existing_skill_names |= {
+                d.name for d in extern_dir.iterdir() if d.is_dir()
+            }
+        for zf in packages_dir.glob("*.zip"):
+            m_ver = re.match(r"^(.+?)_v\d+\.\d+\.\d+\.zip$", zf.name)
+            if m_ver:
+                name = m_ver.group(1)
+            else:
+                # Bare-name ZIP (non-versioned convention)
+                name = zf.name[:-4]
+            if name not in existing_skill_names:
                 failures.append(FailureDetail(
                     location=f"06_Skills-Pakete/{zf.name}",
-                    expected="matching 01_Skills/<name>/",
+                    expected="matching 01_Skills/<name>/ or _extern/<name>/",
                     actual="orphan ZIP",
                     severity="warning",
                     hint="Skill-Dir entfernt? ZIP archivieren",

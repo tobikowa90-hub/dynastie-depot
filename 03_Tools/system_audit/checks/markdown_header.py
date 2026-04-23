@@ -48,22 +48,26 @@ def _stand_date(text: str) -> datetime.date | None:
         return None
 
 
-def _newest_event_date_state(text: str) -> datetime.date | None:
+def _newest_event_date_state(text: str, today: datetime.date) -> datetime.date | None:
     dates: list[datetime.date] = []
     for m in DATE_DOT.finditer(text):
         try:
-            dates.append(_parse_dot(m.group(1)))
+            d = _parse_dot(m.group(1))
+            if d <= today:
+                dates.append(d)
         except ValueError:
             pass
     for m in DATE_ISO.finditer(text):
         try:
-            dates.append(_parse_iso(m.group(1)))
+            d = _parse_iso(m.group(1))
+            if d <= today:
+                dates.append(d)
         except ValueError:
             pass
     return max(dates) if dates else None
 
 
-def _newest_event_date_core_memory(text: str) -> datetime.date | None:
+def _newest_event_date_core_memory(text: str, today: datetime.date) -> datetime.date | None:
     dates: list[datetime.date] = []
     for line in text.splitlines():
         if line.strip().startswith("|"):
@@ -71,25 +75,29 @@ def _newest_event_date_core_memory(text: str) -> datetime.date | None:
             m = DATE_DOT.match(cell)
             if m:
                 try:
-                    dates.append(_parse_dot(m.group(1)))
+                    d = _parse_dot(m.group(1))
+                    if d <= today:
+                        dates.append(d)
                 except ValueError:
                     pass
     if dates:
         return max(dates)
-    return _newest_event_date_state(text)
+    return _newest_event_date_state(text, today)
 
 
-def _newest_event_date_faktortabelle(text: str) -> datetime.date | None:
+def _newest_event_date_faktortabelle(text: str, today: datetime.date) -> datetime.date | None:
     dates: list[datetime.date] = []
     for m in DATE_ISO.finditer(text):
         try:
-            dates.append(_parse_iso(m.group(1)))
+            d = _parse_iso(m.group(1))
+            if d <= today:
+                dates.append(d)
         except ValueError:
             pass
     return max(dates) if dates else None
 
 
-PARSERS: dict[str, Callable[[str], datetime.date | None]] = {
+PARSERS: dict[str, Callable[[str, datetime.date], datetime.date | None]] = {
     "state": _newest_event_date_state,
     "core_memory": _newest_event_date_core_memory,
     "faktortabelle": _newest_event_date_faktortabelle,
@@ -101,8 +109,10 @@ def run(
     context: AuditContext,
     *,
     targets_override: list[tuple[Path, str]] | None = None,
+    today: datetime.date | None = None,
 ) -> CheckResult:
     start = time.monotonic()
+    today = today or datetime.date.today()
 
     targets = targets_override or [
         (repo_root / "00_Core" / "STATE.md", "state"),
@@ -124,7 +134,7 @@ def run(
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         stand = _stand_date(text)
-        newest = PARSERS[kind](text)
+        newest = PARSERS[kind](text, today)
 
         n_checked += 1
 
