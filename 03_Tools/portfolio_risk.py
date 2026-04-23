@@ -19,8 +19,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -153,17 +154,60 @@ def render_markdown(corr: pd.DataFrame, comp: pd.DataFrame, stress: pd.DataFrame
     return "\n".join(out)
 
 
+def _read_last_archived_date(archive_path: Path) -> str | None:
+    """Return the last `date` field from a JSONL archive, or None if empty/missing."""
+    if not (archive_path.exists() and archive_path.stat().st_size > 0):
+        return None
+    last_line = None
+    with archive_path.open("r", encoding="utf-8") as f:
+        for line in f:
+            if line.strip():
+                last_line = line
+    if not last_line:
+        return None
+    return json.loads(last_line).get("date")
+
+
+def _validate_archive_chronology(archive_path: Path) -> None:
+    """Raise if archive dates are not strictly increasing (P3: NAV-chaining safety)."""
+    if not (archive_path.exists() and archive_path.stat().st_size > 0):
+        return
+    prev_date: str | None = None
+    with archive_path.open("r", encoding="utf-8") as f:
+        for i, line in enumerate(f, 1):
+            if not line.strip():
+                continue
+            rec = json.loads(line)
+            d = rec.get("date")
+            if d is None:
+                raise ValueError(f"{archive_path} line {i}: missing 'date' field")
+            if prev_date is not None and d <= prev_date:
+                raise ValueError(
+                    f"{archive_path} not chronologically sorted: line {i} date "
+                    f"{d} <= previous {prev_date}. Fix before backfilling."
+                )
+            prev_date = d
+
+
 def _fetch_latest_common_closes(
-    yahoo_symbols: list[str], lookback_days: int = 14
-) -> tuple[date, pd.Series, pd.Series]:
-    """Return (trading_date, latest_closes, previous_closes) from yfinance.
+    yahoo_symbols: list[str],
+    lookback_days: int = 14,
+    as_of: date | None = None,
+) -> tuple[date, pd.Series, pd.Series, list[date]]:
+    """Return (trading_date, latest_closes, previous_closes, available_sessions).
 
     Uses the most recent date on which ALL tickers have valid close prices
     (as-of intersection). Guarantees point-in-time consistency: if any ticker
     is missing data on date D, the record rolls back to D-1.
+
+    If `as_of` is provided, the window is anchored to that date (backfill of
+    missed persist-runs). trading_date will be the latest common session ≤ as_of.
+    `available_sessions` is the full sorted list of common trading dates in the
+    window (used for gap-detection against the archive).
     """
-    end = date.today() + timedelta(days=1)
-    start = date.today() - timedelta(days=lookback_days)
+    anchor = as_of if as_of is not None else date.today()
+    end = anchor + timedelta(days=1)
+    start = anchor - timedelta(days=lookback_days)
     hist = yf.download(
         yahoo_symbols, start=start.isoformat(), end=end.isoformat(),
         auto_adjust=True, progress=False,
@@ -177,14 +221,20 @@ def _fetch_latest_common_closes(
     if missing_cols:
         raise RuntimeError(f"yfinance returned no columns for: {missing_cols}")
     common = closes.dropna(how="any")
+    if as_of is not None:
+        common = common[common.index.date <= as_of]
     if len(common) < 2:
         raise RuntimeError(
             f"Need >=2 common trading dates for all {len(yahoo_symbols)} tickers, "
             f"got {len(common)}."
+            + (f" (as_of={as_of.isoformat()})" if as_of is not None else "")
         )
     latest_ts = common.index[-1]
     trading_date = latest_ts.date() if hasattr(latest_ts, "date") else latest_ts
-    return trading_date, common.iloc[-1], common.iloc[-2]
+    available_sessions = [
+        (ts.date() if hasattr(ts, "date") else ts) for ts in common.index
+    ]
+    return trading_date, common.iloc[-1], common.iloc[-2], available_sessions
 
 
 def persist_daily_snapshot(
@@ -194,6 +244,7 @@ def persist_daily_snapshot(
     archive_path: Path = Path("05_Archiv/portfolio_returns.jsonl"),
     benchmark_path: Path = Path("05_Archiv/benchmark-series.jsonl"),
     initial_notional: float = 10000.0,
+    as_of: date | None = None,
 ) -> dict:
     """Append daily portfolio + benchmark snapshot to JSONL files.
 
@@ -213,8 +264,20 @@ def persist_daily_snapshot(
     Depot-Scope (synthetischer Local-Return-Index); für §29.2 AQR-Benchmark-
     Vergleiche muss FX-Conversion nachgerüstet werden (Interim-Gate 2027-10-19).
     """
+    _validate_archive_chronology(archive_path)
+    _validate_archive_chronology(benchmark_path)
+
+    last_archived_date = _read_last_archived_date(archive_path)
+
+    lookback_days = 14
+    if as_of is not None and last_archived_date is not None:
+        gap_calendar_days = (as_of - date.fromisoformat(last_archived_date)).days
+        lookback_days = max(14, gap_calendar_days + 7)
+
     all_symbols = list(tickers.values()) + [benchmark]
-    trading_date_obj, latest_closes, prev_closes = _fetch_latest_common_closes(all_symbols)
+    trading_date_obj, latest_closes, prev_closes, available_sessions = (
+        _fetch_latest_common_closes(all_symbols, lookback_days=lookback_days, as_of=as_of)
+    )
     trading_date = trading_date_obj.isoformat()
 
     for path in (archive_path, benchmark_path):
@@ -229,6 +292,24 @@ def persist_daily_snapshot(
                             f"Duplicate date {trading_date} in {path}. "
                             f"Delete/edit manually if intentional."
                         )
+
+    if last_archived_date is not None:
+        if last_archived_date > trading_date:
+            raise ValueError(
+                f"Backfill out of order: last archived date {last_archived_date} > "
+                f"target {trading_date}. Append backfills chronologically to "
+                f"preserve NAV chaining."
+            )
+        last_archived = date.fromisoformat(last_archived_date)
+        sessions_in_gap = [d for d in available_sessions if last_archived < d <= trading_date_obj]
+        if len(sessions_in_gap) > 1:
+            missing = [d.isoformat() for d in sessions_in_gap[:-1]]
+            raise ValueError(
+                f"Gap detected: target {trading_date} skips "
+                f"{len(sessions_in_gap) - 1} trading session(s) after "
+                f"{last_archived_date}: {missing}. "
+                f"Run --as-of sequentially for each missing date first."
+            )
 
     sat_returns = []
     for ticker, yahoo_symbol in tickers.items():
@@ -287,10 +368,26 @@ def persist_daily_snapshot(
 
     archive_path.parent.mkdir(parents=True, exist_ok=True)
     benchmark_path.parent.mkdir(parents=True, exist_ok=True)
-    with archive_path.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(record, ensure_ascii=False) + "\n")
-    with benchmark_path.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(bench_record, ensure_ascii=False) + "\n")
+
+    archive_size_before = archive_path.stat().st_size if archive_path.exists() else 0
+    bench_size_before = benchmark_path.stat().st_size if benchmark_path.exists() else 0
+    try:
+        with archive_path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+            f.flush()
+            os.fsync(f.fileno())
+        with benchmark_path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(bench_record, ensure_ascii=False) + "\n")
+            f.flush()
+            os.fsync(f.fileno())
+    except Exception:
+        if archive_path.exists():
+            with archive_path.open("r+b") as f:
+                f.truncate(archive_size_before)
+        if benchmark_path.exists():
+            with benchmark_path.open("r+b") as f:
+                f.truncate(bench_size_before)
+        raise
 
     try:
         sys.stdout.reconfigure(encoding="utf-8")
@@ -304,6 +401,16 @@ def persist_daily_snapshot(
     return record
 
 
+def _parse_as_of(s: str) -> date:
+    try:
+        d = datetime.strptime(s, "%Y-%m-%d").date()
+    except ValueError as e:
+        raise argparse.ArgumentTypeError(f"--as-of must be YYYY-MM-DD: {s}") from e
+    if d > date.today():
+        raise argparse.ArgumentTypeError(f"--as-of must not be in the future: {s}")
+    return d
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", default="03_Tools/Output")
@@ -315,6 +422,9 @@ def main() -> int:
                         help="Benchmark ticker (default: SPY)")
     parser.add_argument("--initial-notional", type=float, default=10000.0,
                         help="Initial portfolio notional EUR (first record only)")
+    parser.add_argument("--as-of", type=_parse_as_of, default=None,
+                        help="Backfill target date YYYY-MM-DD (default: latest "
+                             "available trading session). Must not be in the future.")
     args = parser.parse_args()
 
     if args.persist == "daily":
@@ -323,6 +433,7 @@ def main() -> int:
             cashflow_net=args.cashflow,
             benchmark=args.benchmark,
             initial_notional=args.initial_notional,
+            as_of=args.as_of,
         )
         return 0
 

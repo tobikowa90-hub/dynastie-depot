@@ -82,8 +82,9 @@
 ### 🔵 Deferred / Explizit zurückgestellt
 
 7. **v3.1 Cache-Refactor** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md`. Trigger: „262s im Alltag stört" ODER „>400s-Alert wiederholt".
-8. **Track 4 ETF+Gold-Erweiterung** — Blockiert auf User-Input (ETF-Ticker IWDA.AS/SWDA.L/EUNL.DE? Gold-Ticker SGLD.DE/4GLD.DE/GC=F?). Gleichzeitig **Open-Backlog-Item Daily-Persist-Stale** auflösen (`portfolio_returns.jsonl` + `benchmark-series.jsonl` je 1 Record seit 17.04. — Cron-/Hook-Mechanismus für Auto-Persist einbauen).
+8. **Track 4 ETF+Gold-Erweiterung** — Blockiert auf User-Input (ETF-Ticker IWDA.AS/SWDA.L/EUNL.DE? Gold-Ticker SGLD.DE/4GLD.DE/GC=F?). Cron-/Hook-Mechanismus für Auto-Persist kann jetzt auf `portfolio_risk.py --persist daily --as-of $(date -I)` aufsetzen (Backfill-Flag seit 23.04. verfügbar).
 9. **KG-Roadmap v0.1 `draft-frozen`** (`07_Obsidian Vault/.../synthesis/Knowledge-Graph-Architektur-Roadmap.md`). Re-Review-Trigger: Cross-Entity-Bedarf ODER Score-Archiv-Interim-Gate 2026-10-17.
+10. **Atomic-Write-Hardening `portfolio_risk.py`** (NEU 23.04.2026, aus CodeRabbit-Bug-Hunt) — aktueller Patch nutzt `fsync` + try/truncate-Rollback (deckt Software-Exceptions). CR forderte temp+`os.replace`+dir-fsync für Hard-Crash-Atomarität. **B-Entscheidung (23.04. User):** Solo-Betrieb 1×/Tag, Hard-Crash-Window µs — nicht gehärtet. **Follow-up-Tasks:** (a) Recovery-Script `03_Tools/repair_daily_persist.py` das Split-State `portfolio_returns.jsonl` vs `benchmark-series.jsonl` erkennt + heilt; (b) Atomic-Write-Härtung erst falls Incident oder Track-4-Auto-Hook konkret wird.
 
 ### ⏰ Long-Term-Gates (chronologisch)
 
@@ -111,8 +112,11 @@
 - **R5 Portfolio-Return-Persistenz aktiv** (seit 19.04.2026, Track 3 Phase 3): `05_Archiv/portfolio_returns.jsonl` + `benchmark-series.jsonl` Daily-Schema v1.0 (trading-date, cashflow-separated post-NAV, equal-weight 11-Satelliten). Erster Record 2026-04-17 (10.173,42 EUR notional, SPY 710,14). Append via `python 03_Tools/portfolio_risk.py --persist daily --cashflow <euro>`.
 - **§30 Live-Monitoring aktiv** (seit 19.04.2026, Track 3 Phase 4): Monthly-Refresh pflicht für MSFT CapEx-FLAG (Flint-Vermaak Investment-Half-Life ~1M). TMO Schema-Watch (keine §30-Pflicht). INSTRUKTIONEN v1.11. Erster MSFT-Refresh ~19.05.2026 (Zwischen-Refresh vor Q3 29.04. nicht nötig, Earnings deckt ab).
 - **Open Backlog (NEU 21.04.2026, aus System-Drift-Audit):**
-  - **Daily-Persist seit 4 Tagen stale** — `portfolio_returns.jsonl` + `benchmark-series.jsonl` haben je nur 1 Record (17.04.). R5-Phase-3 ist seit 19.04. „aktiv" deklariert, faktisch aber stale. Manual-Trigger `python 03_Tools/portfolio_risk.py --persist daily --cashflow <eur>` nicht ausgeführt seit 20.04. **Kurzfrist-Fix Fr 24.04. Block 4:** manueller Append für fehlende Tage. Langfrist: Track 4 Auto-Hook. Interim-Gate 2027-10-19 braucht kontinuierliche Daten — Stale-Zustand ist echtes Risiko.
-  - **Check-6 False Positive** — ZIPs existieren alle in `06_Skills-Pakete/`, aber Check-6 sucht nach `_v1.0.0.zip`-Pattern (mit Versionsnummer) → findet `backtest-ready-forward-verify.zip` nicht. Fix Fr 24.04. Block 1: `skill_version.py` auf Basename-Match ohne Versionsnummer erweitern.
+  - ~~**Daily-Persist seit 4 Tagen stale**~~ **→ resolved 23.04.2026 Abend** — `portfolio_risk.py` `--as-of`-Backfill-Flag implementiert (Codex-Audit Option A gehärtet: Gap-Enforcement via yfinance-sessions + strict-chronology-Validator + Atomic-Write mit Size-Rollback), 4 Records 2026-04-20 bis 2026-04-23 chronologisch appendet. Archive 5/5 Records, NAV-Chain mathematisch validiert. CodeRabbit-Bug-Hunt: 1 in-scope Major (Hard-Crash-Atomarität) — als Follow-up Deferred #10 dokumentiert (Solo-Betrieb 1×/Tag → B-Entscheidung). Langfrist: Track 4 Auto-Hook (Cron/Hook nutzt jetzt vorhandenes `--as-of $(date -I)`).
+  - ~~**Check-6 False Positive**~~ **→ resolved 23.04.2026 Spät.** `skill_version.py` akzeptiert jetzt bare-name ZIPs (`<skill>.zip`) + Orphan-Detection erweitert auf bare-name ZIPs inkl. `_extern/`-Awareness. Codex-Pre-Commit-Review NO-GO (Spec-Drift + Orphan-False-Negative) beide adressiert: Spec-Drift via Plan-Header-Notice (Memory `feedback_spec_section_drift.md`), Orphan-False-Negative via Code-Fix. 3 neue Smoke-Tests. Audit deckt jetzt 4 echte Orphan-ZIPs auf → neuer Backlog-Item.
+  - **06_Skills-Pakete orphan ZIPs (NEU 23.04.):** Check-6 legt nach bare-name-Fix 4 Orphan-ZIPs offen: `adaptationio-fmp-api.zip`, `defeat-beta-defeatbeta-analyst.zip`, `neversight-sec-edgar-skill.zip`, `qualitative-valuation.zip`. Konsolidierungstag Fr 24.04.: prüfen → archivieren/löschen wenn legacy, oder in `_extern/` materialisieren wenn noch genutzt.
+  - ~~**Check-3 future-date-Bug**~~ **→ resolved 23.04.2026 Spät.** `markdown_header.py` filtert Datums > today vor `max()`-Newest-Event-Berechnung. STATE.md + Faktortabelle.md nicht mehr False-FAIL durch Long-Term-Gates / zukünftige Earnings-Dates. CORE-MEMORY.md-Lag bleibt als legitime WARN (Content-Sync-Todo). Plan-Header-Notice + 1 Smoke-Test mit frozen today.
+  - **Check-3 Test time-coupling (NEU 23.04., nicht-blocking):** `test_markdown_header_*_fixture`-Tests rufen `run()` ohne `today`-Override → real `date.today()`. Pre-existing Coupling. Hardening Fr 24.04. mit `today=_dt.date(2026,4,21)`-Freeze.
   - ~~**System-Audit-Tool fehlt**~~ **→ deployed 22.04.2026** — `03_Tools/system_audit.py` v1.0 + `/SystemAudit`-Slash-Command + `--minimal-baseline`-Regression-Guard in INSTRUKTIONEN §27.5. Spec v0.2 + Plan `2026-04-21-system-audit-tool.md` archiviert. Follow-up-Tasks in Task-Backlog: #2 Check-3 future-date-exclude, #4 vault_backlinks Robustness-Pass (Important #4-7), post-Task-17 existence-Cleanup-Welle (~54 CLAUDE.md-Pfadreferenzen).
 - **Track 5 Pläne bereit** (seit 20.04.2026): `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks) + `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks), beide Codex-reviewed + fix-eingepflegt. **Execution PAUSIERT seit 20.04.2026 Abend** — User-Entscheidung zugunsten 6-Paper-Ingest (siehe nächster Punkt). Re-Validation der Pläne in Phase 3 nach Paper-Ingest-Komplettion.
 - **6-Paper-Ingest Phase 1 KOMPLETT + Codex Gate 2 PASS** (20.04.2026 Abend-Spät): B19-B24 als Befunde in Wissenschaftliche-Fundierung-DEFCON (20 Quellen / 24 Befunde); neue Synthesis `Knowledge-Graph-Architektur-Roadmap` v0.1 mit 3 Qualitäts-Gates. **Vault-only**, DEFCON v3.7 unverändert, keine Score/FLAG/Sparraten-Änderungen. Detail in `SESSION-HANDOVER.md` + `log.md`.
@@ -143,9 +147,9 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-22T21:04:09Z
+**Timestamp (UTC):** 2026-04-23T20:08:37Z
 **Result:** 4/8 PASS (2 FAIL, 2 WARN)
-**Run:** `python 03_Tools/system_audit.py --core -v`
+**Run:** `python 03_Tools/system_audit.py --core`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->

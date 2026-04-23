@@ -1,1 +1,5 @@
 {"schema_version": "1.0", "date": "2026-04-17", "benchmark": "SPY", "value": 710.14, "daily_return": 0.01209}
+{"schema_version": "1.0", "date": "2026-04-20", "benchmark": "SPY", "value": 708.72, "daily_return": -0.002}
+{"schema_version": "1.0", "date": "2026-04-21", "benchmark": "SPY", "value": 704.08, "daily_return": -0.00655}
+{"schema_version": "1.0", "date": "2026-04-22", "benchmark": "SPY", "value": 711.21, "daily_return": 0.01013}
+{"schema_version": "1.0", "date": "2026-04-23", "benchmark": "SPY", "value": 708.36, "daily_return": -0.00401}
