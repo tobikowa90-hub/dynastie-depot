@@ -68,7 +68,7 @@
 
 ### 🟠 Portfolio — Kritische Triggers 10 Tage
 
-- ~~**23.04. TMO Q1 14:30 CEST**~~ **DONE 23.04.2026 Nachmittag.** Beat + Guidance-Raise, Score 64→67, D2→D3, fcf_trend_neg Resolve-Gate CLEAR. Sync-Welle 6 Files Old-Pipeline-Format committed (`620702a`). **Retro-Audit Option B DONE (23.04. spät):** `backtest-ready-forward-verify`-Skill Post-hoc-Validation (P1 parse PASS · P2a freshness INFO · P2b STATE-Tripwire PASS · P3 N/A · P4 Dry-Run PASS gegen synth. Archiv · P4-bis Duplicate-Guard PASS). Kein Re-Append (Informationsverlust-Aversion), erster echter Skill-Forward-Run bleibt V 28.04. **Folge:** XLSX-Tools (Rebalancing_Tool + Satelliten_Monitor) einmalig auf neue Raten (33,53€ volle / 16,76€ V / 0€ FLAG) aktualisieren.
+- ~~**23.04. TMO Q1 14:30 CEST**~~ **DONE 23.04.2026 Nachmittag.** Beat + Guidance-Raise, Score 64→67, D2→D3, fcf_trend_neg Resolve-Gate CLEAR. Sync-Welle 6 Files Old-Pipeline-Format committed (`620702a`). **Retro-Audit Option B DONE (23.04. spät):** `backtest-ready-forward-verify`-Skill Post-hoc-Validation (P1 parse PASS · P2a freshness INFO · P2b STATE-Tripwire PASS · P3 N/A · P4 Dry-Run PASS gegen synth. Archiv · P4-bis Duplicate-Guard PASS). Kein Re-Append (Informationsverlust-Aversion), erster echter Skill-Forward-Run bleibt V 28.04. **Folge:** ~~XLSX-Tools einmalig aktualisieren~~ **DONE 23.04.** via `5ccfdd1` (Raten 33,53€/16,76€/0€ in Rebalancing_Tool + Satelliten_Monitor) + `a413c32` (Satelliten-Monitor R-Spalte Alter-Formel statt statischer 0).
 - **28.04. V Q2 FY26** — D2-Entscheidung (Technicals-Reversal?).
 - **29.04. MSFT Q3 FY26** — FLAG-Review CapEx/OCF (bereinigt <60% = Auflösung, >60% = Veto-Verschärfung).
 
