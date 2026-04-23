@@ -19,6 +19,7 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 - Stil: direkt, faktenbasiert, kein Filler — siehe INSTRUKTIONEN.md
 - **Sync-Pflicht:** Nach jeder Analyse: log.md + CORE-MEMORY.md + Faktortabelle + **STATE.md** + **score_history.jsonl** (+ ggf. **flag_events.jsonl**) aktualisieren, alles in einem git-Commit (STATE.md bei jeder Score/FLAG/Sparraten-Änderung). **score_history.jsonl-Write** via Skill `backtest-ready-forward-verify` (v3.7.2, seit 19.04.2026 — dynastie-depot Schritt 7). **flag_events.jsonl** weiterhin CLI-direkt via `03_Tools/backtest-ready/archive_flag.py`.
 - **Briefing-Sync:** Vor Session-Ende `!SyncBriefing` falls 00_Core/ geändert wurde (§25). SessionEnd-Hook warnt automatisch.
+- **Remote-Control (User-Trigger):** Wenn User `remote-Control` eingibt (oder sinngemäße Phrase „remote weiter"/„mobile weiter"), Remote-Routine mit State-Snapshot via `ccr` spawnen (Memory `remote-trigger-api.md`). Sonst kein automatischer Prompt — User-gesteuert, Zero-Overhead. Spawn-Mechanismus + Kontext-Scope final am Konsolidierungstag 24.04. festlegen.
 
 ## Projektstruktur
 
