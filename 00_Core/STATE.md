@@ -1,5 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Live-Status
-**Single Entry Point für Session-Start** | Stand: 22.04.2026 Spät-Nacht (**Phase E 19/19 DONE ✅** — Tasks 15-19 committed + Fix-Welle E + CR-Re-Run gegen `e3ba381` = **1 OOS-Nitpick** (`PORTFOLIO-RISK-2026-04-17.md:39` DE/EN-Mix „Risk-Treiber", Auto-Output nicht Phase-E-Scope, dokumentiert + closed). Codex-Pass = **RECONCILED_WITH_FOLLOWUPS** (3 Codex-Follow-ups deferred: Check-3+existence-Cleanup → §27.5-Guard auf `--core` hochziehen, Check-10 Regex-Scope). Acceptance-Matrix 9/11 ✅ + 2 dokumentierte WARNs (Item 2 `--core` rc=1 Tool-Bugs, Item 9 Notation-Drift). **Phase F (Provenance-Plan) deferred per Pfad-2-Entscheidung** — TMO Q1 23.04. 14:30 CEST läuft mit Old-Pipeline im Minimal-Modus (Weekly-Limit 93%, Reset Do 22:00 CEST), Retro-Migration TMO-Record post-Reset. Phase G (TMO Q1) next. Konsolidierungstag Fr 24.04. geplant (Check-3-Fix + existence-Cleanup + v3.0.4-Briefing-Hotfix + Tavily-Key-Rotation). v3.0.4 Briefing-Hotfix weiter pending) | System: DEFCON v3.7 (unverändert)
+**Single Entry Point für Session-Start** | Stand: 23.04.2026 Nachmittag (**Phase G TMO Q1 FY26 Vollanalyse DONE** — BEAT + Guidance-Raise. Adj EPS $5,44 / Rev $11,01B / GAAP EPS $4,43 (+11%) / FCF $825M (+121% YoY) / OCF $1.192M (+65%) / ΔWC $-1.112M vs $-1.425M. Guidance hochgesetzt: Rev $47,3-48,1B, Adj EPS $24,64-25,12, FCF $6,9-7,4B, Organic 3-4% bestätigt. Clario $8,87B closed. **`fcf_trend_neg` Resolve-Gate CLEAR** (Schema-Watch deaktiviert). Score **64→67**, **D2→D3**, Sparrate **17,81€→33,53€**, Nenner **8,0→8,5** (volle Rate 35,63€→33,53€, V D2-Rate 17,81€→16,76€). Sync-Welle 6 Files Old-Pipeline-Format committed · Retro-Migration TMO-Record via `backtest-ready-forward-verify`-Skill post-Reset Do 22:00+ CEST · XLSX-Tools (Rebalancing_Tool + Satelliten_Monitor) unberührt bis post-Retro-Migration (Vermeidung Doppel-Edit-Churn). **Fr 24.04. Konsolidierungstag-Agenda erweitert um Block 0 Teil 2: Track 5a/5b-Entscheidungspunkt**) · vorher: Phase G Pre-TMO-Briefing bereit via `02_Analysen/TMO_pre-earnings_2026-04-23.md` (earnings-preview-Skill 22.04.) · vorher: **Phase E 19/19 DONE ✅** — Tasks 15-19 committed + Fix-Welle E + CR-Re-Run gegen `e3ba381` = **1 OOS-Nitpick** (`PORTFOLIO-RISK-2026-04-17.md:39` DE/EN-Mix „Risk-Treiber", Auto-Output nicht Phase-E-Scope, dokumentiert + closed). Codex-Pass = **RECONCILED_WITH_FOLLOWUPS** (3 Codex-Follow-ups deferred: Check-3+existence-Cleanup → §27.5-Guard auf `--core` hochziehen, Check-10 Regex-Scope). Acceptance-Matrix 9/11 ✅ + 2 dokumentierte WARNs (Item 2 `--core` rc=1 Tool-Bugs, Item 9 Notation-Drift). **Phase F (Provenance-Plan) deferred per Pfad-2-Entscheidung** — TMO Q1 23.04. 14:30 CEST läuft mit Old-Pipeline im Minimal-Modus (Weekly-Limit 93%, Reset Do 22:00 CEST), Retro-Migration TMO-Record post-Reset. Phase G (TMO Q1) next. Konsolidierungstag Fr 24.04. geplant (Check-3-Fix + existence-Cleanup + v3.0.4-Briefing-Hotfix + Tavily-Key-Rotation). v3.0.4 Briefing-Hotfix weiter pending) | System: DEFCON v3.7 (unverändert)
 
 > **Prinzip:** Diese Datei genügt für 90% der Sessions. Tiefere Quellen on-demand:
 > - Lektionen/Historie → `CORE-MEMORY.md`
@@ -14,21 +14,21 @@
 
 | Ticker | Score | DEFCON | Rate | FLAG | Nächster Trigger |
 |--------|-------|--------|------|------|------------------|
-| AVGO | 84 | 🟢 4 | 35,63€ | ⚠️ Insider-Review (OpenInsider!) | Q3 FY26 |
-| BRK.B | 75 | 🟡 3 | 35,63€ | ✅ Insurance Exception | Q-Earnings Mai |
-| VEEV | 74 | 🟡 3 | 35,63€ | ✅ | Earnings-Trigger |
-| SU | 69 | 🟡 3 | 35,63€ | ✅ | H1 Juli/Aug |
-| COST | 69 | 🟡 3 | 35,63€ | ✅ Screener-Exception | Q1 FY27 ~Dez |
-| RMS | 68 | 🟡 3 | 35,63€ | ✅ Screener-Exception | H1 Juli/Aug |
-| ASML | 68 | 🟡 3 | 35,63€ | ✅ | Q2 2026 (Q1 17.04. Vollanalyse ✅) |
-| V | **63** | **🟠 2** | **17,81€** | ✅ | **28.04. Q2 FY26 — D2-Entscheidung** |
-| TMO | **64** | 🟠 2 | 17,81€ | ✅ (fcf_trend_neg schema-trigger, WC-Noise → **nicht aktiviert**) | **23.04. Q1 — FLAG-Resolve-Gate** |
+| AVGO | 84 | 🟢 4 | 33,53€ | ⚠️ Insider-Review (OpenInsider!) | Q3 FY26 |
+| BRK.B | 75 | 🟡 3 | 33,53€ | ✅ Insurance Exception | Q-Earnings Mai |
+| VEEV | 74 | 🟡 3 | 33,53€ | ✅ | Earnings-Trigger |
+| SU | 69 | 🟡 3 | 33,53€ | ✅ | H1 Juli/Aug |
+| COST | 69 | 🟡 3 | 33,53€ | ✅ Screener-Exception | Q1 FY27 ~Dez |
+| RMS | 68 | 🟡 3 | 33,53€ | ✅ Screener-Exception | H1 Juli/Aug |
+| ASML | 68 | 🟡 3 | 33,53€ | ✅ | Q2 2026 (Q1 17.04. Vollanalyse ✅) |
+| **TMO** | **67** | **🟡 3** | **33,53€** | ✅ Clean (fcf_trend_neg Resolve-Gate CLEAR 23.04.) | **Q2 FY26 ~Ende Juli — Organic-Akzeleration + Clario-Integration-Check** |
+| V | 63 | 🟠 2 | **16,76€** | ✅ | **28.04. Q2 FY26 — D2-Entscheidung** |
 | APH | 63 | 🟠 2 | **0€** | 🔴 Score-basiert | 23.07. Q2 |
 | MSFT | 59 | 🟠 2 | **0€** | 🔴 CapEx/OCF 83.6% | **29.04. Q3 FY26 — FLAG-Review** |
 
-**Sparraten-Nenner:** 7×1.0 + 2×0.5 + 2×0 = **8.0** → 35,63€ volle / 17,81€ D2 / 0€ FLAG. **Summe 285€** ✓
+**Sparraten-Nenner:** 8×1,0 + 1×0,5 + 2×0 = **8,5** → 33,53€ volle / 16,76€ D2 / 0€ FLAG. **Summe 285€** ✓ (8×33,53 + 16,76 + 2×0 = 268,24 + 16,76 = 285,00)
 
-> **18.04.2026 Änderung:** V-Forward-Vollanalyse (63, D2) ersetzt 17.04.-Backfill-Projektion (86, D4) — siehe CORE-MEMORY §11. Gleichzeitig Schema-SKILL-Threshold-Drift gefixt: 5 Tickers (BRK.B/VEEV/SU/COST/RMS) D4→D3 (Label-Fix, Sparrate unverändert), APH D3→D2 (FLAG überschreibt Sparrate weiterhin). Nenner schrumpft von 8.5 auf 8.0, volle Rate steigt 33,53€ → 35,63€.
+> **23.04.2026 Änderung:** TMO Q1 FY26 Forward-Vollanalyse (67, D3) — Beat + Guidance-Raise, `fcf_trend_neg` Resolve-Gate CLEAR. D2→D3, Sparrate 17,81€→33,53€. Kaskade: Nenner 8,0→8,5, volle Rate 35,63€→33,53€ (7 andere D3/D4-Satelliten −2,10€), V D2-Rate 17,81€→16,76€. **18.04.2026 Änderung:** V-Forward-Vollanalyse (63, D2) ersetzt 17.04.-Backfill-Projektion (86, D4) — siehe CORE-MEMORY §11. Gleichzeitig Schema-SKILL-Threshold-Drift gefixt: 5 Tickers (BRK.B/VEEV/SU/COST/RMS) D4→D3 (Label-Fix, Sparrate unverändert), APH D3→D2 (FLAG überschreibt Sparrate weiterhin). Nenner schrumpft von 8.5 auf 8.0, volle Rate steigt 33,53€ → 35,63€.
 
 ---
 
@@ -37,7 +37,7 @@
 - **V D2-Kritik (NEU 18.04.):** 6M RelStärke -14pp vs SPY, Kurs unter fallendem 200MA, Crowd-Sell-Ratio 0%. Q2 FY26 am 28.04. entscheidet: Beat + Guidance-Bestätigung → Technicals-Reversal möglich (zurück Richtung D3). Miss → weiterer Downshift Richtung D1.
 - **ASML Fwd P/E FY27 = 30,30** — Grenzfall. Bei <30 deaktiviert Fix-1-Fwd-Zweig → Score +1 bis +2 möglich (D3→D4-Kandidat).
 - **AVGO Insider $123M (90d)** — wahrscheinlich Post-Vesting (Broadcom-Muster Tan/Brazeal/Spears). Vor FLAG-Aktivierung OpenInsider manuell prüfen.
-- **TMO D2-Kritik + FLAG-Resolve-Gate (NEU 18.04.):** Score 64 (Forward), fcf_trend_neg schema-getriggert (FY25 FCF -13,4% YoY, CapEx +8,9%) aber **nicht aktiviert** — WC-Delta FY25 -1766M erklärt FCF-Rückgang vollständig (>Δ FCF -974M), 4J-Trajektorie FY22-25 $6,9→6,9→7,3→6,3B zeigt Plateau, OpInc +5,1%. Q1 23.04. = natürlicher Resolve-Gate: WC-Unwind + FCF-Recovery bestätigt → kein FLAG; fehlende Reversibilität → fcf_trend_neg-Trigger nachtragen. Ersatz-Vorbereitung ZTS aktiv.
+- ~~**TMO D2-Kritik + FLAG-Resolve-Gate (NEU 18.04.)**~~ **Resolved 23.04.2026:** Q1 FY26 Beat + Guidance-Raise, FCF $825M +121% YoY, WC-Unwind-These bestätigt (ΔWC -1.112M vs -1.425M = +$313M besser), Management FY26-FCF-Guide $6,9-7,4B. `fcf_trend_neg` Resolve-Gate CLEAR, Schema-Watch deaktiviert. Score 64→67, D2→D3, Sparrate 17,81€→33,53€. Neue Watch: **Organic-Akzeleration Q1 +1% → H2 3-4%-Guide** + **Clario-Integration-Execution** (Q2 Ende Juli Re-Check). ZTS-Ersatz-Vorbereitung pausiert.
 - **MSFT FLAG-Auflösungs-Pfad:** Q3 29.04. — bereinigtes CapEx/OCF <60% (Finance Lease $19.5B raus) = Auflösung. Darüber = Veto-Verschärfung.
 
 ---
@@ -46,7 +46,7 @@
 
 | Datum | Ticker | Klasse | Aktion |
 |-------|--------|--------|--------|
-| **23.04.** | **TMO** | **B** | **Q1 — D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind?)** |
+| ~~23.04.~~ | ~~TMO~~ | — | **DONE** Beat + Guidance-Raise, D2→D3, fcf_trend_neg CLEAR. Nächster: Q2 ~Ende Juli (Organic + Clario). |
 | **28.04.** | **V** | **B** | **Q2 FY26 — D2-Entscheidung (Technicals-Reversal?)** |
 | 28.04. | SNPS/SPGI | B | Watchlist-Review |
 | **29.04.** | **MSFT** | **C** | **Q3 FY26 — FLAG-Review** |
@@ -62,20 +62,22 @@
 ### 🔴 Unmittelbar / Primär-Track
 
 1. ~~**Systemhygiene-Welle Phase A-E (SSoT-Aufbau + Audit-Tool-Bau)**~~ **DONE 2026-04-22 Spät-Nacht.** Phase A+B+C+D ✅ committed. Phase E 19/19: Tasks 1-19 substantive + Fix-Welle E `e3ba381` + CR-Re-Run gegen `e3ba381` = 1 OOS-Nitpick (DE/EN-Mix auf 17.04. Auto-Output). Codex RECONCILED_WITH_FOLLOWUPS. **3 Codex-Follow-ups** (bleiben als Backlog-Tasks — werden am Konsolidierungstag Fr 24.04. zusammen mit v3.0.4 + Tavily-Key gelöst): (a) Check-3 future-date-exclude + existence-Cleanup (~54 CLAUDE.md-Pfad-Refs) → §27.5-Guard auf `--core` hochziehen; (b) Check-10 `status_matrix` Regex-Scope auf `### Matrix`-Subsection einengen; (c) §27.5-Kommentar-Update nach (a). **CodeRabbit-OOS** dokumentiert: `flag_events.jsonl:2` null-metrik.wert (pre-existing), `PORTFOLIO-RISK-2026-04-17.md:39` DE/EN-Mix (Auto-Output).
-2. **Morning Briefing v3.0.4 Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft v2.1 (Rollback nach Halluzinations-Incident 20.04.). Hotfix ergänzt §3a Anti-Fallback-Guard + neuer Test T5 Adversarial-Stale-Shibui. Gate A erst nach v3.0.4-PASS.
+2. **Morning Briefing v3.0.4 Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft v2.1 (Rollback nach Halluzinations-Incident 20.04.). Hotfix ergänzt §3a Anti-Fallback-Guard + neuer Test T5 Adversarial-Stale-Shibui. Gate A erst nach v3.0.4-PASS. **Gate für Dashboard v2 Tavily-Integration + Track 5a/5b.**
 3. **Score-Append Provenance-Gate** — Plan v2 `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks, 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. **Pfad-2-Entscheidung 22.04. Spät-Nacht:** TMO Q1 23.04. läuft mit **Old-Pipeline** (Weekly-Limit 93%, Reset Do 22:00 CEST — kein Raum für 7-Tasks/40-Steps-Execution im Minimal-Modus). TMO-Record im Old-Pipeline-Format archiviert, **Retro-Migration post-Reset** (Do Abend 22:00+ ODER Fr 24.04. Konsolidierungstag). „Critical vor TMO Q1"-Formulierung war Self-Imposed-Gate, kein echter Blocker — Provenance-Gate-Nutzen ist in zukünftigen Appends, nicht retrospektiv.
-4. ~~System-Audit-Tool~~ **DONE 2026-04-22** — `03_Tools/system_audit.py` v1.0 + `/SystemAudit` deployed. Baseline `--minimal-baseline` 3/3 PASS (Check-1 jsonl_schema + Check-6 pipeline_ssot + Check-7 log_lag). `--core` 4/8 PASS mit 2 known Tool-Bugs (Check-3 future-date → Follow-up-Task, Check-5 existence → Post-Task-17-Follow-up-Welle). `03_Tools/backtest-ready/schemas.py` um `PortfolioReturnRecord` + `BenchmarkReturnRecord` erweitert. INSTRUKTIONEN §27.5 Migration-Regression-Guard nachgetragen. Spec v0.2 + Plan `docs/superpowers/plans/2026-04-21-system-audit-tool.md` archiviert mit Plan-Header-Notices (Task 15 rc∈{0,1}-Relaxation + Task 17 `--minimal-baseline`-Scope).
+4. ~~System-Audit-Tool~~ **DONE 2026-04-22** — `03_Tools/system_audit.py` v1.0 + `/SystemAudit` deployed. Baseline `--minimal-baseline` 3/3 PASS (Check-1 jsonl_schema + Check-6 pipeline_ssot + Check-7 log_lag). `--core` 4/8 PASS mit 2 known Tool-Bugs (Check-3 future-date → Follow-up-Task, Check-5 existence → Post-Task-17-Follow-up-Welle). Live-Audit 22.04. bestätigt: 4/8 PASS, 2 FAIL (known), 2 WARN (known). **2 Audit-Tool-Verbesserungen (Opus-Advisory 22.04.) → Konsolidierungstag Fr 24.04. Block 1:** (a) Check-5 Batch-Output gruppiert nach Sektion; (b) Check-4 WARN-Semantik `⚠️ Informativ` vs. `🔴 Funktional` trennen.
 
 ### 🟠 Portfolio — Kritische Triggers 10 Tage
 
-- **23.04. TMO Q1 14:30 CEST** — D2-Entscheidung + fcf_trend_neg Resolve-Gate. Old-Pipeline (Pfad 2, Pre-Reset). §4-Router Status-Matrix B1-B24 + backtest-ready-forward-verify aktiv. Erster echter Forward-Run durch neue Provenance-Pipeline = post-Reset Retro-Migration.
+- ~~**23.04. TMO Q1 14:30 CEST**~~ **DONE 23.04.2026 Nachmittag.** Beat + Guidance-Raise, Score 64→67, D2→D3, fcf_trend_neg Resolve-Gate CLEAR. Sync-Welle 6 Files Old-Pipeline-Format committed. **Post-Reset Do 22:00+ CEST:** Retro-Migration TMO-Record via `backtest-ready-forward-verify`-Skill (Draft → Freshness → Tripwire → §28.2 Δ-Gate → Dry-Run → Append → git add → separater Commit). **Danach:** XLSX-Tools (Rebalancing_Tool + Satelliten_Monitor) einmalig auf neue Raten (33,53€ volle / 16,76€ V / 0€ FLAG) aktualisieren.
 - **28.04. V Q2 FY26** — D2-Entscheidung (Technicals-Reversal?).
 - **29.04. MSFT Q3 FY26** — FLAG-Review CapEx/OCF (bereinigt <60% = Auflösung, >60% = Veto-Verschärfung).
 
 ### 🟡 Bereit, wartet auf Gate A (~24.04. frühestens nach v3.0.4-Deploy)
 
-5. **Track 5a SEC EDGAR Skill-Promotion** — Plan `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks). Re-Validation-Check nach 6-Paper-Ingest B21-B24 möglicherweise nötig.
+5. **Track 5a SEC EDGAR Skill-Promotion** — Plan `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks). Re-Validation-Check nach 6-Paper-Ingest B21-B24 möglicherweise nötig. **Entscheidung 5a/5b kann Dashboard v2 beeinflussen** (EDGAR-Daten in Faktortabelle-Parser integrierbar, FRED-Macro-Headline als Tavily-Alternative).
 6. **Track 5b FRED Macro-Regime-Filter** — Plan `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks). User-Aktion vor Start: FRED-API-Key registrieren. B19 (LLM-Regime-Shift-Bias) stärkt wissenschaftliche Begründung.
+6a. **Track 5a/5b Entscheidungspunkt (NEU 23.04.)** — am Konsolidierungstag Fr 24.04. **Block 0 Teil 2 (15 Min)** vor Dashboard v2: ja/nein für 5a, ja/nein für 5b. Grund: Dashboard-Scope (Block 3) hängt von Feed-Entscheidung ab — EDGAR/FRED-Daten im Faktortabelle-Parser wären nachträgliche Re-Integration. User-Pre-Aktion: FRED-API-Key registrieren (falls 5b = ja vorgesehen). Gate: v3.0.4 muss Block 2 PASS haben.
+6b. **Dashboard v2** (`dynasty-depot-dashboard` Artifact) — **wartet auf Gate A (v3.0.4 + Tavily-Key-Rotation) + 5a/5b-Entscheidung (Block 0 Teil 2)**. Architektur entschieden 22.04. (Opus+Sonnet Advisory): Faktortabelle-Parser + Shibui-primär + Tavily-scoped + FLAG-Lösungs-Pfade. Scheduled Task `dynasty-dashboard-refresh` läuft bereits (07:09 Mo-Fr). **Ausführung: Konsolidierungstag Fr 24.04., Block 3 (nach v3.0.4 + Key-Rotation + 5a/5b).** **Scope-Entscheidung 22.04. (final):** Rebalancing_Tool / Satelliten_Monitor / Watchlist_Ersatzbank XLSX bleiben externe Arbeitsblätter — kein XLSX-Parsing im Dashboard (zu fehleranfällig). Dashboard-Fokus = aktuelle 11 Satelliten-Positionen.
 
 ### 🔵 Deferred / Explizit zurückgestellt
 
@@ -109,7 +111,8 @@
 - **R5 Portfolio-Return-Persistenz aktiv** (seit 19.04.2026, Track 3 Phase 3): `05_Archiv/portfolio_returns.jsonl` + `benchmark-series.jsonl` Daily-Schema v1.0 (trading-date, cashflow-separated post-NAV, equal-weight 11-Satelliten). Erster Record 2026-04-17 (10.173,42 EUR notional, SPY 710,14). Append via `python 03_Tools/portfolio_risk.py --persist daily --cashflow <euro>`.
 - **§30 Live-Monitoring aktiv** (seit 19.04.2026, Track 3 Phase 4): Monthly-Refresh pflicht für MSFT CapEx-FLAG (Flint-Vermaak Investment-Half-Life ~1M). TMO Schema-Watch (keine §30-Pflicht). INSTRUKTIONEN v1.11. Erster MSFT-Refresh ~19.05.2026 (Zwischen-Refresh vor Q3 29.04. nicht nötig, Earnings deckt ab).
 - **Open Backlog (NEU 21.04.2026, aus System-Drift-Audit):**
-  - **Daily-Persist seit 4 Tagen stale** — `portfolio_returns.jsonl` + `benchmark-series.jsonl` haben je nur 1 Record (17.04.). R5-Phase-3 ist seit 19.04. „aktiv" deklariert, aber Daily-Append ist Manual-Trigger via `python 03_Tools/portfolio_risk.py --persist daily --cashflow <eur>` und wurde seit Mo 20.04. nicht durchgeführt. Auflösung: Track 4 (ETF/Gold-Erweiterung) — blockiert ohnehin auf User-Input für ETF/Gold-Ticker; bei Auflösung gleichzeitig Cron-/Hook-Mechanismus für Auto-Persist einbauen.
+  - **Daily-Persist seit 4 Tagen stale** — `portfolio_returns.jsonl` + `benchmark-series.jsonl` haben je nur 1 Record (17.04.). R5-Phase-3 ist seit 19.04. „aktiv" deklariert, faktisch aber stale. Manual-Trigger `python 03_Tools/portfolio_risk.py --persist daily --cashflow <eur>` nicht ausgeführt seit 20.04. **Kurzfrist-Fix Fr 24.04. Block 4:** manueller Append für fehlende Tage. Langfrist: Track 4 Auto-Hook. Interim-Gate 2027-10-19 braucht kontinuierliche Daten — Stale-Zustand ist echtes Risiko.
+  - **Check-6 False Positive** — ZIPs existieren alle in `06_Skills-Pakete/`, aber Check-6 sucht nach `_v1.0.0.zip`-Pattern (mit Versionsnummer) → findet `backtest-ready-forward-verify.zip` nicht. Fix Fr 24.04. Block 1: `skill_version.py` auf Basename-Match ohne Versionsnummer erweitern.
   - ~~**System-Audit-Tool fehlt**~~ **→ deployed 22.04.2026** — `03_Tools/system_audit.py` v1.0 + `/SystemAudit`-Slash-Command + `--minimal-baseline`-Regression-Guard in INSTRUKTIONEN §27.5. Spec v0.2 + Plan `2026-04-21-system-audit-tool.md` archiviert. Follow-up-Tasks in Task-Backlog: #2 Check-3 future-date-exclude, #4 vault_backlinks Robustness-Pass (Important #4-7), post-Task-17 existence-Cleanup-Welle (~54 CLAUDE.md-Pfadreferenzen).
 - **Track 5 Pläne bereit** (seit 20.04.2026): `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks) + `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks), beide Codex-reviewed + fix-eingepflegt. **Execution PAUSIERT seit 20.04.2026 Abend** — User-Entscheidung zugunsten 6-Paper-Ingest (siehe nächster Punkt). Re-Validation der Pläne in Phase 3 nach Paper-Ingest-Komplettion.
 - **6-Paper-Ingest Phase 1 KOMPLETT + Codex Gate 2 PASS** (20.04.2026 Abend-Spät): B19-B24 als Befunde in Wissenschaftliche-Fundierung-DEFCON (20 Quellen / 24 Befunde); neue Synthesis `Knowledge-Graph-Architektur-Roadmap` v0.1 mit 3 Qualitäts-Gates. **Vault-only**, DEFCON v3.7 unverändert, keine Score/FLAG/Sparraten-Änderungen. Detail in `SESSION-HANDOVER.md` + `log.md`.
@@ -140,9 +143,9 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-21T22:52:34Z
-**Result:** 3/3 PASS
-**Run:** `python 03_Tools/system_audit.py --minimal-baseline`
+**Timestamp (UTC):** 2026-04-22T21:04:09Z
+**Result:** 4/8 PASS (2 FAIL, 2 WARN)
+**Run:** `python 03_Tools/system_audit.py --core -v`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->

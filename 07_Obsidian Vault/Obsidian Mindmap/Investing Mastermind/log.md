@@ -809,3 +809,71 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 **Commits dieser Session (10):** Pre-Check → wiki-Reorg → raw-Reorg → Wiki-Closure → Schema → Lib+Tests → CLI → Index → gitignore → 5.-Kategorie → Pilot-Ingest.
 
 **Lesson:** Migration-Pre/Post-Check ist Pflicht-Sicherheitsnetz, aber das echte Gold-Insight war: Postcheck flaggte 322 broken Links, die ALLE pre-existent waren. Der „Voll-Reorg-bricht-nichts"-Beweis = grep der migrierten Basenames in der broken-link-Liste, nicht der absolute Count. Verallgemeinert: bei Drift-Audits immer Differenz-Count vs absolute Count messen.
+
+## [2026-04-23] analysis | TMO Q1 FY26 Forward-Vollanalyse — Beat + Guidance-Raise, D2→D3, fcf_trend_neg Resolve
+
+**Context:** Pfad-2 Old-Pipeline (Weekly-Limit 93%, Reset Do 22:00 CEST). Pre-Briefing via earnings-preview-Skill 22.04. (`02_Analysen/TMO_pre-earnings_2026-04-23.md`). Release 23.04. pre-market + Call 14:30 CEST.
+
+**Release-Kennzahlen Q1 FY26:**
+- Revenue $11,01B (+6,2% reported / **+1% organic**) — Beat vs. $10,86B Konsens
+- Adj. EPS $5,44 (+5,6% YoY) — Beat vs. $5,24 Konsens (+3,8%)
+- GAAP EPS $4,43 (+11,3% YoY)
+- GAAP OpM 16,9% (+30bps) / Adj. OpM 21,8% (-10bps)
+- OCF $1.192M (+64,9% YoY) / CapEx $376M / **FCF $825M (+121% YoY)**
+- ΔWC -$1.112M vs -$1.425M (Q1'25) — +$313M weniger Drag = **WC-Unwind-These bestätigt**
+- Segmente: Life Sciences $2,636B (36,2% Margin ✅); Analytical Instruments $1,716B flat (20,7%, Mix/FX-Headwind)
+
+**Capital Deployment:**
+- Clario-Akquise $8,87B abgeschlossen (Life-Sciences-Services)
+- $3,0B Buybacks bereits Januar
+- $5,24B neue Debt aufgenommen
+- 10% Dividenden-Raise
+
+**FY26-Guidance-Raise (Top + Bottom):**
+- Revenue $47,3-48,1B (von $46,3-47,2B, +$1,0B Midpoint)
+- Adj. EPS $24,64-25,12 (von $24,22-24,80, +8-10% FY-Growth)
+- **FCF-Guide FY26 $6,9-7,4B** (vs FY25 $6,3B = +10-17% Recovery)
+- Organic 3-4% bestätigt (H2-Akzeleration impliziert nach Q1 +1%)
+
+**FLAG-Resolution:**
+- `fcf_trend_neg` Schema-Watch seit 18.04. (FY25 FCF -13,4% YoY, WC-Noise-Erklärung) → Resolve-Gate CLEAR alle Kriterien erfüllt: FCF YoY positiv (+121%), ΔWC verbessert, Management-FCF-Commitment. **Schema-Watch deaktiviert.**
+
+**Score-Delta (§28.2 log-only-Fenster |Δ|=3):**
+- Pre: 64/D2 (18.04.) → Neu: **67/D3**
+- Fundamentals +2 (fwd_pe 6→7 Mid-Band-Rekalibrierung bei 19,3; fcf_yield 3→4 FCF-Recovery + FY-Guide)
+- Sentiment +1 (eps_revision_delta 0→+1 Management-Guide-Raise = Analyst-Revision-Trigger)
+- Moat 18 / Technicals 6 / Insider 4 unverändert (Skip-Window <14 Tage)
+- Screener-Exception #4 TMO differenzierte QT weiter aktiv (P/FCF 27,27x Cap 1 Pt / Fwd P/E 19,3 Standard)
+
+**Sparraten-Kaskade:**
+- Nenner 8,0 → 8,5 (TMO Gewicht 0,5 → 1,0)
+- Volle Rate 35,63€ → 33,53€ (Kaskade auf 7 andere D3/D4-Satelliten, je -2,10€)
+- V D2-Rate 17,81€ → 16,76€
+- TMO 17,81€ → 33,53€ (+15,72€)
+- Summe 285€ ✓
+
+**Risk-Map neu:**
+1. Organic +1% Q1 thin — H2-Akzeleration 3-4% guide hängt von Lab-Tools-End-Market Recovery ab. Q2 Ende Juli Re-Check.
+2. Clario-Integration-Execution — $8,87B M&A, Goodwill/Assets >30% (Regel 4 Cash-ROIC-Proxy aktiv), Integration-Performance entscheidet ROIC-Normalisierung.
+3. Bilanz-Leverage Post-Clario — $5,24B neue Debt + $8,87B M&A + $3B Buybacks in Q1. Net Debt/EBITDA Pre-Deal 2,57x → post-Deal schätzungsweise deutlich höher. Q2 Bilanz-Watch.
+
+**Workflow-Disziplin:**
+- Advisor-Review pre-Scoring (Matrix-Misread-Check: EPS $5,44 > $5,35 = Beat+Raise-Zeile, nicht In-Line — korrigiert)
+- Guidance-Line via Tavily vor Scoring gezogen (nicht verschoben auf "Call noch nicht disclosed"-Argument)
+- Organic +1% explizit im Fundamentals-Narrativ adressiert, nicht nur Bull/Bear-Footnote
+
+**Sync-Welle (6 Files, Old-Pipeline-Format):**
+- log.md, CORE-MEMORY.md §1, Faktortabelle.md, STATE.md, `05_Archiv/score_history.jsonl` (direct append, kein Skill-Invoke — Weekly-Limit)
+- `05_Archiv/flag_events.jsonl` unverändert (kein Trigger/Resolve-Event — Schema-Watch ≠ formaler FLAG)
+
+**Retro-Migration geplant:** Post-Reset Do 22:00+ CEST → TMO-Record via `backtest-ready-forward-verify`-Skill (Phase P1-P6: Freshness + Tripwire + §28.2 Δ-Gate + Dry-Run + Append + git add) separater Commit. Erster echter Skill-Forward-Run.
+
+**XLSX-Tools:** `Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx` bleiben unberührt bis post-Retro-Migration — einmaliges Update gegen validierten Skill-Record (Vermeidung Doppel-Edit-Churn).
+
+**Watches neu:**
+- Organic-Akzeleration Q2 ~Ende Juli (Q2-Guide organic ~3% konsistent)
+- Clario-Integration-Early-Read (Q2)
+- Analytical-Instruments-Margin-Drift (-10bps)
+- Net-Debt/EBITDA Post-Clario-Recomputation (Q2 Bilanz)
+
+**Skill:** dynastie-depot v3.7.2 Schritt 0-6 vollständig; Schritt 7 (Archiv-Write via Skill-Invoke) deferred auf Post-Reset Retro-Migration wegen Pfad-2-Weekly-Limit. §28.3 Nicht-Migration-Trigger bestätigt (Standard-Rescore, kein DEFCON-Bump).

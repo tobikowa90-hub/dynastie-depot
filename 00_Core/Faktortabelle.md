@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 18.04.2026 (v3.7 + Schema-Threshold-Alignment + TMO Forward-Vollanalyse) | **Nächste Vollaktualisierung:** 17.07.2026
+**Stand:** 23.04.2026 (v3.7 + TMO Q1 FY26 Forward-Vollanalyse — D2→D3 Upshift + FLAG-Resolve) | **Nächste Vollaktualisierung:** 17.07.2026
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -31,10 +31,13 @@
 <!-- DATA:MSFT -->
 | MSFT | ~25% | 7.5% | ~69% | ~1x | Wide | 59 | 🟠 2 | 🔴 CapEx/OCF >60% | 2026-04-17 | 2026-04-29 Q3 FY26 |
 <!-- TMO-Score-Update 18.04.: 63 (Backfill) → 64 (Forward-Vollanalyse). fcf_trend_neg schema-getriggert (FCF FY25 -13,4% YoY), NICHT aktiviert (WC-Noise-Erklärung, 4J-Plateau). Q1 23.04. = Resolve-Gate. -->
+<!-- TMO-Score-Update 23.04.: 64 → 67 (Q1 FY26 Forward-Vollanalyse). Beat + Guidance-Raise. FCF $825M +121% YoY, OCF +65%, ΔWC -313M besser → fcf_trend_neg Resolve-Gate CLEAR, Schema-Watch deaktiviert. D2→D3, Sparrate 17,81€→33,53€. Nenner 8,0→8,5, volle Rate 35,63€→33,53€. -->
 <!-- DATA:TMO_OLD_BACKFILL -->
 <!-- | TMO | ~15% | 2.6% | ~42% | 2.57x | Wide | 63 | 🟠 2 | — | 2026-04-17 | 2026-04-23 Q1 Earnings | -->
+<!-- DATA:TMO_PRE_Q1 -->
+<!-- | TMO | ~15% 5J | 8,04% GAAP / 17,18% bereinigt | 40,9% | 2.57x | Wide | 64 | 🟠 2 | ✅ (fcf_trend_neg schema-trigger, nicht aktiviert) | 2026-04-18 | 23.04. Q1 FY26 Earnings | -->
 <!-- DATA:TMO -->
-| TMO | ~15% 5J | **8,04% GAAP / 17,18% bereinigt (GW-Ausnahme)** vs WACC 10,44% | 40,9% | 2.57x | Wide | **64** | 🟠 2 | ✅ (fcf_trend_neg schema-trigger → struktureller Disclosure, **nicht aktiviert**) | **2026-04-18** | **23.04.** Q1 FY26 Earnings — D2 + FLAG-Resolve-Gate |
+| TMO | ~15% 5J | 8,04% GAAP / 17,18% bereinigt (GW-Ausnahme) vs WACC 10,44% | 40,9% | 2.57x (Pre-Clario) | Wide | **67** | **🟡 3** | ✅ Clean (fcf_trend_neg Resolve-Gate CLEAR — Q1 FCF $825M +121% YoY, WC-Unwind bestätigt) | **2026-04-23** | **Q2 FY26 ~Ende Juli** — Organic-Akzeleration + Clario-Integration-Check |
 <!-- DATA:RMS -->
 | RMS | ~28% 5J FCF | 24.2% TTM | ~71% | Netto-Cash +€9,89B | Wide | 68 | 🟡 3 | ✅ Clean | 2026-04-17 | H1 2026 Report Juli/Aug 2026 |
 <!-- DATA:VEEV -->
@@ -50,12 +53,13 @@
 <!-- END_TABLE -->
 
 **Aktive FLAGs:** MSFT (CapEx/OCF >60%) | AVGO (Insider $123M unter Review) | APH (Score-basiert, DEFCON 2 seit Threshold-Alignment)
-**Struktureller Disclosure (kein FLAG):** TMO (fcf_trend_neg schema-getriggert FY25 -13,4% FCF YoY, Advisor-Review → nicht aktiviert: WC-Noise, 4J-Plateau, OpInc +5,1% — Resolve-Gate Q1 23.04.)
+**Struktureller Disclosure (kein FLAG):** ~~TMO (fcf_trend_neg)~~ **Resolved 23.04.2026** (Q1 FY26 FCF $825M +121% YoY, WC-Unwind-These bestätigt)
 **Unter Review:** AVGO (Insider $123M — wahrscheinlich Post-Vesting, manueller OpenInsider-Check vor FLAG-Aktivierung)
-**Analysierte Positionen:** 11/11 ✅ ALLE SATELLITEN auf v3.7 rekalibriert (V + TMO 18.04. Forward-Vollanalyse, Rest Algebra-Projektion)
+**Analysierte Positionen:** 11/11 ✅ ALLE SATELLITEN auf v3.7 rekalibriert (V 18.04. + TMO 18.04./23.04. Forward-Vollanalyse, Rest Algebra-Projektion)
 **Offene Scores:** 0/11
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
-**Stand:** 18.04.2026 — v3.7 + Schema-SKILL-Threshold-Alignment (≥80/65-79/50-64/<50)
+**Sparraten-Nenner:** 8×1,0 + 1×0,5 + 2×0 = **8,5** → volle Rate **33,53€** / D2-Rate (V) **16,76€** / FLAG (APH, MSFT) **0€**
+**Stand:** 23.04.2026 — v3.7 + TMO Q1 FY26 Upshift D2→D3 + FLAG-Resolve
 
 > ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Algebra-Projektion v3.5→v3.7: ASML 68→66 (bleibt D3, **Post-Q1 17.04. Vollanalyse: 68**), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74.
 >
