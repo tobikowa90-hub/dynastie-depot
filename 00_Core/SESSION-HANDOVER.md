@@ -1,53 +1,82 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-22 Spät-Nacht (**Phase E 19/19 DONE ✅**) — CR-Re-Run gegen `e3ba381` = 1 OOS-Nitpick, Closure-Commit `57bee6b`. Nächste Session = **Phase G (TMO Q1 23.04. 14:30 CEST)** mit **Pfad-2 Old-Pipeline** (Weekly-Limit 93%, Reset Do 22:00 CEST).
+**Aktualisiert:** 2026-04-23 Nachmittag — **Phase G (TMO Q1) DONE** ✅ Beat + Guidance-Raise, Score 64→67, D2→D3, `fcf_trend_neg` Resolve-Gate CLEAR. Sync-Welle 5 Files + Score-Record Old-Pipeline committed (`620702a`). Chore-Commit CLAUDE.md + system_audit.py (`0f043c7`). **Post-Reset-Aufgabe:** Retro-Migration TMO-Record via `backtest-ready-forward-verify`-Skill (erster echter Skill-Forward-Run) + XLSX-Tools-Update (Rebalancing_Tool + Satelliten_Monitor) einmalig gegen validierten Record. Vorher: 2026-04-23 Morgen — Konsolidierungstag-Agenda erweitert um Block 0c (Track 5a/5b-Entscheidungspunkt). 2026-04-22 Nacht (+Dashboard-Session) — Live Artifact v1 deployed + Dashboard v2 auf Konsolidierungstag Fr 24.04. deferred. Phase E 19/19 DONE, Closure-Commit `57bee6b`.
 **Vorherige Aktualisierungen:** 2026-04-22 Spät — Task 19 + Fix-Welle E (`d7ecf71`/`e3ba381`) · 2026-04-22 Mittag — Tasks 15-18 (`486f2c1`/`fa238bf`/`ab7ae19`/`ca35f62` + Handover `51f5719`) · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D (`ab6b3f5`).
 
-> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E (Systemhygiene-Welle + Audit-Tool v1.0 + Acceptance-Matrix + CR-Reconciliation) · 🔵 F (Provenance-Plan-Execution) **deferred per Pfad 2** · ⏳ G (TMO Q1 23.04. 14:30 CEST Old-Pipeline) · ⏳ **Konsolidierungstag Fr 24.04.** (Backlog-Cleanup, keine Neu-Scopes).
+> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E (Systemhygiene-Welle + Audit-Tool v1.0 + Acceptance-Matrix + CR-Reconciliation) · 🔵 F (Provenance-Plan-Execution) **deferred per Pfad 2** · ✅ G (TMO Q1 23.04. Beat+Raise, D2→D3, FLAG-Resolve, Old-Pipeline-Sync `620702a`) · ⏳ **Post-Reset Do 22:00+ CEST:** TMO-Retro-Migration via `backtest-ready-forward-verify`-Skill + XLSX-Tools-Update · ⏳ **Konsolidierungstag Fr 24.04.** (Backlog-Cleanup + Dashboard v2).
 
 ---
 
-## 🚀 NÄCHSTE SESSION — Phase G (TMO Q1) oder Konsolidierungstag
+## 🚀 NÄCHSTE SESSION — Post-Reset-Aufgaben Do Abend + Konsolidierungstag Fr
 
 ### Kontext-Konstanten
 
-- **Weekly-Limit:** 93% bei Session-Ende 22.04. Spät-Nacht → Minimal-Modus bis Reset
-- **Reset:** Donnerstag 23.04.2026 **22:00 CEST** → Full-Budget-Window öffnet
-- **TMO Q1 Earnings:** Donnerstag 23.04.2026 **14:30 CEST** (8:30 AM ET, pre-market US + Conference-Call gleichzeitig, MarketBeat-verifiziert)
-- **Pfad-2-Entscheidung (locked):** TMO-Analyse Do Nachmittag **Old-Pipeline** (Provenance-Plan nicht stemmbar im Minimal-Modus). TMO-Record im Old-Format archivieren, **Retro-Migration post-Reset** (Do Abend 22:00+ oder Fr)
+- **Weekly-Reset:** Donnerstag 23.04.2026 **22:00 CEST** → Full-Budget-Window öffnet (heute Abend)
+- **Phase G DONE:** TMO Q1 FY26 Forward-Vollanalyse 23.04. Nachmittag (Pfad-2 Old-Pipeline). Beat + Guidance-Raise, Score 64→67, D2→D3, `fcf_trend_neg` Resolve-Gate CLEAR. Sync-Welle committed `620702a`. Siehe CORE-MEMORY §1 Eintrag 23.04.2026 Nachmittag für Details.
+- **Portfolio-State aktuell:** 11 Satelliten, Nenner 8,5 (8×1,0 + 1×0,5 + 2×0), volle Rate **33,53€**, V D2-Rate **16,76€**, FLAG-Raten **0€** (MSFT + APH). Summe 285€.
+- **Nächste Trigger:** V Q2 FY26 28.04. (D2-Entscheidung), MSFT Q3 FY26 29.04. (FLAG-Review).
 
-### Direkter Einstieg: TMO Q1 (Do 14:30 CEST, Pre-Reset)
+### Direkter Einstieg Post-Reset: TMO-Retro-Migration + XLSX-Tools (Do Abend 22:00+)
 
-**Trigger:** `!Analysiere TMO` nach Earnings-Release
+**Sequenz:**
 
-> **📋 Pre-Earnings-Briefing vorab erstellt:** [`02_Analysen/TMO_pre-earnings_2026-04-23.md`](../02_Analysen/TMO_pre-earnings_2026-04-23.md) — via `earnings-preview`-Skill am Vortag (22.04. Spät-Nacht). Enthält Consensus ($5,24 EPS / $10,86B Revenue), Beat-Track 4/4, Analysten-Sentiment 24/26 Buy, Quartals-Trajektorie FCF/ΔWC/OpInc für `fcf_trend_neg` Resolve-Gate + **Entscheidungs-Matrix Miss/In-Line/Beat**. **Morgen als Basis nutzen, nicht neu fetchen** (Token-Spar).
+1. **TMO-Record Retro-Migration** via `backtest-ready-forward-verify`-Skill (erster echter Skill-Forward-Run):
+   - Draft-File unter `03_Tools/backtest-ready/_drafts/TMO_20260423-NNNN.json` erzeugen (Wrapper mit `record`-Block, `skill_meta` weglassen — kein Version-Bump)
+   - Record-Inhalt: 1:1 aus `05_Archiv/score_history.jsonl` Zeile 28 (`2026-04-23_TMO_vollanalyse`) extrahieren
+   - **Wichtig:** Alter Old-Pipeline-Record bereits committed (`620702a`). Skill-Invoke darf **nicht** zweiten Record mit gleicher ID schreiben — P4-Duplicate-Guard müsste greifen. Optionen:
+     - **A (sauber):** Alten Record entfernen vor Skill-Invoke (git-revert betroffene Zeile), dann Skill laufen lassen — Skill appendet frisch
+     - **B (pragmatisch):** Skill im `--dry-run`-Modus gegen Draft laufen lassen nur zur Validierung (P1-P4), kein echtes Re-Write; damit wird nur „hätte die Pipeline funktioniert?" verifiziert, nicht die Historie neu geschrieben
+   - **Empfehlung:** Variante B. Rationale: Der existierende Record ist schema-valid und fachlich korrekt; der eigentliche Pipeline-Disziplin-Test (Freshness + Tripwire + §28.2) ist Dry-Run-erfüllbar, der spätere echte First-Run kommt beim nächsten Earnings-Trigger (V 28.04.).
+2. **XLSX-Tools einmaliger Update** via openpyxl:
+   - `03_Tools/Rebalancing_Tool_v3.4.xlsx` — TMO-Row Score 64→67, DEFCON D2→D3, Sparrate 17,81€→33,53€; volle Rate anderer 7 Satelliten 35,63€→33,53€; V 17,81€→16,76€; Nenner-Zelle 8,0→8,5
+   - `03_Tools/Satelliten_Monitor_v2.0.xlsx` — TMO-Row Score/DEFCON/Rate/Delta-Spalten; Legende-Datum 17.04.→23.04.
+   - Sparraten-Summe 285€ in beiden Tools verifizieren
+3. **Commit:** `chore(tools): TMO D2→D3 in Rebalancing + Satelliten-Monitor nach Retro-Migration`
 
-**Spezifische Gates für TMO:**
-- **D2-Entscheidung:** Score 64 aktuell, Live-Forward-Lauf gegen Q1-Actuals
-- **`fcf_trend_neg` Resolve-Gate:** FY25 FCF -13,4% YoY war schema-getriggert aber Option-B-dokumentiert (WC-Delta -1766M erklärt). Q1 = natürlicher Resolve-Gate:
-  - **WC-Unwind + FCF-Recovery bestätigt** → Disclosure bleibt Notiz, kein FLAG
-  - **Fehlende Reversibilität** → `fcf_trend_neg`-Trigger **nachtragen** via `archive_flag.py trigger`
-- **Old-Pipeline-Archiv:** SKILL.md Schritt 7 (backtest-ready-forward-verify Skill) → Draft + §28.2 Δ-Gate + Append. KEIN Provenance-Gate (Pfad 2).
+### Alternative: Phase F Provenance-Plan-Execution (Do Abend Post-Reset, falls Zeit + Energie)
 
-**Token-Minimal-Modus:**
-- Single-Pass-Analyse, keine Subagent-Exploration
-- Keine Code-Review-Pässe (Codex/CodeRabbit) für TMO — ist keine Code-Änderung
-- Multi-Source-Drift-Check §27.4: minimal (STATE.md + Faktortabelle + CORE-MEMORY §4 vs. neuer Score)
-- Sync-Welle: log.md + CORE-MEMORY §4 + Faktortabelle + STATE.md + `score_history.jsonl` (+ `flag_events.jsonl` bei FLAG-Trigger)
+**Nur wenn User sagt „jetzt Phase F":** Plan `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks, 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. TMO-Retro-Migration oben läuft dann gegen v2-Schema (Provenance-Gate aktiv).
 
-### Alternative: Phase F Provenance-Plan-Execution (Do Abend Post-Reset)
+### Konsolidierungstag Fr 24.04. — Backlog-Cleanup + Dashboard v2
 
-**Nur wenn User sagt „jetzt Phase F":** Plan `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (7 Tasks, 40 Steps) + Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`. Dann danach **TMO-Retro-Migration** des Old-Pipeline-Records.
+**Zeitbudget-Warnung (Opus-Advisory 22.04.):** Block 1 harter Cutoff 50 Min → Block 2 startet 11:00 Uhr fest. Falls existence-Cleanup >50 Min → auf nächste Session verschieben (Housekeeping, kein Blocker).
 
-### Konsolidierungstag Fr 24.04. — Backlog-Cleanup-only
+**Block 0 — Pre-Check (Session-Start, 25 Min):**
+0. **Tavily-Key Smoke-Test** (5 Min) — prüfen ob Key `tvly-dev-4PYXp...` noch valid oder bereits abgelaufen. Falls abgelaufen → sofort rotieren, BEVOR Block 2 startet.
+0b. **Provenance-Gate Pfad-2 Smoke-Test** (5 Min) — TMO Old-Pipeline-Draft gegen v2-Schema validieren: `python 03_Tools/backtest-ready/archive_score.py --dry-run <draft>`. Falls fail → Phase-F-Entscheidung überprüfen.
+0c. **Track 5a/5b Entscheidungspunkt** (NEU 23.04., 15 Min, ausgeführt NACH Block 2 v3.0.4-PASS):
+    - **5a SEC EDGAR Skill-Promotion** ja/nein — Re-Validation nach 6-Paper-Ingest B21-B24 prüfen, Dashboard-Feed-Scope bedenken.
+    - **5b FRED Macro-Regime-Filter** ja/nein — User-Pre-Aktion: FRED-API-Key registrieren (https://fred.stlouisfed.org/docs/api/api_key.html). B19 stärkt wissenschaftliche Begründung.
+    - **Output:** Entscheidung protokollieren in STATE.md §Pipeline 🟡 (Pläne aktivieren ODER weiter 🔵 deferred). Dashboard v2 Block 3 übernimmt Feed-Scope entsprechend.
+    - **Grund der Position vor Block 3:** Dashboard-Scope hängt von Feed-Entscheidung ab — EDGAR/FRED nachträglich wäre Re-Integration.
 
-**Keine neuen Scopes.** 5 Items:
-1. **Check-3 `markdown_header` future-date-exclude** — `03_Tools/system_audit/checks/markdown_header.py:51-63` `_newest_event_date_state` — Long-Term-Gates (2028-04-01, 2027-10-19, 2026-10-17) aus Event-Kandidaten ausschließen
-2. **existence-Cleanup-Welle** — ~54 CLAUDE.md-Pfadreferenzen ohne `00_Core/`-Prefix (Tool-Aufräum, nicht einzeln)
+**Block 1 — System-Hygiene (Morgen, max. 50 Min):**
+1. **Check-3 `markdown_header` future-date-exclude** — `03_Tools/system_audit/checks/markdown_header.py:51-63` — Long-Term-Gates (2028-04-01, 2027-10-19, 2026-10-17) aus Event-Kandidaten ausschließen. Prüfen ob `##`- und `###`-Header beide korrekt gefiltert werden.
+2. **existence-Cleanup-Welle** — ~54 CLAUDE.md-Pfadreferenzen ohne `00_Core/`-Prefix. Grep-Pattern bereitstellen vor manuellem Edit (spart Zeit). **Falls >50 Min Gesamt-Block → hier abbrechen, Rest nächste Session.**
 3. **Nach (1)+(2):** §27.5-Guard von `--minimal-baseline` auf `--core` hochziehen + INSTRUKTIONEN-§-Kommentar-Update
-4. **Morning-Briefing v3.0.4-Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). Prod läuft Rollback v2.1.
-5. **Tavily Dev-Key Rotation** — Key `tvly-dev-4PYXp...` im Dashboard rotieren (7-Tage-Uhr war an v3.0.4-Prod-Deploy gekoppelt; Key-Safety aber auch jetzt prüfen)
-6. **Optional:** TMO-Retro-Migration falls Do Abend nicht erledigt + Daily-Persist-Auto-Hook-Baustein (Track 4)
+4. **Check-5 Batch-Output** (Opus-Empfehlung 22.04.) — gruppiert nach Sektion mit Patch-Suggestion. `system_audit/checks/existence.py` anpassen.
+5. **Check-4 WARN-Semantik** (Opus-Empfehlung 22.04.) — `⚠️ Informativ` vs. `🔴 Funktional` trennen. `system_audit/types.py` oder `report.py`.
+6. **Check-6 Naming-Convention-Fix** — ZIPs existieren alle (`06_Skills-Pakete/backtest-ready-forward-verify.zip` etc.), aber Check-6 sucht nach `_v1.0.0.zip`-Pattern → False Positive WARN. Fix: Check-6-Logik in `system_audit/checks/skill_version.py` auf Basename-Match ohne Versionsnummer erweitern (~5 Min).
+
+**Block 2 — Morning Briefing + Key (ab 11:00, ~90 Min):**
+7. **Morning-Briefing v3.0.4-Hotfix** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks, ~90 Min). **Gate A für Track 5a/5b.**
+8. **Tavily Dev-Key Rotation** — Key im Dashboard rotieren (falls nicht schon Block 0 erledigt). **Gate für Tavily-Integration Dashboard v2.**
+
+**Block 3 — Dashboard v2 (Nachmittag, ~60 Min) — Gate: Block 2 DONE + Block 0c Entscheidung:**
+9. **Dashboard v2 bauen** (`dynasty-depot-dashboard` Artifact updaten):
+   - Faktortabelle.md-Parser mit `<!-- DATA:TICKER -->`-Ankern (ersetzt hartkodierte Scores)
+   - Freshness-Guard: >7d 🟡 Banner / >90d 🔴 Banner
+   - Preisquellen: Shibui primär → defeatbeta Fallback → yfinance Non-US
+   - Tavily-Integration (scoped: Earnings ≤3d + aktive FLAGs + 1 Macro-Headline)
+   - FLAG-Lösungs-Pfad inline (was löst jedes FLAG auf?)
+   - Scheduled Task `dynasty-dashboard-refresh` auf File-Read-Architektur umstellen
+   > **Architektur-Entscheidung (22.04. Opus+Sonnet, FINAL):** Artifact ≠ Briefing-Ersatz. Hybrid: Artifact = Snapshot/Feed (30s), Briefing = Narrativ+Reassurance (3 Min). Excel-Tools (Rebalancing/Satelliten/Watchlist) NICHT integriert. Scope = 11 Satelliten.
+
+**Block 4 — Optional (falls Zeit bleibt):**
+10. TMO-Retro-Migration falls Do Abend 22:00+ nicht erledigt
+11. **Daily-Persist manueller Append** (Opus-Empfehlung 22.04.) — `python 03_Tools/portfolio_risk.py --persist daily --cashflow <eur>` für fehlende Tage 20.-24.04. ausführen. R5 ist deklarativ aktiv aber faktisch seit 17.04. stale — Interim-Gate 2027-10-19 braucht kontinuierliche Daten.
+
+> **R5-Status-Klarstellung:** `portfolio_returns.jsonl` + `benchmark-series.jsonl` haben je nur 1 Record (17.04.). R5 Phase 3 ist deklarativ aktiv, faktisch stale. Auflösung via manuellen Append (Block 4) oder Auto-Hook (Track 4 nach ETF/Gold-Ticker-Entscheidung).
 
 ---
 
