@@ -8,11 +8,12 @@
 
 ## Sources
 *One page per ingested document or operational tool/skill.*
+*Sub-Ordner-Layout (seit 2026-04-23): `wiki/sources/{papers,tools,references,videos}/`*
 
-### Externe Quellen & Forschung
+### Externe Quellen & Forschung (`wiki/sources/papers/`)
 - [[LLMs for Equity Stock Ratings]] — J.P. Morgan AI Research (2024): GPT-4 übertrifft Wall-Street-Analysten bei 3–12-Monats-Aktien-Ratings; Fundamentaldaten sind stärkste Daten-Modalität (1 Quelle)
 
-### Akademische Paper (Wissenschaftliche Fundierung DEFCON)
+### Akademische Paper (Wissenschaftliche Fundierung DEFCON) — `wiki/sources/papers/`
 - [[arXiv-1711.04837]] — Gu, Kelly, Xiu (2019): ML + 5J-Fundamental-Fenster → +2,7% CAGR; Datenhierarchie Fundamentals>Sentiment>Technicals (B1, B7)
 - [[Gu-Kelly-Xiu-2020]] — RFS 2020: FCF+GM stabilste Prädiktoren; trailing P/E verliert Vorhersagekraft; forward P/E valide (B2, B3)
 - [[Morningstar-Wide-Moat]] — Wide Moat Whitepaper: 8 Moat-Quellen; Moat allein ≠ Excess Return (B4, B6)
@@ -23,7 +24,7 @@
 - [[Novy-Marx-2013]] — Journal of Financial Economics: Gross Profitability Premium ~gleich stark wie B/M (B13) ← NEU
 - [[Sloan-1996]] — The Accounting Review: Accruals-Anomalie +10,4% p.a. Low-Accrual-Premium (B14) ← NEU
 
-### Akademische Paper (Backtest-Validation-Framework — §29 Gate)
+### Akademische Paper (Backtest-Validation-Framework — §29 Gate) — `wiki/sources/papers/`
 - [[Bailey-2015-PBO]] — Journal of Computational Finance: PBO/CSCV als Overfitting-Gate (B15) ← NEU 2026-04-19
 - [[Aghassi-2023-Fact-Fiction]] — J. Portfolio Management (AQR): 4 Kanon-Faktoren, t-Stat≥3-Hurdle, externer Benchmark (B16) ← NEU 2026-04-19
 - [[Flint-Vermaak-2021-Decay]] — SSRN 3986499: Faktor-Half-Life, optimale Rebalance-Cadence (B17) ← NEU 2026-04-19
@@ -35,17 +36,36 @@
 - [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] — Frontiers AI (Jan 2026): MC-Dropout-Uncertainty für Finance-QA; -27,8% Halluzinationen (B23) ← NEU 2026-04-20 Phase 1b
 - [[Iacovides-Zhou-Mandic-2025-FinDPO]] — arXiv 2507.18417 (Imperial, 2025): DPO + Logit-to-Score für Long-Short-Portfolios; 67% p.a. bei 5bps (B24) ← NEU 2026-04-20 Phase 1b
 
-### Datenquellen-APIs
+### Datenquellen-APIs (`wiki/sources/tools/`)
 - [[defeatbeta]] — US-Fundamentals (Primär): Income, Cash Flow, ROIC, WACC, Geographic Revenue
 - [[Shibui-SQL]] — Technicals + historische Breite + FLAG-Historik (56+ Indikatoren)
 - [[OpenInsider]] — Insider-Pflichtquelle; Form-4-Verifikation (Spalte "X"/"M")
 
-### Skills & Module (Operative Tools)
+### Methodik & Standards (`wiki/sources/references/`)
+- [[Morningstar-Wide-Moat]] — Wide-Moat Whitepaper: 8 Moat-Quellen-Taxonomie; Methodik-Referenz für Moat-Scoring
+
+### Skills & Module (Operative Tools) — `wiki/sources/tools/`
 - [[dynastie-depot-skill]] — DEFCON v3.7 Haupt-Skill (Skill-Paket v3.7.2); alle Workflows (!Analysiere, !Rebalancing, !QuickCheck, !CAPEX-FCF-ANALYSIS). Schritt 7 delegiert an `backtest-ready-forward-verify` (seit 19.04.2026)
 - [[backtest-ready-forward-verify]] — Satellit für Forward-Run Persistence-Pipeline; kein eigenes Trigger-Word, aktiviert programmatisch aus dynastie-depot Schritt 7. Orchestriert Freshness + STATE.md-Tripwire + §28.2 Δ-Gate + Dry-Run + Append + git add (neu 19.04.2026)
 - [[quick-screener]] — Stufe-0 Vorfilter; 3 Filter (P/FCF, ROIC, Moat-Proxy); Ampel-Ergebnis
 - [[insider-intelligence]] — Form-4-Automatisierung; 8 US-Satelliten; FLAG-Detection (>$20M diskretionär)
 - [[non-us-fundamentals]] — yfinance für ASML/RMS/SU; EUR, IFRS, kein API-Key
+- [[backtest-ready-forward-verify]] — Persistence-Pipeline-Satellit; programmatisch aus dynastie-depot Schritt 7 aktiviert
+
+### Videos (`wiki/sources/videos/`)
+*Eingepflegt via INGEST-VIDEO-Workflow (siehe WIKI-SCHEMA §INGEST-VIDEO). Aktuell leer — wird nach erstem Pilot-Ingest gefüllt.*
+
+#### Earnings Calls (`wiki/sources/videos/earnings-calls/`)
+_(noch leer)_
+
+#### Interviews (`wiki/sources/videos/interviews/`)
+_(noch leer)_
+
+#### Conferences (`wiki/sources/videos/conferences/`)
+_(noch leer)_
+
+#### Analyses (`wiki/sources/videos/analyses/`)
+_(noch leer)_
 
 ---
 
