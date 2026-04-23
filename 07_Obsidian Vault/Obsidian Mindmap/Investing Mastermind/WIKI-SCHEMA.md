@@ -31,6 +31,7 @@ This document is the authoritative schema. Follow it in every session.
       interviews/<slug>/
       conferences/<slug>/
       analyses/<slug>/
+      updating-system/<slug>/  (Videos zu Tool-/System-Upgrades, Skills, Workflows)
     assets/                 ← heruntergeladene Bilder und Anhänge
   wiki/
     entities/               ← Personen, Organisationen, Produkte, Projekte
@@ -40,7 +41,7 @@ This document is the authoritative schema. Follow it in every session.
       tools/                ← Skills, Datenquellen, Tools
       references/           ← Methodik, Standards, Benchmarks
       videos/               ← spiegelt raw/videos/-Kategorien
-        earnings-calls/  interviews/  conferences/  analyses/
+        earnings-calls/  interviews/  conferences/  analyses/  updating-system/
     synthesis/              ← Quer-Analysen, Thesen, evolving understanding
     queries/                ← gespeicherte Antworten auf wichtige Fragen
 ```

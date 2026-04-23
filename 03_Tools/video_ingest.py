@@ -6,7 +6,7 @@ Usage:
         --channel <channel-slug> --topic "<topic>" \\
         [--content-language en] [--note-language de] [--whisper-model large-v3]
 
-Categories: earnings-calls | interviews | conferences | analyses
+Categories: earnings-calls | interviews | conferences | analyses | updating-system
 """
 from __future__ import annotations
 
@@ -65,7 +65,7 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("url")
     p.add_argument("--category", required=True,
-                   choices=["earnings-calls", "interviews", "conferences", "analyses"])
+                   choices=["earnings-calls", "interviews", "conferences", "analyses", "updating-system"])
     p.add_argument("--channel", required=True, help="kebab-case channel slug, e.g. 'brk'")
     p.add_argument("--topic", required=True, help="short topic, e.g. 'annual qa'")
     p.add_argument("--upload-date", default=None, help="YYYY-MM-DD original upload (default: today)")

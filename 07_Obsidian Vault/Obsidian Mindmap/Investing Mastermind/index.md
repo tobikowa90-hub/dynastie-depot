@@ -67,6 +67,10 @@ _(noch leer)_
 #### Analyses (`wiki/sources/videos/analyses/`)
 _(noch leer)_
 
+#### Updating System (`wiki/sources/videos/updating-system/`)
+*Videos zu Tool-/System-Upgrades, Claude-Skills, neuen Workflows.*
+_(noch leer — Pilot-Ingest folgt)_
+
 ---
 
 ## Entities
