@@ -782,3 +782,30 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Scoring-Impact:** ZERO. DEFCON v3.7 + Scores + FLAGs + Sparraten unverändert.
 - **Lesson:** Multi-Tool-Reviews → Run-Output IMMER File-persistieren (nicht nur tail-Inspect), sonst Truncation + Non-Determinismus + Rate-Limit = perfect storm. Applied-Learning-Kandidat.
 - **Next:** CR-Re-Run gegen `e3ba381` nach Cooldown (>22.04. ~23:23 UTC). Bei keinen neuen Blockern: Phase-E-Closure + Phase F oder direkt Phase G (TMO Q1 23.04.).
+
+## [2026-04-23] reorg+ingest-video | Voll-Reorg + Wiki-Closure + Video-Pipeline-Setup + Pilot-Ingest
+
+**Reorg + Schema:**
+- Voll-Reorg `wiki/sources/` und `raw/` in Sub-Ordner (`papers/`, `tools/`, `references/`, `videos/{earnings-calls,interviews,conferences,analyses,updating-system}/`) — 39 git mv, 0 Backlink-Brüche (Obsidian-Basename-Resolution).
+- WIKI-SCHEMA.md erweitert: Frontmatter v2 (`medium`+`video`+`transcript`+`language`+`aliases`-Blöcke), §INGEST-VIDEO als eigenständiger Workflow, Quality-Gate-Tabelle, Sub-Ordner-Transparenz-Hinweis, Cross-Medium-Aggregation-Regel.
+
+**Wiki-Graph-100%-Closure:**
+- 322 broken `[[wiki-link]]` + 20 broken Frontmatter-Refs → **0 broken refs**.
+- 46 Aliases auf bestehende Pages (Title-Case ↔ kebab-case Resolution).
+- 5 neue Stub-Pages: [[MA]] (Mastercard), [[STATE]], [[Faktortabelle]], [[CORE-MEMORY]] (Vault-extern-Anker), [[backtest-ready-forward-verify]] (Skill-Source).
+- 1 Source-Edit: ASML.md `[[Beispiele.md]]`-Phantomlink entfernt.
+
+**Video-Pipeline:**
+- `03_Tools/video_ingest_lib.py` (build_slug, sha256_file, quality_gate) + 18 pytest-Tests.
+- `03_Tools/video_ingest.py` CLI (yt-dlp + whisper + ffmpeg + Quality-Gate + Frontmatter-Generation).
+- `.gitignore`: transient Audio (`*.m4a`/`*.mp3`/`*.webm`) + `whisper_raw.json` ausgeschlossen.
+
+**Pilot-Ingest (Task 9 End-to-End):**
+- Pages created: [[2026-04-08-charlie-automates-graphify-claude-code]] (Kategorie `updating-system`, neu)
+- Pages updated: [[index]], [[WIKI-SCHEMA]]
+- yt-dlp 5.6s + whisper-small 152.3s + Quality-Gate PASS (no warns).
+- Reproduzierbarkeit: `transcript.sha256`/`info.sha256` + Tool-Versionen im Frontmatter + run.log.
+
+**Commits dieser Session (10):** Pre-Check → wiki-Reorg → raw-Reorg → Wiki-Closure → Schema → Lib+Tests → CLI → Index → gitignore → 5.-Kategorie → Pilot-Ingest.
+
+**Lesson:** Migration-Pre/Post-Check ist Pflicht-Sicherheitsnetz, aber das echte Gold-Insight war: Postcheck flaggte 322 broken Links, die ALLE pre-existent waren. Der „Voll-Reorg-bricht-nichts"-Beweis = grep der migrierten Basenames in der broken-link-Liste, nicht der absolute Count. Verallgemeinert: bei Drift-Audits immer Differenz-Count vs absolute Count messen.

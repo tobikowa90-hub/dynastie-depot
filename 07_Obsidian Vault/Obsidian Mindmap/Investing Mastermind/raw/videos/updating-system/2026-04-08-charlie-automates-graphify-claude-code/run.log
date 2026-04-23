@@ -1,0 +1,14 @@
+# run.log for 2026-04-08-charlie-automates-graphify-claude-code
+started: 2026-04-23
+[step 0] url_reachable=True (0.4s)
+[version] yt-dlp: 2026.03.17
+[version] whisper: openai-whisper 20250625
+[version] ffmpeg: ffmpeg version 8.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+[step 1] yt-dlp: yt-dlp -x --audio-format m4a --no-playlist --write-info-json -o C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-04-08-charlie-automates-graphify-claude-code\%(id)s.%(ext)s https://www.youtube.com/shorts/A6lwT0Vd0fE
+[step 1] exit=0, dt=5.6s
+[info] duration_min=2.1, chapters=False, video_id=A6lwT0Vd0fE
+[step 2] whisper: whisper C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-04-08-charlie-automates-graphify-claude-code\A6lwT0Vd0fE.m4a --model small --language en --output_format json --output_dir C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-04-08-charlie-automates-graphify-claude-code
+[step 2] exit=0, dt=152.3s
+[step 3] removed audio file A6lwT0Vd0fE.m4a
+[step 4] transcript_sha256=a2b1d73363ab765e..., info_sha256=3b435bae6c5a6ad5...
+[step 5] quality_gate: passed=True, fails=[], warns=[]
