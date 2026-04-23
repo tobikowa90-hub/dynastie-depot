@@ -3,7 +3,7 @@
 **Aktualisiert:** 2026-04-23 Nachmittag — **Phase G (TMO Q1) DONE** ✅ Beat + Guidance-Raise, Score 64→67, D2→D3, `fcf_trend_neg` Resolve-Gate CLEAR. Sync-Welle 5 Files + Score-Record Old-Pipeline committed (`620702a`). Chore-Commit CLAUDE.md + system_audit.py (`0f043c7`). **Post-Reset-Aufgabe:** Retro-Migration TMO-Record via `backtest-ready-forward-verify`-Skill (erster echter Skill-Forward-Run) + XLSX-Tools-Update (Rebalancing_Tool + Satelliten_Monitor) einmalig gegen validierten Record. Vorher: 2026-04-23 Morgen — Konsolidierungstag-Agenda erweitert um Block 0c (Track 5a/5b-Entscheidungspunkt). 2026-04-22 Nacht (+Dashboard-Session) — Live Artifact v1 deployed + Dashboard v2 auf Konsolidierungstag Fr 24.04. deferred. Phase E 19/19 DONE, Closure-Commit `57bee6b`.
 **Vorherige Aktualisierungen:** 2026-04-22 Spät — Task 19 + Fix-Welle E (`d7ecf71`/`e3ba381`) · 2026-04-22 Mittag — Tasks 15-18 (`486f2c1`/`fa238bf`/`ab7ae19`/`ca35f62` + Handover `51f5719`) · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D (`ab6b3f5`).
 
-> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E (Systemhygiene-Welle + Audit-Tool v1.0 + Acceptance-Matrix + CR-Reconciliation) · 🔵 F (Provenance-Plan-Execution) **deferred per Pfad 2** · ✅ G (TMO Q1 23.04. Beat+Raise, D2→D3, FLAG-Resolve, Old-Pipeline-Sync `620702a`) · ⏳ **Post-Reset Do 22:00+ CEST:** TMO-Retro-Migration via `backtest-ready-forward-verify`-Skill + XLSX-Tools-Update · ⏳ **Konsolidierungstag Fr 24.04.** (Backlog-Cleanup + Dashboard v2).
+> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E (Systemhygiene-Welle + Audit-Tool v1.0 + Acceptance-Matrix + CR-Reconciliation) · 🔵 F (Provenance-Plan-Execution) **deferred per Pfad 2** · ✅ G (TMO Q1 23.04. Beat+Raise, D2→D3, FLAG-Resolve, Old-Pipeline-Sync `620702a`) · ✅ **TMO-Retro-Audit Option B DONE 23.04. spät** (P1-P4 PASS gegen `620702a`, kein Re-Append) · ⏳ **XLSX-Tools-Update** (Rebalancing_Tool + Satelliten_Monitor) · ⏳ **Konsolidierungstag Fr 24.04.** (Backlog-Cleanup + Dashboard v2).
 
 ---
 
@@ -16,17 +16,11 @@
 - **Portfolio-State aktuell:** 11 Satelliten, Nenner 8,5 (8×1,0 + 1×0,5 + 2×0), volle Rate **33,53€**, V D2-Rate **16,76€**, FLAG-Raten **0€** (MSFT + APH). Summe 285€.
 - **Nächste Trigger:** V Q2 FY26 28.04. (D2-Entscheidung), MSFT Q3 FY26 29.04. (FLAG-Review).
 
-### Direkter Einstieg Post-Reset: TMO-Retro-Migration + XLSX-Tools (Do Abend 22:00+)
+### ~~Direkter Einstieg Post-Reset: TMO-Retro-Migration~~ **DONE 23.04. spät (Option B)**
 
 **Sequenz:**
 
-1. **TMO-Record Retro-Migration** via `backtest-ready-forward-verify`-Skill (erster echter Skill-Forward-Run):
-   - Draft-File unter `03_Tools/backtest-ready/_drafts/TMO_20260423-NNNN.json` erzeugen (Wrapper mit `record`-Block, `skill_meta` weglassen — kein Version-Bump)
-   - Record-Inhalt: 1:1 aus `05_Archiv/score_history.jsonl` Zeile 28 (`2026-04-23_TMO_vollanalyse`) extrahieren
-   - **Wichtig:** Alter Old-Pipeline-Record bereits committed (`620702a`). Skill-Invoke darf **nicht** zweiten Record mit gleicher ID schreiben — P4-Duplicate-Guard müsste greifen. Optionen:
-     - **A (sauber):** Alten Record entfernen vor Skill-Invoke (git-revert betroffene Zeile), dann Skill laufen lassen — Skill appendet frisch
-     - **B (pragmatisch):** Skill im `--dry-run`-Modus gegen Draft laufen lassen nur zur Validierung (P1-P4), kein echtes Re-Write; damit wird nur „hätte die Pipeline funktioniert?" verifiziert, nicht die Historie neu geschrieben
-   - **Empfehlung:** Variante B. Rationale: Der existierende Record ist schema-valid und fachlich korrekt; der eigentliche Pipeline-Disziplin-Test (Freshness + Tripwire + §28.2) ist Dry-Run-erfüllbar, der spätere echte First-Run kommt beim nächsten Earnings-Trigger (V 28.04.).
+1. ~~**TMO-Record Retro-Migration**~~ **Retro-Audit Option B DONE 23.04. spät.** Draft `03_Tools/backtest-ready/_drafts/TMO_20260423-retro-audit.json` angelegt (gitignored), Post-hoc-Validation der Skill-Pipeline gegen den `620702a`-Record gefahren. Phase-Outcomes: P1 parse PASS · P2a freshness INFO (erwartet, Working-Tree clean) · P2b STATE-Tripwire PASS (67/3/False dreifach konsistent) · P3 N/A · P4 Dry-Run PASS (synth. Archiv ohne TMO) · P4-bis Duplicate-Guard PASS (real). Kein Re-Append — Informationsverlust-Aversion > Ästhetik. **Erster echter Skill-Forward-Run bleibt V Q2 FY26 28.04.** Siehe `log.md` §[2026-04-23] retro-audit für volles Phase-by-Phase-Protokoll.
 2. **XLSX-Tools einmaliger Update** via openpyxl:
    - `03_Tools/Rebalancing_Tool_v3.4.xlsx` — TMO-Row Score 64→67, DEFCON D2→D3, Sparrate 17,81€→33,53€; volle Rate anderer 7 Satelliten 35,63€→33,53€; V 17,81€→16,76€; Nenner-Zelle 8,0→8,5
    - `03_Tools/Satelliten_Monitor_v2.0.xlsx` — TMO-Row Score/DEFCON/Rate/Delta-Spalten; Legende-Datum 17.04.→23.04.

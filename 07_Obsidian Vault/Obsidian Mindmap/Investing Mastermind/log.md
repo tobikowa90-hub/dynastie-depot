@@ -877,3 +877,16 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - Net-Debt/EBITDA Post-Clario-Recomputation (Q2 Bilanz)
 
 **Skill:** dynastie-depot v3.7.2 Schritt 0-6 vollständig; Schritt 7 (Archiv-Write via Skill-Invoke) deferred auf Post-Reset Retro-Migration wegen Pfad-2-Weekly-Limit. §28.3 Nicht-Migration-Trigger bestätigt (Standard-Rescore, kein DEFCON-Bump).
+
+## [2026-04-23] retro-audit | TMO-Record `backtest-ready-forward-verify` Option B PASS
+- **Kontext:** TMO Q1 FY26 Vollanalyse war wegen Weekly-Limit-93% (Pfad-2) mit Old-Pipeline direkt in `score_history.jsonl` angehängt und in `620702a` committed. Handover sah Retro-Migration via Skill vor. Option-B-Entscheidung (Handover empfohlen): kein Re-Append, stattdessen Post-hoc-Validation der Skill-Pipeline gegen den existierenden Record.
+- **Draft:** `03_Tools/backtest-ready/_drafts/TMO_20260423-retro-audit.json` (Wrapper-Format, ohne `skill_meta` — Standard-Rescore, kein Version-Bump; Verzeichnis ist `.gitignore`d, daher nur im Working-Tree).
+- **Phase-Outcomes:**
+  - P1 `parse_wrapper` — PASS (record_id `2026-04-23_TMO_vollanalyse`, skill_meta leer)
+  - P2a `check_freshness` — INFO (3 Required-Touch-Files sauber im Working-Tree, weil Sync-Welle `620702a` committed — erwartet, nicht blockierend)
+  - P2b `parse_state_row` Tripwire — PASS (STATE.md ↔ Record: score 67 / defcon 3 / flags_active False, dreifach konsistent)
+  - P3 Algebra-Δ-Gate — N/A (kein `skill_meta`, keine Version-Migration)
+  - P4 Dry-Run Schema-Validation gegen synthetisches Archiv (ohne TMO-Zeile) — PASS
+  - P4-bis Duplicate-Guard gegen echtes Archiv — PASS (erwartete `DuplicateRecordError`, beweist Self-Defense)
+- **Ergebnis:** Skill-Pipeline hätte den Record sauber validiert und angehängt. Real-Append nicht ausgeführt — Record existiert bereits, Informationsverlust-Aversion > Ästhetik (kein `git revert` der Zeile). **Erster echter Skill-Forward-Run bleibt V Q2 FY26 28.04.2026.**
+- **Folge-Schritt:** XLSX-Tools-Update (Rebalancing_Tool + Satelliten_Monitor) unblockiert — separater Commit.
