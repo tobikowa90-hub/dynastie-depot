@@ -42,3 +42,10 @@ __pycache__/
 # Obsidian per-Session UI state (tabs, layout, pan/zoom) — ephemeral, not shared config
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/workspace.json
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/graph.json
+
+# Video-Ingest-Pipeline transient artifacts (yt-dlp + whisper)
+# Persisting artifacts (transcript.md/info.json/chapters.json/run.log) stay tracked.
+07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/**/*.m4a
+07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/**/*.mp3
+07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/**/*.webm
+07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/**/whisper_raw.json
