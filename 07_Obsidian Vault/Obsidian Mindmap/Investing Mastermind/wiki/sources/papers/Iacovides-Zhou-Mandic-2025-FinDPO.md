@@ -11,6 +11,9 @@ status: processed
 defcon_relevanz: "Keine DEFCON-Scoring-Änderung. Zwei indirekte Relevanzen: (1) Validation-Bezug zu FINSABER (B19): FinDPOs 67% p.a. Return bei 5bps Transaction Costs ist ein weiterer Datenpunkt im LLM-Investing-Benchmark-Raum — laut FINSABER verschwinden solche Outperformances oft bei 20-J/100+-Symbol-Replikation mit Bias-Mitigation. Hier gilt dies zu prüfen, bevor FinDPO als SOTA-Referenz zitiert wird. (2) Logit-to-Score-Idee als genereller Architektur-Anker: DPO-aligned LLMs können Continuous-Sentiment-Scores liefern statt nur Klassen — das ist für keine Dynasty-Depot-Komponente heute operativ relevant (DEFCON ist Long-Only, kein Sentiment-Signal als Haupt-Faktor), aber konzeptionell wichtig für zukünftige Sentiment-Blöcke im DEFCON-System (Block 'Sentiment' aktuell 10 Pt., manuelle Analysten-Analyse — eine automatisierte DPO-Pipeline wäre denkbar)."
 related: "[[LLM-Preference-Optimization-Finance]], [[Sentiment-Strength-Logit-Extraction]], [[LLM-Investing-Bias-Audit]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[News Sentiment Analysis]]"
 raw: "[[FinDPO: Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs]]"
+aliases:
+  - "FinDPO: Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs"
+
 ---
 
 # Iacovides, Zhou, Mandic — FinDPO (arXiv 2507.18417, 2025)

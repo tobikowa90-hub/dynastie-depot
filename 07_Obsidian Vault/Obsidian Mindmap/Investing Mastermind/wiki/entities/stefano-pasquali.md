@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Arun-et-al-2025-FinReflectKG]
 related: [abhinav-arun, fabrizio-dimino, tejas-prakash-agarwal, bhaskarjit-sarmah, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Stefano Pasquali"
+
 ---
 
 # Stefano Pasquali

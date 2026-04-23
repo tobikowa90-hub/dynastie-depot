@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]
 related: [saralees-nadarajah, rodoumta-koina, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Lebede Ngartera"
+
 ---
 
 # Lebede Ngartera

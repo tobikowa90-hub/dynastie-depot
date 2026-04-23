@@ -5,6 +5,9 @@ tags: [etf, kern, allokation, diversifikation, depot, iwda, eimi, exusa]
 created: 2026-04-10
 updated: 2026-04-10
 related: [depot-state-april-2026, steuer-architektur, defcon-system]
+aliases:
+  - "ETF-Core"
+
 ---
 
 # ETF-Core — Fundament des Depots (65%)

@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Arun-et-al-2025-FinReflectKG]
 related: [fabrizio-dimino, tejas-prakash-agarwal, bhaskarjit-sarmah, stefano-pasquali, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Abhinav Arun"
+
 ---
 
 # Abhinav Arun

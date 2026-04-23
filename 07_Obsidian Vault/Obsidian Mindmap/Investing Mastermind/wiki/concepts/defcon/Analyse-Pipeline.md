@@ -8,6 +8,9 @@ sources: [llms-for-equity-stock-ratings, arXiv-1711.04837]
 related: [DEFCON-System, CapEx-FLAG, ROIC-vs-WACC, Tariff-Exposure-Regel, Non-US-Scoring, Update-Klassen-DEFCON]
 wissenschaftlicher_anker: "B7 (alle 4 Paper) — Fundamentals > Sentiment > Technicals als Datenhierarchie | B10 (JPM 2024) — Chain-of-Thought vor Scoring verbessert Konsistenz und Genauigkeit"
 konfidenzstufe: peer-reviewed
+aliases:
+  - "analyse-pipeline"
+
 ---
 
 # Analyse-Pipeline — Stufe 0 → Entscheidung

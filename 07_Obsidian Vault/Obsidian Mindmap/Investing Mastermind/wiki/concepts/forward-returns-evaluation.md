@@ -6,6 +6,9 @@ created: 2026-04-10
 updated: 2026-04-10
 sources: [llms-for-equity-stock-ratings]
 related: [llm-stock-rating, analyst-stock-ratings, sp-500, financial-fundamentals-analysis, ai-in-investment-analysis]
+aliases:
+  - "Forward Returns Evaluation"
+
 ---
 
 # Forward Returns Evaluation

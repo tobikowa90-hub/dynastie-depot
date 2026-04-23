@@ -6,6 +6,9 @@ created: 2026-04-10
 updated: 2026-04-10
 sources: [llms-for-equity-stock-ratings]
 related: [financial-fundamentals-analysis, chain-of-thought-prompting, news-sentiment-analysis, forward-returns-evaluation, analyst-stock-ratings, gpt-4, ai-in-investment-analysis, defcon-system, analyse-pipeline, dynastie-depot-skill]
+aliases:
+  - "LLM-Based Stock Rating"
+
 ---
 
 # LLM-Based Stock Rating

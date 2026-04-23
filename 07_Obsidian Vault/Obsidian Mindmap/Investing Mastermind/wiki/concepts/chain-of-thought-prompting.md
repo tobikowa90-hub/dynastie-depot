@@ -6,6 +6,9 @@ created: 2026-04-10
 updated: 2026-04-10
 sources: [llms-for-equity-stock-ratings]
 related: [llm-stock-rating, gpt-4, news-sentiment-analysis, ai-in-investment-analysis, defcon-system, analyse-pipeline, dynastie-depot-skill]
+aliases:
+  - "Chain-of-Thought Prompting"
+
 ---
 
 # Chain-of-Thought Prompting

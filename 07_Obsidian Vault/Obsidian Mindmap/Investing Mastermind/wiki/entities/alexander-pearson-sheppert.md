@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Sheppert-2026-GT-Score]
 related: [Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Alexander Pearson Sheppert"
+
 ---
 
 # Alexander Pearson Sheppert

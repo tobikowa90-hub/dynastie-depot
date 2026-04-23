@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Arun-et-al-2025-FinReflectKG, Labre-2025-FinReflectKG-Companion]
 related: [abhinav-arun, tejas-prakash-agarwal, bhaskarjit-sarmah, stefano-pasquali, marcelo-labre, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Fabrizio Dimino"
+
 ---
 
 # Fabrizio Dimino

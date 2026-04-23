@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Arun-et-al-2025-FinReflectKG]
 related: [abhinav-arun, fabrizio-dimino, bhaskarjit-sarmah, stefano-pasquali, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Tejas Prakash Agarwal"
+
 ---
 
 # Tejas Prakash Agarwal

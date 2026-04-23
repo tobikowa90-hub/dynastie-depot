@@ -6,6 +6,9 @@ created: 2026-04-14
 updated: 2026-04-14
 sources: [stock-picking-with-ml, Wolff-Echterling-2023]
 related: [dominik-wolff, sp-500, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Fabian Echterling"
+
 ---
 
 # Fabian Echterling

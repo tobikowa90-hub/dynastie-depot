@@ -3,6 +3,9 @@ tags: [synthese, depot-state, monatlich]
 stand: 2026-04-10
 version: April-2026
 updated: 2026-04-20
+aliases:
+  - "depot-state-april-2026"
+
 ---
 
 # Depot-State — April 2026

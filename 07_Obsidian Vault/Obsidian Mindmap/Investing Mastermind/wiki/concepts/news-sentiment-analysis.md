@@ -6,6 +6,9 @@ created: 2026-04-10
 updated: 2026-04-10
 sources: [llms-for-equity-stock-ratings, Jadhav-Mirza-2025]
 related: [llm-stock-rating, financial-fundamentals-analysis, chain-of-thought-prompting, ai-in-investment-analysis, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "News Sentiment Analysis"
+
 ---
 
 # News Sentiment Analysis

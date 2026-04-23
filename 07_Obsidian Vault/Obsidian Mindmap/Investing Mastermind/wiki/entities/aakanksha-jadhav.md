@@ -6,6 +6,9 @@ created: 2026-04-14
 updated: 2026-04-14
 sources: [large-language-models-equity-markets, Jadhav-Mirza-2025]
 related: [vishal-mirza, ai-in-investment-analysis, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Aakanksha Jadhav"
+
 ---
 
 # Aakanksha Jadhav

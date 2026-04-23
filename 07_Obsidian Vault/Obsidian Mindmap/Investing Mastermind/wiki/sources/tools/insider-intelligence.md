@@ -3,6 +3,9 @@ tags: [skill, tool, insider, form-4, sec, flag, edgar]
 status: aktiv
 version: "1.0"
 stand: 2026-04-06
+aliases:
+  - "insider-intelligence-skill"
+
 ---
 
 # Insider Intelligence Module — Form-4-Automatisierung

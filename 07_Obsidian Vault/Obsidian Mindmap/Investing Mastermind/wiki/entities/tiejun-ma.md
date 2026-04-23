@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Li-Kim-Cucuringu-Ma-2026-FINSABER]
 related: [waylon-li, hyeonjun-kim, mihai-cucuringu, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Tiejun Ma"
+
 ---
 
 # Tiejun Ma

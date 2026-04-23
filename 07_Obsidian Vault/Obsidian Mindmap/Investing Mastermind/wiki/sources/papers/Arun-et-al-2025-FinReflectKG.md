@@ -12,6 +12,9 @@ status: processed
 defcon_relevanz: "Keine DEFCON-Scoring-Änderung. Architektur-Anker für Entscheidung `insider-intelligence` Skill: KG-Mehrwert vs. XML-Direkt-Parsing. Form-4-Insider-Filings sind strukturiertes XML (direkt parsebar) — aber 10-K-Kontext (MD&A, Risk Factors) ist narrativ und KG-extrahiert wertvoller. Codex Round 2: aus 🔴-Cluster auf 🟡 verschoben, weil Form-4 bereits XML = kein zwingender KG-Use-Case. Mögliche Nutzung: Cross-Entity-Queries (z.B. 'welche Satelliten haben Insider-Transactions bei Zuliefern?')."
 related: "[[Labre-2025-FinReflectKG-Companion]], [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[LLM-as-a-Judge-Evaluation]], [[Knowledge-Graph-Architektur-Roadmap]], [[insider-intelligence]]"
 raw: "[[FinReflectKG: Agentic Construction and Evaluation of Financial Knowledge Graphs]]"
+aliases:
+  - "FinReflectKG: Agentic Construction and Evaluation of Financial Knowledge Graphs"
+
 ---
 
 # Arun, Dimino, Agarwal, Sarmah, Pasquali — FinReflectKG (arXiv 2508.17906, 2025)

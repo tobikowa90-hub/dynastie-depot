@@ -6,6 +6,9 @@ source: "[[Novy-Marx-2013]]"
 related: "[[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[F-Score-Quality-Signal]], [[QMJ-Faktor]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
 defcon_block: "Fundamentals (GP/TA als 2-Pt.-Metrik) + Moat (GM-Trend-Bonus bleibt)"
 operative_regel: "GP/TA > 0,33 = 2 Pt. | 0,20–0,33 = 1 Pt. | <0,20 = 0 Pt. Sonderregel COST: Membership-Yield-Proxy analog zu bestehender Screener-Exception."
+aliases:
+  - "Novy-Marx-Gross-Profitability"
+
 ---
 
 # Gross Profitability Premium

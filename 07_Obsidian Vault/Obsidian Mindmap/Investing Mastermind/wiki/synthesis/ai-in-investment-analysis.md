@@ -6,6 +6,9 @@ created: 2026-04-10
 updated: 2026-04-10
 sources: [llms-for-equity-stock-ratings]
 related: [llm-stock-rating, financial-fundamentals-analysis, analyst-stock-ratings, chain-of-thought-prompting, news-sentiment-analysis, forward-returns-evaluation, gpt-4, sp-500, jp-morgan-ai-research, defcon-system, analyse-pipeline, dynastie-depot-skill]
+aliases:
+  - "AI in Investment Analysis"
+
 ---
 
 # AI in Investment Analysis

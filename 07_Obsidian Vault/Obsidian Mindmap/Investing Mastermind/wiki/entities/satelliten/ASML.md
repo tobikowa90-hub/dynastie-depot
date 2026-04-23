@@ -21,7 +21,7 @@ related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie
 # ASML — ASML Holding N.V.
 
 > **DEFCON 🟡 3 | Score 68/100 | Kein FLAG** (Stand 17.04.2026, Post-Q1-Vollanalyse Pfad B)
-> Sparrate: Volle Rate (D3, Gewicht 1.0) | Non-US / IFRS | Kalibrierungsanker in [[Beispiele.md]] (v3.7-Mechanismus: QT beide Zweige hart 0)
+> Sparrate: Volle Rate (D3, Gewicht 1.0) | Non-US / IFRS | Kalibrierungsanker für v3.7-Mechanismus (QT beide Zweige hart 0)
 
 ## Aktuelle Lage (Stand: 17.04.2026 — Post-Q1-Vollanalyse Pfad B)
 

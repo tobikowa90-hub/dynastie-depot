@@ -10,6 +10,9 @@ sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-A
 wissenschaftlicher_anker: "B1–B24 (20 Quellen / 24 Befunde) — kanonische Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]]"
 konfidenzstufe: peer-reviewed
 related: [CapEx-FLAG, ROIC-vs-WACC, Analyse-Pipeline, Tariff-Exposure-Regel, Non-US-Scoring, Update-Klassen-DEFCON, Backtest-Ready-Infrastructure, Score-Archiv, FLAG-Event-Log, Knowledge-Graph-Architektur-Roadmap, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "defcon-system"
+
 ---
 
 # DEFCON-System — 100-Punkte-Scoring-Matrix (v3.7)

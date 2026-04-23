@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Li-Kim-Cucuringu-Ma-2026-FINSABER]
 related: [hyeonjun-kim, mihai-cucuringu, tiejun-ma, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Weixian Waylon Li"
+
 ---
 
 # Weixian Waylon Li

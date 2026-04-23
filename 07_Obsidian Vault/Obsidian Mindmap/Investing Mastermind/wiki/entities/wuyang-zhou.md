@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Iacovides-Zhou-Mandic-2025-FinDPO]
 related: [giorgos-iacovides, danilo-mandic, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Wuyang Zhou"
+
 ---
 
 # Wuyang Zhou

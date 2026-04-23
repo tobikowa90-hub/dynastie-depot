@@ -6,6 +6,9 @@ created: 2026-04-10
 updated: 2026-04-10
 sources: [llms-for-equity-stock-ratings]
 related: [llm-stock-rating, chain-of-thought-prompting, ai-in-investment-analysis, jp-morgan-ai-research]
+aliases:
+  - "GPT-4"
+
 ---
 
 # GPT-4

@@ -11,6 +11,9 @@ status: processed
 defcon_relevanz: "Keine DEFCON-Scoring-Änderung. Ergänzt [[Arun-et-al-2025-FinReflectKG]] um (a) praktische Einordnung des Reflection-Modus und (b) einen vorgeschlagenen Monitoring-Mechanismus für 'Global Semantic Diversity' — Labre weist auf das Paradox hin, dass Reflection zwar CheckRules/Coverage gewinnt, aber Shannon-Entropy nach unten zieht (weniger Varianz, deutlich kompaktere Graph-Struktur). Für Dynasty-Depot relevant als Warn-Lens: bei einer zukünftigen KG-Nutzung im insider-intelligence Skill wäre ein Entropy-Monitor nötig, um nicht durch Reflection-Over-Canonicalisation wichtige Nebenkategorien zu verlieren."
 related: "[[Arun-et-al-2025-FinReflectKG]], [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[Knowledge-Graph-Architektur-Roadmap]]"
 raw: "[[A Look at FinReflectKG: AI-Driven Knowledge Graph in Finance]]"
+aliases:
+  - "A Look at FinReflectKG: AI-Driven Knowledge Graph in Finance"
+
 ---
 
 # Labre — A Look at FinReflectKG (Towards AI, 2025-09-29)

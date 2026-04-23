@@ -6,6 +6,9 @@ created: 2026-04-10
 updated: 2026-04-10
 sources: [llms-for-equity-stock-ratings]
 related: [llm-stock-rating, financial-fundamentals-analysis, chain-of-thought-prompting, news-sentiment-analysis, forward-returns-evaluation, analyst-stock-ratings, jp-morgan-ai-research, gpt-4, sp-500, ai-in-investment-analysis]
+aliases:
+  - "LLMs for Equity Stock Ratings"
+
 ---
 
 # LLMs for Equity Stock Ratings

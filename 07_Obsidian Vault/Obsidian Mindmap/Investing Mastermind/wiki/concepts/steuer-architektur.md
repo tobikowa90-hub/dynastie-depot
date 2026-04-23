@@ -5,6 +5,9 @@ tags: [steuer, finanzen, langfrist, planung, depot, lombardkredit, fifo]
 created: 2026-04-10
 updated: 2026-04-10
 related: [defcon-system, depot-state-april-2026, etf-core]
+aliases:
+  - "Steuer-Architektur"
+
 ---
 
 # Steuer-Architektur — Langfrist-Optimierung

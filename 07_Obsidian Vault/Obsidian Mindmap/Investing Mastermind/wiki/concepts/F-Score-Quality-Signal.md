@@ -6,6 +6,9 @@ source: "[[Piotroski-2000]]"
 related: "[[Accruals-Anomalie-Sloan]], [[Gross-Profitability-Premium]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]], [[FCF-Primacy]]"
 defcon_block: "Fundamentals (Quality-Bonus +2 Pt.)"
 operative_regel: "F-Score ≥7 → +2 Pt. Fundamentals-Bonus. F-Score 4–6 neutral. F-Score ≤3 → -1 Pt. Malus (niedrige Fundamentalqualität)."
+aliases:
+  - "Piotroski-F-Score"
+
 ---
 
 # F-Score als Quality-Signal

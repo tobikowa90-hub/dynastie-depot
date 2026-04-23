@@ -6,6 +6,9 @@ created: 2026-04-20
 updated: 2026-04-20
 sources: [Labre-2025-FinReflectKG-Companion]
 related: [fabrizio-dimino, Wissenschaftliche-Fundierung-DEFCON]
+aliases:
+  - "Marcelo Labre"
+
 ---
 
 # Marcelo Labre

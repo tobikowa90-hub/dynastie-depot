@@ -10,6 +10,9 @@ journal: "Journal of Forecasting (Wiley)"
 status: processed
 defcon_relevanz: "Fundamentals-Block (50 Pt.) — ROIC + FCF + Operating Margin als top-ranked Profitability-Faktoren | Bilanz-Block — EPS-Growth + Leverage als Quality-Faktoren | Non-US validiert: Ergebnisse robust auf STOXX Europe 600"
 related: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[ROIC-vs-WACC]], [[Non-US-Scoring]], [[DEFCON-System]], [[Analyse-Pipeline]]"
+aliases:
+  - "stock-picking-with-ml"
+
 ---
 
 # Stock Picking with Machine Learning
