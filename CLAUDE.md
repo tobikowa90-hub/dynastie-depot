@@ -51,7 +51,7 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 
 **Edge-Cases der Match-Regel:**
 - **Trigger + Wiki-Begriff** (z.B. „!Analysiere TMO und update Vault-Faktortabelle"): Union beider „Lies zusätzlich"-Spalten; Skip-Spalten verlieren Wirkung wenn anderer Trigger die Datei explizit anfordert; Skill-Calls beider Trigger ausführen.
-- **Tippfehler / fast-exakte Trigger** (z.B. `!Analysier`, `!Quickcheck`): Kein Fuzzy-Match. Default-Verhalten + Rückfrage stellen („Meintest du `!Analysiere TMO`?"). Keine Selbstinterpretation.
+- **Tippfehler / fast-exakte Trigger / Case-Drift / Sprach-Varianten** (z.B. `!Analysier`, `!Quickcheck`, `!analysiere`, `!Analyze TMO`): Kein Fuzzy-Match. Trigger sind strikt deutsch und PascalCase (`!Analysiere`, `!QuickCheck`, `!Rebalancing`, `!SyncBriefing`). Default-Verhalten + Rückfrage stellen („Meintest du `!Analysiere TMO`?"). Keine Selbstinterpretation.
 - **Bare Symbol mit Wort-Ambiguität** (z.B. „V"): Soft-Match nur bei Symbolen aus den 11 aktuellen Satelliten-Tickern (siehe STATE.md Portfolio-Tabelle). Bei Zweifel Rückfrage.
 
 ## Wiki-Modus

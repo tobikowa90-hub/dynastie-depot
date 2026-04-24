@@ -14,8 +14,9 @@
 > 2. SESSION-HANDOVER.md (diese Datei) — dieser Resume-Block
 > 3. **CodeRabbit-Pass** via WSL (Memory `coderabbit_cli_via_wsl.md` kanonisch):
 >    ```bash
->    wsl.exe -- bash -lc 'cd "/mnt/c/Users/tobia/OneDrive/Desktop/Claude Stuff" && coderabbit review --plain --base d025c7f --config /dev/null'
+>    wsl.exe -- bash -lc "cd '/mnt/c/Users/tobia/OneDrive/Desktop/Claude Stuff' && coderabbit review --plain --type committed --base-commit d025c7f --config /dev/null"
 >    ```
+>    (Bug-Fix 24.04. Session 2: `--base` interpretiert `d025c7f` als Branch-Name → 339 Files > 150-Limit-Crash; `--base-commit` + `--type committed` scopt korrekt auf Diff-Commits. Quelle: Auto-Memory `coderabbit_cli_via_wsl.md` Z. 12.)
 >    Commit-Range: `d025c7f..HEAD` (12 Commits). Erwartete niedrige Finding-Rate bei Markdown-Refactor; potenzielle Findings: Typos, interne Link-Breaks, Tabellen-Konsistenz. **Sequenz Codex→CodeRabbit** bereits korrekt gelaufen (Codex war Session 1).
 > 4. **Vault-Update-Sweep** — Prüfe zuerst ob `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/concepts/CLAUDE-md-Konstitution.md` existiert; falls ja: strukturell aktualisieren auf neue 7-Section-Struktur (SESSION-INIT / Verhalten / KontLernen / Projektstruktur / Routing-Table / Wiki-Modus / Pointer). Falls nein: neue Konzept-Note anlegen wenn sinnvoll, oder als Backlog-Punkt notieren.
 > 5. Nach Session 2 Abschluss: **Session 3 Brainstorm-Kandidat** = 00_Core Perfect-Organization (siehe STATE.md #12)
