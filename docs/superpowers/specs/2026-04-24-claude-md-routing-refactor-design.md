@@ -113,7 +113,10 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 [v1.0 → v2.4 Block 1:1 aus CLAUDE.md übernommen]
 ```
 
-**Pflicht:** Inhalte werden 1:1 übernommen. Keine Re-Editierung, keine Konsolidierung. Informationsverlust-Aversion (Memory `feedback_information_loss_aversion.md`).
+**Migrations-Invariante (gilt ausschließlich während der Tier-1-Implementierung):**
+Inhalte werden zeichengenau 1:1 aus heutiger CLAUDE.md übernommen. Keine Re-Editierung, keine Konsolidierung, keine Re-Phrasierung, keine Reihenfolge-Änderung der Bullets. Informationsverlust-Aversion (Memory `feedback_information_loss_aversion.md`).
+
+**Trennung Migration vs. Kuration:** Die Pflege-Regel „Thematisch verwandte Bullets konsolidieren" (Kurator-Regel bei Überlauf) gilt **nur für zukünftige Kurations-Zyklen nach abgeschlossenem Deploy**, niemals während der Migration. Konsolidierung ist erlaubt als Anlass-bezogener Schritt mit Historie-Eintrag (analog v2.0-Konsolidierung 18.04.2026), nicht als nebenbei-Aktion während des Refactors.
 
 #### `00_Core/TOKEN-RULES.md`
 
@@ -164,6 +167,21 @@ updated: 2026-04-24
 | Strategie-/Allokations-Frage | KONTEXT.md | Faktortabelle, Wiss-Fundierung | — |
 ```
 
+### Edge-Cases der Match-Regel
+
+Die Hybrid-Match-Regel deckt drei Edge-Cases nicht implizit ab. Sie werden hier explizit normiert:
+
+1. **Trigger + Wiki-Begriff (z.B. „!Analysiere TMO und update Vault-Faktortabelle"):**
+   Beide Trigger matchen → Union der „Lies zusätzlich"-Spalten. Skip-Spalten verlieren ihre Wirkung sobald ein anderer Trigger die jeweilige Datei explizit anfordert (Skip wirkt nur, wenn kein Trigger der Tabelle die Datei anfordert). Skill-Calls beider Trigger werden ausgeführt.
+
+2. **Tippfehler oder fast-exakte Trigger (z.B. `!Analysier`, `!Quickcheck` ohne Camel-Case):**
+   Kein Fuzzy-Match. Behandlung wie Trigger-Miss → Default-Verhalten (`Session starten`-Row), aber Claude MUSS in derselben Antwort eine Rückfrage stellen („Meintest du `!Analysiere TMO`?"). Keine stillschweigende Selbstinterpretation.
+
+3. **Bare Symbol das Ticker UND deutsches Wort sein kann (z.B. „V"):**
+   Ticker-Soft-Match aktiviert sich nur wenn das Symbol zu den **11 aktuellen Satelliten-Tickern** (siehe STATE.md Portfolio-Tabelle) gehört. Mehrdeutige bare Symbole wie „V" matchen, weil V Satellit ist. Symbole wie „A", „M" oder „K" matchen nicht (kein Satellit). Im Zweifelsfall (z.B. unklare Groß/Kleinschreibung) Rückfrage statt Auto-Routing.
+
+Diese drei Klauseln sind Teil des Routing-Verhaltens und werden in der `## Routing-Table`-Section in CLAUDE.md als kompakter Block unter der Tabelle aufgenommen (Implementierung-Plan spezifiziert exakte Formulierung).
+
 ### `## Pointer (Ausgelagertes)` (CLAUDE.md, neue Section am Fuß)
 
 ```markdown
@@ -209,9 +227,14 @@ updated: 2026-04-24
 
 ### APPLIED-LEARNING.md-Pflege
 
+- **SSoT-Status nach Deploy:** APPLIED-LEARNING.md ist nach erfolgreicher Tier-1-Migration die **alleinige Wahrheitsquelle** für Tier-2-Bullets, Pflege-Regeln und Promotion-Logik. CLAUDE.md verweist nur per Pointer. Jede Bullet-Mutation findet ausschließlich in APPLIED-LEARNING.md statt — keine parallele Bullet-Liste in CLAUDE.md, in INSTRUKTIONEN.md oder in Vault-Notes (Konzept-Bezüge bleiben erlaubt, eigene Bullet-Listen nicht).
 - **Proaktive-Pflege-Regel:** Bei jedem Monats-Übergang 5-Min-Scan — Tool-References identifizieren und nach Auto-Memory evakuieren. Unverändert aus heutiger Praxis.
-- **Kurator-Regel bei Überlauf (20/20):** Hybrid-Strategie (Tool-Refs → Auto-Memory, stabile Regeln → INSTRUKTIONEN-§, thematische Konsolidierung). Ziel ≤15/20 nach Revision.
+- **Kurator-Regel bei Überlauf (20/20):** Hybrid-Strategie (Tool-Refs → Auto-Memory, stabile Regeln → INSTRUKTIONEN-§, thematische Konsolidierung). Ziel ≤15/20 nach Revision. Konsolidierung erfolgt nur als bewusster Kuration-Schritt mit Historie-Eintrag (siehe Migrations-Invariante).
 - **Versionshistorie:** Bullet-Zählungen + Promotion-Events + Konsolidierungs-Events werden in `## Historie`-Section nachgehalten (analog v1.0-v2.4).
+
+### TOKEN-RULES.md SSoT-Status
+
+- **Nach Deploy alleinige Wahrheitsquelle** für Token-Effizienz-Regeln. CLAUDE.md verweist nur per Pointer. Falls eine Regel doch in CLAUDE.md zurückkehren soll, MUSS sie aus TOKEN-RULES.md entfernt werden (siehe TOKEN-RULES.md-Pflege „Drift-Prävention" unten). **Keine stillschweigende Doppel-Kuration.**
 
 ### TOKEN-RULES.md-Pflege
 
@@ -227,10 +250,12 @@ updated: 2026-04-24
 4. `### Applied Learning (kuratiert, max. 20 Bullets)` ist aus CLAUDE.md vollständig entfernt; `## Kontinuierliches Lernen` enthält nur die 3-Tier-Tabelle + Pointer-Verweis.
 5. `00_Core/APPLIED-LEARNING.md` existiert mit Frontmatter (name/description/type/updated) und enthält die 12 Bullets, die Pflege-Regeln, die Promotion-Logik und die Historie v1.0-v2.4 — Inhalte 1:1 aus heutiger CLAUDE.md übernommen.
 6. `00_Core/TOKEN-RULES.md` existiert mit Frontmatter (name/description/type/scope/enforcement/updated), explizitem Accessibility-Hinweis und den 6 Regeln aus heutiger CLAUDE.md `## Token-Effizienz (operativ)`.
-7. Routing-Table enthält genau die 9 dokumentierten Zeilen mit den 4 Spalten Trigger / Lies zusätzlich / Skippe / Skill-Call.
-8. `## Pointer (Ausgelagertes)` enthält genau die 3 Zeilen aus dokumentierter Tabelle.
-9. Pre-Move-Grep-Re-Run nach Migration: `grep -n "Applied Learning\|Token-Effizienz" CLAUDE.md` liefert **0 Treffer** (Pointer-Zeile referenziert `APPLIED-LEARNING.md` und `TOKEN-RULES.md` ohne Leerzeichen, matcht das alte Pattern nicht). Externe Files unverändert (keine neuen gebrochenen Anker, alte Konzept-Bezüge bleiben funktional).
-10. Diff-Review: Bullet-Inhalte und Pflege-Regeln sind buchstäblich identisch zu heutiger CLAUDE.md (zeichengenau, ohne Re-Phrasing).
+7. Routing-Table enthält genau die **9 Trigger-Daten-Zeilen** (Tabellen-Header + Markdown-Separator-Zeile zählen nicht) mit den 4 Spalten Trigger / Lies zusätzlich / Skippe / Skill-Call. Direkt unter der Tabelle steht der „Edge-Cases der Match-Regel"-Block mit den 3 normierten Cases.
+8. `## Pointer (Ausgelagertes)` enthält genau die 3 Daten-Zeilen aus dokumentierter Tabelle (Header + Separator nicht mitgezählt).
+9a. **Grep-Check auf alte Headings:** `grep -n "## Token-Effizienz (operativ)\|### Applied Learning (kuratiert" CLAUDE.md` liefert **0 Treffer**. (Pattern matcht die exakten alten Section-Header, nicht Pointer-Zeilen.)
+9b. **Externe-Anker-Check:** `grep -rn "CLAUDE.md#applied-learning\|CLAUDE.md#token-effizienz" 00_Core/ 01_Skills/ 03_Tools/ 07_Obsidian\ Vault/ docs/` liefert **0 Treffer** (nach Migration weiterhin keine externen Anker-Links existent).
+10. **Diff-Verifikation 1:1-Migration:** Implementierungs-Plan stellt ein Verify-Script bereit, das (a) den `### Applied Learning`-Block aus dem Pre-Migration-Commit der CLAUDE.md extrahiert, (b) den Bullet-Block + Pflege-Regeln + Historie aus der neuen `00_Core/APPLIED-LEARNING.md` extrahiert und (c) `git diff --no-index --no-color` zwischen beiden ausgibt. Akzeptanz: nur Frontmatter-Hinzufügung + Heading-Wrapper-Differenzen, kein einziger geänderter Bullet-Text. Analog für `## Token-Effizienz (operativ)` → `00_Core/TOKEN-RULES.md`.
+11. **Negatives Scope-AC (Tier-1-Grenze):** Tier-1-Implementierung ändert keine Dateien außerhalb von (a) `CLAUDE.md`, (b) `00_Core/APPLIED-LEARNING.md` (neu), (c) `00_Core/TOKEN-RULES.md` (neu). Insbesondere keine Edits an `INSTRUKTIONEN.md`, `STATE.md`, `CORE-MEMORY.md`, Vault-Notes, Skill-Files oder Tools. Cross-Link-Updates im Vault sind separater Cleanup-Sweep (siehe Future Work).
 
 ## Future Work / Deferred
 
@@ -261,7 +286,8 @@ Nach Tier-1-Deploy: separater Sweep zur Aktualisierung von `CLAUDE-md-Konstituti
 
 ## Revision History
 
-- **2026-04-24:** Initial draft (Claude Opus 4.7 + User). Brainstorm-Sessions Sections 1+2 (Datei-Layout + CLAUDE.md-Zielstruktur) auf Desktop, Sections 3+4 (Routing-Table + Content-Migration) auf Mobile via /remote-control. Verbindliche Entscheidungen: A=ja (Routing-Table ersetzt On-Demand), B=c (TOKEN-RULES Accessibility), Match=Hybrid, Trigger-Inventar=9 Zeilen, KontLernen=A, TokenEff=X. Advisor-Konsultation auf Desktop adressierte 3 Blind-Spots (Pain #1 Kategorie A vs B, Accessibility-Explizität, Routing-Table-Ersetzung). Pre-Move-Grep ausgeführt — keine gebrochenen Anker. Bezug Memory `feedback_multi_source_drift_check.md` (kein Silent-Fix bei §-Drift in Spec).
+- **2026-04-24 v0.1 (initial draft):** Claude Opus 4.7 + User. Brainstorm-Sessions Sections 1+2 (Datei-Layout + CLAUDE.md-Zielstruktur) auf Desktop, Sections 3+4 (Routing-Table + Content-Migration) auf Mobile via /remote-control. Verbindliche Entscheidungen: A=ja (Routing-Table ersetzt On-Demand), B=c (TOKEN-RULES Accessibility), Match=Hybrid, Trigger-Inventar=9 Zeilen, KontLernen=A, TokenEff=X. Advisor-Konsultation auf Desktop adressierte 3 Blind-Spots (Pain #1 Kategorie A vs B, Accessibility-Explizität, Routing-Table-Ersetzung). Pre-Move-Grep ausgeführt — keine gebrochenen Anker. Bezug Memory `feedback_multi_source_drift_check.md` (kein Silent-Fix bei §-Drift in Spec).
+- **2026-04-24 v0.2 (Codex-Review-Pass):** Codex-Verdict RECOMMEND_REVISE adressiert. Achse 3 (Match-Regel-Edge-Cases): neuer Sub-Abschnitt „Edge-Cases der Match-Regel" mit 3 Cases (Trigger+Wiki-Union, Tippfehler-Rückfrage, Bare-Symbol-Whitelist über STATE.md-Satelliten). Achse 4 (Falsifizierbarkeit): AC #9 in #9a (alte Headings) + #9b (externe Anker) gesplittet, AC #10 mit konkretem `git diff --no-index`-Verify-Script-Anker spezifiziert. Achse 5 (Anti-Hallucination): Migrations-Invariante explizit von Kurations-Regel getrennt, SSoT-Status nach Deploy für APPLIED-LEARNING.md + TOKEN-RULES.md deklariert. Achse 1: AC #7 klargestellt (9 Trigger-Daten-Zeilen, Header/Separator ausgeschlossen). Achse 2: AC #11 Negatives Scope-AC ergänzt (keine Edits außerhalb 3 Files). Bezug Memory `feedback_review_stack.md` (Codex-Reviewer-Slot vor Plan-Writing).
 
 ## Anhang A — Bezug zu projekt-weiten Memories
 
