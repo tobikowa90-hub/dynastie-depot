@@ -1,40 +1,52 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-24 Session-2-Ende — **CLAUDE.md Routing-Refactor Tier 1 VOLLSTÄNDIG CLOSED.**
+**Aktualisiert:** 2026-04-24 Session-3-Ende — **00_Core Perfect-Organization Tier 2 Spec v0.3 RATIFIZIERT (Claude+Codex+Advisor 3-fach-reviewed).**
 
 **Summary:**
 - Session 1: 16 Commits (Tier-1-Execution + AL v2.5 + Sync-Welle + Codex-Reconciliation + Option-B-Compression 97→71 Zeilen)
-- Session 2 (heute): Vault-Update `f9d65d1` (Konstitution-Note auf 7-Section-Struktur) + CodeRabbit-Pass `4cf0ea9` (8 Findings → 3 Fixes / 5 Declines) + STATE/Handover-Close-Commits
+- Session 2 (24.04.): Vault-Update `f9d65d1` (Konstitution-Note auf 7-Section-Struktur) + CodeRabbit-Pass `4cf0ea9` (8 Findings → 3 Fixes / 5 Declines) + STATE/Handover-Close-Commits
+- Session 3 (heute): Brainstorm 00_Core Perfect-Organization abgeschlossen. Scope **B** (a+b+c zusammen). Entscheidungs-Kaskade G2+H1+R2+V-Kompakt+L2+Outbound-only+Markdown+Kopf-Sektion. Spec v0.3 lokal in `docs/superpowers/specs/2026-04-24-00core-perfect-organization-design.md` (gitignored per Design). Claude-Self-Review + Codex-Spec-Review (8 Findings, 2 Blocker + 5 Should + 1 Nice — alle resolved) + Advisor-Coherence-Review (4 Punkte: 1 inline gefixt, 3 deferred-für-Plan-Session). Feature-Branch `refactor/00core-perfect-organization` angelegt.
 
-**Acceptance:** 11/11 AC PASS (2 dokumentierte Abweichungen). Codex `RECONCILED_WITH_FOLLOWUPS` (alle 3 adressiert). CodeRabbit triage-drift-free.
-
-**CR-Command-Bug als Zusatz-Fix:** Session-1-Handover dokumentierte `--base d025c7f`, das interpretiert `d025c7f` als Branch → CR crashte mit „339 Files > 150". Korrektur: `--base-commit d025c7f --type committed`. Auto-Memory `coderabbit_cli_via_wsl.md` war bereits korrekt — Drift nur im Handover-Block.
+**Acceptance (Spec v0.3):** 18 AC dokumentiert, Pre/Post-Migration-Grep-Artefakte spezifiziert, dreifacher Review-Pass durchlaufen. Scoring-neutral (§28.3 Nicht-Migration-Trigger). DEFCON v3.7 unverändert.
 
 **Pending:**
-- Session 3 (Brainstorm-Kandidat): 00_Core Perfect-Organization — Tier-2 STATE-Split Variante-B-Hub + Tier-2b CORE-MEMORY Restrukturierung + Global-Linking-Strategie. Siehe STATE.md Pipeline-Deferred #12.
+- **Session 4 (neu, Plan-Session):** `superpowers:writing-plans` Skill mit Spec v0.3 als Input. 3 offene Klärungen vorher (§10.2 im Spec): (1) PORTFOLIO.md = Primär-Layer ja/nein? (2) Back-Ref-Scope nur 4 neue Files oder +Peers? (3) §18 Union-Regel formal bestätigen?
+- **Session 5 (nach Plan-Review):** Execution via `superpowers:executing-plans` auf Feature-Branch (~3-4h konzentrierte Session). Post-Impl Codex-Reconciliation + CodeRabbit-Pass mandatory.
 
-**Vorherige Aktualisierungen:** 2026-04-24 Session-1-Ende — 16 Commits Tier 1 · 2026-04-24 Mobile — Brainstorm+Spec+Plan (5 Commits) · 2026-04-23 Nachmittag — Phase G (TMO Q1 DONE) · 2026-04-22 Spät — Task 19 + Fix-Welle E · 2026-04-22 Mittag — Tasks 15-18 · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D.
+**Vorherige Aktualisierungen:** 2026-04-24 Session-2-Ende — Vault + CR-Pass (Tier 1 closed) · 2026-04-24 Session-1-Ende — 16 Commits Tier 1 · 2026-04-24 Mobile — Brainstorm+Spec+Plan (5 Commits) · 2026-04-23 Nachmittag — Phase G (TMO Q1 DONE) · 2026-04-22 Spät — Task 19 + Fix-Welle E · 2026-04-22 Mittag — Tasks 15-18.
 
-> **Progress-Banner Tier 1:** ✅ Brainstorm (Desktop 24.04.) · ✅ Spec v0.2 (Mobile) · ✅ Plan v0.2.1 3-fach-reviewed (Mobile) · ✅ Execution (Session 1) · ✅ Sync-Welle (STATE + CORE-MEMORY) · ✅ Codex-Reconciliation · ✅ Option-B-Compression (86→71 Zeilen) · ✅ **Vault-Update-Sweep** (Session 2) · ✅ **CodeRabbit-Pass** (Session 2, 3/8 Fixes, 5 begründete Declines).
+> **Progress-Banner Tier 2 (00_Core Perfect-Organization):** ✅ Brainstorm (Session 3, Desktop) · ✅ Spec v0.3 3-fach-reviewed (Claude+Codex+Advisor) · ⏳ Plan-Session (Session 4) · ⏳ Execution (Session 5).
 
-> **🔄 RESUME-INPUT (Session 3 — 00_Core Perfect-Organization Brainstorm, 2026-04-24 Session-2-Ende):**
+> **🔄 RESUME-INPUT (Session 4 — Plan-Session, 2026-04-24 Session-3-Ende):**
 >
-> **Auftrag:** Brainstorm-Session (nicht Execution) zur Vision „perfekt organisierter + global verknüpfter `00_Core/`-Ordner". Kandidaten-Scope siehe STATE.md Pipeline-Deferred #12:
-> - (a) Tier-2b CORE-MEMORY Restrukturierung (~45 §1-Einträge → Subkategorien + Verknüpfung zu adressierten System-Elementen)
-> - (b) Tier-2 STATE-Split Variante-B-Hub (STATE.md ~10-Z-Hub + PORTFOLIO.md / PIPELINE.md / SYSTEM.md)
-> - (c) Global-Linking-Strategie (Back-Refs zwischen 00_Core-Files)
-> - (d) Vault-Integration (Wiki-Concepts strukturell auf neue 00_Core-Struktur beziehen?)
-> - (e) insider-intelligence SKILL §215 Snapshot-First-Block-Review (aus 24.04. Session 1 Cross-Ref-Pass): einzigartig vs. Duplikat von TOKEN-RULES.md Snapshot-First?
+> **Auftrag:** Execution-Plan schreiben für den in Session 3 ratifizierten Spec v0.3 „00_Core Perfect-Organization Tier 2" (STATE-Split + CORE-MEMORY-Refactor + L2-Back-Refs). Skill: `superpowers:writing-plans`.
 >
-> **Arbeits-Modus:** Section-by-Section + Approval-Gate (`superpowers:brainstorming`-Skill Pflicht). Kein Spec, kein Plan bis Approval aller Sections. **HARD-GATE:** keine Write/Edit an 00_Core-Files oder Vault bis Spec-Approval.
+> **Setup (erstes im Session-Start):**
+> 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung.
+> 2. **`git checkout refactor/00core-perfect-organization`** (Branch ist bereits angelegt).
+> 3. Spec lesen: `docs/superpowers/specs/2026-04-24-00core-perfect-organization-design.md` (lokal, gitignored).
+> 4. Diese SESSION-HANDOVER.md (dieser Block).
 >
-> **Sequenz für Session 3:**
-> 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung
-> 2. SESSION-HANDOVER.md (diese Datei) — dieser Resume-Block
-> 3. Brainstorming-Skill aktivieren, Scope-Kandidaten (a)-(e) als Start-Punkte nehmen
-> 4. Sections 1+2+3... durcharbeiten bis Spec-Ready
+> **3 offene Klärungen vor Plan-Finalisierung (§10.2 im Spec — Advisor-Flagged):**
 >
-> **Nicht-Scope Session 3:** Execution. Nach Brainstorm-Approval → Spec (separate Session) → Plan (separate Session) → Execution (separate Session), analog Tier-1-Sequenz.
+> 1. **PORTFOLIO.md = Primär-Layer-Framing?** Aktuell INSTRUKTIONEN.md Z530-539 framed STATE.md als Projektion. Spec v0.3 verschiebt PORTFOLIO.md in Primärquellen (edit-direkt legitim). Soll das bestätigt werden — oder Projektions-Disziplin beibehalten (PORTFOLIO nur über Faktortabelle/CORE-MEMORY updaten)?
+> 2. **Back-Ref-Scope:** Verweise-Kopf in nur 4 neuen Files (Hub, PORTFOLIO, PIPELINE, SYSTEM) oder +modifizierte Peers (SESSION-HANDOVER, TOKEN-RULES, KONTEXT, Faktortabelle, INSTRUKTIONEN, CORE-MEMORY)?
+> 3. **§18 Multi-Event-Union-Regel:** "Wenn Aktion mehrere Event-Typen berührt → alle Sets" als formaler Teil des §18-Contracts bestätigen?
+>
+> **Sequenz für Session 4:**
+> 1. Setup-Schritte 1-4.
+> 2. 3 Klärungen mit User abhandeln (~5 Min).
+> 3. Spec ggf. auf v0.4 anheben mit User-Antworten.
+> 4. `superpowers:writing-plans` Skill-Call mit finalisiertem Spec als Input.
+> 5. Plan → `docs/superpowers/plans/2026-04-??-00core-perfect-organization.md` mit **Task-0 Pre-Migration-Grep als erster Task** + 9 Phasen gemäß Spec §8.
+> 6. Plan-Review: Claude self + Codex + User (CodeRabbit nicht in dieser Stage — Post-Impl mandatory).
+>
+> **Nicht-Scope Session 4:** Execution. Keine Write/Edit an 00_Core-Files, Skills, Scripts, Vault bis Plan-Approval + eigene Execution-Session.
+>
+> **Wichtige Notizen für Session 4:**
+> - CORE-MEMORY §1 hat heute (24.04.) neuen Session-3-Eintrag bekommen. Dieser wird in Phase 3 der Migration nach §13 (System-Lifecycle-History, `[Meta]`-Topic) verschoben. Kein Sonderfall — normale Migration.
+> - Skill-Versions: `dynastie-depot` bleibt bis Execution v3.7.2 (Bump auf v3.7.3 in Phase 7); `backtest-ready-forward-verify` bleibt 1.0.0 (Bump auf 1.0.1 in Phase 7).
+> - Feature-Branch hat keine Commits außer dem Branch-Create selbst (Spec ist gitignored). Merge in main erst nach vollständigem Execution + Review-Gate.
 >
 > ---
 >
