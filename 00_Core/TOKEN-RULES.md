@@ -30,3 +30,5 @@ Skill-interne Token-Regeln (Workflow-Details in DEFCON-Analyse-Kontext) leben in
 - **§795 Token-Budget-Benchmark:** ~12-18k Werktag | ~2-3k Wochenende (pro !Analysiere-Lauf)
 
 Diese Datei bleibt SSoT für **allgemeine** Session-Token-Regeln; skill-spezifische Details bleiben kontextnah im Skill.
+
+**Konvention:** Skill-interne Token-Regeln nur bei Skills mit **einzigartigem Token-Profil** (eigene Compact-Schwellen, Budget-Benchmarks, MCP-Aktivierungs-Pattern). Leichte oder programmatische Skills (z.B. `backtest-ready-forward-verify`, `non-us-fundamentals`, `quick-screener`) nutzen TOKEN-RULES.md als Baseline, ohne eigene Regeln.

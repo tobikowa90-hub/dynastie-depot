@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-24 Session-1-Ende — **CLAUDE.md Routing-Refactor Tier 1 EXECUTION + Sync-Welle + Codex-Reconciliation DONE.** Plan v0.2.1 (8 Tasks) + Section-A (AL v2.5) + STATE.md Pipeline-SSoT + CORE-MEMORY §1 + Codex-Fix + Option-B-Compression + Handover-Close + TOKEN-RULES-CrossRef = **14 Commits**, alle LOKAL auf `main`. **CLAUDE.md 97→71 Zeilen** (Spec-Ziel ~70 erreicht). 11/11 AC PASS mit 2 dokumentierten Abweichungen. Codex-Verdikt `RECONCILED_WITH_FOLLOWUPS`, alle 3 Findings abgearbeitet (#1 Plan-intentional, #2 minor accepted, #3 Tool-Setups-Descriptor restauriert). **Session 2 PENDING:** CodeRabbit-Pass (WSL) + Vault-Update-Sweep. **Session 3 (Brainstorm-Kandidat):** 00_Core Perfect-Organization (Tier 2b CORE-MEMORY Restrukturierung + Tier 2 STATE-Split + Global-Linking-Strategie) — siehe STATE.md #12.
+**Aktualisiert:** 2026-04-24 Session-1-Ende — **CLAUDE.md Routing-Refactor Tier 1 EXECUTION + Sync-Welle + Codex-Reconciliation DONE.** Plan v0.2.1 (8 Tasks) + Section-A (AL v2.5) + STATE.md Pipeline-SSoT + CORE-MEMORY §1 + Codex-Fix + Option-B-Compression + Handover-Close + TOKEN-RULES-CrossRef + Skill-Review-Convention = **16 Commits**, alle LOKAL auf `main`. **CLAUDE.md 97→71 Zeilen** (Spec-Ziel ~70 erreicht). 11/11 AC PASS mit 2 dokumentierten Abweichungen. Codex-Verdikt `RECONCILED_WITH_FOLLOWUPS`, alle 3 Findings abgearbeitet (#1 Plan-intentional, #2 minor accepted, #3 Tool-Setups-Descriptor restauriert). **Session 2 PENDING:** CodeRabbit-Pass (WSL) + Vault-Update-Sweep. **Session 3 (Brainstorm-Kandidat):** 00_Core Perfect-Organization (Tier 2b CORE-MEMORY Restrukturierung + Tier 2 STATE-Split + Global-Linking-Strategie) — siehe STATE.md #12.
 **Vorherige Aktualisierungen:** 2026-04-24 Mobile — Brainstorm+Spec+Plan CLAUDE.md-Routing (DONE, 5 Commits) · 2026-04-23 Nachmittag — Phase G (TMO Q1 DONE) · 2026-04-22 Spät — Task 19 + Fix-Welle E · 2026-04-22 Mittag — Tasks 15-18 · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D.
 
 > **Progress-Banner Tier 1:** ✅ Brainstorm (Desktop 24.04.) · ✅ Spec v0.2 (Mobile) · ✅ Plan v0.2.1 3-fach-reviewed (Mobile) · ✅ **Execution** (Session 1 heute, 8 Tasks + Section A) · ✅ **Sync-Welle** (STATE + CORE-MEMORY) · ✅ **Codex-Reconciliation** · ✅ **Option-B-Compression** (86→71 Zeilen, Spec-Ziel erreicht) · ⏳ **CodeRabbit-Pass** (Session 2) · ⏳ **Vault-Update-Sweep** (Session 2).
@@ -41,7 +41,7 @@
 > - `03_Tools/Rebalancing_Tool_v3.4.xlsx` — Excel-Autosave
 > - `.claude/scheduled_tasks.lock` + `.claude/worktrees/` — Runtime-Files
 >
-> **Push-Status:** Alle 14 Commits LOKAL auf `main`. Kein `git push`. Briefing-Sync per `!SyncBriefing` falls User das will (00_Core/-Edits in STATE+CORE-MEMORY+APPLIED-LEARNING+TOKEN-RULES+SESSION-HANDOVER vorhanden).
+> **Push-Status:** Alle 16 Commits LOKAL auf `main`. Kein `git push`. Briefing-Sync per `!SyncBriefing` falls User das will (00_Core/-Edits in STATE+CORE-MEMORY+APPLIED-LEARNING+TOKEN-RULES+SESSION-HANDOVER vorhanden).
 
 ---
 
