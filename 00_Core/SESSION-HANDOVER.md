@@ -1,11 +1,40 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-23 Nachmittag — **Phase G (TMO Q1) DONE** ✅ Beat + Guidance-Raise, Score 64→67, D2→D3, `fcf_trend_neg` Resolve-Gate CLEAR. Sync-Welle 5 Files + Score-Record Old-Pipeline committed (`620702a`). Chore-Commit CLAUDE.md + system_audit.py (`0f043c7`). **Post-Reset-Aufgabe:** Retro-Migration TMO-Record via `backtest-ready-forward-verify`-Skill (erster echter Skill-Forward-Run) + XLSX-Tools-Update (Rebalancing_Tool + Satelliten_Monitor) einmalig gegen validierten Record. Vorher: 2026-04-23 Morgen — Konsolidierungstag-Agenda erweitert um Block 0c (Track 5a/5b-Entscheidungspunkt). 2026-04-22 Nacht (+Dashboard-Session) — Live Artifact v1 deployed + Dashboard v2 auf Konsolidierungstag Fr 24.04. deferred. Phase E 19/19 DONE, Closure-Commit `57bee6b`.
+**Aktualisiert:** 2026-04-24 spät — **Jake-Van-Clief-Video-Analyse abgeschlossen** (Wiki-Source-Page `wiki/sources/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents.md` uncommitted — Third-Run ingest-video-Pipeline, large-v3, 5879s whisper-Runtime, 321 Segments, Quality-Gate PASS). Adoption-Verdikt **`pending-brainstorm`** — vorläufige Analyse ergab ~80%-Already-Implemented-Deckung, aber User-Pain liegt an anderer Stelle → Brainstorm in neuer Session nach /clear (siehe Block „Nächste Session" unten). Null Commit. Vorher (2026-04-23 Nachmittag): **Phase G (TMO Q1) DONE** Beat + Guidance-Raise, Score 64→67, D2→D3, `fcf_trend_neg` Resolve-Gate CLEAR. Sync-Welle 5 Files + Score-Record Old-Pipeline committed (`620702a`). Chore-Commit CLAUDE.md + system_audit.py (`0f043c7`).
 **Vorherige Aktualisierungen:** 2026-04-22 Spät — Task 19 + Fix-Welle E (`d7ecf71`/`e3ba381`) · 2026-04-22 Mittag — Tasks 15-18 (`486f2c1`/`fa238bf`/`ab7ae19`/`ca35f62` + Handover `51f5719`) · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D (`ab6b3f5`).
 
-> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E · 🔵 F deferred · ✅ G (TMO Q1 Beat+Raise, Old-Pipeline-Sync `620702a`) · ✅ TMO-Retro-Audit Option B (`2513108`) · ✅ XLSX-Tools Sync (`5ccfdd1` + `a413c32` R-Column-Fix) · ✅ Daily-Persist-Nachtrag (`8a4008b`) · ✅ Check-3+Check-6 system-audit Fixes (`c07f2c3`) · ✅ Video-Ingest Second-Run Dubibubii + Adoption-Decision 4R/2O/1A (`ea48e2a`) · ⏳ **Konsolidierungstag Fr 24.04.** (Block 1 schrumpft um 2 Items, Block 3 Dashboard v2).
+> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E · 🔵 F deferred · ✅ G (TMO Q1 Beat+Raise, Old-Pipeline-Sync `620702a`) · ✅ TMO-Retro-Audit Option B (`2513108`) · ✅ XLSX-Tools Sync (`5ccfdd1` + `a413c32` R-Column-Fix) · ✅ Daily-Persist-Nachtrag (`8a4008b`) · ✅ Check-3+Check-6 system-audit Fixes (`c07f2c3`) · ✅ Video-Ingest Second-Run Dubibubii + Adoption-Decision 4R/2O/1A (`ea48e2a`) · ✅ Video-Ingest Third-Run Jake Van Clief + Analyse uncommitted (`pending-brainstorm`) · ⏳ **Konsolidierungstag Fr 24.04.** (Block 1 schrumpft um 2 Items, Block 3 Dashboard v2) · ⏳ **Brainstorm-Session Session-Start-Optimierung** (neu, siehe unten).
 
-> **🎬 WICHTIG FÜR NÄCHSTE SESSION (/clear 23.04. 22:35 local):** Video-Ingest Jake Van Clief „Stop Building AI Agents. Use This Folder System Instead." läuft als OS-Subprocess (whisper large-v3 auf 23,3 min Audio, Start 21:47 local). **Bei Session-Start prüfen:** `ls "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents/"` — wenn `transcript.md` + `run.log` da → Ingest fertig → Content-Analyse starten. Analyse-Pattern analog Dubibubii-Ingest (`ea48e2a`): Source-Credibility-Block + 6-Mechaniken-Extraktion + Adoption-Matrix gegen Dynasty-Depot-Korrektheits-Primat. **User-Intent:** Video ist Eingabe für **potenzielle systemweite Reorg-Diskussion** (Filesystem + CLAUDE.md-Struktur + Backlink-Cleanup, analog Vault-100%-Closure von gestern). Wenn Content tragfähig → via `superpowers:brainstorming` Reorg-Plan skizzieren, **erst danach** ausführen.
+> **🧠 NÄCHSTE SESSION (/clear 2026-04-24 spät) — BRAINSTORM-INPUT:**
+>
+> **Auftrag:** Frischer `superpowers:brainstorming`-Start **ohne Vor-Framing durch vorherige Session**. Thema = CLAUDE.md ideal strukturieren + Session-Start-Token-Cost reduzieren + globale Verlinkung / Orphan-Elimination.
+>
+> **User-Pain-Points (verbatim eingelegt):**
+> 1. **Session-Start-Cost steigt** zunehmend — CLAUDE.md + STATE.md + MEMORY-Index + Skill-Listings akkumulieren.
+> 2. **CLAUDE.md nicht ideal strukturiert** — Mischung aus Routing + Applied-Learning + Token-Rules + Auto-Memory + Wiki-Hinweis.
+> 3. **Token-Effizienz-Regeln „global"** anwenden und „besser mit allen Aufgaben, Syncs usw verbinden" — Rules sollen über mehr Workflows greifen, nicht nur projektlokal in CLAUDE.md versteckt.
+> 4. **Fehlende globale Verlinkung** — analog Vault-100%-Closure (Orphans + Missing-Backlinks) wünscht User auch für Root-Ordner **Visibility-Layer**, **nicht** strukturellen Rewrite. Zitat: „kein grundlegender rewrite der gesamten struktur! Das zerstört uns ja das system".
+>
+> **Constraints (verbindlich):**
+> - **Kein struktureller Reorg** — keine File-Moves, keine neuen Verzeichnisse, keine Umbenennungen von Kerndateien (STATE.md, CLAUDE.md, INSTRUKTIONEN.md, CORE-MEMORY.md bleiben wo sie sind).
+> - In-Place-Content-Polish OK (z.B. CLAUDE.md schlanker, Applied-Learning-Ceiling straffer).
+> - **Visibility-Layer-Fokus** für Orphans/Backlinks (system_audit-Erweiterung ist Kandidat, nicht automatisch gesetzt).
+> - **Jake Van Clief's 7 Mechaniken** sind **Input, kein Plan** — siehe Wiki-Source-Page. Vorläufiges Verdikt ~80%-Already-Implemented. Jake's #3 Routing-Table ist `deferred`, Rest `already-implemented`/`observe`/`reject-partial`.
+>
+> **Verworfen in vorheriger Brainstorm-Runde (nicht wieder vorschlagen ohne neuen Evidenz-Input):**
+> - STATE.md-Zerlegung in PIPELINE.md/SYSTEM.md
+> - Applied-Learning in separate Datei bewegen
+> - Workspace-Explicit-Labeling mit pro-Workspace-CLAUDE.mds
+> - Jake-Komplett-Adoption
+>
+> **Quellen-Referenzen für Brainstorm:**
+> - Wiki-Source: `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/sources/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents.md` (7 Mechaniken + Adoption-Matrix + Meta-Befund)
+> - Dubibubii-Präzedenz (inverse Polarität): `…/2026-04-22-dubibubii-claude-code-powerful-settings.md`
+> - Memory `feedback_friction_as_evidence.md` (Creator-Video-Skepsis-Pattern)
+> - Memory `feedback_multi_source_drift_check.md` (21.04.-Drift-Lesson)
+> - Transkript Raw: `…/raw/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents/transcript.md`
+>
+> **Pre-Aktion Session-Start:** User clearen → STATE.md lesen → diesen Handover-Block lesen → Wiki-Source-Page **nicht automatisch** lesen (nur wenn Brainstorm dorthin geht) → frische Fragen stellen, nicht mit Lösungsvorschlägen starten.
 
 ---
 
