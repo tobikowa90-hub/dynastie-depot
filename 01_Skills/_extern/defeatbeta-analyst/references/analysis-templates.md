@@ -5,7 +5,7 @@
 **How to use this file**:
 - Use these templates as reference guides for comprehensive analysis workflows
 - Each template provides detailed API call sequences and decision criteria
-- For API reference, best practices, and general guidelines, see **SKILL-defeatbeta-analyst.md**
+- For API reference, best practices, and general guidelines, see **SKILL.md**
 
 ---
 

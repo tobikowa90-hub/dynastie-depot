@@ -32,6 +32,9 @@ desktop.ini
 # Claude Code personal settings (per-user permissions, not for remote agents)
 .claude/settings.local.json
 
+# Claude Code skill-discovery junctions (Windows NTFS-local, no cross-OS meaning)
+.claude/skills/
+
 # Python bytecode cache
 __pycache__/
 *.pyc

@@ -356,7 +356,7 @@ def parse_form4_xml(xml_text: str, filing_date: str) -> list[dict]:
 def _classify_transaction(tx_code: str, is_10b51: bool, price: float) -> str:
     """Klassifiziere Transaktion fuer DEFCON-Relevanz.
 
-    Mapping (aus sources.md / SKILL-insider-intelligence.md):
+    Mapping (aus sources.md / SKILL.md):
     - P = Open-Market-Kauf → positiv
     - S + 10b5-1 = Plan-Verkauf → neutral (kein FLAG)
     - S ohne 10b5-1 = Diskretionaerer Verkauf → potenziell FLAG
@@ -572,7 +572,7 @@ def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
 def _score_net_buy(net_value: float, buy_value: float) -> int:
     """Net Buy letzte 6 Monate (max 4 Punkte).
 
-    Skala (aus SKILL-insider-intelligence.md Insider-Block):
+    Skala (aus SKILL.md Insider-Block):
     4 = starke Net Buys (>$5M)
     3 = moderate Net Buys (>$1M)
     2 = leichte Net Buys (>$0)

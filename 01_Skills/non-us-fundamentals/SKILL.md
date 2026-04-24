@@ -182,7 +182,7 @@ Bei `!Analysiere [Non-US-TICKER]` (ASML, RMS, SU):
 5. Tariff-Exposure-Check: ASML (CN-Exportrestriktionen) manuell via 20-F
 
 **Bei !Analysiere US-Ticker:** Dieses Modul wird NICHT verwendet.
-→ Shibui SQL + defeatbeta MCP (siehe mainSKILL-non-us-fundamentals.md)
+→ Shibui SQL + defeatbeta MCP (siehe dynastie-depot SKILL.md)
 
 ---
 

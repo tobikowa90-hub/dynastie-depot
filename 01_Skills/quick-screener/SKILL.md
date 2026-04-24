@@ -45,7 +45,7 @@ Grauzone. Komplexitaet gehoert in Stufe 2 (DEFCON), nicht hier.
 
 | Datei | Wann lesen |
 |-------|------------|
-| `SKILL-quick-screener.md` (diese Datei) | Immer — Logik, Workflows, Regeln |
+| `SKILL.md` (diese Datei) | Immer — Logik, Workflows, Regeln |
 | `references/thresholds.md` | Bei jeder Screening-Ausfuehrung — Schwellenwerte, Ausnahmen |
 | `scripts/screen.py` | Bei CSV-Import oder Template-Erstellung — ausfuehren, nicht lesen |
 

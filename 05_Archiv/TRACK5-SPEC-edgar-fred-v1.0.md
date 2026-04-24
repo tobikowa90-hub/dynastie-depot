@@ -44,7 +44,7 @@ Dieser Track adressiert beides **parallel** in zwei klar getrennten Sub-Tracks. 
 ### 2.2 Was verändert sich
 
 **Vorher (Status quo):**
-- `01_Skills/_extern/sec-edgar-skill/SKILL-sec-edgar-skill.md` — liegt als read-only Referenz vor, **nicht aktiv**
+- `01_Skills/_extern/sec-edgar-skill/SKILL.md` — liegt als read-only Referenz vor, **nicht aktiv**
 - WebFetch-Permission auf `efts.sec.gov` — HTML-Scraping als Fallback
 - `insider_intel.py` nutzt eigene SEC-EDGAR-Form-4-Pipeline
 
@@ -302,7 +302,7 @@ Folgende Punkte werden im nachgelagerten **Implementation-Plan** (via `writing-p
 - `00_Core/SESSION-HANDOVER.md` §Track 5 (Vorherige Codex-Empfehlung, 2026-04-19)
 - `00_Core/CORE-MEMORY.md` §5 (Audit-Log-Eintrag nach Go-Live)
 - `00_Core/INSTRUKTIONEN.md` §19 (API-Routing), §22 (Skill-Referenz), §31 (neu: Macro-Regime-Filter)
-- `01_Skills/_extern/sec-edgar-skill/SKILL-sec-edgar-skill.md` (EdgarTools-Referenz-Skill)
+- `01_Skills/_extern/sec-edgar-skill/SKILL.md` (EdgarTools-Referenz-Skill)
 - `05_Archiv/portfolio_returns.jsonl` Schema v1.0 (existing)
 - `05_Archiv/score_history.jsonl` Schema (existing, unaffected)
 - FRED-Serien: `BAMLH0A0HYM2` (HY-OAS), `T10Y2Y` (Treasury-Curve), `NAPM` (ISM PMI)
