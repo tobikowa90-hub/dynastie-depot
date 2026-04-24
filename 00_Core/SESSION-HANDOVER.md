@@ -1,6 +1,42 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-24 Session-2-Ende — **CLAUDE.md Routing-Refactor Tier 1 VOLLSTÄNDIG CLOSED.**
+**Aktualisiert:** 2026-04-25 Session-3-Ende — **00_Core Perfect-Organization Tier 2: Task 0-3 DONE** (Feature-Branch `refactor/00core-perfect-organization`, Commits `2f3cf92` → `42b9905` → `f798f0a` → `326fa42`). **Task 4-9 OPEN.** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` (Spec v0.4 ratified, 18 AC). Substantive Änderungen dieser Session: Task 3 CORE-MEMORY §1→§12/§13 Topic-Auflösung — 11 Ticker-Sub-§ + 26-Zeilen-Lifecycle-Tabelle + §6 slim Changelog + §9b gelöscht + Verweise-Kopf. AC #6 Greps 6/6 PASS, `system_audit --minimal-baseline` 3/3 PASS, scoring-neutral. Zwei advisor-pre-commit-Fixes appliziert: (1) MSFT-Wording „§5 Screener-Exception #5" → „SKILL.md Screener-Exception #5" korrigiert (war falsche Cross-Ref), (2) AVGO/MSFT/VEEV Cross-Ref-Bullets statt Prose-Placeholder (folgt Plan-Pattern für doppelrelevante Events aus Step 3.4). **Portfolio-State unverändert** seit 23.04. TMO Q1 Beat. System: DEFCON v3.7 (unverändert).
+
+## 🔄 RESUME-INPUT (Session 4 — Task 4 Script-Patches TDD-Order, 2026-04-25 Session-3-Ende)
+
+**Auftrag:** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` ab **Task 4** via `superpowers:executing-plans` fortsetzen. Branch `refactor/00core-perfect-organization` bleibt checked out.
+
+**Task 4 Kern (TDD-Order kritisch — Tripwire-RED vor GREEN):**
+1. Step 4.1-4.3: `_forward_verify_helpers.py` Tripwire STATE.md → PORTFOLIO.md — erst `_smoke_test.py`-Fixture auf PORTFOLIO-Snippet umstellen (RED), dann Helper-Code anpassen (GREEN). Beide Smoke-Runs explizit zeigen.
+2. Step 4.4-4.7: `system_audit/checks/*` Pfad-Listen erweitern (pipeline_ssot → PIPELINE.md, markdown_header + existence + cross_source um PORTFOLIO/PIPELINE/SYSTEM).
+3. Step 4.8: Fixtures `state_hub_ok.md` + `portfolio_ok.md` + `pipeline_ok.md` + `system_ok.md` neu anlegen (minimale Section-Anchors).
+4. Step 4.9-4.11: `_smoke_test.py` + `_smoke_temp_repo.py` Content-Assertions auf Hub-Schema; `report.py` prüfen; kompletter Smoke-Sweep muss PASS.
+5. Step 4.12: `briefing-sync-check.ps1` CheckedFiles-Liste um PORTFOLIO/PIPELINE/SYSTEM erweitern.
+6. Step 4.13-4.15: `backfill_flags.py` + `backfill_scores.py` + `flag_event_study.py` — CORE-MEMORY §1-Refs auf §12/§13 umleiten (Ticker-Bezug → §12, kein Ticker-Bezug → §13, §3/§4 bleiben).
+7. Step 4.16-4.17: Smoke-Sweep + atomarer Commit.
+
+**AC-Bezug:** AC #9 `--minimal-baseline` 3/3 PASS muss auch nach Task 4 halten; AC #11 Skill-Smoke PASS.
+
+**Sequenz für Session 4:**
+1. `Session starten` → STATE.md (Default) lesen
+2. SESSION-HANDOVER.md (diese Datei) — dieser Resume-Block
+3. Plan re-lesen ab Task 4 (Zeilen 621+)
+4. Step 4.1 grep auf `_forward_verify_helpers.py` STATE.md-Stellen → notieren
+5. Step 4.2 RED-State fabrizieren → PASS → Step 4.3 GREEN
+6. Weiter Step 4.4+ exakt Plan-Steps
+7. Commit-Message pattern `refactor(scripts): Task-4 Tool-Patches für 00_Core-Split` (Plan Step 4.17 Template)
+
+**Post-Task-4:** Task 5 Skill-Patches + 6 Peer-Verweise (dynastie-depot v3.7.3, backtest-ready-forward-verify 1.0.1, SKILL.md + Prompts + SESSION-HANDOVER/TOKEN-RULES/KONTEXT/Faktortabelle Verweise-Kopf). Task 6 CLAUDE.md + INSTRUKTIONEN §18-Rename. Task 7+ Governance, ZIP-Build, Post-Migration-Audit, Merge.
+
+**Spec-Anker:** `docs/superpowers/specs/2026-04-24-00core-perfect-organization-design.md` v0.4 ratified.
+
+**Durchgeführte Verifikationen dieser Session (Task 3):** AC #6 `grep ^## 1\.`=0, `grep ^## 9b\.`=0, `grep ^## 12\. Per-Ticker-Chronik`=1, `grep ^### 12\.`=11, `grep ^## 13\. System-Lifecycle`=1, `awk '/^## 6\./,/^## 7\./' | wc -l`=24 (≤50 PASS). `system_audit --minimal-baseline` rc=0 vor + nach Commit.
+
+---
+
+## 🗃 Vorherige Aktualisierungen
+
+**2026-04-24 Session-2-Ende — CLAUDE.md Routing-Refactor Tier 1 VOLLSTÄNDIG CLOSED.**
 
 ## 🏛 STATE-Banner-Chronik (migriert aus STATE.md Header 2026-04-24)
 
