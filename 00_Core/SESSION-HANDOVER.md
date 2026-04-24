@@ -1,40 +1,145 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-24 spät — **Jake-Van-Clief-Video-Analyse abgeschlossen** (Wiki-Source-Page `wiki/sources/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents.md` uncommitted — Third-Run ingest-video-Pipeline, large-v3, 5879s whisper-Runtime, 321 Segments, Quality-Gate PASS). Adoption-Verdikt **`pending-brainstorm`** — vorläufige Analyse ergab ~80%-Already-Implemented-Deckung, aber User-Pain liegt an anderer Stelle → Brainstorm in neuer Session nach /clear (siehe Block „Nächste Session" unten). Null Commit. Vorher (2026-04-23 Nachmittag): **Phase G (TMO Q1) DONE** Beat + Guidance-Raise, Score 64→67, D2→D3, `fcf_trend_neg` Resolve-Gate CLEAR. Sync-Welle 5 Files + Score-Record Old-Pipeline committed (`620702a`). Chore-Commit CLAUDE.md + system_audit.py (`0f043c7`).
-**Vorherige Aktualisierungen:** 2026-04-22 Spät — Task 19 + Fix-Welle E (`d7ecf71`/`e3ba381`) · 2026-04-22 Mittag — Tasks 15-18 (`486f2c1`/`fa238bf`/`ab7ae19`/`ca35f62` + Handover `51f5719`) · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D (`ab6b3f5`).
+**Aktualisiert:** 2026-04-24 Mobile-Session-Ende — **Brainstorm + Spec + Plan CLAUDE.md-Routing-Refactor (Tier 1) DONE. Execution PENDING — neue Session erforderlich.** Mobile-Session (Opus 4.7) komplettierte Sections 3+4 + Spec v0.2 (Codex-Review-Pass, 5 Achsen) + Plan v0.2.1 (3-fach-Review Claude+Codex+User parallel — 4 kritische Bash-Pipeline-Bugs gefixt + Robustness-Hardening). 5 neue Commits seit Brainstorm-Input-Handover (`2f6e8ba`): `84e0fe7` (Spec v0.1), `1358346` (Spec v0.2), `25d57f0` (Plan v0.1), `1e1889c` (Plan v0.2), `57707a7` (Plan v0.2.1). **Null Implementation geschehen — HARD-GATE bleibt aktiv bis User in neuer Session Execution startet.** Plan-Path: `docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md` v0.2.1 (8 Tasks, 11 AC-Verifikationen, Inline-Bash-Verify, AC #11 Negative-Scope strikt). Spec-Path: `docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md` v0.2. Vorher (2026-04-24 spät): Jake-Van-Clief-Video-Analyse abgeschlossen, Wiki-Source committed (`7baa543`).
+**Vorherige Aktualisierungen:** 2026-04-23 Nachmittag — Phase G (TMO Q1 DONE, Score 64→67, D2→D3, `fcf_trend_neg` CLEAR) · 2026-04-22 Spät — Task 19 + Fix-Welle E (`d7ecf71`/`e3ba381`) · 2026-04-22 Mittag — Tasks 15-18 (`486f2c1`/`fa238bf`/`ab7ae19`/`ca35f62` + Handover `51f5719`) · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D (`ab6b3f5`).
 
-> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E · 🔵 F deferred · ✅ G (TMO Q1 Beat+Raise, Old-Pipeline-Sync `620702a`) · ✅ TMO-Retro-Audit Option B (`2513108`) · ✅ XLSX-Tools Sync (`5ccfdd1` + `a413c32` R-Column-Fix) · ✅ Daily-Persist-Nachtrag (`8a4008b`) · ✅ Check-3+Check-6 system-audit Fixes (`c07f2c3`) · ✅ Video-Ingest Second-Run Dubibubii + Adoption-Decision 4R/2O/1A (`ea48e2a`) · ✅ Video-Ingest Third-Run Jake Van Clief + Analyse uncommitted (`pending-brainstorm`) · ⏳ **Konsolidierungstag Fr 24.04.** (Block 1 schrumpft um 2 Items, Block 3 Dashboard v2) · ⏳ **Brainstorm-Session Session-Start-Optimierung** (neu, siehe unten).
+> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E · 🔵 F deferred · ✅ G (TMO Q1 Beat+Raise, Old-Pipeline-Sync `620702a`) · ✅ TMO-Retro-Audit Option B (`2513108`) · ✅ XLSX-Tools Sync (`5ccfdd1` + `a413c32` R-Column-Fix) · ✅ Daily-Persist-Nachtrag (`8a4008b`) · ✅ Check-3+Check-6 system-audit Fixes (`c07f2c3`) · ✅ Video-Ingest Second-Run Dubibubii + Adoption-Decision 4R/2O/1A (`ea48e2a`) · ✅ Video-Ingest Third-Run Jake Van Clief + Analyse uncommitted (`pending-brainstorm`) · ✅ **Brainstorm + Spec v0.2 + Plan v0.2.1 CLAUDE.md-Routing-Refactor Tier 1** (`84e0fe7`+`1358346`+`25d57f0`+`1e1889c`+`57707a7`) · ⏳ **Execution Plan v0.2.1** (8 Tasks, neue Session erforderlich) · ⏳ **Konsolidierungstag Fr 24.04.** (Block 1 schrumpft um 2 Items, Block 3 Dashboard v2).
 
-> **🧠 NÄCHSTE SESSION (/clear 2026-04-24 spät) — BRAINSTORM-INPUT:**
+> **🔄 RESUME-INPUT (Neue Session — Plan-Execution, 2026-04-24 Mobile-Session-Ende):**
 >
-> **Auftrag:** Frischer `superpowers:brainstorming`-Start **ohne Vor-Framing durch vorherige Session**. Thema = CLAUDE.md ideal strukturieren + Session-Start-Token-Cost reduzieren + globale Verlinkung / Orphan-Elimination.
+> **Auftrag:** Plan `docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md` v0.2.1 ausführen. **8 Tasks**, jeder Task hat eigene Verify-Steps + Commit. Plan ist self-contained — alle Bash/sed/grep-Pipelines konkret + 1:1-Migration-Strategie definiert.
 >
-> **User-Pain-Points (verbatim eingelegt):**
-> 1. **Session-Start-Cost steigt** zunehmend — CLAUDE.md + STATE.md + MEMORY-Index + Skill-Listings akkumulieren.
-> 2. **CLAUDE.md nicht ideal strukturiert** — Mischung aus Routing + Applied-Learning + Token-Rules + Auto-Memory + Wiki-Hinweis.
-> 3. **Token-Effizienz-Regeln „global"** anwenden und „besser mit allen Aufgaben, Syncs usw verbinden" — Rules sollen über mehr Workflows greifen, nicht nur projektlokal in CLAUDE.md versteckt.
-> 4. **Fehlende globale Verlinkung** — analog Vault-100%-Closure (Orphans + Missing-Backlinks) wünscht User auch für Root-Ordner **Visibility-Layer**, **nicht** strukturellen Rewrite. Zitat: „kein grundlegender rewrite der gesamten struktur! Das zerstört uns ja das system".
+> **Sequenz für neue Session:**
+> 1. `Session starten` → STATE.md (Default) — kein deep-read der Spec/Plan-Files nötig, Plan ist self-contained
+> 2. SESSION-HANDOVER.md (diese Datei) lesen — Abschnitt unten + dieser Resume-Block
+> 3. Execution-Mode wählen + Skill aktivieren:
+>    - **Empfohlen: `superpowers:subagent-driven-development`** — Fresh Subagent pro Task, Review zwischen Tasks, schnelle Iteration
+>    - **Alternative: `superpowers:executing-plans`** — Inline-Execution mit Batch-Checkpoints
+> 4. Plan v0.2.1 Task 1 starten (Pre-Migration Snapshot, BASELINE_HASH pinnen)
+> 5. Tasks 2-8 sequenziell durchgehen (jeder Task ~10-15 Min + Commit)
+> 6. **Nach Task 8 Marker-Commit:** Section A der Post-Implementation Follow-ups (siehe Plan) ausführen — separater Commit fügt 2 neue Applied-Learning-Bullets hinzu (12/20 → 14/20)
+> 7. Übrige Follow-ups (Section B): STATE.md-Pipeline-SSoT-Update, CORE-MEMORY.md §1-Eintrag, Vault-Update-Sweep, ggf. Codex-Reconciliation-Pass
 >
-> **Constraints (verbindlich):**
-> - **Kein struktureller Reorg** — keine File-Moves, keine neuen Verzeichnisse, keine Umbenennungen von Kerndateien (STATE.md, CLAUDE.md, INSTRUKTIONEN.md, CORE-MEMORY.md bleiben wo sie sind).
-> - In-Place-Content-Polish OK (z.B. CLAUDE.md schlanker, Applied-Learning-Ceiling straffer).
-> - **Visibility-Layer-Fokus** für Orphans/Backlinks (system_audit-Erweiterung ist Kandidat, nicht automatisch gesetzt).
-> - **Jake Van Clief's 7 Mechaniken** sind **Input, kein Plan** — siehe Wiki-Source-Page. Vorläufiges Verdikt ~80%-Already-Implemented. Jake's #3 Routing-Table ist `deferred`, Rest `already-implemented`/`observe`/`reject-partial`.
+> **Spec/Plan-Anker:**
+> - Spec v0.2 (Codex-reviewed): `docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md`
+> - Plan v0.2.1 (3-fach-Reviewed): `docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md`
+> - Acceptance: 11 AC, alle mechanisch verifiziert in Task 8
 >
-> **Verworfen in vorheriger Brainstorm-Runde (nicht wieder vorschlagen ohne neuen Evidenz-Input):**
-> - STATE.md-Zerlegung in PIPELINE.md/SYSTEM.md
-> - Applied-Learning in separate Datei bewegen
-> - Workspace-Explicit-Labeling mit pro-Workspace-CLAUDE.mds
-> - Jake-Komplett-Adoption
+> **Verbindliche Entscheidungen (final, nicht mehr verhandelbar):**
+> - A=ja: Routing-Table ersetzt On-Demand-Lektüre (keine Duplizierung)
+> - B=c: TOKEN-RULES Accessibility-Modell, kein Enforcement
+> - Match=Hybrid: exakte Trigger strikt + Soft-Match nur für bare Ticker (Whitelist via STATE.md-Satelliten) + Mehrfach-Match Union
+> - Trigger-Inventar=9 Zeilen
+> - KontLernen-Variant A (3-Tier-Tabelle bleibt knapp)
+> - TokenEff-Variant X (Section komplett raus aus CLAUDE.md)
+> - Migrations-Invariante: zeichengenau 1:1, kein Re-Editing, kein v2.5-Eintrag im Migrations-Commit
+> - 2 neue Applied-Learning-Bullets queued für Post-Tier-1-Add (Section A der Follow-ups im Plan)
 >
-> **Quellen-Referenzen für Brainstorm:**
-> - Wiki-Source: `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/sources/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents.md` (7 Mechaniken + Adoption-Matrix + Meta-Befund)
-> - Dubibubii-Präzedenz (inverse Polarität): `…/2026-04-22-dubibubii-claude-code-powerful-settings.md`
-> - Memory `feedback_friction_as_evidence.md` (Creator-Video-Skepsis-Pattern)
-> - Memory `feedback_multi_source_drift_check.md` (21.04.-Drift-Lesson)
-> - Transkript Raw: `…/raw/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents/transcript.md`
+> **HARD-GATE:** Bleibt aktiv bis Plan v0.2.1 final approved + Execution-Mode bewusst gestartet. Keine Side-Edits an CLAUDE.md / 00_Core/APPLIED-LEARNING.md / 00_Core/TOKEN-RULES.md ohne Plan-Task.
 >
-> **Pre-Aktion Session-Start:** User clearen → STATE.md lesen → diesen Handover-Block lesen → Wiki-Source-Page **nicht automatisch** lesen (nur wenn Brainstorm dorthin geht) → frische Fragen stellen, nicht mit Lösungsvorschlägen starten.
+> **Untracked Working-Tree-Items (informativ):**
+> - `03_Tools/Rebalancing_Tool_v3.4.xlsx` — Excel-Autosave (vermutlich Revert / commit nicht nötig)
+> - `.claude/scheduled_tasks.lock` + `.claude/worktrees/` — Runtime-Files, .gitignore-Kandidaten
+>
+> **Push-Status:** Alle 5 Commits sind LOKAL (kein git push erfolgt). Falls Briefing-Sync ins Remote gewünscht: `!SyncBriefing` (CLAUDE.md §25) — aber hier nur docs/-Änderungen, kein 00_Core/-Edit, daher SyncBriefing nicht zwingend.
+
+---
+
+## 📦 ABGESCHLOSSENE ARBEIT (2026-04-24 — Brainstorm/Spec/Plan CLAUDE.md-Routing)
+
+### Original-Brainstorm-Input (für historische Referenz)
+
+> Brainstorm **mitten in der Arbeit pausiert**, nicht frisch starten. Desktop-Session war Opus 4.7 + `superpowers:brainstorming`-Skill aktiv. Sections 1+2 approved, nächste Schritte glasklar.
+>
+> **Auftrag für Mobile-Session:** Direkt Section 3 (Routing-Table-Entwurf) präsentieren + User-Approval einholen. Sections 1+2 **nicht wiederholen** — bestätigt. Skill `superpowers:brainstorming` aktiv halten (Section-by-Section + Approval-Gate + HARD-GATE keine Implementation bis Spec-Approval).
+>
+> **Scope Tier 1 (diese Session):**
+> - CLAUDE.md von ~150 auf ~70 Zeilen
+> - Zwei neue Files: `00_Core/APPLIED-LEARNING.md` + `00_Core/TOKEN-RULES.md`
+> - Projekt-lokal (nicht User-Level)
+> - **Kein struktureller Reorg** außer den 2 neuen Files, keine Umbenennungen
+>
+> **Ziel-Gliederung CLAUDE.md (5 Top-Level, ~70 Z., User-revidiert):**
+> ```
+> # SESSION-INITIALISIERUNG
+>   ## Pflicht-Read
+>   ## Verhalten                (Sync-Pflicht, CORE-MEMORY live, briefing-sync §25, remote-Control)
+>   ## Kontinuierliches Lernen  (3-Tier knapp, Details in APPLIED-LEARNING.md)
+> ## Projektstruktur           (UNVERÄNDERT)
+> ## Routing-Table (Read/Skip/Skill)  (NEU — Jakes #3, ERSETZT On-Demand-Lektüre)
+> ## Wiki-Modus                (Trigger + Pointer zu WIKI-SCHEMA.md)
+> ## Pointer (Ausgelagertes)   (NEU — → APPLIED-LEARNING, TOKEN-RULES, INSTRUKTIONEN)
+> ```
+> Begründung der Revision: Verhalten + Kontinuierliches Lernen sind Wenn-Dann-Regeln die bei Session-Start triggern — gehören unter Session-Init, nicht Top-Level. Pointer ans Fuß-Ende (Inhaltsverzeichnis-Logik).
+>
+> **Entscheidungen (verbindlich, Desktop):**
+> - **A = ja:** Routing-Table **ERSETZT** die existierende On-Demand-Lektüre-Liste (keine Duplizierung, vermeidet Drift)
+> - **B = c:** TOKEN-RULES **Accessibility statt Enforcement** — Regeln liegen vor, via Pointer nachlesbar, **kein Enforcement-Mechanismus**. Spec muss das explizit sagen.
+> - **Variante B Hub** für STATE.md (Tier 2, DEFERRED — nicht diese Session)
+> - **Projekt-lokal** beide neuen Files
+> - **Kein Codex jetzt** (erst nach Spec-Draft, Memory `feedback_review_stack.md`)
+>
+> **Deferred (Spec unter „Future Work" notieren):**
+> - **Tier 2** STATE.md 3-Split Variante B (Hub): STATE.md bleibt als ~10-Z-Hub + Banner + Pointer; darunter `00_Core/PORTFOLIO.md` (Portfolio-State + Watches + 30d-Trigger, konsolidiert mit 🟠 Portfolio-Triggers-Block) / `00_Core/PIPELINE.md` (Pipeline-SSoT 🔴/🟡/🔵 + Long-Term-Gates ⏰) / `00_Core/SYSTEM.md` (System-Zustand + Audit + Backlog). Erwartet ~70% Session-Start-Cost-Reduktion. Separate Session.
+> - **Tier 2b** CORE-MEMORY.md Subkategorisierung (kalendarische Riesen-Liste → Subkategorien + Verknüpfung mit adressierten System-Elementen). User beiläufig geparkt.
+> - **Tier 3** `vault_backlinks`-Check-Erweiterung auf Root-Ordner. Bereits Backlog-Punkt STATE.md Z. 120.
+>
+> **Advisor-Blind-Spots (alle addressieren im Spec):**
+> 1. **Pain #1 nur halb adressiert.** Spec ehrlich: Tier 1 löst Kategorie **B** (projekt-eigen, ~308 Z.). Kategorie **A** (Harness: Skill-Listings + Tool-Deferred + MCP-Instructions + System-Reminders) bleibt **out-of-scope** dieser Runde.
+> 2. **TOKEN-RULES = (c) Accessibility**, nicht Enforcement — explizit schreiben.
+> 3. **Routing-Table ersetzt** On-Demand-Lektüre — nicht paralleles Dasein.
+>
+> **Pre-Spec-Checklist (vor Spec-Finalisierung abarbeiten):**
+> 1. Governance-Text mitmigrieren nach APPLIED-LEARNING.md: 12/20 Bullets + Historie v1.0-v2.4 + Proaktive-Pflege-Regel (Monats-Übergang 5-Min-Scan) + Kurator-Regel-bei-Überlauf (15/20-Ziel).
+> 2. Pre-Move-Grep: `grep -rn "Applied Learning\|Token-Effizienz" 00_Core/ 01_Skills/ 03_Tools/ docs/` — externe Referenzen finden, die beim Move brechen könnten.
+> 3. Tier 2b CORE-MEMORY im Spec unter „Deferred / Future Work" mit 2-Zeiler (Problem + Lösung).
+> 4. Revision History im Spec: Handover-verworfene STATE-Split-Entscheidung heute 2026-04-24 mit feinerer 3-Teilung + Variante-B-Hub revidiert. Bezug Memory `feedback_multi_source_drift_check.md`.
+>
+> **Trigger-Words-Kandidaten für Section 3 Routing-Table:**
+> - `Session starten` → Default, Pflicht-Read STATE.md
+> - `!Analysiere <Ticker>` → INSTRUKTIONEN + Faktortabelle + Wissenschaftliche-Fundierung-DEFCON + Skill `dynastie-depot` + Skill `backtest-ready-forward-verify`
+> - `!Rebalancing` → INSTRUKTIONEN + KONTEXT
+> - `!QuickCheck <Ticker>` → Faktortabelle + Skill `quick-screener`
+> - `!SyncBriefing` → §25
+> - Wiki-Ops (`ingest`/`lint`/`query`/Obsidian/Vault/Faktortabelle-Edit/Score-Update/Insider-Scan) → WIKI-SCHEMA.md
+> - `remote-Control`/mobile weiter → Memory `remote-trigger-api.md` (User-Präferenz: **nur manuell**, keine auto-Routine — /remote-control Slash erzeugt Link/QR-Code)
+> - Konsolidierungstag/System-Audit/Backlog → SYSTEM/PIPELINE-relevant (Tier 2 aktuell STATE.md §Pipeline+§System)
+>
+> Format-Vorschlag: `| Trigger | Lies zusätzlich (über Pflicht-Read hinaus) | Skippe | Skill-Call |`. Robuste Trigger-Klassifikation: bei Miss besser konservativ mehr laden.
+>
+> **Content-Migration-Templates (Section 4):**
+>
+> `00_Core/APPLIED-LEARNING.md`:
+> - Frontmatter: `type: learning-log`, `updated: 2026-04-24`
+> - Sections: Kuratierte Bullets (12/20) · Proaktive-Pflege-Regel · Kurator-Regel-bei-Überlauf · Historie v1.0-v2.4
+> - Inhalt **unverändert** aus heutiger CLAUDE.md-§ „Applied Learning" übernehmen
+>
+> `00_Core/TOKEN-RULES.md`:
+> - Frontmatter: `type: ruleset`, `scope: projekt-weit referenzierbar (Accessibility-Modell, kein Enforcement)`
+> - Sections: Accessibility-Hinweis (explizit „kein Enforcement, Verfügbarkeit") · Regeln (Snapshot-First, Sync-Pflicht alle sechs, Pause-Regel, DEFCON 1 Stopp, MCP lazy-load, Modell-Default)
+> - Inhalt aus heutiger CLAUDE.md-§ „Token-Effizienz (operativ)" übernehmen
+>
+> **Arbeits-Modus für Mobile-Session:**
+> - Section-by-Section + User-Approval (kein Sprung)
+> - Approval nach Section 3 (Routing-Table) einholen
+> - Approval nach Section 4 (Content-Migration) einholen
+> - Dann Spec schreiben: `docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md`
+> - Self-Review (Placeholder/Consistency/Scope/Ambiguity) → User-Review
+> - **HARD-GATE:** keine Write/Edit an CLAUDE.md oder neuen Files ohne Spec-Approval
+> - Dann `superpowers:writing-plans` für Implementation-Plan
+> - Codex erst nach Spec-Draft (Reviewer-Matrix, Memory `feedback_review_stack.md`)
+>
+> **Git-Stand (bereits auf `main` gepusht):**
+> - `2f6e8ba` docs(handover): Brainstorm-Input CLAUDE.md-Routing
+> - `7baa543` ingest-video(third-run): Jake Van Clief Folder-System
+> - Uncommitted am Desktop (informativ): `03_Tools/Rebalancing_Tool_v3.4.xlsx` (Excel-Autosave, vermutlich Revert), `.claude/scheduled_tasks.lock` + `.claude/worktrees/` (Runtime, .gitignore-Kandidaten)
+>
+> **Quellen-Referenzen** (bei Bedarf nachlesen, nicht automatisch):
+> - Jake-Wiki-Source (7 Mechaniken + Adoption-Matrix): `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/sources/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents.md`
+> - Dubibubii-Präzedenz: `…/2026-04-22-dubibubii-claude-code-powerful-settings.md`
+> - Memory: `feedback_friction_as_evidence.md`, `feedback_multi_source_drift_check.md`, `feedback_review_stack.md`, `feedback_information_loss_aversion.md`
+>
+> **Startpunkt Mobile-Session:** Kurze State-Confirmation (1-2 Sätze: „Brainstorm-State übernommen, setze mit Section 3 fort"), dann direkt Section 3 (Routing-Table-Entwurf) präsentieren + Approval-Gate. **Nicht** Section 1 oder 2 wiederholen — bestätigt.
 
 ---
 
