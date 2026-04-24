@@ -10,6 +10,8 @@
 
 **Bezug:** Spec `docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md` v0.2 (Codex-Reviewed, RECOMMEND_REVISE adressiert).
 
+**Plan-Version:** v0.2 (24.04.2026 — nach 3-fach-Review Claude+Codex+User: 4 kritische Command-Bugs gefixt — Bug 1 sed-Pattern, Bug 2/3 grep-Snapshot-Falschquelle, Bug 4 awk-EOF-Syntax; +Robustheit: BASELINE_HASH gepinnt + Pre-Commit-Scope-Checks pro Task + Task-5-Move explizit + Task-6-Precondition + AC #4/#10 Verify-Coverage erweitert + v2.5-Historie-Eintrag entfernt zugunsten strikter Migrations-Invariante).
+
 ---
 
 ## File Structure
@@ -34,32 +36,44 @@
 
 **Zweck:** Den Stand der CLAUDE.md vor dem Refactor festhalten, um in Task 2/3/8 die 1:1-Migration der Bullets per `git diff --no-index` belegen zu können.
 
-- [ ] **Step 1: Sichern der aktuellen CLAUDE.md ins Temp-Verzeichnis**
+- [ ] **Step 1: Pre-Migration Baseline-Hash pinnen + CLAUDE.md aus Baseline sichern**
 
 ```bash
-cp "CLAUDE.md" /tmp/claude_md_pre_migration.md
+# Pin baseline = current HEAD commit (= Plan-Commit, vor Task-2-Edits)
+BASELINE_HASH=$(git rev-parse HEAD)
+echo "$BASELINE_HASH" > /tmp/claude_md_baseline_hash.txt
+echo "Pre-Migration Baseline: $BASELINE_HASH"
+
+# Sichere CLAUDE.md aus Baseline-Commit (nicht working tree — robust gegen Mid-Task-Edits)
+git show "$BASELINE_HASH:CLAUDE.md" > /tmp/claude_md_pre_migration.md
 wc -l /tmp/claude_md_pre_migration.md
 ```
 
-Expected: `98 /tmp/claude_md_pre_migration.md` (oder ähnlich, je nach EOL-Konvention; AC-Baseline)
+Expected: Hash 7-40 Zeichen + `~98 /tmp/claude_md_pre_migration.md` (AC #1 Baseline).
 
-- [ ] **Step 2: Extrahieren der Applied-Learning-Bullets in Snapshot-Datei**
+**Resume-Recovery:** Falls `/tmp/` nach Reboot leer: Baseline-Hash über `git log --grep "plan(claude-md-routing)" --oneline | head -1 | awk '{print $1}'` rekonstruieren, dann obige Commands neu ausführen.
+
+- [ ] **Step 2: Extrahieren der Applied-Learning-Section in Snapshot-Datei**
 
 ```bash
-sed -n '/^### Applied Learning/,/^[^#]*$/p' /tmp/claude_md_pre_migration.md > /tmp/old_applied_learning_block.md
+# Applied Learning ist die LETZTE Section in CLAUDE.md → ',$p' bis Dateiende (robust)
+sed -n '/^### Applied Learning/,$p' /tmp/claude_md_pre_migration.md > /tmp/old_applied_learning_block.md
 wc -l /tmp/old_applied_learning_block.md
+grep -c "^- " /tmp/old_applied_learning_block.md
 ```
 
-Expected: ≥20 Zeilen (Heading + Intro-Quote-Block + 12 Bullets + Historie).
+Expected: ~22 Zeilen, davon `12` Bullet-Zeilen.
 
 - [ ] **Step 3: Extrahieren der Token-Effizienz-Section in Snapshot-Datei**
 
 ```bash
+# Token-Effizienz ist NICHT letzte Section → bis nächstem '## '-Heading, dann letzte Zeile (= nächstes Heading) abschneiden
 sed -n '/^## Token-Effizienz (operativ)/,/^## /p' /tmp/claude_md_pre_migration.md | sed '$d' > /tmp/old_token_eff_block.md
 wc -l /tmp/old_token_eff_block.md
+grep -c "^- \*\*" /tmp/old_token_eff_block.md
 ```
 
-Expected: 8-10 Zeilen (Heading + 6 Regel-Bullets + Spacing). Das `sed '$d'` entfernt die nächste `## `-Zeile am Ende der Range.
+Expected: ~8-10 Zeilen, davon `6` Regel-Bullet-Zeilen.
 
 - [ ] **Step 4: Pre-Conditions verifizieren — alte Sections existieren**
 
@@ -135,7 +149,7 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 
 ## Historie
 
-v1.0 (17.04.2026) 19 Bullets gemischt. v2.0 (18.04.2026) Evakuierung: 6 Tool-Refs → Auto-Memory, 4 systemische Regeln → INSTRUKTIONEN §27, auf **9 Kern-Arbeitsprinzipien** reduziert. Neues +1 (Option B FLAG-Entscheidung). v2.1 (18.04.2026) Bullet „Scoring-Version-Bump re-verify" → INSTRUKTIONEN §28.2 promoted. v2.2 (20.04.2026) +1 (Spec-§-Drift-Handling, aus Track-5-Plan-Writing). v2.3 (20.04.2026 Nacht-Spät) +1 (Anti-Hallucination-Datenpfad-Vollständigkeit, aus v3.0.3-Incident). v2.4 (21.04.2026) +1 (Exhaustive-Drift-Check, aus Pre-Provenance-Plan-Compat-Check 12/27 silent v3.7-Threshold-Drift). v2.5 (24.04.2026) Migration aus CLAUDE.md in eigene Datei, Pflege-Regeln + Promotion-Logik mitgenommen, Bullet-Inhalt unverändert. Stand: **12/20**.
+v1.0 (17.04.2026) 19 Bullets gemischt. v2.0 (18.04.2026) Evakuierung: 6 Tool-Refs → Auto-Memory, 4 systemische Regeln → INSTRUKTIONEN §27, auf **9 Kern-Arbeitsprinzipien** reduziert. Neues +1 (Option B FLAG-Entscheidung). v2.1 (18.04.2026) Bullet „Scoring-Version-Bump re-verify" → INSTRUKTIONEN §28.2 promoted. v2.2 (20.04.2026) +1 (Spec-§-Drift-Handling, aus Track-5-Plan-Writing). v2.3 (20.04.2026 Nacht-Spät) +1 (Anti-Hallucination-Datenpfad-Vollständigkeit, aus v3.0.3-Incident). v2.4 (21.04.2026) +1 (Exhaustive-Drift-Check, aus Pre-Provenance-Plan-Compat-Check 12/27 silent v3.7-Threshold-Drift). Stand: **12/20**.
 ```
 
 - [ ] **Step 2: Verify — Bullet-Anzahl exakt 12**
@@ -146,37 +160,49 @@ grep -c "^- " 00_Core/APPLIED-LEARNING.md
 
 Expected: `12`
 
-- [ ] **Step 3: Verify — Jeder Bullet-Text ist zeichengenau identisch zur alten CLAUDE.md**
+- [ ] **Step 3: Verify — Bullet-Text 1:1 identisch (aus dediziertem Snapshot)**
 
 ```bash
-grep "^- " /tmp/claude_md_pre_migration.md > /tmp/old_bullets.txt
-grep "^- " 00_Core/APPLIED-LEARNING.md > /tmp/new_bullets.txt
-git diff --no-index --no-color /tmp/old_bullets.txt /tmp/new_bullets.txt
+# Quelle: dedizierter Snapshot aus Task 1 Step 2 (NUR Applied Learning Section, keine On-Demand-Lektüre/Verhalten/etc.)
+grep "^- " /tmp/old_applied_learning_block.md > /tmp/old_al_bullets.txt
+grep "^- " 00_Core/APPLIED-LEARNING.md > /tmp/new_al_bullets.txt
+git diff --no-index --no-color /tmp/old_al_bullets.txt /tmp/new_al_bullets.txt
+echo "AL-Bullets-Diff exit: $?"
 ```
 
-Expected: `exit 0` (no differences). Falls Diff existiert → STOP, ein Bullet wurde versehentlich umformuliert. Korrigieren bis Diff leer.
+Expected: leerer Diff, exit `0`. Falls Diff existiert → STOP, Bullet versehentlich umformuliert. Korrigieren bis Diff leer.
 
-- [ ] **Step 4: Verify — Pflege-Regel + Historie 1:1 vorhanden**
+- [ ] **Step 4: Verify — Pflege-Regel + Historie strukturell vorhanden**
 
 ```bash
 grep -c "Proaktive Pflege (seit 18.04.2026)" 00_Core/APPLIED-LEARNING.md
 grep -c "Kurator-Regel bei Überlauf (20/20)" 00_Core/APPLIED-LEARNING.md
 grep -c "v1.0 (17.04.2026) 19 Bullets gemischt" 00_Core/APPLIED-LEARNING.md
 grep -c "v2.4 (21.04.2026) +1 (Exhaustive-Drift-Check" 00_Core/APPLIED-LEARNING.md
-grep -c "v2.5 (24.04.2026) Migration aus CLAUDE.md" 00_Core/APPLIED-LEARNING.md
+grep -c "Stand: \*\*12/20\*\*" 00_Core/APPLIED-LEARNING.md
 ```
 
-Expected: jeweils `1`.
+Expected: jeweils `1`. (v2.5-Eintrag bewusst NICHT vergeben — strikte Migrations-Invariante; Migration wird via Commit-Message + CORE-MEMORY.md dokumentiert, nicht im Historie-Absatz.)
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: Pre-Commit-Scope-Check (AC #11 Guard)**
 
 ```bash
 git add 00_Core/APPLIED-LEARNING.md
+git diff --name-only --cached
+```
+
+Expected: nur `00_Core/APPLIED-LEARNING.md`. Falls weitere Pfade auftauchen → `git reset HEAD <pfad>` und investigieren bevor Commit.
+
+- [ ] **Step 6: Commit**
+
+```bash
 git commit -m "feat(claude-md-routing): create APPLIED-LEARNING.md — Tier-2 SSoT für Bullets+Pflege+Historie
 
 1:1 Migration aus CLAUDE.md ### Applied Learning Section.
-12 Bullets unveraendert (Diff-Verify PASS), Pflege-Regeln + Historie mitgenommen.
-Frontmatter (name/description/type/updated) ergaenzt, neuer Historie-Eintrag v2.5.
+12 Bullets unveraendert (Diff-Verify PASS), Pflege-Regeln + Historie mitgenommen
+(strikte Migrations-Invariante: Historie endet auf v2.4, kein v2.5-Eintrag —
+Migrations-Event ist im Commit-Log + CORE-MEMORY-Followup dokumentiert).
+Frontmatter (name/description/type/updated) ergaenzt.
 
 Spec: docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md v0.2 AC #5.
 
@@ -230,15 +256,17 @@ grep -c "^- \*\*" 00_Core/TOKEN-RULES.md
 
 Expected: `6`
 
-- [ ] **Step 3: Verify — Alle 6 Regel-Bullets zeichengenau identisch zur alten CLAUDE.md**
+- [ ] **Step 3: Verify — Alle 6 Regel-Bullets 1:1 identisch (aus dediziertem Snapshot)**
 
 ```bash
-grep "^- \*\*" /tmp/claude_md_pre_migration.md | head -6 > /tmp/old_token_bullets.txt
+# Quelle: dedizierter Snapshot aus Task 1 Step 3 (NUR Token-Effizienz Section, keine Verhalten-Bullets)
+grep "^- \*\*" /tmp/old_token_eff_block.md > /tmp/old_token_bullets.txt
 grep "^- \*\*" 00_Core/TOKEN-RULES.md > /tmp/new_token_bullets.txt
 git diff --no-index --no-color /tmp/old_token_bullets.txt /tmp/new_token_bullets.txt
+echo "Token-Bullets-Diff exit: $?"
 ```
 
-Expected: `exit 0` (no differences). Hinweis: `head -6` ist OK weil die ersten 6 `- **`-Bullets in pre_migration.md die Token-Effizienz-Regeln sind (kein anderes Vorkommen davor — verifiziere mit `grep -n '^- \*\*' /tmp/claude_md_pre_migration.md` falls Zweifel).
+Expected: leerer Diff, exit `0`. Falls Diff existiert → STOP, Bullet versehentlich umformuliert.
 
 - [ ] **Step 4: Verify — Accessibility-Hinweis vorhanden**
 
@@ -249,10 +277,18 @@ grep -c "kein Enforcement-Mechanismus" 00_Core/TOKEN-RULES.md
 
 Expected: jeweils `1`.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: Pre-Commit-Scope-Check (AC #11 Guard)**
 
 ```bash
 git add 00_Core/TOKEN-RULES.md
+git diff --name-only --cached
+```
+
+Expected: nur `00_Core/TOKEN-RULES.md`.
+
+- [ ] **Step 6: Commit**
+
+```bash
 git commit -m "feat(claude-md-routing): create TOKEN-RULES.md — Accessibility-Modell SSoT
 
 1:1 Migration aus CLAUDE.md ## Token-Effizienz (operativ) Section.
@@ -345,10 +381,18 @@ grep -c "Drift-Check.*exhaustive Schema-Validation" CLAUDE.md
 
 Expected: jeweils `0` (Bullet-Text vollständig entfernt; Konzept lebt in APPLIED-LEARNING.md).
 
-- [ ] **Step 8: Commit (intermediate state — CLAUDE.md temporär ohne Routing-Table/Pointer)**
+- [ ] **Step 8: Pre-Commit-Scope-Check (AC #11 Guard)**
 
 ```bash
 git add CLAUDE.md
+git diff --name-only --cached
+```
+
+Expected: nur `CLAUDE.md`.
+
+- [ ] **Step 9: Commit (intermediate state — CLAUDE.md temporär ohne Routing-Table/Pointer)**
+
+```bash
 git commit -m "refactor(claude-md-routing): remove obsolete sections vor Routing-Table-Insertion
 
 Entfernt:
@@ -373,9 +417,11 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 
 **Zweck:** `## Kontinuierliches Lernen` von ~11 auf ~8 Zeilen schrumpfen (3-Tier-Tabelle bleibt, Promotion-Logik raus, Pointer rein) und gemäß Spec-Reihenfolge unter `## Verhalten` zwischen Verhalten und Projektstruktur einsortieren.
 
-- [ ] **Step 1: `## Kontinuierliches Lernen (3-Tier-System)` neu schreiben**
+- [ ] **Step 1: `## Kontinuierliches Lernen` neu schreiben UND an Ziel-Position einfügen**
 
-Suche in `CLAUDE.md` den aktuellen Block (steht aktuell zwischen Wiki-Modus und dem entfernten Token-Effizienz, je nach Stand nach Task 4):
+Nach Task 4 steht `## Kontinuierliches Lernen` am Ende der Datei (zwischen Wiki-Modus und EOF, weil Token-Efficient + Applied Learning entfernt wurden). Diese Operation **(a) entfernt den alten Block komplett UND (b) fügt den neuen Block an der Ziel-Position zwischen `## Verhalten` und `## Projektstruktur` ein** — beides in einem Edit, kein konditionaler Fallback.
+
+Suche in `CLAUDE.md` den aktuellen Block:
 
 ```markdown
 ## Kontinuierliches Lernen (3-Tier-System)
@@ -391,7 +437,9 @@ Suche in `CLAUDE.md` den aktuellen Block (steht aktuell zwischen Wiki-Modus und 
 **Promotion-Logik:** Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONEN (wenn systemisch).
 ```
 
-und ersetze ihn durch:
+**Operation 1: Block am alten Ort vollständig löschen.**
+
+**Operation 2: Den neuen geschrumpften Block unmittelbar vor `## Projektstruktur` einfügen** (mit Leerzeile davor und danach), folgender exakter Inhalt:
 
 ```markdown
 ## Kontinuierliches Lernen
@@ -407,13 +455,13 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 
 Änderungen: (a) Heading-Suffix „(3-Tier-System)" raus (kürzer), (b) „Automatisch aktiv"-Hinweis raus (Tier 2/3 sind nicht automatisch — irreführend gewesen), (c) Tier-2 Speicherort = neue Datei, (d) Tier-3 Speicherort mit `00_Core/`-Prefix, (e) Promotion-Logik als eigener Block raus (lebt jetzt in APPLIED-LEARNING.md), (f) ein Pointer-Satz am Ende.
 
-- [ ] **Step 2: Section-Reihenfolge prüfen — `## Kontinuierliches Lernen` muss zwischen `## Verhalten` und `## Projektstruktur` stehen**
+- [ ] **Step 2: Verify — Section-Reihenfolge ist korrekt**
 
 ```bash
 grep -n "^## " CLAUDE.md
 ```
 
-Expected output (Reihenfolge entscheidend, exakte Zeilen-Nrn variieren):
+Expected output (in dieser Reihenfolge, exakte Zeilen-Nrn variieren):
 ```
 NN:## Verhalten
 NN:## Kontinuierliches Lernen
@@ -421,9 +469,17 @@ NN:## Projektstruktur
 NN:## Wiki-Modus
 ```
 
-Falls `## Kontinuierliches Lernen` an falscher Stelle steht: gesamten Block ausschneiden und unmittelbar **vor** `## Projektstruktur` einfügen (mit jeweils einer Leerzeile davor und danach).
+Falls Reihenfolge falsch → STOP, Step 1 inkorrekt ausgeführt. Edit nachholen, nicht erst hier korrigieren.
 
-- [ ] **Step 3: Verify — Promotion-Logik-Sentence raus**
+- [ ] **Step 3: Verify — Genau 1 Vorkommen von `## Kontinuierliches Lernen`**
+
+```bash
+grep -c "^## Kontinuierliches Lernen" CLAUDE.md
+```
+
+Expected: `1` (kein Doppel — alter Block muss komplett raus sein).
+
+- [ ] **Step 4: Verify — Promotion-Logik-Sentence raus**
 
 ```bash
 grep -c "^\*\*Promotion-Logik:\*\*" CLAUDE.md
@@ -431,7 +487,7 @@ grep -c "^\*\*Promotion-Logik:\*\*" CLAUDE.md
 
 Expected: `0` (lebt nun in APPLIED-LEARNING.md `## Promotion-Logik`).
 
-- [ ] **Step 4: Verify — Pointer-Satz auf APPLIED-LEARNING.md vorhanden**
+- [ ] **Step 5: Verify — Pointer-Satz auf APPLIED-LEARNING.md vorhanden**
 
 ```bash
 grep -c "siehe \`00_Core/APPLIED-LEARNING.md\`" CLAUDE.md
@@ -439,10 +495,18 @@ grep -c "siehe \`00_Core/APPLIED-LEARNING.md\`" CLAUDE.md
 
 Expected: `1`
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Pre-Commit-Scope-Check (AC #11 Guard)**
 
 ```bash
 git add CLAUDE.md
+git diff --name-only --cached
+```
+
+Expected: nur `CLAUDE.md`.
+
+- [ ] **Step 7: Commit**
+
+```bash
 git commit -m "refactor(claude-md-routing): schrumpfe Kontinuierliches Lernen + Section-Reihenfolge
 
 - ## Kontinuierliches Lernen: 11 -> 8 Zeilen (3-Tier-Tabelle bleibt, Promotion-Logik raus,
@@ -464,6 +528,14 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 - Modify: `CLAUDE.md` (neue Section einfügen)
 
 **Zweck:** Die neue Routing-Table mit 9 Trigger-Daten-Zeilen + Match-Regel-Note + Edge-Cases-Block einfügen, zwischen `## Projektstruktur` und `## Wiki-Modus`.
+
+- [ ] **Step 0: Precondition — `## Projektstruktur` muss direkt vor `## Wiki-Modus` stehen**
+
+```bash
+grep -n "^## Projektstruktur\|^## Wiki-Modus" CLAUDE.md
+```
+
+Expected: `## Projektstruktur` und `## Wiki-Modus` als zwei aufeinanderfolgende Treffer (keine andere `## `-Section dazwischen). Falls FAIL → STOP, Section-Layout aus Task 5 inkorrekt; nicht weiter ohne Fix.
 
 - [ ] **Step 1: Routing-Table-Section unmittelbar vor `## Wiki-Modus` einfügen**
 
@@ -505,17 +577,12 @@ Expected: `1`
 - [ ] **Step 3: Verify — Genau 9 Trigger-Daten-Zeilen in der Tabelle (AC #7)**
 
 ```bash
-awk '/^## Routing-Table/,/^## Wiki-Modus/' CLAUDE.md | grep -c "^| \`\|^| Wiki\|^| Konsolidierungstag\|^| Strategie\|^| Session"
-```
-
-Expected: `9` (Header + Separator zählen NICHT, da sie mit `| Trigger` und `|---` beginnen).
-
-Alternative explizite Variante:
-```bash
 awk '/^## Routing-Table/,/^## Wiki-Modus/' CLAUDE.md | grep -E "^\| (\`|Wiki-Ops|Konsolidierungstag|Strategie)" | wc -l
 ```
 
-Expected: `9`
+Expected: `9` Trigger-Daten-Zeilen. (Header `| Trigger` und Separator `|---` zählen nicht.)
+
+Begründung Pattern: 6 Trigger beginnen mit Backtick (`` `Session starten` ``, `` `!Analysiere` ``, `` `!QuickCheck` ``, `` `!Rebalancing` ``, `` `!SyncBriefing` ``, `` `remote-Control` ``); 3 ohne Backtick (Wiki-Ops, Konsolidierungstag, Strategie). ERE wegen Backtick-Alternation (BRE `\|` ist GNU-Extension, nicht portabel).
 
 - [ ] **Step 4: Verify — Edge-Cases-Block mit 3 Bullets vorhanden**
 
@@ -540,10 +607,18 @@ Expected (Reihenfolge):
 ## Wiki-Modus
 ```
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Pre-Commit-Scope-Check (AC #11 Guard)**
 
 ```bash
 git add CLAUDE.md
+git diff --name-only --cached
+```
+
+Expected: nur `CLAUDE.md`.
+
+- [ ] **Step 7: Commit**
+
+```bash
 git commit -m "feat(claude-md-routing): add ## Routing-Table mit 9 Triggers + Edge-Cases-Block
 
 Routing-Table ersetzt die in Task 4 entfernte On-Demand-Lektuere-Liste (Entscheidung A).
@@ -594,7 +669,8 @@ Expected: `1`
 - [ ] **Step 3: Verify — Genau 3 Daten-Zeilen in Pointer-Tabelle (AC #8)**
 
 ```bash
-awk '/^## Pointer \(Ausgelagertes\)/,EOF' CLAUDE.md | grep -c "^| \`00_Core/"
+# 'EOF' ist KEIN gültiger awk-Marker → sed mit ',$' statt awk
+sed -n '/^## Pointer (Ausgelagertes)/,$p' CLAUDE.md | grep -c "^| \`00_Core/"
 ```
 
 Expected: `3`
@@ -617,10 +693,18 @@ grep -n "^## " CLAUDE.md | tail -1
 
 Expected: Letzte Zeile zeigt `^## Pointer (Ausgelagertes)$`.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Pre-Commit-Scope-Check (AC #11 Guard)**
 
 ```bash
 git add CLAUDE.md
+git diff --name-only --cached
+```
+
+Expected: nur `CLAUDE.md`.
+
+- [ ] **Step 7: Commit**
+
+```bash
 git commit -m "feat(claude-md-routing): add ## Pointer (Ausgelagertes) am Fuss
 
 3 Pointer auf ausgelagerte SSoT-Files (APPLIED-LEARNING, TOKEN-RULES, INSTRUKTIONEN).
@@ -676,14 +760,21 @@ grep -c "^## Token-Effizienz" CLAUDE.md
 
 Expected: `0`
 
-- [ ] **Step 4: AC #4 — Applied Learning Sub-Section vollständig entfernt**
+- [ ] **Step 4: AC #4 — Applied Learning raus + `## Kontinuierliches Lernen` enthält nur 3-Tier-Tabelle + Pointer-Verweis**
 
 ```bash
+# Sub-Section + Bullet-Text entfernt:
 grep -c "^### Applied Learning" CLAUDE.md
 grep -c "Subagents nur für Code+Tests" CLAUDE.md
+# Promotion-Logik-Sentence raus aus CLAUDE.md (lebt jetzt in APPLIED-LEARNING.md):
+grep -c "^\*\*Promotion-Logik:\*\*" CLAUDE.md
+# Pointer-Satz auf neue Datei vorhanden:
+grep -c "siehe \`00_Core/APPLIED-LEARNING.md\`" CLAUDE.md
+# 3-Tier-Tabelle in Kontinuierliches Lernen vorhanden (alle 3 Tiers):
+sed -n '/^## Kontinuierliches Lernen/,/^## /p' CLAUDE.md | grep -c "^| [0-9]\."
 ```
 
-Expected: jeweils `0` (Heading + Bullet-Text beide weg).
+Expected: `0`, `0`, `0`, `1`, `3` (Heading raus, Bullet raus, Promotion-Logik raus, Pointer-Satz da, 3 Tier-Zeilen in Tabelle).
 
 - [ ] **Step 5: AC #5 — APPLIED-LEARNING.md existiert mit allen Pflichten**
 
@@ -719,7 +810,7 @@ Expected: `9` Trigger-Daten-Zeilen, `3` Edge-Case-Bullets.
 - [ ] **Step 8: AC #8 — Pointer (Ausgelagertes) genau 3 Daten-Zeilen**
 
 ```bash
-awk '/^## Pointer \(Ausgelagertes\)/,EOF' CLAUDE.md | grep -c "^| \`00_Core/"
+sed -n '/^## Pointer (Ausgelagertes)/,$p' CLAUDE.md | grep -c "^| \`00_Core/"
 ```
 
 Expected: `3`
@@ -740,28 +831,50 @@ grep -rn "CLAUDE.md#applied-learning\|CLAUDE.md#token-effizienz" 00_Core/ 01_Ski
 
 Expected: `0`
 
-- [ ] **Step 11: AC #10 — Diff-Verifikation 1:1-Migration (Bullets identisch)**
+- [ ] **Step 11: AC #10 — Diff-Verifikation 1:1-Migration (Bullets + Pflege-Regeln + Historie)**
+
+Spec AC #10 verlangt: „Bullet-Block + Pflege-Regeln + Historie ... kein einziger geänderter Bullet-Text" (nur Frontmatter + Heading-Wrapper-Differenzen erlaubt). Verify in 3 Stufen:
 
 ```bash
-# Applied Learning Bullets
-grep "^- " /tmp/claude_md_pre_migration.md | head -12 > /tmp/old_al_bullets.txt
+# === Stufe 1: Applied-Learning Bullets ===
+grep "^- " /tmp/old_applied_learning_block.md > /tmp/old_al_bullets.txt
 grep "^- " 00_Core/APPLIED-LEARNING.md > /tmp/new_al_bullets.txt
 git diff --no-index --no-color /tmp/old_al_bullets.txt /tmp/new_al_bullets.txt
-echo "AL-Diff exit: $?"
+echo "AL-Bullets-Diff exit: $?"
 
-# Token-Effizienz Bullets
-grep "^- \*\*" /tmp/claude_md_pre_migration.md | head -6 > /tmp/old_token_bullets.txt
+# === Stufe 2: Token-Effizienz Bullets ===
+grep "^- \*\*" /tmp/old_token_eff_block.md > /tmp/old_token_bullets.txt
 grep "^- \*\*" 00_Core/TOKEN-RULES.md > /tmp/new_token_bullets.txt
 git diff --no-index --no-color /tmp/old_token_bullets.txt /tmp/new_token_bullets.txt
-echo "Token-Diff exit: $?"
+echo "Token-Bullets-Diff exit: $?"
+
+# === Stufe 3: AL Pflege-Regeln + Historie (Schlüsselsätze identisch in beiden Files) ===
+# Extrahiere die exakten Sätze (sind im alten File in einem Quote-Block, im neuen in derselben Form)
+for marker in "Proaktive Pflege (seit 18.04.2026)" "Kurator-Regel bei Überlauf (20/20)" "v1.0 (17.04.2026) 19 Bullets gemischt" "v2.4 (21.04.2026) +1 (Exhaustive-Drift-Check" "Stand: \*\*12/20\*\*"; do
+  old_count=$(grep -c "$marker" /tmp/old_applied_learning_block.md)
+  new_count=$(grep -c "$marker" 00_Core/APPLIED-LEARNING.md)
+  if [ "$old_count" != "$new_count" ]; then
+    echo "MISMATCH marker '$marker': old=$old_count new=$new_count"
+  fi
+done
+echo "Stufe-3-Marker-Check fertig."
 ```
 
-Expected: beide diffs leer, beide exit `0`.
+Expected: 
+- Stufe 1 Diff leer + exit `0`
+- Stufe 2 Diff leer + exit `0`
+- Stufe 3 keine `MISMATCH`-Zeilen.
+
+Falls eine Stufe FAIL → STOP, Migrations-Invariante verletzt, korrigieren.
 
 - [ ] **Step 12: AC #11 — Negative Scope (nur 3 Files modified)**
 
 ```bash
-git diff --name-only "$(git rev-parse HEAD~6)" HEAD
+# Baseline-Hash aus Task 1 Step 1 — robust gegen Zwischen-Fixes oder /tmp-Loss
+BASELINE_HASH=$(cat /tmp/claude_md_baseline_hash.txt 2>/dev/null \
+  || git log --grep "plan(claude-md-routing)" --oneline | head -1 | awk '{print $1}')
+echo "Baseline: $BASELINE_HASH"
+git diff --name-only "$BASELINE_HASH" HEAD
 ```
 
 Expected: genau diese Pfade (Reihenfolge egal, aber keine anderen):
@@ -771,9 +884,7 @@ Expected: genau diese Pfade (Reihenfolge egal, aber keine anderen):
 CLAUDE.md
 ```
 
-Falls weitere Files geändert wurden: STOP, AC #11 verletzt — Revert oder Erklärung im AC-Report.
-
-Hinweis: `HEAD~6` adressiert den Commit unmittelbar vor Task 2 (Plan-Commit). Hintergrund: 6 substantive Task-Commits (Task 2 + 3 + 4 + 5 + 6 + 7). Marker-Commit (Step 15) folgt erst nach diesem Schritt. Falls Zwischen-Fixes nötig waren und die Commit-Zahl differiert, per `git log --oneline -20` den richtigen Baseline-Hash ermitteln und ersetzen.
+Falls weitere Files geändert wurden: STOP, AC #11 verletzt — Revert oder Erklärung im AC-Report. Falls `/tmp/claude_md_baseline_hash.txt` fehlt (Reboot zwischen Tasks), fällt der `||`-Fallback auf den Plan-Commit-Grep zurück.
 
 - [ ] **Step 13: Smoke-Test — system-audit `--minimal-baseline`**
 
@@ -787,7 +898,10 @@ Expected: `3/3 PASS`, exit `0`. Sicherstellt, dass das system_audit-Tool nicht d
 - [ ] **Step 14: Cleanup Snapshot-Dateien**
 
 ```bash
-rm -f /tmp/claude_md_pre_migration.md /tmp/old_applied_learning_block.md /tmp/old_token_eff_block.md /tmp/old_bullets.txt /tmp/new_bullets.txt /tmp/old_token_bullets.txt /tmp/new_token_bullets.txt /tmp/old_al_bullets.txt /tmp/new_al_bullets.txt
+rm -f /tmp/claude_md_pre_migration.md /tmp/claude_md_baseline_hash.txt \
+      /tmp/old_applied_learning_block.md /tmp/old_token_eff_block.md \
+      /tmp/old_al_bullets.txt /tmp/new_al_bullets.txt \
+      /tmp/old_token_bullets.txt /tmp/new_token_bullets.txt
 ```
 
 Expected: keine Output (rm -f ist silent bei Nicht-Existenz).
