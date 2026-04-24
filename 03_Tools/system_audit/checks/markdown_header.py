@@ -1,4 +1,7 @@
-"""Check-2: Header-Stand-Drift across STATE.md / CORE-MEMORY.md / Faktortabelle.md.
+"""Check-2: Header-Stand-Drift across 00_Core/ state-bearing files.
+
+Targets (post-Hub-Split): STATE.md (Hub) / PORTFOLIO.md / PIPELINE.md /
+SYSTEM.md / CORE-MEMORY.md / Faktortabelle.md.
 
 Spec §5.1 Check-2 (Codex-Patch P6): compare header `**Stand:**` date to the
 newest event-date parseable from the markdown content — NOT git commit date
@@ -116,6 +119,9 @@ def run(
 
     targets = targets_override or [
         (repo_root / "00_Core" / "STATE.md", "state"),
+        (repo_root / "00_Core" / "PORTFOLIO.md", "state"),
+        (repo_root / "00_Core" / "PIPELINE.md", "state"),
+        (repo_root / "00_Core" / "SYSTEM.md", "state"),
         (repo_root / "00_Core" / "CORE-MEMORY.md", "core_memory"),
         (repo_root / "00_Core" / "Faktortabelle.md", "faktortabelle"),
     ]

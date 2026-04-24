@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Check-3: Score/DEFCON/FLAG consistency across config.yaml / STATE.md /
+"""Check-3: Score/DEFCON/FLAG consistency across config.yaml / PORTFOLIO.md /
 Faktortabelle.md / Vault entity frontmatter.
 
 Spec §5.1 Check-3, Codex-Patch P3 (FLAG-Parsing-Matrix).
@@ -73,7 +73,7 @@ def _parse_faktortabelle(path: Path) -> dict[str, dict]:
     Live structure has 11+ columns including FCF-Marge, ROIC, Gross Margin,
     Debt/EBITDA, Moat before Score/DEFCON/FLAG. HTML-Comment-Rows between
     data rows (<!-- DATA:... -->) must be skipped, not treated as table-end.
-    FLAG cell uses the same icon format as STATE.md (✅/⚠️/🔴 + reason text),
+    FLAG cell uses the same icon format as PORTFOLIO.md (✅/⚠️/🔴 + reason text),
     not a boolean — convert via parse_flag_icon.
     """
     out: dict[str, dict] = {}
@@ -192,7 +192,7 @@ def run(
     start = time.monotonic()
     sources = sources_override or {
         "config": repo_root / "01_Skills" / "dynastie-depot" / "config.yaml",
-        "state": repo_root / "00_Core" / "STATE.md",
+        "portfolio": repo_root / "00_Core" / "PORTFOLIO.md",
         "faktortabelle": repo_root / "00_Core" / "Faktortabelle.md",
         "vault_entities_dir": repo_root / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities",
     }
@@ -229,7 +229,7 @@ def run(
             category="core",
         )
     satelliten = config.get("satelliten", [])
-    state_by_ticker = _parse_state_table(sources["state"]) if sources.get("state") and sources["state"].exists() else {}
+    portfolio_by_ticker = _parse_state_table(sources["portfolio"]) if sources.get("portfolio") and sources["portfolio"].exists() else {}
     fakt_by_ticker = _parse_faktortabelle(sources["faktortabelle"]) if sources.get("faktortabelle") and sources["faktortabelle"].exists() else {}
     vault_by_ticker = _parse_vault_entities(sources["vault_entities_dir"]) if sources.get("vault_entities_dir") else {}
 
@@ -249,7 +249,7 @@ def run(
             ))
             continue
 
-        for mirror_name, mirror in [("STATE.md", state_by_ticker), ("Faktortabelle.md", fakt_by_ticker), ("Vault", vault_by_ticker)]:
+        for mirror_name, mirror in [("PORTFOLIO.md", portfolio_by_ticker), ("Faktortabelle.md", fakt_by_ticker), ("Vault", vault_by_ticker)]:
             if ticker not in mirror:
                 if mirror_name == "Vault":
                     continue
@@ -285,7 +285,7 @@ def run(
                     hint=f"DEFCON-Mismatch — {mirror_name} syncen",
                 ))
                 continue
-            if mirror_name == "STATE.md":
+            if mirror_name == "PORTFOLIO.md":
                 verdict = compare_flag(c_flag, m["flag_icon"])
                 if verdict == "error":
                     failures.append(FailureDetail(

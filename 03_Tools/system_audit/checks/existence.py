@@ -1,8 +1,9 @@
 """Check-4: Backtick-wrapped path references must resolve to existing files.
 
-Spec §5.1 Check-4 + Codex-Patch P3. Scope: CLAUDE.md + STATE.md + SESSION-HANDOVER.md
-+ Pipeline-SSoT-referenzierte Plans (NOT glob all plans). Ignoriert URLs, Wikilinks
-`[[...]]`, Code-Fences, Whitelist-Pfade.
+Spec §5.1 Check-4 + Codex-Patch P3. Scope: CLAUDE.md + STATE.md + PORTFOLIO.md +
+PIPELINE.md + SYSTEM.md + SESSION-HANDOVER.md + Pipeline-SSoT-referenzierte Plans
+(NOT glob all plans). Ignoriert URLs, Wikilinks `[[...]]`, Code-Fences,
+Whitelist-Pfade.
 """
 from __future__ import annotations
 
@@ -47,17 +48,20 @@ def run(
     base = [
         repo_root / "CLAUDE.md",
         repo_root / "00_Core" / "STATE.md",
+        repo_root / "00_Core" / "PORTFOLIO.md",
+        repo_root / "00_Core" / "PIPELINE.md",
+        repo_root / "00_Core" / "SYSTEM.md",
         repo_root / "00_Core" / "SESSION-HANDOVER.md",
     ]
     pipeline_plans: list[Path] = []
 
     if scan_files_override is None:
-        state_path = repo_root / "00_Core" / "STATE.md"
-        if state_path.exists():
+        pipeline_path = repo_root / "00_Core" / "PIPELINE.md"
+        if pipeline_path.exists():
             # Forward-dependency on Task 9 Check-6 — guard gracefully.
             try:
                 from system_audit.checks.pipeline_ssot import extract_plan_refs
-                refs = extract_plan_refs(state_path.read_text(encoding="utf-8"))
+                refs = extract_plan_refs(pipeline_path.read_text(encoding="utf-8"))
                 pipeline_plans = [repo_root / r for r in refs if (repo_root / r).exists()]
             except ImportError:
                 pipeline_plans = []  # Check-6 not yet implemented; skip plan-ref augmentation

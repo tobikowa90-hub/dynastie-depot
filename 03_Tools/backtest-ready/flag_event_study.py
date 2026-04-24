@@ -275,7 +275,7 @@ def _fmt_alpha_cell(hr: HorizonResult) -> str:
 def format_event_narrative_msft(er: EventResult) -> str:
     parts: list[str] = []
     parts.append(
-        f"**Hintergrund (CORE-MEMORY §1):** CapEx/OCF Q2 FY26 GAAP 83,6 % (bereinigt um "
+        f"**Hintergrund (CORE-MEMORY §12):** CapEx/OCF Q2 FY26 GAAP 83,6 % (bereinigt um "
         f"Finance Leases ~63 %), damit über der 60 %-Schwelle. Trigger-Datum 2026-01-15 "
         f"ist Proxy (Monatsmitte; Earnings-Call ca. 30.01.)."
     )

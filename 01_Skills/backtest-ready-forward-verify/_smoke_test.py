@@ -33,11 +33,11 @@ except Exception:
     pass
 
 # ---------------------------------------------------------------------------
-# STATE.md fixture string — covers all style variants that parse_state_row
+# PORTFOLIO.md fixture string — covers all style variants that parse_state_row
 # must handle in production.
 # ---------------------------------------------------------------------------
-STATE_MD_FIXTURE = """\
-# STATE.md — Dynasty-Depot Live-Status
+PORTFOLIO_MD_FIXTURE = """\
+# PORTFOLIO.md — Depot-Live-State
 **Stand: 18.04.2026**
 
 ---
@@ -378,34 +378,34 @@ def case_5() -> None:
     _require_helpers()
 
     # AVGO: score=84, defcon=4, ⚠️ = watch (not hard flag) → flags_active=False
-    avgo = parse_state_row("AVGO", STATE_MD_FIXTURE)
+    avgo = parse_state_row("AVGO", PORTFOLIO_MD_FIXTURE)
     assert avgo == {"score": 84, "defcon": 4, "flags_active": False}, (
         f"AVGO mismatch: {avgo}"
     )
 
     # V: bold-wrap **63** / **🟠 2** / ✅ → flags_active=False
-    v = parse_state_row("V", STATE_MD_FIXTURE)
+    v = parse_state_row("V", PORTFOLIO_MD_FIXTURE)
     assert v == {"score": 63, "defcon": 2, "flags_active": False}, f"V mismatch: {v}"
 
     # APH: 🔴 → flags_active=True
-    aph = parse_state_row("APH", STATE_MD_FIXTURE)
+    aph = parse_state_row("APH", PORTFOLIO_MD_FIXTURE)
     assert aph == {"score": 63, "defcon": 2, "flags_active": True}, f"APH mismatch: {aph}"
 
     # MSFT: 🔴 → flags_active=True
-    msft = parse_state_row("MSFT", STATE_MD_FIXTURE)
+    msft = parse_state_row("MSFT", PORTFOLIO_MD_FIXTURE)
     assert msft == {"score": 59, "defcon": 2, "flags_active": True}, f"MSFT mismatch: {msft}"
 
     # TMO: **64** / 🟠 2 / ✅ (...) → flags_active=False
-    tmo = parse_state_row("TMO", STATE_MD_FIXTURE)
+    tmo = parse_state_row("TMO", PORTFOLIO_MD_FIXTURE)
     assert tmo == {"score": 64, "defcon": 2, "flags_active": False}, f"TMO mismatch: {tmo}"
 
     # BRK.B: ticker with dot
-    brkb = parse_state_row("BRK.B", STATE_MD_FIXTURE)
+    brkb = parse_state_row("BRK.B", PORTFOLIO_MD_FIXTURE)
     assert brkb == {"score": 75, "defcon": 3, "flags_active": False}, f"BRK.B mismatch: {brkb}"
 
     # UNKNOWN → ValueError
     try:
-        parse_state_row("UNKNOWN", STATE_MD_FIXTURE)
+        parse_state_row("UNKNOWN", PORTFOLIO_MD_FIXTURE)
         raise AssertionError("expected ValueError for unknown ticker")
     except (ValueError, KeyError) as exc:
         assert "UNKNOWN" in str(exc), f"error message should mention ticker, got: {exc}"
@@ -426,13 +426,13 @@ def case_6() -> None:
         core_dir.mkdir()
 
         # Create the required files
-        state_md = core_dir / "STATE.md"
+        portfolio_md = core_dir / "PORTFOLIO.md"
         faktor_md = core_dir / "Faktortabelle.md"
         log_md = core_dir / "log.md"
         core_memory_md = core_dir / "CORE-MEMORY.md"
         config_yaml = tmppath / "config.yaml"
 
-        for f in [state_md, faktor_md, log_md, core_memory_md, config_yaml]:
+        for f in [portfolio_md, faktor_md, log_md, core_memory_md, config_yaml]:
             f.write_text("initial content\n", encoding="utf-8")
 
         # Init git repo and make initial commit
@@ -446,7 +446,7 @@ def case_6() -> None:
         )
 
         # Sub-case A: all 3 required files modified → returns []
-        state_md.write_text("modified\n", encoding="utf-8")
+        portfolio_md.write_text("modified\n", encoding="utf-8")
         faktor_md.write_text("modified\n", encoding="utf-8")
         log_md.write_text("modified\n", encoding="utf-8")
         result_a = check_freshness(repo_root=tmpdir)
@@ -454,27 +454,27 @@ def case_6() -> None:
 
         # Reset files (git checkout)
         subprocess.run(
-            ["git", "checkout", "--", "00_Core/STATE.md", "00_Core/Faktortabelle.md", "00_Core/log.md"],
+            ["git", "checkout", "--", "00_Core/PORTFOLIO.md", "00_Core/Faktortabelle.md", "00_Core/log.md"],
             cwd=tmpdir,
             capture_output=True,
         )
 
-        # Sub-case B: only STATE + Faktor modified, log untouched → returns ["log.md"]
-        state_md.write_text("modified\n", encoding="utf-8")
+        # Sub-case B: only PORTFOLIO + Faktor modified, log untouched → returns ["log.md"]
+        portfolio_md.write_text("modified\n", encoding="utf-8")
         faktor_md.write_text("modified\n", encoding="utf-8")
         result_b = check_freshness(repo_root=tmpdir)
         assert result_b == ["log.md"], f"Sub-case B: expected ['log.md'], got {result_b}"
 
         # Reset
         subprocess.run(
-            ["git", "checkout", "--", "00_Core/STATE.md", "00_Core/Faktortabelle.md"],
+            ["git", "checkout", "--", "00_Core/PORTFOLIO.md", "00_Core/Faktortabelle.md"],
             cwd=tmpdir,
             capture_output=True,
         )
 
         # Sub-case C: none modified → returns all three required files
         result_c = check_freshness(repo_root=tmpdir)
-        assert sorted(result_c) == sorted(["STATE.md", "Faktortabelle.md", "log.md"]), (
+        assert sorted(result_c) == sorted(["PORTFOLIO.md", "Faktortabelle.md", "log.md"]), (
             f"Sub-case C: expected all 3 required, got {result_c}"
         )
 
@@ -484,7 +484,7 @@ def case_6() -> None:
         config_yaml.write_text("changed\n", encoding="utf-8")
         result_d = check_freshness(repo_root=tmpdir)
         # Still missing all 3 required (the conditional files are tracked but not checked)
-        assert sorted(result_d) == sorted(["STATE.md", "Faktortabelle.md", "log.md"]), (
+        assert sorted(result_d) == sorted(["PORTFOLIO.md", "Faktortabelle.md", "log.md"]), (
             f"Sub-case D: conditional files must be ignored, got {result_d}"
         )
         # Verify CORE-MEMORY and config are NOT in the result

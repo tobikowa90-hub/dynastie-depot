@@ -1,4 +1,5 @@
 # PIPELINE.md — Pipeline-SSoT + Long-Term-Gates
+**Stand:** 25.04.2026
 
 ## Verweise
 - [INSTRUKTIONEN.md §18](INSTRUKTIONEN.md#18-sync-pflicht-logmd--core-memorymd--faktortabellemd--statemd--score_historyjsonl--flag_eventsjsonl) — Pipeline-Item-Sync-Pflicht (Event-Typ "Pipeline-Item")

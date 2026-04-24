@@ -1,4 +1,5 @@
 # 🎯 STATE.md — Dynasty-Depot Hub
+**Stand:** 25.04.2026
 
 ## Verweise
 - [PORTFOLIO.md](PORTFOLIO.md) — Live-State (default-load bei Session-Start)
@@ -29,7 +30,7 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-24T22:23:38Z
+**Timestamp (UTC):** 2026-04-24T23:13:50Z
 **Result:** 3/3 PASS
 **Run:** `python 03_Tools/system_audit.py --minimal-baseline`
 **Full-Report:** stdout (kein Archiv-File)

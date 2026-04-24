@@ -248,7 +248,7 @@ def test_cross_source_pass_on_aligned() -> None:
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
     result = run(REPO_ROOT, ctx, sources_override={
         "config": fx / "config.yaml",
-        "state": fx / "state.md",
+        "portfolio": fx / "state.md",
         "faktortabelle": fx / "faktortabelle.md",
         "vault_entities_dir": None,
     })
@@ -268,7 +268,7 @@ def test_cross_source_fail_on_divergence() -> None:
         ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
         result = run(REPO_ROOT, ctx, sources_override={
             "config": tdp / "config.yaml",
-            "state": tdp / "state.md",
+            "portfolio": tdp / "state.md",
             "faktortabelle": tdp / "faktortabelle.md",
             "vault_entities_dir": None,
         })
@@ -468,7 +468,7 @@ def test_pipeline_ssot_fail_on_broken_ref() -> None:
     from system_audit.checks.pipeline_ssot import run
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "pipeline_ssot"
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-    result = run(REPO_ROOT, ctx, state_path_override=fx / "state_broken.md")
+    result = run(REPO_ROOT, ctx, pipeline_path_override=fx / "state_broken.md")
     assert result.status == "FAIL"
     assert any("nonexistent.md" in f.actual for f in result.failures)
 
