@@ -9,6 +9,12 @@ updated: 2026-04-24
 
 # Token-Effizienz — Operative Regeln
 
+## Verweise
+- [CLAUDE.md](../CLAUDE.md) — Pointer-Sektion
+- [APPLIED-LEARNING.md](APPLIED-LEARNING.md) — Tier-2-Learning-Log
+- [STATE.md](STATE.md) — Hub
+- [INSTRUKTIONEN.md §18](INSTRUKTIONEN.md) — Sync-Pflicht (Accessibility-Rolle)
+
 > **Accessibility-Hinweis (explizit, Entscheidung 2026-04-24):**
 > Diese Regeln liegen vor und sind via Pointer aus CLAUDE.md erreichbar. Es existiert **kein Enforcement-Mechanismus** (kein Hook, kein Skill-Check, kein Audit). Anwendung erfolgt durch bewusste Entscheidung der jeweiligen Session — nicht durch automatische Kontrolle.
 

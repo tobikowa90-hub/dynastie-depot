@@ -3,6 +3,12 @@
 > Dieses Dokument beschreibt das WAS und WARUM des Projekts.
 > Für das WIE → INSTRUKTIONEN.md | Für Erinnerungen → CORE-MEMORY.md
 
+## Verweise
+- [STATE.md](STATE.md) — Hub
+- [PORTFOLIO.md](PORTFOLIO.md) — aktuelle Allokation
+- [INSTRUKTIONEN.md](INSTRUKTIONEN.md) — Workflows
+- [CORE-MEMORY.md §2](CORE-MEMORY.md#2-strategische-entscheidungen-dauerhaft-bindend) — Strategische Entscheidungen
+
 ---
 
 ## 1. Identität & Philosophie

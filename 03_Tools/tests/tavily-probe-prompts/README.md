@@ -13,8 +13,8 @@ Each file contains a self-contained prompt for a specific test case.
 
 ## Tests
 
-- **T1** happy-path: full v3.0 prompt against real STATE.md, verify News-Sektion renders + slot-struktur + allowlist.
-- **T2** (not a separate file): covered by T1 under different STATE (not mocked; real state suffices given current portfolio has mix of FLAGs/earnings).
+- **T1** happy-path: full v3.0 prompt against real PORTFOLIO.md, verify News-Sektion renders + slot-struktur + allowlist.
+- **T2** (not a separate file): covered by T1 under different PORTFOLIO state (not mocked; real state suffices given current portfolio has mix of FLAGs/earnings).
 - **T3** adversarial-trap: force SU.PA + RMS.PA queries, verify query-string content + no Suncor/Rockwell in results.
 - **T4** fail-open: reuse Phase-0-R1-C bad-params pattern, verify 422 caught and run completes.
 - **T5** (not a separate file): post-update content-verify, done in Task 9.

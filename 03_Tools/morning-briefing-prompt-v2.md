@@ -102,7 +102,7 @@ SCHRITT 1 — Wochentag pruefen:
 
 SCHRITT 2 — Kontext laden:
 
-2a) Lies 00_Core/STATE.md:
+2a) Lies 00_Core/PORTFOLIO.md:
 - Extrahiere: Sparraten pro Ticker (Rate-Spalte aus Portfolio-State-Tabelle)
 - Extrahiere: Aktive Watches (kompletten Block — unveraendert)
 - Extrahiere: Naechste kritische Trigger (Tabelle mit Datum/Ticker/Klasse/Aktion)
@@ -162,7 +162,7 @@ Review: [Alle unter Review]
 (Oder: Keine aktiven FLAGs)
 
 --- AKTIVE WATCHES ---
-  [Bullets aus STATE.md Watches-Block — unveraendert uebernehmen]
+  [Bullets aus PORTFOLIO.md Watches-Block — unveraendert uebernehmen]
   (Oder: Keine aktiven Watches)
 
 --- KURS-CHECK (vs. Score-Datum) ---
@@ -170,7 +170,7 @@ Satelliten:
   [TICKER]  [Kurs]  [+/-X%]  Score [X] ([Datum])  Rate: [€]  [FLAG falls aktiv]  [Shibui|Yahoo]
   (Score-Datum == heute: zeige 'Score heute' statt Delta)
   (Yahoo-Titel: nur Kurs, kein Delta)
-  (Rate aus STATE.md: volle Rate / halbe Rate / 0€ FLAG)
+  (Rate aus PORTFOLIO.md: volle Rate / halbe Rate / 0€ FLAG)
 
 Ersatzbank:
   [TICKER]  [Kurs]  Score [X]  [Shibui]
@@ -178,7 +178,7 @@ Ersatzbank:
 
 --- NAECHSTE TRIGGER & EARNINGS (30 Tage) ---
   [Datum] [Ticker] [Klasse] — [Aktion/Kontext]
-  (Kombiniert: STATE.md Trigger-Tabelle + Faktortabelle Earnings-Kalender, nach Datum sortiert)
+  (Kombiniert: PORTFOLIO.md Trigger-Tabelle + Faktortabelle Earnings-Kalender, nach Datum sortiert)
   (Oder: Keine Trigger diese Woche)
 
 --- VERALTETE SCORES (>90 Tage) ---
@@ -199,7 +199,7 @@ Schwellenwerte:
 ---
 
 WOCHENEND-MODUS (Sa/So):
-- Lies STATE.md + Faktortabelle (KEIN Shibui-Call, KEIN Yahoo curl)
+- Lies PORTFOLIO.md + Faktortabelle (KEIN Shibui-Call, KEIN Yahoo curl)
 - Zeige: FLAGS, AKTIVE WATCHES, Earnings + Trigger naechste Woche, veraltete Scores, Empfehlung fuer Montag
 - Kurzformat, kein Kurs-Check
 

@@ -3,6 +3,14 @@
 > Dieses Dokument beschreibt das WIE — User-Workflows, Befehle, Meta-Regeln.
 > Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 
+## Verweise
+- [STATE.md](STATE.md) — Hub
+- [PORTFOLIO.md](PORTFOLIO.md) — Portfolio-State (Primär, §22 Sparplan-Formel-Anwendung)
+- [PIPELINE.md](PIPELINE.md) — Pipeline-Items (§18 Event-Typ "Pipeline")
+- [SYSTEM.md](SYSTEM.md) — System-Zustand (§18 Event-Typ "System", §27.5 Guard-Pfad)
+- [CORE-MEMORY.md](CORE-MEMORY.md) — Lektionen + Per-Ticker + Lifecycle
+- [Faktortabelle.md](Faktortabelle.md) — Score-Detail
+
 ---
 
 ## 1. Befehls-Übersicht

@@ -9,7 +9,14 @@
 > Konflikt Faktortabelle ↔ config.yaml: config.yaml gewinnt immer.
 > score_datum > 90 Tage → 🟡 veraltet markieren.
 > Bei Datenzweifel → Shibui direkt abfragen.
-> **Seit 17.04.2026:** Session-Start-Entry-Point ist `00_Core/STATE.md` — Faktortabelle ist on-demand Deep-Dive-Quelle. Sync-Pflicht umfasst **4 Dateien** (log.md + CORE-MEMORY.md + Faktortabelle.md + STATE.md — §18 INSTRUKTIONEN).
+> **Seit 25.04.2026 (00_Core Hub-Split):** Session-Start liest `00_Core/STATE.md` (Hub) + `00_Core/PORTFOLIO.md` (Live-State); Faktortabelle ist on-demand Deep-Dive-Quelle. Sync-Pflicht §18 v2 = Trigger-basiertes Event-Mapping (Score-Event-Set inkl. PORTFOLIO.md statt STATE.md).
+
+## Verweise
+- [PORTFOLIO.md](PORTFOLIO.md) — Live-State (Primärquelle, synchron mit dieser Tabelle)
+- [INSTRUKTIONEN.md §4](INSTRUKTIONEN.md#4-stufe-2--defcon-scoring-100-punkte-matrix) — DEFCON-Scoring-Regeln
+- [CORE-MEMORY.md §4](CORE-MEMORY.md#4-score-register) — Score-Register
+- [CORE-MEMORY.md §5](CORE-MEMORY.md#5-scoring-lektionen-gelernte-regeln) — Scoring-Lektionen
+- [CORE-MEMORY.md §12](CORE-MEMORY.md#12-per-ticker-chronik) — Per-Ticker-Historie
 
 ---
 

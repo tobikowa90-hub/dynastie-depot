@@ -1,8 +1,60 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-25 Session-3-Ende — **00_Core Perfect-Organization Tier 2: Task 0-3 DONE** (Feature-Branch `refactor/00core-perfect-organization`, Commits `2f3cf92` → `42b9905` → `f798f0a` → `326fa42`). **Task 4-9 OPEN.** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` (Spec v0.4 ratified, 18 AC). Substantive Änderungen dieser Session: Task 3 CORE-MEMORY §1→§12/§13 Topic-Auflösung — 11 Ticker-Sub-§ + 26-Zeilen-Lifecycle-Tabelle + §6 slim Changelog + §9b gelöscht + Verweise-Kopf. AC #6 Greps 6/6 PASS, `system_audit --minimal-baseline` 3/3 PASS, scoring-neutral. Zwei advisor-pre-commit-Fixes appliziert: (1) MSFT-Wording „§5 Screener-Exception #5" → „SKILL.md Screener-Exception #5" korrigiert (war falsche Cross-Ref), (2) AVGO/MSFT/VEEV Cross-Ref-Bullets statt Prose-Placeholder (folgt Plan-Pattern für doppelrelevante Events aus Step 3.4). **Portfolio-State unverändert** seit 23.04. TMO Q1 Beat. System: DEFCON v3.7 (unverändert).
+## Verweise
+- [STATE.md](STATE.md) — Hub
+- [PORTFOLIO.md](PORTFOLIO.md) — aktueller Portfolio-State
+- [PIPELINE.md](PIPELINE.md) — offene Pläne bei Session-Abschluss
+- [SYSTEM.md](SYSTEM.md) — Infra-Kontext
+- [CORE-MEMORY.md §12](CORE-MEMORY.md#12-per-ticker-chronik) — Per-Ticker-Historie bei Ticker-Sessions
 
-## 🔄 RESUME-INPUT (Session 4 — Task 4 Script-Patches TDD-Order, 2026-04-25 Session-3-Ende)
+**Aktualisiert:** 2026-04-25 Session-4-Ende — **00_Core Perfect-Organization Tier 2: Task 4 Script-Side WIP (4.1–4.11 done, 4.12–4.17 offen)**. Feature-Branch `refactor/00core-perfect-organization`, **kein neuer Commit** (atomarer Task-4-Commit via Plan Step 4.17 in Session 5 nach Codex-Review). Substantive Änderungen dieser Session (uncommitted, working-tree): (a) **TDD RED→GREEN** Tripwire-Migration `_forward_verify_helpers.py` + `01_Skills/backtest-ready-forward-verify/_smoke_test.py` → Fixture `STATE_MD_FIXTURE` → `PORTFOLIO_MD_FIXTURE`, `REQUIRED_TOUCH_FILES[0]` `STATE.md` → `PORTFOLIO.md`, Docstrings/Error-Messages angepasst — Smoke 6/6 PASS. (b) `system_audit/checks/pipeline_ssot.py` Default-Pfad → `PIPELINE.md`. (c) `system_audit/checks/markdown_header.py` targets-Liste um PORTFOLIO/PIPELINE/SYSTEM erweitert (kind="state"). (d) `system_audit/checks/existence.py` base-scan um PORTFOLIO/PIPELINE/SYSTEM + Pipeline-Plan-Refs aus PIPELINE.md statt STATE.md. (e) `system_audit/checks/cross_source.py` + `_smoke_test.py` Key-Rename `state` → `portfolio`, mirror_name `STATE.md` → `PORTFOLIO.md`. (f) 4 neue Fixtures `03_Tools/system_audit/fixtures/markdown_header/{state_hub,portfolio,pipeline,system}_ok.md`. (g) **Task-2-Carry-Over (advisor-empfohlen):** `**Stand:** 25.04.2026` in STATE.md / PORTFOLIO.md / PIPELINE.md / SYSTEM.md nachgetragen (war beim Hub-Split Task 2 verloren). Smoke-Sweep: `system_audit/_smoke_test.py` 14/14 OK, `--minimal-baseline` 3/3 PASS (AC #9), `01_Skills/backtest-ready-forward-verify/_smoke_test.py` 6/6 PASS (AC #11). Check-3 markdown_header 6/6 PASS (vorher FAIL durch fehlendes Stand). **Portfolio-State unverändert** seit 23.04. TMO Q1. System: DEFCON v3.7 (unverändert).
+
+## 🔄 RESUME-INPUT (Session 5 — Task 4 Restschritte 4.12–4.17 + Codex-Review, 2026-04-25 Session-4-Ende)
+
+**Auftrag:** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` ab **Task 4 Step 4.12** via `superpowers:executing-plans` fortsetzen. Branch `refactor/00core-perfect-organization` bleibt checked out. **Working-Tree enthält 13+ uncommitted Edits** von Session 4 (siehe Header oben). Vor Commit: Codex-Review (User-Request Session 4).
+
+**Restliche Steps Session 5:**
+1. **Step 4.12:** `03_Tools/briefing-sync-check.ps1` — `$CheckedFiles`-Liste um `00_Core/PORTFOLIO.md`, `00_Core/PIPELINE.md`, `00_Core/SYSTEM.md` erweitern (neben dem bereits gelisteten STATE.md). Optional Smoke via `pwsh.exe -File ... -WhatIf`.
+2. **Step 4.13:** `03_Tools/backtest-ready/backfill_flags.py` — Docstring + Prose-Refs „CORE-MEMORY §1" auf §12 (Ticker-Bezug) bzw. §13 (ohne Ticker-Bezug) umleiten. §3/§4 bleiben.
+3. **Step 4.14:** `03_Tools/backtest-ready/flag_event_study.py` — Output-Template „**Hintergrund (CORE-MEMORY §1):**" → „**Hintergrund (CORE-MEMORY §12):**". §3/§4 bleiben.
+4. **Step 4.15:** `03_Tools/backtest-ready/backfill_scores.py` — `grep -n "CORE-MEMORY §"` prüfen; §4-Ref bleibt, §1 → §12/§13. Wahrscheinlich kein Change, nur Verification.
+5. **Step 4.16:** Final Smoke-Sweep — `python 03_Tools/system_audit/_smoke_test.py`, `python 01_Skills/backtest-ready-forward-verify/_smoke_test.py`, `python 03_Tools/system_audit.py --minimal-baseline` alle rc=0.
+6. **Step 4.16b (NEU, User-Request Session 4):** **Codex-Review** via `codex:rescue` / `codex:gpt-5-4-prompting`-Pattern auf den vollen Task-4-Diff (`git diff` gegen `326fa42`). Ziel: Spec-Drift-Check + Info-Loss-Check (Review-Stack v2, Memory `feedback_review_stack.md`). Codex-Findings adressieren vor Commit (Option 1: Plan-Header-Notice falls §-Referenz-Drift auftritt, Memory `feedback_spec_section_drift.md`).
+7. **Step 4.17:** Atomarer Commit via Plan-Template (erweitert um Task-2-Carry-Over **Stand:**-Nachtrag):
+   ```
+   refactor(scripts): Task-4 Tool-Patches für 00_Core-Split
+   …
+   + Task-2-Carry-Over: **Stand:** 25.04.2026 in STATE/PORTFOLIO/PIPELINE/SYSTEM (Hub-Split hatte Header verloren → Check-3 FAIL)
+   ```
+
+**AC-Bezug Restdauer:** AC #9 muss nach 4.12-4.17 weiter 3/3 PASS halten · AC #11 ebenso.
+
+**Sequenz Session 5:**
+1. `Session starten` → STATE.md lesen
+2. SESSION-HANDOVER.md (diese Datei) — Resume-Input Session 5
+3. `git status` + `git diff --stat 326fa42..HEAD` — Session-4-Diff inspizieren
+4. Step 4.12 → 4.13 → 4.14 → 4.15 → 4.16 (Smoke-Sweep) → 4.16b (Codex) → 4.17 (Commit)
+
+**Known Pre-Existing Carry-Over (nicht Task-4-Scope, nicht in Commit):**
+- `Check-4 cross_source` FAIL: `PORTFOLIO.md: TMO score=64` vs `config.yaml=67` — config.yaml nicht synchronisiert nach TMO Q1 23.04. **Task 6 Governance-Scope.**
+- `Check-5 existence` FAIL: 244 stale path-refs in SESSION-HANDOVER/CLAUDE.md + `PIPELINE.md`-extrahierten Plan-Files. **Task 6 `existence-Cleanup-Welle`** löst das. Task 4 hat den FAIL durch Scan-Erweiterung nur *sichtbar* gemacht; die Drift war schon da.
+- `portfolio_risk.py`, `benchmark-series.jsonl`, `03_Tools/repair_daily_persist.py` in SYSTEM.md/PIPELINE.md ohne Pfad-Prefix — Task 6 Housekeeping.
+
+**Post-Task-4:** Task 5 Skill-Patches + Peer-Verweise (`dynastie-depot` v3.7.3, `backtest-ready-forward-verify` v1.0.1, Verweise-Köpfe in 4 Files). Task 6 CLAUDE.md + INSTRUKTIONEN §18-Rename. Task 7+ Governance, ZIP-Build, Post-Migration-Audit, Merge.
+
+**Spec-Anker:** `docs/superpowers/specs/2026-04-24-00core-perfect-organization-design.md` v0.4 ratified.
+
+**Durchgeführte Verifikationen Session 4:**
+- backtest-ready-forward-verify `_smoke_test.py` 6/6 PASS (inkl. RED-Zustand 5/6 als Teil TDD-Protokoll dokumentiert)
+- system_audit `_smoke_test.py` 14 Suites PASS
+- `--minimal-baseline` 3/3 PASS rc=0 (mehrfach während Session)
+- Check-3 markdown_header: 2/3 FAIL vor Task 4 → 6/6 PASS nach Task-2-Carry-Over-Fix
+
+---
+
+## 🗃 Vorherige Resume-Inputs (archiviert)
+
+### Session 4 (Task 4 Script-Patches TDD-Order — ARCHIVIERT 2026-04-25)
 
 **Auftrag:** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` ab **Task 4** via `superpowers:executing-plans` fortsetzen. Branch `refactor/00core-perfect-organization` bleibt checked out.
 
