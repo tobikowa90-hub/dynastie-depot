@@ -12,6 +12,16 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 - **Briefing-Sync:** Vor Session-Ende `!SyncBriefing` falls 00_Core/ geändert wurde (§25). SessionEnd-Hook warnt automatisch.
 - **Remote-Control (User-Trigger):** Wenn User `remote-Control` eingibt (oder sinngemäße Phrase „remote weiter"/„mobile weiter"), Remote-Routine mit State-Snapshot via `ccr` spawnen (Memory `remote-trigger-api.md`). Sonst kein automatischer Prompt — User-gesteuert, Zero-Overhead. Spawn-Mechanismus + Kontext-Scope final am Konsolidierungstag 24.04. festlegen.
 
+## Kontinuierliches Lernen
+
+| Tier | Speicherort | Wer schreibt | Wann gelesen | Pflege |
+|------|------------|--------------|-------------|--------|
+| 1. Auto-Memory | `~/.claude/.../memory/*.md` | Claude automatisch | Session-Start | Auto-Dream konsolidiert |
+| 2. Applied Learning | `00_Core/APPLIED-LEARNING.md` | Manuell bei Review | On-Demand (per Routing-Table) | Monatlich + Kurator-Regel |
+| 3. Formelle Regeln | `00_Core/INSTRUKTIONEN.md` §§ | Bei bewiesenem Bedarf | Per Routing-Table | Bei Systemänderungen |
+
+Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNING.md`.
+
 ## Projektstruktur
 
 ```
@@ -42,15 +52,3 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 → `07_Obsidian Vault/WIKI-SCHEMA.md` lesen und den dortigen Workflows folgen.
 
 Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
-
-## Kontinuierliches Lernen (3-Tier-System)
-
-**Automatisch aktiv** (`autoMemoryEnabled + autoDreamEnabled`):
-
-| Tier | Speicherort | Wer schreibt | Wann gelesen | Pflege |
-|------|------------|--------------|-------------|--------|
-| 1. Auto-Memory | `~/.claude/.../memory/*.md` | Claude automatisch | Session-Start | Auto-Dream konsolidiert |
-| 2. Applied Learning | CLAUDE.md (diese Sektion) | Manuell bei Review | Session-Start | Monatlich: Obsoletes raus |
-| 3. Formelle Regeln | INSTRUKTIONEN.md §§ | Bei bewiesenem Bedarf | Session-Start | Bei Systemänderungen |
-
-**Promotion-Logik:** Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONEN (wenn systemisch).
