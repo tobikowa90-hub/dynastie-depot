@@ -1,0 +1,77 @@
+[
+  {
+    "start_time": 0.0,
+    "title": "What this video covers",
+    "end_time": 75.0
+  },
+  {
+    "start_time": 75.0,
+    "title": "The problem with how most people use AI",
+    "end_time": 210.0
+  },
+  {
+    "start_time": 210.0,
+    "title": "What tokens are and why context windows matter",
+    "end_time": 345.0
+  },
+  {
+    "start_time": 345.0,
+    "title": "The workspace blueprint: three workspaces for three kinds of work",
+    "end_time": 420.0
+  },
+  {
+    "start_time": 420.0,
+    "title": "What VS Code is and why I use it (you dont have to)",
+    "end_time": 510.0
+  },
+  {
+    "start_time": 510.0,
+    "title": "Markdown explained: what it is, where it came from, why it matters",
+    "end_time": 645.0
+  },
+  {
+    "start_time": 645.0,
+    "title": "The CLAUDE.md file: the first thing every AI reads",
+    "end_time": 750.0
+  },
+  {
+    "start_time": 750.0,
+    "title": "The three layer routing system explained",
+    "end_time": 840.0
+  },
+  {
+    "start_time": 840.0,
+    "title": "Layer 1: Top level identity and navigation",
+    "end_time": 930.0
+  },
+  {
+    "start_time": 930.0,
+    "title": "Layer 2: Workspace level context files",
+    "end_time": 1020.0
+  },
+  {
+    "start_time": 1020.0,
+    "title": "Layer 3: Skills, MCP servers, and plug and play tools",
+    "end_time": 1140.0
+  },
+  {
+    "start_time": 1140.0,
+    "title": "Naming conventions that replace databases",
+    "end_time": 1230.0
+  },
+  {
+    "start_time": 1230.0,
+    "title": "How to make this yours: content creators, freelancers, developers",
+    "end_time": 1320.0
+  },
+  {
+    "start_time": 1320.0,
+    "title": "The research paper behind all of this",
+    "end_time": 1380.0
+  },
+  {
+    "start_time": 1380.0,
+    "title": "Where to get the template",
+    "end_time": 1398
+  }
+]

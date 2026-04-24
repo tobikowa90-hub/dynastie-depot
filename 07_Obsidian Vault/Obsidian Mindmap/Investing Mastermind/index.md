@@ -69,7 +69,9 @@ _(noch leer)_
 
 #### Updating System (`wiki/sources/videos/updating-system/`)
 *Videos zu Tool-/System-Upgrades, Claude-Skills, neuen Workflows.*
-_(noch leer — Pilot-Ingest folgt)_
+- [[2026-04-08-charlie-automates-graphify-claude-code]] — Pilot-Ingest, Charlie Automates
+- [[2026-04-22-dubibubii-claude-code-powerful-settings]] — Dubibubii Powerful Settings, Adoption 1A/2O/4R
+- [[2026-03-10-jake-van-clief-folder-system-ai-agents]] — Jake Van Clief Folder-System, Adoption `pending-brainstorm`
 
 ---
 

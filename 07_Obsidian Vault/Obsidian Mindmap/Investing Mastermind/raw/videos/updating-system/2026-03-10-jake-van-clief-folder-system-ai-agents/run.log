@@ -1,0 +1,14 @@
+# run.log for 2026-03-10-jake-van-clief-folder-system-ai-agents
+started: 2026-04-23
+[step 0] url_reachable=True (0.2s)
+[version] yt-dlp: 2026.03.17
+[version] whisper: openai-whisper 20250625
+[version] ffmpeg: ffmpeg version 8.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+[step 1] yt-dlp: yt-dlp -x --audio-format m4a --no-playlist --write-info-json -o C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-03-10-jake-van-clief-folder-system-ai-agents\%(id)s.%(ext)s https://www.youtube.com/watch?v=MkN-ss2Nl10
+[step 1] exit=0, dt=39.2s
+[info] duration_min=23.3, chapters=True, video_id=MkN-ss2Nl10
+[step 2] whisper: whisper C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-03-10-jake-van-clief-folder-system-ai-agents\MkN-ss2Nl10.m4a --model large-v3 --language en --output_format json --output_dir C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\raw\videos\updating-system\2026-03-10-jake-van-clief-folder-system-ai-agents
+[step 2] exit=0, dt=5879.3s
+[step 3] removed audio file MkN-ss2Nl10.m4a
+[step 4] transcript_sha256=7da0a220e86a95dd..., info_sha256=2376b08412a5940f...
+[step 5] quality_gate: passed=True, fails=[], warns=[]
