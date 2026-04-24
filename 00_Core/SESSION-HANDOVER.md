@@ -1,47 +1,47 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-24 Mobile-Session-Ende — **Brainstorm + Spec + Plan CLAUDE.md-Routing-Refactor (Tier 1) DONE. Execution PENDING — neue Session erforderlich.** Mobile-Session (Opus 4.7) komplettierte Sections 3+4 + Spec v0.2 (Codex-Review-Pass, 5 Achsen) + Plan v0.2.1 (3-fach-Review Claude+Codex+User parallel — 4 kritische Bash-Pipeline-Bugs gefixt + Robustness-Hardening). 5 neue Commits seit Brainstorm-Input-Handover (`2f6e8ba`): `84e0fe7` (Spec v0.1), `1358346` (Spec v0.2), `25d57f0` (Plan v0.1), `1e1889c` (Plan v0.2), `57707a7` (Plan v0.2.1). **Null Implementation geschehen — HARD-GATE bleibt aktiv bis User in neuer Session Execution startet.** Plan-Path: `docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md` v0.2.1 (8 Tasks, 11 AC-Verifikationen, Inline-Bash-Verify, AC #11 Negative-Scope strikt). Spec-Path: `docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md` v0.2. Vorher (2026-04-24 spät): Jake-Van-Clief-Video-Analyse abgeschlossen, Wiki-Source committed (`7baa543`).
-**Vorherige Aktualisierungen:** 2026-04-23 Nachmittag — Phase G (TMO Q1 DONE, Score 64→67, D2→D3, `fcf_trend_neg` CLEAR) · 2026-04-22 Spät — Task 19 + Fix-Welle E (`d7ecf71`/`e3ba381`) · 2026-04-22 Mittag — Tasks 15-18 (`486f2c1`/`fa238bf`/`ab7ae19`/`ca35f62` + Handover `51f5719`) · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D (`ab6b3f5`).
+**Aktualisiert:** 2026-04-24 Session-1-Ende — **CLAUDE.md Routing-Refactor Tier 1 EXECUTION + Sync-Welle + Codex-Reconciliation DONE.** Plan v0.2.1 (8 Tasks) + Section-A (AL v2.5) + STATE.md Pipeline-SSoT + CORE-MEMORY §1 + Codex-Fix + Option-B-Compression = **12 Commits**, alle LOKAL auf `main`. **CLAUDE.md 97→71 Zeilen** (Spec-Ziel ~70 erreicht). 11/11 AC PASS mit 2 dokumentierten Abweichungen. Codex-Verdikt `RECONCILED_WITH_FOLLOWUPS`, alle 3 Findings abgearbeitet (#1 Plan-intentional, #2 minor accepted, #3 Tool-Setups-Descriptor restauriert). **Session 2 PENDING:** CodeRabbit-Pass (WSL) + Vault-Update-Sweep. **Session 3 (Brainstorm-Kandidat):** 00_Core Perfect-Organization (Tier 2b CORE-MEMORY Restrukturierung + Tier 2 STATE-Split + Global-Linking-Strategie) — siehe STATE.md #12.
+**Vorherige Aktualisierungen:** 2026-04-24 Mobile — Brainstorm+Spec+Plan CLAUDE.md-Routing (DONE, 5 Commits) · 2026-04-23 Nachmittag — Phase G (TMO Q1 DONE) · 2026-04-22 Spät — Task 19 + Fix-Welle E · 2026-04-22 Mittag — Tasks 15-18 · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D.
 
-> **Progress-Banner (Phase A-G):** ✅ A+B+C+D+E · 🔵 F deferred · ✅ G (TMO Q1 Beat+Raise, Old-Pipeline-Sync `620702a`) · ✅ TMO-Retro-Audit Option B (`2513108`) · ✅ XLSX-Tools Sync (`5ccfdd1` + `a413c32` R-Column-Fix) · ✅ Daily-Persist-Nachtrag (`8a4008b`) · ✅ Check-3+Check-6 system-audit Fixes (`c07f2c3`) · ✅ Video-Ingest Second-Run Dubibubii + Adoption-Decision 4R/2O/1A (`ea48e2a`) · ✅ Video-Ingest Third-Run Jake Van Clief + Analyse uncommitted (`pending-brainstorm`) · ✅ **Brainstorm + Spec v0.2 + Plan v0.2.1 CLAUDE.md-Routing-Refactor Tier 1** (`84e0fe7`+`1358346`+`25d57f0`+`1e1889c`+`57707a7`) · ⏳ **Execution Plan v0.2.1** (8 Tasks, neue Session erforderlich) · ⏳ **Konsolidierungstag Fr 24.04.** (Block 1 schrumpft um 2 Items, Block 3 Dashboard v2).
+> **Progress-Banner Tier 1:** ✅ Brainstorm (Desktop 24.04.) · ✅ Spec v0.2 (Mobile) · ✅ Plan v0.2.1 3-fach-reviewed (Mobile) · ✅ **Execution** (Session 1 heute, 8 Tasks + Section A) · ✅ **Sync-Welle** (STATE + CORE-MEMORY) · ✅ **Codex-Reconciliation** · ✅ **Option-B-Compression** (86→71 Zeilen, Spec-Ziel erreicht) · ⏳ **CodeRabbit-Pass** (Session 2) · ⏳ **Vault-Update-Sweep** (Session 2).
 
-> **🔄 RESUME-INPUT (Neue Session — Plan-Execution, 2026-04-24 Mobile-Session-Ende):**
+> **🔄 RESUME-INPUT (Session 2 — CodeRabbit + Vault, 2026-04-24 Session-1-Ende):**
 >
-> **Auftrag:** Plan `docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md` v0.2.1 ausführen. **8 Tasks**, jeder Task hat eigene Verify-Steps + Commit. Plan ist self-contained — alle Bash/sed/grep-Pipelines konkret + 1:1-Migration-Strategie definiert.
+> **Auftrag:** Externe System-Integration des abgeschlossenen Refactors: (1) CodeRabbit-Pass via WSL, (2) Vault-Update-Sweep.
 >
-> **Sequenz für neue Session:**
-> 1. `Session starten` → STATE.md (Default) — kein deep-read der Spec/Plan-Files nötig, Plan ist self-contained
-> 2. SESSION-HANDOVER.md (diese Datei) lesen — Abschnitt unten + dieser Resume-Block
-> 3. Execution-Mode wählen + Skill aktivieren:
->    - **Empfohlen: `superpowers:subagent-driven-development`** — Fresh Subagent pro Task, Review zwischen Tasks, schnelle Iteration
->    - **Alternative: `superpowers:executing-plans`** — Inline-Execution mit Batch-Checkpoints
-> 4. Plan v0.2.1 Task 1 starten (Pre-Migration Snapshot, BASELINE_HASH pinnen)
-> 5. Tasks 2-8 sequenziell durchgehen (jeder Task ~10-15 Min + Commit)
-> 6. **Nach Task 8 Marker-Commit:** Section A der Post-Implementation Follow-ups (siehe Plan) ausführen — separater Commit fügt 2 neue Applied-Learning-Bullets hinzu (12/20 → 14/20)
-> 7. Übrige Follow-ups (Section B): STATE.md-Pipeline-SSoT-Update, CORE-MEMORY.md §1-Eintrag, Vault-Update-Sweep, ggf. Codex-Reconciliation-Pass
+> **Sequenz für Session 2:**
+> 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung ziehen
+> 2. SESSION-HANDOVER.md (diese Datei) — dieser Resume-Block
+> 3. **CodeRabbit-Pass** via WSL (Memory `coderabbit_cli_via_wsl.md` kanonisch):
+>    ```bash
+>    wsl.exe -- bash -lc 'cd "/mnt/c/Users/tobia/OneDrive/Desktop/Claude Stuff" && coderabbit review --plain --base d025c7f --config /dev/null'
+>    ```
+>    Commit-Range: `d025c7f..HEAD` (12 Commits). Erwartete niedrige Finding-Rate bei Markdown-Refactor; potenzielle Findings: Typos, interne Link-Breaks, Tabellen-Konsistenz. **Sequenz Codex→CodeRabbit** bereits korrekt gelaufen (Codex war Session 1).
+> 4. **Vault-Update-Sweep** — Prüfe zuerst ob `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/concepts/CLAUDE-md-Konstitution.md` existiert; falls ja: strukturell aktualisieren auf neue 7-Section-Struktur (SESSION-INIT / Verhalten / KontLernen / Projektstruktur / Routing-Table / Wiki-Modus / Pointer). Falls nein: neue Konzept-Note anlegen wenn sinnvoll, oder als Backlog-Punkt notieren.
+> 5. Nach Session 2 Abschluss: **Session 3 Brainstorm-Kandidat** = 00_Core Perfect-Organization (siehe STATE.md #12)
 >
-> **Spec/Plan-Anker:**
-> - Spec v0.2 (Codex-reviewed): `docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md`
-> - Plan v0.2.1 (3-fach-Reviewed): `docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md`
-> - Acceptance: 11 AC, alle mechanisch verifiziert in Task 8
+> **Spec/Plan-Anker (historisch):**
+> - Spec v0.2: `docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md`
+> - Plan v0.2.1: `docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md`
 >
-> **Verbindliche Entscheidungen (final, nicht mehr verhandelbar):**
-> - A=ja: Routing-Table ersetzt On-Demand-Lektüre (keine Duplizierung)
-> - B=c: TOKEN-RULES Accessibility-Modell, kein Enforcement
-> - Match=Hybrid: exakte Trigger strikt + Soft-Match nur für bare Ticker (Whitelist via STATE.md-Satelliten) + Mehrfach-Match Union
-> - Trigger-Inventar=9 Zeilen
-> - KontLernen-Variant A (3-Tier-Tabelle bleibt knapp)
-> - TokenEff-Variant X (Section komplett raus aus CLAUDE.md)
-> - Migrations-Invariante: zeichengenau 1:1, kein Re-Editing, kein v2.5-Eintrag im Migrations-Commit
-> - 2 neue Applied-Learning-Bullets queued für Post-Tier-1-Add (Section A der Follow-ups im Plan)
+> **Resultate Tier 1 (für CR-Context):**
+> - CLAUDE.md 97→71 Zeilen (Spec-Ziel ~70 erreicht)
+> - 2 neue SSoT-Files: `00_Core/APPLIED-LEARNING.md` (14/20 Bullets, v2.5) + `00_Core/TOKEN-RULES.md` (Accessibility-Modell)
+> - Neue `## Routing-Table` (9 Trigger + 3 Edge-Cases + Hybrid-Match) ersetzt On-Demand-Lektüre
+> - `## Pointer (Ausgelagertes)` 4 Zeilen (AL/Token/Instruktionen/Meilensteine-Archiv — User-Entscheidung gegen Info-Verlust, AC #8 dokumentiert abweichend)
+> - Sync-Welle: STATE.md Pipeline-SSoT (Tier-1 als DONE #5 + Renumber-Kaskade) + CORE-MEMORY §1-Eintrag
+> - Codex-Reconciliation: RECONCILED_WITH_FOLLOWUPS, alle 3 Findings abgearbeitet
 >
-> **HARD-GATE:** Bleibt aktiv bis Plan v0.2.1 final approved + Execution-Mode bewusst gestartet. Keine Side-Edits an CLAUDE.md / 00_Core/APPLIED-LEARNING.md / 00_Core/TOKEN-RULES.md ohne Plan-Task.
+> **Commits-Übersicht Session 1 (Baseline `d025c7f`):**
+> `9ae0dcc`(AL) → `81829b5`(Token) → `e586d27`(remove) → `3e81a14`(KontLernen) → `ca66785`(Routing) → `2a67221`(Pointer-4Z) → `b99cf3b`(AC-Marker) → `1bd7492`(AL v2.5) → `3f76917`(STATE) → `0964d85`(CORE-MEMORY) → `1e79386`(Codex-Fix#3) → `3bd8632`(Option-B-Compression 86→71)
 >
-> **Untracked Working-Tree-Items (informativ):**
-> - `03_Tools/Rebalancing_Tool_v3.4.xlsx` — Excel-Autosave (vermutlich Revert / commit nicht nötig)
-> - `.claude/scheduled_tasks.lock` + `.claude/worktrees/` — Runtime-Files, .gitignore-Kandidaten
+> **Execution-Mode für Session 2:** Direkt-Editieren (Markdown), kein Subagent-Mode (CLAUDE.md Applied-Learning Bullet #1). CodeRabbit ist externer Subprocess (keine Subagent-Problematik).
 >
-> **Push-Status:** Alle 5 Commits sind LOKAL (kein git push erfolgt). Falls Briefing-Sync ins Remote gewünscht: `!SyncBriefing` (CLAUDE.md §25) — aber hier nur docs/-Änderungen, kein 00_Core/-Edit, daher SyncBriefing nicht zwingend.
+> **Untracked Working-Tree-Items (unverändert, informativ):**
+> - `03_Tools/Rebalancing_Tool_v3.4.xlsx` — Excel-Autosave
+> - `.claude/scheduled_tasks.lock` + `.claude/worktrees/` — Runtime-Files
+>
+> **Push-Status:** Alle 12 Commits LOKAL auf `main`. Kein `git push`. Briefing-Sync per `!SyncBriefing` falls User das will (00_Core/-Edits in STATE+CORE-MEMORY+APPLIED-LEARNING+TOKEN-RULES vorhanden).
 
 ---
 
