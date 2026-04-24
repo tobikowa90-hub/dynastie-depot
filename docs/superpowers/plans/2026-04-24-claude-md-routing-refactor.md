@@ -939,9 +939,43 @@ Falls einzelne AC FAIL: STOP, kein Marker-Commit. Stattdessen FAIL-Liste an User
 
 ## Post-Implementation Follow-ups (NICHT Teil dieses Plans)
 
+### A — Applied-Learning-Zugang (queued aus 3-fach-Review-Prozess 24.04.2026)
+
+Zwei neue Tier-2-Bullets aus dieser Brainstorm/Spec/Plan-Session, **als separater Commit nach Task 8 Marker** (sauber getrennt von strikter Migrations-Invariante):
+
+```bash
+# Nach AC-Marker-Commit: Append 2 Bullets + Historie-Eintrag v2.5
+# Bullet-Count steigt auf 14/20 (innerhalb Pflege-Regel, kein Überlauf)
+
+# Edit 00_Core/APPLIED-LEARNING.md:
+# (a) An die "## Bullets"-Liste folgende 2 Bullets anhängen (nach dem 12. Bullet):
+- Plan-Self-Review verfehlt Bash/sed/grep-Pipeline-Bugs — externe Review-Instanz (Codex) pflicht vor Execution
+- 1:1-Migration-Commit darf keine Meta-Logging-Einträge ergänzen — separater Commit nach Verify-PASS
+
+# (b) Historie-Eintrag erweitern (Stand-Zeile von 12/20 auf 14/20):
+v2.5 (24.04.2026 nach Tier-1-Deploy) +2 (Plan-Self-Review-Blindspot, Migrations-Invariante-vs-Meta-Logging — beide aus 3-fach-Review CLAUDE.md-Routing-Refactor). Stand: **14/20**.
+
+# Commit-Message:
+git add 00_Core/APPLIED-LEARNING.md
+git commit -m "docs(applied-learning): +2 Bullets aus 3-fach-Review-Prozess CLAUDE.md-Routing v2.5
+
+(1) Plan-Self-Review verfehlt Bash/sed/grep-Pipeline-Bugs — Codex pflicht vor Execution.
+    Belegt: 4 kritische Command-Bugs in Plan v0.1, alle von Codex erkannt, keiner von
+    meinem Self-Review.
+(2) 1:1-Migration-Commit darf keine Meta-Logging-Eintraege ergaenzen.
+    Belegt: v2.5-Historie-Eintrag im Migrations-Commit verletzte Spec-Invariante,
+    Codex Achse 5 WARN, jetzt strikt getrennt.
+
+Stand: 14/20.
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
+```
+
+### B — Übrige Follow-ups
+
 - **Codex-Reconciliation-Pass** (Memory `feedback_review_stack.md`): Nach AC-Report-Commit Spec + Plan + Implementation gegen Memory-Drift prüfen.
 - **CodeRabbit-Pass:** Weniger relevant (Markdown-Refactor, kein Code), aber inverted-Sequenz für Refactor-Sicherheit erwägen.
 - **Vault-Update-Sweep:** `07_Obsidian Vault/.../wiki/concepts/CLAUDE-md-Konstitution.md` strukturell aktualisieren (separate Aufgabe, nicht spec-blockierend).
 - **STATE.md-Pipeline-SSoT-Update:** Tier-1-Refactor als ✅ DONE eintragen.
-- **CORE-MEMORY.md §1-Eintrag:** Meilenstein „CLAUDE.md Routing-Refactor Tier 1 deployed".
+- **CORE-MEMORY.md §1-Eintrag:** Meilenstein „CLAUDE.md Routing-Refactor Tier 1 deployed + Applied-Learning v2.5 (12→14)".
 - **Tier 2 STATE-Split (Variante B Hub):** Eigene Brainstorm-Session, separates Spec.
