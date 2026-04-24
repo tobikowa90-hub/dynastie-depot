@@ -20,3 +20,13 @@ updated: 2026-04-24
 - **DEFCON 1 Stopp:** Score <50 → Analyse stoppen (Insider-Modul läuft durch)
 - **MCP:** Tool Search lädt lazy. Manuell deaktivieren nur bei Vault-Only-Sessions.
 - **Modell:** Sonnet 4.6 default; `/model opus` für !Analysiere, Multi-Step-Refactors, strategische Entscheidungen.
+
+## Skill-spezifische Ergänzungen
+
+Skill-interne Token-Regeln (Workflow-Details in DEFCON-Analyse-Kontext) leben in `01_Skills/dynastie-depot/SKILL.md`:
+- **§172 `/compact` bei 60%-Threshold** mit Preserve/Discard-Spec + „Nach 3-4 Compacts: Summary → `/clear` → neu"
+- **§171 MCP-Aktivierung nach Arbeitsbereich** (Analyse: Shibui+defeatbeta+WebSearch / Vault: filesystem / Chat: `/mcp disable` nicht benötigter Server)
+- **§170 Snapshot-First-Flow:** Faktortabelle → Trigger? → Delta (Shibui nur für Delta seit `score_datum`)
+- **§795 Token-Budget-Benchmark:** ~12-18k Werktag | ~2-3k Wochenende (pro !Analysiere-Lauf)
+
+Diese Datei bleibt SSoT für **allgemeine** Session-Token-Regeln; skill-spezifische Details bleiben kontextnah im Skill.
