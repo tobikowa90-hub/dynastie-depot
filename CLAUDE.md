@@ -2,15 +2,6 @@
 
 **PFLICHT bei `Session starten`:** Lies sofort **nur `00_Core/STATE.md`** — ohne Rückfrage. Diese Datei ist Single-Entry-Point und genügt für 90% der Sessions (Scores, DEFCON, FLAGs, Sparraten, Trigger, Watches).
 
-**On-Demand-Lektüre** (nur wenn Kontext explizit gebraucht wird):
-- `CORE-MEMORY.md` — Scoring-Lektionen (§5), Positions-Entscheidungen (§3), Audit-Log (§10), aktuelle Meilensteine ab 15.04. (§1)
-- `INSTRUKTIONEN.md` — Scoring-Skalen, Sparplan-Formel, Workflows (bei `!Analysiere`, `!Rebalancing`)
-- `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` — **Status-Matrix** (Single Source of Truth für wissenschaftliche Befunde B1-B24+; automatisch aktiv via §4 Router in `!Analysiere`, via §28 bei Migration, via §29 bei Retrospective, via §33 bei Skill-Architektur-Proposals; nicht in mechanischen Workflows `!QuickCheck` / `!Rebalancing` / Screener)
-- `KONTEXT.md` — Strategie, Allokation, Slot-Zuteilung (bei Strategie-Fragen)
-- `Faktortabelle.md` — Detail-Metriken pro Ticker (bei Deep-Dive)
-- `SESSION-HANDOVER.md` — Last-Session-Kontext (bei Fortsetzung)
-- `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md` — Chronik vor 15.04. (Projekt-Aufbau, Tool-Setups, erste Analysen)
-
 Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill aktivieren.
 
 ## Verhalten
@@ -52,15 +43,6 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 
 Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 
-## Token-Effizienz (operativ)
-
-- **Snapshot-First:** STATE.md + Faktortabelle vor API — spart 3-5 Tool-Calls
-- **Sync-Pflicht (alle sechs):** log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + flag_events.jsonl
-- **Pause-Regel:** >5 Min → /compact (Preserve: Score/Tabelle/Urteil/FLAGs) oder /clear
-- **DEFCON 1 Stopp:** Score <50 → Analyse stoppen (Insider-Modul läuft durch)
-- **MCP:** Tool Search lädt lazy. Manuell deaktivieren nur bei Vault-Only-Sessions.
-- **Modell:** Sonnet 4.6 default; `/model opus` für !Analysiere, Multi-Step-Refactors, strategische Entscheidungen.
-
 ## Kontinuierliches Lernen (3-Tier-System)
 
 **Automatisch aktiv** (`autoMemoryEnabled + autoDreamEnabled`):
@@ -72,26 +54,3 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 | 3. Formelle Regeln | INSTRUKTIONEN.md §§ | Bei bewiesenem Bedarf | Session-Start | Bei Systemänderungen |
 
 **Promotion-Logik:** Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONEN (wenn systemisch).
-
-### Applied Learning (kuratiert, max. 20 Bullets)
-
-> <15 Wörter pro Bullet. Nur operativ relevante **Arbeitsprinzipien** — keine Tool-References (→ Auto-Memory) und keine systemischen Regeln (→ INSTRUKTIONEN.md §§).
->
-> **Proaktive Pflege (seit 18.04.2026):** Bei jedem Monats-Übergang: 5-Min-Scan — Tool-References identifizieren und evakuieren. Verhindert Buildup, billiger als reaktive Überlauf-Sanierung.
->
-> **Kurator-Regel bei Überlauf (20/20):** Hybrid-Strategie: (1) Tool-References → Auto-Memory; (2) stabile Regeln → neue INSTRUKTIONEN-§; (3) thematisch verwandte Bullets konsolidieren. Ziel: ≤15/20 nach Revision. Archivierung ist kein Weg (toter Code).
-
-- Subagents nur für Code+Tests — Markdown/YAML-Edits direkt editieren (3×Subagent-Overhead unnötig)
-- Paper-Ingest ≠ System-Update: Wissenschaft validiert Regeln, erzwingt keine neuen — Redundanz-Check vor jeder Scoring-Erweiterung
-- Informationsverlust-Aversion > Ästhetik: bei Delete-vs-Keep Default = erhalten + Zeitstand-Banner
-- Advisor-Empfehlung nicht ohne neue Evidenz überstimmen — Ästhetik-Argumente zählen nicht als Evidenz
-- Parallel-Agents für !Analysiere REJECTED 17.04.: ~270k Token + Screener-Exception-Fehler — Genauigkeit > Wall-Time
-- Backfill-Tolerant-Pattern für Cross-Validators: bei fehlenden Rohwerten moat.rating="narrow" → Quality-Trap-Validator deaktiviert, keine Schätzungen nötig
-- Cross-Session AI-"Fixes" immer gegen `git diff HEAD` prüfen — Preview-Reads können Truncation fälschlich diagnostizieren
-- Option B vor mechanischem FLAG-Trigger: schema-getriggert ≠ strukturell. WC-Noise / Multi-Year-Trend / OpInc-Parallelität prüfen (TMO 18.04. fcf_trend_neg nicht aktiviert)
-- Backtest-Validation = 4-Dim-Gate (PBO + AQR-Bench + Half-Life + Seven Sins); Sin #7 n.a. für Long-Only.
-- Spec-§-Drift in Plan: Header-Notice mit Ist-§-Mapping + Codex-Attestierung, Spec frozen lassen — nicht Silent-Fix, nicht Spec-PR-Blocker
-- Anti-Hallucination-Guards: nicht nur Gründe, auch alternative Datenpfade/Fallbacks explizit verbieten (v3.0.3-Incident)
-- „Drift-Check" = exhaustive Schema-Validation aller Records, nicht Spot-Check (12/27 silent defcon-Drift entdeckt 21.04. via Pre-Check)
-
-> **Historie:** v1.0 (17.04.2026) 19 Bullets gemischt. v2.0 (18.04.2026) Evakuierung: 6 Tool-Refs → Auto-Memory, 4 systemische Regeln → INSTRUKTIONEN §27, auf **9 Kern-Arbeitsprinzipien** reduziert. Neues +1 (Option B FLAG-Entscheidung). v2.1 (18.04.2026) Bullet „Scoring-Version-Bump re-verify" → INSTRUKTIONEN §28.2 promoted. v2.2 (20.04.2026) +1 (Spec-§-Drift-Handling, aus Track-5-Plan-Writing). v2.3 (20.04.2026 Nacht-Spät) +1 (Anti-Hallucination-Datenpfad-Vollständigkeit, aus v3.0.3-Incident). v2.4 (21.04.2026) +1 (Exhaustive-Drift-Check, aus Pre-Provenance-Plan-Compat-Check 12/27 silent v3.7-Threshold-Drift). Stand: **12/20**.
