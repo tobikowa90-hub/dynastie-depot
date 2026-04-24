@@ -1,15 +1,52 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-24 Session-1-Ende — **CLAUDE.md Routing-Refactor Tier 1 EXECUTION + Sync-Welle + Codex-Reconciliation DONE.** Plan v0.2.1 (8 Tasks) + Section-A (AL v2.5) + STATE.md Pipeline-SSoT + CORE-MEMORY §1 + Codex-Fix + Option-B-Compression + Handover-Close + TOKEN-RULES-CrossRef + Skill-Review-Convention = **16 Commits**, alle LOKAL auf `main`. **CLAUDE.md 97→71 Zeilen** (Spec-Ziel ~70 erreicht). 11/11 AC PASS mit 2 dokumentierten Abweichungen. Codex-Verdikt `RECONCILED_WITH_FOLLOWUPS`, alle 3 Findings abgearbeitet (#1 Plan-intentional, #2 minor accepted, #3 Tool-Setups-Descriptor restauriert). **Session 2 PENDING:** CodeRabbit-Pass (WSL) + Vault-Update-Sweep. **Session 3 (Brainstorm-Kandidat):** 00_Core Perfect-Organization (Tier 2b CORE-MEMORY Restrukturierung + Tier 2 STATE-Split + Global-Linking-Strategie) — siehe STATE.md #12.
-**Vorherige Aktualisierungen:** 2026-04-24 Mobile — Brainstorm+Spec+Plan CLAUDE.md-Routing (DONE, 5 Commits) · 2026-04-23 Nachmittag — Phase G (TMO Q1 DONE) · 2026-04-22 Spät — Task 19 + Fix-Welle E · 2026-04-22 Mittag — Tasks 15-18 · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D.
+**Aktualisiert:** 2026-04-24 Session-2-Ende — **CLAUDE.md Routing-Refactor Tier 1 VOLLSTÄNDIG CLOSED.**
 
-> **Progress-Banner Tier 1:** ✅ Brainstorm (Desktop 24.04.) · ✅ Spec v0.2 (Mobile) · ✅ Plan v0.2.1 3-fach-reviewed (Mobile) · ✅ **Execution** (Session 1 heute, 8 Tasks + Section A) · ✅ **Sync-Welle** (STATE + CORE-MEMORY) · ✅ **Codex-Reconciliation** · ✅ **Option-B-Compression** (86→71 Zeilen, Spec-Ziel erreicht) · ⏳ **CodeRabbit-Pass** (Session 2) · ⏳ **Vault-Update-Sweep** (Session 2).
+**Summary:**
+- Session 1: 16 Commits (Tier-1-Execution + AL v2.5 + Sync-Welle + Codex-Reconciliation + Option-B-Compression 97→71 Zeilen)
+- Session 2 (heute): Vault-Update `f9d65d1` (Konstitution-Note auf 7-Section-Struktur) + CodeRabbit-Pass `4cf0ea9` (8 Findings → 3 Fixes / 5 Declines) + STATE/Handover-Close-Commits
 
-> **🔄 RESUME-INPUT (Session 2 — CodeRabbit + Vault, 2026-04-24 Session-1-Ende):**
+**Acceptance:** 11/11 AC PASS (2 dokumentierte Abweichungen). Codex `RECONCILED_WITH_FOLLOWUPS` (alle 3 adressiert). CodeRabbit triage-drift-free.
+
+**CR-Command-Bug als Zusatz-Fix:** Session-1-Handover dokumentierte `--base d025c7f`, das interpretiert `d025c7f` als Branch → CR crashte mit „339 Files > 150". Korrektur: `--base-commit d025c7f --type committed`. Auto-Memory `coderabbit_cli_via_wsl.md` war bereits korrekt — Drift nur im Handover-Block.
+
+**Pending:**
+- Session 3 (Brainstorm-Kandidat): 00_Core Perfect-Organization — Tier-2 STATE-Split Variante-B-Hub + Tier-2b CORE-MEMORY Restrukturierung + Global-Linking-Strategie. Siehe STATE.md Pipeline-Deferred #12.
+
+**Vorherige Aktualisierungen:** 2026-04-24 Session-1-Ende — 16 Commits Tier 1 · 2026-04-24 Mobile — Brainstorm+Spec+Plan (5 Commits) · 2026-04-23 Nachmittag — Phase G (TMO Q1 DONE) · 2026-04-22 Spät — Task 19 + Fix-Welle E · 2026-04-22 Mittag — Tasks 15-18 · 2026-04-21 Nacht — Task 14 + Fix-Welle C+D.
+
+> **Progress-Banner Tier 1:** ✅ Brainstorm (Desktop 24.04.) · ✅ Spec v0.2 (Mobile) · ✅ Plan v0.2.1 3-fach-reviewed (Mobile) · ✅ Execution (Session 1) · ✅ Sync-Welle (STATE + CORE-MEMORY) · ✅ Codex-Reconciliation · ✅ Option-B-Compression (86→71 Zeilen) · ✅ **Vault-Update-Sweep** (Session 2) · ✅ **CodeRabbit-Pass** (Session 2, 3/8 Fixes, 5 begründete Declines).
+
+> **🔄 RESUME-INPUT (Session 3 — 00_Core Perfect-Organization Brainstorm, 2026-04-24 Session-2-Ende):**
 >
-> **Auftrag:** Externe System-Integration des abgeschlossenen Refactors: (1) CodeRabbit-Pass via WSL, (2) Vault-Update-Sweep.
+> **Auftrag:** Brainstorm-Session (nicht Execution) zur Vision „perfekt organisierter + global verknüpfter `00_Core/`-Ordner". Kandidaten-Scope siehe STATE.md Pipeline-Deferred #12:
+> - (a) Tier-2b CORE-MEMORY Restrukturierung (~45 §1-Einträge → Subkategorien + Verknüpfung zu adressierten System-Elementen)
+> - (b) Tier-2 STATE-Split Variante-B-Hub (STATE.md ~10-Z-Hub + PORTFOLIO.md / PIPELINE.md / SYSTEM.md)
+> - (c) Global-Linking-Strategie (Back-Refs zwischen 00_Core-Files)
+> - (d) Vault-Integration (Wiki-Concepts strukturell auf neue 00_Core-Struktur beziehen?)
+> - (e) insider-intelligence SKILL §215 Snapshot-First-Block-Review (aus 24.04. Session 1 Cross-Ref-Pass): einzigartig vs. Duplikat von TOKEN-RULES.md Snapshot-First?
 >
-> **Sequenz für Session 2:**
+> **Arbeits-Modus:** Section-by-Section + Approval-Gate (`superpowers:brainstorming`-Skill Pflicht). Kein Spec, kein Plan bis Approval aller Sections. **HARD-GATE:** keine Write/Edit an 00_Core-Files oder Vault bis Spec-Approval.
+>
+> **Sequenz für Session 3:**
+> 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung
+> 2. SESSION-HANDOVER.md (diese Datei) — dieser Resume-Block
+> 3. Brainstorming-Skill aktivieren, Scope-Kandidaten (a)-(e) als Start-Punkte nehmen
+> 4. Sections 1+2+3... durcharbeiten bis Spec-Ready
+>
+> **Nicht-Scope Session 3:** Execution. Nach Brainstorm-Approval → Spec (separate Session) → Plan (separate Session) → Execution (separate Session), analog Tier-1-Sequenz.
+>
+> ---
+>
+> **🗃 RESUME-INPUT (Session 2 — CodeRabbit + Vault, ARCHIVIERT, DONE 2026-04-24):**
+>
+> **Auftrag war:** Externe System-Integration des abgeschlossenen Refactors: (1) CodeRabbit-Pass via WSL, (2) Vault-Update-Sweep.
+>
+> **Ergebnis:**
+> - Vault `f9d65d1`: `CLAUDE-md-Konstitution.md` auf 7-Section-Struktur + Tier-1-Refactor-Subsection + Änderungsprotokoll-Zeile 24.04.
+> - CR-Pass `4cf0ea9`: 8 Findings triaggiert → 3 FIX (CLAUDE.md Edge-Cases Case-Drift/Sprach-Varianten, APPLIED-LEARNING Historie-Tabelle, Handover CR-Command-Bug) / 5 begründete Declines (Session-1-SHA-Stable, Quote-Empirisch-OK, Bullet-Count-CR-self-confirmed, Handover-Dense-wird-rebuilt, STATE-Numbering-Konvention, CORE-MEMORY-Dense-Konvention).
+>
+> **Sequenz war:**
 > 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung ziehen
 > 2. SESSION-HANDOVER.md (diese Datei) — dieser Resume-Block
 > 3. **CodeRabbit-Pass** via WSL (Memory `coderabbit_cli_via_wsl.md` kanonisch):
