@@ -24,33 +24,18 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 
 ## Projektstruktur
 
-```
-00_Core/            → Kontext, Instruktionen, Gedächtnis (IMMER zuerst lesen)
-01_Skills/          → Skill-Quelldateien (Arbeitsversion)
-  ├── dynastie-depot/              → Haupt-Skill (DEFCON-System, v3.7.2)
-  ├── backtest-ready-forward-verify/ → Satellit: Forward-Run Persistence-Pipeline (v1.0, programmatisch aktiviert)
-  ├── insider-intelligence/        → Form-4-Scanner (8 US-Satelliten)
-  ├── non-us-fundamentals/         → yfinance IFRS-Modul (ASML/RMS/SU)
-  ├── quick-screener/              → Stufe-0-Vorfilter
-  └── _extern/                     → Fremd-Skills (read-only Referenz)
-02_Analysen/        → DEFCON-Analysen als Excel
-03_Tools/           → Rebalancing-Tool, Satelliten-Monitor, Watchlist, Briefing-Hook
-04_Templates/       → Single-Source-of-Truth für alle Templates
-05_Archiv/          → Historische Dateien
-06_Skills-Pakete/   → Installierbare ZIP-Skills (Deployables)
-07_Obsidian Vault/  → Investing Mastermind Wiki (71 Notes — Stand 15.04.2026)
-  └── Obsidian Mindmap/Investing Mastermind/
-      ├── WIKI-SCHEMA.md  → Schema + Workflows (bei Wiki-Ops lesen)
-      ├── index.md        → Content-Katalog
-      ├── wiki/           → Entitäten, Konzepte, Quellen, Synthesen
-      └── raw/            → Quelldokumente (nie editieren)
-```
+- `00_Core/` — Kontext, Instruktionen, Gedächtnis (STATE, CORE-MEMORY, INSTRUKTIONEN, APPLIED-LEARNING, TOKEN-RULES, KONTEXT, Faktortabelle, SESSION-HANDOVER)
+- `01_Skills/` — dynastie-depot · backtest-ready-forward-verify · insider-intelligence · non-us-fundamentals · quick-screener · `_extern/` (read-only)
+- `02_Analysen/` — DEFCON-Analysen als Excel
+- `03_Tools/` — Rebalancing · Satelliten-Monitor · Watchlist · Briefing-Hook · system_audit
+- `04_Templates/` — SSoT aller Templates
+- `05_Archiv/` — Historische Dateien
+- `06_Skills-Pakete/` — Installierbare ZIP-Skills
+- `07_Obsidian Vault/` — Wiki (71 Notes, Schema + Workflows via `WIKI-SCHEMA.md`)
 
 ## Routing-Table
 
-> Pflicht-Read STATE.md immer. Tabelle nennt zusätzliche Reads, explizite Skips, Skill-Trigger.
-> **Match-Regel (Hybrid):** Exakte Trigger strikt. Eine Soft-Match-Ausnahme — bare Ticker-Symbol ohne Trigger-Wort → behandle als `!QuickCheck <Ticker>`. Bei Mehrfach-Match (z.B. Ticker + Wiki-Begriff): Union der Lies-Spalten.
-> **Bei Trigger-Miss:** konservativ mehr laden statt zu wenig.
+> STATE.md immer. **Match-Regel (Hybrid):** exakte Trigger strikt; bare Ticker → `!QuickCheck`; Mehrfach-Match = Union der Lies-Spalten. Bei Trigger-Miss: konservativ mehr laden.
 
 | Trigger | Lies zusätzlich | Skippe | Skill-Call |
 |---------|-----------------|--------|------------|
