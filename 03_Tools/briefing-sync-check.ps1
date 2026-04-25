@@ -31,6 +31,8 @@ if (-not (Test-Path -LiteralPath $projectRoot)) {
 Set-Location -LiteralPath $projectRoot
 
 # Briefing-relevant files (what morning-briefing trigger reads from repo)
+# Includes 01_Skills/dynastie-depot/config.yaml since §18 v2.1 (25.04.2026):
+# config.yaml is part of the score-event-set, drift desyncs satellite-state vs PORTFOLIO/Faktortabelle.
 $briefingFiles = @(
     '00_Core/STATE.md',
     '00_Core/PORTFOLIO.md',
@@ -39,7 +41,8 @@ $briefingFiles = @(
     '00_Core/Faktortabelle.md',
     '00_Core/CORE-MEMORY.md',
     '00_Core/SESSION-HANDOVER.md',
-    '00_Core/INSTRUKTIONEN.md'
+    '00_Core/INSTRUKTIONEN.md',
+    '01_Skills/dynastie-depot/config.yaml'
 )
 
 # Check 1: uncommitted changes in briefing files
@@ -51,10 +54,10 @@ try {
     }
 } catch {}
 
-# Check 2: commits ahead of origin/main touching 00_Core/
+# Check 2: commits ahead of origin/main touching 00_Core/ or dynastie-depot config.yaml
 $unpushedCount = 0
 try {
-    $revOutput = & git rev-list --count 'origin/main..HEAD' -- '00_Core/' 2>$null
+    $revOutput = & git rev-list --count 'origin/main..HEAD' -- '00_Core/' '01_Skills/dynastie-depot/config.yaml' 2>$null
     if ($revOutput -match '^\d+$') {
         $unpushedCount = [int]$revOutput
     }
