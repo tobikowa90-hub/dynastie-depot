@@ -1,0 +1,744 @@
+Starting CodeRabbit review in plain text mode...
+
+Review directory: /mnt/c/Users/tobia/OneDrive/Desktop/Claude Stuff
+
+Connecting to review service
+Setting up
+Preparing sandbox
+Preparing sandbox
+Summarizing
+Reviewing
+Preparing sandbox
+
+============================================================================
+File: 01_Skills/_extern/earnings-recap/SKILL.md
+Line: 95 to 112
+Type: potential_issue
+
+Comment:
+Edge case in price reaction calculation.
+
+The price reaction logic uses iloc[0] and iloc[-1] from the 5-day window around earnings. However:
+- If len(hist_extended) == 2, these are adjacent trading days, not necessarily pre/post earnings
+- The earnings date itself might be at iloc[0] or iloc[-1] depending on market hours
+
+Consider using the earnings date index to explicitly identify the last pre-earnings close and first post-earnings close.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/_extern/earnings-recap/SKILL.md around lines 95 - 112, The current reaction calculation uses hist_extended.iloc[0] and .iloc[-1] which can pick the wrong rows; instead locate the earnings_date within hist_extended.index (from earnings_hist and hist_extended) and explicitly pick the last trading-day index strictly before earnings_date as pre_price and the first trading-day index strictly after earnings_date as post_price (if earnings_date equals an index use the previous and next rows accordingly), and add guards for missing pre/post rows (e.g., insufficient data) before computing reaction_pct using those explicit entries.
+
+============================================================================
+File: docs/superpowers/specs/_artifacts/2026-04-24-post-migration-refs.txt
+Line: 165 to 177
+Type: nitpick
+
+Comment:
+Consider excluding __pycache__/ from grep scope.
+
+The artifact includes binary .pyc file matches (lines 165-177) which add noise without verification value. Adding --exclude-dir=__pycache__ to the grep would produce cleaner results.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @docs/superpowers/specs/_artifacts/2026-04-24-post-migration-refs.txt around lines 165 - 177, The grep output is noisy because it includes matches from Python bytecode directories; update the command that generates these artifacts to exclude __pycache__ by adding --exclude-dir=__pycache__ (or equivalent for your tool, e.g., --glob '!/__pycache__/' for ripgrep) so binary .pyc hits like those shown are omitted; look for the script or invocation that produces the artifact file (search for the grep/rg call that created this post-migration refs output) and modify it to include the exclusion.
+Preparing sandbox
+
+============================================================================
+File: 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents/chapters.json
+Line: 74 to 76
+Type: potential_issue
+
+Comment:
+Minor type inconsistency in final chapter end_time.
+
+Line 75 has "end_time": 1398 (integer) while all other end_time values in the file are floats (e.g., 75.0, 210.0, 345.0). For consistency, this should be 1398.0.
+
+
+
+🔧 Proposed fix for type consistency
+
+   {
+     "start_time": 1380.0,
+     "title": "Where to get the template",
+-    "end_time": 1398
++    "end_time": 1398.0
+   }
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents/chapters.json around lines 74 - 76, The final chapter object with "title": "Where to get the template" has an inconsistent type for the "end_time" field (currently 1398 as an integer); update that "end_time" value to a float (1398.0) to match the other chapter entries and preserve type consistency across the chapters.json file.
+
+============================================================================
+File: 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/index.md
+Line: 72 to 74
+Type: nitpick
+
+Comment:
+Consider chronological ordering for video entries.
+
+The three video entries are currently ordered by date as: 2026-04-08, 2026-04-22, 2026-03-10. If these entries are meant to be chronologically sorted, the 2026-03-10 entry should appear first. However, if the current ordering is intentional (e.g., semantic grouping or importance), this is fine.
+
+
+
+♻️ Proposed chronological ordering
+
+ #### Updating System (wiki/sources/videos/updating-system/)
+ Videos zu Tool-/System-Upgrades, Claude-Skills, neuen Workflows.
++- [[2026-03-10-jake-van-clief-folder-system-ai-agents]] — Jake Van Clief Folder-System, Adoption pending-brainstorm
+ - [[2026-04-08-charlie-automates-graphify-claude-code]] — Pilot-Ingest, Charlie Automates
+ - [[2026-04-22-dubibubii-claude-code-powerful-settings]] — Dubibubii Powerful Settings, Adoption 1A/2O/4R
+-- [[2026-03-10-jake-van-clief-folder-system-ai-agents]] — Jake Van Clief Folder-System, Adoption pending-brainstorm
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/index.md around lines 72 - 74, The three video entries in index.md are out of chronological order; reorder the lines so the 2026-03-10 entry ([[2026-03-10-jake-van-clief-folder-system-ai-agents]] — Jake Van Clief Folder-System, Adoption pending-brainstorm) comes before the 2026-04-08 ([[2026-04-08-charlie-automates-graphify-claude-code]] — Pilot-Ingest, Charlie Automates) and 2026-04-22 ([[2026-04-22-dubibubii-claude-code-powerful-settings]] — Dubibubii Powerful Settings, Adoption 1A/2O/4R) lines; update their order in the list to 2026-03-10, 2026-04-08, 2026-04-22 unless you intentionally want a semantic ordering.
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+
+============================================================================
+File: 00_Core/TOKEN-RULES.md
+Line: 23 to 24
+Type: nitpick
+
+Comment:
+Long rule bullet may be difficult to parse.
+
+Line 24 (Sync-Pflicht) is quite dense with multiple nested conditions. Consider splitting into sub-bullets for better readability, or ensure the referenced §18 provides the canonical detailed breakdown.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @00_Core/TOKEN-RULES.md around lines 23 - 24, The "Sync-Pflicht (Trigger-basiert, §18 v2)" bullet is too dense and hard to parse; split it into a short lead sentence plus clearly separated sub-bullets for each event-type (e.g., "Score/FLAG/Sparraten-Change", "Pipeline-Item", "System-Zustand", "Multi-Event = Union") and list the required files per type (log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, score_history.jsonl, flag_events.jsonl, PIPELINE.md, SYSTEM.md) so readers can scan quickly, and add a final line pointing to the canonical breakdown in INSTRUKTIONEN.md §18 for full details.
+
+============================================================================
+File: docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md
+Line: 39 to 54
+Type: nitpick
+
+Comment:
+Resume recovery relies on git log grep which may be fragile.
+
+The resume recovery mechanism uses git log --grep "plan(claude-md-routing)" to reconstruct the baseline hash if /tmp/ is cleared. This assumes the commit message format is preserved and unique. Consider documenting that this grep pattern must remain stable or storing the baseline hash in a more persistent location.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md around lines 39 - 54, The resume-recovery step relying on git log --grep "plan(claude-md-routing)" is fragile; update the plan doc and the pre-migration snippet so the baseline hash is stored persistently (instead of only /tmp) and/or document that the commit-grep pattern must remain stable. Concretely, modify the section referencing /tmp/claude_md_baseline_hash.txt and the grep pattern "plan(claude-md-routing)" in 2026-04-24-claude-md-routing-refactor.md to either (a) write the BASELINE_HASH into a persistent location checked into the repo (or a dedicated .plans file or git tag/git-note) so recovery can read it, or (b) add an explicit note that the commit message pattern must not change and show the alternate stable command to reconstruct the hash; update the Resume-Recovery paragraph accordingly.
+
+============================================================================
+File: 03_Tools/system_audit/checks/pipeline_ssot.py
+Line: 50 to 59
+Type: nitpick
+
+Comment:
+Consider using FAIL instead of SKIP for missing PIPELINE.md.
+
+When PIPELINE.md is missing, the check returns SKIP status with severity "warning". However, if PIPELINE.md is now the canonical SSoT for pipeline references, its absence might warrant a FAIL rather than SKIP, especially in production audits. The current behavior may silently mask a configuration issue.
+
+
+
+
+♻️ Consider stricter handling
+
+     if not pipeline_path.exists():
+         return CheckResult(
+-            name="pipeline_ssot", status="SKIP", n_checked=0, n_passed=0,
++            name="pipeline_ssot", status="FAIL", n_checked=0, n_passed=0,
+             failures=[FailureDetail(
+                 location=str(pipeline_path), expected="PIPELINE.md present",
+-                actual="missing", severity="warning", hint=None,
++                actual="missing", severity="error", 
++                hint="PIPELINE.md ist SSoT für Pipeline-Referenzen und muss existieren",
+             )],
+             duration_ms=int((time.monotonic() - start) * 1000),
+             category="core",
+         )
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @03_Tools/system_audit/checks/pipeline_ssot.py around lines 50 - 59, The missing PIPELINE.md block currently returns a SKIP CheckResult; change it to return a FAIL for the "pipeline_ssot" check by updating the CheckResult constructed when pipeline_path.exists() is False: set status="FAIL", adjust counts (e.g., n_checked=1, n_passed=0) and change the FailureDetail severity from "warning" to a stricter level like "error" (keep location, expected, actual, duration_ms and category as-is) so the absence is treated as a failing audit.
+
+============================================================================
+File: 01_Skills/_extern/sec-edgar-skill/SKILL.md
+Line: 316 to 325
+Type: potential_issue
+
+Comment:
+Error handling example has a logical flow issue.
+
+The code catches an exception when creating Company("INVALID"), but then the subsequent filings = company.get_filings(form="10-K") would fail because company was never successfully assigned if the exception was raised. The example should show proper scoping or separate the two error-handling scenarios.
+
+
+
+
+📝 Proposed fix for error handling example
+
+ python
+ from edgar import Company
+ 
+ try:
+     company = Company("INVALID")
++    # Check if filings exist
++    filings = company.get_filings(form="10-K")
++    if len(filings) == 0:
++        print("No 10-K filings found")
+ except Exception as e:
+     print(f"Company not found: {e}")
+-
+-# Check if filings exist
+-filings = company.get_filings(form="10-K")
+-if len(filings) == 0:
+-    print("No 10-K filings found")
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/_extern/sec-edgar-skill/SKILL.md around lines 316 - 325, The example creates Company("INVALID") inside a try/except but still calls company.get_filings afterwards, which will fail if the constructor threw and company was never assigned; fix by only calling Company.get_filings when company was successfully created (e.g., move the filings check into the try block after Company("INVALID") or use a separate try/except around company.get_filings), and/or guard with an explicit check that company is not None before calling company.get_filings; reference the Company constructor and the get_filings(form="10-K") call when making the change.
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+
+============================================================================
+File: 00_Core/SYSTEM.md
+Line: 19
+Type: nitpick
+
+Comment:
+Consider breaking down the lengthy production incident description.
+
+Line 19 is a single bullet point containing 300+ words describing the v3.0.3 Manual-Run failure incident. This dense paragraph covers:
+- Failure description
+- Rollback action
+- Root cause (hallucination of Yahoo intraday fallback)
+- Impact details (fabricated phantom prices)
+- Recovery plan
+- Hotfix specification
+
+
+
+Suggested restructuring for readability
+
+Consider breaking this into a sub-section with structured bullets:
+
+- Morning Briefing: 🔴 v3.0.3 Manual-Run FAIL → Rollback v2.1 DEPLOYED 20.04.2026 15:13 UTC.
+  - Status: Prod-Trigger trig_01PyAVAxFpjbPkvXq7UrS2uG läuft wieder v2.1 (reine Shibui+Yahoo-curl-Kurs-Extraktion, keine Tavily, keine News-Sektion)
+  - Incident: Manual-Run 20.04. Nacht-Spät zeigte schwere Halluzination — Agent interpretierte Shibui-EOD-Lag (17.04. Karfreitag-Wochenende) fälschlich als "stale data"
+  - Impact: Improvisierter unautorisierten Yahoo-Intraday-Fallback für US-Ticker (nicht in Spec), halluzinierte Phantom-Preise (AVGO $317,79 vs. real ~$388 entspr. €337 Broker-Verify) → fabrizierter Markteinbruch -21,8% AVGO / -16% APH / -10% MSFT+TMO
+  - Runtime: 720s+ (>2× Alert-Schwelle)
+  - Recovery: Gate A ausgesetzt bis v3.0.4
+  - Hotfix-Plan: §3a expliziter Guard "Shibui-EOD-Datum = autoritativ, Wochenend-/Feiertags-Lag = NORMAL, KEIN Yahoo-Fallback-Pfad für US-Ticker"
+  - Lessons: Korrektheits-Prinzip > Laufzeit (memory feedback_correctness_over_runtime) bestätigt
+
+
+
+This improves scanability and makes it easier to locate specific incident details.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @00_Core/SYSTEM.md at line 19, The single long "Morning Briefing" bullet is too dense—split it into a short header line plus a structured sub-section of bullets (Status, Incident, Impact, Runtime, Recovery, Hotfix-Plan, Lessons) as shown in the reviewer’s example; update the "Morning Briefing" entry, reference the Prod-Trigger id trig_01PyAVAxFpjbPkvXq7UrS2uG, preserve mentions of v3.0.3/v2.1 and "Gate A", and add the explicit Hotfix/guard line (§3a) "Shibui-EOD-Datum = autoritativ, Wochenend-/Feiertags-Lag = NORMAL, KEIN Yahoo-Fallback-Pfad für US-Ticker" so the incident is readable and each concern (failure, rollback, root cause, impact, runtime, recovery, hotfix) is its own bullet.
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+
+============================================================================
+File: 00_Core/CORE-MEMORY.md
+Line: 48 to 50
+Type: nitpick
+
+Comment:
+Verify historical disclaimer clarity and placement.
+
+The historical note spanning lines 48-50 is quite long (3 lines of dense metadata including multiple date ranges, version numbers, and ticker-specific shifts). This compressed historical context might be difficult to parse for future readers.
+
+Consider:
+- Moving the detailed v3.7 shift specifics to §13 (System-Lifecycle-History) with a date entry
+- Keeping only a brief pointer here: "Historical decision narrative through 16.04. Live state → PORTFOLIO.md"
+
+This would align with the stated goal of converting §1 from "long-form milestone chronicle" to a clean "topic-split framing."
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @00_Core/CORE-MEMORY.md around lines 48 - 50, The "3. Aktive Positions-Entscheidungen" historical note is too dense; extract the detailed v3.7 shift specifics (MSFT 60→59, TMO 62→63, APH 61→63, ASML 66→68, 18.04 shifts, thresholds/denominator changes) and move them to §13 (System-Lifecycle-History) as a dated entry, leaving this section to contain only a concise pointer like "Historische Entscheidungs-Narrative bis 16.04 — Live state → 00_Core/PORTFOLIO.md (siehe auch Faktortabelle.md)"; update any internal cross-references accordingly so readers can follow from "3. Aktive Positions-Entscheidungen" to the full log in §13.
+
+============================================================================
+File: 00_Core/INSTRUKTIONEN.md
+Line: 557 to 583
+Type: nitpick
+
+Comment:
+Primary sources model introduces ambiguity around STATE.md status.
+
+§27.3 v2 (lines 557-583) reclassifies STATE.md from "primary source" to "Navigations-/Hub-Layer" (line 571). However:
+
+1. Line 571 says STATE.md "darf direkt editiert werden" (may be directly edited) for the alert slot + last-audit block.
+2. Präzedenzfall (line 582) says "Portfolio-Tabelle wurde immer direkt editiert" - acknowledging the table was previously in STATE.md and is now in PORTFOLIO.md.
+
+Potential confusion: If STATE.md is a "hub" but "directly editable," how is it different from a primary source? The distinction between "hub/navigation" and "primary source" isn't crisp.
+
+Suggest clarifying:
+- Primary source = operational truth (PORTFOLIO.md, PIPELINE.md, SYSTEM.md)
+- Hub = pointer/index with minimal live content (STATE.md alert slot)
+- Projection = read-only derivative (briefing tables)
+
+This three-tier model should be made explicit rather than implied.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @00_Core/INSTRUKTIONEN.md around lines 557 - 583, Update §27.3 v2 to remove ambiguity by explicitly defining the three tiers: list Primary sources as the operational truth (PORTFOLIO.md, PIPELINE.md, SYSTEM.md, Faktortabelle.md, CORE-MEMORY.md, score_history.jsonl, flag_events.jsonl) and state that they are the editable Single-Source-of-Truth; define the Navigations-/Hub-Layer (STATE.md) as a pointer/index with only minimal allowed live content (hand-maintained alert slot and a script-written Last-Audit-Block) and explicitly note that direct edits are limited to those slots only; and define Projections as read-only derivatives (Briefing-Tabellen, Dashboard-Summaries) that must be regenerated from primary sources, then adjust the language around line 571 and the Präzedenzfall sentence to reflect that PORTFOLIO.md was moved out of STATE.md and is now a primary source.
+
+============================================================================
+File: 00_Core/APPLIED-LEARNING.md
+Line: 19 to 32
+Type: potential_issue
+
+Comment:
+Verify bullets comply with  <15 Wörter pro Bullet"
+
+Let me spot-check a few bullets:
+- Line 19: "Subagents nur für Code+Tests — Markdown/YAML-Edits direkt editieren (3×Subagent-Overhead unnötig)" = 13 words ✓
+- Line 20: "Paper-Ingest ≠ System-Update: Wissenschaft validiert Regeln, erzwingt keine neuen — Redundanz-Check vor jeder Scoring-Erweiterung" = 16 words ✗
+- Line 26: "Cross-Session AI-"Fixes" immer gegen git diff HEAD prüfen — Preview-Reads können Truncation fälschlich diagnostizieren" = 14 words ✓
+- Line 29: "Spec-§-Drift in Plan: Header-Notice mit Ist-§-Mapping + Codex-Attestierung, Spec frozen lassen — nicht Silent-Fix, nicht Spec-PR-Blocker" = 18 words ✗
+
+At least 2 bullets (lines 20, 29) exceed the 15-word limit.
+
+
+
+Several bullets violate the stated <15 word constraint. Consider:
+1. Splitting long bullets into two separate principles
+2. Increasing the limit to <20 words to match reality
+3. Aggressively editing to fit within 15 words
+
+This is a self-consistency issue with the documented rule at line 11.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @00_Core/APPLIED-LEARNING.md around lines 19 - 32, Several bullets in the APPLIED-LEARNING.md list violate the "<15 Wörter pro Bullet" rule (notably the bullets starting "Paper-Ingest ≠ System-Update: Wissenschaft..." and "Spec-§-Drift in Plan: Header-Notice..."); edit those bullets so each is <=15 words by either (A) splitting them into two separate bullets (e.g., split "Paper-Ingest ≠ System-Update: Wissenschaft..." into a rule about Paper-Ingest vs System-Update and a separate redundancy-check rule) or (B) aggressively compressing wording to meet the 15-word cap, and then re-count words to confirm; ensure the bullets identified by their opening phrases ("Paper-Ingest ≠ System-Update" and "Spec-§-Drift in Plan") are fixed and re-validate the whole list for the <15-word constraint.
+
+============================================================================
+File: 00_Core/INSTRUKTIONEN.md
+Line: 294 to 308
+Type: potential_issue
+
+Comment:
+Clarify union rule enforcement mechanism.
+
+Lines 294-308 introduce a "Multi-Event-Union-Regel" stating that when an action touches multiple event types, ALL corresponding file sets must be updated. However:
+
+1. Who enforces this? Line 298 says "Responsibility liegt beim Analysten" - this is a manual process with no automated guard.
+
+2. How is violation detected? The backtest-ready-forward-verify skill sees only score appends (line 298), but wouldn't catch stale PIPELINE.md or SYSTEM.md.
+
+3. Präzedenzfall reference (line 302) points to feedback_exhaustive_drift_check.md from 21.04.2026 - but this was a defcon-Drift in JSONL records, not a multi-source staleness issue.
+
+This is a manual responsibility that could silently fail. Consider whether system_audit.py (mentioned in §27.5) should have a check for this, or if this belongs in §18.3 commit-granularity guidance.
+
+
+
+Would you like me to propose an audit check addition to system_audit.py that validates timestamp consistency across event-type file sets?
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @00_Core/INSTRUKTIONEN.md around lines 294 - 308, The Multi-Event-Union rule lacks an automated enforcement/detection mechanism: add an audit check to system_audit.py (e.g., implement a validate_multi_event_union or check_multi_event_fileset_consistency function) that, when given an event ID or action, finds all associated event-type file-sets (Score files, PIPELINE.md, SYSTEM.md), compares their latest timestamps/commit SHAs and flags any divergence or stale files, and surface failures to backtest_ready_forward_verify (or return a structured error) so the pipeline can block or warn when not all related file-sets were updated atomically; ensure the check is wired into the existing system_audit.py audit run and referenced in the §18.3 commit-granularity guidance.
+Preparing sandbox
+
+============================================================================
+File: docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md
+Line: 151 to 168
+Type: nitpick
+
+Comment:
+Routing table has 9 rows but acceptance criterion says 9 "trigger-data-rows" - verify count.
+
+AC #7 (line 253) states: "Routing-Table enthält genau die 9 Trigger-Daten-Zeilen" but the table at lines 157-164 appears to have 9 actual content rows (excluding header and separator). This is correct.
+
+However, the "Session starten (default)" row (line 159) is unusual because:
+1. It's not a user-input trigger, it's the absence of a trigger
+2. The "Lies zusätzlich" column says "(Resume-Fall: SESSION-HANDOVER.md)" which is conditional logic
+
+This makes the table harder to read because one row has different semantics (default fallback) vs. the other 8 (explicit triggers).
+
+Consider whether the default case should be documented separately outside the table, with the table only containing positive-match triggers.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md around lines 151 - 168, The Routing-Table mixes an implicit default ("Session starten") with explicit triggers which breaks AC #7; extract the default into its own short section (e.g., "Default / Session starten (fallback): …") outside the table and keep the table strictly for positive-match triggers, then update AC #7 to reflect the table now contains eight trigger-data-rows (or alternatively keep AC #7 as 9 by explicitly documenting that the default is counted); references: Routing-Table, the Session starten row, and AC #7.
+Preparing sandbox
+
+============================================================================
+File: 01_Skills/quick-screener/SKILL.md
+Line: 86 to 100
+Type: nitpick
+
+Comment:
+Consider adding examples for the plausibility checks.
+
+The verification rules are well-defined, but providing concrete examples would improve clarity:
+- "Quellen-Divergenz" (line 88-91): The example shows 30 vs 42 (39% divergence), but consider adding the calculation formula
+- "Negative/unplausible Werte" (line 99-100): Examples are given, but "Gross Margin > 95% bei Nicht-Software-Unternehmen" could use industry-specific thresholds
+
+
+
+Suggested clarification
+
+Add a calculation note for divergence:
+ - Quellen-Divergenz: Wenn zwei Quellen fuer dieselbe Metrik um mehr als 20%
+   voneinander abweichen, ist das ein Warnsignal. Beispiel: GuruFocus zeigt
+-  P/FCF = 30, AlphaSpread zeigt P/FCF = 42 → Divergenz melden.
++  P/FCF = 30, AlphaSpread zeigt P/FCF = 42 → Divergenz 39,4% (|42-30|/30.6) → melden.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/quick-screener/SKILL.md around lines 86 - 100, Add concrete examples and calculation notes to the Plausibilitaetschecks section: for "Quellen-Divergenz" (the Quellen-Divergenz bullet) append a short formula and worked example showing percent divergence = |A−B|/((A+B)/2)×100 and apply it to 30 vs 42 to show ~39%; for "Negative/unplausible Werte" (the Negative/unplausible Werte bullet) add brief industry-specific thresholds (e.g., Gross Margin >95% flagged for non-software, but for software flag >85%; ROIC >100% always flagged; negative FCF flagged) and one short example per threshold so readers know expected action.
+
+============================================================================
+File: 00_Core/APPLIED-LEARNING.md
+Line: 13
+Type: potential_issue
+
+Comment:
+Bullet count mismatch between spec and implementation.
+
+Line 13 shows (Stand: 14/20) but the spec document (file 3, line 94) states:
+
+> "[12 Bullets 1:1 aus heutiger CLAUDE.md übernommen, unverändert]"
+
+And the spec AC #5 (line 251) says:
+
+> "enthält die 12 Bullets"
+
+Counting the actual bullets (lines 19-32), there are indeed 14 bullets, not 12.
+
+Analysis:
+- The version history (line 48) shows v2.5 on 24.04.2026 added "+2" bullets, reaching "Stand: 14/20"
+- This matches the 14 bullets present
+
+Issue: The spec is out of sync with the implementation. Either:
+1. The spec was written when there were 12 bullets, and 2 were added afterward
+2. The spec should be updated to reflect 14 bullets
+
+
+
+
+This is a discrepancy between the spec document and the actual implementation. The spec should either:
+- Be updated to reflect 14 bullets in AC #5
+- Have a version note indicating it describes the pre-v2.5 state
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @00_Core/APPLIED-LEARNING.md at line 13, Summary: The document header "## Bullets (Stand: 14/20)" and the actual list contain 14 bullets while the referenced spec (AC #5 / the "[12 Bullets]" note) still requires 12, causing a spec/implementation mismatch. Update the spec or the doc so they match: either change AC #5 and the "[12 Bullets...]" reference to state 14 bullets, or add a clear version note in the spec indicating it describes the pre-v2.5 (12-bullet) state and that v2.5 introduced +2 bullets; ensure you update the header "## Bullets (Stand: 14/20)" or the spec text consistently and mention v2.5 where applicable.
+
+============================================================================
+File: docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md
+Line: 246 to 258
+Type: nitpick
+
+Comment:
+Acceptance criteria #10 (1:1 migration verify) is excellent but may be fragile.
+
+AC #10 specifies a git diff --no-index verification script to ensure bullets/rules are migrated exactly 1:1. This is a strong safeguard against the "silent modification during refactor" anti-pattern.
+
+Potential issue: The AC accepts "nur Frontmatter-Hinzufügung + Heading-Wrapper-Differenzen" (only frontmatter additions + heading wrapper differences). But what if there are:
+- Whitespace normalization (trailing spaces, line endings)
+- Markdown formatting changes (e.g., bold vs __bold__)
+- List marker changes (- vs * for bullets)
+
+These would show as diffs but might be considered acceptable. The AC should either:
+1. Explicitly allow these cosmetic differences, or
+2. Require byte-for-byte identity (stricter)
+
+
+
+Add a note to AC #10:
+
+ 10. Diff-Verifikation 1:1-Migration: ...
++    Akzeptierte Differenzen: Frontmatter-Zeilen, Heading-Level-Anpassungen (z.B. ### → ##).
++    Nicht akzeptiert: Bullet-Text-Änderungen, Reihenfolge-Änderungen, Whitespace-Normalisierung über Zeilenenden hinaus.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @docs/superpowers/specs/2026-04-24-claude-md-routing-refactor-design.md around lines 246 - 258, Update Acceptance Criteria #10 to explicitly allow only defined cosmetic differences by specifying a normalization pass before diff: trim trailing whitespace, normalize line endings to LF, normalize list markers (treat "-" and "*" as equivalent), normalize emphasis markers (treat "bold" and "__bold__" as equivalent), and ignore leading/trailing blank lines; require the Verify-Script to apply these normalizations to the extracted blocks from CLAUDE.md and the new 00_Core/APPLIED-LEARNING.md and 00_Core/TOKEN-RULES.md before running git diff --no-index, and otherwise treat any remaining differences (beyond frontmatter additions and heading-wrapper changes) as a failure.
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+
+============================================================================
+File: 01_Skills/non-us-fundamentals/SKILL.md
+Line: 48 to 54
+Type: potential_issue
+
+Comment:
+Clarify the purpose of the "Ersatz-Ticker" column.
+
+The ticker mapping table includes a column "Ersatz-Ticker" with values like SNPS, RACE, and DE, but there's no explanation of:
+- When/why these substitute tickers would be used
+- Whether they're fallback tickers if data is unavailable
+- OR reference tickers for comparison/validation
+- OR tickers suggested for slot replacement if the Non-US ticker is removed
+
+
+Add a brief explanation either:
+1. In the table caption
+2. OR in a footnote after the table
+3. OR in a new subsection "Ersatz-Ticker Usage"
+
+This is especially important because line 233 mentions "substitute" in the maintenance section, suggesting this column is load-bearing.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/non-us-fundamentals/SKILL.md around lines 48 - 54, The "Ersatz-Ticker" column needs a short, explicit explanation: add a one-sentence caption/footnote or a new subsection titled "Ersatz-Ticker Usage" that states this column lists fallback or reference tickers to be used when the primary non‑US ticker data is unavailable, for validation/comparison, or as suggested replacements if the original ticker is removed (reference the existing maintenance/substitute usage in the maintenance section). Update mentions of "substitute" in the maintenance text to point to this explanation so readers understand when to use values like SNPS, RACE, and DE.
+
+============================================================================
+File: 01_Skills/non-us-fundamentals/SKILL.md
+Line: 236 to 239
+Type: nitpick
+
+Comment:
+Document the brittleness risk of yfinance row name changes.
+
+Lines 236-239 warn that "Row-Namen in Cashflow-Statement aendern sich gelegentlich" and provide a fallback list approach via _get_cf_row(), with a manual verification command.
+
+This is a known fragility in the dependency chain. While the fallback list is good defensive coding, the maintenance burden should be highlighted:
+
+
+1. Add a section in ## Bekannte Daten-Limitierungen titled "yfinance Schema-Drift-Risiko"
+2. Document the last known-good row names and verification date
+3. Add a testing step to the INSTRUKTIONEN workflow: "Run python -c "import yfinance as yf; t=yf.Ticker('ASML.AS'); print(list(t.cashflow.index))" monthly to detect schema drift"
+
+Based on learnings: "Auto-Memory: Claude automatically updates" patterns suggest schema drift should be logged somewhere for tracking.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/non-us-fundamentals/SKILL.md around lines 236 - 239, Add a new subsection "yfinance Schema-Drift-Risiko" under "## Bekannte Daten-Limitierungen" that cites the brittleness of yfinance row-name changes, lists the last known-good cashflow row names and the verification date, and references the fallback lookup in _get_cf_row() so maintainers know where the defensive logic lives; also update the INSTRUKTIONEN workflow to include a monthly test step that runs the provided command (python -c "import yfinance as yf; t=yf.Ticker('ASML.AS'); print(list(t.cashflow.index))") to detect schema drift and instruct the workflow to append any differences to a simple drift log (e.g., a tracked file or issue) for historical tracking.
+Preparing sandbox
+
+============================================================================
+File: 00_Core/PORTFOLIO.md
+Line: 31
+Type: nitpick
+
+Comment:
+Consider moving historical change log entries to CORE-MEMORY.md.
+
+Line 31 contains a detailed change log entry dated 23.04.2026 and 18.04.2026 embedded directly in the PORTFOLIO.md file. Based on learnings, CORE-MEMORY.md should be kept live and contains historical chronology (§12 per-ticker chronicle mentioned in line 8 reference).
+
+This creates potential drift: the same historical events may need to be documented in both files, violating DRY and increasing sync burden.
+
+
+Consider one of these patterns:
+1. Keep only "last change date" in PORTFOLIO.md, move full change narratives to CORE-MEMORY.md §12
+2. OR explicitly document that PORTFOLIO.md includes "recent changes (last 30 days)" while CORE-MEMORY.md holds full history
+3. OR add a cross-reference: > Vollständige Änderungshistorie: siehe CORE-MEMORY.md §12
+
+Based on learnings: "Keep 00_Core/CORE-MEMORY.md live — update immediately upon relevant events"
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @00_Core/PORTFOLIO.md at line 31, Move the verbose historical entries currently embedded in PORTFOLIO.md (the 23.04.2026 and 18.04.2026 narratives on line 31) into 00_Core/CORE-MEMORY.md under the per-ticker chronicle (§12), and replace them in PORTFOLIO.md with either a concise "last change date" or a single-line cross-reference (e.g., "Vollständige Änderungshistorie: siehe CORE-MEMORY.md §12") or a note that PORTFOLIO.md only holds the last 30 days; update any labels that referenced the moved details to point to CORE-MEMORY.md §12 so records remain authoritative and DRY.
+
+============================================================================
+File: 01_Skills/non-us-fundamentals/SKILL.md
+Line: 159 to 165
+Type: potential_issue
+
+Comment:
+ROIC proxy calculation lacks validation confidence.
+
+Lines 159-165 document a ROIC proxy formula: EBIT * 0.75 / (Total Assets - Current Liabilities) because yfinance doesn't provide ROIC directly.
+
+Concerns:
+1. The 0.75 multiplier (presumably a tax adjustment) is not sourced or explained
+2. Line 164 explicitly states "Verifikation immer empfohlen" against GuruFocus, indicating low confidence in the proxy
+3. Invested Capital approximation Total Assets - Current Liabilities is crude and may misrepresent capital-intensive businesses
+
+
+
+Recommended improvements
+
+1. Document the 0.75 multiplier source: Is this a typical EU corporate tax rate? Add citation.
+2. Add validation step to the workflow: Make GuruFocus cross-check mandatory, not just recommended.
+3. Flag proxy-derived metrics in output: Add a marker like ROIC (proxy) = X% to distinguish from authoritative data.
+4. Consider alternative proxy: Book Value or Total Equity might be more defensible than Total Assets - Current Liabilities for Invested Capital.
+
+
+
+Line 122 in the DEFCON metrics table states ROIC includes "GuruFocus Verifikation," suggesting manual verification is already expected—make this explicit in the workflow documentation.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/non-us-fundamentals/SKILL.md around lines 159 - 165, Update the ROIC documentation and workflow around the proxy formula EBIT * 0.75 / (Total Assets - Current Liabilities): explicitly cite/justify the 0.75 multiplier (add source or note if it’s an assumed tax adjustment), change the GuruFocus verification step from advisory to mandatory in the workflow and in the DEFCON metrics table (where ROIC already mentions "GuruFocus Verifikation"), mark all outputs that use this calculation as ROIC (proxy) = X% so they’re clearly flagged, and add a note suggesting an alternative invested-capital proxy (e.g., Book Value or Total Equity) with guidance on when to prefer it over Total Assets - Current Liabilities.
+
+============================================================================
+File: 01_Skills/backtest-ready-forward-verify/SKILL.md
+Line: 131 to 134
+Type: nitpick
+
+Comment:
+Parameter naming creates misleading documentation.
+
+Lines 131-134 describe calling parse_state_row(ticker, state_md_content) but immediately state in parentheses that state_md_content "ist jetzt der PORTFOLIO.md-Inhalt". This contradicts the parameter name and creates confusion for future maintainers.
+
+
+Either:
+1. Update the helper function to rename the parameter: parse_state_row(ticker, portfolio_md_content)
+2. OR document this as a breaking change (not backwards-compatible) in v1.0.1
+3. OR keep a dual-signature helper that auto-detects the source file
+
+The current approach (keeping the old name while changing semantics) violates the principle of least surprise.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/backtest-ready-forward-verify/SKILL.md around lines 131 - 134, The parameter name state_md_content in parse_state_row is now misleading because it actually expects PORTFOLIO.md content; rename the internal parameter to portfolio_md_content (e.g., parse_state_row(ticker, portfolio_md_content)) and update all internal uses and docs accordingly, then add a backward-compatible wrapper parse_state_row(ticker, state_md_content) that logs or flags deprecation and simply forwards to the new signature to avoid breaking callers while making the intent clear.
+
+============================================================================
+File: 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/concepts/CLAUDE-md-Konstitution.md
+Line: 50
+Type: potential_issue
+
+Comment:
+Clarify Tier-2 STATE-Split status versus this PR's scope.
+
+Line 50 states "Deferred (nicht in Tier 1): Tier-2 STATE-Split Variante-B-Hub (STATE.md → ~10-Z-Hub + PORTFOLIO.md/PIPELINE.md/SYSTEM.md)."
+
+However, this PR introduces 00_Core/PORTFOLIO.md as a new file and the AI summary describes "STATE.md reduced to cross-link hub" and "PORTFOLIO.md now holds live portfolio state."
+
+This creates confusion:
+- Is this PR implementing Tier-2 STATE-Split?
+- OR is this PR only "Phase 1+2" and a full Tier-2 split is still deferred?
+- If deferred, what's the difference between the current state and the planned Tier-2?
+
+
+Recommendation: Update line 50 to clarify:
+1. If this PR IS Tier-2: remove "Deferred" and mark as "Completed 2026-04-25"
+2. If this is partial: specify what remains deferred (e.g., "PIPELINE.md and SYSTEM.md split deferred")
+
+Line 65 change log also says "Tier-2 STATE-Split deferred" which conflicts with the PORTFOLIO.md file being added in this PR.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/concepts/CLAUDE-md-Konstitution.md at line 50, Clarify whether the Tier-2 STATE-Split is implemented or still deferred: if this PR implements Tier‑2, remove the "Deferred" qualifier and mark the statement as "Completed 2026-04-25" and update the changelog text that currently says "Tier-2 STATE-Split deferred"; if this PR is only a partial Phase 1+2, change the sentence to explicitly state that PORTFOLIO.md was added as the Phase‑1/2 live-portfolio extraction while the full Tier‑2 split (PIPELINE.md and SYSTEM.md and the CORE-MEMORY subcategorization) remains deferred—ensure STATE.md is described as a cross-link hub only and update the changelog entry to list which subfiles remain deferred and which were added (00_Core/PORTFOLIO.md) so the PR scope and AI summary are consistent.
+Preparing sandbox
+
+============================================================================
+File: 01_Skills/non-us-fundamentals/SKILL.md
+Line: 147 to 158
+Type: potential_issue
+
+Comment:
+Flag the RMS CapEx workaround as a data quality risk.
+
+Lines 147-158 document a significant data quality issue: yfinance reports Free Cash Flow == Operating Cash Flow for RMS.PA due to an IFRS data error, requiring manual workaround calculations for the most recent year while older years show n/a.
+
+This creates several risks:
+1. Silent failures: If the workaround logic breaks, CapEx/FCF metrics will be wrong without obvious errors
+2. Staleness: Users may not realize data for 2022-2024 is unavailable
+3. Verification burden: Line 157 says "Verifikation: Hermes Rapport Annuel" but doesn't specify how often to verify
+
+
+Recommendations:
+1. Add explicit logging/warnings when the workaround is triggered
+2. Document the expected re-verification schedule (e.g., "verify TTM calculation against Q2/H1 reports")
+3. Consider adding a quality flag in the output to signal "CapEx calculated via workaround"
+
+Based on learnings: "Kein API-Key noetig" is a design goal, but silent data quality issues violate the "direct, fact-based" principle.
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/non-us-fundamentals/SKILL.md around lines 147 - 158, The RMS.PA CapEx workaround noted in SKILL.md (v1.1) is a data-quality risk; update the implementation and docs so the workaround emits an explicit warning/log entry whenever the "CapEx from info.freeCashflow/info.operatingCashflow TTM" path is used, add a machine-readable quality flag (e.g., capex_quality: "workaround" / "missing" / "verified") to outputs produced by that logic, and extend the documentation block to specify a re‑verification cadence (for example: "re-verify TTM calculation against next quarterly and annual reports; schedule: every 6 months") plus a short checklist pointing to the Hermes Rapport Annuel as the primary verification source.
+Preparing sandbox
+Preparing sandbox
+
+============================================================================
+File: 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/sources/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents.md
+Line: 40 to 41
+Type: potential_issue
+
+Comment:
+Inconsistent manual_review: false flag.
+
+Line 40 sets manual_review: false and line 41 shows manual_review_reasons: [], but the document contains:
+- Detailed 7-item mechanics breakdown (lines 66-75)
+- Comprehensive adoption matrix with 7 verdicts (lines 78-87)
+- Source credibility analysis (lines 58-65)
+- Meta-findings and adoption rationale (lines 88-96)
+
+This appears to be manual review work. Either:
+1. The frontmatter flag is incorrect and should be manual_review: true
+2. OR the schema definition of "manual_review" means something different than "the content was manually analyzed"
+
+
+
+Proposed fix
+
+-manual_review: false
+-manual_review_reasons: []
++manual_review: true
++manual_review_reasons: [adoption-evaluation, mechanics-extraction, credibility-assessment]
+
+
+
+Alternatively, add a comment to the frontmatter schema explaining what manual_review actually flags (e.g., "transcript quality issues" vs. "content analysis").
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/sources/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents.md around lines 40 - 41, The frontmatter flag manual_review is inconsistent with the content analysis present; update the frontmatter by setting manual_review: true and preserve manual_review_reasons: [] (or populate reasons) so the metadata reflects the manual analysis, or alternatively add a short schema comment explaining the intended meaning of manual_review (e.g., whether it flags "transcript quality issues" vs "content analysis") so future editors understand how to use manual_review and manual_review_reasons; change the value of manual_review or add the explanatory comment near the existing manual_review and manual_review_reasons keys to resolve the mismatch.
+Preparing sandbox
+Preparing sandbox
+Preparing sandbox
+
+============================================================================
+File: 01_Skills/_extern/sec-edgar-skill/SKILL.md
+Line: 341 to 350
+Type: potential_issue
+
+Comment:
+Remove invalid Company.docs.search() API call from code example.
+
+The EdgarTools library does not provide a Company.docs.search() method. The correct approach is to fetch filings with Company.get_filings() and then call Filing.search() on individual filings:
+
+from edgar import Company
+
+company = Company("AAPL")
+filings = company.get_filings(form="10-K")
+for filing in filings:
+    results = filing.search("how to get revenue")
+
+
+(Note: Directory structure verification could not be completed due to repository access limitations; this requires manual confirmation that reference paths match the actual directory layout.)
+
+Prompt for AI Agent:
+Verify each finding against the current code and only fix it if needed.
+
+In @01_Skills/_extern/sec-edgar-skill/SKILL.md around lines 341 - 350, Replace the invalid Company.docs.search() example with the correct flow: call Company.get_filings(...) to retrieve filings and then call Filing.search(...) on each filing; update the example text to reference Company.get_filings and Filing.search (not Company.docs.search) and ensure the surrounding narrative mentions iterating filings and invoking filing.search for per-filing document searches.
+
+Review completed: 26 findings ✔
