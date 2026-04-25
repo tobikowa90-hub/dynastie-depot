@@ -200,12 +200,11 @@ Trigger: nur bei Score ≥ 80 aus Stufe 2
 
 ## 12. config-Pflege-Pflicht
 
-Nach **jeder** `!Analysiere`-Analyse, Sparplan-Änderung oder FLAG-Update:
-- Score + DEFCON in `mainconfig.md` aktualisieren
-- FLAGS setzen oder aufheben
-- Watchlist-Status aktualisieren
-- Termine eintragen
-- Neue Version hochladen
+> **Sync-Pflicht-Vertrag → §18 v2 (Trigger-basiertes File-Set-Mapping).**
+>
+> Score / DEFCON / FLAG / Sparraten-Änderungen schreiben das vollständige Score-Event-File-Set fort: `PORTFOLIO.md` + `Faktortabelle.md` + `CORE-MEMORY.md` + `log.md` + `score_history.jsonl` + **`01_Skills/dynastie-depot/config.yaml`** (+ `flag_events.jsonl` bei FLAG-Trigger/Resolve). Per-File-Inhalt + atomarer Commit: §18.1 + §18.3.
+>
+> Watchlist-Status (PORTFOLIO „Aktive Watches") + Termine (PORTFOLIO „Nächste kritische Trigger" / PIPELINE Long-Term-Gates) sind Teil des PORTFOLIO/PIPELINE-Sets — kein separater Pflege-Pfad.
 
 ---
 
@@ -241,47 +240,48 @@ Nach **jeder** `!Analysiere`-Analyse, Sparplan-Änderung oder FLAG-Update:
 
 ---
 
-## 17. Skill-Hierarchie & Aktivierungslogik (v2.0 — 08.04.2026)
+## 17. Skill-Hierarchie & Aktivierungslogik (v2.1 — 25.04.2026)
 
-**Grundregel:** `dynastie-depot` ist der Monolith. Innerhalb von `!Analysiere`
-werden **keine weiteren Skills geladen** — alle Module (defeatbeta, Shibui,
-insider_intel.py, WebSearch) werden direkt als Tool-Calls genutzt.
-Jeder zusätzliche Skill-Load kostet Token und verliert DEFCON-Kontext.
+**Grundregel:** `dynastie-depot` ist der Monolith. Innerhalb von `!Analysiere` werden Module (defeatbeta, Shibui, insider_intel.py, WebSearch) **als direkte Tool-Calls** genutzt — kein manuelles Skill-Chaining. Jeder Ad-hoc-Skill-Load kostet Token und verliert DEFCON-Kontext.
+
+**Eine dokumentierte Ausnahme:** `backtest-ready-forward-verify` wird in dynastie-depot **Schritt 7** programmatisch invoked (`Skill(skill="backtest-ready-forward-verify", args="<draft-pfad>")`) zum Schreiben von `score_history.jsonl`. Pipeline-Kapsel (Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git add) ist im Skill gekapselt — kein Inline-CLI in dynastie-depot. Trigger seit v3.7.2 (19.04.2026), kanonisch dokumentiert in SKILL.md Schritt 7 + SYSTEM.md.
 
 ### Wann wird welcher Skill eigenständig aktiviert?
 
-| Befehl | Skill | Bedingung |
-|--------|-------|-----------|
-| `!QuickCheck [TICKER\|ALL]` | `quick-screener` | Stufe-0-Vorfilter oder monatlicher Check |
-| `!EarningsPreview [TICKER]` | `earnings-preview` | 48h vor Earnings |
-| `!EarningsRecap [TICKER]` | `earnings-recap` | 48h nach Earnings |
-| `!EarningsCalendar` | `earnings-calendar` | Wöchentlicher Überblick |
-| `!InsiderScan` | `insider-intelligence` | Standalone-Scan ohne !Analysiere |
-| Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` | Quartalsweise manuell (Correlation / Component Risk / Stress-Test) — kein Skill |
-| Dokument-Konflikt / 10-K-Text | `sec-edgar-skill` | Eskalations-Fallback |
+| Befehl / Trigger | Skill | Aktivierungs-Modus |
+|---|---|---|
+| `!QuickCheck [TICKER\|ALL]` | `quick-screener` | Manuell (User-Trigger) |
+| `!EarningsPreview [TICKER]` | `earnings-preview` | Manuell (48h vor Earnings) |
+| `!EarningsRecap [TICKER]` | `earnings-recap` | Manuell (48h nach Earnings) |
+| `!EarningsCalendar` | `earnings-calendar` | Manuell (wöchentlicher Überblick) |
+| `!InsiderScan` | `insider-intelligence` | Manuell (Standalone-Scan ohne !Analysiere) |
+| `!Analysiere` Schritt 7 | **`backtest-ready-forward-verify`** | **⚙️ Programmatisch** (aus dynastie-depot SKILL.md Schritt 7, jsonl-Write-Pflicht) |
+| Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` | Quartalsweise manuell (Python-Tool, kein Skill) |
+| Dokument-Konflikt / 10-K-Text | `sec-edgar-skill` | Eskalations-Fallback (manuell) |
 
-### Warum kein Skill-Chaining innerhalb !Analysiere?
+### Warum kein manuelles Skill-Chaining innerhalb !Analysiere?
 
-Ein Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
+Ein Ad-hoc-Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 - DEFCON-Scoring-Skalen und Kalibrierungsankern
 - FLAG-Logik und deren Überschreibungsregeln
-- config.yaml (aktuelle Positionen, DEFCON-Status)
+- `01_Skills/dynastie-depot/config.yaml` (aktuelle Positionen, DEFCON-Status)
 - Kontext der laufenden Analyse (welcher Ticker, welche Daten schon geladen)
 
 → Ergebnis wäre generische Analyse statt kontextbewusster DEFCON-Score.
-→ Vollständige Dokumentation: `01_Skills/dynastie-depot/PIPELINE.md`
+→ `backtest-ready-forward-verify` Step-7-Invocation ist davon ausgenommen, weil sie **keinen Scoring-Kontext braucht** — sie schreibt lediglich den fertigen `ScoreRecord` deterministisch ins Archiv.
+→ Pipeline-Stufen, Skill-Architektur-Tabelle: `01_Skills/dynastie-depot/PIPELINE.md` (skill-internes Pipeline-Doc).
 
 ---
 
-## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2, 2026-04-24 00_Core-Refactor)
+## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2.1, 2026-04-25)
 
-Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: bei Score-Change bleibt es bei 6 Files (nur File-Name STATE→PORTFOLIO). Kein mechanischer Mehraufwand für den häufigsten Event-Typ.
+Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 6 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.0: +1 manueller File (`config.yaml`).
 
 ### 18.1 Event-Typ-Mapping
 
 | Event-Typ | Pflicht-Files |
 |---|---|
-| **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` (+ `flag_events.jsonl` bei FLAG) |
+| **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` + **`01_Skills/dynastie-depot/config.yaml`** (+ `flag_events.jsonl` bei FLAG-Trigger/Resolve) |
 | **Pipeline-Item** (neuer Plan, Gate-Passage, Status-Transition, Done/Deferred) | **`PIPELINE.md`** + `log.md` (+ `SESSION-HANDOVER.md` Pflicht bei Session-Abschluss; mid-Session optional) |
 | **System-Zustand-Change** (DEFCON-Version, MCP-Change, Briefing-Status, neuer Backlog-Eintrag, Infra-Deploy) | **`SYSTEM.md`** + `log.md` (+ `CORE-MEMORY.md §6` bei Versionsprung) |
 | **Critical-Alert-Slot** (Hub) | `STATE.md` Hub-Edit (nur Alert-Slot); kein Bi-Sync erzwungen |
@@ -289,7 +289,8 @@ Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: be
 **Kanonische Schreibwege:**
 - `score_history.jsonl` (05_Archiv/) — append-only via Skill `backtest-ready-forward-verify` (v1.0.1, dynastie-depot v3.7.3 Schritt 7; orchestriert Pipeline-Kapsel: Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git add).
 - `flag_events.jsonl` (05_Archiv/) — append-only via `archive_flag.py` (nur bei FLAG-Trigger oder Resolution). SKILL.md Schritt 6b.
-- `Faktortabelle.md` Score + FLAG. Bei FLAG-Change: `config.yaml` manuell sync.
+- `Faktortabelle.md` — Score + FLAG-Spalte (manuell, im selben Sync-Commit).
+- `01_Skills/dynastie-depot/config.yaml` — TMO/Ticker-Block (`score`, `defcon`, `score_datum`, `score_valid_until`, `flag_hinweis`, `sparrate_hinweis`, `scoring_notiz`, `naechste_pruefung`, `earnings_trigger`, `substitute_activation_rule`) manuell sync. **Bei reinem Score-Change OHNE FLAG-Trigger ebenfalls Pflicht** — Lücke 25.04. nach 7-Tage-Drift TMO 23.04. (post-Q1) entdeckt.
 
 ### 18.2 Multi-Event-Union-Regel (bindender §18-Vertrags-Teil)
 
@@ -311,7 +312,8 @@ Alle zum Event-Set gehörenden Files in **einem** Commit bündeln (atomar). Pipe
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
 - v1.6 → v1.7 (2026-04-19): Schritt 5 (score_history.jsonl) wird via Skill `backtest-ready-forward-verify` orchestriert — Pipeline-Kapsel statt Inline-CLI-Call in dynastie-depot Schritt 7.
 - v1.7 → v1.8 (2026-04-21): Zusatz-Trigger für STATE.md Pipeline-SSoT-Section ergänzt (Plan-Commit / Gate-Passage / Status-Transition). Kein Impact auf die 6-File-Liste selbst.
-- v1.8 → v2 (2026-04-24): 00_Core Hub-Split — pauschale 6er-Liste → Trigger-basiertes Event-Mapping (§18.1) + Multi-Event-Union-Regel (§18.2). STATE.md = Hub (Critical-Alert-Slot), Live-State migriert in PORTFOLIO.md. Pipeline-Items in PIPELINE.md, System-Items in SYSTEM.md.
+- v1.8 → v2.0 (2026-04-24): 00_Core Hub-Split — pauschale 6er-Liste → Trigger-basiertes Event-Mapping (§18.1) + Multi-Event-Union-Regel (§18.2). STATE.md = Hub (Critical-Alert-Slot), Live-State migriert in PORTFOLIO.md. Pipeline-Items in PIPELINE.md, System-Items in SYSTEM.md.
+- v2.0 → v2.1 (2026-04-25): `config.yaml` aus „Bei FLAG-Change manuell sync"-Sub-Note in das Score-Event-File-Set hochgezogen — Lücke aufgedeckt durch TMO 23.04.-Drift (Score 64→67, kein FLAG-Trigger ⇒ alte Klausel griff nicht ⇒ config.yaml stale für 7 Tage bis 25.04.-Finalize-Commit `bb9986e`). Kein Set-Wachstum bei FLAG-Events (config.yaml ohnehin schon im Set), aber +1 manueller File bei reinen Score/Sparraten-Changes.
 
 ---
 

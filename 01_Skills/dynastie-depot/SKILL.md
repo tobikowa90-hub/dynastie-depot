@@ -303,7 +303,7 @@ Am Ende jeder `!Analysiere`-Ausgabe. Pipeline-Disziplin (Freshness / Tripwire / 
    - `FAIL phase=P4 reason="duplicate record_id ..."` + Exit 1 → **Nicht Re-Invoke.** Wahrscheinlich partieller P5-Abbruch vom Vorlauf (Append ok, git-add nicht). Recovery: `git add 05_Archiv/score_history.jsonl` manuell, dann direkt Sync-Commit (nicht erneut den Skill invoken).
    - `FAIL phase=<P1|P2b|anderes> reason=...` + Exit 1 → Skill hat nichts mutiert. Fehler diagnostizieren (Schema-Validation, Tripwire-Drift, etc.), Draft korrigieren, Skill erneut invoken.
 
-5. **Nach Success (Exit 0, Skill hat `git add` bereits gesetzt):** Sync-Commit mit allen 6 Files (§18 Sync-Pflicht — Score-Event-Set): `log.md + CORE-MEMORY.md + Faktortabelle.md + PORTFOLIO.md + score_history.jsonl` (+ ggf. `flag_events.jsonl`).
+5. **Nach Success (Exit 0, Skill hat `git add` bereits gesetzt):** Sync-Commit mit dem vollständigen Score-Event-File-Set (§18 v2.1): `log.md + CORE-MEMORY.md + Faktortabelle.md + PORTFOLIO.md + score_history.jsonl + 01_Skills/dynastie-depot/config.yaml` (+ ggf. `flag_events.jsonl` bei FLAG-Trigger/Resolve). config.yaml-Sync ist Pflicht **auch ohne FLAG-Change** — sonst läuft der Ticker-Block stale gegen PORTFOLIO/Faktortabelle (Lücke 25.04. nach TMO 23.04.-Drift gefixt).
 
 **Wenn der Lauf abbricht bevor Schritt 7 Skill-Invocation erreicht:** Im nächsten Lauf Draft rekonstruieren und nachholen. Jeder verpasste Append = irreversibler Historie-Verlust.
 

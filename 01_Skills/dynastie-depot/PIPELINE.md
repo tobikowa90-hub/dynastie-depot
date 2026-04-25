@@ -1,5 +1,5 @@
 # 🦅 Dynastie-Depot – Institutionelle Analyse-Pipeline
-**Version:** 2.1 | **Stand:** 17.04.2026 | **Zieljahr:** 2058 | **Scoring:** DEFCON v3.7
+**Version:** 2.2 | **Stand:** 25.04.2026 | **Zieljahr:** 2058 | **Scoring:** DEFCON v3.7 | **Skill-Paket:** v3.7.3
 
 ---
 
@@ -34,25 +34,21 @@ Impuls / Idee
 
 ### Warum `dynastie-depot` als Monolith funktioniert
 
-`!Analysiere` ruft **keinen weiteren Skill explizit auf**. Alle spezialisierten
-Module werden direkt als Tool-Calls genutzt — ohne den Token-Overhead eines
-Skill-Loads. Das ist bewusst so designed:
+`!Analysiere` chained **kein** Skill manuell. Spezialisierte Module werden direkt als Tool-Calls genutzt — ohne den Token-Overhead eines Skill-Loads. Eine **dokumentierte Ausnahme**: `backtest-ready-forward-verify` wird in Schritt 7 programmatisch invoked (jsonl-Write-Pipeline-Kapsel, kein Scoring-Kontext nötig).
 
-| Was genutzt wird | Wie genutzt | Expliziter Skill-Load? |
-|------------------|------------|----------------------|
+| Was genutzt wird | Wie genutzt | Skill-Load? |
+|------------------|------------|---|
 | defeatbeta MCP | MCP-Tool-Calls direkt | ❌ Nein |
 | Shibui Finance SQL | MCP-Tool-Calls direkt | ❌ Nein |
 | insider_intel.py | Bash → Python direkt | ❌ Nein |
 | eodhd_intel.py | Bash → Python direkt | ❌ Nein |
 | WebSearch | Tool-Call direkt | ❌ Nein |
-| `insider-intelligence` Skill | Nur bei standalone !InsiderScan | ⚠️ Optional |
-| `quick-screener` Skill | Nur bei !QuickCheck | ⚠️ Optional |
-| `earnings-preview` Skill | Nur bei !EarningsPreview | ⚠️ Optional |
-| `earnings-recap` Skill | Nur bei !EarningsRecap | ⚠️ Optional |
+| **`backtest-ready-forward-verify`** | **Schritt 7 jsonl-Write** | **⚙️ Programmatisch** (kanonisch) |
+| `insider-intelligence` Skill | Nur bei standalone `!InsiderScan` | ⚠️ Optional / Manuell |
+| `quick-screener` Skill | Nur bei `!QuickCheck` | ⚠️ Optional / Manuell |
+| `earnings-preview` / `-recap` / `-calendar` | Nur bei jeweiligem `!Earnings…`-Trigger | ⚠️ Optional / Manuell |
 
-**Konsequenz:** Kein Mehrwert durch Skill-Verkettung innerhalb von `!Analysiere`.
-Jeder zusätzliche Skill-Load kostet Token und verliert DEFCON-Kontext
-(Scoring-Skalen, FLAG-Regeln, Kalibrierungsanker sind nur in der SKILL.md bekannt).
+**Konsequenz:** Kein **manuelles** Skill-Chaining innerhalb von `!Analysiere`. Jeder Ad-hoc-Skill-Load kostet Token und verliert DEFCON-Kontext (Scoring-Skalen, FLAG-Regeln, Kalibrierungsanker sind nur in der SKILL.md bekannt). Die Step-7-Programmatic-Invocation ist davon ausgenommen, weil sie keinen Scoring-Kontext braucht — sie schreibt einen fertigen `ScoreRecord` deterministisch ins Archiv.
 
 ### Wann werden andere Skills eigenständig aktiviert?
 
@@ -271,58 +267,14 @@ Fußnoten wie bei MSFT Pre-Processing Regel 2), XBRL-Datenkonflikte,
 
 ---
 
-## SYSTEM-STATUS (Stand: 17.04.2026)
+## SYSTEM-STATUS
 
-| Komponente | Version | Typ | Status |
-|------------|---------|-----|--------|
-| `dynastie-depot` | 3.7 | Haupt-Skill | ✅ Aktiv |
-| `quick-screener` | 1.1 | Skill | ✅ Aktiv |
-| `insider-intelligence` | 1.0 | Skill + Python | ✅ Aktiv |
-| `non-us-fundamentals` | 1.1 | Python-Modul | ✅ Aktiv |
-| `earnings-preview` | 1.0 | Skill | ✅ Aktiv |
-| `earnings-recap` | 1.0 | Skill | ✅ Aktiv |
-| `earnings-calendar` | 1.0 | Skill | ✅ Aktiv |
-| `sec-edgar-skill` | 1.0 | Skill (Fallback) | ✅ Aktiv |
-| `portfolio_risk.py` | 1.0 | Python-Tool | ✅ Aktiv (quarterly) |
-| defeatbeta MCP | 1.27.0 | MCP-Server | ✅ Aktiv (WSL2) |
-| Shibui Finance SQL | — | MCP-Connector | ✅ Aktiv |
-
-**Deinstalliert / entfernt:**
-- `generate-stock-reports` (08.04.2026) — vollständig durch WebSearch in !Analysiere ersetzt
-- `us-stock-analysis` (08.04.2026) — vollständig durch `dynastie-depot` ersetzt
-- `analyzing-financial-statements`, `analyzing-financials`, `findata-toolkit-us`, `fmp-api`, `valuation-calculator` (17.04.2026) — redundante Fremd-Skills
-- `qualitative-valuation` (17.04.2026) — ~80% in DEFCON-Scoring kodifiziert, ESG bewusst ausgelassen
-- `risk-metrics-calculation` (17.04.2026) — 3 Funktionen nach `03_Tools/portfolio_risk.py` extrahiert, Rest irrelevant für 33J-Horizont
-
----
+> **SSoT → `00_Core/SYSTEM.md`** (Skill-Versionen, MCP-Status, Briefing-Status, Backtest-Ready-Status, Backlog). Hier nicht duplizieren, um Drift wie 17.04.→25.04.-Lag zu vermeiden.
 
 ## ORDNERSTRUKTUR
 
-```
-Claude Stuff/
-├── 00_Core/           → CORE-MEMORY.md | KONTEXT.md | INSTRUKTIONEN.md
-├── 01_Skills/         → Skill-Quelldateien (Arbeitsversionen)
-│   ├── dynastie-depot/              → SKILL.md | config.yaml | Beispiele.md | PIPELINE.md (v3.7.2)
-│   ├── backtest-ready-forward-verify/ → SKILL.md | _smoke_test.py (Satellit, programmatisch aus Schritt 7)
-│   ├── insider-intelligence/        → SKILL.md | insider_intel.py
-│   ├── non-us-fundamentals/         → SKILL.md | eodhd_intel.py
-│   └── quick-screener/              → SKILL.md
-├── 02_Analysen/       → DEFCON-Analysen als Excel (Output Stufe 3)
-├── 03_Tools/          → Rebalancing_Tool | Satelliten_Monitor | Watchlist_Monitor | portfolio_risk.py | briefing-sync-check.ps1
-├── 04_Templates/      → CAPEX-FCF | Alerts-Log (Analyse-Template in SKILL.md §Workflow 1)
-├── 05_Archiv/         → Historische Dateien
-└── 06_Skills-Pakete/  → Installierbare ZIPs (nur aktive Skills)
-    ├── dynastie-depot_v3.7.2.zip
-    ├── backtest-ready-forward-verify.zip
-    ├── quick-screener.zip
-    ├── insider_intel.zip
-    ├── earnings-preview.zip
-    ├── earnings-recap.zip
-    ├── openclaw-earnings-calendar.zip
-    ├── defeat-beta-defeatbeta-analyst.zip
-    └── neversight-sec-edgar-skill.zip
-```
+> **SSoT → `CLAUDE.md` `## Projektstruktur`.** Diese Datei dokumentiert nur die Pipeline-Stufen + Skill-Architektur.
 
 ---
 
-🦅 PIPELINE.md v2.1 | Dynastie-Depot DEFCON v3.7 | Stand: 17.04.2026
+🦅 PIPELINE.md v2.2 | Dynastie-Depot DEFCON v3.7 | Skill-Paket v3.7.3 | Stand: 25.04.2026
