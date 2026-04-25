@@ -1156,6 +1156,85 @@ def test_score_event_parity_skip_on_missing_sources() -> None:
     assert all(f.severity == "warning" for f in result.failures)
 
 
+def test_skill_frontmatter_pass_on_complete() -> None:
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "demo"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text(
+            "---\nname: demo\ndescription: a test skill\nversion: 1.0.0\n---\n# demo\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_skill_frontmatter_warn_on_missing_version() -> None:
+    """F8-Pathologie: SKILL.md hat name+description aber version: fehlt."""
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "draft-skill"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text(
+            "---\nname: draft-skill\ndescription: missing version field\n---\n# draft\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any(
+        "version" in f.expected.lower() and "draft-skill" in f.location
+        for f in result.failures
+    ), f"expected version-missing warning for draft-skill; got {result.failures}"
+
+def test_skill_frontmatter_warn_on_missing_description() -> None:
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "no-desc"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text(
+            "---\nname: no-desc\nversion: 1.0.0\n---\n# x\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any("description" in f.expected.lower() for f in result.failures)
+
+def test_skill_frontmatter_skip_on_no_frontmatter() -> None:
+    """Convention: SKILL.md ohne Frontmatter ist 'draft', WARN nicht FAIL."""
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "no-fm"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text("# no-fm\n\nNo frontmatter at all.\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any("frontmatter" in (f.hint or "").lower() for f in result.failures)
+
+def test_skill_frontmatter_ignores_extern_subskills() -> None:
+    """_extern/<name>/ Skills sind nicht audit-scope (read-only third-party)."""
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "_extern" / "third-party"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text("# no fm\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status in ("PASS", "SKIP"), f"_extern muss ignored sein, got {result.status}"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -1235,3 +1314,9 @@ if __name__ == "__main__":
     test_score_event_parity_fail_on_missing_file_in_briefing_sync()
     test_score_event_parity_skip_on_missing_sources()
     print("[OK] score_event_parity smoke tests passed")
+    test_skill_frontmatter_pass_on_complete()
+    test_skill_frontmatter_warn_on_missing_version()
+    test_skill_frontmatter_warn_on_missing_description()
+    test_skill_frontmatter_skip_on_no_frontmatter()
+    test_skill_frontmatter_ignores_extern_subskills()
+    print("[OK] skill_frontmatter smoke tests passed")
