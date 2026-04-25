@@ -1,9 +1,31 @@
-# Post-Migration Reference Grep — 2026-04-25 (post-Codex-F1-fix)
-# Scope: alle STATE.md / CORE-MEMORY.md Referenzen außerhalb von 05_Archiv, Vault, Analysen, docs, .claude, .git.
+# Post-Migration Reference Grep — 2026-04-25 (post-Codex-F1-fix `920a602`)
+# Scope: STATE.md / CORE-MEMORY.md References außerhalb von 05_Archiv, Vault, Analysen, docs, .claude, .git, .tmp.driveupload (OneDrive-Sync-Staging).
 # AC-Bezug: Spec v0.4 AC #15.
-# Excludes match Pre-Migration-Artefakt (2026-04-24-pre-migration-refs.txt).
-./.tmp.driveupload/323:189:      "Bash(awk '/^## 6\\\\. /,/^## 7\\\\. /' 00_Core/CORE-MEMORY.md)",
-./.tmp.driveupload/323:191:      "Bash(awk 'END{print NR}' 00_Core/STATE.md 00_Core/PORTFOLIO.md)",
+# Excludes wie Pre-Migration-Artefakt (2026-04-24-pre-migration-refs.txt) +.tmp.driveupload (runtime-only, post-04-25 entstanden).
+#
+# Allow-List-Klassifikation (Spec AC #15, jeder Treffer matcht eine Kategorie):
+#   (a) Hub selbst — STATE.md
+#   (b) Navigation/Pointer in 00_Core-Peers + CLAUDE.md + Skills/Tools-Doku
+#   (c) Last-Audit-Block-Refs in system_audit-Code/Fixtures
+#   (d) Spec-Doku (docs/superpowers — already excluded by scope)
+#   (e) CORE-MEMORY §13 historische Lifecycle-Einträge
+#
+# Deny-List (muss leer sein): Tripwire-Checks, Score-/FLAG-/DEFCON-State-Abfragen, Sparraten-Tabellen-Refs.
+#
+# Per-File-Annotation:
+#   ./00_Core/CORE-MEMORY.md (4 Hits)         — Allow (b: Verweise) + (e: §13 historische Migration-Logs)
+#   ./00_Core/Faktortabelle.md (4 Hits)       — Allow (b: Verweise + Hub-Split-Hinweis)
+#   ./00_Core/INSTRUKTIONEN.md (~22 Hits)     — Allow (b: §18 Trigger-Mapping; Critical-Alert-Slot-Spec; Briefing-Sync-Set)
+#   ./00_Core/KONTEXT.md (~6 Hits)            — Allow (b: §11 Projection-Layer-Beschreibung)
+#   ./00_Core/SESSION-HANDOVER.md (~16 Hits)  — Allow (b: Banner-Chronik / Resume-Input-Block-Historie)
+#   ./00_Core/STATE.md (~8 Hits)              — Allow (a: Hub) + (c: Last-Audit-Block-Markers)
+#   ./00_Core/SYSTEM.md (~4 Hits)             — Allow (b: Verweise + historischer Resolved-Bug-Eintrag)
+#   ./00_Core/TOKEN-RULES.md (3 Hits)         — Allow (b: Verweise + Snapshot-First-Pointer + §18 v2 Verweis nach Codex-F1-Fix `920a602`)
+#   ./CLAUDE.md (mehrere Hits)                — Allow (b: Pointer-Tabelle + Routing-Table + Briefing-Sync)
+#   ./01_Skills/...SKILL.md / *.md            — Allow (b: Skill-internal Doku + ASCII-File-Trees)
+#   ./03_Tools/...                            — Allow (b: Tool-Patches Targets + Test-Fixtures)
+#   ./03_Tools/.../__pycache__/*.pyc          — Binary, kein materieller Treffer (grep zeigt nur "Binary file matches")
+
 ./00_Core/CORE-MEMORY.md:1:# 🧠 CORE-MEMORY.md — Institutionelles Gedächtnis
 ./00_Core/CORE-MEMORY.md:301:**NICHT durchgeführt in diesem Sweep:** Markdown-Cross-Source-Validation, Existence-Check (CLAUDE.md/STATE.md-Pfade), Skill-Version-Check, Vault-Backlink-Integrity, docs/superpowers-vs-STATE-Referenzen. **Grund:** dedizierte Exhaustive-Validation via `03_Tools/system_audit.py` in Session 22.04. (Phase D+E).
 ./00_Core/CORE-MEMORY.md:405:  - **Befund 2 (2026-04-18, γ-Fix Schema-SKILL DEFCON-Threshold-Drift):** `schemas.py _check_defcon_level` benutzte alte Thresholds (70/60/50) während SKILL.md Neueinstieg + Bestandsüberwachung seit v3.x mit 80/65/50 arbeitet. Forward-Record `2026-04-18_V_vollanalyse` wurde mit falschem defcon_level=4 (Score 72) akzeptiert — unter Schema war das konsistent, unter SKILL wäre D3 korrekt. **Fix commit 18.04.:** `schemas.py` + `archive_score.py` Smoke-Tests auf neue Thresholds (Sub-Sum 80 statt 79). Impact: 5 Tickers (BRK.B/VEEV/SU/COST/RMS) in STATE.md/Faktortabelle von D4 auf D3 umgelabelt (Sparrate bei D3/D4-Übergang laut SKILL-Bestand identisch → keine operative Änderung); APH D3→D2 (FLAG überschreibt Sparrate weiter).
