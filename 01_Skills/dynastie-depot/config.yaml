@@ -251,18 +251,18 @@ satelliten:
   - ticker: TMO
     name: "Thermo Fisher Scientific"
     typ: "Substanz / Life Sciences"
-    defcon: 2
-    score: 64
-    score_datum: "2026-04-18"
-    score_valid_until: "2026-10-15"
+    defcon: 3
+    score: 67
+    score_datum: "2026-04-23"
+    score_valid_until: "2026-10-20"
     flag: false
-    flag_hinweis: "fcf_trend_neg schema-getriggert (FY25 FCF 6,293M / FY24 7,267M = -13,4% YoY; CapEx +8,9%), NICHT aktiviert per Advisor-Review (Option B — struktureller Disclosure): (a) WC-Delta FY25 -1,766M > FCF-Delta -974M = WC-Noise-Erklärung; (b) 4J-Plateau FY22-25 $6,9→6,9→7,3→6,3B = kein Mehrjahres-Abwärtstrend; (c) Operating Income +5,1% YoY = Profitabilität intakt. Resolve-Gate: Q1 FY26 Earnings 23.04.2026."
-    sparrate_hinweis: "DEFCON 2, kein 🔴 FLAG → Gewicht 0.5 (halbe Rate 17,81€)"
-    scoring_notiz: "Score 64 (v3.7 Forward-Vollanalyse 18.04., Algebra-Projektion 63 bestätigt ±1): Fundamentals 30/50 (Fwd P/E 6 / P/FCF 1 QT-cap Wide+31x / Bilanz 6 / CapEx/OCF 7 / ROIC 6 bereinigt — GAAP 8,04%, Regel-4-Gating greift: GW/Assets 44,74% ≥30% → IC bereinigt 43,430M → ROIC bereinigt 17,18% vs WACC 10,44% = +6,74pp Spread / FCF-Y 3 / OpM 1), Moat 18 (Wide Intangibles + Switching Costs + Scale), Technicals 6 (ATH -18% / RelStärke 0 / Trend 3), Insider 4 (0+1+3), Sentiment 6 (SB 4 / Sell 1 / PT-Up 2 / PT-Disp -1 = 35,5% Dispersion)."
-    naechste_pruefung: "2026-04-23 Q1 FY26 Earnings — D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind + FCF-Recovery = Disclosure bleibt; fehlende Reversibilität = FLAG-Trigger nachtragen)."
-    earnings_trigger: "DEFCON 3 bei: FCF-Recovery + WC-Unwind bestätigt + ROIC-Aufwärtstrend. DEFCON 2 bleibt bei: FCF weiter rückläufig + WC-Delta persistent. DEFCON 1 / ZTS-Aktivierung bei: fcf_trend_neg-FLAG nachzutragen + Score <50."
+    flag_hinweis: "fcf_trend_neg Resolve-Gate CLEAR (23.04.2026 Q1 FY26 Beat): FCF $825M +121% YoY, OCF +64,9%, ΔWC -1.112M vs -1.425M (+$313M besser) — WC-Unwind-These bestätigt. Schema-Watch deaktiviert. Management FY26-FCF-Guide $6,9-7,4B."
+    sparrate_hinweis: "DEFCON 3, kein 🔴 FLAG → Gewicht 1.0 (volle Rate 33,53€)"
+    scoring_notiz: "Score 67 (v3.7 Forward-Vollanalyse 23.04. Q1 FY26 Earnings-Trigger): Fundamentals 32/50 (Fwd P/E 7 19,3 / P/FCF 1 QT-cap Wide+27,27x / Bilanz 6 / CapEx/OCF 7 31,5% Q1-Standalone / ROIC 6 bereinigt 17,18% / FCF-Y 4 / OpM 1), Moat 18 (Wide unverändert), Technicals 6 (ATH -18,5% / RelStärke 0 / Trend 3), Insider 4 (Skip-Window <14d), Sentiment 7 (SB 4 / Sell 1 / PT-Up 2 / EPS-Revision-Up +1 Guidance-Raise / PT-Disp -1). Δ vs Pre-Score 64: Fundamentals +2 (fwd_pe 6→7, fcf_yield 3→4), Sentiment +1 (eps_revision_delta 0→+1). Beat-Headline: Adj EPS $5,44 vs $5,24 Konsens (+3,8%); Revenue $11,01B (+6,2% reported / +1% organic). Guidance-Raise FY26: Revenue $47,3-48,1B, Adj EPS $24,64-25,12, FCF $6,9-7,4B."
+    naechste_pruefung: "2026-07 Q2 FY26 ~Ende Juli — Organic-Akzeleration (Q1 +1% → H2 3-4% Guide bestätigen) + Clario-Integration-Execution-Check."
+    earnings_trigger: "DEFCON 4 bei: Q2 Organic ≥3% + Clario-Integration on-track + Sustained-FCF-Recovery. DEFCON 3 bleibt bei: Q2 Organic 1-3% + Plan-konformes Track-Record. DEFCON 2 bei: Q2 Organic <1% + Lab-Tools-Softness persistent + Clario-Friktion. DEFCON 1 / ZTS-Aktivierung bei: Score <50 oder Moat-Downgrade."
     ersatz: ZTS
-    substitute_activation_rule: "Vorbereitung aktiv bei Score 67 (D3). Ausführung bei Score <50 oder Moat-Downgrade. ZTS muss Score ≥80 ohne FLAG haben."
+    substitute_activation_rule: "Vorbereitung PAUSIERT seit 23.04.2026 (Q1 FY26 Beat + Guidance-Raise + fcf_trend_neg Resolve-Gate CLEAR). Re-Aktivierung bei: Q2 FY26 Organic <3% ODER Score-Erosion Richtung D2. Ausführung bei Score <50 oder Moat-Downgrade. ZTS muss Score ≥80 ohne FLAG haben."
     region: USA
     us_exposure: true
 
