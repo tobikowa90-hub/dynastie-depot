@@ -998,6 +998,40 @@ def test_jsonl_schema_malformed_json_hint() -> None:
     ), f"malformed JSON erwartet 'manuell pruefen/entfernen' hint; got hints={[f.hint for f in json_failures]}"
 
 
+def test_pyyaml_preflight_clean_message() -> None:
+    """Without PyYAML: orchestrator must rc=2 with stderr-message that names
+    the missing module + suggests the fix. Simuliert via sys.modules-Override.
+    """
+    import contextlib
+    import importlib.util
+    import io
+    import sys as _sys
+    main_spec = importlib.util.spec_from_file_location(
+        "_sa_main_preflight_test", str(REPO_ROOT / "03_Tools" / "system_audit.py"),
+    )
+    assert main_spec is not None and main_spec.loader is not None
+    main_mod = importlib.util.module_from_spec(main_spec)
+    main_spec.loader.exec_module(main_mod)
+
+    saved_yaml = _sys.modules.pop("yaml", None)
+    _sys.modules["yaml"] = None  # type: ignore[assignment]
+    stdout_buf = io.StringIO()
+    stderr_buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(stdout_buf), contextlib.redirect_stderr(stderr_buf):
+            rc = main_mod.main(["--core", "--no-write"])
+        assert rc == 2, f"expected rc=2 on missing PyYAML, got rc={rc}"
+        err = stderr_buf.getvalue()
+        assert "PyYAML" in err or "pyyaml" in err.lower(), f"stderr must name PyYAML: {err[:200]}"
+        assert "pip install" in err.lower() or "requirements" in err.lower(), (
+            f"stderr must hint at install path: {err[:200]}"
+        )
+    finally:
+        _sys.modules.pop("yaml", None)
+        if saved_yaml is not None:
+            _sys.modules["yaml"] = saved_yaml
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -1059,6 +1093,7 @@ if __name__ == "__main__":
     test_orchestrator_vault_runs_optional_checks()
     test_orchestrator_invalid_timeout_rejected()
     test_main_rc2_emits_partial_json_and_preserves_diagnosis()
+    test_pyyaml_preflight_clean_message()
     print("[OK] orchestrator smoke tests passed")
     test_vault_backlinks_pass_fixture()
     test_vault_backlinks_fail_on_missing()
