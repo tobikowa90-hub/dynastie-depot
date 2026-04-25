@@ -1032,6 +1032,130 @@ def test_pyyaml_preflight_clean_message() -> None:
             _sys.modules["yaml"] = saved_yaml
 
 
+SCORE_EVENT_FILES_CANONICAL = (
+    "log.md",
+    "CORE-MEMORY.md",
+    "Faktortabelle.md",
+    "PORTFOLIO.md",
+    "score_history.jsonl",
+    "config.yaml",
+    "flag_events.jsonl",
+)
+
+def test_score_event_parity_pass_on_aligned_readme() -> None:
+    """PASS: README enthaelt alle 7 Files + v2.1-String."""
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        readme_dir = tdp / "03_Tools" / "backtest-ready"
+        readme_dir.mkdir(parents=True)
+        (readme_dir / "README.md").write_text(
+            "Sync-Pflicht-Welle §18 INSTRUKTIONEN v2.1\n\n"
+            "7-File-Set: log.md, CORE-MEMORY.md, Faktortabelle.md, "
+            "PORTFOLIO.md, score_history.jsonl, "
+            "01_Skills/dynastie-depot/config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        # Briefing + SKILL als minimale stub-targets
+        (tdp / "03_Tools" / "briefing-sync-check.ps1").write_text(
+            "$briefingFiles = @('log.md','CORE-MEMORY.md','Faktortabelle.md',"
+            "'PORTFOLIO.md','score_history.jsonl','config.yaml','flag_events.jsonl')\n",
+            encoding="utf-8",
+        )
+        skill_dir = tdp / "01_Skills" / "dynastie-depot"
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text(
+            "## Schritt 7 Sync-Pflicht\n\nlog.md, CORE-MEMORY.md, Faktortabelle.md, "
+            "PORTFOLIO.md, score_history.jsonl, config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        instr = tdp / "00_Core" / "INSTRUKTIONEN.md"
+        instr.parent.mkdir(parents=True)
+        instr.write_text("## §18 v2.1 Sync-Pflicht\nv2.1\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+    assert result.failures == []
+
+def test_score_event_parity_fail_on_v17_drift() -> None:
+    """FAIL F1: README sagt §18 v1.7 statt v2.1."""
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        rd = tdp / "03_Tools" / "backtest-ready"
+        rd.mkdir(parents=True)
+        (rd / "README.md").write_text(
+            "Sync-Pflicht-Welle §18 INSTRUKTIONEN v1.7\n\n"
+            "7-File-Set: log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, "
+            "score_history.jsonl, 01_Skills/dynastie-depot/config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        (tdp / "03_Tools" / "briefing-sync-check.ps1").write_text("# stub\n", encoding="utf-8")
+        sd = tdp / "01_Skills" / "dynastie-depot"
+        sd.mkdir(parents=True)
+        (sd / "SKILL.md").write_text("# stub\n", encoding="utf-8")
+        instr = tdp / "00_Core" / "INSTRUKTIONEN.md"
+        instr.parent.mkdir(parents=True)
+        instr.write_text("v2.1\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any(
+        "v1.7" in f.actual or "v1.7" in f.location
+        for f in result.failures if f.severity == "error"
+    ), f"v1.7-drift muss als error gefunden werden; got {result.failures}"
+
+def test_score_event_parity_fail_on_missing_file_in_briefing_sync() -> None:
+    """FAIL F4: briefing-sync-check.ps1 listet config.yaml nicht."""
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        rd = tdp / "03_Tools" / "backtest-ready"
+        rd.mkdir(parents=True)
+        (rd / "README.md").write_text(
+            "v2.1\n7-File: log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, "
+            "score_history.jsonl, config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        (tdp / "03_Tools" / "briefing-sync-check.ps1").write_text(
+            "$briefingFiles = @('log.md','CORE-MEMORY.md','Faktortabelle.md',"
+            "'PORTFOLIO.md','score_history.jsonl','flag_events.jsonl')\n"
+            "# F4-Pathologie: array unvollstaendig\n",
+            encoding="utf-8",
+        )
+        sd = tdp / "01_Skills" / "dynastie-depot"
+        sd.mkdir(parents=True)
+        (sd / "SKILL.md").write_text(
+            "log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, "
+            "score_history.jsonl, config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        instr = tdp / "00_Core" / "INSTRUKTIONEN.md"
+        instr.parent.mkdir(parents=True)
+        instr.write_text("v2.1\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any(
+        "config.yaml" in f.expected and "briefing" in f.location.lower()
+        for f in result.failures
+    ), f"config.yaml-miss in briefing-sync muss gefangen werden; got {result.failures}"
+
+def test_score_event_parity_skip_on_missing_sources() -> None:
+    """SKIP: keine der erwarteten Source-Files vorhanden — kein FAIL."""
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+    assert all(f.severity == "warning" for f in result.failures)
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -1106,3 +1230,8 @@ if __name__ == "__main__":
     test_status_matrix_subsections_are_scanned()
     test_status_matrix_n_passed_arithmetic_with_gaps()
     print("[OK] status_matrix smoke tests passed")
+    test_score_event_parity_pass_on_aligned_readme()
+    test_score_event_parity_fail_on_v17_drift()
+    test_score_event_parity_fail_on_missing_file_in_briefing_sync()
+    test_score_event_parity_skip_on_missing_sources()
+    print("[OK] score_event_parity smoke tests passed")
