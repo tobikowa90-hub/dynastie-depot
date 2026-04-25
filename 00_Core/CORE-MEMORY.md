@@ -45,9 +45,9 @@
 
 ---
 
-## 3. Aktive Positions-Entscheidungen (Historisch, pre-v3.7 — aktuelle Positions-Realität in `00_Core/STATE.md` + `Faktortabelle.md`)
+## 3. Aktive Positions-Entscheidungen (Historisch, pre-v3.7 — aktuelle Positions-Realität in `00_Core/PORTFOLIO.md` + `Faktortabelle.md`)
 
-> ⚠️ **Historische Entscheidungs-Narrative (04.04.–16.04.).** Aktuelle Live-Scores/DEFCON/Sparraten → `00_Core/STATE.md`. v3.7-Shifts: MSFT 60→59, TMO 62→63 (D2 bestätigt), APH 61→63 (FLAG bleibt), ASML 66→68 (Post-Q1 Vollanalyse). Weitere Shifts 18.04.: V Vollanalyse 63/D2, 5 Tickers Threshold-Drift-Fix D4→D3, Nenner 8.5→8.0. Section bleibt als Entscheidungs-Logik-Archiv erhalten.
+> ⚠️ **Historische Entscheidungs-Narrative (04.04.–16.04.).** Aktuelle Live-Scores/DEFCON/Sparraten → `00_Core/PORTFOLIO.md`. v3.7-Shifts: MSFT 60→59, TMO 62→63 (D2 bestätigt), APH 61→63 (FLAG bleibt), ASML 66→68 (Post-Q1 Vollanalyse). Weitere Shifts 18.04.: V Vollanalyse 63/D2, 5 Tickers Threshold-Drift-Fix D4→D3, Nenner 8.5→8.0. Section bleibt als Entscheidungs-Logik-Archiv erhalten.
 
 ### MSFT — DEFCON 2, FLAG aktiv (Re-Analyse 08.04.2026)
 - **Score:** 60/100 (↓ von 77, −17 Punkte) | **DEFCON:** 🟠 2 | **FLAG:** 🔴 CapEx/OCF Q2 FY26: 83.6% (bereinigt ~63%)
@@ -84,7 +84,7 @@
 ## 4. Score-Register
 
 → **Aktueller State:** [`Faktortabelle.md`](Faktortabelle.md) — Live-Score + DEFCON + FLAG pro Ticker
-→ **Portfolio-Snapshot:** [`STATE.md`](STATE.md) — Section "Portfolio-State (11 Satelliten)"
+→ **Portfolio-Snapshot:** [`PORTFOLIO.md`](PORTFOLIO.md) — Section "Portfolio-State (11 Satelliten)"
 → **Vollständige Historie:** `05_Archiv/score_history.jsonl` — alle Score-Records append-only (ab 17.04.2026 forward, Backfill-Records aus damaliger Section-4-Tabelle)
 → **FLAG-Events:** `05_Archiv/flag_events.jsonl` — Trigger + Resolution append-only
 → **Write-Tooling:** `03_Tools/backtest-ready/archive_score.py` + `archive_flag.py`
@@ -195,7 +195,7 @@ Bei Unternehmen mit signifikanter Produktion in Risikoländern (Malaysia, Thaila
 → **Aktuelle Scope:** MSFT CapEx/OCF 83.6% → Monthly-Refresh pflicht (erster Refresh ~19.05.2026, Zwischen-Refresh vor Q3-Earnings 29.04. nicht nötig — Earnings-Trigger deckt ab)
 → **TMO** fcf_trend_neg bleibt **Schema-Watch**, keine §30-Pflicht (Q1 23.04. = natürliches Resolve-Gate)
 → **§30-Ausweitung** auf weitere Faktor-Klassen (Quality/Value/Momentum) erfordert Applied-Learning-Re-Review — Re-Review-Entscheidung dokumentiert als eigene CORE-MEMORY §5-Lektion (Codex-Wächter 19.04.)
-→ **Drei-Ebenen-Semantik-Trennung:** "Aktiver FLAG" (§30, flag_events.jsonl-Trigger, Monthly-Refresh pflicht) ≠ "Schema-Watch" (schema-getriggert-nicht-aktiviert, kein flag_events-Pfad) ≠ STATE.md "Aktive Watches" (allgemeine Beobachtungsnotiz, kein FLAG-Mechanik)
+→ **Drei-Ebenen-Semantik-Trennung:** "Aktiver FLAG" (§30, flag_events.jsonl-Trigger, Monthly-Refresh pflicht) ≠ "Schema-Watch" (schema-getriggert-nicht-aktiviert, kein flag_events-Pfad) ≠ PORTFOLIO.md "Aktive Watches" (allgemeine Beobachtungsnotiz, kein FLAG-Mechanik)
 → **FLAG-Events ändern nur FLAG-Status, niemals Score-Komponenten/-gewichte** — §30 ist Monitoring-Cadence-Regel, kein Scoring-Change
 → **Forward-dating-Pflicht:** Monthly-Refresh-Events in flag_events.jsonl nur mit aktuellem Refresh-Datum (kein Backfill ohne Kennzeichnung — §29.5 Sin #2)
 **Codex-Review-Revisions appliziert (5/5):** Score-Unverändbarkeit (§30.3.5), Schema-Watch-Klarstellung (§30.1), Applied-Learning-Re-Review-Ablage (§30.4), Drei-Ebenen-Disambiguierung (§30.1), Forward-Dating-Anker (§30.3.3).
@@ -294,7 +294,7 @@ Nur Versions-Changelog. Narrative Meilensteine stehen in §13.
 |-------|--------|
 | `05_Archiv/score_history.jsonl` | **12/27 FAIL** → migriert via `migrate_defcon_drift.py` → **27/27 PASS** (alle defcon_level-Drift, keine Score-/Block-Drift) |
 | `05_Archiv/flag_events.jsonl` | 2/2 PASS (keine Drift) |
-| `dynastie-depot/config.yaml` Satelliten Score+DEFCON | 11/11 == STATE.md (keine Cross-Source-Divergenz) |
+| `dynastie-depot/config.yaml` Satelliten Score+DEFCON | 11/11 == PORTFOLIO.md (keine Cross-Source-Divergenz) |
 | `05_Archiv/portfolio_returns.jsonl` | 1 Record (17.04.) — **stale seit 4 Tagen** (R5-Phase-3 aktiv aber Daily-Append-Cron existiert nicht, Manual-Trigger-Pflicht vergessen) → Backlog-Item (Auflösung in Track 4 ETF/Gold-Erweiterung) |
 | `05_Archiv/benchmark-series.jsonl` | 1 Record (17.04.) — stale analog (siehe oben) |
 
