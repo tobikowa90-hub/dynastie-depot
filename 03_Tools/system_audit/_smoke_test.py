@@ -1235,6 +1235,80 @@ def test_skill_frontmatter_ignores_extern_subskills() -> None:
     assert result.status in ("PASS", "SKIP"), f"_extern muss ignored sein, got {result.status}"
 
 
+def test_header_freshness_fail_on_placeholder() -> None:
+    """F6-Pathologie: Header `Deployed: <YYYY-MM-DD>` Placeholder."""
+    import tempfile
+    from system_audit.checks.header_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "03_Tools" / "morning-briefing-prompt-v3.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "# Morning Briefing v3.0.3\n\n"
+            "Deployed: <YYYY-MM-DD>\n\n"
+            "Body\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, targets_override=[(target, "Deployed")])
+    assert result.status == "FAIL"
+    assert any(
+        "<YYYY-MM-DD>" in f.actual or "placeholder" in (f.hint or "").lower()
+        for f in result.failures
+    ), f"placeholder muss als error gefangen werden; got {result.failures}"
+
+def test_header_freshness_warn_on_stale_date() -> None:
+    """Stand-Datum > 30d alt: WARN."""
+    import datetime as _dt
+    import tempfile
+    from system_audit.checks.header_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "01_Skills" / "demo" / "SKILL.md"
+        target.parent.mkdir(parents=True)
+        old = (_dt.date(2026, 4, 25) - _dt.timedelta(days=60)).isoformat()
+        # Format DD.MM.YYYY (per insider-intel-Convention)
+        d = _dt.date.fromisoformat(old)
+        target.write_text(
+            f"# demo\n\n**Stand:** {d.day:02d}.{d.month:02d}.{d.year}\n\nBody\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx,
+                     targets_override=[(target, "Stand")],
+                     today=_dt.date(2026, 4, 25))
+    assert result.status == "WARN"
+    assert any(f.severity == "warning" for f in result.failures)
+
+def test_header_freshness_pass_on_recent() -> None:
+    import datetime as _dt
+    import tempfile
+    from system_audit.checks.header_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "01_Skills" / "fresh" / "SKILL.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "**Stand:** 24.04.2026\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx,
+                     targets_override=[(target, "Stand")],
+                     today=_dt.date(2026, 4, 25))
+    assert result.status == "PASS"
+
+def test_header_freshness_skip_on_no_targets() -> None:
+    import tempfile
+    from system_audit.checks.header_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        # Default-targets all missing → SKIP
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -1320,3 +1394,8 @@ if __name__ == "__main__":
     test_skill_frontmatter_skip_on_no_frontmatter()
     test_skill_frontmatter_ignores_extern_subskills()
     print("[OK] skill_frontmatter smoke tests passed")
+    test_header_freshness_fail_on_placeholder()
+    test_header_freshness_warn_on_stale_date()
+    test_header_freshness_pass_on_recent()
+    test_header_freshness_skip_on_no_targets()
+    print("[OK] header_freshness smoke tests passed")
