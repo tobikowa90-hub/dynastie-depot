@@ -1,6 +1,6 @@
 # Morning Briefing Remote Trigger — Prompt v3.0
 **Trigger-ID:** `trig_01PyAVAxFpjbPkvXq7UrS2uG`
-**Deployed:** <YYYY-MM-DD> (fill after deploy)
+**Deployed:** 2026-04-20 (v3.0.3, currently rolled back — Prod auf v2.2)
 **Version:** v3.0 — Tavily News-Signal Integration
 
 ## Changelog

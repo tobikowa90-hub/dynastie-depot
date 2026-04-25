@@ -9,7 +9,7 @@ description: >
 
 # Insider Intelligence Module — Dynastie-Depot v1.0
 
-**Stand:** 06.04.2026 | **Zweck:** Automatisierter DEFCON-Insider-Block (10 Punkte)
+**Stand:** 06.04.2026 (rev. 20.04.2026 — Snapshot-First-Workflow-Block) | **Zweck:** Automatisierter DEFCON-Insider-Block (10 Punkte)
 **Ersetzt:** Generischer sec-edgar-skill (bleibt als Recherche-Fallback)
 
 > **Architektur-Entscheidung (§33 Skill-Self-Audit, 20.04.2026):** KG-basierte Alternative (FinReflectKG-Pattern via Knowledge-Graph-Extraction aus Form-4) wurde via [[Knowledge-Graph-Architektur-Roadmap]] Szenario 1 **REJECT** klassifiziert — Gate 1 negativ, weil Form-4 XML-strukturiert und Schema stabil. XML-Direkt-Parsing bleibt dauerhafte Primär-Architektur. Re-Review nur bei formaler §33-Re-Evaluation. Siehe Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix (B21 `future-arch`).
