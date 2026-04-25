@@ -28,7 +28,7 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 - `01_Skills/` — dynastie-depot · backtest-ready-forward-verify · insider-intelligence · non-us-fundamentals · quick-screener · `_extern/` (read-only)
 - `02_Analysen/` — DEFCON-Analysen als Excel
 - `03_Tools/` — Rebalancing · Satelliten-Monitor · Watchlist · Briefing-Hook · system_audit
-- `04_Templates/` — SSoT aller Templates
+- `04_Templates/` — Pointer + spezifische Templates (z.B. `CAPEX-FCF-ANALYSE.md` zeigt auf `01_Skills/dynastie-depot/capex-fcf-template.md` v4.0)
 - `05_Archiv/` — Historische Dateien
 - `06_Skills-Pakete/` — Installierbare ZIP-Skills
 - `07_Obsidian Vault/` — Wiki (71 Notes, Schema + Workflows via `WIKI-SCHEMA.md`)
