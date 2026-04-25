@@ -17,7 +17,7 @@ Append-only JSONL-Archive für das Dynastie-Depot-Scoring-System. Jede `!Analysi
 | `schemas.py` | Pydantic-Modelle (Score-Record, FLAG-Event, Kurs, MigrationEvent, 15 Modelle insgesamt). Validators (v3.7.2, 6 Stück): Arithmetik, DEFCON-Konsistenz, Quality-Trap-Interaktion (v3.7), FLAG-Direction, MigrationEvent-Delta-Arithmetik, §28.2-Outcome-Bucket. |
 | `archive_score.py` | CLI: Score-Record anhängen. Liest JSON via `--file` oder `--stdin`. Validiert, prüft `record_id`-Uniqueness + Forward-Datum-Window (≤3 Tage). Append-only an `../../05_Archiv/score_history.jsonl`. Seit 19.04.2026 orchestriert durch Skill (siehe unten); direkter CLI-Aufruf bleibt für Backfill und manuelle Recovery. |
 | `archive_flag.py` | CLI: FLAG-Events — Subcommands `trigger`, `resolve`, `list`. Schwellen hardcoded via `FLAG_RULES` in `schemas.py`. Uniqueness-Check (kein Doppel-Trigger), Resolve-Präconditions (Trigger existiert + nicht bereits resolved). Bleibt CLI-direkt (nicht Teil der v3.7.2-Skill-Orchestrierung). |
-| `_forward_verify_helpers.py` | Deterministische Primitives (Python): `parse_wrapper`, `parse_state_row` (STATE.md-Tripwire), `build_migration_event` (§28.2-Bucketing + STOP-Signal), `check_freshness` (git-status gegen 3 Required-Touch-Files). Aufgerufen vom Skill `backtest-ready-forward-verify`. |
+| `_forward_verify_helpers.py` | Deterministische Primitives (Python): `parse_wrapper`, `parse_state_row` (PORTFOLIO.md-Tripwire; Funktions-Signatur aus Backwards-Compat unverändert), `build_migration_event` (§28.2-Bucketing + STOP-Signal), `check_freshness` (git-status gegen 3 Required-Touch-Files). Aufgerufen vom Skill `backtest-ready-forward-verify`. |
 | `backfill_scores.py` / `backfill_flags.py` | Einmalige Backfill-CLIs aus CORE-MEMORY §4. Nicht Teil des laufenden Betriebs. |
 | `flag_event_study.py` | Phase-3-Analyse-CLI (Event-Study über FLAG-Trigger/Resolution-Paare). Einmalige Auswertung, kein Teil der Orchestrierung. |
 | `README.md` | Diese Datei. |
@@ -36,7 +36,7 @@ Aus dynastie-depot Schritt 7: Draft-Wrapper nach `_drafts/<TICKER>_<YYYYMMDD-HHM
 Skill(skill="backtest-ready-forward-verify", args="<pfad-zum-draft>")
 ```
 
-Skill orchestriert P1-P6 (Parse → Freshness + STATE.md-Tripwire → §28.2 Δ-Gate → Dry-Run → Append → git add). Stdout-Report: 6 Fälle (OK / freshness / PFLICHT / STOP / duplicate / FAIL). Siehe `01_Skills/backtest-ready-forward-verify/SKILL.md`.
+Skill orchestriert P1-P6 (Parse → Freshness + PORTFOLIO.md-Tripwire → §28.2 Δ-Gate → Dry-Run → Append → git add). Stdout-Report: 6 Fälle (OK / freshness / PFLICHT / STOP / duplicate / FAIL). Siehe `01_Skills/backtest-ready-forward-verify/SKILL.md`.
 
 ### Score archivieren — CLI-direkt (Backfill / manuelle Recovery)
 
@@ -123,7 +123,7 @@ Nach jeder `!Analysiere`: **6 Dateien** in einem git-Commit aktualisieren:
 1. `log.md` (Vault)
 2. `CORE-MEMORY.md` (00_Core)
 3. `Faktortabelle.md`
-4. `STATE.md`
+4. `PORTFOLIO.md` (seit 00_Core Hub-Split, vorher `STATE.md`)
 5. `score_history.jsonl` ← dieser Append (seit v3.7.2 via Skill orchestriert)
 6. `flag_events.jsonl` (nur bei FLAG-Trigger/Resolution, CLI-direkt)
 

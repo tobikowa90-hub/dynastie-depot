@@ -33,6 +33,9 @@ Set-Location -LiteralPath $projectRoot
 # Briefing-relevant files (what morning-briefing trigger reads from repo)
 $briefingFiles = @(
     '00_Core/STATE.md',
+    '00_Core/PORTFOLIO.md',
+    '00_Core/PIPELINE.md',
+    '00_Core/SYSTEM.md',
     '00_Core/Faktortabelle.md',
     '00_Core/CORE-MEMORY.md',
     '00_Core/SESSION-HANDOVER.md',

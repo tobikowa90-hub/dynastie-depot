@@ -1,6 +1,6 @@
 ---
 name: dynastie-depot
-version: "3.7.2"
+version: "3.7.3"
 zieljahr: 2058
 system: DEFCON v3.7
 description: >
@@ -39,9 +39,9 @@ trigger_words:
 - Lombardkredit
 - NV-Bescheinigung
 ---
-# 🦅 Dynastie-Depot – Skill v3.7.2
+# 🦅 Dynastie-Depot – Skill v3.7.3
 
-**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.2 | **Stand:** 19.04.2026 | v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
+**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.3 | **Stand:** 25.04.2026 | v3.7.3 Delta (2026-04-25): 00_Core Struktur-Refactor — Tripwire auf PORTFOLIO.md, §1-Refs auf §12/§13 umgeleitet; Skill-Logik unverändert. v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
 
 ## Übersicht
 
@@ -303,7 +303,7 @@ Am Ende jeder `!Analysiere`-Ausgabe. Pipeline-Disziplin (Freshness / Tripwire / 
    - `FAIL phase=P4 reason="duplicate record_id ..."` + Exit 1 → **Nicht Re-Invoke.** Wahrscheinlich partieller P5-Abbruch vom Vorlauf (Append ok, git-add nicht). Recovery: `git add 05_Archiv/score_history.jsonl` manuell, dann direkt Sync-Commit (nicht erneut den Skill invoken).
    - `FAIL phase=<P1|P2b|anderes> reason=...` + Exit 1 → Skill hat nichts mutiert. Fehler diagnostizieren (Schema-Validation, Tripwire-Drift, etc.), Draft korrigieren, Skill erneut invoken.
 
-5. **Nach Success (Exit 0, Skill hat `git add` bereits gesetzt):** Sync-Commit mit allen 6 Files (§18 Sync-Pflicht — alle sechs, immer): `log.md + CORE-MEMORY.md + Faktortabelle.md + STATE.md + score_history.jsonl` (+ ggf. `flag_events.jsonl`).
+5. **Nach Success (Exit 0, Skill hat `git add` bereits gesetzt):** Sync-Commit mit allen 6 Files (§18 Sync-Pflicht — Score-Event-Set): `log.md + CORE-MEMORY.md + Faktortabelle.md + PORTFOLIO.md + score_history.jsonl` (+ ggf. `flag_events.jsonl`).
 
 **Wenn der Lauf abbricht bevor Schritt 7 Skill-Invocation erreicht:** Im nächsten Lauf Draft rekonstruieren und nachholen. Jeder verpasste Append = irreversibler Historie-Verlust.
 
@@ -720,7 +720,7 @@ Wenn der User \!QuickCheck \[TICKER\] oder \!QuickCheck ALL eingibt:
 
 ### Risiko-Reihenfolge bei \!QuickCheck ALL
 
-1.  Positionen mit aktivem FLAG zuerst, danach nach DEFCON aufsteigend sortieren (Portfolio-Stand: `00_Core/STATE.md`)
+1.  Positionen mit aktivem FLAG zuerst, danach nach DEFCON aufsteigend sortieren (Portfolio-Stand: `00_Core/PORTFOLIO.md`)
 2.  Positionen ohne aktuellen Score (score: null in config.yaml)
 3.  Stabile DEFCON-4-Positionen zuletzt
 

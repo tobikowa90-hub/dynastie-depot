@@ -138,7 +138,7 @@ BRK.B, RMS, V, APH, MSFT, TMO, COST — Scoring-Mechanismen jeweils in SKILL.md 
 | :---: | :--- |
 | **Gesamtscore v3.7** | **68/100 — 🟡 DEFCON 3** (Live-Verify 17.04. ✅) |
 | Subscore-Breakdown | **v3.7-frisch** — alle 5 Kategorien post-Q1-2026 auditierbar (Ausnahme Insider: AFM-H1-2026 pending, Carry-Forward 06.04.) |
-| Delta vs. STATE.md 66 | +2 Pkt (Live-Verify ±2 Toleranz eingehalten — Q1-Beat triggert GM-Trend-Bonus + Sentiment-EPS-Rev-Bonus) |
+| Delta vs. PORTFOLIO.md 66 | +2 Pkt (Live-Verify ±2 Toleranz eingehalten — Q1-Beat triggert GM-Trend-Bonus + Sentiment-EPS-Rev-Bonus) |
 | Live-Verify v3.7 | ✅ 3/11 (TMO ±1, ASML ±2, RMS ±2) — ASML ist primärer Non-US-Kalibrierungsanker |
 
 ### Subscores (v3.7)

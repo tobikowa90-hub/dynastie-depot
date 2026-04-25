@@ -1,4 +1,4 @@
-"""Check-6: STATE.md Pipeline-SSoT-Section Plan-Refs muessen existieren.
+"""Check-6: PIPELINE.md Pipeline-SSoT-Section Plan-Refs muessen existieren.
 
 MVP = Reverse-Only (Spec §5.1 Check-6). Forward-Richtung (Plan-Frontmatter
 status: ready|in-progress) deferred in Spec §10.5 / §12 Follow-up-Plan.
@@ -15,12 +15,12 @@ PIPELINE_HEADER_RE = re.compile(r"^##\s+🗺\s+Aktive Pipeline", re.MULTILINE)
 PLAN_PATH_RE = re.compile(r"(docs/superpowers/plans/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md)")
 
 
-def extract_plan_refs(state_text: str) -> list[str]:
+def extract_plan_refs(pipeline_text: str) -> list[str]:
     """Isolate pipeline section; return all plan-path references in order (dedup)."""
-    m = PIPELINE_HEADER_RE.search(state_text)
+    m = PIPELINE_HEADER_RE.search(pipeline_text)
     if not m:
         return []
-    after = state_text[m.end():]
+    after = pipeline_text[m.end():]
     end_rel = len(after)
     for next_match in re.finditer(r"^##\s+(?!🗺)", after, re.MULTILINE):
         end_rel = next_match.start()
@@ -42,23 +42,23 @@ def run(
     repo_root: Path,
     context: AuditContext,
     *,
-    state_path_override: Path | None = None,
+    pipeline_path_override: Path | None = None,
 ) -> CheckResult:
     start = time.monotonic()
-    state_path = state_path_override or repo_root / "00_Core" / "STATE.md"
+    pipeline_path = pipeline_path_override or repo_root / "00_Core" / "PIPELINE.md"
 
-    if not state_path.exists():
+    if not pipeline_path.exists():
         return CheckResult(
             name="pipeline_ssot", status="SKIP", n_checked=0, n_passed=0,
             failures=[FailureDetail(
-                location=str(state_path), expected="STATE.md present",
+                location=str(pipeline_path), expected="PIPELINE.md present",
                 actual="missing", severity="warning", hint=None,
             )],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
 
-    text = state_path.read_text(encoding="utf-8", errors="replace")
+    text = pipeline_path.read_text(encoding="utf-8", errors="replace")
     refs = extract_plan_refs(text)
     failures: list[FailureDetail] = []
     n_checked = len(refs)
@@ -70,7 +70,7 @@ def run(
             n_passed += 1
         else:
             failures.append(FailureDetail(
-                location=str(state_path.relative_to(repo_root)) if state_path.is_relative_to(repo_root) else str(state_path),
+                location=str(pipeline_path.relative_to(repo_root)) if pipeline_path.is_relative_to(repo_root) else str(pipeline_path),
                 expected=f"{ref} exists",
                 actual=f"{ref} missing",
                 severity="error",

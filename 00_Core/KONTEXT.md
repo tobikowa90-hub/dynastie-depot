@@ -3,6 +3,12 @@
 > Dieses Dokument beschreibt das WAS und WARUM des Projekts.
 > Für das WIE → INSTRUKTIONEN.md | Für Erinnerungen → CORE-MEMORY.md
 
+## Verweise
+- [STATE.md](STATE.md) — Hub
+- [PORTFOLIO.md](PORTFOLIO.md) — aktuelle Allokation
+- [INSTRUKTIONEN.md](INSTRUKTIONEN.md) — Workflows
+- [CORE-MEMORY.md §2](CORE-MEMORY.md#2-strategische-entscheidungen-dauerhaft-bindend) — Strategische Entscheidungen
+
 ---
 
 ## 1. Identität & Philosophie
@@ -158,19 +164,23 @@ Das Dynastie-Depot-System hält seinen Zustand in **vier formal getrennten Layer
 ### Narrative-Layer — Menschenlesbare Historie (evolvierend)
 
 - **`log.md`** (Vault) — technisches Protokoll pro Analyse/Session
-- **`CORE-MEMORY.md`** (00_Core) — strategisches Gedächtnis (Sections 1-11: Meilensteine, Entscheidungen, Positionen, §4 Pointer, Lektionen, Upgrades, Audit, Backtest-Infrastructure)
+- **`CORE-MEMORY.md`** (00_Core) — strategisches Gedächtnis (Sections 2-13: Strategische Entscheidungen, Positionen, §4 Pointer, Lektionen, Upgrades, Audit, Backtest-Infrastructure, §12 Per-Ticker-Chronik, §13 System-Lifecycle). §1 Meilensteine vor 15.04.2026 archiviert in `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md`; §1-Nachfolge durch §12/§13 Topic-Auflösung (Task-3 Refactor 2026-04-25).
 - **Merkmal:** "Was ist warum passiert?" — Kontext und Begründungen, nicht nur Zahlen.
 
 ### History-Layer — Maschinenlesbare Historie (append-only, unveränderlich)
 
-- **`05_Archiv/score_history.jsonl`** — ein Record pro `!Analysiere` (Vollanalyse/Delta/Rescoring), validiert via `ScoreRecord` in `03_Tools/backtest-ready/schemas.py`. Git-tracked via `.gitignore`-Whitelist. **Seit 19.04.2026 (v3.7.2)** wird der Write via Skill `backtest-ready-forward-verify` orchestriert (Pipeline-Disziplin: Freshness + STATE.md-Tripwire + §28.2 Δ-Gate + Dry-Run + Append).
+- **`05_Archiv/score_history.jsonl`** — ein Record pro `!Analysiere` (Vollanalyse/Delta/Rescoring), validiert via `ScoreRecord` in `03_Tools/backtest-ready/schemas.py`. Git-tracked via `.gitignore`-Whitelist. **Seit 19.04.2026 (v3.7.2)** wird der Write via Skill `backtest-ready-forward-verify` orchestriert (Pipeline-Disziplin: Freshness + PORTFOLIO.md-Tripwire + §28.2 Δ-Gate + Dry-Run + Append; Tripwire-Ziel seit Hub-Split 2026-04-25 PORTFOLIO.md, vorher STATE.md).
 - **`05_Archiv/flag_events.jsonl`** — ein Record pro FLAG-Trigger und pro Resolution, 4 FLAG-Typen hardcoded in `FLAG_RULES`.
 - **Merkmal:** "Was wurde wann entschieden?" — Point-in-Time, nie überschrieben. Basis für 2028+ Backtest.
 
 ### Projection-Layer — Session-Entry-Snapshot (abgeleitet)
 
-- **`STATE.md`** — komprimierte Portfolio-Tabelle + Watches + Trigger-Liste. **Keine eigenständige Wahrheitsquelle.** Projektion aus State + Narrative, wird via §18 Sync-Pflicht synchron gehalten.
-- **Merkmal:** "Was muss ich zum Session-Start wissen?" — 80 Zeilen statt 1.200 Auto-Read.
+- **`STATE.md`** — **Hub**: Navigation + Critical-Alerts (≤10 Tage) + Last-Audit-Block. **Keine eigenständige Wahrheitsquelle.**
+- **`PORTFOLIO.md`** — Live-Portfolio-State: 11-Satelliten-Tabelle + Aktive Watches + 30-Tage-Trigger + Sparraten-Nenner. Default-load bei Session-Start.
+- **`PIPELINE.md`** — Offene Pläne (🔴/🟡/🔵) + Long-Term-Gates (⏰).
+- **`SYSTEM.md`** — System-Zustand: DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog.
+- Alle vier Projection-Files sind **Projektion aus State + Narrative**, werden via §18 Sync-Pflicht synchron gehalten (trigger-basiertes Event-Mapping seit 2026-04-25 Task-6 Governance).
+- **Merkmal:** "Was muss ich zum Session-Start wissen?" — Hub (~40 Z.) + PORTFOLIO (~55 Z.) statt 1.200 Auto-Read aus Single-STATE.md.
 
 ### Schreib-Disziplin (§18 Sync-Pflicht)
 
@@ -181,7 +191,7 @@ Jede Score/FLAG/Sparraten-Änderung triggert Updates in **allen vier Layern** (6
 | State | `Faktortabelle.md` | Überschreiben |
 | Narrative | `log.md`, `CORE-MEMORY.md` | Fortschreiben (append + edit) |
 | History | `score_history.jsonl`, `flag_events.jsonl` | Append-only (nie UPDATE) |
-| Projection | `STATE.md` | Regenerieren aus State + Narrative |
+| Projection | `STATE.md` (Hub), `PORTFOLIO.md`, `PIPELINE.md`, `SYSTEM.md` | Regenerieren aus State + Narrative (trigger-basiertes §18-Event-Mapping) |
 
 **Korrekturen im History-Layer** sind tabu — stattdessen neuer Record mit `source: "correction"` oder Cross-Reference via `notizen`-Feld. Dies sichert Point-in-Time-Integrität für Backtest.
 
@@ -189,12 +199,14 @@ Jede Score/FLAG/Sparraten-Änderung triggert Updates in **allen vier Layern** (6
 
 | Kontext | Lies |
 |---------|------|
-| Session-Start (90% der Fälle) | Projection-Layer (`STATE.md`) |
-| Live-Score/FLAG-Check | State-Layer (`Faktortabelle.md`) |
-| "Warum-Fragen", Lessons, Strategie | Narrative-Layer (`CORE-MEMORY.md`) |
+| Session-Start (90% der Fälle) | Projection-Layer (`STATE.md` Hub + `PORTFOLIO.md` default-load) |
+| Live-Score/FLAG-Check | State-Layer (`Faktortabelle.md`) + Projection (`PORTFOLIO.md`) |
+| "Warum-Fragen", Lessons, Strategie | Narrative-Layer (`CORE-MEMORY.md` §5/§12/§13) |
+| Pipeline / Long-Term-Gates | Projection-Layer (`PIPELINE.md`) |
+| System / Infra / Briefing | Projection-Layer (`SYSTEM.md`) |
 | 2028-Backtest, Event-Study, Review | History-Layer (JSONL-Archive) |
 
 **Anti-Pattern:** Narrative- oder Projection-Layer als Wahrheit für Backtest zitieren. Diese Layer sind für Menschen gedacht und können nachträglich editiert werden — nur History-Layer hat Point-in-Time-Garantie.
 
 ---
-*🦅 KONTEXT.md v1.1 (§11 4-Layer-Architektur Backtest-Ready) | Dynastie-Depot | Stand: 17.04.2026*
+*🦅 KONTEXT.md v1.2 (§11 4-Layer-Architektur Backtest-Ready + Projection-Layer Hub-Split) | Dynastie-Depot | Stand: 25.04.2026*

@@ -83,7 +83,7 @@ CATALOGUE: list[BackfillCandidate] = [
         notizen=(
             "Backfill-Datum Proxy: Monatsmitte Januar 2026 "
             "(Q2 FY26 Earnings Call ca. 30.01.2026, exakter Trigger-Tag "
-            "nicht rekonstruierbar). CORE-MEMORY §1: CapEx/OCF Q2 FY26 "
+            "nicht rekonstruierbar). CORE-MEMORY §12 (MSFT-Chronik): CapEx/OCF Q2 FY26 "
             "83.6% GAAP, bereinigt um Finance Leases ~63% (>60%-Schwelle)."
         ),
     ),

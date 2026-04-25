@@ -1,6 +1,6 @@
 # T1 Happy-Path Test
 
-**Setup:** Full v3.0 prompt (see 03_Tools/morning-briefing-prompt-v3.md "Embedded Prompt Content" block). Reads real STATE.md and Faktortabelle from main branch.
+**Setup:** Full v3.0 prompt (see 03_Tools/morning-briefing-prompt-v3.md "Embedded Prompt Content" block). Reads real PORTFOLIO.md and Faktortabelle from main branch.
 
 **Probe allowed_tools:** `["Bash", "Read", "Glob", "Grep", "mcp__tavily__tavily_search"]`
 

@@ -161,4 +161,4 @@ Nach Erstellung der Excel-Datei (alle vier, immer — §18 INSTRUKTIONEN):
 1. `log.md` (Vault) — Eintrag mit Ticker, Score, Datum
 2. `CORE-MEMORY.md` — Score-Register aktualisieren falls geaendert
 3. `Faktortabelle.md` — Score + FLAG aktualisieren falls geaendert
-4. `STATE.md` — Portfolio-Tabelle + Trigger-Liste aktualisieren falls Score/FLAG/Sparraten geaendert
+4. `PORTFOLIO.md` — Portfolio-Tabelle + Trigger-Liste aktualisieren falls Score/FLAG/Sparraten geaendert

@@ -1,16 +1,21 @@
 ---
 name: backtest-ready-forward-verify
-version: "1.0.0"
+version: "1.0.1"
 description: >
   Orchestriert den Persistence-Teil jeder !Analysiere-Forward-Vollanalyse.
   Konsumiert einen ScoreRecord-Draft (JSON) aus dynastie-depot Schritt 7,
-  validiert gegen Schema + STATE.md-Tripwire, führt §28.2 Algebra-Δ-Gate
+  validiert gegen Schema + PORTFOLIO.md-Tripwire, führt §28.2 Algebra-Δ-Gate
   (conditional), macht Dry-Run und Append an score_history.jsonl, gibt
   strukturierten Report an Aufrufer zurück. Keine eigenen Trigger-Words —
   aktiviert sich ausschließlich programmatisch aus dynastie-depot.
 trigger_words: []
 ---
-# backtest-ready-forward-verify — Skill v1.0.0
+# backtest-ready-forward-verify — Skill v1.0.1
+
+**v1.0.1 Delta (2026-04-25):** 00_Core Struktur-Refactor — Tripwire auf
+`00_Core/PORTFOLIO.md` (Hub-Split Phase 1+2); Skill-Phases P1-P6 unverändert,
+Function-Signatur `parse_state_row(ticker, state_md_content)` aus
+Backwards-Compat-Gründen erhalten.
 
 **Aktivierung:** Ausschließlich programmatisch aus `dynastie-depot` Schritt 7.
 Keine direkten Trigger-Words. Nie manuell aufrufen.
@@ -26,14 +31,14 @@ Diese Skill mutiert **ausschließlich** `05_Archiv/score_history.jsonl` (Append-
 **In-Scope:**
 - Lesen des Draft-JSON (ScoreRecord + optionale `skill_meta`)
 - Freshness-Check der drei Pflicht-Touch-Dateien
-- STATE.md-Tripwire (Konsistenz-Check Score/DEFCON/FLAG)
+- PORTFOLIO.md-Tripwire (Konsistenz-Check Score/DEFCON/FLAG)
 - §28.2 Algebra-Δ-Gate (nur bei `skill_meta` vorhanden)
 - Dry-Run-Validation via `archive_score.py --dry-run`
 - Real-Append via `archive_score.py`
 - `git add 05_Archiv/score_history.jsonl` (kein Commit — Sync-Commit folgt in §18)
 
 **Out-of-Scope (Caller-Verantwortung):**
-- Narrative Dateien: `STATE.md`, `Faktortabelle.md`, `CORE-MEMORY.md`, `log.md`, `config.yaml`
+- Narrative Dateien: `PORTFOLIO.md`, `Faktortabelle.md`, `CORE-MEMORY.md`, `log.md`, `config.yaml`
 - Sync-Commit (§18 Pflicht nach Analyse)
 - FLAG-Events (`archive_flag.py`, `flag_events.jsonl`)
 - Backfill-Runs
@@ -51,7 +56,7 @@ Diese Skill mutiert **ausschließlich** `05_Archiv/score_history.jsonl` (Append-
 | `00_Core/INSTRUKTIONEN.md §18` | Sync-Pflicht nach Analyse |
 | `00_Core/INSTRUKTIONEN.md §27.4` | Multi-Source-Drift Prevention |
 | `00_Core/INSTRUKTIONEN.md §28.2` | Algebra-Δ-Tabelle + Outcome-Buckets |
-| `00_Core/STATE.md` (Zeilen 15-27) | Tripwire-Quelle: aktuelle Portfolio-State-Tabelle |
+| `00_Core/PORTFOLIO.md` (Portfolio-State-Sektion) | Tripwire-Quelle: aktuelle 11-Satelliten-Tabelle (Score/DEFCON/Rate/FLAG) |
 
 **Drift-Prevention (§27.4):** Bucketing-Logik (|Δ|≤2/3-5/>5) NICHT hier kopieren.
 Sie lebt in `schemas.py::MigrationEvent._check_outcome_bucket` und in
@@ -93,7 +98,7 @@ alle drei Keys müssen gesetzt sein, sonst P1 Fehler.
 |-------|------|---------------|-----------------|
 | P1 | Draft-Read + Parse | `parse_wrapper(args)` | FAIL P1 |
 | P2a | Freshness-Check | `check_freshness(repo_root)` | Warnung (nicht blockierend) |
-| P2b | Tripwire | `parse_state_row(ticker, STATE.md)` | FAIL P2b |
+| P2b | Tripwire | `parse_state_row(ticker, PORTFOLIO.md)` | FAIL P2b |
 | P3 | Δ-Gate (conditional) | `build_migration_event(skill_meta, forward_score)` | STOP signal (nicht blockierend) |
 | P4 | Dry-Run | `archive_score.py --file <draft> --dry-run` | FAIL P4 |
 | P5 | Real Append | `archive_score.py --file <draft>` | FAIL P5 |
@@ -113,7 +118,7 @@ Ruf `check_freshness(repo_root=<repo_root>)` auf. `repo_root` = Verzeichnis des 
 (Parent von `00_Core/`, `03_Tools/`, etc.).
 
 - Gibt Liste von Dateinamen zurück, die NICHT modifiziert sind.
-- Leere Liste → alle drei Pflicht-Dateien (STATE.md, Faktortabelle.md, log.md) wurden
+- Leere Liste → alle drei Pflicht-Dateien (PORTFOLIO.md, Faktortabelle.md, log.md) wurden
   im Laufe der Analyse berührt. Gut.
 - Nicht-leere Liste → Warnung im Output (Line 3+ im Report). KEIN Stopp — die Analyse
   kann trotzdem archiviert werden. Freshness ist Hinweis für Caller.
@@ -121,16 +126,18 @@ Ruf `check_freshness(repo_root=<repo_root>)` auf. `repo_root` = Verzeichnis des 
 **Conditional files ignorieren:** CORE-MEMORY.md und config.yaml werden nicht geprüft.
 check_freshness gibt sie nie zurück — keine manuelle Filterung nötig.
 
-### P2b — Tripwire (STATE.md Konsistenz)
+### P2b — Tripwire (PORTFOLIO.md Konsistenz)
 
-Lese `00_Core/STATE.md`. Ruf `parse_state_row(ticker, state_md_content)` auf.
+Lese `00_Core/PORTFOLIO.md`. Ruf `parse_state_row(ticker, state_md_content)` auf
+(Funktions-Signatur aus Backwards-Compat-Gründen unverändert; `state_md_content`
+ist jetzt der PORTFOLIO.md-Inhalt).
 Vergleiche Ergebnis `{score, defcon, flags_active}` gegen `record_dict`:
 
 - **Score:** `state_score != record.score_gesamt` → `FAIL phase=P2b reason="score drift: state=<X> vs record=<Y>"`. Exakter Vergleich (beide ints).
 - **DEFCON:** Abweichung → `FAIL phase=P2b reason="defcon drift: ..."`.
 - **FLAG:** `flags_active=True` aber `aktiv_ids=[]` → `FAIL phase=P2b reason="FLAG-Drift: ..."`. Umgekehrt (neuer FLAG im Record) kein Fehler.
 - **Ticker nicht gefunden** → ValueError → `FAIL phase=P2b reason="ticker not found"`.
-- **Neu analysierter Ticker** (noch nicht in STATE.md): Tripwire überspringen, Report: `[tripwire: ticker 'XYZ' not in STATE.md — new position]`.
+- **Neu analysierter Ticker** (noch nicht in PORTFOLIO.md): Tripwire überspringen, Report: `[tripwire: ticker 'XYZ' not in PORTFOLIO.md — new position]`.
 
 Bei jedem `FAIL phase=P2b`: **Pipeline abbrechen — P3/P4/P5/P6 nicht ausführen. Kein Archiv-Write.** (Konsistent zu P4/P5 Stopp-Semantik.)
 
@@ -143,7 +150,7 @@ Injiziere `event.model_dump()` in `record_dict["migration_event"]`.
 
 - `signal == ""` → accepted → weiter zu P4.
 - `"PFLICHT:"` in signal → log_only → merke für Report Line 4. **Kein Stopp** — Archivierung läuft durch.
-- `signal.startswith("STOP:")` → block → merke für Report Line 5. **Kein Stopp auf Archiv-Ebene** — Record ist Historie-relevant; Fan-Out (STATE.md/Sparrate/CORE-MEMORY) blockiert bis Caller Ursache identifiziert.
+- `signal.startswith("STOP:")` → block → merke für Report Line 5. **Kein Stopp auf Archiv-Ebene** — Record ist Historie-relevant; Fan-Out (PORTFOLIO.md/Sparrate/CORE-MEMORY) blockiert bis Caller Ursache identifiziert.
 
 `MigrationEvent` self-validiert Δ-Arithmetik + Bucket — Exception-frei = konsistent.
 
@@ -230,7 +237,7 @@ Diese Aktionen sind bewusst **nicht** Teil dieser Skill:
 - **Multi-File-Tripwire** — Faktortabelle, CORE-MEMORY, log.md, config.yaml werden nicht als Tripwire-Quelle genutzt
 - **Automatisches CORE-MEMORY §5 schreiben** — Skill gibt Signal (PFLICHT:/STOP:), Caller schreibt
 - **Sync-Commit** — §18 ist Caller-Verantwortung nach Gesamt-Analyse
-- **STATE.md + Faktortabelle aktualisieren** — Caller schreibt nach Analyse, vor Commit
+- **PORTFOLIO.md + Faktortabelle aktualisieren** — Caller schreibt nach Analyse, vor Commit
 - **FLAG-Event-Studies** — `flag_event_study.py`
 - **Scoring-Entscheidungen** — Skill persistiert nur, trifft keine inhaltlichen Urteile
 - **Retrospektive Analyse** (Strategie-Selection, Parameter-Tuning, Portfolio-Return-Validation) → §29-Gate-Framework (Bailey 2015 + Aghassi 2023 + Flint/Vermaak 2021 + Palomar 2025 Ch. 8). Aktivierung 2028-04-01 oder bei erster Parameter-Variation; §29.5 Seven-Sins-Gate bereits jetzt aktiv.

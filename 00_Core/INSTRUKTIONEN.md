@@ -3,6 +3,14 @@
 > Dieses Dokument beschreibt das WIE — User-Workflows, Befehle, Meta-Regeln.
 > Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 
+## Verweise
+- [STATE.md](STATE.md) — Hub
+- [PORTFOLIO.md](PORTFOLIO.md) — Portfolio-State (Primär, §22 Sparplan-Formel-Anwendung)
+- [PIPELINE.md](PIPELINE.md) — Pipeline-Items (§18 Event-Typ "Pipeline")
+- [SYSTEM.md](SYSTEM.md) — System-Zustand (§18 Event-Typ "System", §27.5 Guard-Pfad)
+- [CORE-MEMORY.md](CORE-MEMORY.md) — Lektionen + Per-Ticker + Lifecycle
+- [Faktortabelle.md](Faktortabelle.md) — Score-Detail
+
 ---
 
 ## 1. Befehls-Übersicht
@@ -265,28 +273,45 @@ Ein Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 ---
 
-## 18. Sync-Pflicht: log.md + CORE-MEMORY.md + Faktortabelle.md + STATE.md + score_history.jsonl (+ flag_events.jsonl)
+## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2, 2026-04-24 00_Core-Refactor)
 
-**Trigger:** Score/FLAG-Änderung, neue Analyse, Systemänderung, Sparraten-Änderung.
+Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: bei Score-Change bleibt es bei 6 Files (nur File-Name STATE→PORTFOLIO). Kein mechanischer Mehraufwand für den häufigsten Event-Typ.
 
-**Reihenfolge (alle sechs, immer):**
-1. `log.md` (Vault) — technisches Protokoll
-2. `CORE-MEMORY.md` (00_Core) — strategisches Gedächtnis (Section 1: Analysen, Section 3: FLAGs, Section 4: Scores)
-3. `Faktortabelle.md` — Score + FLAG aktualisieren. Bei FLAG-Änderung: config.yaml manuell sync.
-4. `STATE.md` — Portfolio-Tabelle + Watches + Trigger-Liste (Single-Entry-Point seit 17.04.2026).
-5. `score_history.jsonl` (05_Archiv/) — append-only Score-Archiv via `archive_score.py` (jedes `!Analysiere`; vollanalyse/delta/rescoring). SKILL.md Schritt 7. **Orchestriert via Skill `backtest-ready-forward-verify` (seit 19.04.2026, v3.7.2):** Pipeline-Disziplin (Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git add) mechanisch durchgesetzt. 6-File-Sync-Pflicht unverändert.
-6. `flag_events.jsonl` (05_Archiv/) — append-only FLAG-Event-Log via `archive_flag.py` (nur bei FLAG-Trigger oder Resolution). SKILL.md Schritt 6b.
+### 18.1 Event-Typ-Mapping
 
-**Nie nur eine der sechs Dateien aktualisieren.** Verlässt STATE.md den aktuellen Stand → Session-Start unbrauchbar. Verpasst JSONL-Append → irreversibler Historie-Verlust für 2028-Backtest-Review.
+| Event-Typ | Pflicht-Files |
+|---|---|
+| **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` (+ `flag_events.jsonl` bei FLAG) |
+| **Pipeline-Item** (neuer Plan, Gate-Passage, Status-Transition, Done/Deferred) | **`PIPELINE.md`** + `log.md` (+ `SESSION-HANDOVER.md` Pflicht bei Session-Abschluss; mid-Session optional) |
+| **System-Zustand-Change** (DEFCON-Version, MCP-Change, Briefing-Status, neuer Backlog-Eintrag, Infra-Deploy) | **`SYSTEM.md`** + `log.md` (+ `CORE-MEMORY.md §6` bei Versionsprung) |
+| **Critical-Alert-Slot** (Hub) | `STATE.md` Hub-Edit (nur Alert-Slot); kein Bi-Sync erzwungen |
 
-**Wissenschaftlicher Anker:** Die Point-in-Time-Persistenz aller sechs Dateien schützt vor §29.5 Sin #2 (Look-Ahead Bias). Jeder Record muss zum Zeitpunkt der Daten-Sichtung geschrieben werden, nicht rückwirkend. → §29.5 / [[Seven-Sins-Backtesting]]
+**Kanonische Schreibwege:**
+- `score_history.jsonl` (05_Archiv/) — append-only via Skill `backtest-ready-forward-verify` (v1.0.1, dynastie-depot v3.7.3 Schritt 7; orchestriert Pipeline-Kapsel: Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git add).
+- `flag_events.jsonl` (05_Archiv/) — append-only via `archive_flag.py` (nur bei FLAG-Trigger oder Resolution). SKILL.md Schritt 6b.
+- `Faktortabelle.md` Score + FLAG. Bei FLAG-Change: `config.yaml` manuell sync.
 
-**Zusatz-Trigger für STATE.md (seit 21.04.2026, Section „Aktive Pipeline (SSoT)"):** Unabhängig von der 6-File-Sync-Welle ist STATE.md zusätzlich zu pflegen bei (a) jedem neuen Plan-Commit in `docs/superpowers/plans/`, (b) jedem Gate-Passage (Deploy, Freeze, Promotion), (c) jeder Status-Transition (ready→in-progress→done, deferred→active). Zweck: Pipeline-SSoT verhindert Re-Fragmentierung über STATE.md + SESSION-HANDOVER + Plan-Files + Memory. Pflege allein via STATE.md-Edit — keine Propagation zu den anderen 5 Dateien notwendig, wenn nur Plan-Status-Shift.
+### 18.2 Multi-Event-Union-Regel (bindender §18-Vertrags-Teil)
+
+**Regel:** Wenn eine Aktion **mehrere** Event-Typen berührt (z.B. Score-Change, der gleichzeitig einen Pipeline-Item-Status vorrückt ODER einen System-Zustand-Eintrag erzeugt), werden **alle zugehörigen File-Sets aktualisiert (Union, keine Auswahl)**.
+
+**Rationale:** verhindert, dass `backtest-ready-forward-verify` einen Score-Append PASS ablegt, während PIPELINE.md oder SYSTEM.md stale bleiben. Der Skill sieht Fan-Out nicht — Responsibility liegt beim Analysten (analog §27.4 Drift-Check).
+
+**Beispiel:** TMO Q1 23.04.-Vollanalyse = Score-Event + Pipeline-Item-Gate-Passage (Resolve-Gate CLEAR) → beide Sets (Score-File-Set + PIPELINE.md) aktualisiert.
+
+**Präzedenzfall:** Memory `feedback_exhaustive_drift_check.md` (21.04.2026 — 12/27 silent defcon-Drift).
+
+### 18.3 Commit-Granularität
+
+Alle zum Event-Set gehörenden Files in **einem** Commit bündeln (atomar). Pipeline-Items können separat committet werden, wenn der Score-Event-Commit schon draußen ist.
+
+**Wissenschaftlicher Anker:** Point-in-Time-Persistenz aller Pflicht-Files schützt vor §29.5 Sin #2 (Look-Ahead Bias). Jeder Record muss zum Zeitpunkt der Daten-Sichtung geschrieben werden, nicht rückwirkend. → §29.5 / [[Seven-Sins-Backtesting]]
 
 **Änderungsprotokoll:**
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
 - v1.6 → v1.7 (2026-04-19): Schritt 5 (score_history.jsonl) wird via Skill `backtest-ready-forward-verify` orchestriert — Pipeline-Kapsel statt Inline-CLI-Call in dynastie-depot Schritt 7.
 - v1.7 → v1.8 (2026-04-21): Zusatz-Trigger für STATE.md Pipeline-SSoT-Section ergänzt (Plan-Commit / Gate-Passage / Status-Transition). Kein Impact auf die 6-File-Liste selbst.
+- v1.8 → v2 (2026-04-24): 00_Core Hub-Split — pauschale 6er-Liste → Trigger-basiertes Event-Mapping (§18.1) + Multi-Event-Union-Regel (§18.2). STATE.md = Hub (Critical-Alert-Slot), Live-State migriert in PORTFOLIO.md. Pipeline-Items in PIPELINE.md, System-Items in SYSTEM.md.
 
 ---
 
@@ -407,7 +432,7 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 
 ## 25. Briefing-Sync Shortcuts (GitHub ↔ Local)
 
-**Problem:** Der 10:00-Morning-Briefing-Trigger läuft als Remote-Session auf claude.ai und liest `00_Core/` aus dem **GitHub-Repo** — nicht aus dem lokalen Arbeitsverzeichnis. Jede lokale Änderung an Faktortabelle/CORE-MEMORY/SESSION-HANDOVER muss vor 10:00 gepusht sein, sonst analysiert der Trigger veraltete Daten.
+**Problem:** Der 10:00-Morning-Briefing-Trigger läuft als Remote-Session auf claude.ai und liest `00_Core/` aus dem **GitHub-Repo** — nicht aus dem lokalen Arbeitsverzeichnis. Jede lokale Änderung an STATE.md (Hub) / PORTFOLIO.md / PIPELINE.md / SYSTEM.md / Faktortabelle / CORE-MEMORY / SESSION-HANDOVER / INSTRUKTIONEN muss vor 10:00 gepusht sein, sonst analysiert der Trigger veraltete Daten.
 
 ### `!BriefingCheck`
 
@@ -422,6 +447,10 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 **Ausgabeformat:**
 ```
 BriefingCheck [Datum HH:MM]
+  STATE.md             [X Zeilen divergent] / [✅ identisch]
+  PORTFOLIO.md         [X Zeilen divergent] / [✅ identisch]
+  PIPELINE.md          [X Zeilen divergent] / [✅ identisch]
+  SYSTEM.md            [X Zeilen divergent] / [✅ identisch]
   Faktortabelle.md     [X Zeilen divergent] / [✅ identisch]
   CORE-MEMORY.md       [X Zeilen divergent] / [✅ identisch]
   SESSION-HANDOVER.md  [X Zeilen divergent] / [✅ identisch]
@@ -436,7 +465,7 @@ Empfehlung: [!SyncBriefing ausführen] / [Kein Handeln nötig]
 1. `git status --short 00_Core/` — welche Dateien modified
 2. `git diff 00_Core/` — vollständigen Diff anzeigen
 3. **Review-Gate:** User bestätigt *explizit* mit `ja`/`push` bevor committed wird — nie automatisch
-4. Nach Bestätigung: `git add 00_Core/Faktortabelle.md 00_Core/CORE-MEMORY.md 00_Core/SESSION-HANDOVER.md 00_Core/INSTRUKTIONEN.md`
+4. Nach Bestätigung: `git add 00_Core/STATE.md 00_Core/PORTFOLIO.md 00_Core/PIPELINE.md 00_Core/SYSTEM.md 00_Core/Faktortabelle.md 00_Core/CORE-MEMORY.md 00_Core/SESSION-HANDOVER.md 00_Core/INSTRUKTIONEN.md` (Hub-Split-Set, parallel zu `briefing-sync-check.ps1` `$briefingFiles`)
 5. `git commit -m "Briefing-Sync: <kurze Begründung aus Diff abgeleitet>"`
 6. `git push origin main`
 7. Verifikation: `git log -1 --format="%h %s"` ausgeben
@@ -525,18 +554,32 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 
 **Präzedenzfall:** v3.7 Fundamentals-Cap 50 — bewusst akzeptiert dass Top-Namen (AVGO 84) weniger Bonus-Headroom haben; dafür Score-Inflation strukturell ausgeschlossen.
 
-### 27.3 Projection-Layer ≠ Wahrheitsquelle
+### 27.3 Primärquellen vs. Navigations-/Projektions-Layer
 
-**Regel:** STATE.md, Briefing-Tabellen, Dashboard-Summaries sind **Projektionen** aus State+Narrative — nie selbst als Primärquelle fortschreiben.
+**Regel (v2, 2026-04-24 00_Core-Refactor):** Nach dem Refactor gilt eine Drei-Ebenen-Klassifikation statt der alten Projektions-Dichotomie.
 
-**Typische Falle:** STATE.md direkt editieren ohne zuerst Faktortabelle/CORE-MEMORY/score_history.jsonl zu aktualisieren. Ergebnis: Drift zwischen Primär- und Projektions-Layer, Session-Start-Informationen werden unzuverlässig.
+**Primärquellen (direkt editierbar, Single-Source-of-Truth):**
+- `Faktortabelle.md`
+- `CORE-MEMORY.md` (inkl. §12 Per-Ticker, §13 System-Lifecycle)
+- `score_history.jsonl` (ausschließlich via `archive_score.py` / `backtest-ready-forward-verify`-Skill)
+- `flag_events.jsonl` (ausschließlich via `archive_flag.py`)
+- **`PORTFOLIO.md`** (NEU — Portfolio-Tabelle + Watches + 30-Tage-Trigger, direkt editierbar, kein Projektions-Verbot)
+- **`PIPELINE.md`** (NEU — Pipeline-SSoT, direkt editierbar bei Plan-Commits/Gate-Passagen)
+- **`SYSTEM.md`** (NEU — System-Zustand, direkt editierbar bei Infra-Änderungen)
 
-**Pflichtreihenfolge bei Änderungen:**
-1. Primärquelle zuerst (Faktortabelle.md, CORE-MEMORY.md, score_history.jsonl via archive_score.py).
-2. Projektion synchron nachziehen (STATE.md).
-3. Kein STATE.md-Edit ohne parallele Primärquellen-Änderung (Ausnahme: reine Layout/Navigation).
+**Navigations-/Hub-Layer:**
+- `STATE.md` (Hub) — Navigation + Critical-Alert + Last-Audit-Block. Darf direkt editiert werden (handgepflegter Alert-Slot; Last-Audit-Block script-geschrieben).
 
-**Präzedenzfall:** 17.04.2026 — STATE.md-Einführung begleitet von §18 Sync-Pflicht-Erweiterung (alle sechs Dateien, immer, ein Commit).
+**Reine Projektion (aus Primärquellen ableiten, niemals selbst fortschreiben):**
+- Briefing-Tabellen (Morning Briefing Prompts)
+- Dashboard-Summaries (`dynasty-depot-dashboard` Artifact)
+
+**Pflichtreihenfolge bei Score/FLAG/Sparraten-Änderung:**
+1. Primärquellen zuerst (Faktortabelle.md, CORE-MEMORY.md, score_history.jsonl via Skill).
+2. PORTFOLIO.md synchron nachziehen.
+3. Briefing-Projektionen laufen automatisch beim nächsten Briefing-Trigger.
+
+**Präzedenzfall:** 24.04.2026 — 00_Core-Refactor entkoppelt Live-State (PORTFOLIO) vom Navigations-Hub (STATE) und räumt mit der Projektions-Aspiration auf, die in der Praxis nie gelebt wurde (Portfolio-Tabelle wurde immer direkt editiert).
 
 ### 27.4 Multi-Source-Drift-Check vor "fertig"-Meldung
 
@@ -544,10 +587,10 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 
 **Pflicht-Suchliste:**
 - `00_Core/INSTRUKTIONEN.md` (§§)
-- `00_Core/CORE-MEMORY.md` (§4 Score-Tabelle, §5 Scoring-Lektionen)
+- `00_Core/CORE-MEMORY.md` (§4 Score-Tabelle, §5/§12/§13 Scoring-Lektionen + Per-Ticker + Lifecycle)
 - `01_Skills/dynastie-depot/config.yaml`
 - `01_Skills/dynastie-depot/SKILL.md`
-- `00_Core/STATE.md`, `Faktortabelle.md`
+- `00_Core/STATE.md` (Hub + Last-Audit), `00_Core/PORTFOLIO.md`, `00_Core/PIPELINE.md`, `00_Core/SYSTEM.md`, `Faktortabelle.md`
 - `07_Obsidian Vault/.../wiki/entities/satelliten/*.md`
 - `03_Tools/Rebalancing_Tool_v3.4.xlsx`, `Satelliten_Monitor_v2.0.xlsx`
 
@@ -655,7 +698,7 @@ Nur starten wenn Step 4 grün. Vor Commit alle folgenden Stellen synchronisiert:
 - Ein Bugfix einer bestehenden Regel ohne Skalen-/Gewichts-Änderung (z.B. Schwellwert-Copy-Paste-Fehler in config.yaml).
 - Ein neuer FLAG ohne Score-Impact hinzugefügt wird (reine Disclosure).
 
-Für diese Fälle reicht: Commit + STATE.md-Update + CORE-MEMORY §5 Lektion, keine Step-1-7-Pflicht.
+Für diese Fälle reicht: Commit + zugehöriges Hub-Set-Update (PORTFOLIO bei Score/Sparrate, SYSTEM bei Infra) + CORE-MEMORY §5 Lektion, keine Step-1-7-Pflicht.
 
 **Präzedenzfall:** 18.04.2026 TMO `fcf_trend_neg`-Disclosure (Option B) — struktureller FLAG ohne Score-Penalty, kein Version-Bump.
 
@@ -792,9 +835,9 @@ Monatliche Refresh-Pflicht für **aktive Investment-FLAGs** zwischen Earnings-Te
 
 **"Aktiver FLAG"** (R1 pflicht) = binär ausgelöst in `05_Archiv/backtest-ready/flag_events.jsonl` ohne nachfolgenden `resolve`-Event.
 
-**"Schema-Watch (nicht FLAG-aktiv)"** (R1 NICHT automatisch) = schema-getriggert per FLAG_RULES, aber bewusst nicht aktiviert (z.B. TMO fcf_trend_neg FY25: WC-Delta erklärt FCF-Rückgang, kein struktureller Trend). **Kein aktiver FLAG, kein R1, kein flag_events-Pfad.** Schema-Watch ist semantisch separat von STATE.md "Aktive Watches" (= allgemeine Beobachtungsnotizen).
+**"Schema-Watch (nicht FLAG-aktiv)"** (R1 NICHT automatisch) = schema-getriggert per FLAG_RULES, aber bewusst nicht aktiviert (z.B. TMO fcf_trend_neg FY25: WC-Delta erklärt FCF-Rückgang, kein struktureller Trend). **Kein aktiver FLAG, kein R1, kein flag_events-Pfad.** Schema-Watch ist semantisch separat von PORTFOLIO.md "Aktive Watches" (= allgemeine Beobachtungsnotizen, seit 00_Core Hub-Split aus STATE.md migriert).
 
-**Drei-Ebenen-Disambiguierung:** (1) "Aktiver FLAG" (§30, Monthly-Refresh pflicht, flag_events.jsonl-Trigger) ≠ (2) "Schema-Watch" (schema-getriggert-aber-nicht-aktiviert, kein flag_events) ≠ (3) STATE.md "Aktive Watches" (allgemeine Beobachtungsnotizen, kein FLAG-Pfad).
+**Drei-Ebenen-Disambiguierung:** (1) "Aktiver FLAG" (§30, Monthly-Refresh pflicht, flag_events.jsonl-Trigger) ≠ (2) "Schema-Watch" (schema-getriggert-aber-nicht-aktiviert, kein flag_events) ≠ (3) PORTFOLIO.md "Aktive Watches" (allgemeine Beobachtungsnotizen, kein FLAG-Pfad).
 
 ### 30.2 Aktuelle Scope (Stand 19.04.2026)
 

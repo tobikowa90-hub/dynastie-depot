@@ -22,7 +22,7 @@ from schemas import MigrationEvent
 
 # Required-Touch set for freshness gate (basenames only — matched against
 # git-status output by basename so path prefix is irrelevant).
-REQUIRED_TOUCH_FILES = ("STATE.md", "Faktortabelle.md", "log.md")
+REQUIRED_TOUCH_FILES = ("PORTFOLIO.md", "Faktortabelle.md", "log.md")
 
 # DEFCON emoji → numeric level mapping
 _DEFCON_EMOJI: dict[str, int] = {
@@ -152,7 +152,7 @@ def parse_wrapper(path: str) -> tuple[dict, dict]:
 
 def parse_state_row(ticker: str, state_md_content: str) -> dict:
     """Extract ``{score: int, defcon: int, flags_active: bool}`` for *ticker*
-    from STATE.md Portfolio-Tabelle.
+    from PORTFOLIO.md Portfolio-Tabelle.
 
     Handles:
     - Bold-wrap on any cell (``**63**``, ``**🟠 2**``, ``**17,81€**``)
@@ -161,7 +161,7 @@ def parse_state_row(ticker: str, state_md_content: str) -> dict:
     - Tickers with dots (``BRK.B``)
     - Arbitrary whitespace around pipes
 
-    Table column order assumed (per STATE.md):
+    Table column order assumed (per PORTFOLIO.md):
         0=Ticker  1=Score  2=DEFCON  3=Rate  4=FLAG  5=Nächster Trigger
 
     Raises:
@@ -181,7 +181,7 @@ def parse_state_row(ticker: str, state_md_content: str) -> dict:
         flags_active = _parse_flags_active(cells[4])
         return {"score": score, "defcon": defcon, "flags_active": flags_active}
 
-    raise ValueError(f"ticker '{ticker}' not found in STATE.md")
+    raise ValueError(f"ticker '{ticker}' not found in PORTFOLIO.md")
 
 
 def build_migration_event(
@@ -249,7 +249,7 @@ def build_migration_event(
 def check_freshness(repo_root: str) -> list[str]:
     """Run ``git status --porcelain`` from *repo_root*.
 
-    Check which of the three REQUIRED_TOUCH_FILES (STATE.md, Faktortabelle.md,
+    Check which of the three REQUIRED_TOUCH_FILES (PORTFOLIO.md, Faktortabelle.md,
     log.md) are **not** modified (i.e., not shown in git status output).
 
     Returns the list of missing (not-modified) filenames.  Empty list = all fresh.
@@ -258,8 +258,8 @@ def check_freshness(repo_root: str) -> list[str]:
     only touch on content changes, and the plan rejects including them to avoid
     alert fatigue.
 
-    Matches files by basename, so ``00_Core/STATE.md`` in git output maps to
-    ``STATE.md``.
+    Matches files by basename, so ``00_Core/PORTFOLIO.md`` in git output maps to
+    ``PORTFOLIO.md``.
     """
     result = subprocess.run(
         ["git", "status", "--porcelain"],

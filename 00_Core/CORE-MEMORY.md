@@ -1,50 +1,18 @@
 # 🧠 CORE-MEMORY.md — Institutionelles Gedächtnis
-**Version:** 1.7 (v3.7) | **Stand:** 21.04.2026 Mittag
+**Version:** 1.9 (v3.7 + Topic-Auflösung §1→§12/§13) | **Stand:** 25.04.2026
+
+## Verweise
+- [STATE.md](STATE.md) — Hub + Last-Audit
+- [PORTFOLIO.md](PORTFOLIO.md) — Live-Portfolio-State
+- [PIPELINE.md](PIPELINE.md) — Pipeline-SSoT (ersetzt altes §9b)
+- [SYSTEM.md](SYSTEM.md) — Infra/Briefing/Backtest
+- [INSTRUKTIONEN.md §5](INSTRUKTIONEN.md) — Sentiment/Scoring-Kontext
+- [Faktortabelle.md](Faktortabelle.md) — Score-Detail pro Ticker
+
 > Dieses Dokument speichert alle wichtigen Entscheidungen, Erkenntnisse und
 > strategischen Weichenstellungen aus den Projektthreads.
 > Für Strategie → KONTEXT.md | Für Workflows → INSTRUKTIONEN.md
-
----
-
-## 1. System-Meilensteine (ab 15.04.2026 — aktueller Scoring-Zyklus)
-
-> **Chronik vor 15.04.2026** → ausgelagert: [`05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md`](../05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md)
-> **Operative Lektionen** dieser Archiv-Einträge sind permanent in Sections 2–10 dieser Datei, `INSTRUKTIONEN.md`, und dem Vault dokumentiert. Archiv = reine Historie.
-
-| Datum | Meilenstein |
-|-------|-------------|
-| 15.04.2026 | **Rebalancing_Tool_v3.4** — Sparraten-Logik überarbeitet: D4/D3=volle Rate (1.0), D2=50% Sockelbetrag (0.5), D1/🔴 FLAG=0€. Drift-Warnschwelle typ-abhängig (Faktor×Toleranz). 🟡-CF auf O-Spalte. B26 dynamisch. Ziel-Allokation exakt 100%. Alle Markdown/YAML aktualisiert |
-| 15.04.2026 | **Vault-Audit:** 10 neue Seiten (4 Autoren + 6 Ersatzbank), 7 Orphans gefixt, DEFCON Cross-Links, Frontmatter standardisiert. 61→71 Notes. CLAUDE.md/INSTRUKTIONEN.md/CORE-MEMORY optimiert: Duplikate entfernt, Typos gefixt, Versionen synchronisiert. |
-| 15.04.2026 | **System-Integration v4.0:** SKILL.md v4.0 (15 Regeln), 6 Lücken in INSTRUKTIONEN.md geschlossen, MCP-Session-Check + Tool Search verankert, settings.json optimiert, Sync-Pflicht 3 Dateien. System-Reife ~95%. |
-| 15.04.2026 | **APH Tariff-Check abgeschlossen:** Revenue China FY2025 = 14.7% (< 15%-Schwelle, kein Revenue-FLAG). Supply-Chain CN/MY bestätigt → Risk-Map-Notiz. Bestehender FLAG bleibt (Score-basiert). China-Revenue-Trend strukturell rückläufig (23%→14.7% in 2 Jahren) — positiv. |
-| 15.04.2026 | **V (Visa) DEFCON v3.4 Vollanalyse:** Score 86/100, DEFCON 🟢 4. Kalibrierungsanker auf AVGO-Niveau. Highlights: CapEx/OCF ~6% (Fabless-Niveau), Moat 19/20 (GuruFocus 9/10 Wide, 4 überlappende Quellen), FCF $21.6B FY25, Revenue $40B (+11.4%). Schwächen: ROIC ~9.9% GAAP knapp unter WACC ~10.5% (Goodwill-Verzerrung Visa-Europe), Fwd PE 23x, Kurs unter 200MA. Insider sauber (diskr. $201K / 90d). Kein FLAG. Sparplan voll aktiv. |
-| 15.04.2026 | **COST (Costco) DEFCON v3.4 Vollanalyse:** Score 69/100, DEFCON 🟢 4 (Bestandsposition). Screener-Exception: ROIC 5.6% GAAP (strukturell durch niedriges Book Value) → Membership Yield 15.2% ($5.3B / $34.9B IC) als ökonomischer Return > WACC 12.3%. Highlights: Moat 19/20 (GuruFocus 9/10 Wide — Membership-Loyalty unübertroffen), CapEx/OCF 21.3% Clean, FCF $7.2B FY2025. Schwächen: P/FCF 53x (teuer), FCF Yield 1.88%, Fwd PE 51x, GAAP-ROIC-Malus. Kein FLAG. Sparplan voll aktiv. |
-| 15.04.2026 | **BRK.B (Berkshire Hathaway) DEFCON v3.4 Vollanalyse:** Score 75/100, DEFCON 🟢 4. Screener-Exception: P/B 1.44x statt P/FCF (Versicherung/Holdings). Highlights: Moat 19/20 (Float $686B einzigartig, BNSF Efficient Scale, 60J Capital-Allocation-Track-Record), Book Value CAGR +10% p.a. 5J, Interest Income $39.98B FY25, Goodwill nur 6.8% (kein Malus), CapEx/OCF 45.6% (BNSF+BHE Infrastruktur, kein FLAG). Insider 9/10: Greg Abel Open-Market-Käufe $15.3M (90d) — starkes Alignment-Signal. Schwächen: ROIC 5.6–7.8% GAAP (Insurance Exception), Technicals 4/10 (unter 200MA, limitierter PT-Upside), Buybacks $0 FY25. Kein FLAG. Sparplan voll aktiv. |
-| 15.04.2026 | **SU (Schneider Electric) DEFCON v3.4 Vollanalyse:** Score 71/100, DEFCON 🟢 4. Highlights: CapEx/OCF 25.2% (ausgezeichnet, 4J stabil), ROIC 10.48% > WACC 8.96% (positiver Spread bestätigt), FCF-Wachstum +41% in 3J (€3.26B→€4.59B), Kurs +12.6% über 200D-MA (einziger Satellit über 200MA), 22 Analysten Strong Buy 0% Sell. Schwächen: P/FCF 37.7x (teuer), FCF Yield 2.65%, Goodwill 40.2% (AVEVA M&A), Moat Narrow (nicht Wide gesichert). Kein FLAG. Sparplan voll aktiv. |
-| 16.04.2026 | **ASML Q1 2026 Earnings Recap:** EPS $7,15 (Beat +7,99% vs. $6,62 Konsens). Umsatz €8,77 Mrd (+13,2% YoY). GM 53,0%. Net Income €2,76 Mrd (+17,1% YoY). Guidance angehoben: FY2026 €36–40 Mrd (von €34–39 Mrd). Kurs −2,4% trotz Beat: Booking-Disclosure erstmals nicht veröffentlicht + China-Exportkontroll-Unsicherheit (€36–40 Mrd Bandbreite explizit für Export-Control-Risiko). DEFCON-Score 68 unverändert. Kein FLAG. Sparrate voll aktiv. Nächster Trigger: Q2 2026 Earnings. |
-| 15.04.2026 | **RMS (Hermès) Q1 2026 Earnings Recap + DEFCON v3.4 Re-Analyse:** Score 71→**69**, DEFCON 🟢 4 bestätigt. Q1 Revenue €4,07B (+6% CER, −1% reported). Miss vs. +7–8% Erwartung. Kursreaktion: **−8,4%** (neues 52W-Tief €1.529 intraday). Treiber: Mittlerer Osten −6% (Iran-Krieg, UAE Malls −40%), FX-Headwind €290M, China Asien ex Japan +2%. Positiv: Leder +9%, Moat 19/20 intakt, ROIC 24% >> WACC 6,5%, Insider-Käufe +€7,67M (90d). Kein FLAG. Sparrate voll aktiv (31,67€). Score valid bis 15.10.2026. **Screener-Exception (institutionelle Begründung):** Analog COST (Membership Yield 15,2% > WACC 12,3%) rechtfertigt bei RMS der hohe ökonomische Return ROIC 24% >> WACC 6,5% (Spread +17,5 PP) die Beibehaltung von DEFCON 🟢 4 trotz Score 69 (knapp an D3-Grenze). Score-basierte Downgrade-Mechanik wird durch Return-Exception überschrieben, solange Moat 19/20 + ROIC-Spread >10 PP bestätigt bleiben. Re-Check-Trigger: H1 2026 Report Juli/Aug 2026. |
-| 16.04.2026 | **DEFCON v3.5 Scoring-Audit & Fix:** Formales 7-Fragen-Audit des Scoring-Systems. Ergebnis: 5×A, 1×B (PT-Upside Double-Counting in Technicals+Sentiment), 1×C (Gewichtsanpassung zurückgestellt). Fix: PT-Upside aus Technicals entfernt, Relative Stärke vs S&P500 als 0-3 Scored Metric promotet (vorher ±1 Tiebreaker), Fundamentals-Floor-Klausel (min 0) hinzugefügt. Anker rekalibriert: AVGO 86→85, SNPS 79→76, TMO 65→62 (D3→D2 Grenzfall), FICO 70→67, SPGI 77→74. MKL 82 unverändert. Block-Gewichte 50/20/10/10/10 beibehalten. |
-| 17.04.2026 | **3 Foundation-Papers integriert (Vault v4.3):** Piotroski (2000) F-Score, Novy-Marx (2013) Gross Profitability Premium, Sloan (1996) Accruals-Anomalie. 7→10 Quellen, 11→14 Befunde (B12/B13/B14). 6 neue Notes (3 sources + 3 concepts), Synthese erweitert, index.md 70→76 wiki-Notes. **Vorbereitet für v3.6-Release:** Quality-Bonus (F-Score ≥7 → +2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus (<3% → +2 Pt.). System-Reife-Ceiling 85% → geplant 92-95%. Kein Scoring-Impact vor v3.6-Implementation — aktuelle Scores unverändert. |
-| 17.04.2026 | **v3.6 verworfen, v3.7 „System-Gap-Release" ratifiziert.** v3.6-Boni (F-Score/GP-TA/Accrual) = Double-Counting mit dekomponierten Sub-Signalen → verworfen. v3.7-Fixes implementiert: **(1) Quality-Trap als Interaktionsterm** (Wide Moat + Fwd P/E >30 ODER P/FCF >35 → betreffender Fundamentals-Subscore hart 0; Wide Moat + 22–30/22–35 → Subscore max. 1). Redesign gegen ursprünglichen additiven Moat-Malus (hätte Double-Counting verletzt — Applied Learning 17.04.). **(2) Operating Margin TTM** als Fundamentals-Metrik (max 2 Pt.; >30%→2, 15–30%→1, <15%→0; COST+BRK.B Exception). **(3) Analyst-Bias-Kalibrierung** Sentiment (SB>60% → 1 Crowd-Malus, SB<40%→4; Sell-Ratio <3%→1, 3–10%→3, >10%→0). **(4) Fundamentals-Block-Cap bei 50** (keine Bonus-Inflation). Backtest aller 11 Satelliten approximativ (Interaktions-Redesign): ASML 68→66 (D3 bleibt — Fix-1 milder als additiver Malus), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, VEEV 74→74, V 86→86, BRK.B 75→75, APH 61→63, COST 69→69. **Keine DEFCON-Klassifikations-Shifts.** Sparraten korrigiert (Nenner = 8×1.0 + 1×0.5 = 8.5; zuvor fälschlich 9.0 nach v3.5-Audit nie nachgepflegt): **volle Rate 33,53€, TMO D2-Rate 16,76€, FLAGs (MSFT+APH) 0€**. Live-Verifikation pro Ticker bei nächstem Earnings-Update (QuickCheck-Pflicht). System-Reife 85% → ~92%. **Tools-Sync 17.04. (Commit 7419fe7 + cdf0064):** Rebalancing_Tool + Satelliten_Monitor via openpyxl synchronisiert, Sparraten-Summe 285€ validiert, J-Spalte FLAG-aware gefixt. |
-| 17.04.2026 | **TMO Live-Verify (Schritt-2-Restarbeit Backtest v3.7):** defeatbeta + stockanalysis. OpM TTM 18,17% (1 Pt.), Fwd P/E FY26 20,80 (unter 22 → Fix-1 triggert NICHT auf Fwd P/E), P/FCF 29,3x ($184B MCap / $6,29B TTM FCF → 22-35 + Wide Moat → **P/FCF-Subscore hart max 1**), SB-% 31,6% (Score 4, kein Malus), Sell-Ratio 0% (Warning, Score 1). Score-Rekonstruktion 67-1+0-2 = 64 → **Score 63 innerhalb ±1 Toleranz bestätigt**. DEFCON 2 live-verified, Sparrate 16,76€ korrekt. Kritischer Trigger 23.04. Q1 Earnings. Besonderheit: Fix-1 differenziert sauber — nur P/FCF-Zweig triggert, Fwd-P/E-Zweig nicht. |
-| 17.04.2026 | **ASML Live-Verify (Schritt-2 Backtest v3.7):** defeatbeta + stockanalysis. OpM TTM 36,1% (2 Pt. max, >30%), Fwd P/E FY26 **39,52** (>30 → Fwd-P/E-Subscore hart 0), Fwd P/E FY27 **30,30 Grenzfall**, P/FCF ~48x (MCap $570B / TTM FCF €11,07B, >35 → P/FCF-Subscore hart 0), SB-% 18,2% (Score 4), Sell-Ratio 0% (Warning, Score 1). **BEIDE Fix-1-Zweige triggern hart auf 0** — maximaler Interaktionsterm-Impact ohne Double-Counting. Approximation **66 innerhalb ±2 Toleranz bestätigt**, DEFCON 3 live-verified. **Watch:** Fwd P/E FY27 30,30 auf der Kippe — wenn nach nächster Guidance <30 → Fix-1-Fwd-Zweig deaktiviert, Score +1 bis +2 möglich (D3→D4-Kandidatur). |
-| 17.04.2026 | **RMS Live-Verify (Schritt-2 Backtest v3.7):** stockanalysis (defeatbeta non-US Gap). OpM TTM 41,05% (2 Pt. max), Fwd P/E 34,91 (>30 → Fwd-P/E-Subscore hart 0), P/FCF ~38x (MCap €173B / TTM FCF ~€4,5B, >35 → P/FCF-Subscore hart 0). Analyst-Daten Lücke (EU-Coverage dünn bei stockanalysis). **Beide Fix-1-Zweige triggern** wie ASML — DEFCON 4 durch Screener-Exception (ROIC 24% >> WACC 6,5%, Spread +17,5pp) geschützt. Approximation **68 innerhalb ±2 Toleranz bestätigt**. Nach Q1 −8,4% Kursdrop fiel Fwd P/E von ~39 auf 34,9 — weitere Korrektur könnte <30 bringen, Score +1 möglich. |
-| 17.04.2026 | **Zwischenbilanz Live-Verify 3/11 (TMO, ASML, RMS) — alle Approximationen innerhalb Toleranz bestätigt.** Fix-1 Interaktionsterm funktioniert präzise design-konform: bei ASML+RMS beide Zweige hart 0, bei TMO nur P/FCF-Zweig (Differenzierung). Kein Double-Counting, kein Pauschal-Malus. v3.7-System empirisch validiert. Rest-Tickers (8) bei regulärem Earnings-Trigger. |
-| 17.04.2026 | **ASML Post-Q1 Vollanalyse (Pfad B, Non-US/IFRS-Workflow-Anker für Beispiele.md):** Score **68/100 🟡 DEFCON 3** (+2 vs. STATE.md-Approximation 66 — innerhalb v3.7 Live-Verify-Toleranz ±2). Subscore-Breakdown v3.7-frisch: Fundamentals 28/50 (QT-P/E-Zweig hart 0, QT-P/FCF-Zweig hart 0, Bilanz 8/8, CapEx 8/8, ROIC+17,19pp Spread 8/8, FCF-Yield 2/8, OpM 2/2), Moat 20/20 (GM-Trend +1,5pp Bonus), Technicals 7/10, Insider 7/10 (Carry-Forward 06.04. — AFM-H1 pending), Sentiment 6/10 (B11-Bias-Malus aktiv: 35/44 Strong-Buy). Daten: eodhd_intel.py (Non-US Primärtool) + WebSearch Q1-Actuals. Kurs €1.242,60, FCF-Marge 33,8%, ROIC 26,48%, WACC 9,29% (FRED DGS10 4,29% + 5% ERP — GuruFocus 18,21% als implausibel verworfen), China-Shift 36%→19% post-Q1, Stock -6% trotz Beat (Export-Control-Sorge). **Kein FLAG.** Sparrate voll 33,53€. Ankerrolle in Beispiele.md v3.7 zementiert: einziger Depot-Anker mit beidseitiger QT-Aktivierung; FY27 Fwd-P/E 30,30 Grenzfall dokumentiert D3→D4-Pfad (+6-8 Pkt bei <30). Sync komplett (STATE/Faktortabelle/CORE-MEMORY/log/Wiki-Entität). |
-| 17.04.2026 | **Skill v3.7.1 deployed — Backtest-Ready Forward-Pipeline aktiv (Phase 1/4).** SKILL.md-Delta: **Schritt 6b** (FLAG-Resolution-Check via `archive_flag.py list --aktiv`) + **Schritt 7** (Archiv-Write Pflicht via `archive_score.py`) zwischen Depot-Einordnung und SCORING-SKALEN eingefügt. DEFCON-Scoring **unverändert v3.7** — Skill-Paket-Version-Bump (3.7→3.7.1) ohne Scoring-Semantik-Impact. **Neue Tools in `03_Tools/backtest-ready/`:** schemas.py (14 Pydantic-Modelle inkl. Quality-Trap-Cross-Validator, Cap-50-Floor-0, Direction-Check für 4 FLAG-Typen), archive_score.py (CLI Append + Uniqueness + Forward-Window), archive_flag.py (trigger/resolve/list Subcommands). **Archive git-tracked via `.gitignore`-Whitelist** (Pattern `05_Archiv/*` + Exceptions für score_history.jsonl + flag_events.jsonl). **§18 Sync-Pflicht erweitert auf 6 Dateien** (v1.5→v1.6 INSTRUKTIONEN), CLAUDE.md/STATE.md parallel aktualisiert. **ZIP:** `06_Skills-Pakete/dynastie-depot_v3.7.1.zip` (manuell in Desktop re-installieren — ersetzt v3.7). Nächste Phasen: 0.5 (Spec-Update parallel), 2 (Backfill aus CORE-MEMORY Section 4), 3 (Event-Study), 4 (KONTEXT.md + Vault). |
-| 17.04.2026 | **Skill-Audit + Tools-Sync Phase 2 (Post-ASML-Update, v3.7-Abschluss):** Part 1 — `_extern/risk-metrics-calculation` 3 Funktionen extrahiert nach `03_Tools/portfolio_risk.py`, qualitative-valuation + risk-metrics-calculation _extern-Skills gelöscht (4 Skills gesamt). Part 2 — Full-Skill-Audit A/B/C-Kategorien: **Kategorie A (faktisch falsch → fix)** in `config.yaml` (ASML 66→68, AVGO/RMS/SU scoring_notiz, MSFT flag_grund harmonisiert), `INSTRUKTIONEN.md` (TMO-Kalibrierungsanker 62→63), `Faktortabelle.md` (Header v3.4→v3.7, 3/11 Live-Verify-Status). **Vault-Sync** 6 Satellite-Entities (AVGO/SU/RMS/TMO/MSFT/APH) Callout + Frontmatter + Historie-Einträge; Synthese-Banner B-konform in `Wissenschaftliche-Fundierung-DEFCON.md` (v3.5-Zeitstand markiert statt gelöscht → Informationsverlust-Aversion); `dynastie-depot-skill.md` D3-Rate-Fix (D4/D3=1.0 | D2=0.5 | FLAG=0.0) + Rechenbeispiel Nenner 9.0→8.5. **Tools-Patches via openpyxl:** `Rebalancing_Tool_v3.4.xlsx` N10/O10 APH Score 66→68; `Satelliten_Monitor_v2.0.xlsx` L7 ASML Score 66→68, M7 Delta −2→+2, S7 Live-Verify-Text 66→68, S17 APH-Text 61→63, QuickScreen I12 ASML 66→68, B23 Legende 15.04.→17.04. Sparraten-Summe 285€ in beiden Tools verifiziert. **Skill-ZIP manuell re-installiert.** |
-| 19.04.2026 | **Skill `backtest-ready-forward-verify` deployed (v3.7.2).** Schritt 7 institutionalisiert: Draft → `Skill(args=<pfad>)` → Phase P1 Draft-Read + Schema-Validation → P2a Freshness-Warnung (3 Required-Touch STATE/Faktortabelle/log.md) → P2b STATE.md-Tripwire (score/defcon/flags exakt) → P3 §28.2 Δ-Gate (conditional: immer MigrationEvent gebaut, STOP-Signal bei \|Δ\|>5) → P4 `archive_score.py --dry-run` → P5 Real Append → P6 git add. Consumer-Vertrag: 6 Stdout-Fälle (OK / freshness / PFLICHT / STOP / duplicate-record_id / FAIL). Pipeline-Disziplin mechanisch durchgesetzt; menschliche Kontrolle verlagert auf §27.4 Multi-Source-Drift-Check. **Schema:** `MigrationEvent` mit `_check_delta` + `_check_outcome_bucket` self-validating (defense-in-depth gegen Builder-Bugs, Record ist append-only). **Nicht-Migration-Trigger** (§28.3): kein DEFCON-Bump, System-Scoring unverändert v3.7. **Commits:** 33cdd74 (MigrationEvent field), 1bd50ac (self-validators), 2f3e828 (gitignore+_drafts/), 7d43492 (skill main), 7e0b021 (P4 prosa), 603ea74 (tightening: parse_wrapper strict, P2b exact, porcelain offset, STOP float, assertion), 018257e (dynastie-depot Schritt 7 delegate). First real-run: TMO Q1 am 23.04.2026 (FLAG-Resolve-Gate). |
-| 20.04.2026 | **Morning-Briefing v3.0.3 deployed auf Probe + T1/T4/T3 alle PASS + Soft-Alert-Rebase.** Lever 1 Yahoo-Gap-Elimination (BRK.B/RMS.PA/SU.PA deterministisch `n.v. [Yahoo 403 known]`, kein Yahoo-curl mehr); 60s-Budget-Fallback aus SCHRITT 4.5(E) entfernt (war Recall-Regression). Spec §6(E)/§8/§10-13 auf **Soft-Alert-Schema** rebased (<180s healthy / 180-400s observe / >400s alert, KEIN Auto-Rollback aus Runtime). Grund: User-Prinzip "Korrektheit > Laufzeit" (memory `feedback_correctness_over_runtime.md`) kollidiert mit hartem 90s-Gate aus v3.0. **3 Probe-Tests PASS:** T1 Happy-Path 262s (-27% vs. v3.0.2 FAIL 360s), T4 Fail-Open ~10s (HTTP 422 gefangen, FERTIG erreicht), T3 Adversarial-Trap ~270s (dreifache Homonym-Absicherung: Dual-Key-Query + static COMPANY_NAME-Map + `.PA`-Suffix-Strukturdifferenz bestätigt; 0 Suncor/Rockwell-Durchschläge in 6 Results). **Bonus T3:** RMS.PA Ex-Dividend 21.04.2026 EUR 13,00 entdeckt (automatische Gutschrift), Q1-Revenue-Slowdown (Middle-East + Tourismus) als Watch-Notiz. **Codex-Thread 019da9fa:** 3 Runden — Runtime-Lever-Priorisierung, Korrektheits-Prinzip-Validierung, Gate-Sequencing (T4 vor T3). **Prod-Deploy auf `trig_01PyAVAxFpjbPkvXq7UrS2uG` pending** — nächste Session. Gate A (3-Tage-Cron-Stabilität) startet am Prod-Deploy-Tag, Stabilität = funktionale Korrektheit (nicht Laufzeit). **Commits:** 30b1867 (v3.0.3 prompt + spec rebase), e5ba317 (T1-result + STATE + Handover), 29d9cb0 (T4-result), 7cafc78 (T3-result), c7c0c11 (Gate-A-Korrektheits-Definition), 42a82f4 (v3.1 deferred cache-refactor-plan). |
-| 19.04.2026 | **Track 3 Paper-Integration systemweit abgeschlossen — 5 Phasen in einer Session.** Phase 1a (11 Satelliten mit Factor-Exposure-Block Aghassi 2023, 7ed5267), Phase 1b (6 defcon-Concepts + 8 bestehende Concepts mit Paper-Ankern + index/log, 81fece3), Phase 2 (2 Skills + 3 Tool-Dokus + INSTRUKTIONEN §§18/27/28/29-Anker, a47cc28), Phase 3 (R5 Portfolio-Return-Persistenz: `05_Archiv/portfolio_returns.jsonl` + `benchmark-series.jsonl` Daily-Schema v1.0, trading-date + cashflow-separated post-NAV + dual-file Duplicate-Guard, erster Record 2026-04-17 Portfolio 10.173,42 EUR, f7920cf), Phase 4 (§30 Live-Monitoring & Cadence mit Monthly-Refresh-Pflicht für MSFT CapEx-FLAG, INSTRUKTIONEN v1.11, c1f0f21 Draft + 96b0b69 Final). **3 Codex-Review-Gates, 13 Findings appliziert** (Phase 1b: 3 — MSFT/TMO plan-intendiert, CapEx-FLAG §29.3-Rückverweis; Phase 3: 5 — Wall-Clock-Date-Bias, dual-Duplicate-Guard, Common-Date-Intersection, Mixed-Currency-Caveat, Schema-Doc-Wording; Phase 4: 5 — Drei-Ebenen-Disambiguierung, Score-Unverändbarkeit, Re-Review-Ablage, Forward-Dating, Schema-Watch-Klarstellung). **Skills v3.7.2 in-place** (kein Bump — Doku-Refresh ohne funktionalen Change, plan-konform). **Applied-Learning "Paper-Ingest ≠ System-Update" bewahrt:** DEFCON-Scoring-Kern unverändert, nur Monitoring/Dokumentation/Infrastruktur/Validation-Vorbau. Interim-Gate 2027-10-19, Review-Gate 2028-04-01. Spec 976e67a, Plan ee61535. |
-| 20.04.2026 Nacht-Spät (Post-Deploy-Fail) | **🔴 v3.0.3 Manual-Run FAIL → Rollback auf v2.1 durchgeführt.** User-initiierter Manual-Run via Desktop-App zeigte **schwere Datenfabrikation**: Agent interpretierte Shibui-EOD-Rückgabe 17.04. (korrekt: Karfreitag + Osterwochenende, keine US-Börse 18/19.04., Montag 20.04. noch nicht in Shibui-EOD) fälschlich als "stale data" und improvisierte unautorisierten Yahoo-Intraday-Fallback-Pfad über Tavily für 7 US-Ticker (ASML/AVGO/MSFT/TMO/V/APH/SPGI). Reportete Phantom-Kurse (AVGO $317,79 / -21,8% intraday) — Broker-Verify via User zeigte real €337,58 ≈ $388, -2,26% gegenüber Freitag. Hätte in falsche !Analysiere-Spirale geführt (fabrizierter "Oster-Wochenende-Markteinbruch"). Runtime 720s+ (>2× Alert-Schwelle 400s). **Was korrekt funktionierte:** Yahoo-n.v.-deterministic für 3 Titel (§3c), Material-Filter (4 "keine material News" mit Begründung), Slot-Struktur 4≤5, 8/8 Sektionen vorhanden, FLAGS/WATCHES/Trigger alignment mit STATE.md. **Root Cause:** Spec §3 hat keinen expliziten Guard gegen "Shibui-Data-Scheint-Stale → Live-Fallback"-Heuristik. Critical Guards verbieten nur Halluzinierte-Gründe, nicht improvisierte Datenpfade. **Rollback-Execution:** RemoteTrigger.update mit v2.1-Content aus `03_Tools/morning-briefing-prompt-v2.md`, allowed_tools auf `[Bash,Read,Glob,Grep]` zurückgesetzt (Tavily raus), updated_at 15:13 UTC. **Gate A ausgesetzt.** v3.0.4-Hotfix in nächster Session: §3a expliziter Anti-Fallback-Guard (Wochenend-/Feiertags-EOD-Lag als NORMAL deklarieren; Delta-Spalte "Score-Datum-Close" wenn heute-Close nicht verfügbar; kein Yahoo-intraday für US-Ticker). Vorher Sprint 3.0.4-Probe-Testing inkl. Karfreitag-/Osterwochenende-Szenario. **Scoring-Impact: ZERO** (Infrastruktur-Ereignis, keine Score/FLAG/Sparraten-Änderung). **Lesson Learned:** Anti-Hallucination-Guards müssen nicht nur Begründungen, sondern auch alternative Datenpfade explizit verbieten — "KEINE Gründe erfinden" ist nicht stark genug, braucht "KEINE unautorisierten Datenquellen nutzen". |
-| 20.04.2026 Nacht-Spät | **Morning-Briefing Prod-Deploy v3.0.3 + Discoverability-Edits Post-6-Paper-Ingest.** Prod-Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG` via RemoteTrigger.update (full-replace ccr) von v2.1 auf v3.0.3 gehoben, updated_at 2026-04-20T14:36:26Z, next_run 21.04. 10:01 MESZ. Content 1:1 identisch zum Probe-Trigger T1-Baseline (T1/T3/T4 PASS). `allowed_tools` erweitert um `mcp__tavily__tavily_search`, Shibui+Tavily MCPs automatisch erhalten (ccr-Pfad weglassen → Preservation). Gate-A-Fenster 21./22./23.04. mit Korrektheits-Check (8/8 Sektionen, Yahoo-n.v.-deterministic, Material-Filter, Slot-Struktur), keine Runtime-Gates (Soft-Alert-Schema, User-Prinzip Korrektheit > Laufzeit). Rollback-Pfad: v2.1-Content in `03_Tools/morning-briefing-prompt-v2.md`, Runbook Spec §11. **Paraller Post-Ingest-Audit (User-Initiative):** Impact-Check des 6-Paper-Ingest auf 3 DEFCON-Notes (Wissenschaftliche-Fundierung-DEFCON / Update-Klassen-DEFCON / DEFCON-System) → 2 Discoverability-Lücken identifiziert (Update-Klassen + DEFCON-System ohne Status-Matrix-Deep-Link). Drei Discoverability-Edits ohne Scoring-Impact: (1) Update-Klassen-DEFCON — neue Sektion "Klasse-C-Erweiterungs-Potenzial (Meta-Gate)" mit B17+B19-Referenzen + Status-Matrix-Deep-Link, `updated: 2026-04-20`, `related:` um Wissenschaftliche-Fundierung + Regie-Aware erweitert. (2) DEFCON-System.md — `wissenschaftlicher_anker` von B1-B14 auf B1-B24 erweitert mit `#Status-Matrix`-Deep-Link, `related:` um KG-Roadmap + Wissenschaftliche-Fundierung, §Wissenschaftliche-Fundierung erweitert (B19-B24 als Meta-Gate-Addendum, Kernaussage "DEFCON v3.7 unverändert nach gesamtem Ingest" fixiert). (3) Depot-State-April-2026 — Drift-Fix des Banner-Live-Stand-Verweises (Nenner 8.5→8.0, 33,53€/16,76€→35,63€/17,81€), neue Sektion "Post-Snapshot-Events (11.-20.04.)" mit chronologischem Abriss v3.7-Release + Nenner-Shift + 6-Paper-Ingest + v3.0.3-Deploy. **10.04.-Kernsnapshot unverändert** (Informationsverlust-Aversion). Multi-Source-Drift-Check bestätigt alignment STATE.md ↔ Vault-Notes. Scoring-neutral: DEFCON v3.7 + Scores + FLAGs + Sparraten unverändert. |
-| 20.04.2026 Nacht-Spät | **KG-Roadmap v0.1 `draft-frozen` markiert — Codex-Verdikt Option D.** Post-6-Paper-Ingest-Closure: User-Frage „macht KG-Roadmap-Ratifikation vor Track 5a/5b Re-Validation mehr Sinn?" → Codex-Review (Opus 4.7 + Codex Combined) prüfte 3 Optionen (A Ratifikation v0.1→v1.0 / B Offene-Fragen-Klärung / C beides) und empfahl **Option D** (`draft-frozen` statt v1.0-Ratifikation, Inhalte faktisch geltend, Re-Review-Trigger explizit). **Begründung:** Szenario 2 (10-K-KG) ist genuine `future-arch`, nicht decided — v1.0 würde Konsens-Lock-in ohne Usage-Evidence suggerieren. Q1-Q3 (Dataset-Größe / Lizenz-Legal / Score-Archiv-Integration) heute spekulativ beantwortbar, nicht release-blockierend, aber Q3-Design-Klarheit Pflicht **vor** operativer KG-Adoption (Point-in-Time-Append-only-Natur von `score_history.jsonl` + §18/§28.2 Sync-Disziplin). **Umsetzung:** Synthesis-Frontmatter `status: draft-frozen` + `re_review_trigger: "Cross-Entity-/10-K-Narrativ-Bedarf ODER Score-Archiv-Interim-Gate 2026-10-17"` + Status-Banner direkt nach Frontmatter; Offene-Fragen-Abschnitt um Governance-Hinweis + Per-Frage-Status erweitert; Versionshistorie um v0.1-`draft-frozen`-Zeile ergänzt. **STATE.md:** System-Zustand-Eintrag „KG-Roadmap v0.1 `draft-frozen`" mit Re-Review-Trigger, Header-Stand 20.04.2026 Nacht-Spät. **Track 5a/5b und v3.0.3-Prod-Deploy nicht blockiert.** Scoring-neutral: DEFCON v3.7 unverändert, config.yaml unberührt, Skill bleibt v3.7.2, §28.3 Nicht-Migration-Trigger weiterhin gültig. **Präzedenz:** Erste Anwendung des `draft-frozen`-Status für Synthesis-Dokumente — etabliert legitimen Zwischen-Status zwischen v0.1 (Draft) und v1.0 (Ratified). |
-| 21.04.2026 Mittag | **Drift-Migration `score_history.jsonl` 12/27 → 27/27 PASS** (commit `ca76114`). Pre-Check vor Provenance-Gate-Plan-Execution deckte 12 Records silent `defcon_level`-Drift seit 18.04.-Threshold-Migration auf (alle pre-18.04.-Backfills hatten alten 70/60/50-Bands archiviert; neue Schema-Bands 80/65/50 lieferten Schema-Mismatch bei Score 71-76 D4→D3 und Score 61-63 D3→D2). **Tool:** `03_Tools/backtest-ready/migrate_defcon_drift.py` (idempotent + atomar, Snap-to-Schema via aktueller Bands). 12 `defcon_level`-Korrekturen angewendet, Record-IDs unverändert. Re-Validate-Sweep gegen aktuelles Schema: 27/27 PASS. Genauer Auslöser-Fall: Zeile 25 V_vollanalyse 17.04. Score 72 mit defcon_level=4 → D3 korrigiert. **Incident-Bedeutung:** Exhaustive Drift-Check fand, was „üblicher" Spot-Check nicht gefunden hätte — direkte Motivation für Systemhygiene-Pivot zu TOP-Priority + §27.4 Vertikal-Drift-Klausel. |
-| 21.04.2026 Mittag | **Score-Append Provenance-Gate Spec + Plan v2 ratifiziert** (commit `206c0a1`). Spec `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` Architektur-Variante **E (Hybrid Pipeline-Gate B + reduzierter Schema-Guard D)** nach 5 Codex-Sparring-Runden — gegen ursprünglich favorisierte Variante B (Pipeline-Gate solo), weil Codex auf Defense-in-Depth gegen Bypass-via-Direkt-Append insistierte. Plan v2 mit 4 Codex-Patches: **Task 0** Pre-Execution-Baseline-Check (force-verify pre-Migration-Integrity), **Task 2 Step 2.7** Re-Validate-Sweep (nicht nur geschriebene Records), **Task 3 Step 3.1a-d** Granularitäts-Split (§28.2-Delta-Gate differenziert nach MigrationEvent-Type), **Task 6** CORE-MEMORY-§10-Timing-Fix (Append post-Commit statt pre-Commit). 7 Tasks, 40 Steps. First-Live-Test geplant TMO Q1 23.04.2026. |
-| 23.04.2026 Nachmittag | **TMO Q1 FY26 Forward-Vollanalyse — Beat + Guidance-Raise, fcf_trend_neg Resolve-Gate CLEAR.** Release 23.04. pre-market, Call 14:30 CEST. Headline: Adj. EPS $5,44 vs $5,24 (+3,8% Beat) / Rev $11,01B vs $10,86B (+1,4% Beat, +6,2% reported / **+1% organic** — thin); GAAP EPS $4,43 (+11,3%). **FCF $825M vs $373M YoY = +121%**, OCF $1.192M (+64,9%), ΔWC -$1.112M vs -$1.425M (+$313M besser — WC-Unwind-These bestätigt). Clario-Akquise $8,87B abgeschlossen; $3B Buybacks Januar; $5,24B neue Debt; 10% Dividenden-Raise. **Guidance hochgesetzt Top + Bottom:** Rev $47,3-48,1B (von $46,3-47,2B), Adj EPS $24,64-25,12 (von $24,22-24,80), **FCF-Guide FY26 $6,9-7,4B** (vs FY25 $6,3B), Organic 3-4% bestätigt (→ H2-Akzeleration impliziert). **Score 64→67 (Δ+3, §28.2 log-only-Fenster):** Fundamentals +2 (fwd_pe 6→7 Mid-Band-Rekalibrierung bei 19,3; fcf_yield 3→4 FCF-Recovery + FY-Guide), Sentiment +1 (eps_revision_delta 0→+1 Management-Guide-Raise). Moat 18 / Technicals 6 / Insider 4 unverändert (Skip-Window <14 Tage zum 18.04.-Forward-Record). Screener-Exception #4 differenzierte QT weiter aktiv (P/FCF 27,27x Cap 1 Pt / Fwd P/E 19,3 < 22 Standard-Skala). **D2→D3.** `fcf_trend_neg` Schema-Watch deaktiviert (Resolve-Gate-Kriterien alle erfüllt: FCF YoY positiv, ΔWC verbessert, Management-FCF-Commitment). **Sparraten-Kaskade:** Nenner 8,0→8,5, volle Rate 35,63€→33,53€ (7 andere D3/D4-Satelliten -2,10€ jeweils), V D2-Rate 17,81€→16,76€, TMO 17,81€→33,53€ (+15,72€). ZTS-Ersatz-Vorbereitung pausiert, These intakt. **Neue Watches:** Organic-Akzeleration Q2 Ende Juli (Q2-Guide ~3% konsistent), Clario-Integration-Execution + Net-Debt/EBITDA-Post-Clario (Pre-Deal 2,57x, Post-Deal schätzungsweise deutlich höher), Analytical-Instruments-Margin-Drift (-10bps). **Sync-Welle:** 6 Files Old-Pipeline-Format (Pfad-2-Entscheidung wegen Weekly-Limit 93%, Reset Do 22:00+ CEST). **Retro-Migration TMO-Record via `backtest-ready-forward-verify`-Skill post-Reset** (erster echter Skill-Forward-Run). **XLSX-Tools (Rebalancing_Tool + Satelliten_Monitor) bleiben unberührt bis post-Retro-Migration** — einmaliges Update gegen validierten Skill-Record statt Doppel-Edit-Churn. Pre-Briefing `02_Analysen/TMO_pre-earnings_2026-04-23.md` (earnings-preview-Skill 22.04.) hat Entscheidungs-Matrix korrekt aufgespannt (Beat + Raise = D2→D3-Kandidat bestätigt). Advisor-Feedback umgesetzt: Matrix-Row korrekt als Beat+Raise (nicht In-Line) gelesen, Guidance-Line via Tavily vor Scoring gezogen, Organic +1% explizit im Fundamentals-Narrativ statt nur Bull/Bear-Footnote. |
-| 21.04.2026 Mittag | **§27.4 Vertikal-Drift-Klausel + Applied Learning 12/20 + Systemhygiene-Pivot zu TOP-Priority** (commits `ca76114`+`8e835ab`). INSTRUKTIONEN §27.4 erweitert um „Zweite Klasse — Vertikal-Drift (Schema-Migration auf Altdaten)" mit Präzedenzfall 21.04.2026 (12/27 silent defcon_level-Drift post-18.04.-Threshold-Shift) und Re-Validate-Pflicht bei allen Schema-/Threshold-Migrationen. CLAUDE.md Applied Learning v2.4 Bullet 12/20 promotet („Drift-Check = exhaustive Schema-Validation aller Records, nicht Spot-Check"). Memory `feedback_exhaustive_drift_check.md` NEU (Tier 1, Index 13/13). **Pivot-Entscheidung:** Externes Tool `codebase-memory-mcp` wurde evaluiert und verworfen (löst Code-AST-Index, nicht unser Markdown/YAML/JSONL-Drift-Problem; externer SQLite-Cache = neue Drift-Quelle). Konsequenz: internes `03_Tools/system_audit.py` bauen + Slash-Command `/SystemAudit` + STATE.md-Section „Last Audit"; **zuerst manueller Sync-Sweep** (sonst baut das Tool gegen kaputte Baseline). Phase A-G Sequenz in `SESSION-HANDOVER.md` für nächste Session. |
-| 24.04.2026 Session 3 | **00_Core Perfect-Organization Tier 2 — Brainstorm + Spec v0.3 RATIFIZIERT (3-fach-reviewed Claude+Codex+Advisor).** Scope **B** (a+b+c zusammen; d Vault + e §215 deferred). Entscheidungs-Kaskade via `superpowers:brainstorming` mit 11 Clarifying-Qs: **G2** (4-File-Split STATE→Hub+PORTFOLIO.md+PIPELINE.md+SYSTEM.md — natürliche Bruchstellen nach Info-Lebensdauer) + **H1** (Hub-Pure ~25 Z mit Navigation + Critical-Alert-Slot handgepflegt + Last-Audit-Block als Invariante gegen state_writer.py-Patch) + **R2** (CORE-MEMORY §1-Auflösung) + **V-Kompakt** (§12 Per-Ticker-Chronik mit Sub-§§ pro Ticker + §13 System-Lifecycle-History mit `[Topic]`-Prefix; §9b gelöscht; §6 schlank als Version-Changelog) + **L2** (Back-Ref-Konvention Outbound-only Markdown-Links Kopf-Sektion, kein Tooling) + **Feature-Branch** `refactor/00core-perfect-organization`. Skill-Versions pro Convention separat: `dynastie-depot` v3.7.2→v3.7.3 (Patch-Bump an DEFCON-gekoppelter Semver-Kette), `backtest-ready-forward-verify` Frontmatter-Semver 1.0.0→1.0.1 (eigene Kette). **DEFCON v3.7 unverändert** (§28.3 Nicht-Migration-Trigger). **Spec v0.3:** `docs/superpowers/specs/2026-04-24-00core-perfect-organization-design.md` (gitignored per Design, lokal persistent). 18 AC mit Pre/Post-Migration-Grep-Artefakten + Allow/Deny-Lists + Baseline-Snapshots. **Review-Kaskade:** Claude-Self-Review (3 Inline-Fixes) → Codex-Spec-Review (8 Findings: 2 Blocker **#1** Patch-Katalog um 6 Files erweitert (backfill_flags.py/flag_event_study.py/INSTRUKTIONEN §25+Z530-539/SystemAudit.md/briefing-sync-check.ps1-Detail/_smoke_temp_repo.py) + **#2** Versions-Surface nicht uniform (backtest-ready hat Frontmatter `1.0.0`, nicht v3.7.2) → §7.3 pro-Skill separat; 5 Should-Address (§18-Union-Regel neu, Routing-Konsolidierungstag STATE.md behalten, Hub-Invariante-Rationale 4 Gründe, Phasen-4+5 edit-parallel-aber-verification-sequential, AC-Messbarkeit quantifiziert); 1 Nice — alle resolved) → Advisor-Coherence-Review (4 Punkte: **#4 PORTFOLIO Size-AC ≤90 Z inline gefixt**; #1-3 deferred als §10.2 offene Klärungen für Plan-Session: PORTFOLIO=Primär-Layer?, Back-Ref-Scope Peers?, §18-Union-Regel formal?). **Nicht-Scope:** Vault-Sanierung (neuer Pipeline-Item #13) + insider-intelligence §215-Triage. **Next Session 4:** `superpowers:writing-plans` Skill mit Spec v0.3 → Plan in `docs/superpowers/plans/`. Keine Commits auf Feature-Branch außer dieser Sync-Welle (Spec gitignored). |
-| 24.04.2026 Session 1 | **CLAUDE.md Routing-Refactor Tier 1 deployed + Applied-Learning v2.5 (12→14/20).** Plan `docs/superpowers/plans/2026-04-24-claude-md-routing-refactor.md` v0.2.1 (3-fach-reviewt Claude+Codex+User, 4 kritische Command-Bugs in v0.1 von Codex gefunden, keiner von Plan-Self-Review) vollständig ausgeführt in neuer Session. **CLAUDE.md 97→86 Zeilen** (Toleranz +10 PASS, strict ≤80 knapp verfehlt). **2 neue SSoT-Files in `00_Core/`:** `APPLIED-LEARNING.md` (Frontmatter + 14 Bullets + Pflege-Regeln + Historie v2.5) ersetzt inline-CLAUDE.md-Section; `TOKEN-RULES.md` (Accessibility-Modell, kein Enforcement, 6 Regel-Bullets) ersetzt `## Token-Effizienz (operativ)`. **Neue `## Routing-Table`** (9 Trigger × 4 Spalten + 3 Edge-Cases + Hybrid-Match-Regel: exakte Trigger strikt, Soft-Match nur für bare Ticker aus STATE.md-Satelliten-Whitelist, Mehrfach-Match Union) ersetzt On-Demand-Lektüre-Liste (Entscheidung A). **`## Pointer (Ausgelagertes)`** mit 4 Zeilen (APPLIED-LEARNING, TOKEN-RULES, INSTRUKTIONEN, Meilensteine-Archiv) — 4. Zeile = dokumentierte Abweichung von AC #8 (3 Zeilen), User-Entscheidung gegen Info-Verlust (Meilensteine-Archiv hatte keinen natürlichen Trigger in Routing-Table). **Applied-Learning v2.5:** +2 Bullets (Plan-Self-Review-Blindspot, Migrations-Invariante-vs-Meta-Logging) aus 3-fach-Review-Erkenntnissen, Stand 14/20. Separater Commit nach AC-Marker (Migrations-Invariante: Historie endet auf v2.4 im Migrations-Commit, v2.5-Eintrag post-PASS). **11/11 AC PASS** mit 2 dokumentierten Abweichungen (AC #8 4 Pointer-Zeilen, AC #9b 3 Self-Reference-Hits in Plan+Spec-Files, keine echten dangling anchors). Smoke: `system_audit --minimal-baseline` 3/3 PASS. **8 Commits** Baseline `d025c7f`: `9ae0dcc`(AL) + `81829b5`(Token) + `e586d27`(remove) + `3e81a14`(KontLernen) + `ca66785`(Routing) + `2a67221`(Pointer) + `b99cf3b`(AC-Marker) + `1bd7492`(AL v2.5). Scoring-neutral: DEFCON v3.7 unverändert, config.yaml unberührt, keine Score/FLAG/Sparraten-Änderung. **Session 1 Sync-Welle (heute):** `3f76917` STATE.md Pipeline-SSoT (Tier-1 als DONE #5 + Renumber-Kaskade 🟡 5→6,6→7,6a→7a,6b→7b + 🔵 7→8,8→9,9→10,10→11), dieser CORE-MEMORY §1-Eintrag. **Session 1 Rest heute:** Codex-Reconciliation-Pass. **Session 2 (frisch):** CodeRabbit-Pass (WSL) + Vault-Update-Sweep (`07_Obsidian Vault/.../wiki/concepts/CLAUDE-md-Konstitution.md`). **Tier 2 STATE-Split (Variante B Hub) deferred** — eigene Brainstorm-Session. Execution-Mode-Entscheidung: `superpowers:executing-plans` statt `subagent-driven-development` (per CLAUDE.md Applied-Learning Bullet #1: „Subagents nur für Code+Tests — Markdown/YAML-Edits direkt editieren"). |
+> Per-Ticker-Chronik → §12 | System-Lifecycle → §13
 
 ---
 
@@ -77,9 +45,9 @@
 
 ---
 
-## 3. Aktive Positions-Entscheidungen (Historisch, pre-v3.7 — aktuelle Positions-Realität in `00_Core/STATE.md` + `Faktortabelle.md`)
+## 3. Aktive Positions-Entscheidungen (Historisch, pre-v3.7 — aktuelle Positions-Realität in `00_Core/PORTFOLIO.md` + `Faktortabelle.md`)
 
-> ⚠️ **Historische Entscheidungs-Narrative (04.04.–16.04.).** Aktuelle Live-Scores/DEFCON/Sparraten → `00_Core/STATE.md`. v3.7-Shifts: MSFT 60→59, TMO 62→63 (D2 bestätigt), APH 61→63 (FLAG bleibt), ASML 66→68 (Post-Q1 Vollanalyse). Weitere Shifts 18.04.: V Vollanalyse 63/D2, 5 Tickers Threshold-Drift-Fix D4→D3, Nenner 8.5→8.0. Section bleibt als Entscheidungs-Logik-Archiv erhalten.
+> ⚠️ **Historische Entscheidungs-Narrative (04.04.–16.04.).** Aktuelle Live-Scores/DEFCON/Sparraten → `00_Core/PORTFOLIO.md`. v3.7-Shifts: MSFT 60→59, TMO 62→63 (D2 bestätigt), APH 61→63 (FLAG bleibt), ASML 66→68 (Post-Q1 Vollanalyse). Weitere Shifts 18.04.: V Vollanalyse 63/D2, 5 Tickers Threshold-Drift-Fix D4→D3, Nenner 8.5→8.0. Section bleibt als Entscheidungs-Logik-Archiv erhalten.
 
 ### MSFT — DEFCON 2, FLAG aktiv (Re-Analyse 08.04.2026)
 - **Score:** 60/100 (↓ von 77, −17 Punkte) | **DEFCON:** 🟠 2 | **FLAG:** 🔴 CapEx/OCF Q2 FY26: 83.6% (bereinigt ~63%)
@@ -116,7 +84,7 @@
 ## 4. Score-Register
 
 → **Aktueller State:** [`Faktortabelle.md`](Faktortabelle.md) — Live-Score + DEFCON + FLAG pro Ticker
-→ **Portfolio-Snapshot:** [`STATE.md`](STATE.md) — Section "Portfolio-State (11 Satelliten)"
+→ **Portfolio-Snapshot:** [`PORTFOLIO.md`](PORTFOLIO.md) — Section "Portfolio-State (11 Satelliten)"
 → **Vollständige Historie:** `05_Archiv/score_history.jsonl` — alle Score-Records append-only (ab 17.04.2026 forward, Backfill-Records aus damaliger Section-4-Tabelle)
 → **FLAG-Events:** `05_Archiv/flag_events.jsonl` — Trigger + Resolution append-only
 → **Write-Tooling:** `03_Tools/backtest-ready/archive_score.py` + `archive_flag.py`
@@ -227,7 +195,7 @@ Bei Unternehmen mit signifikanter Produktion in Risikoländern (Malaysia, Thaila
 → **Aktuelle Scope:** MSFT CapEx/OCF 83.6% → Monthly-Refresh pflicht (erster Refresh ~19.05.2026, Zwischen-Refresh vor Q3-Earnings 29.04. nicht nötig — Earnings-Trigger deckt ab)
 → **TMO** fcf_trend_neg bleibt **Schema-Watch**, keine §30-Pflicht (Q1 23.04. = natürliches Resolve-Gate)
 → **§30-Ausweitung** auf weitere Faktor-Klassen (Quality/Value/Momentum) erfordert Applied-Learning-Re-Review — Re-Review-Entscheidung dokumentiert als eigene CORE-MEMORY §5-Lektion (Codex-Wächter 19.04.)
-→ **Drei-Ebenen-Semantik-Trennung:** "Aktiver FLAG" (§30, flag_events.jsonl-Trigger, Monthly-Refresh pflicht) ≠ "Schema-Watch" (schema-getriggert-nicht-aktiviert, kein flag_events-Pfad) ≠ STATE.md "Aktive Watches" (allgemeine Beobachtungsnotiz, kein FLAG-Mechanik)
+→ **Drei-Ebenen-Semantik-Trennung:** "Aktiver FLAG" (§30, flag_events.jsonl-Trigger, Monthly-Refresh pflicht) ≠ "Schema-Watch" (schema-getriggert-nicht-aktiviert, kein flag_events-Pfad) ≠ PORTFOLIO.md "Aktive Watches" (allgemeine Beobachtungsnotiz, kein FLAG-Mechanik)
 → **FLAG-Events ändern nur FLAG-Status, niemals Score-Komponenten/-gewichte** — §30 ist Monitoring-Cadence-Regel, kein Scoring-Change
 → **Forward-dating-Pflicht:** Monthly-Refresh-Events in flag_events.jsonl nur mit aktuellem Refresh-Datum (kein Backfill ohne Kennzeichnung — §29.5 Sin #2)
 **Codex-Review-Revisions appliziert (5/5):** Score-Unverändbarkeit (§30.3.5), Schema-Watch-Klarstellung (§30.1), Applied-Learning-Re-Review-Ablage (§30.4), Drei-Ebenen-Disambiguierung (§30.1), Forward-Dating-Anker (§30.3.3).
@@ -264,18 +232,24 @@ Bei Unternehmen mit signifikanter Produktion in Risikoländern (Malaysia, Thaila
 
 ## 6. System-Upgrades & Versionsverlauf
 
-### DEFCON v3.1 (03.04.2026) — 11 Verbesserungen
-Neu hinzugefügt: SBC/Revenue, Accrual Ratio, GM-Trend, Pricing Power,
-Relative Stärke, 200MA Slope als Wachstumsindikator, DCF-Anker erweitert,
-EPS Revision, PT-Dispersion, Tariff Exposure
+Nur Versions-Changelog. Narrative Meilensteine stehen in §13.
 
-### config.md Struktur (01.04.2026)
-Single-Source-of-Truth etabliert. Pflicht: Nach jeder Analyse updaten + neu hochladen.
-Versionshistorie in der Datei selbst dokumentieren.
-
-### Rebalancing Tool v3.1 FINAL (31.03.2026)
-Allokation 65/30/5 final. US-Exposure korrekt berechnet.
-Gleichgewichtung aller 11 Satelliten (2,73%) implementiert.
+| Datum | Komponente | Version | Kurz-Delta |
+|---|---|---|---|
+| 2026-03-31 | Rebalancing_Tool | v3.1 FINAL | Allokation 65/30/5, Gleichgewichtung 11 Satelliten (2,73%) |
+| 2026-04-01 | config.md Struktur | — | Single-Source-of-Truth etabliert |
+| 2026-04-03 | DEFCON-Scoring | v3.1 | SBC/Revenue, Accruals, GM-Trend, Pricing Power, Relative Stärke, 200MA Slope, DCF-Anker, EPS-Revision, PT-Dispersion, Tariff Exposure |
+| 2026-04-15 | Rebalancing_Tool | v3.4 | Sparraten-Logik überarbeitet (D4/D3=1.0, D2=0.5, D1/FLAG=0€) |
+| 2026-04-16 | DEFCON-Scoring | v3.5 | Scoring-Audit-Fix (PT-Upside Double-Counting, Relative-Stärke 0–3) |
+| 2026-04-17 | DEFCON-Scoring | v3.7 | System-Gap-Release (v3.6 verworfen) — QT-Interaktionsterm, OpM TTM, Analyst-Bias, Cap 50 |
+| 2026-04-17 | dynastie-depot Skill | v3.7.1 | Backtest-Ready Forward-Pipeline, Schritt 6b + 7 |
+| 2026-04-18 | DEFCON-Schema | v3.7 | Threshold-Drift-Fix 80/65/50 (D3/D4-Labels) |
+| 2026-04-19 | backtest-ready-forward-verify | v3.7.2 / semver 1.0.0 | Skill deployed — Pipeline-Kapsel P1-P6 |
+| 2026-04-22 | system_audit | v1.0 | Drift-Audit-Tool + `/SystemAudit` |
+| 2026-04-24 | CLAUDE.md | Routing-Refactor Tier 1 | Routing-Table + APPLIED-LEARNING + TOKEN-RULES |
+| 2026-04-24 | 00_Core Struktur | Tier 2 | STATE-Split + CORE-MEMORY §1→§12/§13 |
+| 2026-04-24 | dynastie-depot Skill | v3.7.3 | 00_Core-Refactor-Adoption |
+| 2026-04-24 | backtest-ready-forward-verify | semver 1.0.1 | 00_Core-Refactor-Adoption |
 
 ---
 
@@ -300,71 +274,6 @@ Gleichgewichtung aller 11 Satelliten (2,73%) implementiert.
 
 ---
 
-## 9b. Nächste Session — Aktionsplan (post Liberation Day)
-
-**Kontext:** Liberation Day (02.04.2026) + Zoll-Eskalation haben Märkte strukturell verändert. Tariff-Exposure aller Satelliten muss neu bewertet werden. Gleichzeitig ist DEFCON v3.4 jetzt vollständig produktiv (alle MCPs, Module, Pre-Processing). Erster vollständiger Re-Check aller 11 Satelliten steht an.
-
-**Workflow-Entscheidung (ratifiziert 06.04.2026):**
-Kein blinder Full-Run für alle 11. Erst Triage via `!QuickCheck ALL` mit Tariff-Fokus, dann Deep Dives in Risikoreihenfolge.
-
-### Triage-Reihenfolge
-
-| Priorität | Ticker | Grund | Befehl |
-|-----------|--------|-------|--------|
-| 🔴 1 | TMO | Earnings 23.04. — Entscheidung steht an | `!Analysiere TMO` |
-| 🔴 2 | MSFT | Earnings 29.04. — FLAG-Review | `!Analysiere MSFT` |
-| 🟡 3 | AVGO | Tariff-Exposure MY/TH ~35%, Insider-FLAG läuft | `!Analysiere AVGO` |
-| 🟡 4 | COST | Retail, US-lastig, Tariff-Ketteneffekte | `!Analysiere COST` |
-| 🟡 5 | V | Zahlungsinfrastruktur — kein direktes Tariff-Risiko, aber Konsumrückgang | `!Analysiere V` |
-| 🟡 6 | APH | Produktion in Tariff-Risikoländern (CN/MY) | `!Analysiere APH` |
-| 🟢 7 | BRK.B | Holding, defensiv, wenig Tariff-Direktexposition | `!Analysiere BRK.B` |
-| 🟢 8 | VEEV | SaaS, keine Produktion, kein Tariff-Risiko | `!Analysiere VEEV` |
-| 🟢 9 | RMS | Luxury, Preismacht, EUR-denominiert | `!Analysiere RMS` |
-| 🟢 10 | SU | Industrie, EUR, Energie-Infrastruktur | `!Analysiere SU` |
-| 🟢 11 | ASML | Score 68, DEFCON 3 — API Sanity Check ✅ abgeschlossen (07.04.2026) | — |
-
-### Nach jedem `!Analysiere`:
-1. config.yaml aktualisieren (score, defcon, flag, score_valid_until)
-2. CORE-MEMORY.md Score-Register aktualisieren
-3. Satelliten Monitor + Rebalancing Tool aktualisieren wenn DEFCON/Sparrate sich ändert
-
-### defeatbeta-MCP Status (repariert 07.04.2026 — vollständig produktiv ✅)
-
-**Konfiguration:** `wsl -d Ubuntu-24.04 bash -c /home/tobia/.defeatbeta-env/bin/python -m defeatbeta_mcp`
-Version 1.27.0 | 100+ Tools geladen | Daten bis 03.04.2026
-
-**Root-Ursache (dokumentiert):** `cache_httpfs` ist Linux-only DuckDB Community Extension — inkompatibel mit `windows_amd64`. Fix: defeatbeta läuft jetzt in WSL2 (Ubuntu-24.04). Zwei Distros vorhanden (Ubuntu default=leer, Ubuntu-24.04=venv). Immer `-d Ubuntu-24.04` spezifizieren.
-
-**Live-Test (07.04.2026):** AVGO Cash Flow vollständig abgerufen ✅ — OCF $27,54B, CapEx $623M, FCF $26,91B.
-
-### API-Routing (US-Ticker — gültig ab 07.04.2026):
-- **Fundamentals:** defeatbeta MCP (Primärquelle — alle Income/CF/Balance/ROIC/WACC-Tools)
-- **Technicals + historische Breite:** Shibui SQL (unverändert Primärquelle)
-- **Insider:** insider_intel.py (SEC EDGAR Form-4)
-- **Forward-Metriken / Moat / Sentiment:** Web Search
-
-### Session-Start-Pflicht (vor erstem !Analysiere):
-Quick-Test: `get_latest_data_update_date` → antwortet = Verbindung OK ✅
-Falls Fehler → WSL2-Verbindung prüfen: `wsl -d Ubuntu-24.04` verfügbar?
-
-### Zusatz-Check bei jedem Satelliten (Liberation-Day-Pflicht):
-- Tariff-Exposure: CN + TW + MY + TH + VN Revenue- + Supply-Chain-Anteil → >35% = FLAG
-- Quelle 1: defeatbeta `get_quarterly_revenue_by_geography`
-- Quelle 2: Earnings Call Transcript → Management-Kommentar Zölle
-- Bewertungskorrektur: Kurse seit 02.04. teilweise -10 bis -20% → TTM-Verzerrung prüfen, Forward-Metriken als Basis
-
-### Aktuelle Sparplan-Berechnung (Stand 16.04.2026 — v3.5)
-AVGO FLAG→0,0 | ASML D3→1,0 | MSFT FLAG→0,0 | RMS→1,0 | VEEV→1,0 | SU→1,0 | BRK.B→1,0 | V→1,0 | TMO D2→0,5 | APH FLAG→0,0 | COST→1,0
-Summe: 7×1,0 + 1×0,5 = 7,5 | Einheits-Rate: 38,00€ | D2-Rate: 19,00€ | Check: 7×38,00 + 1×19,00 = 285,00€ ✓
-
-### Rebalancing-Workflow-Regel (ratifiziert 06.04.2026)
-- Nach `!Analysiere` → config.yaml + CORE-MEMORY + Excel sofort (wenn DEFCON/Sparrate ändert sich)
-- `!Rebalancing` → nur wenn Sparplan tatsächlich eingereicht wird (monatlich)
-- Freier Betrag bei DEFCON-Abstieg fließt automatisch in D4-Positionen (Formel, kein aktives Targeting)
-- Watchlist.csv → archiviert (05_Archiv/). Ersetzt durch Watchlist_Ersatzbank_Monitor_v1.0.xlsx
-
----
-
 ## 10. API-Audit-Log (Quarterly Sanity Check)
 
 **Format:** Datum | Ticker | OCF-Abweichung | CapEx-Abweichung | Status
@@ -385,7 +294,7 @@ Summe: 7×1,0 + 1×0,5 = 7,5 | Einheits-Rate: 38,00€ | D2-Rate: 19,00€ | Che
 |-------|--------|
 | `05_Archiv/score_history.jsonl` | **12/27 FAIL** → migriert via `migrate_defcon_drift.py` → **27/27 PASS** (alle defcon_level-Drift, keine Score-/Block-Drift) |
 | `05_Archiv/flag_events.jsonl` | 2/2 PASS (keine Drift) |
-| `dynastie-depot/config.yaml` Satelliten Score+DEFCON | 11/11 == STATE.md (keine Cross-Source-Divergenz) |
+| `dynastie-depot/config.yaml` Satelliten Score+DEFCON | 11/11 == PORTFOLIO.md (keine Cross-Source-Divergenz) |
 | `05_Archiv/portfolio_returns.jsonl` | 1 Record (17.04.) — **stale seit 4 Tagen** (R5-Phase-3 aktiv aber Daily-Append-Cron existiert nicht, Manual-Trigger-Pflicht vergessen) → Backlog-Item (Auflösung in Track 4 ETF/Gold-Erweiterung) |
 | `05_Archiv/benchmark-series.jsonl` | 1 Record (17.04.) — stale analog (siehe oben) |
 
@@ -512,4 +421,96 @@ Entscheidungsmatrix wird in `07_Obsidian Vault/.../synthesis/Backtest-Methodik-R
 - README: `03_Tools/backtest-ready/README.md`
 
 ---
-*🦅 CORE-MEMORY.md v1.8 (§11 Backtest-Ready Infrastructure + §4 Pointer) | Dynastie-Depot | Stand: 21.04.2026 Mittag*
+
+## 12. Per-Ticker-Chronik
+
+Analyse-spezifische Chronik pro Satellit (Live-Verify, Vollanalysen, Earnings-Updates, FLAG-Transitions). Sortierung innerhalb Sub-§ chronologisch aufsteigend. Format: `- TT.MM.JJJJ — Kurz-Titel (Key-Fakten).` Volle Prosa bleibt in `log.md`-History.
+
+### 12.1 AVGO
+
+- 17.04.2026 — v3.7-Backtest-Rekalibrierung Score 85→84, DEFCON 4 bestätigt, FLAG (Insider $123M 06.04.) bleibt aktiv (Detail §13 [Scoring] v3.7-Ratifikation; Methoden-Anker §5 10b5-1-Footnote-Lücke + Tariff-Exposure-Kalibrierung).
+
+### 12.2 APH
+
+- 15.04.2026 — Tariff-Check abgeschlossen (Revenue China FY25 = 14,7% <15% → kein Revenue-FLAG; Supply-Chain CN/MY Risk-Map-Notiz; China-Trend strukturell rückläufig 23%→14,7% in 2J). Score-basierter FLAG bleibt aktiv.
+
+### 12.3 ASML
+
+- 16.04.2026 — Q1 2026 Earnings Recap (EPS $7,15 Beat +7,99%, Rev €8,77B +13,2% YoY, GM 53,0%, FY26-Guidance angehoben €36–40B; Kurs −2,4% trotz Beat — Booking-Disclosure-Entfall + China-Exportkontroll-Unsicherheit; Score 68 unverändert, kein FLAG, Sparrate voll).
+- 17.04.2026 — Live-Verify v3.7 Schritt-2-Backtest (OpM TTM 36,1% → 2 Pt., Fwd P/E FY26 39,52 → Fwd-P/E-Subscore hart 0, Fwd P/E FY27 30,30 Grenzfall, P/FCF ~48x → P/FCF-Subscore hart 0; beide QT-Zweige triggern hart; Approximation 66 ±2-Toleranz bestätigt, DEFCON 3 live-verified).
+- 17.04.2026 — Post-Q1 Vollanalyse (Pfad B Non-US/IFRS, Anker für Beispiele.md): Score **68/100 🟡 DEFCON 3** (+2 vs. Approximation, innerhalb Toleranz). Fundamentals 28/50 (QT-P/E + QT-P/FCF beide 0, Bilanz 8/8, CapEx 8/8, ROIC-Spread +17,19pp, FCF-Yield 2/8, OpM 2/2), Moat 20/20 (GM-Bonus), Technicals 7/10, Insider 7/10 (AFM-Carry-Forward), Sentiment 6/10 (B11-Bias-Malus). WACC 9,29% via FRED DGS10 4,29% + 5% ERP (GuruFocus 18,21% verworfen). Kein FLAG, Sparrate voll 33,53€. Einziger Depot-Anker mit beidseitiger QT-Aktivierung.
+
+### 12.4 BRK.B
+
+- 15.04.2026 — DEFCON v3.4 Vollanalyse (Score 75/100 🟢 4, Screener-Exception P/B 1,44x statt P/FCF; Moat 19/20 — Float $686B, BNSF Efficient Scale, 60J Capital-Allocation-Track-Record; Book Value CAGR +10% p.a. 5J; Goodwill 6,8%; Insider 9/10 — Greg Abel Open-Market $15,3M/90d; Schwächen ROIC 5,6–7,8% GAAP Insurance-Exception, Tech 4/10 unter 200MA, Buybacks $0 FY25; kein FLAG, Sparrate voll).
+
+### 12.5 COST
+
+- 15.04.2026 — DEFCON v3.4 Vollanalyse (Score 69/100 🟢 4 Bestandsposition, Screener-Exception: ROIC 5,6% GAAP → Membership Yield 15,2% als ökonomischer Return > WACC 12,3%; Moat 19/20 — Membership-Loyalty; CapEx/OCF 21,3% Clean, FCF $7,2B FY25; Schwächen P/FCF 53x, FCF-Yield 1,88%, Fwd P/E 51x, GM <15% Kostenführer-Modell; kein FLAG, Sparrate voll).
+
+### 12.6 MSFT
+
+- 17.04.2026 — v3.7-Backtest-Rekalibrierung Score 60→59, DEFCON 2, CapEx-FLAG bleibt aktiv (Detail §13 [Scoring] v3.7-Ratifikation; FLAG-History + CapEx-Finance-Lease-Exception in §3; Pre-Processing Regel 2 + SKILL.md Screener-Exception #5 bereinigter Pfad). Score-Update-Trigger: Q3 FY26 Earnings 29.04.2026 (FLAG-Review, bereinigtes CapEx/OCF <60% = Auflösung).
+
+### 12.7 RMS
+
+- 15.04.2026 — Q1 2026 Earnings + DEFCON v3.4 Re-Analyse (Score 71→**69** 🟢 4 bestätigt; Q1 Revenue €4,07B +6% CER (−1% reported) → Miss vs. +7–8%; Kurs −8,4%, 52W-Tief €1.529; Treiber Mittlerer Osten −6% Iran-Krieg, FX-Headwind €290M; Leder +9%, ROIC 24% >> WACC 6,5% Spread +17,5pp — Screener-Exception #3 überschreibt Score-Downgrade-Mechanik; Insider-Käufe +€7,67M/90d; kein FLAG, Sparrate voll; Re-Check H1 2026 Juli/Aug).
+- 17.04.2026 — Live-Verify v3.7 Schritt-2-Backtest (OpM TTM 41,05% → 2 Pt., Fwd P/E 34,91 → Fwd-P/E-Subscore hart 0, P/FCF ~38x → P/FCF-Subscore hart 0; beide QT-Zweige triggern hart wie ASML; Approximation 68 ±2-Toleranz bestätigt, D4 durch Screener-Exception geschützt; post −8,4%-Drop Fwd P/E ~39→34,9 → weitere Korrektur <30 könnte Score +1 bringen).
+
+### 12.8 SU
+
+- 15.04.2026 — DEFCON v3.4 Vollanalyse (Score 71/100 🟢 4; Highlights CapEx/OCF 25,2% 4J-stabil, ROIC 10,48% > WACC 8,96% Spread bestätigt, FCF +41%/3J €3,26B→€4,59B, Kurs +12,6% über 200D-MA — einziger Satellit über 200MA, 22 Analysten Strong-Buy 0% Sell; Schwächen P/FCF 37,7x, FCF-Yield 2,65%, Goodwill 40,2% AVEVA-M&A, Moat Narrow; kein FLAG, Sparrate voll).
+
+### 12.9 TMO
+
+- 17.04.2026 — Live-Verify v3.7 Schritt-2-Backtest (OpM TTM 18,17% → 1 Pt., Fwd P/E FY26 20,80 <22 → Standard-Skala, P/FCF 29,3x + Wide Moat → **nur** P/FCF-Zweig triggert max 1 Cap (Screener-Exception #4 differenzierte QT); Score-Rekonstruktion 67-1+0-2 = 64 → Score 63 ±1-Toleranz bestätigt; D2 live-verified, Sparrate 16,76€ korrekt).
+- 18.04.2026 — Pre-Earnings-Vollanalyse + fcf_trend_neg Schema-Watch-Entscheidung (Score 64/D2; Advisor-Review verwirft mechanischen `fcf_trend_neg`-Trigger wegen WC-Noise FY25 ΔWC −1.766M erklärt FCF-Rückgang −974M überproportional, 4J-FCF-Plateau $6,9–7,3B, OpInc +5,1% YoY intakt → Option B struktureller Disclosure statt FLAG-Aktivierung; kein flag_events-Write; Q1 23.04. = natürlicher Resolve-Gate). Detail §11.Befund 4.
+- 23.04.2026 — Q1 FY26 Forward-Vollanalyse, Beat + Guidance-Raise, **fcf_trend_neg-Resolve-Gate CLEAR** (Adj EPS $5,44 vs $5,24 +3,8%, Rev $11,01B +1,4% Beat / +1% organic; **FCF $825M +121% YoY**, OCF $1.192M +64,9%, ΔWC −$1.112M vs −$1.425M WC-Unwind-These bestätigt; Guidance Top+Bottom hochgesetzt Rev $47,3–48,1B, FCF-Guide FY26 $6,9–7,4B, Organic 3–4% → H2-Akzeleration; Score **64→67 Δ+3 (§28.2 log-only-Fenster)**: Fundamentals +2 (fwd_pe 6→7, fcf_yield 3→4), Sentiment +1 (eps_revision_delta +1); **D2→D3**, Screener-Exception #4 weiter aktiv; Sparraten-Kaskade Nenner 8,0→8,5, TMO 17,81€→**33,53€** +15,72€; neue Watches Organic-Akzeleration Q2, Clario-Integration, Net-Debt/EBITDA-Post-Clario, Analytical-Instruments-Margin-Drift −10bps). Detail §13 [Ticker]-Zeile.
+
+### 12.10 V
+
+- 15.04.2026 — DEFCON v3.4 Vollanalyse (Score **86/100** 🟢 4, Kalibrierungsanker auf AVGO-Niveau; Highlights CapEx/OCF ~6% Fabless, Moat 19/20 — GuruFocus 9/10 Wide 4 überlappende Quellen, FCF $21,6B FY25, Revenue $40B +11,4%; Schwächen ROIC ~9,9% GAAP knapp unter WACC ~10,5% Goodwill-Verzerrung Visa-Europe, Fwd P/E 23x, unter 200MA; Insider sauber diskret. $201K/90d; kein FLAG, Sparrate voll).
+- 18.04.2026 — Forward-Rescoring (Score **72→63 🟠 D2**, erster Rescoring-Präzedenzfall; Advisor-Review deckt 3 Sub-Score-Korrekturen auf: (a) Moat `pricing_power_bonus` ohne Transcript-Belegung −1, (b) Insider `ownership` Threshold-Korrektur V <1% → 1/3 statt 2/3 −1, (c) ROIC `Goodwill-Ausnahme` auf Nicht-M&A-Compounder fehlapplziert Regel-4-Gating GW/Assets 19,95% <30% greift nicht −7; `2026-04-18_V_rescoring` Archive-Append mit Begründung in `notizen`). Detail §11.Befund 3.
+
+### 12.11 VEEV
+
+- 17.04.2026 — v3.7-Backtest-Rekalibrierung Score 74→74 unverändert, DEFCON 4 (Detail §13 [Scoring] v3.7-Ratifikation).
+- 18.04.2026 — Threshold-Drift-Fix D4→D3-Label (Sparrate bei D3/D4-Übergang identisch → keine operative Änderung; Detail §13 [Scoring] 18.04. + §11.Befund 2).
+
+---
+
+## 13. System-Lifecycle-History
+
+Chronologische Meilenstein-Liste. Topic-Prefix für Grep-Filterung. Sortierung aufsteigend. Format: Tabelle.
+
+| Datum | Topic | Meilenstein |
+|---|---|---|
+| 15.04.2026 | [Tools] | Rebalancing_Tool_v3.4 — Sparraten-Logik überarbeitet (D4/D3=1.0, D2=0.5, D1/FLAG=0€); Drift-Warnschwelle typ-abhängig; Ziel-Allokation exakt 100% |
+| 15.04.2026 | [Vault] | Vault-Audit — 10 neue Seiten (4 Autoren + 6 Ersatzbank), 7 Orphans gefixt, 61→71 Notes, Frontmatter standardisiert |
+| 15.04.2026 | [Meta] | System-Integration v4.0 — SKILL.md v4.0 (15 Regeln), 6 INSTRUKTIONEN-Lücken geschlossen, MCP-Session-Check + Tool Search verankert, System-Reife ~95% |
+| 16.04.2026 | [Scoring] | DEFCON v3.5 Scoring-Audit & Fix — 7-Fragen-Audit (5×A, 1×B PT-Upside Double-Counting, 1×C); PT-Upside aus Technicals entfernt, Relative-Stärke als 0–3 Scored Metric promotet, Fundamentals-Floor min 0; Anker rekalibriert AVGO 86→85, SNPS 79→76, TMO 65→62 D2, FICO 70→67, SPGI 77→74 |
+| 17.04.2026 | [Scoring] | v3.6 verworfen, v3.7 "System-Gap-Release" ratifiziert — (1) Quality-Trap Interaktionsterm (QT-Zweige hart 0 bei Wide Moat × teure Bewertung), (2) OpM TTM max 2 Pt., (3) Analyst-Bias-Kalibrierung Sentiment, (4) Fundamentals-Cap 50; Sparraten Nenner 8,5 → 33,53€/16,76€/0€; System-Reife ~92% |
+| 17.04.2026 | [Tools] | Skill v3.7.1 deployed — Backtest-Ready Forward-Pipeline aktiv Phase 1/4; Schritt 6b FLAG-Resolution + Schritt 7 Archiv-Write; 14 Pydantic-Modelle; §18 Sync-Pflicht 6 Dateien |
+| 17.04.2026 | [Vault] | 3 Foundation-Papers integriert (Piotroski 2000 F-Score, Novy-Marx 2013 GP Premium, Sloan 1996 Accruals) — 7→10 Quellen, 11→14 Befunde (B12/B13/B14), 70→76 wiki-Notes, kein Scoring-Impact |
+| 17.04.2026 | [Scoring] | Zwischenbilanz Live-Verify 3/11 (TMO/ASML/RMS) — alle Approximationen ±-Toleranz bestätigt; Fix-1 Interaktionsterm funktioniert design-konform (ASML/RMS beide Zweige, TMO nur P/FCF); v3.7 empirisch validiert |
+| 17.04.2026 | [Tools] | Skill-Audit + Tools-Sync Phase 2 (Post-ASML-Update) — 4 _extern-Skills konsolidiert nach `portfolio_risk.py`; Kategorie-A-Fixes in config.yaml (ASML 66→68 etc.), INSTRUKTIONEN (TMO-Anker 62→63), Faktortabelle (v3.4→v3.7), Vault-Sync 6 Entities, Rebalancing/Satelliten-Monitor via openpyxl synchronisiert |
+| 18.04.2026 | [Scoring] | Schema-SKILL-Threshold-Drift gefixt — `schemas.py _check_defcon_level` auf 80/65/50 Bands (vormals 70/60/50); 5 Tickers (BRK.B/VEEV/SU/COST/RMS) D4→D3 umgelabelt (Sparrate identisch), APH D3→D2 (FLAG überschreibt). Detail §11.Befund 2 |
+| 19.04.2026 | [Tools] | `backtest-ready-forward-verify` Skill deployed (v3.7.2) — Pipeline-Kapsel P1-P6 (Draft-Read + Schema / Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append + git-add); 6 Stdout-Fälle; MigrationEvent self-validating |
+| 19.04.2026 | [Tools] | Track 3 Paper-Integration systemweit abgeschlossen — 5 Phasen: 11 Satelliten mit Factor-Exposure-Block (Aghassi 2023), 6 defcon-Concepts, 2 Skills + 3 Tool-Dokus, R5 `portfolio_returns.jsonl` + `benchmark-series.jsonl` Daily-Schema v1.0 (erster Record 17.04. Portfolio 10.173,42 EUR), §30 Live-Monitoring; 13 Codex-Findings appliziert; Skill bleibt v3.7.2 |
+| 20.04.2026 | [Briefing] | Morning-Briefing v3.0.3 deployed auf Probe + T1/T3/T4 PASS + Soft-Alert-Rebase — Lever 1 Yahoo-Gap-Elimination (BRK.B/RMS.PA/SU.PA `n.v.`), Soft-Alert <180/180–400/>400s; T1 262s, T4 ~10s, T3 ~270s (dreifache Homonym-Absicherung RMS.PA/SU.PA vs Suncor); Gate A beim Prod-Deploy |
+| 20.04.2026 | [Briefing] | Prod-Deploy v3.0.3 — RemoteTrigger `trig_01PyAVAxFpjbPkvXq7UrS2uG` via ccr full-replace, updated_at 14:36 UTC, next_run 21.04. 10:01; `allowed_tools` um `mcp__tavily__tavily_search` erweitert; Discoverability-Edits Post-6-Paper-Ingest (Update-Klassen-DEFCON + DEFCON-System + Depot-State-April Banner-Drift-Fix) |
+| 20.04.2026 | [Briefing] | 🔴 v3.0.3 Manual-Run FAIL → Rollback v2.1 — schwere Datenfabrikation (Oster-EOD-Lag falsch als "stale" interpretiert → Yahoo-intraday-Fallback improvisiert → Phantom-Kurse AVGO $317,79 −21,8%); Rollback 15:13 UTC auf v2.1-Content, allowed_tools auf `[Bash,Read,Glob,Grep]`; Gate A ausgesetzt; Anti-Hallucination-Lesson: auch Datenpfade explizit verbieten |
+| 20.04.2026 | [Vault] | KG-Roadmap v0.1 `draft-frozen` — Codex-Option-D statt v1.0-Ratifikation; Re-Review-Trigger = Cross-Entity-/10-K-Narrativ-Bedarf ODER Score-Archiv-Interim-Gate 2026-10-17; Track 5a/5b + v3.0.3-Prod-Deploy nicht blockiert; erste Anwendung `draft-frozen` für Synthesis-Docs |
+| 21.04.2026 | [Scoring] | Drift-Migration `score_history.jsonl` 12/27 → 27/27 PASS (`ca76114`) — `migrate_defcon_drift.py` idempotent+atomar; 12 `defcon_level`-Drifts seit 18.04.-Threshold-Migration gefixt (alle pre-18.04.-Backfills Score 71–76 D4→D3, 61–63 D3→D2); Motivation für Systemhygiene-Pivot TOP-Priority |
+| 21.04.2026 | [Tools] | Score-Append Provenance-Gate Spec + Plan v2 ratifiziert (`206c0a1`) — Architektur Variante E (Hybrid Pipeline-Gate B + Schema-Guard D), 5 Codex-Sparring-Runden; 4 Patches (Task 0 Pre-Execution-Baseline, Task 2.7 Re-Validate-Sweep, Task 3.1a-d Granularitäts-Split, Task 6 CORE-MEMORY-§10-Timing-Fix); 7 Tasks/40 Steps |
+| 21.04.2026 | [Meta] | §27.4 Vertikal-Drift-Klausel + Applied Learning 12/20 + Systemhygiene-Pivot TOP-Priority (`ca76114` + `8e835ab`) — Präzedenzfall 12/27 Drift → Re-Validate-Pflicht bei Schema-/Threshold-Migrationen; Memory `feedback_exhaustive_drift_check.md` Tier 1 13/13; externes `codebase-memory-mcp` verworfen → internes `03_Tools/system_audit.py` bauen |
+| 22.04.2026 | [Tools] | system_audit.py v1.0 + `/SystemAudit` deployed (Phase E 19/19 DONE) — 9 Checks Core+Optional, `--minimal-baseline` 3/3 PASS pragmatischer Regression-Gate; Acceptance-Matrix 9/11 PASS + 2 dokumentierte WARNs; 2 Plan-Header-Notices (Spec-Drift Task 15 + Task 17); Codex RECONCILED_WITH_FOLLOWUPS (3 Follow-ups); CodeRabbit 4 Phase-E-Findings gefixt (Fix-Welle E `e3ba381`) + 1 OOS-Nitpick |
+| 23.04.2026 | [Ticker] | TMO Q1 FY26 Beat + Guidance-Raise → Score 64→67, D2→D3, fcf_trend_neg-Resolve-Gate CLEAR, Sparraten-Kaskade Nenner 8,0→8,5 (Detail §12.9) |
+| 23.04.2026 | [Tools] | `portfolio_risk.py` `--as-of`-Backfill-Flag + Atomic-Write — Daily-Persist-Lücke seit 17.04. retroaktiv adressierbar; Cashflow-Separation + trading-date-Anker bleibt |
+| 23.04.2026 | [Tools] | Audit-Tool Severity-Icons + Batch-Output-Grouping — `system_audit.py` Output-Hygiene (Severity ✅/⚠️/❌ Icons pro Check, Batch-Grouping nach Kategorie Core/Optional); Check-10 status_matrix Over-Strict-Regex Scope auf `### Matrix`-Subsection eingeengt |
+| 23.04.2026 | [Tools] | `06_Skills-Pakete` Orphan-ZIPs → `05_Archiv/skills-legacy/` — v3.7.1-Paket als neue SSoT, Legacy-Pakete archiviert (Informationsverlust-Aversion: archiviert, nicht gelöscht) |
+| 24.04.2026 | [Meta] | CLAUDE.md Routing-Refactor Tier 1 deployed + Applied-Learning v2.5 (12→14/20) — 97→86 Zeilen, 2 neue SSoT `APPLIED-LEARNING.md` + `TOKEN-RULES.md`, `## Routing-Table` (9 Trigger × 4 Spalten + 3 Edge-Cases + Hybrid-Match-Regel), 11/11 AC PASS (2 dokumentierte Abweichungen); 8 Commits Baseline `d025c7f` |
+| 24.04.2026 | [Meta] | 00_Core Perfect-Organization Tier 2 — STATE-Split (159 Z → Hub ≤40 Z + PORTFOLIO + PIPELINE + SYSTEM), CORE-MEMORY §1 → §12 Per-Ticker + §13 System-Lifecycle, `## Verweise`-Block auf 10 Files, §18 Trigger-basiert + Union-Regel, Scoring-neutral (AC #18), Feature-Branch `refactor/00core-perfect-organization`; dynastie-depot v3.7.3 + backtest-ready-forward-verify 1.0.1 Adoption-Bumps |
+
+---
+*🦅 CORE-MEMORY.md v1.9 (§12 Per-Ticker + §13 System-Lifecycle, §1/§9b entfernt) | Dynastie-Depot | Stand: 25.04.2026*
