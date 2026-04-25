@@ -1,24 +1,25 @@
-# Post-Migration Reference Grep — 2026-04-25 (post-drift-fix 0e45989)
+# Post-Migration Reference Grep — 2026-04-25 (post-Codex-F1-fix)
 # Scope: alle STATE.md / CORE-MEMORY.md Referenzen außerhalb von 05_Archiv, Vault, Analysen, docs, .claude, .git.
 # AC-Bezug: Spec v0.4 AC #15.
 # Excludes match Pre-Migration-Artefakt (2026-04-24-pre-migration-refs.txt).
+./.tmp.driveupload/323:189:      "Bash(awk '/^## 6\\\\. /,/^## 7\\\\. /' 00_Core/CORE-MEMORY.md)",
+./.tmp.driveupload/323:191:      "Bash(awk 'END{print NR}' 00_Core/STATE.md 00_Core/PORTFOLIO.md)",
 ./00_Core/CORE-MEMORY.md:1:# 🧠 CORE-MEMORY.md — Institutionelles Gedächtnis
-./00_Core/CORE-MEMORY.md:5:- [STATE.md](STATE.md) — Hub + Last-Audit
 ./00_Core/CORE-MEMORY.md:301:**NICHT durchgeführt in diesem Sweep:** Markdown-Cross-Source-Validation, Existence-Check (CLAUDE.md/STATE.md-Pfade), Skill-Version-Check, Vault-Backlink-Integrity, docs/superpowers-vs-STATE-Referenzen. **Grund:** dedizierte Exhaustive-Validation via `03_Tools/system_audit.py` in Session 22.04. (Phase D+E).
 ./00_Core/CORE-MEMORY.md:405:  - **Befund 2 (2026-04-18, γ-Fix Schema-SKILL DEFCON-Threshold-Drift):** `schemas.py _check_defcon_level` benutzte alte Thresholds (70/60/50) während SKILL.md Neueinstieg + Bestandsüberwachung seit v3.x mit 80/65/50 arbeitet. Forward-Record `2026-04-18_V_vollanalyse` wurde mit falschem defcon_level=4 (Score 72) akzeptiert — unter Schema war das konsistent, unter SKILL wäre D3 korrekt. **Fix commit 18.04.:** `schemas.py` + `archive_score.py` Smoke-Tests auf neue Thresholds (Sub-Sum 80 statt 79). Impact: 5 Tickers (BRK.B/VEEV/SU/COST/RMS) in STATE.md/Faktortabelle von D4 auf D3 umgelabelt (Sparrate bei D3/D4-Übergang laut SKILL-Bestand identisch → keine operative Änderung); APH D3→D2 (FLAG überschreibt Sparrate weiter).
+./00_Core/CORE-MEMORY.md:5:- [STATE.md](STATE.md) — Hub + Last-Audit
 ./00_Core/CORE-MEMORY.md:516:*🦅 CORE-MEMORY.md v1.9 (§12 Per-Ticker + §13 System-Lifecycle, §1/§9b entfernt) | Dynastie-Depot | Stand: 25.04.2026*
 ./00_Core/Faktortabelle.md:12:> **Seit 25.04.2026 (00_Core Hub-Split):** Session-Start liest `00_Core/STATE.md` (Hub) + `00_Core/PORTFOLIO.md` (Live-State); Faktortabelle ist on-demand Deep-Dive-Quelle. Sync-Pflicht §18 v2 = Trigger-basiertes Event-Mapping (Score-Event-Set inkl. PORTFOLIO.md statt STATE.md).
 ./00_Core/Faktortabelle.md:17:- [CORE-MEMORY.md §4](CORE-MEMORY.md#4-score-register) — Score-Register
 ./00_Core/Faktortabelle.md:18:- [CORE-MEMORY.md §5](CORE-MEMORY.md#5-scoring-lektionen-gelernte-regeln) — Scoring-Lektionen
 ./00_Core/Faktortabelle.md:19:- [CORE-MEMORY.md §12](CORE-MEMORY.md#12-per-ticker-chronik) — Per-Ticker-Historie
-./00_Core/INSTRUKTIONEN.md:4:> Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
-./00_Core/INSTRUKTIONEN.md:7:- [STATE.md](STATE.md) — Hub
 ./00_Core/INSTRUKTIONEN.md:11:- [CORE-MEMORY.md](CORE-MEMORY.md) — Lektionen + Per-Ticker + Lifecycle
 ./00_Core/INSTRUKTIONEN.md:284:| **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` (+ `flag_events.jsonl` bei FLAG) |
 ./00_Core/INSTRUKTIONEN.md:286:| **System-Zustand-Change** (DEFCON-Version, MCP-Change, Briefing-Status, neuer Backlog-Eintrag, Infra-Deploy) | **`SYSTEM.md`** + `log.md` (+ `CORE-MEMORY.md §6` bei Versionsprung) |
 ./00_Core/INSTRUKTIONEN.md:287:| **Critical-Alert-Slot** (Hub) | `STATE.md` Hub-Edit (nur Alert-Slot); kein Bi-Sync erzwungen |
 ./00_Core/INSTRUKTIONEN.md:313:- v1.7 → v1.8 (2026-04-21): Zusatz-Trigger für STATE.md Pipeline-SSoT-Section ergänzt (Plan-Commit / Gate-Passage / Status-Transition). Kein Impact auf die 6-File-Liste selbst.
 ./00_Core/INSTRUKTIONEN.md:314:- v1.8 → v2 (2026-04-24): 00_Core Hub-Split — pauschale 6er-Liste → Trigger-basiertes Event-Mapping (§18.1) + Multi-Event-Union-Regel (§18.2). STATE.md = Hub (Critical-Alert-Slot), Live-State migriert in PORTFOLIO.md. Pipeline-Items in PIPELINE.md, System-Items in SYSTEM.md.
+./00_Core/INSTRUKTIONEN.md:4:> Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 ./00_Core/INSTRUKTIONEN.md:435:**Problem:** Der 10:00-Morning-Briefing-Trigger läuft als Remote-Session auf claude.ai und liest `00_Core/` aus dem **GitHub-Repo** — nicht aus dem lokalen Arbeitsverzeichnis. Jede lokale Änderung an STATE.md (Hub) / PORTFOLIO.md / PIPELINE.md / SYSTEM.md / Faktortabelle / CORE-MEMORY / SESSION-HANDOVER / INSTRUKTIONEN muss vor 10:00 gepusht sein, sonst analysiert der Trigger veraltete Daten.
 ./00_Core/INSTRUKTIONEN.md:450:  STATE.md             [X Zeilen divergent] / [✅ identisch]
 ./00_Core/INSTRUKTIONEN.md:455:  CORE-MEMORY.md       [X Zeilen divergent] / [✅ identisch]
@@ -30,9 +31,8 @@
 ./00_Core/INSTRUKTIONEN.md:590:- `00_Core/CORE-MEMORY.md` (§4 Score-Tabelle, §5/§12/§13 Scoring-Lektionen + Per-Ticker + Lifecycle)
 ./00_Core/INSTRUKTIONEN.md:593:- `00_Core/STATE.md` (Hub + Last-Audit), `00_Core/PORTFOLIO.md`, `00_Core/PIPELINE.md`, `00_Core/SYSTEM.md`, `Faktortabelle.md`
 ./00_Core/INSTRUKTIONEN.md:671:7. `00_Core/CORE-MEMORY.md` — §5 Scoring-Lektion + §1 Meilenstein-Eintrag
+./00_Core/INSTRUKTIONEN.md:7:- [STATE.md](STATE.md) — Hub
 ./00_Core/INSTRUKTIONEN.md:838:**"Schema-Watch (nicht FLAG-aktiv)"** (R1 NICHT automatisch) = schema-getriggert per FLAG_RULES, aber bewusst nicht aktiviert (z.B. TMO fcf_trend_neg FY25: WC-Delta erklärt FCF-Rückgang, kein struktureller Trend). **Kein aktiver FLAG, kein R1, kein flag_events-Pfad.** Schema-Watch ist semantisch separat von PORTFOLIO.md "Aktive Watches" (= allgemeine Beobachtungsnotizen, seit 00_Core Hub-Split aus STATE.md migriert).
-./00_Core/KONTEXT.md:4:> Für das WIE → INSTRUKTIONEN.md | Für Erinnerungen → CORE-MEMORY.md
-./00_Core/KONTEXT.md:7:- [STATE.md](STATE.md) — Hub
 ./00_Core/KONTEXT.md:10:- [CORE-MEMORY.md §2](CORE-MEMORY.md#2-strategische-entscheidungen-dauerhaft-bindend) — Strategische Entscheidungen
 ./00_Core/KONTEXT.md:167:- **`CORE-MEMORY.md`** (00_Core) — strategisches Gedächtnis (Sections 2-13: Strategische Entscheidungen, Positionen, §4 Pointer, Lektionen, Upgrades, Audit, Backtest-Infrastructure, §12 Per-Ticker-Chronik, §13 System-Lifecycle). §1 Meilensteine vor 15.04.2026 archiviert in `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md`; §1-Nachfolge durch §12/§13 Topic-Auflösung (Task-3 Refactor 2026-04-25).
 ./00_Core/KONTEXT.md:172:- **`05_Archiv/score_history.jsonl`** — ein Record pro `!Analysiere` (Vollanalyse/Delta/Rescoring), validiert via `ScoreRecord` in `03_Tools/backtest-ready/schemas.py`. Git-tracked via `.gitignore`-Whitelist. **Seit 19.04.2026 (v3.7.2)** wird der Write via Skill `backtest-ready-forward-verify` orchestriert (Pipeline-Disziplin: Freshness + PORTFOLIO.md-Tripwire + §28.2 Δ-Gate + Dry-Run + Append; Tripwire-Ziel seit Hub-Split 2026-04-25 PORTFOLIO.md, vorher STATE.md).
@@ -42,98 +42,84 @@
 ./00_Core/KONTEXT.md:194:| Projection | `STATE.md` (Hub), `PORTFOLIO.md`, `PIPELINE.md`, `SYSTEM.md` | Regenerieren aus State + Narrative (trigger-basiertes §18-Event-Mapping) |
 ./00_Core/KONTEXT.md:202:| Session-Start (90% der Fälle) | Projection-Layer (`STATE.md` Hub + `PORTFOLIO.md` default-load) |
 ./00_Core/KONTEXT.md:204:| "Warum-Fragen", Lessons, Strategie | Narrative-Layer (`CORE-MEMORY.md` §5/§12/§13) |
-./00_Core/PIPELINE.md:9:- [CORE-MEMORY.md §13](CORE-MEMORY.md#13-system-lifecycle-history) — Lifecycle-Einträge bei Done/Deferred
+./00_Core/KONTEXT.md:4:> Für das WIE → INSTRUKTIONEN.md | Für Erinnerungen → CORE-MEMORY.md
+./00_Core/KONTEXT.md:7:- [STATE.md](STATE.md) — Hub
 ./00_Core/PIPELINE.md:15:> **Zweck:** Single-Source-of-Truth für alle offenen Pläne, Gates und Termine. Ersetzt die bisherige Fragmentierung über STATE.md + SESSION-HANDOVER.md + Plan-Files + Memory (jedes Mal aus 4 Quellen rekonstruiert — exakter Anti-Pattern der 21.04.-Drift-Lesson).
-./00_Core/PIPELINE.md:45:12. **00_Core Perfect-Organization Tier 2 — IN PROGRESS (Session 3 heute, Task 0-3 DONE).** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` (Spec v0.4 ratified, 18 AC). Feature-Branch `refactor/00core-perfect-organization`. **DONE:** Task 0 Pre-Migration Baseline (`2f3cf92` Baseline-Artefakte: Grep-Refs + Pre-Audit), Task 1 Satelliten-Skelette (`42b9905` PORTFOLIO/PIPELINE/SYSTEM leer mit Verweise-Kopf), Task 2 atomarer STATE-Split Cutover (`f798f0a` STATE.md 159 Z→40 Z Hub + Content-Fill in 3 Peers + Banner-Chronik → SESSION-HANDOVER.md, AC #1-#5/#18 PASS), Task 3 CORE-MEMORY §1→§12/§13 Topic-Auflösung (`326fa42` 11 Ticker-Sub-§ + 26-Zeilen-Lifecycle-Tabelle + §6 slim Changelog + §9b gelöscht + Verweise-Kopf, AC #6 PASS, advisor-pre-commit-Fixes MSFT-Wording + AVGO/MSFT/VEEV Cross-Ref-Bullets). **OPEN (Session 4+):** Task 4 Script-Patches TDD-Order (`_forward_verify_helpers.py` Tripwire STATE→PORTFOLIO, `system_audit/checks/*`, Fixtures, `briefing-sync-check.ps1`, backfill/flag_event_study §1-Refs → §12/§13), Task 5 Skill-Patches + Peer-Verweise (`dynastie-depot` v3.7.3, `backtest-ready-forward-verify` v1.0.1, 4 weitere Peer-Files mit Verweise-Kopf), Task 6 CLAUDE.md + INSTRUKTIONEN §18-Rename (Cutover-Abschluss auf Main-Zeitachse via `--no-ff`), Task 7 Governance/Review-Gates, Task 8 ZIP-Build (2 Skill-Pakete), Task 9 Post-Migration-Audit + Merge. system_audit `--minimal-baseline` 3/3 PASS durch alle Tasks. Scoring-neutral. **Scope-Restdauer:** ~15 Script-/Skill-Files + 2 ZIPs + 4 Review-Gates. (e) SKILL.md §215 Snapshot-First-Block-Review bleibt Backlog (out-of-scope dieses Plans).
+./00_Core/PIPELINE.md:45:12. **00_Core Perfect-Organization Tier 2 — IN PROGRESS (Task 8 Smoke+Verification running, Task 0-7 DONE).** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` (Spec v0.4 ratified, 18 AC). Feature-Branch `refactor/00core-perfect-organization`. **DONE:** Task 0 Pre-Migration Baseline (`2f3cf92`), Task 1 Satelliten-Skelette (`42b9905`), Task 2 atomarer STATE-Split Cutover (`f798f0a` STATE.md 159 Z→40 Z Hub + Content-Fill in 3 Peers + Banner-Chronik → SESSION-HANDOVER.md, AC #1-#5/#18 PASS), Task 3 CORE-MEMORY §1→§12/§13 Topic-Auflösung (`326fa42`, AC #6 PASS), Task 4 Script-Patches TDD (`469f5af` Tripwire STATE→PORTFOLIO + system_audit/checks + Fixtures + briefing-sync-check.ps1 + backfill/flag_event_study §1→§12/§13), Task 5 Skill-Patches + Peer-Verweise (`a404012` dynastie-depot v3.7.3 + bt-fwd-verify v1.0.1 + 5 Peer-Verweise-Header), Task 6 Governance (`9cce107` CLAUDE.md + INSTRUKTIONEN §18 v2 + §25/§27.3/§27.4), Task 7 Skill-Paket-Build (`f66b622` ZIPs neu gebaut + v3.7.2 archiviert + Legacy-README-Entry), Task-8-Narratives-Drift-Fix (`0e45989` CORE-MEMORY §3 + KONTEXT §Layer post-migration cleanup). **OPEN (Task 8 Rest + Task 9):** Step 8.10 Commit Verification-Artefakte, Task 9 Codex-Reconciliation + CodeRabbit-Pass + User-Sign-off + Merge. system_audit `--minimal-baseline` 3/3 PASS durch alle Tasks. Scoring-neutral (AC #18 verifiziert). **SKILL.md §215 Snapshot-First-Block-Review bleibt Backlog (out-of-scope dieses Plans).**
+./00_Core/PIPELINE.md:47:13. **Vault-Concept-Seiten-Sanierung (NEU 2026-04-25 — Follow-up zu 00_Core-Refactor Tier 2, AC #17):** 8 Vault-Files referenzieren STATE.md/CORE-MEMORY.md (`wiki/concepts/STATE.md`, `wiki/concepts/CORE-MEMORY.md`, `wiki/concepts/CLAUDE-md-Konstitution.md`, `wiki/concepts/Session-Start-Protokoll.md`, `wiki/concepts/Token-Mechanik.md`, `wiki/concepts/Context-Hygiene.md`, `wiki/synthesis/Depot-State-April-2026.md`, diverse DEFCON-Concepts). Nach Tier-2-Execution muss Vault auf neue Struktur (Hub + PORTFOLIO / PIPELINE / SYSTEM + CORE-MEMORY §12/§13) nachgezogen werden. **Trigger:** Vor nächstem Vault-heavy-Discoverability-Sweep ODER bei erstem Vault-Lint-Fail ODER User-initiierter Vault-Review — whichever first. **Risiko bei Aufschub:** Dokumentations-Drift (nicht Live-System-Break — `vault_backlinks.py` prüft Wikilinks, nicht Prose-Refs).
+./00_Core/PIPELINE.md:9:- [CORE-MEMORY.md §13](CORE-MEMORY.md#13-system-lifecycle-history) — Lifecycle-Einträge bei Done/Deferred
 ./00_Core/PORTFOLIO.md:8:- [CORE-MEMORY.md §12](CORE-MEMORY.md#12-per-ticker-chronik) — Per-Ticker-Analyse-Historie
+./00_Core/SESSION-HANDOVER.md:100:1. `Session starten` → STATE.md (Hub, default-load) + PORTFOLIO.md (Live-State, default-load nach §6.1 CLAUDE.md v2)
+./00_Core/SESSION-HANDOVER.md:109:- briefing-sync-check.ps1 — Codex falsch-positiv-flagged (STATE.md ist intentional drin als Hub für Critical-Alert-Sync)
+./00_Core/SESSION-HANDOVER.md:12:- `0e45989` Task-8-Narratives-Drift-Fix — Codex-Review entdeckte 2 🔴 Blocker (F1 CORE-MEMORY §3/§4/§5/§9: 5 Stellen, F2 KONTEXT §11 Projection-Layer: 5 Stellen). 9 Drift-Pointer STATE.md → PORTFOLIO.md / 4-file-arch nachgezogen. KONTEXT v1.1→v1.2. Allowed: L405 CORE-MEMORY historisch (18.04. pre-Hub-Split korrekt at write-time); morning-briefing-prompt-v2.md Changelog.
+./00_Core/SESSION-HANDOVER.md:135:1. **Step 4.12:** `03_Tools/briefing-sync-check.ps1` — `$CheckedFiles`-Liste um `00_Core/PORTFOLIO.md`, `00_Core/PIPELINE.md`, `00_Core/SYSTEM.md` erweitern (neben dem bereits gelisteten STATE.md). Optional Smoke via `pwsh.exe -File ... -WhatIf`.
+./00_Core/SESSION-HANDOVER.md:151:1. `Session starten` → STATE.md lesen
+./00_Core/SESSION-HANDOVER.md:180:1. Step 4.1-4.3: `_forward_verify_helpers.py` Tripwire STATE.md → PORTFOLIO.md — erst `_smoke_test.py`-Fixture auf PORTFOLIO-Snippet umstellen (RED), dann Helper-Code anpassen (GREEN). Beide Smoke-Runs explizit zeigen.
+./00_Core/SESSION-HANDOVER.md:191:1. `Session starten` → STATE.md (Default) lesen
+./00_Core/SESSION-HANDOVER.md:194:4. Step 4.1 grep auf `_forward_verify_helpers.py` STATE.md-Stellen → notieren
+./00_Core/SESSION-HANDOVER.md:211:## 🏛 STATE-Banner-Chronik (migriert aus STATE.md Header 2026-04-24)
+./00_Core/SESSION-HANDOVER.md:226:- Session 3 (Brainstorm-Kandidat): 00_Core Perfect-Organization — Tier-2 STATE-Split Variante-B-Hub + Tier-2b CORE-MEMORY Restrukturierung + Global-Linking-Strategie. Siehe STATE.md Pipeline-Deferred #12.
+./00_Core/SESSION-HANDOVER.md:234:> **Auftrag:** Brainstorm-Session (nicht Execution) zur Vision „perfekt organisierter + global verknüpfter `00_Core/`-Ordner". Kandidaten-Scope siehe STATE.md Pipeline-Deferred #12:
+./00_Core/SESSION-HANDOVER.md:236:> - (b) Tier-2 STATE-Split Variante-B-Hub (STATE.md ~10-Z-Hub + PORTFOLIO.md / PIPELINE.md / SYSTEM.md)
+./00_Core/SESSION-HANDOVER.md:244:> 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung
+./00_Core/SESSION-HANDOVER.md:262:> 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung ziehen
+./00_Core/SESSION-HANDOVER.md:271:> 5. Nach Session 2 Abschluss: **Session 3 Brainstorm-Kandidat** = 00_Core Perfect-Organization (siehe STATE.md #12)
+./00_Core/SESSION-HANDOVER.md:282:> - Sync-Welle: STATE.md Pipeline-SSoT (Tier-1 als DONE #5 + Renumber-Kaskade) + CORE-MEMORY §1-Eintrag
+./00_Core/SESSION-HANDOVER.md:328:> - **Variante B Hub** für STATE.md (Tier 2, DEFERRED — nicht diese Session)
+./00_Core/SESSION-HANDOVER.md:333:> - **Tier 2** STATE.md 3-Split Variante B (Hub): STATE.md bleibt als ~10-Z-Hub + Banner + Pointer; darunter `00_Core/PORTFOLIO.md` (Portfolio-State + Watches + 30d-Trigger, konsolidiert mit 🟠 Portfolio-Triggers-Block) / `00_Core/PIPELINE.md` (Pipeline-SSoT 🔴/🟡/🔵 + Long-Term-Gates ⏰) / `00_Core/SYSTEM.md` (System-Zustand + Audit + Backlog). Erwartet ~70% Session-Start-Cost-Reduktion. Separate Session.
+./00_Core/SESSION-HANDOVER.md:334:> - **Tier 2b** CORE-MEMORY.md Subkategorisierung (kalendarische Riesen-Liste → Subkategorien + Verknüpfung mit adressierten System-Elementen). User beiläufig geparkt.
+./00_Core/SESSION-HANDOVER.md:335:> - **Tier 3** `vault_backlinks`-Check-Erweiterung auf Root-Ordner. Bereits Backlog-Punkt STATE.md Z. 120.
+./00_Core/SESSION-HANDOVER.md:349:> - `Session starten` → Default, Pflicht-Read STATE.md
+./00_Core/SESSION-HANDOVER.md:356:> - Konsolidierungstag/System-Audit/Backlog → SYSTEM/PIPELINE-relevant (Tier 2 aktuell STATE.md §Pipeline+§System)
+./00_Core/SESSION-HANDOVER.md:38:1. `Session starten` → STATE.md (Hub, default-load) + PORTFOLIO.md (Live-State, default-load)
 ./00_Core/SESSION-HANDOVER.md:4:- [STATE.md](STATE.md) — Hub
+./00_Core/SESSION-HANDOVER.md:430:    - **Output:** Entscheidung protokollieren in STATE.md §Pipeline 🟡 (Pläne aktivieren ODER weiter 🔵 deferred). Dashboard v2 Block 3 übernimmt Feed-Scope entsprechend.
+./00_Core/SESSION-HANDOVER.md:471:STATE.md Banner sagt: „Phase E 19/19 DONE" + „Pfad-2" + „Phase G next".
+./00_Core/SESSION-HANDOVER.md:507:1. `Session starten` → STATE.md (Banner „Phase E 19/19 DONE, Pfad-2, Phase G next")
+./00_Core/SESSION-HANDOVER.md:53:- briefing-sync-check.ps1 — Codex-False-Positive (STATE.md intentional als Hub für Critical-Alert-Sync)
 ./00_Core/SESSION-HANDOVER.md:8:- [CORE-MEMORY.md §12](CORE-MEMORY.md#12-per-ticker-chronik) — Per-Ticker-Historie bei Ticker-Sessions
-./00_Core/SESSION-HANDOVER.md:17:**Working-Tree (uncommitted, runtime/autosave):** `00_Core/STATE.md` (Last-Audit-Auto-Update), `03_Tools/Rebalancing_Tool_v3.4.xlsx` (Excel-Autosave), `.claude/scheduled_tasks.lock`, `.claude/worktrees/`. Kein Task-Scope.
-./00_Core/SESSION-HANDOVER.md:35:1. `Session starten` → STATE.md (Hub, default-load) + PORTFOLIO.md (Live-State, default-load nach §6.1 CLAUDE.md v2)
-./00_Core/SESSION-HANDOVER.md:44:- briefing-sync-check.ps1 — Codex falsch-positiv-flagged (STATE.md ist intentional drin als Hub für Critical-Alert-Sync)
-./00_Core/SESSION-HANDOVER.md:70:1. **Step 4.12:** `03_Tools/briefing-sync-check.ps1` — `$CheckedFiles`-Liste um `00_Core/PORTFOLIO.md`, `00_Core/PIPELINE.md`, `00_Core/SYSTEM.md` erweitern (neben dem bereits gelisteten STATE.md). Optional Smoke via `pwsh.exe -File ... -WhatIf`.
-./00_Core/SESSION-HANDOVER.md:86:1. `Session starten` → STATE.md lesen
-./00_Core/SESSION-HANDOVER.md:115:1. Step 4.1-4.3: `_forward_verify_helpers.py` Tripwire STATE.md → PORTFOLIO.md — erst `_smoke_test.py`-Fixture auf PORTFOLIO-Snippet umstellen (RED), dann Helper-Code anpassen (GREEN). Beide Smoke-Runs explizit zeigen.
-./00_Core/SESSION-HANDOVER.md:126:1. `Session starten` → STATE.md (Default) lesen
-./00_Core/SESSION-HANDOVER.md:129:4. Step 4.1 grep auf `_forward_verify_helpers.py` STATE.md-Stellen → notieren
-./00_Core/SESSION-HANDOVER.md:146:## 🏛 STATE-Banner-Chronik (migriert aus STATE.md Header 2026-04-24)
-./00_Core/SESSION-HANDOVER.md:161:- Session 3 (Brainstorm-Kandidat): 00_Core Perfect-Organization — Tier-2 STATE-Split Variante-B-Hub + Tier-2b CORE-MEMORY Restrukturierung + Global-Linking-Strategie. Siehe STATE.md Pipeline-Deferred #12.
-./00_Core/SESSION-HANDOVER.md:169:> **Auftrag:** Brainstorm-Session (nicht Execution) zur Vision „perfekt organisierter + global verknüpfter `00_Core/`-Ordner". Kandidaten-Scope siehe STATE.md Pipeline-Deferred #12:
-./00_Core/SESSION-HANDOVER.md:171:> - (b) Tier-2 STATE-Split Variante-B-Hub (STATE.md ~10-Z-Hub + PORTFOLIO.md / PIPELINE.md / SYSTEM.md)
-./00_Core/SESSION-HANDOVER.md:179:> 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung
-./00_Core/SESSION-HANDOVER.md:197:> 1. `Session starten` → STATE.md (Default) lesen, kompakte Zusammenfassung ziehen
-./00_Core/SESSION-HANDOVER.md:206:> 5. Nach Session 2 Abschluss: **Session 3 Brainstorm-Kandidat** = 00_Core Perfect-Organization (siehe STATE.md #12)
-./00_Core/SESSION-HANDOVER.md:217:> - Sync-Welle: STATE.md Pipeline-SSoT (Tier-1 als DONE #5 + Renumber-Kaskade) + CORE-MEMORY §1-Eintrag
-./00_Core/SESSION-HANDOVER.md:263:> - **Variante B Hub** für STATE.md (Tier 2, DEFERRED — nicht diese Session)
-./00_Core/SESSION-HANDOVER.md:268:> - **Tier 2** STATE.md 3-Split Variante B (Hub): STATE.md bleibt als ~10-Z-Hub + Banner + Pointer; darunter `00_Core/PORTFOLIO.md` (Portfolio-State + Watches + 30d-Trigger, konsolidiert mit 🟠 Portfolio-Triggers-Block) / `00_Core/PIPELINE.md` (Pipeline-SSoT 🔴/🟡/🔵 + Long-Term-Gates ⏰) / `00_Core/SYSTEM.md` (System-Zustand + Audit + Backlog). Erwartet ~70% Session-Start-Cost-Reduktion. Separate Session.
-./00_Core/SESSION-HANDOVER.md:269:> - **Tier 2b** CORE-MEMORY.md Subkategorisierung (kalendarische Riesen-Liste → Subkategorien + Verknüpfung mit adressierten System-Elementen). User beiläufig geparkt.
-./00_Core/SESSION-HANDOVER.md:270:> - **Tier 3** `vault_backlinks`-Check-Erweiterung auf Root-Ordner. Bereits Backlog-Punkt STATE.md Z. 120.
-./00_Core/SESSION-HANDOVER.md:284:> - `Session starten` → Default, Pflicht-Read STATE.md
-./00_Core/SESSION-HANDOVER.md:291:> - Konsolidierungstag/System-Audit/Backlog → SYSTEM/PIPELINE-relevant (Tier 2 aktuell STATE.md §Pipeline+§System)
-./00_Core/SESSION-HANDOVER.md:365:    - **Output:** Entscheidung protokollieren in STATE.md §Pipeline 🟡 (Pläne aktivieren ODER weiter 🔵 deferred). Dashboard v2 Block 3 übernimmt Feed-Scope entsprechend.
-./00_Core/SESSION-HANDOVER.md:406:STATE.md Banner sagt: „Phase E 19/19 DONE" + „Pfad-2" + „Phase G next".
-./00_Core/SESSION-HANDOVER.md:442:1. `Session starten` → STATE.md (Banner „Phase E 19/19 DONE, Pfad-2, Phase G next")
 ./00_Core/STATE.md:1:# 🎯 STATE.md — Dynasty-Depot Hub
-./00_Core/STATE.md:8:- [CORE-MEMORY.md](CORE-MEMORY.md) — Lektionen + Per-Ticker-Chronik (§12) + System-Lifecycle (§13)
 ./00_Core/STATE.md:21:| Lektionen / Per-Ticker-Chronik / Lifecycle | CORE-MEMORY.md (§5 / §12 / §13) |
 ./00_Core/STATE.md:40:*🦅 STATE.md Hub v2.0 | Dynasty-Depot | Navigation + Critical-Alert + Last-Audit*
+./00_Core/STATE.md:8:- [CORE-MEMORY.md](CORE-MEMORY.md) — Lektionen + Per-Ticker-Chronik (§12) + System-Lifecycle (§13)
+./00_Core/SYSTEM.md:28:  - ~~**Check-3 future-date-Bug**~~ **→ resolved 23.04.2026 Spät.** `markdown_header.py` filtert Datums > today vor `max()`-Newest-Event-Berechnung. STATE.md + Faktortabelle.md nicht mehr False-FAIL durch Long-Term-Gates / zukünftige Earnings-Dates. CORE-MEMORY.md-Lag bleibt als legitime WARN (Content-Sync-Todo). Plan-Header-Notice + 1 Smoke-Test mit frozen today.
 ./00_Core/SYSTEM.md:8:- [CORE-MEMORY.md §6](CORE-MEMORY.md#6-system-upgrades--versionsverlauf) — Versions-Changelog
 ./00_Core/SYSTEM.md:9:- [CORE-MEMORY.md §13](CORE-MEMORY.md#13-system-lifecycle-history) — System-Lifecycle-Einträge
-./00_Core/SYSTEM.md:28:  - ~~**Check-3 future-date-Bug**~~ **→ resolved 23.04.2026 Spät.** `markdown_header.py` filtert Datums > today vor `max()`-Newest-Event-Berechnung. STATE.md + Faktortabelle.md nicht mehr False-FAIL durch Long-Term-Gates / zukünftige Earnings-Dates. CORE-MEMORY.md-Lag bleibt als legitime WARN (Content-Sync-Todo). Plan-Header-Notice + 1 Smoke-Test mit frozen today.
 ./00_Core/TOKEN-RULES.md:15:- [STATE.md](STATE.md) — Hub
-./00_Core/TOKEN-RULES.md:23:- **Snapshot-First:** STATE.md + Faktortabelle vor API — spart 3-5 Tool-Calls
-./00_Core/TOKEN-RULES.md:24:- **Sync-Pflicht (alle sechs):** log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + flag_events.jsonl
-./01_Skills/backtest-ready-forward-verify/SKILL.md:41:- Narrative Dateien: `PORTFOLIO.md`, `Faktortabelle.md`, `CORE-MEMORY.md`, `log.md`, `config.yaml`
-./01_Skills/backtest-ready-forward-verify/SKILL.md:126:**Conditional files ignorieren:** CORE-MEMORY.md und config.yaml werden nicht geprüft.
+./00_Core/TOKEN-RULES.md:23:- **Snapshot-First:** PORTFOLIO.md (Live-State) + Faktortabelle vor API — spart 3-5 Tool-Calls. STATE.md ist Hub und wird durch CLAUDE.md-Session-Init ohnehin geladen.
+./00_Core/TOKEN-RULES.md:24:- **Sync-Pflicht (Trigger-basiert, §18 v2):** Pflicht-Files pro Event-Typ — Score/FLAG/Sparraten-Change → `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + `PORTFOLIO.md` + `score_history.jsonl` (+ `flag_events.jsonl` bei FLAG); Pipeline-Item → `PIPELINE.md` + `log.md`; System-Zustand → `SYSTEM.md` + `log.md`. Multi-Event = Union. Details: [INSTRUKTIONEN.md §18](INSTRUKTIONEN.md#18-sync-pflicht--trigger-basiertes-file-set-mapping-v2-2026-04-24-00_core-refactor).
 ./01_Skills/backtest-ready-forward-verify/_smoke_test.py:432:        core_memory_md = core_dir / "CORE-MEMORY.md"
 ./01_Skills/backtest-ready-forward-verify/_smoke_test.py:491:        assert "CORE-MEMORY.md" not in result_d, "CORE-MEMORY.md must not appear in freshness result"
+./01_Skills/backtest-ready-forward-verify/SKILL.md:126:**Conditional files ignorieren:** CORE-MEMORY.md und config.yaml werden nicht geprüft.
+./01_Skills/backtest-ready-forward-verify/SKILL.md:41:- Narrative Dateien: `PORTFOLIO.md`, `Faktortabelle.md`, `CORE-MEMORY.md`, `log.md`, `config.yaml`
 ./01_Skills/dynastie-depot/capex-fcf-template.md:162:2. `CORE-MEMORY.md` — Score-Register aktualisieren falls geaendert
 ./01_Skills/dynastie-depot/PIPELINE.md:303:├── 00_Core/           → CORE-MEMORY.md | KONTEXT.md | INSTRUKTIONEN.md
 ./01_Skills/dynastie-depot/SKILL.md:306:5. **Nach Success (Exit 0, Skill hat `git add` bereits gesetzt):** Sync-Commit mit allen 6 Files (§18 Sync-Pflicht — Score-Event-Set): `log.md + CORE-MEMORY.md + Faktortabelle.md + PORTFOLIO.md + score_history.jsonl` (+ ggf. `flag_events.jsonl`).
 ./01_Skills/dynastie-depot/SKILL.md:942:3. Befund in CORE-MEMORY.md → "API-Audit-Log" eintragen: `[Datum] | [Ticker] | OCF: X% | CapEx: X% | Status`
+./03_Tools/backtest-ready/_forward_verify_helpers.py:257:    Conditional files (CORE-MEMORY.md, config.yaml) are **not** checked — they
 ./03_Tools/backtest-ready/backfill_scores.py:3:Parses the Markdown Score-Register table in `00_Core/CORE-MEMORY.md`
-./03_Tools/backtest-ready/backfill_scores.py:78:CORE_MEMORY: Path = REPO_ROOT / "00_Core" / "CORE-MEMORY.md"
 ./03_Tools/backtest-ready/backfill_scores.py:382:        description="Backfill score history from CORE-MEMORY.md Section 4.",
 ./03_Tools/backtest-ready/backfill_scores.py:389:        print(f"[FATAL] CORE-MEMORY.md not found at {CORE_MEMORY}", file=sys.stderr)
 ./03_Tools/backtest-ready/backfill_scores.py:395:        print("[FATAL] Score-Register table empty or not found in CORE-MEMORY.md",
+./03_Tools/backtest-ready/backfill_scores.py:78:CORE_MEMORY: Path = REPO_ROOT / "00_Core" / "CORE-MEMORY.md"
 ./03_Tools/backtest-ready/README.md:124:2. `CORE-MEMORY.md` (00_Core)
 ./03_Tools/backtest-ready/README.md:126:4. `PORTFOLIO.md` (seit 00_Core Hub-Split, vorher `STATE.md`)
-./03_Tools/backtest-ready/_forward_verify_helpers.py:257:    Conditional files (CORE-MEMORY.md, config.yaml) are **not** checked — they
-Binary file ./03_Tools/backtest-ready/__pycache__/_forward_verify_helpers.cpython-314.pyc matches
 ./03_Tools/briefing-sync-check.ps1:35:    '00_Core/STATE.md',
 ./03_Tools/briefing-sync-check.ps1:40:    '00_Core/CORE-MEMORY.md',
-./03_Tools/morning-briefing-prompt-v2.md:4:**Version:** v2.2 — STATE.md als zweite Kontext-Quelle + Format-Erweiterung
 ./03_Tools/morning-briefing-prompt-v2.md:12:### v2.2 (17.04.2026) — STATE.md Integration
 ./03_Tools/morning-briefing-prompt-v2.md:13:- SCHRITT 2 aufgeteilt: 2a STATE.md (Sparraten, Watches, Trigger-Tabelle) + 2b Faktortabelle (Score-Details, Earnings)
 ./03_Tools/morning-briefing-prompt-v2.md:14:- Neuer Abschnitt `--- AKTIVE WATCHES ---` nach FLAGS (aus STATE.md)
 ./03_Tools/morning-briefing-prompt-v2.md:16:- `EARNINGS NAECHSTE 7 TAGE` → `NAECHSTE TRIGGER & EARNINGS (30 Tage)` (kombiniert aus STATE.md + Faktortabelle)
 ./03_Tools/morning-briefing-prompt-v2.md:17:- WOCHENEND-MODUS: liest jetzt auch STATE.md, zeigt Watches
+./03_Tools/morning-briefing-prompt-v2.md:4:**Version:** v2.2 — STATE.md als zweite Kontext-Quelle + Format-Erweiterung
 ./03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md:343:   ├─ 00_Core/STATE.md         → Sparraten, Watches, Trigger-Tabelle
-./03_Tools/system_audit/checks/existence.py:3:Spec §5.1 Check-4 + Codex-Patch P3. Scope: CLAUDE.md + STATE.md + PORTFOLIO.md +
-./03_Tools/system_audit/checks/existence.py:50:        repo_root / "00_Core" / "STATE.md",
-./03_Tools/system_audit/checks/markdown_header.py:3:Targets (post-Hub-Split): STATE.md (Hub) / PORTFOLIO.md / PIPELINE.md /
-./03_Tools/system_audit/checks/markdown_header.py:4:SYSTEM.md / CORE-MEMORY.md / Faktortabelle.md.
-./03_Tools/system_audit/checks/markdown_header.py:121:        (repo_root / "00_Core" / "STATE.md", "state"),
-./03_Tools/system_audit/checks/markdown_header.py:125:        (repo_root / "00_Core" / "CORE-MEMORY.md", "core_memory"),
-Binary file ./03_Tools/system_audit/checks/__pycache__/cross_source.cpython-310.pyc matches
-Binary file ./03_Tools/system_audit/checks/__pycache__/existence.cpython-310.pyc matches
-Binary file ./03_Tools/system_audit/checks/__pycache__/existence.cpython-314.pyc matches
-Binary file ./03_Tools/system_audit/checks/__pycache__/markdown_header.cpython-310.pyc matches
-Binary file ./03_Tools/system_audit/checks/__pycache__/markdown_header.cpython-314.pyc matches
-Binary file ./03_Tools/system_audit/checks/__pycache__/pipeline_ssot.cpython-310.pyc matches
-./03_Tools/system_audit/fixtures/markdown_header/pipeline_ok.md:5:- [STATE.md](STATE.md)
-./03_Tools/system_audit/fixtures/markdown_header/portfolio_ok.md:5:- [STATE.md](STATE.md)
-./03_Tools/system_audit/fixtures/markdown_header/state_hub_ok.md:1:# 🎯 STATE.md — Dynasty-Depot Hub
-./03_Tools/system_audit/fixtures/markdown_header/state_hub_ok.md:20:*🦅 STATE.md Hub v2.0*
-./03_Tools/system_audit/fixtures/markdown_header/state_ok.md:1:# 🎯 STATE.md — Dynasty-Depot Live-Status
-./03_Tools/system_audit/fixtures/markdown_header/state_stale.md:1:# 🎯 STATE.md — Dynasty-Depot Live-Status
-./03_Tools/system_audit/fixtures/markdown_header/state_warn.md:1:# 🎯 STATE.md — Dynasty-Depot Live-Status
-./03_Tools/system_audit/fixtures/markdown_header/system_ok.md:5:- [STATE.md](STATE.md)
-./03_Tools/system_audit/report.py:125:    an internal_errors array. STATE.md write is caller's responsibility — it
-./03_Tools/system_audit/state_writer.py:1:"""Idempotent Last-Audit-block writer for STATE.md.
-./03_Tools/system_audit/state_writer.py:14:FOOTER_SENTINEL = "🦅 STATE.md v"
-./03_Tools/system_audit/state_writer.py:44:            f"STATE.md Marker-Block inkonsistent (start-Marker ohne end-Marker) — manuell fixen: {state_path}"
-./03_Tools/system_audit/state_writer.py:48:            f"STATE.md duplicate Marker (start={n_start}, end={n_end}) — manuell fixen: {state_path}"
+./03_Tools/system_audit.py:11:  2 — tool-internal error (ImportError, uncaught check exception) — STATE.md NOT written
+./03_Tools/system_audit.py:127:    """Compact "N/M PASS (X FAIL, Y WARN, Z SKIP)" line for STATE.md Last-Audit block."""
+./03_Tools/system_audit.py:176:                        help="Skip STATE.md Last-Audit update (dry-run)")
+./03_Tools/system_audit.py:236:        # so automation + humans can still see what did complete. STATE.md stays
+./03_Tools/system_audit.py:269:                REPO_ROOT / "00_Core" / "STATE.md",
+./03_Tools/system_audit.py:275:            print(f"[error] STATE.md write failed (marker-block inconsistent): {e}",
+./03_Tools/system_audit.py:279:            print(f"[warn] STATE.md write permission denied: {e}", file=sys.stderr)
 ./03_Tools/system_audit/_smoke_temp_repo.py:5:- STATE.md gets Last-Audit block written
 ./03_Tools/system_audit/_smoke_temp_repo.py:75:        state_text = (tdp / "00_Core" / "STATE.md").read_text(encoding="utf-8")
 ./03_Tools/system_audit/_smoke_temp_repo.py:81:        assert m, "timestamp not found in STATE.md"
@@ -152,64 +138,40 @@ Binary file ./03_Tools/system_audit/checks/__pycache__/pipeline_ssot.cpython-310
 ./03_Tools/system_audit/_smoke_test.py:692:        p = Path(td) / "STATE.md"
 ./03_Tools/system_audit/_smoke_test.py:694:            "# STATE\n\n---\n*🦅 STATE.md v1.0*\n",
 ./03_Tools/system_audit/_smoke_test.py:792:        p = Path(td) / "STATE.md"
+./03_Tools/system_audit/checks/existence.py:3:Spec §5.1 Check-4 + Codex-Patch P3. Scope: CLAUDE.md + STATE.md + PORTFOLIO.md +
+./03_Tools/system_audit/checks/existence.py:50:        repo_root / "00_Core" / "STATE.md",
+./03_Tools/system_audit/checks/markdown_header.py:121:        (repo_root / "00_Core" / "STATE.md", "state"),
+./03_Tools/system_audit/checks/markdown_header.py:125:        (repo_root / "00_Core" / "CORE-MEMORY.md", "core_memory"),
+./03_Tools/system_audit/checks/markdown_header.py:3:Targets (post-Hub-Split): STATE.md (Hub) / PORTFOLIO.md / PIPELINE.md /
+./03_Tools/system_audit/checks/markdown_header.py:4:SYSTEM.md / CORE-MEMORY.md / Faktortabelle.md.
+./03_Tools/system_audit/fixtures/markdown_header/pipeline_ok.md:5:- [STATE.md](STATE.md)
+./03_Tools/system_audit/fixtures/markdown_header/portfolio_ok.md:5:- [STATE.md](STATE.md)
+./03_Tools/system_audit/fixtures/markdown_header/state_hub_ok.md:1:# 🎯 STATE.md — Dynasty-Depot Hub
+./03_Tools/system_audit/fixtures/markdown_header/state_hub_ok.md:20:*🦅 STATE.md Hub v2.0*
+./03_Tools/system_audit/fixtures/markdown_header/state_ok.md:1:# 🎯 STATE.md — Dynasty-Depot Live-Status
+./03_Tools/system_audit/fixtures/markdown_header/state_stale.md:1:# 🎯 STATE.md — Dynasty-Depot Live-Status
+./03_Tools/system_audit/fixtures/markdown_header/state_warn.md:1:# 🎯 STATE.md — Dynasty-Depot Live-Status
+./03_Tools/system_audit/fixtures/markdown_header/system_ok.md:5:- [STATE.md](STATE.md)
+./03_Tools/system_audit/report.py:125:    an internal_errors array. STATE.md write is caller's responsibility — it
+./03_Tools/system_audit/state_writer.py:1:"""Idempotent Last-Audit-block writer for STATE.md.
+./03_Tools/system_audit/state_writer.py:14:FOOTER_SENTINEL = "🦅 STATE.md v"
+./03_Tools/system_audit/state_writer.py:44:            f"STATE.md Marker-Block inkonsistent (start-Marker ohne end-Marker) — manuell fixen: {state_path}"
+./03_Tools/system_audit/state_writer.py:48:            f"STATE.md duplicate Marker (start={n_start}, end={n_end}) — manuell fixen: {state_path}"
+./CLAUDE.md:11:- **Sync-Pflicht (§18 v2):** Trigger-basiertes Event-Mapping. Score/FLAG/Sparraten-Change → log.md + CORE-MEMORY.md + Faktortabelle + **PORTFOLIO.md** + score_history.jsonl (+ ggf. flag_events.jsonl), alles in einem git-Commit. Pipeline-Item → PIPELINE.md + log.md. System-Zustand-Change → SYSTEM.md + log.md. Multi-Event-Aktionen = Union der Sets. **score_history.jsonl-Write** via Skill `backtest-ready-forward-verify` (v1.0.1, seit dynastie-depot v3.7.3 Schritt 7). **flag_events.jsonl** CLI-direkt via `03_Tools/backtest-ready/archive_flag.py`.
+./CLAUDE.md:3:**PFLICHT bei `Session starten`:** Lies sofort **`00_Core/STATE.md` (Hub) und `00_Core/PORTFOLIO.md`** — ohne Rückfrage. Hub gibt Navigation + Critical-Alert; PORTFOLIO ist der Live-State für 90% der Sessions (Scores, DEFCON, FLAGs, Sparraten, Trigger, Watches).
+./CLAUDE.md:38:> STATE.md + PORTFOLIO.md immer. **Match-Regel (Hybrid):** exakte Trigger strikt; bare Ticker → `!QuickCheck`; Mehrfach-Match = Union der Lies-Spalten. Bei Trigger-Miss: konservativ mehr laden.
+./CLAUDE.md:49:| Konsolidierungstag / System-Audit / Backlog-Review | SESSION-HANDOVER.md, STATE.md (Hub für Critical-Alerts + Last-Audit-Block) + PIPELINE.md + SYSTEM.md | KONTEXT, Faktortabelle (außer ticker-spezifisch) | `SystemAudit` (slash) bei Audit-Lauf |
+./CLAUDE.md:9:- `CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
+Binary file ./03_Tools/__pycache__/system_audit.cpython-314.pyc matches
+Binary file ./03_Tools/backtest-ready/__pycache__/_forward_verify_helpers.cpython-314.pyc matches
+Binary file ./03_Tools/system_audit/__pycache__/_smoke_test.cpython-314-pytest-9.0.3.pyc matches
 Binary file ./03_Tools/system_audit/__pycache__/report.cpython-310.pyc matches
 Binary file ./03_Tools/system_audit/__pycache__/report.cpython-314.pyc matches
 Binary file ./03_Tools/system_audit/__pycache__/state_writer.cpython-310.pyc matches
 Binary file ./03_Tools/system_audit/__pycache__/state_writer.cpython-314.pyc matches
-Binary file ./03_Tools/system_audit/__pycache__/_smoke_test.cpython-314-pytest-9.0.3.pyc matches
-./03_Tools/system_audit.py:11:  2 — tool-internal error (ImportError, uncaught check exception) — STATE.md NOT written
-./03_Tools/system_audit.py:127:    """Compact "N/M PASS (X FAIL, Y WARN, Z SKIP)" line for STATE.md Last-Audit block."""
-./03_Tools/system_audit.py:176:                        help="Skip STATE.md Last-Audit update (dry-run)")
-./03_Tools/system_audit.py:236:        # so automation + humans can still see what did complete. STATE.md stays
-./03_Tools/system_audit.py:269:                REPO_ROOT / "00_Core" / "STATE.md",
-./03_Tools/system_audit.py:275:            print(f"[error] STATE.md write failed (marker-block inconsistent): {e}",
-./03_Tools/system_audit.py:279:            print(f"[warn] STATE.md write permission denied: {e}", file=sys.stderr)
-Binary file ./03_Tools/__pycache__/system_audit.cpython-314.pyc matches
-./CLAUDE.md:3:**PFLICHT bei `Session starten`:** Lies sofort **`00_Core/STATE.md` (Hub) und `00_Core/PORTFOLIO.md`** — ohne Rückfrage. Hub gibt Navigation + Critical-Alert; PORTFOLIO ist der Live-State für 90% der Sessions (Scores, DEFCON, FLAGs, Sparraten, Trigger, Watches).
-./CLAUDE.md:9:- `CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
-./CLAUDE.md:11:- **Sync-Pflicht (§18 v2):** Trigger-basiertes Event-Mapping. Score/FLAG/Sparraten-Change → log.md + CORE-MEMORY.md + Faktortabelle + **PORTFOLIO.md** + score_history.jsonl (+ ggf. flag_events.jsonl), alles in einem git-Commit. Pipeline-Item → PIPELINE.md + log.md. System-Zustand-Change → SYSTEM.md + log.md. Multi-Event-Aktionen = Union der Sets. **score_history.jsonl-Write** via Skill `backtest-ready-forward-verify` (v1.0.1, seit dynastie-depot v3.7.3 Schritt 7). **flag_events.jsonl** CLI-direkt via `03_Tools/backtest-ready/archive_flag.py`.
-./CLAUDE.md:38:> STATE.md + PORTFOLIO.md immer. **Match-Regel (Hybrid):** exakte Trigger strikt; bare Ticker → `!QuickCheck`; Mehrfach-Match = Union der Lies-Spalten. Bei Trigger-Miss: konservativ mehr laden.
-./CLAUDE.md:49:| Konsolidierungstag / System-Audit / Backlog-Review | SESSION-HANDOVER.md, STATE.md (Hub für Critical-Alerts + Last-Audit-Block) + PIPELINE.md + SYSTEM.md | KONTEXT, Faktortabelle (außer ticker-spezifisch) | `SystemAudit` (slash) bei Audit-Lauf |
-
-# ==============================================================================
-# AC #15 Allow/Deny-Lint — Kategorisierung 2026-04-25 post-drift-fix (0e45989)
-# ==============================================================================
-#
-# Allow-Kategorien (Plan Spec v0.4):
-#  (a) Hub selbst (STATE.md als Navigation/Last-Audit-Target)
-#  (b) Navigation-Tabellen / Architektur-Beschreibungen in 00_Core-Peers + CLAUDE.md
-#  (c) Last-Audit-Block-Refs + audit-code/fixtures in 03_Tools/system_audit
-#  (d) Spec-Dokumentation (out-of-scope per exclude)
-#  (e) CORE-MEMORY §12/§13 historische Einträge + historical prose
-#
-# 172 Hits verteilt:
-#  - 00_Core/ (81 nach drift-fix, davor 85)
-#  - 03_Tools/ (74)
-#  - 01_Skills/ (8)
-#  - CLAUDE.md (5)
-#  - 05_Archiv/skills-legacy/README.md (nicht in grep-scope)
-#
-# Per-File-Kategorien:
-#  CLAUDE.md: 5 Hits, alle (b) Navigation-Table/Pflicht-Read/Routing
-#  01_Skills/: 8 Hits, alle (b) narrative Datei-Listen / file-tree / (c) audit code fixture
-#  03_Tools/system_audit/*: Hits alle (c) audit code + fixtures
-#  03_Tools/briefing-sync-check.ps1: (c) CheckedFiles-Liste mit STATE.md (Last-Audit-Sync)
-#  03_Tools/backtest-ready/*: (c) narrative backfill tooling + README migration-note
-#  03_Tools/morning-briefing-prompt-v2.md: (b) Changelog-History; operative Teile in PORTFOLIO.md
-#  03_Tools/morning-briefing-prompt-v3.md: (b) Änderungshinweis auf v2
-#  03_Tools/specs/: (d) Spec-Doku
-#  00_Core/STATE.md: (a) Hub selbst
-#  00_Core/PORTFOLIO.md + PIPELINE.md + SYSTEM.md: (b) Verweise-Header + Navigation
-#  00_Core/CORE-MEMORY.md: (a) Hub-ref + (e) historical prose (L301/L405)
-#  00_Core/KONTEXT.md: (a) Hub + (b) Projection-Layer-Architektur + (e) historical comparison (L183)
-#  00_Core/INSTRUKTIONEN.md: (b) §18 Sync-Pflicht file-lists + §25/§27 Navigation
-#  00_Core/Faktortabelle.md: (b) Verweise-Header
-#  00_Core/TOKEN-RULES.md: (b) Pointer-Refs
-#  00_Core/SESSION-HANDOVER.md: (e) Banner-Chronik historische Einträge
-#
-# Deny-List (Tripwire-Checks ohne PORTFOLIO.md-Counterpart / Score-/FLAG-/DEFCON-State-Abfragen
-# auf STATE.md / Sparraten-Tabellen-Refs auf STATE.md):
-#   ✅ LEER — Deny-Drift von 9 Stellen (5 CORE-MEMORY + 4 KONTEXT) gefixt via Commit 0e45989
-#      (refactor/narratives: post-migration drift-fix CORE-MEMORY §3 + KONTEXT §Layer).
-#
-# Verdikt AC #15: PASS (post-drift-fix Re-Run; Deny-List empty, 172 residual Hits alle Allow).
+Binary file ./03_Tools/system_audit/checks/__pycache__/cross_source.cpython-310.pyc matches
+Binary file ./03_Tools/system_audit/checks/__pycache__/existence.cpython-310.pyc matches
+Binary file ./03_Tools/system_audit/checks/__pycache__/existence.cpython-314.pyc matches
+Binary file ./03_Tools/system_audit/checks/__pycache__/markdown_header.cpython-310.pyc matches
+Binary file ./03_Tools/system_audit/checks/__pycache__/markdown_header.cpython-314.pyc matches
+Binary file ./03_Tools/system_audit/checks/__pycache__/pipeline_ssot.cpython-310.pyc matches

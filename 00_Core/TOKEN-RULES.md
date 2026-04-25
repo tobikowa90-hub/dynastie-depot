@@ -4,7 +4,7 @@ description: Operative Regeln zur Token-Effizienz für Dynasty-Depot-Sessions. A
 type: ruleset
 scope: projekt-weit referenzierbar
 enforcement: none (Accessibility-Modell)
-updated: 2026-04-24
+updated: 2026-04-25
 ---
 
 # Token-Effizienz — Operative Regeln
@@ -20,8 +20,8 @@ updated: 2026-04-24
 
 ## Regeln
 
-- **Snapshot-First:** STATE.md + Faktortabelle vor API — spart 3-5 Tool-Calls
-- **Sync-Pflicht (alle sechs):** log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + flag_events.jsonl
+- **Snapshot-First:** PORTFOLIO.md (Live-State) + Faktortabelle vor API — spart 3-5 Tool-Calls. STATE.md ist Hub und wird durch CLAUDE.md-Session-Init ohnehin geladen.
+- **Sync-Pflicht (Trigger-basiert, §18 v2):** Pflicht-Files pro Event-Typ — Score/FLAG/Sparraten-Change → `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + `PORTFOLIO.md` + `score_history.jsonl` (+ `flag_events.jsonl` bei FLAG); Pipeline-Item → `PIPELINE.md` + `log.md`; System-Zustand → `SYSTEM.md` + `log.md`. Multi-Event = Union. Details: [INSTRUKTIONEN.md §18](INSTRUKTIONEN.md#18-sync-pflicht--trigger-basiertes-file-set-mapping-v2-2026-04-24-00_core-refactor).
 - **Pause-Regel:** >5 Min → /compact (Preserve: Score/Tabelle/Urteil/FLAGs) oder /clear
 - **DEFCON 1 Stopp:** Score <50 → Analyse stoppen (Insider-Modul läuft durch)
 - **MCP:** Tool Search lädt lazy. Manuell deaktivieren nur bei Vault-Only-Sessions.
