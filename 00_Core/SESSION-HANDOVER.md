@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-25 Spät-Nachmittag — Tranche 4 DONE (Sign-off + 5 Fix-Commits + Codex-Follow-up); Phase 2 Plan-File auf nächste Session geschoben
+**Aktualisiert:** 2026-04-25 Abend — Phase 2 Plan-File geschrieben + Codex-Plan-Review GO-WITH-FIXES alle 12 Findings addressed (Plan v1.1); Implementation auf nächste Session via subagent-driven-development geschoben
 
 ## Verweise
 - [STATE.md](STATE.md) — Hub (Critical-Alerts + Last-Audit + Navigation)
@@ -12,64 +12,73 @@
 
 ---
 
-## 🔄 RESUME-INPUT (next session — Phase 2 Plan-File via writing-plans)
+## 🔄 RESUME-INPUT (next session — Phase 2 Implementation via subagent-driven-development)
 
-**Auftrag:** Cluster A–E + F13/F15 + Codex-Follow-up sind DONE. Nächste Session: **Phase-2-Plan-File schreiben** für `system_audit.py`-Rework via `superpowers:writing-plans`. **Keine Code-Änderung am Audit-Tool diese Session** — nur Plan, dann separate Implementierungssession.
+**Auftrag:** Plan-File geschrieben + Codex-Reviewed (GO-WITH-FIXES, alle 12 Findings addressed). Nächste Session: **Implementation via `superpowers:subagent-driven-development`** des Plans `docs/superpowers/plans/2026-04-25-system-audit-rework.md` (v1.1). 8 Tasks, 7 Commits, ~25 neue Tests, CORE 8→14 Checks.
 
-### Was DONE ist (Tranche 4, 25.04. Spät-Nachmittag)
+### Plan-File-Status
 
-**6 Commits + 2 lokale Cleanups, ausgehend von Sweep-Report `docs/superpowers/specs/2026-04-25-cross-folder-sweep-findings.md`:**
+**Lokation:** `docs/superpowers/plans/2026-04-25-system-audit-rework.md` (v1.1)
 
-| Commit | Cluster | Findings |
-|--------|---------|----------|
-| `4de7054` | A — §18-v2.1-Drift | F1+F2+F4 (README.md v1.7→v2.1, 7-Datei-Liste, briefing-sync-check.ps1 +config.yaml) |
-| `2bafd82` | B — Header-Freshness + F5-Normalisierung | F6 (briefing-prompt-v3.md `Deployed:`) + F9 (insider-intel Stand-Datum + rev) + F5 (PIPELINE v2.1→v2.2) |
-| `a2994e7` | C — Top-Level Governance | F11 (SystemAudit.md 8 Kern-Checks + --minimal-baseline) + F12 (CLAUDE.md Z31 04_Templates Pointer-Wording, Option A) |
-| `7fcda23` | D — Cleanup (F8+F16) | F8 quick-screener `version: 1.0.0` Frontmatter; F16 earnings-preview/recap.zip nach `05_Archiv/orphan-skill-zips/` (gitignored, kein git-mv) |
-| `ee3de50` | E — Mastercard 3-Wege-Sync | F18a config.yaml watchlist: MA mit `quick_screener:`-Block (P/FCF 30,2 / ROIC 43% / Wide); F18b Vault `satelliten/MA.md` → `ersatzbank/MA.md` + Tags + Frontmatter; F18c Watchlist_Ersatzbank_Monitor_v1.1.xlsx R10+R26 verifizierte Werte + `QuickScan ✅ 25.04.2026` |
-| `11b8856` | Codex-Follow-up | Vault `Backtest-Ready-Infrastructure.md:58` §18 v1.7→v2.1 (Sweep-Lücke Folder 5); briefing-sync-check.ps1 Status-Messages an erweitertes scope angepasst |
+**Plan-Sequenz (final, post-Codex-Review):**
+1. **PyYAML-Dependency-Preflight** (Orchestrator-Gate, vor §18 wegen yaml-Hard-Import) — Sweep-Spec §228 Caveat explizit zitiert als Begründung
+2. **§18-Parity** (F1+F2+F4) — README.md / briefing-sync-check.ps1 / SKILL.md / INSTRUKTIONEN.md
+3. **Skill-Frontmatter-Completeness** (F8) — schließt skill_version.py:82 silent-continue-Lücke
+4. **Header-Freshness** (F6+F9) — Placeholder-FAIL + 30d-WARN, header-zone scoped (erste 12 Zeilen, P2-06)
+5. **Top-Level-Governance-Parity** (F11) — Slash-Doku-Count + Flag-Coverage gegen live CORE
+6. **Cross-Source-Reverse** (F18 NEU) — Vault entities/satelliten/ → config.yaml, FRONTMATTER-only ticker-extraction (P2-08)
+7. **Pointer-Completeness** (F12 narrowed) — CLAUDE.md ## Pointer-section-scoped backtick-Pfade existence (P2-03+P2-09)
+8. **Defer-Doku** — Modus-Restrukturierung / Plan-vs-Live-Drift / ZIP-Mtime → PIPELINE Backlog
 
-**Lokal-only (gitignored, kein Commit):**
-- **F15** — `.claude/worktrees/stupefied-bhabha-43cb6a/` gelöscht. Diff-Verifikation: alle 6 Files = pre-Tier-2-Snapshot 23.04. 22:30–22:56 (vor Hub-Split + §1→§12/§13-Reorg), durch `97a2680` + Tranche-1+2A in main übertroffen. Codex VALID via `.git/logs/*`. Branch `refactor/00core-perfect-organization` (b23fe37) bleibt als Anker.
-- **F13** — 5 stale Permissions aus `.claude/settings.local.json` entfernt (Z131+Z132 doppelte c/c-Reads, Z135 Python-Syntax, Z157 non-command, Z158 missing script). JSON-Validität verifiziert.
+**Acceptance:** CORE 8→14, Smoke-Tests 59→84 (25 neu), Sweep-Coverage F1-F18 von 0/8 auf 8/8.
 
-**Codex-Review (`a05c94070d09e5a5e`, Spät-Nachmittag 25.04.):** Keine BLOCKERs. 3 Loose-Ends: 2 fixed in `11b8856`, 1 false positive (`7fcda23` Message dokumentiert gitignored-Realität bereits explizit).
+### Codex-Plan-Review-Findings (alle addressed in Plan v1.1)
 
-### TODO Session-Start (Phase 2 Plan-File)
+**Codex-Review agentId:** `a2862e6a730e2ecca`
 
-**Tool:** `Skill(skill="superpowers:writing-plans")` → Plan-File `docs/superpowers/plans/2026-04-25-system-audit-rework.md`.
+| Severity | Finding | Status |
+|----------|---------|--------|
+| BLOCK | P2-01 Zahlen-Inkonsistenz (5 vs 6 Module, CORE-Total) | DONE — Goal+Acceptance reconciled |
+| BLOCK | P2-02 Task 6 PORTFOLIO-Claim ohne Code | DONE — Scope-Narrowing auf Vault only mit Begründung (config→PORTFOLIO bereits durch existing cross_source.py abgedeckt) |
+| BLOCK | P2-03 Task 7 Section-Level fehlt | DONE — Scope auf Pointer-Tabelle existence narrowed + Section-Anchor implementiert |
+| SHOULD | P2-04 Governance --no-write-WARN ohne Spec-Backing | DONE — uniform error außer --minimal-baseline (einzige spec-gestützte Exception) |
+| SHOULD | P2-05 _live_core_count Reentrancy doc | DONE — module-cache + sys.path-Mutation kommentiert |
+| SHOULD | P2-06 Header-Freshness Body-Match-Risk | DONE — HEADER_SCAN_LIMIT_LINES=12 |
+| SHOULD | P2-07 §18-Parity 80-char-Heuristik | DONE — line-based co-occurrence statt proximity-window |
+| SHOULD | P2-08 TICKER_RE FP-Risk | DONE — Frontmatter-only ticker-extraction, kein Filename-Stem-Fallback |
+| SHOULD | P2-09 Pointer Section-Scoping | DONE — `_extract_pointer_section`, regression-test added |
+| SHOULD | P2-10 Test-Count-Delta | DONE — 84 final (25 neu, vorher overschätzt ~95) |
+| SHOULD | P2-11 OneDrive per-Task | DONE — Pre-Commit-Edit-Checkpoint 3-Step-Protokoll im Pre-Task |
+| INFO | P2-12 Sequence-Reorder Spec §228 Quote | DONE — explizit zitiert in Empirische Sequenz |
 
-**Plan-Inhalt (empirische Sequenz, Codex-VALID):**
-1. **§18-Parity-Check** (HIGH) — F1+F2+F4 hätte gefangen
-2. **PyYAML-Dependency-Preflight** (HIGH, Codex-Caveat #1 — könnte vor §18-Parity wenn Resilienz=hard prereq)
-3. **Skill-Frontmatter-Completeness-Check** (HIGH NEU) — F8 silent skip in `skill_version.py:82` (`if md_ver is None: continue`)
-4. **Header/Footer-Freshness-Check** (MED) — F6+F9
-5. **Top-Level-Governance-Parity-Check** (MED) — F11+F12
-6. **Cross-Source-Reverse-Check** (MED NEU) — F18 watchlist/ersatzbank coverage; `cross_source.py:231-241` audited heute nur `satelliten`-Direction
-7. **Pointer-Completeness-Check** (LOW)
-8. **Defer:** Modus-Restrukturierung, Plan-vs-Live-Drift, ZIP-Mtime
+### TODO Session-Start (Implementation via Subagent)
 
-### Code-Pattern-Hinweise für Plan-Author
+**Tool:** `Skill(skill="superpowers:subagent-driven-development")` mit Plan-Argument `docs/superpowers/plans/2026-04-25-system-audit-rework.md`.
 
-- **Check-Module-Pattern:** `03_Tools/system_audit/checks/skill_version.py` ist guter Vorbild (saubere `run(repo_root, context) -> CheckResult`-Signatur, `time.monotonic()` Duration, FailureDetail-List, Status-Eskalation `FAIL > WARN > PASS`).
-- **Registry:** Neue Checks in `03_Tools/system_audit/checks/__init__.py` `CORE`-Dict eintragen mit `name → "system_audit.checks.<modul>:run"`.
-- **Types:** `system_audit.types.AuditContext` (repo_root, include_optional, vault_timeout_s); `CheckResult` (name, status, n_checked, n_passed, failures, duration_ms, category); `FailureDetail` (frozen dataclass — location, expected, actual, severity, hint).
-- **YAML:** `import yaml` + `yaml.safe_load()` (siehe `skill_version.py:35`).
-- **Tests:** `03_Tools/system_audit/_smoke_test.py` (59/59 PASS Baseline). Plain `def test_*` Funktionen, run via `python 03_Tools/system_audit/_smoke_test.py`. Keine pytest-Konvention außer `system_audit/_smoke_test.py`.
-- **Path-Shadowing-Workaround:** `_smoke_test.py:18-19` poppt `sys.path[0]` weil Python's `types` durch package-local `types.py` shadow'd wird. Nicht ändern.
-- **Verification-Gates:** `--minimal-baseline` (3 Checks: jsonl_schema + pipeline_ssot + log_lag) muss 3/3 PASS bleiben. `--core` 4/8 PASS heute (2 known FAIL + 2 known WARN, dokumentiert in PIPELINE Item #4).
+**Pre-Task-Checks (ohne Subagent, manuell vor Spawn):**
+1. `git status --short` — soll wieder die übliche pre-existing-dirty-Liste (STATE.md, Rebalancing_Tool.xlsx) zeigen + nichts unter `03_Tools/system_audit/`
+2. `python "03_Tools/system_audit/_smoke_test.py"` — 59/59 PASS Baseline grün
+3. `python 03_Tools/system_audit.py --core --no-write` — rc=1 mit 4/8 PASS + 2 known-WARN + 2 known-FAIL (PIPELINE Item #4 bestätigt)
+
+**Sequenz:** 8 Tasks à frischer Subagent. Two-Stage-Review zwischen Tasks. Zwischen Task 5 + Task 6 ein Live-Run-Checkpoint (`--core --no-write`) zum Validieren dass keine Regressionen entstanden sind.
+
+**OneDrive-Edit-Collision-Risk:** Plan operationalisiert das Pre-Commit-3-Step-Protokoll in der Pre-Task-Section. Subagent-Driver muss vor jedem Task-Commit den Check applizieren — sonst Sync-Konflikt-Risiko bei `_smoke_test.py` und `__init__.py` (in 7 von 8 Tasks editiert).
+
+### Code-Pattern-Hinweise für Subagent-Implementation
+
+Identisch zu Plan-File §"Code-Vorbild" — `skill_version.py:58-147` ist die Referenz. AuditContext / CheckResult / FailureDetail / Status-Eskalation alle dort dokumentiert.
 
 ### Standing-Pre-existing-Dirty
-- `00_Core/STATE.md` — Last-Audit-Timestamp 10:01→10:22Z (älter, keine Aktion nötig)
+- `00_Core/STATE.md` — Last-Audit-Timestamp älter, wird durch finale Audit-Run nach Task 8 aktualisiert
 - `00_Core/SESSION-HANDOVER.md` — wird mit dieser Session-Ende aktualisiert
-- `03_Tools/Rebalancing_Tool_v3.4.xlsx` — pre-existing dirty, nicht von Tranche 4 berührt
+- `03_Tools/Rebalancing_Tool_v3.4.xlsx` — pre-existing dirty, weiterhin ungeklärt
 
 ### Memory-Updates (bereits persistiert)
 - `feedback_review_via_codex_not_advisor.md` — Reviews/Second-Opinions immer Codex, nie advisor()
 - `feedback_onedrive_edit_collision.md` — Edit-Collision-Pattern (vor Edit Editor-Status checken)
 
 ### Wichtige Calibration-Notiz
-F3 (`_forward_verify_helpers.py:25, 257-259`) bleibt **INFO, nicht FIX** — SKILL.md Z126 + Code-Kommentar dokumentieren Teil-Gate-Trade-off explizit konsistent. Codex-RECONCILED VALID. Nicht als §18-Verletzung re-klassifizieren.
+F3 (`_forward_verify_helpers.py:25, 257-259`) bleibt **INFO, nicht FIX** — SKILL.md Z126 + Code-Kommentar dokumentieren Teil-Gate-Trade-off explizit konsistent. Codex-RECONCILED VALID. Nicht als §18-Verletzung re-klassifizieren — auch nicht als score_event_parity-Failure (Plan-Code achtet darauf, weil File nicht in `score_event_parity.py`-Audit-Targets-Liste).
 
 ---
 
