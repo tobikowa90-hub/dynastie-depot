@@ -510,7 +510,7 @@ Empfehlung: [!SyncBriefing ausführen] / [Kein Handeln nötig]
 1. **Score-JSON generieren** (SKILL.md Schritt 7) — `ScoreRecord` gemäß `schemas.py`. Pflichtfelder: `schema_version: "1.0"`, `record_id: YYYY-MM-DD_TICKER_TYP`, `source: "forward"`, `defcon_version` aktuell, `score_datum` (heute, max. 3 Tage zurück), vollständige 5-Block-`scores` + `score_gesamt` + `defcon_level`, `kurs`, `market_cap`, `flags`, `metriken_roh`, `quellen`.
 2. **Archivieren** — `archive_score.py --file <tempfile.json>`. Keine Ausnahme, kein Record darf verloren gehen.
 3. **FLAG-Events archivieren** (nur bei Trigger/Resolution, SKILL.md Schritt 6b) — `archive_flag.py trigger` oder `resolve`. Schwellen aus `FLAG_RULES` automatisch.
-4. **Git-Commit** — alle sechs Dateien §18 in einem Commit.
+4. **Git-Commit** — vollständiges Score-Event-File-Set §18 v2.1 atomar in einem Commit (6 Pflicht-Files inkl. `config.yaml`, + conditional `flag_events.jsonl` bei FLAG-Trigger/Resolve, + Multi-Event-Union per §18.2 falls weitere Event-Typen mit-betroffen).
 
 ### Fehler-Klassen
 
@@ -945,4 +945,4 @@ Drei Szenarien wurden bei Paper-Ingest evaluiert:
 Quelle: [[Knowledge-Graph-Architektur-Roadmap]] / [[Arun-et-al-2025-FinReflectKG]] / [[Labre-2025-FinReflectKG-Companion]] / [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] / [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] / [[Iacovides-Zhou-Mandic-2025-FinDPO]]
 
 ---
-*🦅 INSTRUKTIONEN.md v1.12 (§4 Router-Umbau + §2 Befunde-Check + §29.5/.6 B19/B20-Extensions + §33 Skill-Self-Audit) | Dynastie-Depot v3.7 | Stand: 20.04.2026 Phase-2-Complete*
+*🦅 INSTRUKTIONEN.md v1.13 (§12 → §18-Pointer · §17 v2.1 backtest-ready-forward-verify-Programmatic-Ausnahme · §18 v2.1 config.yaml im Score-Event-Set · §26.4 Wording-Fix) | Dynastie-Depot v3.7 / Skill-Paket v3.7.3 | Stand: 25.04.2026*

@@ -67,12 +67,13 @@ system_regeln:
     gewichte: "D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0"
     formel: "Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht"
     beispiel: |
-      Aktueller Stand (18.04.2026, v3.7 + Schema-SKILL-Threshold-Alignment): 7× D4/D3 (Gewicht 1.0) + 2× D2 (V + TMO, Gewicht 0.5) + 2× 🔴 eingefroren (MSFT + APH)
-      Nenner = (7 × 1.0) + (2 × 0.5) + (2 × 0) = 8.0
-      D4/D3-Einzelrate = 285€ / 8.0 × 1.0 = 35,63€
-      D2-Einzelrate (V + TMO) = 285€ / 8.0 × 0.5 = 17,81€
+      Aktueller Stand (23.04.2026, post-TMO Q1 Forward-Vollanalyse Resolve-Gate CLEAR): 8× D4/D3 (Gewicht 1.0) + 1× D2 (V, Gewicht 0.5) + 2× 🔴 eingefroren (MSFT + APH)
+      Nenner = (8 × 1.0) + (1 × 0.5) + (2 × 0) = 8.5
+      D4/D3-Einzelrate = 285€ / 8.5 × 1.0 = 33,53€
+      D2-Einzelrate (V) = 285€ / 8.5 × 0.5 = 16,76€
       🔴/D1-Rate = 0€
-      Summencheck: 7 × 35,63 + 2 × 17,81 = 249,41 + 35,62 = 285€ ✓
+      Summencheck: 8 × 33,53 + 1 × 16,76 = 268,24 + 16,76 = 285€ ✓
+      Vorgänger-Beispiel (18.04.2026, V+TMO beide D2): Nenner 8.0, D4/D3 35,63€, D2 17,81€ — historisch, durch TMO-Upshift 23.04. obsolet.
 
   tariff_exposure_quelle:
     beschreibung: "Primärquelle für Tariff-Exposure-Scoring (Pflicht bei jedem !Analysiere)"
@@ -423,13 +424,15 @@ keine_zuteilung:
     grund: "Earnings Mai 2026 abwarten"
 
 # ─────────────────────────────────────────────
-# TERMINE & TRIGGER (Stand 16.04.2026)
+# TERMINE & TRIGGER (Stand 25.04.2026)
 # ─────────────────────────────────────────────
 termine:
-  - datum: "~2026-04-22"
-    event: "V Q2 FY26 Earnings (28.04.) → D2-Entscheidung, Technicals-Reversal bei Beat + Guidance? (Score 63, D2 seit 18.04. Forward)"
-  - datum: "2026-04-23"
-    event: "TMO Q1 FY26 Earnings → D2-Entscheidung + fcf_trend_neg Resolve-Gate (WC-Unwind?). FCF >$7.3B nötig für FCF-Yield >4% (Score 64, D2 seit 18.04. Forward)"
+  - datum: "2026-04-28"
+    event: "V Q2 FY26 Earnings → D2-Entscheidung, Technicals-Reversal bei Beat + Guidance? (Score 63, D2 seit 18.04. Forward)"
+  - datum: "2026-04-23 [DONE]"
+    event: "TMO Q1 FY26 Earnings → Beat + Guidance-Raise, fcf_trend_neg Resolve-Gate CLEAR. Score 64→67, D2→D3, Sparrate 17,81€→33,53€. Nächster Trigger: Q2 FY26 ~Ende Juli (Organic-Akzeleration + Clario-Integration-Check)."
+  - datum: "2026-07 (Ende Juli)"
+    event: "TMO Q2 FY26 Earnings → Organic-Akzeleration-Check (Q1 +1% → H2-Guide 3-4% bestätigen?) + Clario-Integration-Execution-Check"
   - datum: "2026-04-28"
     event: "SPGI Q1 2026 Earnings → Re-Analyse (Score 77 → ≥80 möglich bei ROIC-Normalisierung)"
   - datum: "2026-04-28"
