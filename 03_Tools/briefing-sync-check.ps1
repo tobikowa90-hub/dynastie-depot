@@ -78,7 +78,7 @@ $parts = @()
 if ($dirtyCount -gt 0)   { $parts += "$dirtyCount uncommitted" }
 if ($unpushedCount -gt 0) { $parts += "$unpushedCount unpushed" }
 $detail = $parts -join ', '
-$msg = "BRIEFING-SYNC ausstehend: $detail in 00_Core/. Das Morning-Briefing 10:00 liest sonst veraltete Daten aus GitHub. Fuehre !SyncBriefing aus."
+$msg = "BRIEFING-SYNC ausstehend: $detail in 00_Core/ + dynastie-depot config.yaml. Das Morning-Briefing 10:00 liest sonst veraltete Daten aus GitHub. Fuehre !SyncBriefing aus."
 
 # Fire Windows Toast (native WinRT, no dependencies)
 try {
@@ -90,7 +90,7 @@ try {
     )
     $textNodes = $template.GetElementsByTagName('text')
     [void]$textNodes.Item(0).AppendChild($template.CreateTextNode('Dynasty-Depot: Briefing-Sync ausstehend'))
-    [void]$textNodes.Item(1).AppendChild($template.CreateTextNode("$detail in 00_Core/ - !SyncBriefing vor naechster Session"))
+    [void]$textNodes.Item(1).AppendChild($template.CreateTextNode("$detail in 00_Core/+config.yaml - !SyncBriefing vor naechster Session"))
 
     $toast = [Windows.UI.Notifications.ToastNotification]::new($template)
     [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('DynastyDepot').Show($toast)

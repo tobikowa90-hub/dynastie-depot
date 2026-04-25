@@ -55,7 +55,7 @@ Siehe KONTEXT.md §11 für Details:
 
 ## Schreib-Disziplin
 
-§18 Sync-Pflicht (INSTRUKTIONEN.md v1.7): Nach jeder `!Analysiere` müssen **6 Dateien** im gleichen git-Commit aktualisiert werden — log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + flag_events.jsonl (bei FLAG-Event). **Seit 19.04.2026 (v1.7):** `score_history.jsonl`-Write wird via Skill `backtest-ready-forward-verify` orchestriert.
+§18 Sync-Pflicht (INSTRUKTIONEN.md v2.1): Nach jeder `!Analysiere` müssen **7 Dateien** im gleichen git-Commit aktualisiert werden — log.md + CORE-MEMORY.md + Faktortabelle + PORTFOLIO.md + score_history.jsonl + `01_Skills/dynastie-depot/config.yaml` (+ flag_events.jsonl bei FLAG-Event). **Seit 25.04.2026 (v2.1):** `config.yaml` ist Pflicht-Target im Score-Event-Set (vorher implizit, 7-Tage-TMO-Drift 23.→25.04. machte den Gap explizit). **Seit 19.04.2026 (v1.7→v2.0):** `score_history.jsonl`-Write wird via Skill `backtest-ready-forward-verify` orchestriert. **Seit 25.04.2026 (Hub-Split):** `PORTFOLIO.md` ersetzt `STATE.md` als Live-State-Target.
 
 SKILL.md Schritt 7 (dynastie-depot v3.7.2) ist die kanonische Trigger-Stelle: Draft schreiben → `Skill(args=<pfad>)` → Stdout-Report parsen (6 Fälle: OK / freshness / PFLICHT / STOP / duplicate / FAIL) → bei STOP Fan-Out-Block über 7 Oberflächen (§28.1 Step 7).
 
