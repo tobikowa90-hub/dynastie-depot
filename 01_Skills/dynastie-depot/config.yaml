@@ -410,6 +410,23 @@ watchlist:
     region: USA
     us_exposure: true
 
+  - ticker: MA
+    name: "Mastercard Inc."
+    status: "QuickScan 25.04.2026 GRÜN (3/3) – DEFCON-Analyse pending (Ersatzbank V)"
+    quick_screener:
+      datum: "2026-04-25"
+      ergebnis: "GRÜN"
+      p_fcf: 30.2
+      p_fcf_quelle: "GuruFocus (10J-Median 37.3)"
+      roic_ttm: 43.0
+      roic_quelle: "GuruFocus"
+      moat: "Wide"
+      moat_quelle: "Morningstar moat-score"
+    naechste_aktion: "DEFCON-Analyse bei V-D2-Downshift oder Slot-Freigabe – stärkster V-Ersatz (Payment-Network-Duopol)"
+    region: USA
+    us_exposure: true
+    related: [V]
+
 # ─────────────────────────────────────────────
 # KEINE ZUTEILUNG (Beobachtung, keine Analyse-Prio)
 # ─────────────────────────────────────────────
