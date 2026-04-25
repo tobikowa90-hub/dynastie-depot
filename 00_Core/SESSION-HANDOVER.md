@@ -7,16 +7,81 @@
 - [SYSTEM.md](SYSTEM.md) — Infra-Kontext
 - [CORE-MEMORY.md §12](CORE-MEMORY.md#12-per-ticker-chronik) — Per-Ticker-Historie bei Ticker-Sessions
 
-**Aktualisiert:** 2026-04-25 Session-5-Ende — **00_Core Perfect-Organization Tier 2: Tasks 4+5+6 VOLLSTÄNDIG CLOSED.** Feature-Branch `refactor/00core-perfect-organization`, 3 atomare Commits seit Task-3-Baseline `326fa42`:
-- `469f5af` Task-4 Tool-Patches (TDD RED→GREEN Tripwire + 4 system_audit/checks/* + 4 neue Fixtures + briefing-sync-check.ps1 + Task-2-Carry-Over Stand-Nachtrag) — Codex RECONCILED_WITH_FOLLOWUPS, F1+F2 pre-commit
-- `a404012` Task-5 Skill+Peer-Patches (dynastie-depot v3.7.2→v3.7.3 inkl. Frontmatter, bt-fwd-verify v1.0.0→v1.0.1, 11 Tripwire-Refs, 5 Verweise-Header in Peer-Files, briefing-Prompts v2/v3, tavily-probe-prompts, backtest-ready/README) — Codex RECONCILED_WITH_FOLLOWUPS, Frontmatter-Blocker pre-commit
-- `9cce107` Task-6 Governance (CLAUDE.md 71→74 Z, §18 v2 Trigger-Mapping + Multi-Event-Union-Regel, §25 Briefing-Sync Hub-Set, §27.3 v2 Drei-Ebenen, §27.4 +PORTFOLIO/PIPELINE/SYSTEM/§12/§13) — Codex CRITICAL_DRIFT initial (§25 Blocker), pre-commit behoben + 3 Followups inline
+**Aktualisiert:** 2026-04-25 Session-6-Ende — **00_Core Perfect-Organization Tier 2: Tasks 7+8 CLOSED (inkl. Narrative-Drift-Fix).** Feature-Branch `refactor/00core-perfect-organization`, 3 neue atomare Commits seit Task-6-`9cce107`:
+- `f66b622` Task-7 Skill-Paket-Build — ZIPs physisch gebaut (`dynastie-depot_v3.7.3.zip` 57,6 KB + `backtest-ready-forward-verify.zip` 10,8 KB v1.0.1-Frontmatter verifiziert via SHA256+Entries), `v3.7.2.zip` → `05_Archiv/skills-legacy/` archiviert. **User-Pause-Punkt 7.5 erfolgt**, manuelle Desktop-Installation durch User bestätigt, Post-Install-Smoke 6/6 PASS. Commit-Scope: nur `skills-legacy/README.md` force-added (ZIPs bleiben gitignored Build-Artefakte, User löschte Trail-Kopie manuell). AC #7 ✓ + AC #8 ✓.
+- `0e45989` Task-8-Narratives-Drift-Fix — Codex-Review entdeckte 2 🔴 Blocker (F1 CORE-MEMORY §3/§4/§5/§9: 5 Stellen, F2 KONTEXT §11 Projection-Layer: 5 Stellen). 9 Drift-Pointer STATE.md → PORTFOLIO.md / 4-file-arch nachgezogen. KONTEXT v1.1→v1.2. Allowed: L405 CORE-MEMORY historisch (18.04. pre-Hub-Split korrekt at write-time); morning-briefing-prompt-v2.md Changelog.
+- `7ee1b61` Task-8 Smoke-Sweep + Artefakt-Gate — minimal-baseline 3/3 PASS (AC #9), --core 5/8→6/8 PASS (AC #10, Check-3 FAIL→PASS via Task-4 Fixture-Fix, keine PASS→FAIL-Transitions), Skill-Smoke 6/6 PASS (AC #11), Scoring-Neutralität (AC #18) verifiziert (jsonl+config.yaml unverändert, DEFCON v3.7 persistent; 2 v3.8-Treffer beide False-Positive). PIPELINE.md #13 Vault-Sanierung als Deferred-Follow-up eingehängt (AC #17 ✓). Last-Audit-Block aktualisiert (AC #16c ✓). 4 Artefakte force-added in `docs/superpowers/specs/_artifacts/`.
 
-ACs erfüllt: #5 (10/10 Verweise-Header), #7 (dynastie-depot v3.7.3), #8 (bt-fwd-verify v1.0.1), #9 (--minimal-baseline 3/3), #11 (Skill-Smoke 6/6), #12 (CLAUDE.md ≤80, STATE+PORTFOLIO grep), #13 (§18 v2 + Union-Regel grepbar). **Portfolio-State unverändert** seit 23.04. TMO Q1 (Score 67/D3/33,53€/Nenner 8,5). System: DEFCON v3.7 (unverändert).
+Codex-Verdikt Task-8 Step 8.6: `RECONCILED_WITH_FOLLOWUPS` → F1+F2 durch `0e45989` closed. AC-Matrix Stand Session-6-Ende: **#1-#6 PASS** (Tasks 2/3), **#7-#8 PASS** (Task 7), **#9-#11 PASS** (Task 4 + Smoke), **#12-#13 PASS** (Task 6), **#14-#15 PASS** (Task 8 Reconcile+Lint), **#16c PASS** (Last-Audit), **#17 PASS** (Vault-FU), **#18 PASS** (Scoring-Neutralität). **OPEN (Task 9 Scope): #16a (Codex formal), #16b (CodeRabbit), #16-User-Sign-off, #16d Merge-Dokumentation.**
 
-**Working-Tree (uncommitted, runtime/autosave):** `00_Core/STATE.md` (Last-Audit-Auto-Update), `03_Tools/Rebalancing_Tool_v3.4.xlsx` (Excel-Autosave), `.claude/scheduled_tasks.lock`, `.claude/worktrees/`. Kein Task-Scope.
+**Portfolio-State unverändert** seit 23.04. TMO Q1 (Score 67/D3/33,53€/Nenner 8,5). System: DEFCON v3.7 (unverändert).
 
-## 🔄 RESUME-INPUT (Session 6 — Task 7 Skill-Paket-Build + Archive, 2026-04-25 Session-5-Ende)
+**Working-Tree (uncommitted, runtime/autosave):** `03_Tools/Rebalancing_Tool_v3.4.xlsx` (Excel-Autosave), `.claude/scheduled_tasks.lock`, `.claude/worktrees/`. Kein Task-Scope.
+
+## 🔄 RESUME-INPUT (Session 7 — Task 9 Review-Gates + Merge, 2026-04-25 Session-6-Ende)
+
+**Auftrag:** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` ab **Task 9 Step 9.1** via `superpowers:executing-plans` fortsetzen. Branch `refactor/00core-perfect-organization` bleibt checked out. Tasks 0-8 sind committed; nur noch Task 9 (Review-Gates) + Merge laut Spec.
+
+**Task 9 Steps Session 7 (~45-75 Min, harter User-Pause-Punkt 9.7):**
+1. **Step 9.1:** Claude Self-Review Checklist — AC #1-#18 durchgehen, bereits dokumentierte PASS aus Handover-Banner übernehmen, noch OPEN prüfen (#16a/b/Sign-off/Merge-Doku).
+2. **Step 9.2:** Codex-Reconciliation formal via `codex:codex-rescue`-Subagent gegen vollen `main..HEAD`-Diff (9 Commits seit baseline `db50ff0`). Prompt per Plan-Template.
+3. **Step 9.3:** Codex-Output speichern als `docs/superpowers/specs/_artifacts/codex-reconciliation-report.md` (force-add).
+4. **Step 9.4:** Codex-Findings adressieren. 🔴 Blocker sofort fixen als einzelne Commits `fix(refactor): Codex-F<N>…`. 🟡 Should inline oder Deferred. ℹ️ Nice dokumentieren.
+5. **Step 9.5:** CodeRabbit-Pass via WSL, `--base-commit` statt `--base` (Auto-Memory `coderabbit_cli_via_wsl.md` kanonisch). Base = letzter main-Commit vor 2026-04-24 (wahrscheinlich `db50ff0`).
+6. **Step 9.6:** CodeRabbit-Findings triagieren → `coderabbit-findings.md` (Fix/Decline + Rationale). Fixes als separate Commits.
+7. **🛑 Step 9.7 USER-PAUSE:** User-Sign-off einholen (Plan-Zitat: „STOP until user approval or decline is received"). Sign-off-Artefakt `user-signoff.md` anlegen.
+8. **Step 9.8-9.10 (nach User-OK):** Merge nach `main` via `--no-ff`, Tag-Commit optional, `!SyncBriefing` nach Merge.
+
+**AC-Bezug:** AC #16a (Claude Self) · #16b (Codex/CR via Artefakte) · #16c bereits ✓ · #16d Merge-Dokumentation.
+
+**Sequenz Session 7:**
+1. `Session starten` → STATE.md (Hub, default-load) + PORTFOLIO.md (Live-State, default-load)
+2. SESSION-HANDOVER.md (diese Datei) — Resume-Input Session 7
+3. Step 9.1 Claude Self-Review (AC-Matrix aus Handover-Banner als Ausgangspunkt)
+4. Step 9.2 Codex-Subagent dispatch (codex:codex-rescue)
+5. Codex-Findings adressieren (9.3+9.4)
+6. Step 9.5 CodeRabbit-Pass (WSL, base-commit=merge-base-main-HEAD)
+7. Step 9.6 CR-Triage
+8. 🛑 USER-PAUSE 9.7 → Sign-off
+9. Post-Sign-off: Merge + !SyncBriefing
+
+**Codex-Preview (Task 8 Step 8.6):** Bereits `RECONCILED_WITH_FOLLOWUPS` für Tasks 0-7 + Drift-Fix. Task 9 Step 9.2 Full-Pass wird vermutlich `RECONCILED` zurückgeben (F1+F2 gefixt), eventuell neue kleinere Findings.
+
+**Bekannte offene Codex-Followups (pre-Task-9, kein Blocker):**
+- `03_Tools/backtest-ready/README.md:130` v3.7.2-Skill-Orchestrierung → v3.7.3 (Doku-Drift, harmlos)
+- `03_Tools/system_audit/_smoke_test.py:450-471,505-507` Test-/Fixture-Naming `state_*` → `portfolio/pipeline` (kosmetische Hygiene, Codex F3 Task 4)
+- briefing-sync-check.ps1 — Codex-False-Positive (STATE.md intentional als Hub für Critical-Alert-Sync)
+
+**Known Pre-Existing FAIL in --core (Task-8-Diff, nicht Task-9-Scope):**
+- Check-4 `cross_source` FAIL 20/22: `PORTFOLIO.md: TMO score=64` vs `config.yaml=67` — config.yaml nicht synchronisiert nach TMO Q1 23.04. (Task-6-Scope laut Handover, aber im Commit nicht addressiert → weiter Backlog).
+- Check-5 `existence` FAIL 203/455: stale path-refs in CLAUDE.md/SESSION-HANDOVER/Plan-Files. Task-6-"existence-Cleanup-Welle" nicht ausgeführt. Pre-existing, durch Task-4 Scan-Erweiterung nur sichtbarer geworden.
+
+**Spec-Anker:** `docs/superpowers/specs/2026-04-24-00core-perfect-organization-design.md` v0.4 ratified.
+
+**Push-Status:** 9 Commits LOKAL auf Feature-Branch seit baseline `db50ff0` (7 Task-Commits + Task-8 Artefakt-Commit + Narrative-Drift-Fix). Kein `git push`. `!SyncBriefing` deferred bis Branch-Merge in main (Task 9.8-9.10).
+
+**Branch-Status nach Session 6:**
+```
+7ee1b61 verify(refactor): Task-8 Smoke-Sweep + Artefakt-Gate
+0e45989 refactor(narratives): post-migration drift-fix CORE-MEMORY §3 + KONTEXT §Layer
+f66b622 build(skills): Task-7 Skill-Paket-Build — Legacy-Archive README-Entry
+9cce107 refactor(governance): Task-6 CLAUDE.md + INSTRUKTIONEN §18/§25/§27.3/§27.4
+a404012 refactor(skills+peers): Task-5 Content-Patches + Peer-Verweise-Header
+469f5af refactor(scripts): Task-4 Tool-Patches für 00_Core-Split
+60b2882 handover: Session-3-Ende — Task-3 CORE-MEMORY closed, Task-4 Resume-Input
+326fa42 refactor(00core): Task-3 CORE-MEMORY §1→§12/§13 Topic-Auflösung
+db50ff0 (main, baseline merge-base)
+```
+
+---
+
+## 🗃 Vorherige Resume-Inputs (archiviert)
+
+### Session 6 (Task 7 Skill-Paket-Build + Task 8 Verification — ARCHIVIERT 2026-04-25)
+
+**Auftrag war:** Plan ab Task 7 Step 7.1 fortsetzen. Ergebnis: Task 7 (`f66b622`), Narrative-Drift-Fix (`0e45989` per Codex F1+F2), Task 8 (`7ee1b61`). 1 Codex-Review durchgeführt während Step 8.6 Allow/Deny-Lint = RECONCILED_WITH_FOLLOWUPS → F1+F2 fixed. AC #7/#8/#9/#10/#11/#14/#15/#16c/#17/#18 PASS. Task-7 Commit-Scope nur README force-added (ZIPs blieben gitignored Build-Artefakte per User-Entscheidung Option 2). User löschte Trail-Kopie `_1.0.1.zip` manuell.
+
+### Session 5 (Tasks 4+5+6 Atomare Commits — ARCHIVIERT 2026-04-25)
 
 **Auftrag:** Plan `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` ab **Task 7 Step 7.1** via `superpowers:executing-plans` fortsetzen. Branch `refactor/00core-perfect-organization` bleibt checked out. Tasks 4+5+6 sind committed; nur noch Task 7 (Build) + Task 8+ (Governance/Audit/Merge laut Spec).
 
