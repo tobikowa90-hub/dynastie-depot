@@ -95,11 +95,13 @@ Das DEFCON-System hält seinen Zustand in vier getrennten Layern (siehe KONTEXT.
 | Layer | Datei(en) | Mutation |
 |-------|-----------|----------|
 | State | `Faktortabelle.md` | Überschrieben |
-| Narrative | `log.md`, `CORE-MEMORY.md` | Fortgeschrieben |
+| Narrative | `log.md`, `CORE-MEMORY.md` (§5 / §12 / §13) | Fortgeschrieben |
 | History | `05_Archiv/score_history.jsonl`, `05_Archiv/flag_events.jsonl` | Append-only (unveränderlich) |
-| Projection | `STATE.md` | Aus State + Narrative synchronisiert |
+| Projection (Live-State) | `PORTFOLIO.md` | Aus State + Narrative synchronisiert (default-load bei Session-Start) |
+| Hub | `STATE.md` | Verweise + Critical-Alerts + Last-Audit (~40 Z, seit Tier-2-Refactor 25.04.2026) |
+| Persistenz | `01_Skills/dynastie-depot/config.yaml` | Score/DEFCON/FLAG-Persistenz (§18 v2.1 im Score-Event-Set seit 25.04.2026) |
 
-Jede Score/FLAG-Änderung triggert §18 Sync-Pflicht auf **alle sechs Dateien** im gleichen git-Commit. Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FLAG-Event-Log]].
+Jede Score/FLAG/Sparraten-Änderung triggert §18 v2.1 Sync-Pflicht (Trigger-basiertes Event-Mapping) auf das vollständige Score-Event-File-Set im gleichen git-Commit. Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FLAG-Event-Log]].
 
 ## Wissenschaftliche Fundierung (nachträglich 19.04.2026, erweitert 20.04.2026)
 

@@ -6,9 +6,9 @@ aliases:
   - "Faktortabelle.md"
 tags: [system, single-source-of-truth, scoring]
 created: 2026-04-23
-updated: 2026-04-23
+updated: 2026-04-25
 sources: []
-related: [STATE, CORE-MEMORY, Faktortabelle-Architektur]
+related: [STATE, PORTFOLIO, CORE-MEMORY, Faktortabelle-Architektur]
 ---
 
 # Faktortabelle.md

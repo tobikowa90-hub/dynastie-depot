@@ -14,14 +14,14 @@ Context-Hygiene bezeichnet die Disziplin, das Kontextfenster einer Claude-Sessio
 
 ## Regeln
 
-### Init-Sequenz (Pflicht)
+### Init-Sequenz (Pflicht, Stand Tier-2-Refactor 2026-04-25)
 ```
-1. CORE-MEMORY.md    → aktueller Stand
-2. KONTEXT.md        → Strategie + Allokation
-3. INSTRUKTIONEN.md  → Workflows + DEFCON-Regeln
-4. Faktortabelle.md  → aktueller Score-State
+1. STATE.md      → Hub: Verweise + Critical-Alerts + Last-Audit (~40 Z)
+2. PORTFOLIO.md  → Live-State (default-load, 90% der Sessions)
 ```
-Keine weiteren Dateien beim Start laden — on-demand wenn benötigt.
+Alle weiteren Dateien (PIPELINE / SYSTEM / CORE-MEMORY / INSTRUKTIONEN / KONTEXT / Faktortabelle / SESSION-HANDOVER) **on-demand via Routing-Table** in CLAUDE.md — trigger-spezifisch geladen, nicht beim Start.
+
+Vorher (bis 16.04.2026): 4-Datei-Auto-Read (CORE-MEMORY + KONTEXT + INSTRUKTIONEN + Faktortabelle, ~1.200 Z) — abgelöst per [[Session-Start-Protokoll]]-Migration.
 
 ### MCP-Session-Typen
 

@@ -1,7 +1,7 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-20 Abend (Phase 1b of 6-Paper Ingest — FinReflectKG + Labre + Bayesian RAG + FinDPO: +4 sources, +6 concepts, +12 entities, +1 synthesis = 130 Notes: 124 wiki + 6 raw-ingested; Phase 1a+1b komplett)
+> Last updated: 2026-04-25 (Vault-Concept-Seiten-Sanierung Tier-2-00_Core-Refactor — 14 Files: Hub-Split STATE→Hub+PORTFOLIO/PIPELINE/SYSTEM, CORE-MEMORY §1→§12/§13, §18 v2.1 Trigger-Mapping, Tripwire-Migration STATE→PORTFOLIO. Keine neuen Pages, nur Drift-Sanierung)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -46,7 +46,7 @@
 
 ### Skills & Module (Operative Tools) — `wiki/sources/tools/`
 - [[dynastie-depot-skill]] — DEFCON v3.7 Haupt-Skill (Skill-Paket v3.7.2); alle Workflows (!Analysiere, !Rebalancing, !QuickCheck, !CAPEX-FCF-ANALYSIS). Schritt 7 delegiert an `backtest-ready-forward-verify` (seit 19.04.2026)
-- [[backtest-ready-forward-verify]] — Satellit für Forward-Run Persistence-Pipeline; kein eigenes Trigger-Word, aktiviert programmatisch aus dynastie-depot Schritt 7. Orchestriert Freshness + STATE.md-Tripwire + §28.2 Δ-Gate + Dry-Run + Append + git add (neu 19.04.2026)
+- [[backtest-ready-forward-verify]] — Satellit für Forward-Run Persistence-Pipeline; kein eigenes Trigger-Word, aktiviert programmatisch aus dynastie-depot Schritt 7. Orchestriert Freshness + PORTFOLIO.md-Tripwire + §28.2 Δ-Gate + Dry-Run + Append + git add (neu 19.04.2026; Tripwire seit Tier-2-Refactor 25.04.2026 auf PORTFOLIO.md, v1.0.1)
 - [[quick-screener]] — Stufe-0 Vorfilter; 3 Filter (P/FCF, ROIC, Moat-Proxy); Ampel-Ergebnis
 - [[insider-intelligence]] — Form-4-Automatisierung; 8 US-Satelliten; FLAG-Detection (>$20M diskretionär)
 - [[non-us-fundamentals]] — yfinance für ASML/RMS/SU; EUR, IFRS, kein API-Key
@@ -152,7 +152,7 @@ _(noch leer)_
 - [[Non-US-Scoring]] — IFRS-Addendum für ASML/RMS/SU; Insider manuell via AFM/AMF
 - [[Score-Archiv]] — Append-only JSONL-Historie aller Score-Records; Basis für 2028+ Backtest (neu 17.04.2026)
 - [[FLAG-Event-Log]] — Trigger + Resolution für 4 FLAG-Typen; Quelle für deskriptive Event-Study (neu 17.04.2026)
-- [[Backtest-Ready-Infrastructure]] — 4-Layer-Architektur (State/Narrative/History/Projection); §18 6-Dateien-Sync (neu 17.04.2026)
+- [[Backtest-Ready-Infrastructure]] — 5-Layer-Architektur (State/Narrative/History/Projection-Live/Hub) seit Tier-2-Refactor 25.04.2026; §18 v2.1 Trigger-basiertes Sync-Mapping (neu 17.04.2026)
 
 ### Wissenschaftliche Fundierung DEFCON
 - [[5J-Fundamental-Fenster]] — 5J-Durchschnitt > Spot als Prädiktor; Pflichtperspektive in jeder Analyse
@@ -185,11 +185,11 @@ _(noch leer)_
 ### Token-Effizienz & System
 - [[Token-Mechanik]] — Strukturiertes Token-Management; Snapshot-First, MCP-Minimalset
 - [[Context-Hygiene]] — On-demand Loading; Compact-Regeln; MCP-Session-Typen
-- [[CLAUDE-md-Konstitution]] — CLAUDE.md als Wahrheitsquelle; 4 Pflicht-Lektüren; Trigger-Liste
+- [[CLAUDE-md-Konstitution]] — CLAUDE.md als Wahrheitsquelle; Hub+PORTFOLIO Default-Load; Routing-Table-Trigger (Tier-1 24.04. + Tier-2 25.04.2026)
 - [[Context-Hygiene-Code]] — Claude Code-spezifisch: autoCompact 75%, Tool Search, Deny Rules
 - [[Update-Klassen-DEFCON]] — A/B/C/D Klassen; Klasse-C-Priorität (Event-getriggert, sofort)
 - [[Faktortabelle-Architektur]] — Snapshot-First; config.yaml → Faktortabelle → API; ~60-70% Token-Einsparung
-- [[Session-Start-Protokoll]] — STATE.md als Single-Entry-Point; ersetzt 4-Datei-Auto-Read (~80% Token-Einsparung, seit 17.04.2026)
+- [[Session-Start-Protokoll]] — Hub (STATE.md) + PORTFOLIO.md Default-Load; ersetzt 4-Datei-Auto-Read (~80% Token-Einsparung, seit 17.04.2026 STATE-First; Tier-2-Hub-Split 25.04.2026)
 - [[INSTRUKTIONEN-SKILL-Trennung]] — Post-Dedup Arbeitsteilung: User-Workflow (INSTRUKTIONEN) vs. Scoring-Technik (SKILL); 587→452 Zeilen, 10 Cross-Refs, seit 17.04.2026
 
 ### Depot-Struktur & Planung

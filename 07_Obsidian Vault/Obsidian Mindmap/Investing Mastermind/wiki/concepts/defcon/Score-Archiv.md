@@ -30,7 +30,7 @@ Volldetails: [`03_Tools/backtest-ready/schemas.py`](../../../../../03_Tools/back
 SKILL.md **Schritt 7 (Archiv-Write Pflicht)** nach jeder `!Analysiere`. **Seit 19.04.2026 (dynastie-depot v3.7.2)** wird die Persistence-Pipeline über den Satelliten-Skill [`backtest-ready-forward-verify`](../../../../../01_Skills/backtest-ready-forward-verify/SKILL.md) orchestriert:
 
 ```
-Draft → Skill(args=<pfad>) → P1 Schema-Validation → P2a Freshness + P2b STATE.md-Tripwire
+Draft → Skill(args=<pfad>) → P1 Schema-Validation → P2a Freshness + P2b PORTFOLIO.md-Tripwire
       → P3 §28.2 Δ-Gate (conditional, injiziert MigrationEvent) → P4 --dry-run → P5 Append → P6 git add
 ```
 

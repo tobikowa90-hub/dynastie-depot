@@ -6,9 +6,9 @@ aliases:
   - "CORE-MEMORY.md"
 tags: [system, single-source-of-truth, memory]
 created: 2026-04-23
-updated: 2026-04-23
+updated: 2026-04-25
 sources: []
-related: [STATE, Faktortabelle]
+related: [STATE, PORTFOLIO, Faktortabelle]
 ---
 
 # CORE-MEMORY.md
@@ -17,15 +17,22 @@ related: [STATE, Faktortabelle]
 
 ## Rolle
 
-Live-Gedächtnis für Dynasty-Depot — wird bei relevanten Ereignissen direkt fortgeschrieben. Enthält:
-- §3 Positions-Entscheidungen (chronologisch)
-- §5 Scoring-Lektionen
-- §10 Audit-Log
-- §1 Aktuelle Meilensteine ab 15.04.2026
+Live-Gedächtnis für Dynasty-Depot — wird bei relevanten Ereignissen direkt fortgeschrieben. Sektionen (Stand Tier-2-Refactor 2026-04-25):
+- §2 Strategische Entscheidungen (dauerhaft bindend)
+- §3 Aktive Positions-Entscheidungen (historisch, pre-v3.7)
+- §4 Score-Register
+- §5 Scoring-Lektionen (gelernte Regeln)
+- §6 System-Upgrades & Versionsverlauf
+- §7 Steuer-Erinnerungen
+- §8 Nächste offene Entscheidungen
+- §10 API-Audit-Log
+- §11 Backtest-Ready Infrastructure
+- **§12 Per-Ticker-Chronik** (Topic-Auflösung des alten §1)
+- **§13 System-Lifecycle-History** (Topic-Auflösung des alten §1)
 
 ## Wann lesen
 
-On-Demand bei Strategie-Fragen, Lessons-Learned-Recall, Audit-Trail-Suche. Pre-15.04.2026 Chronik liegt im Archiv: `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md`.
+On-Demand bei Strategie-Fragen, Lessons-Learned-Recall, Audit-Trail-Suche, Per-Ticker-Historie (§12) oder System-Versions-Lookup (§13). Pre-15.04.2026 Chronik liegt im Archiv: `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md`. Live-Portfolio-State (Scores/FLAGs/Sparraten) → [[PORTFOLIO]].
 
 ## Pfad
 

@@ -16,7 +16,7 @@ CLAUDE.md ist die primäre Konfigurationsdatei für das Verhalten von Claude-Ses
 
 | # | Sektion | Inhalt | Priorität |
 |---|---------|--------|-----------|
-| 1 | SESSION-INITIALISIERUNG | Pflicht-Read STATE.md + Skill-Aktivierung | Kritisch |
+| 1 | SESSION-INITIALISIERUNG | Pflicht-Read STATE.md (Hub) + PORTFOLIO.md (Live-State) + Skill-Aktivierung | Kritisch |
 | 2 | Verhalten | Sync-Pflicht, CORE-MEMORY live, Briefing-Sync §25, Remote-Control | Hoch |
 | 3 | Kontinuierliches Lernen | 3-Tier-Tabelle (Auto-Memory / Applied-Learning / Instruktionen) | Hoch |
 | 4 | Projektstruktur | Ordner-Map `00_Core/` bis `07_Obsidian Vault/` | Mittel |
@@ -47,7 +47,7 @@ Der **Tier-1-Refactor 24.04.2026** (Spec `docs/superpowers/specs/2026-04-24-clau
    - `00_Core/TOKEN-RULES.md` (**Accessibility-Modell, kein Enforcement** — Regeln liegen vor, via Pointer nachlesbar)
 3. **Neue Fuß-Sektion `## Pointer (Ausgelagertes)`** — 4 Zeilen: APPLIED-LEARNING, TOKEN-RULES, INSTRUKTIONEN, Meilensteine-Archiv.
 
-**Deferred (nicht in Tier 1):** Tier-2 STATE-Split Variante-B-Hub (`STATE.md` → ~10-Z-Hub + `PORTFOLIO.md`/`PIPELINE.md`/`SYSTEM.md`). Tier-2b CORE-MEMORY-Subkategorisierung. Eigene Brainstorm-Session — siehe STATE.md Pipeline-Deferred #12 „00_Core Perfect-Organization".
+**Tier-2-Status (Stand 25.04.2026):** ✅ **DONE** — STATE-Split Variante-B-Hub (`STATE.md` → 40-Z-Hub + `PORTFOLIO.md`/`PIPELINE.md`/`SYSTEM.md`) + CORE-MEMORY §1→§12/§13 Topic-Auflösung + INSTRUKTIONEN §18 v2.1 Trigger-basiertes Sync-Mapping. Spec/Plan: `docs/superpowers/plans/2026-04-24-00core-perfect-organization.md` (18 AC PASS, Codex-Reconciliation `RECONCILED_WITH_FOLLOWUPS`). Skill-Bumps: dynastie-depot v3.7.3, backtest-ready-forward-verify v1.0.1.
 
 ## Wiki-Modus-Trigger (vollständig)
 
@@ -63,6 +63,7 @@ Auslösende Begriffe: `ingest`, `lint`, `query`, `Wiki`, `Vault`, `Obsidian`, `S
 | 2026-04-17 | STATE.md-First Session-Init (ersetzt 4-Datei-Auto-Read); CORE-MEMORY §1-Archivierung |
 | 2026-04-17 | Post-STATE Konsolidierung: Token-Block verdichtet, MCP-Session-Check zu 1 Bullet, Applied Learning 12→11 (SKILL-Rename obsolet), Modell-Toggle-Bullet ergänzt — siehe [[INSTRUKTIONEN-SKILL-Trennung]] |
 | 2026-04-24 | **Tier-1-Refactor:** 97→71 Zeilen · Routing-Table (9 Trigger + Hybrid-Match + 3 Edge-Cases) ersetzt On-Demand-Lektüre · neue SSoT `APPLIED-LEARNING.md` + `TOKEN-RULES.md` (Accessibility-Modell) · neue `## Pointer (Ausgelagertes)`-Sektion · 7 Top-Level-Sektionen. Spec/Plan: `2026-04-24-claude-md-routing-refactor-*`. Tier-2 STATE-Split deferred. |
+| 2026-04-25 | **Tier-2-00_Core-Refactor:** STATE-Split (159 Z→40 Z Hub + 3 Satelliten PORTFOLIO/PIPELINE/SYSTEM) · CORE-MEMORY §1→§12/§13 Topic-Auflösung · INSTRUKTIONEN §18 v2.1 Trigger-basiertes Sync-Mapping + Multi-Event-Union-Regel + `config.yaml` im Score-Event-Set · Routing-Table um Hub/PORTFOLIO-Default-Load erweitert. Skill-Bumps: dynastie-depot v3.7.3, backtest-ready-forward-verify v1.0.1. Plan: `2026-04-24-00core-perfect-organization.md` (18 AC PASS). |
 
 ## Backlinks
 - [[Context-Hygiene]] — Context-Regeln operationalisiert in CLAUDE.md
