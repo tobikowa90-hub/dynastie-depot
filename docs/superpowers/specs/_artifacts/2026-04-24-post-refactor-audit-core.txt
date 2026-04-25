@@ -1,0 +1,75 @@
+🔍 System-Audit — 2026-04-25T00:09:54Z
+
+Check-1  jsonl_schema         ✅ PASS  40/40    |   232ms
+Check-2  store_freshness      ✅ PASS  2/2      |     0ms
+Check-3  markdown_header      ✅ PASS  6/6      |    20ms
+Check-4  cross_source         ❌ FAIL  20/22    |   126ms
+         ⚠️ PORTFOLIO.md: AVGO: expected watch-active consistent with config false | actual icon=warn reason=Insider-Review (OpenInsider!)
+           hint: Watch ist informativ — kein Fehler
+         🔴 PORTFOLIO.md: TMO: expected score=64 | actual TMO score=67
+           hint: PORTFOLIO.md-Zeile aktualisieren, config.yaml ist Wahrheitsquelle
+         🔴 Faktortabelle.md: TMO: expected score=64 | actual TMO score=67
+           hint: Faktortabelle.md-Zeile aktualisieren, config.yaml ist Wahrheitsquelle
+Check-5  existence            ❌ FAIL  203/455  |   100ms
+         [docs\superpowers\plans\2026-04-24-00core-perfect-organization.md] 73 finding(s) — 73🔴
+           🔴 docs\superpowers\plans\2026-04-24-00core-perfect-organization.md:248: expected referenced path exists | actual PORTFOLIO.md
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 docs\superpowers\plans\2026-04-24-00core-perfect-organization.md:256: expected referenced path exists | actual STATE.md
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 71 more in [docs\superpowers\plans\2026-04-24-00core-perfect-organization.md]
+         [docs\superpowers\plans\2026-04-20-track5b-fred-regime-filter.md] 63 finding(s) — 63🔴
+           🔴 docs\superpowers\plans\2026-04-20-track5b-fred-regime-filter.md:15: expected referenced path exists | actual fred_client.py
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 docs\superpowers\plans\2026-04-20-track5b-fred-regime-filter.md:16: expected referenced path exists | actual 05_Archiv/macro_regime_historical.jsonl
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 61 more in [docs\superpowers\plans\2026-04-20-track5b-fred-regime-filter.md]
+         [00_Core\SESSION-HANDOVER.md] 48 finding(s) — 48🔴
+           🔴 00_Core\SESSION-HANDOVER.md:25: expected referenced path exists | actual _1.0.1.zip
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 00_Core\SESSION-HANDOVER.md:26: expected referenced path exists | actual 06_Skills-Pakete/dynastie-depot_v3.7.2.zip
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 46 more in [00_Core\SESSION-HANDOVER.md]
+         [docs\superpowers\plans\2026-04-20-track5a-edgar-skill-promotion.md] 20 finding(s) — 20🔴
+           🔴 docs\superpowers\plans\2026-04-20-track5a-edgar-skill-promotion.md:7: expected referenced path exists | actual _extern/sec-edgar-skill/SKILL-sec-edgar-skill.md
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 docs\superpowers\plans\2026-04-20-track5a-edgar-skill-promotion.md:7: expected referenced path exists | actual 01_Skills/sec-edgar-skill/SKILL.md
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 18 more in [docs\superpowers\plans\2026-04-20-track5a-edgar-skill-promotion.md]
+         [docs\superpowers\plans\2026-04-21-score-append-provenance-gate.md] 16 finding(s) — 16🔴
+           🔴 docs\superpowers\plans\2026-04-21-score-append-provenance-gate.md:7: expected referenced path exists | actual archive_score.py
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 docs\superpowers\plans\2026-04-21-score-append-provenance-gate.md:7: expected referenced path exists | actual versions.py
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 14 more in [docs\superpowers\plans\2026-04-21-score-append-provenance-gate.md]
+         [00_Core\SYSTEM.md] 11 finding(s) — 11🔴
+           🔴 00_Core\SYSTEM.md:22: expected referenced path exists | actual benchmark-series.jsonl
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 00_Core\SYSTEM.md:25: expected referenced path exists | actual portfolio_risk.py
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 9 more in [00_Core\SYSTEM.md]
+         [00_Core\PIPELINE.md] 8 finding(s) — 8🔴
+           🔴 00_Core\PIPELINE.md:44: expected referenced path exists | actual portfolio_risk.py
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 00_Core\PIPELINE.md:44: expected referenced path exists | actual 03_Tools/repair_daily_persist.py
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 6 more in [00_Core\PIPELINE.md]
+         [docs\superpowers\plans\2026-04-24-claude-md-routing-refactor.md] 7 finding(s) — 7🔴
+           🔴 docs\superpowers\plans\2026-04-24-claude-md-routing-refactor.md:25: expected referenced path exists | actual INSTRUKTIONEN.md
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 docs\superpowers\plans\2026-04-24-claude-md-routing-refactor.md:25: expected referenced path exists | actual STATE.md
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 5 more in [docs\superpowers\plans\2026-04-24-claude-md-routing-refactor.md]
+         [CLAUDE.md] 6 finding(s) — 6🔴
+           🔴 CLAUDE.md:9: expected referenced path exists | actual CORE-MEMORY.md
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           🔴 CLAUDE.md:13: expected referenced path exists | actual remote-trigger-api.md
+             hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+           ... 4 more in [CLAUDE.md]
+Check-6  skill_version        ✅ PASS  2/2      |     9ms
+Check-7  pipeline_ssot        ✅ PASS  5/5      |     0ms
+Check-8  log_lag              ✅ PASS  1/1      |    60ms
+
+Summary: 6/8 PASS, 2 FAIL, 0 WARN, 0 SKIP
+Duration: 547ms
+Exit-Code: 1
+rc=1

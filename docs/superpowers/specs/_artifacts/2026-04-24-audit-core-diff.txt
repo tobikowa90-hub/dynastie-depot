@@ -1,0 +1,81 @@
+1c1
+< 🔍 System-Audit — 2026-04-24T21:19:42Z
+---
+> 🔍 System-Audit — 2026-04-25T00:09:54Z
+3c3
+< Check-1  jsonl_schema         ✅ PASS  40/40    |    79ms
+---
+> Check-1  jsonl_schema         ✅ PASS  40/40    |   232ms
+5,9c5,7
+< Check-3  markdown_header      ❌ FAIL  2/3      |     6ms
+<          🔴 00_Core\CORE-MEMORY.md: expected Stand >= 2026-04-24 or <= 2 business-day lag | actual Stand 2026-04-21 vs newest-event 2026-04-24 (lag 3 business days)
+<            hint: Header-Zeile auf 24.04.2026 aktualisieren
+< Check-4  cross_source         ❌ FAIL  20/22    |    87ms
+<          ⚠️ STATE.md: AVGO: expected watch-active consistent with config false | actual icon=warn reason=Insider-Review (OpenInsider!)
+---
+> Check-3  markdown_header      ✅ PASS  6/6      |    20ms
+> Check-4  cross_source         ❌ FAIL  20/22    |   126ms
+>          ⚠️ PORTFOLIO.md: AVGO: expected watch-active consistent with config false | actual icon=warn reason=Insider-Review (OpenInsider!)
+11,12c9,10
+<          🔴 STATE.md: TMO: expected score=64 | actual TMO score=67
+<            hint: STATE.md-Zeile aktualisieren, config.yaml ist Wahrheitsquelle
+---
+>          🔴 PORTFOLIO.md: TMO: expected score=64 | actual TMO score=67
+>            hint: PORTFOLIO.md-Zeile aktualisieren, config.yaml ist Wahrheitsquelle
+15c13,19
+< Check-5  existence            ❌ FAIL  114/282  |    47ms
+---
+> Check-5  existence            ❌ FAIL  203/455  |   100ms
+>          [docs\superpowers\plans\2026-04-24-00core-perfect-organization.md] 73 finding(s) — 73🔴
+>            🔴 docs\superpowers\plans\2026-04-24-00core-perfect-organization.md:248: expected referenced path exists | actual PORTFOLIO.md
+>              hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+>            🔴 docs\superpowers\plans\2026-04-24-00core-perfect-organization.md:256: expected referenced path exists | actual STATE.md
+>              hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+>            ... 71 more in [docs\superpowers\plans\2026-04-24-00core-perfect-organization.md]
+22,29c26,27
+<          [00_Core\STATE.md] 31 finding(s) — 31🔴
+<            🔴 00_Core\STATE.md:5: expected referenced path exists | actual CORE-MEMORY.md
+<              hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+<            🔴 00_Core\STATE.md:6: expected referenced path exists | actual INSTRUKTIONEN.md
+<              hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+<            ... 29 more in [00_Core\STATE.md]
+<          [00_Core\SESSION-HANDOVER.md] 25 finding(s) — 25🔴
+<            🔴 00_Core\SESSION-HANDOVER.md:11: expected referenced path exists | actual coderabbit_cli_via_wsl.md
+---
+>          [00_Core\SESSION-HANDOVER.md] 48 finding(s) — 48🔴
+>            🔴 00_Core\SESSION-HANDOVER.md:25: expected referenced path exists | actual _1.0.1.zip
+31c29
+<            🔴 00_Core\SESSION-HANDOVER.md:46: expected referenced path exists | actual CLAUDE-md-Konstitution.md
+---
+>            🔴 00_Core\SESSION-HANDOVER.md:26: expected referenced path exists | actual 06_Skills-Pakete/dynastie-depot_v3.7.2.zip
+33c31
+<            ... 23 more in [00_Core\SESSION-HANDOVER.md]
+---
+>            ... 46 more in [00_Core\SESSION-HANDOVER.md]
+45a44,55
+>          [00_Core\SYSTEM.md] 11 finding(s) — 11🔴
+>            🔴 00_Core\SYSTEM.md:22: expected referenced path exists | actual benchmark-series.jsonl
+>              hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+>            🔴 00_Core\SYSTEM.md:25: expected referenced path exists | actual portfolio_risk.py
+>              hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+>            ... 9 more in [00_Core\SYSTEM.md]
+>          [00_Core\PIPELINE.md] 8 finding(s) — 8🔴
+>            🔴 00_Core\PIPELINE.md:44: expected referenced path exists | actual portfolio_risk.py
+>              hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+>            🔴 00_Core\PIPELINE.md:44: expected referenced path exists | actual 03_Tools/repair_daily_persist.py
+>              hint: Pfad umbenannt/geloescht? Referenz aktualisieren
+>            ... 6 more in [00_Core\PIPELINE.md]
+58,60c68,70
+< Check-6  skill_version        ✅ PASS  2/2      |     5ms
+< Check-7  pipeline_ssot        ✅ PASS  4/4      |     0ms
+< Check-8  log_lag              ✅ PASS  1/1      |    21ms
+---
+> Check-6  skill_version        ✅ PASS  2/2      |     9ms
+> Check-7  pipeline_ssot        ✅ PASS  5/5      |     0ms
+> Check-8  log_lag              ✅ PASS  1/1      |    60ms
+62,63c72,73
+< Summary: 5/8 PASS, 3 FAIL, 0 WARN, 0 SKIP
+< Duration: 245ms
+---
+> Summary: 6/8 PASS, 2 FAIL, 0 WARN, 0 SKIP
+> Duration: 547ms
