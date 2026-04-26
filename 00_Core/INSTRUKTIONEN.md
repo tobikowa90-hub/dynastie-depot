@@ -13,6 +13,53 @@
 
 ---
 
+## §0. Code-Verhaltens-Regeln (Präambel)
+
+> Diese Regeln gelten universell für alle Code- und File-Edit-Operationen
+> (insbesondere durch Claude Code). Sie sind **nicht** auf Markdown-Sync,
+> Wiki-Operationen oder reine Lese-Vorgänge anzuwenden.
+>
+> Quelle: Adaptation der Karpathy-Beobachtungen zu LLM-Coding-Failure-Modes.
+
+### §0.1 Think Before Coding
+- Annahmen explizit machen, nicht still raten
+- Bei mehreren plausiblen Interpretationen: Rückfrage statt Auswahl
+- Bei einfacherer Alternative: aktiv pushen, nicht der ersten Idee folgen
+- Bei Konfusion: stoppen und benennen, was unklar ist
+
+### §0.2 Simplicity First (Anti-Overengineering)
+- Minimum-Code, der das Problem löst — nichts Spekulatives
+- Keine Abstraktionen für Single-Use-Code
+- Keine "Flexibilität" oder "Konfigurierbarkeit", die nicht angefordert wurde
+- Keine Error-Handler für unmögliche Szenarien
+- Test: Würde ein Senior-Engineer sagen "das ist überkomplex"? → vereinfachen
+
+### §0.3 Surgical Changes
+- Nur anfassen, was angefasst werden muss
+- Kein Drive-by-Refactoring benachbarter Code-/Kommentar-/Format-Bereiche
+- Bestehenden Stil matchen, auch wenn man es anders machen würde
+- Bei aufgefallenem Dead-Code: erwähnen, nicht selbst löschen
+- Test: Jede geänderte Zeile traceable zur User-Anfrage? Wenn nein → zurücknehmen
+
+### §0.4 Goal-Driven Execution
+- Erfolgs-Kriterien vor Implementierung definieren
+- Bei Bug-Fixes: erst Test schreiben, der Bug reproduziert
+- Bei Refactor: Tests vor und nach grün
+- Multi-Step-Tasks: kurzer Plan mit `verify:`-Kriterien pro Schritt
+  (Format konsistent zu `docs/superpowers/plans/`)
+
+### Bezug zu bestehenden Regeln
+
+| Regel | Verhältnis zu §0 |
+|---|---|
+| §27.5 Migration-Regression-Guard | §0.3 Surgical Changes ist die generalisierte Form — §27.5 ist spezifisch für Migrations-Tasks |
+| §29.5 Look-Ahead-Prevention | §0.4 Goal-Driven ist die generalisierte Form — §29.5 ist spezifisch für Backtest-Code |
+| §18 Sync-Pflicht | §0 gilt nicht für Sync-Operationen — Sync ist mechanisch, nicht kreativ |
+
+**Konflikt-Auflösung:** Bei Konflikt zwischen §0 und einem späteren spezifischen § gewinnt der spezifische §. §0 ist Default-Verhalten, kein Override.
+
+---
+
 ## 1. Befehls-Übersicht
 
 | Befehl | Funktion | Dauer |
