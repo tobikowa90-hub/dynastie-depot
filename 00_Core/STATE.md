@@ -29,9 +29,9 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-25T10:22:31Z
-**Result:** 3/3 PASS
-**Run:** `python 03_Tools/system_audit.py --minimal-baseline`
+**Timestamp (UTC):** 2026-04-26T19:16:11Z
+**Result:** 9/14 PASS (2 FAIL, 3 WARN)
+**Run:** `python 03_Tools/system_audit.py --core`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->
