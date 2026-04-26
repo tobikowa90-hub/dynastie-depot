@@ -34,23 +34,43 @@ CANONICAL_VERSION = "v2.1"
 WRONG_VERSIONS = ("v1.7", "v2.0")  # known prior versions to detect drift
 
 
-def _scan_text_for_basenames(text: str) -> set[str]:
-    """Return basenames from CANONICAL set that appear at least once in text."""
-    return {bn for bn in CANONICAL_SCORE_EVENT_BASENAMES if bn in text}
+# List-entry markers: commas, quotes, table cells, PowerShell arrays,
+# markdown bullets — signals that a basename appears as a declared list item,
+# not in narrative prose.
+_LIST_MARKER_RE = re.compile(r"[,'\"|`]|@\(|^\s*[-*]\s", re.MULTILINE)
 
+def _scan_text_for_basenames(text: str) -> set[str]:
+    """Return basenames that appear in list-entry contexts (commas, quotes,
+    table cells, PowerShell arrays, markdown bullets) — not raw prose.
+    Avoids FP where a basename appears in narrative text (e.g., 'die log.md
+    Datei wird ...') but is not declared as part of the §18 file set.
+    Codex-Review TaskID 12 follow-up.
+    """
+    found: set[str] = set()
+    for line in text.splitlines():
+        if not _LIST_MARKER_RE.search(line):
+            continue
+        for bn in CANONICAL_SCORE_EVENT_BASENAMES:
+            if bn in line:
+                found.add(bn)
+    return found
+
+
+# §18 as governing-rule reference: NOT followed by '.' + digit (subsection)
+_GOVERNING_18_RE = re.compile(r"§18(?!\.\d)")
 
 def _scan_text_for_wrong_versions(text: str) -> list[str]:
     """Return list of wrong-version mentions (v1.7, v2.0) co-located with §18.
 
     Strict heuristic: scan line-by-line, flag only when SAME LINE contains
-    both a wrong-version-string AND a §18-marker (`§18` literal).
-    Vermeidet false-positives bei Skill-Versionen (`version: 1.0.1`),
-    System-Version (`v3.7`), und Cross-Section-Drift wo §18 in Z10 und
-    `v1.7` in Z200 unbezogen sind (Codex-Review P2-07).
+    BOTH a wrong-version-string AND a §18 reference that is NOT a subsection
+    (§18.1, §18.2 are inline subsection refs — exclude). This prevents FP
+    on changelog lines like 'v1.8 -> v2.0 ... (§18.1)'.
+    Codex-Review TaskID 12 follow-up.
     """
     out: list[str] = []
     for line in text.splitlines():
-        if "§18" not in line:
+        if not _GOVERNING_18_RE.search(line):
             continue
         for wv in WRONG_VERSIONS:
             if wv in line and wv not in out:

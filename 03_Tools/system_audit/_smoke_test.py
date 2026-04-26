@@ -1156,6 +1156,35 @@ def test_score_event_parity_skip_on_missing_sources() -> None:
     assert all(f.severity == "warning" for f in result.failures)
 
 
+def test_score_event_parity_no_fp_on_changelog() -> None:
+    """Regression Codex-TaskID-12: changelog 'v1.8 -> v2.0 ... (§18.1)' must NOT
+    trigger version-drift FAIL. §18 subsection refs are not governing-rule mentions.
+    """
+    from system_audit.checks.score_event_parity import _scan_text_for_wrong_versions
+    text = (
+        "## 18. Sync-Pflicht v2.1\n"
+        "Body referencing §18 v2.1 governance.\n"
+        "Changelog:\n"
+        "- v1.8 -> v2.0 (2026-04-24): Hub-Split via (§18.1) + Multi-Event (§18.2).\n"
+        "- v2.0 -> v2.1 (2026-04-25): config.yaml in Set.\n"
+    )
+    out = _scan_text_for_wrong_versions(text)
+    assert out == [], f"changelog with §18.1/§18.2 subsection refs must not flag wrong-version; got {out}"
+
+def test_score_event_parity_no_fp_on_basename_in_prose() -> None:
+    """Regression Codex-TaskID-12: basename mention in narrative prose must NOT
+    count as list-entry. Line-scope to list markers only.
+    """
+    from system_audit.checks.score_event_parity import _scan_text_for_basenames
+    text = "Bitte schaue in die log.md Datei nach den letzten Eintraegen.\n"
+    found = _scan_text_for_basenames(text)
+    assert "log.md" not in found, f"prose mention must not count; got {found}"
+    # And confirm list context still works
+    text2 = "Files: log.md, CORE-MEMORY.md\n"
+    found2 = _scan_text_for_basenames(text2)
+    assert "log.md" in found2 and "CORE-MEMORY.md" in found2
+
+
 def test_skill_frontmatter_pass_on_complete() -> None:
     import tempfile
     from system_audit.checks.skill_frontmatter import run
@@ -1387,6 +1416,8 @@ if __name__ == "__main__":
     test_score_event_parity_fail_on_v17_drift()
     test_score_event_parity_fail_on_missing_file_in_briefing_sync()
     test_score_event_parity_skip_on_missing_sources()
+    test_score_event_parity_no_fp_on_changelog()
+    test_score_event_parity_no_fp_on_basename_in_prose()
     print("[OK] score_event_parity smoke tests passed")
     test_skill_frontmatter_pass_on_complete()
     test_skill_frontmatter_warn_on_missing_version()
