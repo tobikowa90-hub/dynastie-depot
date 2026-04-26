@@ -76,9 +76,9 @@ Draft-JSON (`{"record": {...}, "skill_meta": {...}}`) nach `03_Tools/backtest-re
 Skill(skill="backtest-ready-forward-verify", args="<pfad-zum-draft>")
 ```
 
-Der Skill orchestriert Phasen P1-P6 (Schema-Validation → Freshness + STATE.md-Tripwire → §28.2 Δ-Gate conditional → Dry-Run → Append → git add). Stdout-Report mit 6 Fällen (OK / freshness / PFLICHT / STOP / duplicate / FAIL) — dynastie-depot-Handler routet weiter. Der Score-Record wird via Pydantic-Schema ([[Score-Archiv]]) validiert (Arithmetik, DEFCON-Konsistenz, Quality-Trap-Interaktion) und an `05_Archiv/score_history.jsonl` angehängt. Keine Ausnahme — jeder verpasste Append = irreversibler Historie-Verlust.
+Der Skill orchestriert Phasen P1-P6 (Schema-Validation → Freshness + PORTFOLIO.md-Tripwire → §28.2 Δ-Gate conditional → Dry-Run → Append → git add). Stdout-Report mit 6 Fällen (OK / freshness / PFLICHT / STOP / duplicate / FAIL) — dynastie-depot-Handler routet weiter. Der Score-Record wird via Pydantic-Schema ([[Score-Archiv]]) validiert (Arithmetik, DEFCON-Konsistenz, Quality-Trap-Interaktion) und an `05_Archiv/score_history.jsonl` angehängt. Keine Ausnahme — jeder verpasste Append = irreversibler Historie-Verlust.
 
-Commit-Disziplin §18: Alle sechs Dateien (log.md + CORE-MEMORY.md + Faktortabelle + STATE.md + score_history.jsonl + ggf. flag_events.jsonl) in einem git-Commit.
+Commit-Disziplin §18 v2.1 (seit Tier-2-Refactor 25.04.2026): Score-Event-File-Set atomar in einem Commit — log.md + CORE-MEMORY.md + Faktortabelle.md + PORTFOLIO.md + score_history.jsonl + config.yaml (+ conditional flag_events.jsonl). Trigger-basiertes Mapping mit Multi-Event-Union-Regel.
 
 ## Wissenschaftliche Fundierung (nachträglich 19.04.2026)
 

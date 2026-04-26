@@ -24,11 +24,11 @@ Token-Mechanik beschreibt, wie Claude-Sessions Kontextfenster-Kapazität verbrau
 
 ## Operative Regeln für DEFCON-Sessions
 
-1. **Pflicht-Lektüre zuerst:** `00_Core/STATE.md` (seit 17.04.2026 Single-Entry-Point, ~80 Zeilen). Andere 00_Core-Dateien on-demand — siehe [[Session-Start-Protokoll]].
+1. **Pflicht-Lektüre zuerst:** `00_Core/STATE.md` (Hub, ~40 Z) + `00_Core/PORTFOLIO.md` (Live-State, default-load seit Tier-2-Refactor 25.04.2026). Andere 00_Core-Dateien on-demand via Routing-Table in CLAUDE.md — siehe [[Session-Start-Protokoll]].
 2. **MCP-Minimalset:** Shibui + defeatbeta + WebSearch — alle anderen deaktivieren
 3. **5-Min-Regel:** Vor jeder Pause `/compact` oder `/clear` — nie offene Session ohne Sync verlassen
 4. **DEFCON 1 Stopp:** Score <50 → Analyse stoppen, keine weiteren API-Calls (Insider-Modul läuft immer durch)
-5. **Sync-Pflicht (4 Dateien):** log.md + CORE-MEMORY + Faktortabelle + STATE.md nach jeder Analyse aktualisieren (§18 INSTRUKTIONEN)
+5. **Sync-Pflicht (§18 v2.1 Trigger-basiertes Mapping):** Score/FLAG/Sparraten-Change-Set = log.md + CORE-MEMORY.md + Faktortabelle.md + PORTFOLIO.md + score_history.jsonl + config.yaml (+ conditional flag_events.jsonl). Multi-Event-Aktionen = Union der File-Sets. Details: [INSTRUKTIONEN §18 v2.1](../../../../00_Core/INSTRUKTIONEN.md).
 
 ## Backlinks
 - [[Context-Hygiene]] — Umsetzung der Token-Mechanik

@@ -14,7 +14,7 @@ tags: [index, home, navigation]
 
 ## 🛰️ Satelliten (aktive Positionen)
 
-> Quelle: [[STATE]] (00_Core/STATE.md, 19.04.2026). DEFCON-Thresholds Schema-aligned seit 18.04.: ≥80 D4 / 65-79 D3 / 50-64 D2 / <50 D1. Sparraten-Nenner 8.0 → 35,63€ / 17,81€ / 0€.
+> Quelle: [[PORTFOLIO]] (`00_Core/PORTFOLIO.md`, Live-State-SSoT seit Tier-2-Refactor 25.04.2026; vorher `STATE.md`). DEFCON-Thresholds Schema-aligned seit 18.04.: ≥80 D4 / 65-79 D3 / 50-64 D2 / <50 D1. Sparraten-Nenner 8.0 → 35,63€ / 17,81€ / 0€.
 
 | Ticker | DEFCON | Score | Rate | FLAG |
 |--------|--------|-------|------|------|

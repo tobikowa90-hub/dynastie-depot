@@ -12,7 +12,7 @@ sources: [backtest-ready-forward-verify]
 related: [dynastie-depot-skill, defcon-system, Backtest-Ready-Infrastructure]
 ---
 
-# backtest-ready-forward-verify (Skill v1.0)
+# backtest-ready-forward-verify (Skill v1.0.1)
 
 ## Rolle
 
@@ -21,7 +21,7 @@ Persistence-Pipeline-Satellit für jede `!Analysiere`-Forward-Vollanalyse. Wird 
 ## Aufgaben
 
 1. Konsumiert ScoreRecord-Draft (JSON) aus dynastie-depot Schritt 7
-2. Validiert gegen JSON-Schema + STATE.md-Tripwire
+2. Validiert gegen JSON-Schema + PORTFOLIO.md-Tripwire (Tier-2-Refactor 25.04.2026)
 3. Führt §28.2 Algebra-Δ-Gate (conditional) aus
 4. Dry-Run + Append an `score_history.jsonl`
 5. Gibt strukturierten Report an Aufrufer zurück

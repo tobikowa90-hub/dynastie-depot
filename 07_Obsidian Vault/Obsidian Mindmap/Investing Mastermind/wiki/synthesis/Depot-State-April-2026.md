@@ -10,7 +10,7 @@ aliases:
 
 # Depot-State — April 2026
 
-> ⚠️ **Historischer Snapshot-Zeitstand: 10.04.2026 (pre-v3.7).** Live-Stand (Nenner **8.0**, Rate **35,63€/17,81€/0€**, 11 Satelliten, DEFCON v3.7, 6-Paper-Ingest SSoT aktiv) → `00_Core/STATE.md`. Dieser Snapshot bleibt als April-Monatsarchiv erhalten.
+> ⚠️ **Historischer Snapshot-Zeitstand: 10.04.2026 (pre-v3.7).** Live-Stand (Nenner **8.0**, Rate **35,63€/17,81€/0€**, 11 Satelliten, DEFCON v3.7, 6-Paper-Ingest SSoT aktiv) → `00_Core/PORTFOLIO.md` (seit Tier-2-Refactor 25.04.2026; vorher `STATE.md`). Dieser Snapshot bleibt als April-Monatsarchiv erhalten.
 > Monatlicher Snapshot. Nach jeder !Analysiere-Session aktualisieren.
 > Nächste Vollaktualisierung: Mai 2026 (nach TMO + MSFT Earnings)
 

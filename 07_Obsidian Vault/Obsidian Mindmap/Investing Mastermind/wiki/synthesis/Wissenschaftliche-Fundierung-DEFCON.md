@@ -161,7 +161,7 @@ Jeder zukünftige Befund MUSS bei Ingest in diese Matrix eingetragen werden mit 
 
 ### Aktive Satelliten (v3.5-Zeitstand: 16.04.2026 — dient B1-B11 Mapping)
 
-> ⚠️ **Scores sind v3.5-Zeitstand (16.04.)** — nicht Live-Portfolio-State. Aktuelle v3.7-Scores: siehe `00_Core/STATE.md` (Single Source of Truth). Tabelle dient dem Mapping der wissenschaftlichen Befunde (B1-B11) auf Satelliten-Charakteristika, keine Scoring-Aussage.
+> ⚠️ **Scores sind v3.5-Zeitstand (16.04.)** — nicht Live-Portfolio-State. Aktuelle v3.7-Scores: siehe `00_Core/PORTFOLIO.md` (Live-State-SSoT, seit Tier-2-Refactor 25.04.2026; vorher `STATE.md`). Tabelle dient dem Mapping der wissenschaftlichen Befunde (B1-B11) auf Satelliten-Charakteristika, keine Scoring-Aussage.
 
 | Ticker | DEFCON | Score | FLAG | Relevante Befunde |
 |--------|--------|-------|------|------------------|

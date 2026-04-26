@@ -913,3 +913,27 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Adoption-Verdikt: `pending-brainstorm`** — ~80%-Already-Implemented-Deckung, aber User-Pain (Session-Start-Cost + globale Verlinkung + CLAUDE.md-Struktur) liegt an anderer Stelle als isolierte Jake-Adoption adressieren würde. Entscheidung **vertagt** auf dedizierte Brainstorm-Session (nach /clear 2026-04-24 spät).
 - **Meta-Learning:** Dubibubii-Polarität (Friction-Reduction) vs. Jake-Polarität (Routing-Discipline/Durability). Jake's Framing passt struktural zum Dynasty-Depot-Korrektheits-Primat, **aber** „Replace all validation-code with naming-conventions"-These ist in Precision-Systems ein Anti-Pattern (Schema-Validation in Code = Feature, nicht Friction; v3.0.3-Präzedenz). Falls 3. Creator dieselbe „code raus, nur Folders"-These pitcht → Memory-Evidenz-Pattern dokumentieren.
 - **System-Impact:** Null System-Änderung, keine Config/Skill-Commits, Wiki-Source-Page uncommitted. Handover-Eintrag als Brainstorm-Input für nächste Session.
+
+## [2026-04-25] edit | Vault-Concept-Seiten-Sanierung (Follow-up Tier-2-00_Core-Refactor, PIPELINE #13)
+- **Anlass:** PIPELINE.md Item #13 (Follow-up zu 00_Core Tier-2-Refactor 25.04.2026, AC #17). 14 Vault-Files referenzierten noch alte STATE/CORE-MEMORY-Struktur (pre-Hub-Split / pre-§12-§13-Auflösung / pre-§18-v2.1-Trigger-Mapping / pre-Tripwire-Migration). Doku-Drift-Sanierung, Live-System unverändert.
+- **Tripwire-Source-Verify:** `03_Tools/backtest-ready/_forward_verify_helpers.py:25` `REQUIRED_TOUCH_FILES = ("PORTFOLIO.md", "Faktortabelle.md", "log.md")` — Tripwire liest seit Tier-2 PORTFOLIO.md, nicht STATE.md. Stale Refs in 3 Wiki-Pages (Score-Archiv / Analyse-Pipeline / backtest-ready-forward-verify-source) auf PORTFOLIO.md migriert.
+- **Pages updated (14):**
+  - Tier 1 (Frame-Wechsel): [[STATE]], [[CORE-MEMORY]], [[Session-Start-Protokoll]], [[Context-Hygiene]], [[Token-Mechanik]]
+  - Tier 2 (substantielle Refs): [[CLAUDE-md-Konstitution]] (+ Änderungsprotokoll-Eintrag 25.04.), [[DEFCON-System]] (4-Layer→5-Layer + Hub-Split), [[Backtest-Ready-Infrastructure]] (Projection-Layer-Split + §18-v2.1), [[Analyse-Pipeline]] (Tripwire + Sync-File-Set), [[Score-Archiv]] (Tripwire), [[backtest-ready-forward-verify]]-source (Tripwire + v1.0.1)
+  - Tier 3 (single-line): [[Faktortabelle]] (frontmatter related), [[Depot-State-April-2026]] (Live-Stand-Pointer), [[Wissenschaftliche-Fundierung-DEFCON]] (Live-Score-Pointer), [[Investing-Mastermind-Index]] (Quelle-Pointer)
+- **Pages updated (operative):** `index.md` (header-timestamp + 4 page-descriptions auf neue Struktur), `log.md` (dieser Eintrag).
+- **Bewusst NICHT angefasst:**
+  - Historische Stage-Marker mit Datum-Stempel (CLAUDE-md-Konstitution Z.7/Z.27/Z.63, Session-Start-Protokoll Migrations-Block, Entity-Pages ASML/V mit datierten Backfill-Refs, Source-Videos mit damaligem System-State)
+  - [[Knowledge-Graph-Architektur-Roadmap]] §1-Verweis (User-Entscheidung 25.04. Remote: hands-off, Lösung zuhause)
+  - INSTRUKTIONEN-SKILL-Trennung (beide Refs historisch datiert 17.04.)
+  - §5/§4 CORE-MEMORY-Refs (Sektionen existieren weiter, nicht stale)
+- **Branch:** `claude/remote-access-google-drive-GW8o2` (Remote-Web-Session, kein Konflikt-Risiko mit lokaler SystemAudit-Execution).
+- **Risiko:** Null Live-System-Impact — pure Markdown-Prose-Updates. Keine Score/FLAG/Sparraten/JSONL/YAML-Touches.
+
+## [2026-04-26] lint | Hub-Split-Lückenschluss — 3 Vault-Stubs + DEFCON-Layer-Fix (Lint-Follow-up zu 25.04. Vault-Sanitation)
+- **Anlass:** Wiki-Lint auf PR #1 (Vault-Sanitation 25.04.) zeigte 3 broken Wikilinks (`[[PORTFOLIO]]`, `[[PIPELINE]]`, `[[SYSTEM]]`) + 1 patch-interne Inkonsistenz in [[DEFCON-System]] (Tabelle hat 6 Zeilen, Section-Header + Verweis-Bullet sagten weiter "4-Layer"). Hub-Split-Refactor 25.04. hatte die 00_Core-Files (`PORTFOLIO.md`/`PIPELINE.md`/`SYSTEM.md`) erstellt, aber die Vault-Stub-Backlink-Anker fehlten.
+- **Pages created (3):** [[PORTFOLIO]], [[PIPELINE]], [[SYSTEM]] — Backlink-Anker-Pattern analog [[STATE]] (yaml-Frontmatter + Rolle + Sync-Pflicht-Hinweis + 00_Core-Pfad).
+- **Pages updated (3):** `index.md` (4 neue Concept-Bullets STATE/PORTFOLIO/PIPELINE/SYSTEM unter `### Token-Effizienz & System` + Header-Timestamp 26.04.), [[DEFCON-System]] (Z.88 Verweis-Bullet "4-Layer" → "5-Layer + Hub+Live-State-Split" / Z.91 Section-Header analog), `log.md` (dieser Eintrag).
+- **Bewusst NICHT angefasst:** [[Backtest-Ready-Infrastructure]] (`## 4-Layer-Architektur`-Sektion sagt weiter 4-Layer mit STATE als Projection — wäre 2. Follow-up; aktueller PR-Scope hatte BRI explizit gedroppt wegen lokal-main-Wording-Drift). Historische 4-Layer-Refs in datierten log.md-Einträgen (17.04. ff.) bleiben erhalten.
+- **Branch:** `claude/remote-access-google-drive-GW8o2` (Follow-up-Commit auf demselben Branch, derselben PR #1).
+- **Risiko:** Null Live-System-Impact — pure Markdown-Prose, 3 neue Backlink-Anker-Pages, 2 Lint-Korrekturen. Wiki-Lint danach erwartet GREEN für die 16 Patch-Files + 3 neuen Stubs.
