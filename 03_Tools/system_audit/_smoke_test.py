@@ -1448,6 +1448,52 @@ def test_cross_source_reverse_warn_on_orphan_vault_ticker() -> None:
         for f in result.failures
     ), f"orphan-ticker MA muss als warning gefangen werden; got {result.failures}"
 
+def test_cross_source_reverse_fail_on_satelliten_tag_mismatch() -> None:
+    """ERROR-Pfad: Vault hat satelliten/MA.md Top-Level, config hat MA nur in watchlist.
+    Tag-Drift = echte Inkonsistenz, nicht Recherche-Phase.
+    """
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cfg_dir = tdp / "01_Skills" / "dynastie-depot"
+        cfg_dir.mkdir(parents=True)
+        (cfg_dir / "config.yaml").write_text(
+            "satelliten:\n  - ticker: AVGO\n    score: 84\n    defcon: D4\n"
+            "watchlist:\n  - ticker: MA\n    name: Mastercard\n",
+            encoding="utf-8",
+        )
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault.mkdir(parents=True)
+        # MA in Top-Level satelliten/ — aber config.satelliten hat MA nicht (nur watchlist)
+        (vault / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
+        (vault / "AVGO.md").write_text("---\nticker: AVGO\n---\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL", f"got {result.status}, failures={result.failures}"
+    assert any(
+        "MA" in f.location and f.severity == "error" and "satelliten" in f.expected
+        for f in result.failures
+    ), f"satelliten-tag-mismatch muss als error gefangen werden; got {result.failures}"
+
+
+def test_cross_source_reverse_dotted_ticker_extracted() -> None:
+    """Regression: dotted ticker (BRK.B) MUST extract from frontmatter
+    (Critical-bug fix from initial Code-Quality-Review).
+    """
+    import tempfile
+    from system_audit.checks.cross_source_reverse import _vault_ticker_locations
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        vault = tdp / "satelliten"
+        vault.mkdir()
+        (vault / "BRKB.md").write_text("---\nticker: BRK.B\n---\n", encoding="utf-8")
+        (vault / "QUOTED.md").write_text('---\nticker: "AVGO"\n---\n', encoding="utf-8")
+        out = _vault_ticker_locations(vault)
+    assert "BRK.B" in out, f"BRK.B (dotted) must extract; got {out}"
+    assert "AVGO" in out, f"quoted ticker must extract; got {out}"
+
+
 def test_cross_source_reverse_skip_on_missing_config() -> None:
     import tempfile
     from system_audit.checks.cross_source_reverse import run
@@ -1557,5 +1603,7 @@ if __name__ == "__main__":
     print("[OK] governance_parity smoke tests passed")
     test_cross_source_reverse_pass_on_aligned()
     test_cross_source_reverse_warn_on_orphan_vault_ticker()
+    test_cross_source_reverse_fail_on_satelliten_tag_mismatch()
+    test_cross_source_reverse_dotted_ticker_extracted()
     test_cross_source_reverse_skip_on_missing_config()
     print("[OK] cross_source_reverse smoke tests passed")

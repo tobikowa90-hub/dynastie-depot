@@ -24,7 +24,13 @@ VAULT_ENTITIES_REL = Path(
 # Ticker-Extraktion ausschliesslich via Frontmatter — kein Filename-Stem-Fallback,
 # weil Vault-Dateien mit Stems wie API/INDEX/NOTES (1-5 char ALL-UPPER) sonst
 # als Ticker false-positive matchen wuerden (Codex-Review P2-08).
-TICKER_FRONTMATTER_RE = re.compile(r"^\s*ticker:\s*([A-Z]{1,5})\s*$", re.MULTILINE)
+# Pattern erlaubt optionale "..." Quotes (YAML scalar) sowie Punkte/Bindestriche
+# fuer dotted/dashed Tickers wie BRK.B, RDS.A, BF-B. Line-Anchor + Frontmatter-only
+# bleibt unverletzt — kein body-text false-positive (P2-08 Schutz bewahrt).
+TICKER_FRONTMATTER_RE = re.compile(
+    r'^\s*ticker:\s*"?([A-Z][A-Z0-9.\-]{0,9})"?\s*$',
+    re.MULTILINE,
+)
 
 
 def _config_ticker_sets(cfg_path: Path) -> tuple[set[str], set[str], set[str]]:
