@@ -124,7 +124,7 @@ def test_jsonl_schema_fail_on_bad_fixture() -> None:
     assert any(f.severity == "error" for f in result.failures)
     assert any("bad_score.jsonl:1" in f.location for f in result.failures)
 
-def test_jsonl_schema_skip_on_missing_file(tmp_path=None) -> None:
+def test_jsonl_schema_skip_on_missing_file() -> None:
     from system_audit.checks.jsonl_schema import run
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
     result = run(REPO_ROOT, ctx, stores_override={
@@ -998,6 +998,789 @@ def test_jsonl_schema_malformed_json_hint() -> None:
     ), f"malformed JSON erwartet 'manuell pruefen/entfernen' hint; got hints={[f.hint for f in json_failures]}"
 
 
+def test_pyyaml_preflight_clean_message() -> None:
+    """Without PyYAML: orchestrator must rc=2 with stderr-message that names
+    the missing module + suggests the fix. Simuliert via sys.modules-Override.
+    """
+    import contextlib
+    import importlib.util
+    import io
+    import sys as _sys
+    main_spec = importlib.util.spec_from_file_location(
+        "_sa_main_preflight_test", str(REPO_ROOT / "03_Tools" / "system_audit.py"),
+    )
+    assert main_spec is not None and main_spec.loader is not None
+    main_mod = importlib.util.module_from_spec(main_spec)
+    main_spec.loader.exec_module(main_mod)
+
+    saved_yaml = _sys.modules.pop("yaml", None)
+    _sys.modules["yaml"] = None  # type: ignore[assignment]
+    stdout_buf = io.StringIO()
+    stderr_buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(stdout_buf), contextlib.redirect_stderr(stderr_buf):
+            rc = main_mod.main(["--core", "--no-write"])
+        assert rc == 2, f"expected rc=2 on missing PyYAML, got rc={rc}"
+        err = stderr_buf.getvalue()
+        assert "PyYAML" in err or "pyyaml" in err.lower(), f"stderr must name PyYAML: {err[:200]}"
+        assert "pip install" in err.lower() or "requirements" in err.lower(), (
+            f"stderr must hint at install path: {err[:200]}"
+        )
+    finally:
+        _sys.modules.pop("yaml", None)
+        if saved_yaml is not None:
+            _sys.modules["yaml"] = saved_yaml
+
+
+SCORE_EVENT_FILES_CANONICAL = (
+    "log.md",
+    "CORE-MEMORY.md",
+    "Faktortabelle.md",
+    "PORTFOLIO.md",
+    "score_history.jsonl",
+    "config.yaml",
+    "flag_events.jsonl",
+)
+
+def test_score_event_parity_pass_on_aligned_readme() -> None:
+    """PASS: README enthaelt alle 7 Files + v2.1-String."""
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        readme_dir = tdp / "03_Tools" / "backtest-ready"
+        readme_dir.mkdir(parents=True)
+        (readme_dir / "README.md").write_text(
+            "Sync-Pflicht-Welle §18 INSTRUKTIONEN v2.1\n\n"
+            "7-File-Set: log.md, CORE-MEMORY.md, Faktortabelle.md, "
+            "PORTFOLIO.md, score_history.jsonl, "
+            "01_Skills/dynastie-depot/config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        # Briefing + SKILL als minimale stub-targets
+        (tdp / "03_Tools" / "briefing-sync-check.ps1").write_text(
+            "$briefingFiles = @('log.md','CORE-MEMORY.md','Faktortabelle.md',"
+            "'PORTFOLIO.md','score_history.jsonl','config.yaml','flag_events.jsonl')\n",
+            encoding="utf-8",
+        )
+        skill_dir = tdp / "01_Skills" / "dynastie-depot"
+        skill_dir.mkdir(parents=True)
+        (skill_dir / "SKILL.md").write_text(
+            "## Schritt 7 Sync-Pflicht\n\nlog.md, CORE-MEMORY.md, Faktortabelle.md, "
+            "PORTFOLIO.md, score_history.jsonl, config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        instr = tdp / "00_Core" / "INSTRUKTIONEN.md"
+        instr.parent.mkdir(parents=True)
+        instr.write_text("## §18 v2.1 Sync-Pflicht\nv2.1\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+    assert result.failures == []
+
+def test_score_event_parity_fail_on_v17_drift() -> None:
+    """FAIL F1: README sagt §18 v1.7 statt v2.1."""
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        rd = tdp / "03_Tools" / "backtest-ready"
+        rd.mkdir(parents=True)
+        (rd / "README.md").write_text(
+            "Sync-Pflicht-Welle §18 INSTRUKTIONEN v1.7\n\n"
+            "7-File-Set: log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, "
+            "score_history.jsonl, 01_Skills/dynastie-depot/config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        (tdp / "03_Tools" / "briefing-sync-check.ps1").write_text("# stub\n", encoding="utf-8")
+        sd = tdp / "01_Skills" / "dynastie-depot"
+        sd.mkdir(parents=True)
+        (sd / "SKILL.md").write_text("# stub\n", encoding="utf-8")
+        instr = tdp / "00_Core" / "INSTRUKTIONEN.md"
+        instr.parent.mkdir(parents=True)
+        instr.write_text("v2.1\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any(
+        "v1.7" in f.actual or "v1.7" in f.location
+        for f in result.failures if f.severity == "error"
+    ), f"v1.7-drift muss als error gefunden werden; got {result.failures}"
+
+def test_score_event_parity_fail_on_missing_file_in_briefing_sync() -> None:
+    """FAIL F4: briefing-sync-check.ps1 listet config.yaml nicht."""
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        rd = tdp / "03_Tools" / "backtest-ready"
+        rd.mkdir(parents=True)
+        (rd / "README.md").write_text(
+            "v2.1\n7-File: log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, "
+            "score_history.jsonl, config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        (tdp / "03_Tools" / "briefing-sync-check.ps1").write_text(
+            "$briefingFiles = @('log.md','CORE-MEMORY.md','Faktortabelle.md',"
+            "'PORTFOLIO.md','score_history.jsonl','flag_events.jsonl')\n"
+            "# F4-Pathologie: array unvollstaendig\n",
+            encoding="utf-8",
+        )
+        sd = tdp / "01_Skills" / "dynastie-depot"
+        sd.mkdir(parents=True)
+        (sd / "SKILL.md").write_text(
+            "log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, "
+            "score_history.jsonl, config.yaml, flag_events.jsonl\n",
+            encoding="utf-8",
+        )
+        instr = tdp / "00_Core" / "INSTRUKTIONEN.md"
+        instr.parent.mkdir(parents=True)
+        instr.write_text("v2.1\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any(
+        "config.yaml" in f.expected and "briefing" in f.location.lower()
+        for f in result.failures
+    ), f"config.yaml-miss in briefing-sync muss gefangen werden; got {result.failures}"
+
+def test_score_event_parity_skip_on_missing_sources() -> None:
+    """SKIP: keine der erwarteten Source-Files vorhanden — kein FAIL."""
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+    assert all(f.severity == "warning" for f in result.failures)
+
+
+def test_score_event_parity_no_fp_on_changelog() -> None:
+    """Regression Codex-TaskID-12: changelog 'v1.8 -> v2.0 ... (§18.1)' must NOT
+    trigger version-drift FAIL. §18 subsection refs are not governing-rule mentions.
+    """
+    from system_audit.checks.score_event_parity import _scan_text_for_wrong_versions
+    text = (
+        "## 18. Sync-Pflicht v2.1\n"
+        "Body referencing §18 v2.1 governance.\n"
+        "Changelog:\n"
+        "- v1.8 -> v2.0 (2026-04-24): Hub-Split via (§18.1) + Multi-Event (§18.2).\n"
+        "- v2.0 -> v2.1 (2026-04-25): config.yaml in Set.\n"
+    )
+    out = _scan_text_for_wrong_versions(text)
+    assert out == [], f"changelog with §18.1/§18.2 subsection refs must not flag wrong-version; got {out}"
+
+def test_score_event_parity_no_fp_on_basename_in_prose() -> None:
+    """Regression Codex-TaskID-12: basename mention in narrative prose must NOT
+    count as list-entry. Line-scope to list markers only.
+    """
+    from system_audit.checks.score_event_parity import _scan_text_for_basenames
+    text = "Bitte schaue in die log.md Datei nach den letzten Eintraegen.\n"
+    found = _scan_text_for_basenames(text)
+    assert "log.md" not in found, f"prose mention must not count; got {found}"
+    # And confirm list context still works
+    text2 = "Files: log.md, CORE-MEMORY.md\n"
+    found2 = _scan_text_for_basenames(text2)
+    assert "log.md" in found2 and "CORE-MEMORY.md" in found2
+
+
+def test_score_event_parity_fail_on_drift_in_section_with_decoy_outside() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #1: drift inside the
+    canonical §18 list must FAIL even if the dropped basename appears in an
+    unrelated list-context elsewhere in the same file (e.g. a table-of-files
+    on L70 covering for a missing entry in the §18 block on L306).
+    Sliding-window cluster-detection must catch this.
+    """
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        # README.md: §18 block missing config.yaml (drift), but config.yaml
+        # appears 60+ lines earlier in an unrelated table — file-wide scan
+        # would find it; cluster-window must not.
+        rd = tdp / "03_Tools" / "backtest-ready"
+        rd.mkdir(parents=True)
+        decoy_padding = "\n".join(
+            f"| col-{i} | `config.yaml` skill-file |" for i in range(40)
+        )
+        readme_body = (
+            "# Backtest-Ready README\n\n"
+            "## Skill-File-Table (NOT the §18 list)\n\n"
+            f"{decoy_padding}\n\n"
+            "## §18 v2.1 Score-Event-Set\n\n"
+            "Sync-Pflicht-Welle §18 INSTRUKTIONEN v2.1\n\n"
+            "7-File-Set: log.md, CORE-MEMORY.md, Faktortabelle.md, "
+            "PORTFOLIO.md, score_history.jsonl, flag_events.jsonl\n"
+            # ^ DRIFT: config.yaml dropped from the canonical block.
+        )
+        (rd / "README.md").write_text(readme_body, encoding="utf-8")
+        (tdp / "03_Tools" / "briefing-sync-check.ps1").write_text("# stub\n", encoding="utf-8")
+        sd = tdp / "01_Skills" / "dynastie-depot"
+        sd.mkdir(parents=True)
+        (sd / "SKILL.md").write_text("# stub\n", encoding="utf-8")
+        instr = tdp / "00_Core" / "INSTRUKTIONEN.md"
+        instr.parent.mkdir(parents=True)
+        instr.write_text("v2.1\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL", (
+        f"drift in §18 block must FAIL despite decoy mention; got {result.status}, "
+        f"failures={result.failures}"
+    )
+    assert any(
+        "config.yaml" in f.expected and f.severity == "error"
+        for f in result.failures
+    ), f"missing config.yaml in canonical block must be reported; got {result.failures}"
+
+
+def test_score_event_parity_window_helper_clusters_only() -> None:
+    """Unit-Test: sliding-window helper returns only basenames that cluster
+    within the same N-line window.
+    """
+    from system_audit.checks.score_event_parity import (
+        _basenames_in_best_window,
+        CANONICAL_SCORE_EVENT_BASENAMES,
+    )
+    # Cluster: 7 basenames in one line
+    text_clustered = (
+        "Header\n\n"
+        "Files: log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, "
+        "score_history.jsonl, config.yaml, flag_events.jsonl\n"
+    )
+    out_clustered = _basenames_in_best_window(text_clustered, CANONICAL_SCORE_EVENT_BASENAMES)
+    assert out_clustered == set(CANONICAL_SCORE_EVENT_BASENAMES)
+
+    # Scattered: each basename in its own line, separated by 30+ lines
+    padding = "\n".join("intermediate line" for _ in range(30))
+    text_scattered = "\n".join(
+        f"- {bn}\n{padding}" for bn in CANONICAL_SCORE_EVENT_BASENAMES
+    )
+    out_scattered = _basenames_in_best_window(
+        text_scattered, CANONICAL_SCORE_EVENT_BASENAMES
+    )
+    # Best window catches at most 1-2 basenames (they are 30+ lines apart)
+    assert len(out_scattered) < len(CANONICAL_SCORE_EVENT_BASENAMES), (
+        f"scattered basenames must not cluster; got {out_scattered}"
+    )
+
+
+def test_skill_frontmatter_pass_on_complete() -> None:
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "demo"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text(
+            "---\nname: demo\ndescription: a test skill\nversion: 1.0.0\n---\n# demo\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_skill_frontmatter_warn_on_missing_version() -> None:
+    """F8-Pathologie: SKILL.md hat name+description aber version: fehlt."""
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "draft-skill"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text(
+            "---\nname: draft-skill\ndescription: missing version field\n---\n# draft\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any(
+        "version" in f.expected.lower() and "draft-skill" in f.location
+        for f in result.failures
+    ), f"expected version-missing warning for draft-skill; got {result.failures}"
+
+def test_skill_frontmatter_warn_on_missing_description() -> None:
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "no-desc"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text(
+            "---\nname: no-desc\nversion: 1.0.0\n---\n# x\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any("description" in f.expected.lower() for f in result.failures)
+
+def test_skill_frontmatter_skip_on_no_frontmatter() -> None:
+    """Convention: SKILL.md ohne Frontmatter ist 'draft', WARN nicht FAIL."""
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "no-fm"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text("# no-fm\n\nNo frontmatter at all.\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any("frontmatter" in (f.hint or "").lower() for f in result.failures)
+
+def test_skill_frontmatter_ignores_extern_subskills() -> None:
+    """_extern/<name>/ Skills sind nicht audit-scope (read-only third-party)."""
+    import tempfile
+    from system_audit.checks.skill_frontmatter import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        d = tdp / "01_Skills" / "_extern" / "third-party"
+        d.mkdir(parents=True)
+        (d / "SKILL.md").write_text("# no fm\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status in ("PASS", "SKIP"), f"_extern muss ignored sein, got {result.status}"
+
+
+def test_header_freshness_fail_on_placeholder() -> None:
+    """F6-Pathologie: Header `Deployed: <YYYY-MM-DD>` Placeholder."""
+    import tempfile
+    from system_audit.checks.header_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "03_Tools" / "morning-briefing-prompt-v3.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "# Morning Briefing v3.0.3\n\n"
+            "Deployed: <YYYY-MM-DD>\n\n"
+            "Body\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, targets_override=[(target, "Deployed")])
+    assert result.status == "FAIL"
+    assert any(
+        "<YYYY-MM-DD>" in f.actual or "placeholder" in (f.hint or "").lower()
+        for f in result.failures
+    ), f"placeholder muss als error gefangen werden; got {result.failures}"
+
+def test_header_freshness_warn_on_stale_date() -> None:
+    """Stand-Datum > 30d alt: WARN."""
+    import datetime as _dt
+    import tempfile
+    from system_audit.checks.header_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "01_Skills" / "demo" / "SKILL.md"
+        target.parent.mkdir(parents=True)
+        old = (_dt.date(2026, 4, 25) - _dt.timedelta(days=60)).isoformat()
+        # Format DD.MM.YYYY (per insider-intel-Convention)
+        d = _dt.date.fromisoformat(old)
+        target.write_text(
+            f"# demo\n\n**Stand:** {d.day:02d}.{d.month:02d}.{d.year}\n\nBody\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx,
+                     targets_override=[(target, "Stand")],
+                     today=_dt.date(2026, 4, 25))
+    assert result.status == "WARN"
+    assert any(f.severity == "warning" for f in result.failures)
+
+def test_header_freshness_pass_on_recent() -> None:
+    import datetime as _dt
+    import tempfile
+    from system_audit.checks.header_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "01_Skills" / "fresh" / "SKILL.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "**Stand:** 24.04.2026\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx,
+                     targets_override=[(target, "Stand")],
+                     today=_dt.date(2026, 4, 25))
+    assert result.status == "PASS"
+
+def test_header_freshness_skip_on_no_targets() -> None:
+    import tempfile
+    from system_audit.checks.header_freshness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        # Default-targets all missing → SKIP
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+
+
+def test_governance_parity_pass_on_aligned() -> None:
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "# /SystemAudit\n\n"
+            "Default ohne $ARGUMENTS = --core (alle 11 Kern-Checks).\n"
+            "Verfuegbare Flags: --core --full --vault --minimal-baseline "
+            "--no-write --json -v --timeout-per-check\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_governance_parity_fail_on_count_drift() -> None:
+    """F11-Pathologie: Slash sagt '7' aber CORE-Registry hat 8."""
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "Default --core (alle 7 Kern-Checks). Flags: --core --full --vault\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "FAIL"
+    assert any(
+        "11" in f.expected and "7" in f.actual
+        for f in result.failures
+    ), f"count-drift muss als error gefangen werden; got {result.failures}"
+
+def test_governance_parity_warn_on_missing_minimal_baseline_mention() -> None:
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        # Note: includes -v + --timeout-per-check so the new alt-form coverage
+        # passes; only --minimal-baseline absent, isolating the WARN assertion.
+        cmd.write_text(
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+            "--no-write --json -v --timeout-per-check\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "WARN"
+    assert any(
+        "minimal-baseline" in f.expected.lower()
+        for f in result.failures
+    )
+
+
+def test_governance_parity_fail_on_missing_timeout_per_check_flag() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #3: --timeout-per-check
+    is a real argparse flag and removing it from the slash-doc must FAIL (not
+    silently pass via the prior under-specified EXPECTED_FLAGS list).
+    """
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+            "--minimal-baseline --no-write --json -v\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "FAIL", f"got {result.status}, failures={result.failures}"
+    assert any(
+        "--timeout-per-check" in f.expected and f.severity == "error"
+        for f in result.failures
+    ), f"missing --timeout-per-check must error; got {result.failures}"
+
+
+def test_governance_parity_accepts_short_or_long_v_form() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #3: -v and --verbose
+    are alt-forms of the same flag. Documentation passes if either appears.
+    """
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    base = (
+        "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+        "--minimal-baseline --no-write --json --timeout-per-check"
+    )
+    for v_form in ("-v", "--verbose"):
+        with tempfile.TemporaryDirectory() as td:
+            tdp = Path(td)
+            cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+            cmd.parent.mkdir(parents=True)
+            cmd.write_text(f"{base} {v_form}\n", encoding="utf-8")
+            ctx = AuditContext(repo_root=tdp, include_optional=False)
+            result = run(tdp, ctx, expected_core_count=11)
+        assert result.status == "PASS", (
+            f"v_form={v_form} should pass alt-form; got {result.status}, "
+            f"failures={result.failures}"
+        )
+
+
+def test_governance_parity_fail_on_no_v_form_at_all() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #3: with NEITHER -v
+    NOR --verbose in the doc, the alt-set fails.
+    """
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+            "--minimal-baseline --no-write --json --timeout-per-check\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "FAIL"
+    assert any(
+        "-v/--verbose" in f.expected and f.severity == "error"
+        for f in result.failures
+    ), f"missing both -v and --verbose must error; got {result.failures}"
+
+
+def test_governance_parity_skip_on_missing_slash_cmd() -> None:
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+
+
+def test_cross_source_reverse_pass_on_aligned() -> None:
+    """PASS: alle Vault/PORTFOLIO-Ticker auch in config (satelliten OR watchlist)."""
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cfg_dir = tdp / "01_Skills" / "dynastie-depot"
+        cfg_dir.mkdir(parents=True)
+        (cfg_dir / "config.yaml").write_text(
+            "satelliten:\n  - ticker: AVGO\n    score: 84\n    defcon: D4\n"
+            "watchlist:\n  - ticker: MA\n    name: Mastercard\n",
+            encoding="utf-8",
+        )
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        (vault / "ersatzbank").mkdir(parents=True)
+        (vault / "AVGO.md").write_text("---\nticker: AVGO\n---\n", encoding="utf-8")
+        (vault / "ersatzbank" / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_cross_source_reverse_warn_on_orphan_vault_ticker() -> None:
+    """F18-Pathologie: MA im Vault, fehlt in config (alle 3 Listen)."""
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cfg_dir = tdp / "01_Skills" / "dynastie-depot"
+        cfg_dir.mkdir(parents=True)
+        (cfg_dir / "config.yaml").write_text(
+            "satelliten:\n  - ticker: AVGO\n    score: 84\n    defcon: D4\n",
+            encoding="utf-8",
+        )
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault.mkdir(parents=True)
+        (vault / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any(
+        "MA" in f.actual and "config.yaml" in f.expected
+        for f in result.failures
+    ), f"orphan-ticker MA muss als warning gefangen werden; got {result.failures}"
+
+def test_cross_source_reverse_fail_on_satelliten_tag_mismatch() -> None:
+    """ERROR-Pfad: Vault hat satelliten/MA.md Top-Level, config hat MA nur in watchlist.
+    Tag-Drift = echte Inkonsistenz, nicht Recherche-Phase.
+    """
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cfg_dir = tdp / "01_Skills" / "dynastie-depot"
+        cfg_dir.mkdir(parents=True)
+        (cfg_dir / "config.yaml").write_text(
+            "satelliten:\n  - ticker: AVGO\n    score: 84\n    defcon: D4\n"
+            "watchlist:\n  - ticker: MA\n    name: Mastercard\n",
+            encoding="utf-8",
+        )
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault.mkdir(parents=True)
+        # MA in Top-Level satelliten/ — aber config.satelliten hat MA nicht (nur watchlist)
+        (vault / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
+        (vault / "AVGO.md").write_text("---\nticker: AVGO\n---\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL", f"got {result.status}, failures={result.failures}"
+    assert any(
+        "MA" in f.location and f.severity == "error" and "satelliten" in f.expected
+        for f in result.failures
+    ), f"satelliten-tag-mismatch muss als error gefangen werden; got {result.failures}"
+
+
+def test_cross_source_reverse_dotted_ticker_extracted() -> None:
+    """Regression: dotted ticker (BRK.B) MUST extract from frontmatter
+    (Critical-bug fix from initial Code-Quality-Review).
+    """
+    import tempfile
+    from system_audit.checks.cross_source_reverse import _vault_ticker_locations
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        vault = tdp / "satelliten"
+        vault.mkdir()
+        (vault / "BRKB.md").write_text("---\nticker: BRK.B\n---\n", encoding="utf-8")
+        (vault / "QUOTED.md").write_text('---\nticker: "AVGO"\n---\n', encoding="utf-8")
+        out = _vault_ticker_locations(vault)
+    assert "BRK.B" in out, f"BRK.B (dotted) must extract; got {out}"
+    assert "AVGO" in out, f"quoted ticker must extract; got {out}"
+
+
+def test_cross_source_reverse_skip_on_missing_config() -> None:
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+
+
+def test_cross_source_reverse_fail_on_invalid_yaml() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #2: malformed YAML in
+    config.yaml must surface as a single explicit FAIL with the parser error,
+    not a silent flood of orphan-ticker warnings (which would happen if
+    parse-failure returned three empty sets).
+    """
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cfg_dir = tdp / "01_Skills" / "dynastie-depot"
+        cfg_dir.mkdir(parents=True)
+        # Malformed YAML: unclosed mapping + tab-indent (yaml-parser-fatal)
+        (cfg_dir / "config.yaml").write_text(
+            "satelliten:\n  - ticker: AVGO\n\tdefcon: D4\n  bad_indent: [unclosed\n",
+            encoding="utf-8",
+        )
+        # Vault has tickers — without the fix these would all show up as
+        # orphan-warnings; with the fix the YAML parse failure short-circuits.
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault.mkdir(parents=True)
+        (vault / "AVGO.md").write_text("---\nticker: AVGO\n---\n", encoding="utf-8")
+        (vault / "MSFT.md").write_text("---\nticker: MSFT\n---\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL", f"got {result.status}, failures={result.failures}"
+    assert len(result.failures) == 1, (
+        f"malformed YAML must produce exactly ONE FAIL (not orphan-flood); "
+        f"got {len(result.failures)}: {result.failures}"
+    )
+    f = result.failures[0]
+    assert f.severity == "error"
+    assert "YAMLError" in f.actual, f"actual must surface parser error; got {f.actual}"
+    assert "config.yaml" in f.location.lower()
+
+
+def test_pointer_completeness_pass_on_existing_targets() -> None:
+    import tempfile
+    from system_audit.checks.pointer_completeness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "00_Core").mkdir()
+        (tdp / "00_Core" / "PIPELINE.md").write_text("ok\n", encoding="utf-8")
+        (tdp / "CLAUDE.md").write_text(
+            "## Pointer (Ausgelagertes)\n\n"
+            "| Datei | Zweck |\n"
+            "|-------|-------|\n"
+            "| `00_Core/PIPELINE.md` | Pipeline-SSoT |\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_pointer_completeness_fail_on_missing_pointer_target() -> None:
+    """F12-style: Pointer auf existing Target ist OK; aber Pointer auf
+    fehlende Datei muss FAIL."""
+    import tempfile
+    from system_audit.checks.pointer_completeness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "CLAUDE.md").write_text(
+            "## Pointer (Ausgelagertes)\n\n"
+            "| Datei | Zweck |\n"
+            "|-------|-------|\n"
+            "| `00_Core/MISSING.md` | Some-SSoT |\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any(
+        "MISSING.md" in f.actual or "MISSING.md" in f.location
+        for f in result.failures
+    )
+
+def test_pointer_completeness_skip_on_no_claude_md() -> None:
+    import tempfile
+    from system_audit.checks.pointer_completeness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+
+def test_pointer_completeness_section_scoped_not_routing_table() -> None:
+    """P2-09: Backtick-Pfade in Routing-Tabelle (anderer Section) duerfen
+    nicht als Pointer-Behauptung gewertet werden."""
+    import tempfile
+    from system_audit.checks.pointer_completeness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "00_Core").mkdir()
+        (tdp / "00_Core" / "PIPELINE.md").write_text("ok\n", encoding="utf-8")
+        (tdp / "CLAUDE.md").write_text(
+            "# CLAUDE.md\n\n"
+            "## Routing-Table\n\n"
+            "| Trigger | Lies zusaetzlich |\n"
+            "|---------|------------------|\n"
+            "| `!Analysiere` | `00_Core/NONEXISTENT-IN-ROUTING.md` |\n\n"
+            "## Pointer (Ausgelagertes)\n\n"
+            "| Datei | Zweck |\n"
+            "|-------|-------|\n"
+            "| `00_Core/PIPELINE.md` | Pipeline-SSoT |\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", (
+        f"section-scope muss Routing-Tabelle ignorieren; got {result.status}, "
+        f"failures={result.failures}"
+    )
+    assert all(
+        "NONEXISTENT-IN-ROUTING" not in f.location and
+        "NONEXISTENT-IN-ROUTING" not in f.actual
+        for f in result.failures
+    ), "Routing-Tabellen-Pfad darf nicht als Pointer-Failure gewertet werden"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -1059,6 +1842,7 @@ if __name__ == "__main__":
     test_orchestrator_vault_runs_optional_checks()
     test_orchestrator_invalid_timeout_rejected()
     test_main_rc2_emits_partial_json_and_preserves_diagnosis()
+    test_pyyaml_preflight_clean_message()
     print("[OK] orchestrator smoke tests passed")
     test_vault_backlinks_pass_fixture()
     test_vault_backlinks_fail_on_missing()
@@ -1071,3 +1855,37 @@ if __name__ == "__main__":
     test_status_matrix_subsections_are_scanned()
     test_status_matrix_n_passed_arithmetic_with_gaps()
     print("[OK] status_matrix smoke tests passed")
+    test_score_event_parity_pass_on_aligned_readme()
+    test_score_event_parity_fail_on_v17_drift()
+    test_score_event_parity_fail_on_missing_file_in_briefing_sync()
+    test_score_event_parity_skip_on_missing_sources()
+    test_score_event_parity_no_fp_on_changelog()
+    test_score_event_parity_no_fp_on_basename_in_prose()
+    print("[OK] score_event_parity smoke tests passed")
+    test_skill_frontmatter_pass_on_complete()
+    test_skill_frontmatter_warn_on_missing_version()
+    test_skill_frontmatter_warn_on_missing_description()
+    test_skill_frontmatter_skip_on_no_frontmatter()
+    test_skill_frontmatter_ignores_extern_subskills()
+    print("[OK] skill_frontmatter smoke tests passed")
+    test_header_freshness_fail_on_placeholder()
+    test_header_freshness_warn_on_stale_date()
+    test_header_freshness_pass_on_recent()
+    test_header_freshness_skip_on_no_targets()
+    print("[OK] header_freshness smoke tests passed")
+    test_governance_parity_pass_on_aligned()
+    test_governance_parity_fail_on_count_drift()
+    test_governance_parity_warn_on_missing_minimal_baseline_mention()
+    test_governance_parity_skip_on_missing_slash_cmd()
+    print("[OK] governance_parity smoke tests passed")
+    test_cross_source_reverse_pass_on_aligned()
+    test_cross_source_reverse_warn_on_orphan_vault_ticker()
+    test_cross_source_reverse_fail_on_satelliten_tag_mismatch()
+    test_cross_source_reverse_dotted_ticker_extracted()
+    test_cross_source_reverse_skip_on_missing_config()
+    print("[OK] cross_source_reverse smoke tests passed")
+    test_pointer_completeness_pass_on_existing_targets()
+    test_pointer_completeness_fail_on_missing_pointer_target()
+    test_pointer_completeness_skip_on_no_claude_md()
+    test_pointer_completeness_section_scoped_not_routing_table()
+    print("[OK] pointer_completeness smoke tests passed")

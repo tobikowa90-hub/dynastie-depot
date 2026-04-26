@@ -27,6 +27,25 @@ from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 from pathlib import Path
 
+def _preflight_dependencies() -> int | None:
+    """Check hard runtime deps before any check-module import.
+
+    Returns None on success, rc=2 on missing dep (with stderr-message naming
+    the module + install hint). Called as the very first step in main().
+    """
+    try:
+        import yaml  # noqa: F401
+    except ImportError:
+        sys.stderr.write(
+            "ERROR: PyYAML nicht verfuegbar. system_audit.checks.{cross_source,"
+            "skill_version,score_event_parity,skill_frontmatter,cross_source_reverse}"
+            " benoetigen yaml.safe_load.\n"
+            "Fix: pip install pyyaml  (oder: pip install -r requirements.txt)\n"
+        )
+        return 2
+    return None
+
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "03_Tools"))
 
@@ -157,6 +176,9 @@ def _build_run_cmd(argv: list[str] | None) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
+    rc_preflight = _preflight_dependencies()
+    if rc_preflight is not None:
+        return rc_preflight
     _reconfigure_stdout_utf8()
 
     parser = argparse.ArgumentParser(
