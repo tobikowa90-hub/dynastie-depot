@@ -1338,6 +1338,72 @@ def test_header_freshness_skip_on_no_targets() -> None:
     assert result.status == "SKIP"
 
 
+def test_governance_parity_pass_on_aligned() -> None:
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "# /SystemAudit\n\n"
+            "Default ohne $ARGUMENTS = --core (alle 11 Kern-Checks).\n"
+            "Verfuegbare Flags: --core --full --vault --minimal-baseline --no-write --json\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_governance_parity_fail_on_count_drift() -> None:
+    """F11-Pathologie: Slash sagt '7' aber CORE-Registry hat 8."""
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "Default --core (alle 7 Kern-Checks). Flags: --core --full --vault\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "FAIL"
+    assert any(
+        "11" in f.expected and "7" in f.actual
+        for f in result.failures
+    ), f"count-drift muss als error gefangen werden; got {result.failures}"
+
+def test_governance_parity_warn_on_missing_minimal_baseline_mention() -> None:
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault --no-write --json\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "WARN"
+    assert any(
+        "minimal-baseline" in f.expected.lower()
+        for f in result.failures
+    )
+
+def test_governance_parity_skip_on_missing_slash_cmd() -> None:
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -1430,3 +1496,8 @@ if __name__ == "__main__":
     test_header_freshness_pass_on_recent()
     test_header_freshness_skip_on_no_targets()
     print("[OK] header_freshness smoke tests passed")
+    test_governance_parity_pass_on_aligned()
+    test_governance_parity_fail_on_count_drift()
+    test_governance_parity_warn_on_missing_minimal_baseline_mention()
+    test_governance_parity_skip_on_missing_slash_cmd()
+    print("[OK] governance_parity smoke tests passed")

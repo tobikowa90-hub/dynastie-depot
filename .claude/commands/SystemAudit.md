@@ -12,6 +12,6 @@ Wenn FAIL: liste pro fehlgeschlagener Kategorie die Anzahl + die ersten 3 Failur
 Wenn PASS: zeige die einzeilige Summary + den neuen Last-Audit-Timestamp aus STATE.md.
 Wenn Exit-Code 2: IO- oder Tool-intern-Fehler — Stderr zeigen, nicht als "audit-FAIL" kommunizieren.
 
-Default ohne $ARGUMENTS = --core (alle 11 Kern-Checks: jsonl_schema, store_freshness, markdown_header, cross_source, existence, skill_version, pipeline_ssot, log_lag, score_event_parity, skill_frontmatter, header_freshness — schreibt STATE.md Last-Audit-Block).
+Default ohne $ARGUMENTS = --core (alle 12 Kern-Checks: jsonl_schema, store_freshness, markdown_header, cross_source, existence, skill_version, pipeline_ssot, log_lag, score_event_parity, skill_frontmatter, header_freshness, governance_parity — schreibt STATE.md Last-Audit-Block).
 
 Schmaler Baseline-Lauf: `--minimal-baseline` (3 stabile Checks: jsonl_schema + pipeline_ssot + log_lag, 3/3 PASS soll dauerhaft halten).
