@@ -831,7 +831,7 @@ Wenn der User \!Rebalancing eingibt oder nach Sparplan-Verteilung fragt:
 
 ## 🧹 PRE-PROCESSING & DATA CLEANING (API-Filter)
 
-**Pflicht:** Bevor rohe Finanzdaten aus externen APIs (Shibui Finance, defeatbeta, EODHD) in die DEFCON-Matrix einfließen, MUSS dieser Data-Cleaning-Layer angewendet werden. Kein Scoring ohne vorherige Prüfung dieser vier Regeln.
+**Pflicht:** Bevor rohe Finanzdaten aus externen APIs (Shibui Finance, defeatbeta, EODHD) in die DEFCON-Matrix einfließen, MUSS dieser Data-Cleaning-Layer angewendet werden. Kein Scoring ohne vorherige Prüfung dieser fünf Regeln.
 
 ### Regel 1 — SBC-Check (Stock-Based Compensation)
 
@@ -880,6 +880,26 @@ Kalibrierung: MSFT capital_lease_obligations ~$17,3B → Finance Lease Check Pfl
 - Tendenz: überschätzt leicht → konservativ anwenden
 - Pflicht: Abweichung von GAAP-ROIC dokumentieren mit Hinweis "Proxy, nicht GAAP"
 - Kalibrierung: AVGO Goodwill ~55% Assets → Regel 4 immer aktiv | SNPS ~60% → immer aktiv
+
+### Regel 5 — Roh→Metrik-Triage (Tool-Output-Disziplin)
+
+**Aktion:** Nach jedem Tool-Aufruf in Schritt 1 (Datensammlung) wird intern für jeden Tool-Output explizit festgehalten, welche Metriken extrahiert wurden. Ab Schritt 4 (Scoring) wird ausschließlich auf die extrahierten Metriken referenziert, nicht mehr auf den rohen API-Output.
+
+**Tool→Metrik-Mapping (das ist alles, was später zitiert wird):**
+
+| Tool-Call | Extrahierte Metriken |
+| :--- | :--- |
+| defeatbeta `get_stock_annual_cash_flow` | FCF-Trend (4Q), CapEx/OCF letzter Q, ΔWC-Pattern |
+| defeatbeta `get_stock_quarterly_roic` | ROIC 6Q-Ø, ROIC vs WACC Δ |
+| defeatbeta `get_stock_wacc` | WACC-Wert (nur neuester Eintrag) |
+| defeatbeta `get_stock_annual_gross_margin` | GM-Trend 3J (Bonus/Malus) |
+| defeatbeta `get_stock_earning_call_transcript` | Guidance-Statement, Management-Tone, Pricing-Power-Aussage |
+| Shibui `technical_indicators` | 200MA-Slope, RSI-State, RelStärke vs SPY |
+| Shibui `cash_flow_quarterly` 12Q | CapEx-FLAG-Muster (Anzahl Quartale >60%) |
+| `insider_intel.py` / `eodhd_intel.py` | Netto-Selling 90d, 10b5-1-Flag-Status, Top-Insider-Liste |
+| GuruFocus `term/moat-score` | Moat-Klasse + Trend |
+
+**Caveat:** Claude kann Tool-Outputs nicht aktiv aus dem Konversations-Kontext löschen — die Disziplin wirkt an der Quelle (granulare Tool-Calls per BLOCK A der Token-Effizienz-Regeln) und im Output (extrahierte Metriken statt Roh-Outputs zitieren). Beide Hebel zusammen halten den Analyse-Thread schlank.
 
 ---
 
