@@ -1,72 +1,77 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-26 — Spec-Tranche aus Opus-Parallel-Session done: PR #2 mit drei atomaren Commits (Karpathy §0 + Banner-Migration + Pre-Processing Regel 5) rebase-merged auf main. Phase-2-Branch `feat/system-audit-phase-2` parkt unverändert für Resume in nächster Session.
+**Aktualisiert:** 2026-04-26 — Phase-2 Tasks 1-7 + Codex-Fix Task 2 implementiert auf `feat/system-audit-phase-2`. Branch jetzt 9 Commits ahead of main (rebased), Smoke 20/20 grün, Live-Audit 14 Checks. Subagent-driven-development mit Spec+Quality-Loop pro Task durch. **Final-Review (Codex + CodeRabbit) + Task 8 Defer-Doku queued für nächste Session.**
 
 ### 🟢 Resume-Stand (zurück zu `feat/system-audit-phase-2`)
 
-**Branch ist 4 Commits voraus auf `becb190` main:**
-- `ec8925a` — Task 1 PyYAML-Preflight (rc=2 + install hint) — fully reviewed ✅
-- `6a9051e` — Task 2 score_event_parity (CORE 8→9, +4 Smoke) — Spec+Quality ✅, Codex GO-WITH-FIXES ⚠️
-- `e4e250e` — Task 3 skill_frontmatter (CORE 9→10, +5 Smoke) — Spec+Quality ✅, doc-nit
-- `ad69501` — Task 4 header_freshness (CORE 10→11, +4 Smoke) — **Reviews offen**
+**Branch ist 9 Commits voraus auf `1fada16` main** (rebased clean):
 
-**Plan-File (v1.1):** `docs/superpowers/plans/2026-04-25-system-audit-rework.md` — 8 Tasks, Sequenz: PyYAML-Preflight → §18-Parity → Skill-Frontmatter → Header-Freshness → Top-Level-Governance → Cross-Source-Reverse → Pointer-Completeness → Defer-Doku. Pre-Execution Codex-Review (`a2862e6a730e2ecca`) GO-WITH-FIXES alle 12 Findings (P2-01..12) addressed in v1.1.
+```
+72e6a51  feat(audit): pointer_completeness check (F12 Pointer-Drift)        Task 7
+7f75389  fix(audit): cross_source_reverse regex + FAIL-path test            Task 6 fix (BRK.B)
+d1cfcec  feat(audit): cross_source_reverse check (F18 Driver)               Task 6
+3ea22ad  feat(audit): governance_parity check (F11 Slash-Doku-Drift)        Task 5
+18f6769  fix(audit): score_event_parity Codex-Review-Heuristik-Tightening   Task 12 (Codex-Fix)
+c3bd14a  feat(audit): header_freshness check (F6+F9 Driver)                 Task 4
+e260edf  feat(audit): skill_frontmatter check (F8 silent-skip Schliesser)   Task 3
+fd59ba6  feat(audit): score_event_parity check (§18 v2.1 Sweep-Driver)     Task 2
+dfd74cd  feat(audit): PyYAML-Preflight vor Check-Dispatch                   Task 1
+```
 
-**Smoke-Suite-Stand:** 17/17 `[OK]` (von 14 vor Plan), 73 Test-Funktionen.
+**Plan-File (v1.1):** `docs/superpowers/plans/2026-04-25-system-audit-rework.md` — 8 Tasks total, 7/8 implementiert + Codex-Fix Task 2.
 
-### ⚠️ Phase-2-Codex-Findings (`adacf0c067b462e5b`, GO-WITH-FIXES) — Vor Task 5 fixen
+**Smoke-Suite:** 20/20 [OK] (von 14 vor Plan-Start, +6 neue Check-Module).
+**CORE-Registry:** 8 → 14.
+**Live-Audit:** `python 03_Tools/system_audit.py --core --no-write` zeigt 14 Checks.
 
-**TaskID 12 — Task 2 Heuristiken tightenen** (~30 min):
-1. `_scan_text_for_basenames` zu naive (`score_event_parity.py:33`) — Whole-file substring scan; line-scope auf list-entry-pattern (Lines mit `,` `'` `"` `` ` `` `|` `@(`).
-2. `_scan_text_for_wrong_versions` Changelog-FP (`score_event_parity.py:48`) — INSTRUKTIONEN.md Z315/Z361 `v1.8 → v2.0 ... §18.1 §18.2` ist FP. **Empfehlung Option b: Marker-Check** — nur Lines mit Section-Header-Pattern (`## §18`, `# §18`, `**§18**`) als governing-rule treaten. Plus Smoke-Test `test_score_event_parity_no_fp_on_changelog` als Regression-Anchor.
-3. Task 3 Doku-Drift (kein Code-Bug) — wenn `dynastie-depot/SKILL.md` in Task 8 Cleanup landet: `description: >` durch single-line oder korrekte Indent ersetzen.
+### Reviews — alle Tasks Subagent-spec+quality durch
 
-**Heutige Tranche-Erkenntnis (Final-Review `afe31a2e5397b877d`):** Pre-existing FP-Risk in INSTRUKTIONEN.md Z361 wurde durch heutige Edits nicht eingeführt — gehört zu TaskID 12. Co-Occurrence ist jetzt durch §18.4-Einfügung möglicherweise auf andere Z-Nummer verschoben, Logik aber identisch.
+| Task | Spec | Quality | Notes |
+|------|------|---------|-------|
+| Task 4 (header_freshness) | ✅ | ✅ Approved with concerns | 2 Important regex-cosmetics (deferred) |
+| Task 12 (score_event_parity-Fix) | ✅ | ✅ Approved | 0 Crit/Imp, 4 Minor (deferred) |
+| Task 5 (governance_parity) | ✅ | ✅ Approved | 0 Crit/Imp, 5 Minor (deferred) |
+| Task 6 (cross_source_reverse) | ✅ | ❌→✅ | **Critical found+fixed**: Regex `[A-Z]{1,5}` schluckte BRK.B → Live-Miss von 11/11 auf 10/10. Fix-Commit `7f75389` widert Regex auf `[A-Z][A-Z0-9.\-]{0,9}` + optional `"..."` quotes. I1: FAIL-path-Test ergänzt. Re-Review ✅. |
+| Task 7 (pointer_completeness) | ✅ | ✅ Approved | 0 Crit/Imp, 5 Minor (cosmetic) |
 
-**Showstopper:** keine. Task 4 Reviews + Tasks 5-7 unabhängig von Task 2 Heuristik-Issues, aber Task 5 Top-Level-Governance-Parity berührt CORE-Registry-Count → erst nach TaskID-12-Fix.
+Alle Minor-Findings sind im Final-Review/Task-8-Scope deferred.
 
-### TODO nächste Session — Resume-Sequenz
+### TODO nächste Session — Final-Phase
 
-**Pre-Resume-Checks (manuell, ohne Subagent):**
-1. `git checkout feat/system-audit-phase-2`
-2. `git rebase main` — heutige 3 Commits sind nun auf main, Phase-2-Branch sollte rebase-clean sein (Task 4 fügt header_freshness in `01_Skills/`/`03_Tools/` ein, Heutige Edits sind in `00_Core/` + `01_Skills/dynastie-depot/SKILL.md` — Konflikt-Potential nur bei SKILL.md, dort heutige Pre-Processing Regel 5 vs. Phase-2-Skill-Frontmatter-Edits)
-3. `git status --short` — pre-existing dirty (Rebalancing.xlsx + Vault-Deletes + code-workspace; STATE.md / SESSION-HANDOVER.md heute committet)
-4. `python "03_Tools/system_audit/_smoke_test.py"` — 17/17 grün
+**Pre-Resume-Checks:**
+1. `git status --short` — pre-existing dirty siehe unten
+2. `git log --oneline main..HEAD` — sollte 9 Commits zeigen, alles unverändert
+3. `python "03_Tools/system_audit/_smoke_test.py"` — 20/20 grün
 
 **Sequenz (priorisiert):**
-1. **Task 4 Reviews** (TaskID 11) — Spec-Reviewer + Code-Quality-Reviewer für `ad69501` dispatchen (~5 min)
-2. **Codex-Fix Task 2** (TaskID 12) — beide Heuristiken + neuer Regression-Test (~30 min). Commit-Message: `fix(audit): score_event_parity Codex-Review-Heuristik-Tightening`
-3. **Task 5** Top-Level-Governance-Parity (Plan §1268-1544) — erst nach TaskID 12
-4. **Task 6** Cross-Source-Reverse (Plan §1546-1831)
-5. **Task 7** Pointer-Completeness (Plan §1833-2121) — Achtung: heute neue Routing-Table-Zeile in CLAUDE.md könnte Pointer-Section-Anchor-Test beeinflussen, kurz prüfen
-6. **Final-Review** (TaskID 10) — Codex + CodeRabbit auf Tasks 4-7 + Task-2-Fix
-7. **Task 8** Defer-Doku + optional Live-Drift-Cleanup
 
-**Erwarteter End-Stand:** CORE 11→14, Smoke 73→84, 8-9 Commits auf Branch, rc=0/1, PR-fähig.
+1. **Final-Review (TaskID 10)** — Codex via `codex:codex-rescue` + CodeRabbit via `coderabbit:code-review` auf vollen Branch-Diff `git diff main..HEAD`. Großer Diff (9 Commits, ~700 Zeilen Code + ~400 Zeilen Tests). Tokens-intensive — separate Session ist intentional.
+   - Codex-Fokus: Heuristik-Korrektheit, Edge-Cases der Regex-Patterns, sys.path-Mutation-Safety in `_live_core_count`, Section-Scoping-Robustheit, etc.
+   - CodeRabbit-Fokus: standardisierte Code-Hygiene, Test-Coverage, Style-Consistency.
+2. **Codex-Fixes** (falls vorhanden) als zusätzliche Commits.
+3. **Task 8 (Defer-Doku + Live-Drift-Cleanup)** — Plan §2123-Ende. Inkl.:
+   - PIPELINE.md Defer-Items dokumentieren
+   - Optional Live-Drift-Cleanup für score_event_parity (5 FAIL pre-existing), skill_frontmatter (9 FAIL pre-existing), header_freshness (WARN insider-intelligence Stand 06.04.). Diese Drifts sind durch Tasks 4-7 sichtbar gemacht, nicht eingeführt — separater Cleanup-Commit oder als Task-8-Bestandteil.
 
-### Heute-Tranche-Doku (für Phase-2-Rebase-Awareness)
+**Erwarteter End-Stand:** PR-fähiger Branch, ~10-12 Commits gesamt (je nach Codex-Findings), CORE 14, Smoke 20/20.
 
-**3 Commits auf main seit `d129270`:**
-- `4e9d4af` — Karpathy §0 in INSTRUKTIONEN.md + CLAUDE.md Pointer + Routing-Hook
-- `669a801` — Stand-Banner aus Header in Footer der 8 00_Core-Files (§18.4 Konvention)
-- `9c468ec` — Pre-Processing Regel 5 (Tool→Metrik-Triage) in dynastie-depot SKILL.md
+### ⚠️ Wichtige Notizen
 
-**Konflikt-Risiko bei Phase-2-Rebase:**
-- `INSTRUKTIONEN.md`: §0 + §18.4 sind neue Sektionen — Phase-2 hat dort keine Edits, aber TaskID 12 wird `score_event_parity.py`-Heuristik betreffen, **die governance-File scannt**. §18.4-Wording neu lesen für Test-Fixture-Aktualisierung.
-- `01_Skills/dynastie-depot/SKILL.md`: Pre-Processing Regel 5 angefügt. Phase-2-Task 3 (skill_frontmatter) und potenziell Task 8 (Live-Drift-Cleanup `description: >` Fix) berühren denselben File. Frontmatter (oben) und Pre-Processing-Block (unten Z832ff) sollten konfliktfrei sein.
-- 8 × `00_Core/*.md` Stand-Banner-Migration: Phase-2-Code touchiert keine 00_Core-Files direkt; mögliche Test-Fixtures in `_smoke_test.py:505,535` referenzieren `STATE.md:18`/`STATE.md:1` — sind aber Test-Fixture-Strings, keine echten File-Refs (verifiziert).
+**Memory-Updates persistiert in dieser Session:** Keine neuen Auto-Memories geschrieben (nichts grundlegend Neues über Workflow gelernt — Subagent-Loop war wie geplant). `feedback_pre_commit_diff_inspection.md` (von 26.04.) wurde aktiv angewandt.
 
-### Memory-Updates persistiert
-- `feedback_pre_commit_diff_inspection.md` (NEU 26.04.) — Bulk-Refactor-Hygiene: vor commit `git diff --cached` prüfen, pre-existing dirty rutscht silent durch
-- `feedback_review_via_codex_not_advisor.md` — Reviews via Codex, nie advisor()
-- `feedback_onedrive_edit_collision.md` — Edit-Collision-Pattern bei offenem Editor
+**Subagent-Damage-Pattern (für Awareness, nicht Memory-Pflicht):** Ein Subagent (general-purpose) hat bei Task-4-Spec-Review `git checkout ad69501 -- .` gerufen → 27 Files staged-überschrieben. Repariert via `git reset --hard HEAD`. Lehre: Subagent-Prompts MÜSSEN explizit `git checkout <sha> -- .` verbieten (FORBIDDEN-Liste in den Reviewer-Prompts seither). Kein Memory-Eintrag nötig — Pattern ist im Prompt-Template eingebaut.
+
+**Pending stash:** `stash@{0}: On main: pre-phase2-resume vault drift + xlsx 26.04.` — enthält Vault-Concept-File-Drifts (PORTFOLIO/STATE/SYSTEM/PIPELINE in `wiki/concepts/`) + Investing-Mastermind/index.md+log.md + xlsx + .obsidian/app.json + 4 Vault-Deletes. Beim Resume: stash bleibt, kann nach Phase-2-Merge wieder applied werden — oder vorher inspizieren ob Vault-Drift echte Sync-Pflicht-Items enthält.
 
 ### Standing-Pre-existing-Dirty
-- `03_Tools/Rebalancing_Tool_v3.4.xlsx` — weiterhin ungeklärt
-- `07_Obsidian Vault/.../app.json` + 4 Vault-Deletes (`2026-04-23.md`, `Unbenannt*`) — Vault-Cleanup-Backlog
-- `Claude-Stuff.code-workspace` — IDE-Setup, gitignore-Kandidat
+
+- `03_Tools/Rebalancing_Tool_v3.4.xlsx` — weiterhin ungeklärt (im Stash)
+- `07_Obsidian Vault/Obsidian Mindmap/.obsidian/app.json` + 4 Vault-Deletes (`2026-04-23.md`, `Unbenannt*`) — Vault-Cleanup-Backlog (im Stash)
+- `Claude-Stuff.code-workspace` — IDE-Setup, gitignore-Kandidat (untracked)
+- Vault-concept-files (`wiki/concepts/PIPELINE.md` etc.) — vermutlich Live-Drift via filesystem-MCP-Sync (im Stash)
 
 ### Wichtige Calibration-Notiz
+
 F3 (`_forward_verify_helpers.py:25, 257-259`) bleibt **INFO, nicht FIX** — Teil-Gate-Trade-off, Codex-RECONCILED VALID. Nicht als §18-Verletzung oder score_event_parity-Failure re-klassifizieren.
 
 ---
