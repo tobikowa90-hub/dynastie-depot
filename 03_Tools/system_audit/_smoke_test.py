@@ -124,7 +124,7 @@ def test_jsonl_schema_fail_on_bad_fixture() -> None:
     assert any(f.severity == "error" for f in result.failures)
     assert any("bad_score.jsonl:1" in f.location for f in result.failures)
 
-def test_jsonl_schema_skip_on_missing_file(tmp_path=None) -> None:
+def test_jsonl_schema_skip_on_missing_file() -> None:
     from system_audit.checks.jsonl_schema import run
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
     result = run(REPO_ROOT, ctx, stores_override={

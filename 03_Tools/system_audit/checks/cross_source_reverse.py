@@ -135,7 +135,7 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
                     expected=f"{ticker} in config.satelliten (matches Vault folder)",
                     actual=f"{ticker} only in {'watchlist' if ticker in watch_set else 'keine_zuteilung'}",
                     severity="error",
-                    hint=f"Vault-Pfad sagt satellit, config sagt nicht — entweder Vault → ersatzbank/ verschieben oder config.satelliten ergaenzen",
+                    hint="Vault-Pfad sagt satellit, config sagt nicht — entweder Vault → ersatzbank/ verschieben oder config.satelliten ergaenzen",
                 ))
             else:
                 n_passed += 1
