@@ -1,5 +1,5 @@
 # 🧠 CORE-MEMORY.md — Institutionelles Gedächtnis
-**Version:** 1.9 (v3.7 + Topic-Auflösung §1→§12/§13) | **Stand:** 25.04.2026
+**Version:** 1.9 (v3.7 + Topic-Auflösung §1→§12/§13)
 
 ## Verweise
 - [STATE.md](STATE.md) — Hub + Last-Audit

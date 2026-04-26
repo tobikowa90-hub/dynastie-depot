@@ -1,5 +1,4 @@
 # 🎯 STATE.md — Dynasty-Depot Hub
-**Stand:** 25.04.2026
 
 ## Verweise
 - [PORTFOLIO.md](PORTFOLIO.md) — Live-State (default-load bei Session-Start)
@@ -30,11 +29,11 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-25T10:01:27Z
+**Timestamp (UTC):** 2026-04-25T10:22:31Z
 **Result:** 3/3 PASS
 **Run:** `python 03_Tools/system_audit.py --minimal-baseline`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->
 
-*🦅 STATE.md Hub v2.0 | Dynasty-Depot | Navigation + Critical-Alert + Last-Audit*
+*🦅 STATE.md Hub v2.0 | Dynasty-Depot | Navigation + Critical-Alert + Last-Audit | Stand: 25.04.2026*

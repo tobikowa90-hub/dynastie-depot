@@ -1,5 +1,4 @@
 # PORTFOLIO.md — Depot-Live-State
-**Stand:** 25.04.2026
 
 ## Verweise
 - [INSTRUKTIONEN.md §22](INSTRUKTIONEN.md#22-sparplan-formel-aktuell-18042026-v37) — Sparplan-Formel (Nenner-Berechnung)
@@ -54,4 +53,4 @@
 
 ---
 
-*🦅 PORTFOLIO.md v1.0 | Dynasty-Depot | Live-State — default-load bei Session-Start*
+*🦅 PORTFOLIO.md v1.0 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 25.04.2026*

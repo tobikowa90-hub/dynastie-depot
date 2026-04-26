@@ -1,6 +1,5 @@
 # DEFCON Faktortabelle
 
-**Stand:** 23.04.2026 (v3.7 + TMO Q1 FY26 Forward-Vollanalyse — D2→D3 Upshift + FLAG-Resolve) | **Nächste Vollaktualisierung:** 17.07.2026
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -66,7 +65,6 @@
 **Offene Scores:** 0/11
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
 **Sparraten-Nenner:** 8×1,0 + 1×0,5 + 2×0 = **8,5** → volle Rate **33,53€** / D2-Rate (V) **16,76€** / FLAG (APH, MSFT) **0€**
-**Stand:** 23.04.2026 — v3.7 + TMO Q1 FY26 Upshift D2→D3 + FLAG-Resolve
 
 > ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Algebra-Projektion v3.5→v3.7: ASML 68→66 (bleibt D3, **Post-Q1 17.04. Vollanalyse: 68**), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74.
 >
@@ -136,3 +134,7 @@
 [[ASML]] · [[AVGO]] · [[MSFT]] · [[RMS]] · [[VEEV]] · [[SU]] · [[BRK.B]] · [[V]] · [[TMO]] · [[APH]] · [[COST]]
 
 Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · [[Context-Hygiene]]
+
+---
+
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 23.04.2026 (TMO Q1 Upshift D2→D3 + FLAG-Resolve) | Nächste Vollaktualisierung: 17.07.2026*
