@@ -1584,6 +1584,42 @@ def test_cross_source_reverse_skip_on_missing_config() -> None:
     assert result.status == "SKIP"
 
 
+def test_cross_source_reverse_fail_on_invalid_yaml() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #2: malformed YAML in
+    config.yaml must surface as a single explicit FAIL with the parser error,
+    not a silent flood of orphan-ticker warnings (which would happen if
+    parse-failure returned three empty sets).
+    """
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cfg_dir = tdp / "01_Skills" / "dynastie-depot"
+        cfg_dir.mkdir(parents=True)
+        # Malformed YAML: unclosed mapping + tab-indent (yaml-parser-fatal)
+        (cfg_dir / "config.yaml").write_text(
+            "satelliten:\n  - ticker: AVGO\n\tdefcon: D4\n  bad_indent: [unclosed\n",
+            encoding="utf-8",
+        )
+        # Vault has tickers — without the fix these would all show up as
+        # orphan-warnings; with the fix the YAML parse failure short-circuits.
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault.mkdir(parents=True)
+        (vault / "AVGO.md").write_text("---\nticker: AVGO\n---\n", encoding="utf-8")
+        (vault / "MSFT.md").write_text("---\nticker: MSFT\n---\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL", f"got {result.status}, failures={result.failures}"
+    assert len(result.failures) == 1, (
+        f"malformed YAML must produce exactly ONE FAIL (not orphan-flood); "
+        f"got {len(result.failures)}: {result.failures}"
+    )
+    f = result.failures[0]
+    assert f.severity == "error"
+    assert "YAMLError" in f.actual, f"actual must surface parser error; got {f.actual}"
+    assert "config.yaml" in f.location.lower()
+
+
 def test_pointer_completeness_pass_on_existing_targets() -> None:
     import tempfile
     from system_audit.checks.pointer_completeness import run

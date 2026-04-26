@@ -34,11 +34,14 @@ TICKER_FRONTMATTER_RE = re.compile(
 
 
 def _config_ticker_sets(cfg_path: Path) -> tuple[set[str], set[str], set[str]]:
-    """Return (satelliten, watchlist, keine_zuteilung) ticker sets."""
-    try:
-        data = yaml.safe_load(cfg_path.read_text(encoding="utf-8", errors="replace")) or {}
-    except yaml.YAMLError:
-        return set(), set(), set()
+    """Return (satelliten, watchlist, keine_zuteilung) ticker sets.
+
+    Raises yaml.YAMLError on parse failure so the caller can surface a
+    single explicit FAIL instead of silently returning empty sets (which
+    would degrade into a flood of orphan-ticker warnings — Codex-Phase-2-
+    Final-Review Important #2 fix).
+    """
+    data = yaml.safe_load(cfg_path.read_text(encoding="utf-8", errors="replace")) or {}
 
     def _extract(key: str) -> set[str]:
         out: set[str] = set()
@@ -95,7 +98,29 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             category="core",
         )
 
-    sat_set, watch_set, kein_set = _config_ticker_sets(cfg_path)
+    try:
+        sat_set, watch_set, kein_set = _config_ticker_sets(cfg_path)
+    except yaml.YAMLError as e:
+        # Single-shot FAIL: surface the parser error explicitly instead of
+        # silently treating every Vault ticker as orphan (Codex Phase-2-
+        # Final-Review Important #2). First line of YAMLError typically
+        # carries the problem-mark; rest is multi-line context.
+        first = str(e).splitlines()[0] if str(e) else type(e).__name__
+        rel_loc = str(cfg_path.relative_to(repo_root)) if cfg_path.is_relative_to(repo_root) else str(cfg_path)
+        return CheckResult(
+            name="cross_source_reverse", status="FAIL",
+            n_checked=1, n_passed=0,
+            failures=[FailureDetail(
+                location=rel_loc,
+                expected="config.yaml parses as valid YAML",
+                actual=f"YAMLError: {first}",
+                severity="error",
+                hint="config.yaml ist defekt — Vault-Parity-Check kann nicht laufen, "
+                     "bis Datei valides YAML ist. Parser-Fehler oben + git diff pruefen",
+            )],
+            duration_ms=int((time.monotonic() - start) * 1000),
+            category="core",
+        )
     config_union = sat_set | watch_set | kein_set
     vault_tickers = _vault_ticker_locations(repo_root / VAULT_ENTITIES_REL)
 
