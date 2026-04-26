@@ -1,75 +1,65 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-26 — Paper-Ingest Phase A (14 Source-Pages) committed. **Nächste Session: Codex-Fixes + Phase B+C abschließen.**
+**Aktualisiert:** 2026-04-27 — Paper-Ingest Phase A: Codex-Fixes + Phase B (Status-Matrix B25-B28, §29.7 M&P-Discount, 6 Concept-Pages, 30 Entity-Pages) committed. **Nächste Session: Phase C (Synthesis-Update Quellen 20→34, index.md, log.md, Lint, Final-Commit) — nach Codex-Review.**
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. Paper-Ingest Phase A1+A2+A3 done — 14 Source-Pages in `wiki/sources/papers/` + 14 Raw-PDFs in `raw/papers/` committed. Codex-Review identifizierte 4 Must-Fix + 3 Should-Fix + 3 Nice-to-have.
+**Branch:** `main`. Phase A (14 Source-Pages) committed in `b8306df` (gestern). Phase B heute durchgezogen — gegliedert in 3 Sub-Commits empfohlen oder einen Bulk-Commit:
 
-**Standing-Dirty (NICHT mitcommitted):** `app.json`, `wiki/concepts/PORTFOLIO.md`, gelöschte `.canvas`/`.base`-Files, plus stash + xlsx + .code-workspace.
+**Commit-Block 1 — Codex Quick-Wins + Should-Fixes:**
+- `2iQ-Insider-Meta-Review-2021.md` — Alias `2iQ-Insider-Meta-Review` ergänzt + `>>>>` Cleanup line 33 (Codex Must-Fix #3, #10)
+- `Hou-Xue-Zhang-2015-q-Factor.md` — Alias `Hou-Xue-Zhang-q-Factor` ergänzt (Codex Must-Fix #4)
+- `McLean-Pontiff-2016.md` — Magnitude-Klärung Tabelle (-31%/-55% raw vs 26%/58% headline aufgelöst, Codex Should-Fix #5) + §29.7 „angelegt" statt „geplant"
+- `Lakonishok-Lee-2001.md` — Confidence-Markierung deutlicher (image-only-Trap-Hinweis verstärkt, Codex Should-Fix #6) + Status-Tag `active-scoring-validation`
+- `Tetlock-2007.md` — Confidence-Markierung Magnitude-Tabelle (sekundär-zitierte bps-Werte, Codex Should-Fix #6) + Status-Tag `design-context`
+- `Ke-Huddart-Petroni-2003.md` — Status-Tag `design-context`
+- `Yang-Liu-Wang-2023-FinGPT.md` — Venue-Feld YAML-strukturiert: conference vs. preprint_v1/v2 entmischt (Codex Should-Fix #7)
 
-### 🎯 Hauptauftrag nächste Session: Codex-Fixes + Phase B+C
+**Commit-Block 2 — Phase B1 Status-Matrix + §29.7:**
+- `wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` — 2 neue Status-Labels (`active-scoring-validation` + `design-context`), B25-B28 in Status-Matrix + Befunde-Matrix, 4-Dim-Validation-Gate erweitert um §29.7-Zeile, Header-Counter 24 → 28 Befunde, Sources-Frontmatter um 4 Pages erweitert, Änderungsprotokoll-Eintrag 2026-04-26
+- `00_Core/INSTRUKTIONEN.md` — neuer §29.7 M&P-Discount-Gate (Renumber alt §29.7 → §29.8, alt §29.8 → §29.9), §4 Befunde-Router um 6 Status-Labels erweitert, §5 Sentiment um 4-Layer-Anker (B11/B19/B24/B28), §6 Insider um B26-Validation + B27-deferred-Pipeline-Note
+- `01_Skills/dynastie-depot/SKILL.md` — Schritt 2.5 erweitert: 6 Status-Labels statt 4, Backlinks B25-B28, Insider/Sentiment-Block-Output-Templates ergänzen B26/B27/B28-Befund-IDs
 
-#### **Sofort vor Phase B1: Must-Fix (3 Quick-Wins)**
+**Commit-Block 3 — Phase B2 Concept-Pages (6 neu + 2 Updates):**
+- Neu in `wiki/concepts/`: `Post-Publication-Decay.md` (B25), `Insider-Trading-Primary-Signal.md` (B26+B27), `Earnings-Foreknowledge-Window.md` (B27), `Media-Pessimism-Sentiment.md` (B28), `Noise-Trader-Model.md` (DSSW 1990), `Competitive-Advantage-Period.md` (Mauboussin CAP — Bonus zur Auflösung der Backlinks aus den 2 Updates)
+- Update: `Moat-Taxonomie-Morningstar.md` + `defcon/ROIC-vs-WACC.md` mit CAP-Verweis
 
-3. **Alias-Fix `[[2iQ-Insider-Meta-Review]]`** — File heißt `2iQ-Insider-Meta-Review-2021.md`, fehlender Alias bricht 2 Backlinks in `Lakonishok-Lee-2001.md:22+66`. Lösung: Alias `"2iQ-Insider-Meta-Review"` zu Frontmatter der 2iQ-Page hinzufügen.
-4. **Alias-Fix `[[Hou-Xue-Zhang-q-Factor]]`** — File heißt `Hou-Xue-Zhang-2015-q-Factor.md`, bricht Backlinks in `Fama-French-2015-Five-Factor.md:54` + `Fama-French-2006-Profitability.md:68`. Lösung: Alias hinzufügen.
-10. **Cleanup `>>>>`-Artefakt** in `2iQ-Insider-Meta-Review-2021.md:33` (Ingest-Rauschen).
+**Commit-Block 4 — Phase B3 Entity-Pages (30 neu kompakt):**
+- B25: r-david-mclean, jeffrey-pontiff
+- B26: josef-lakonishok, inmoo-lee
+- B27: bin-ke, steven-huddart, kathy-petroni
+- B28: paul-tetlock
+- Mauboussin: michael-mauboussin, dan-callahan
+- QMJ: clifford-asness, andrea-frazzini, lasse-pedersen
+- Amundi 4-Pillars: jean-baptiste-lepetit, nazim-cherief, thy-ly, takaya-sekine
+- FF: eugene-fama, kenneth-french
+- HLZ-q-Factor: kewei-hou, chen-xue, lu-zhang
+- Harvey-Liu-Zhu: campbell-harvey, yan-liu, heqing-zhu
+- FinGPT: hongyang-yang, xiao-yang-liu, christina-dan-wang
+- 2iQ: robert-hable
+- Momentum-Anker: tobias-moskowitz
 
-#### **Phase B1 — absorbiert die governance-kritischen Fixes (Must-Fix #1+#2):**
+**Standing-Dirty (NICHT mitcommitted, gleiche Liste wie gestern):** `app.json`, `wiki/concepts/PORTFOLIO.md`, gelöschte `.canvas`/`.base`-Files in `Obsidian Mindmap/`, plus stash + xlsx + .code-workspace.
 
-1. **Status-Matrix B25-B28 in `wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md`** eintragen (Codex-FAIL: Pages klassifizieren B25-B28 bereits, aber SSoT kennt sie nicht)
-   - B25 McLean/Pontiff = `meta-gate` (§29.7-Erweiterung "M&P-Discount")
-   - B26 Lakonishok/Lee = `active-scoring-validation` (Insider-Block-Validation)
-   - B27 Ke/Huddart/Petroni = `design-context` (Window-Erweiterung deferred auf insider-intelligence v2)
-   - B28 Tetlock = `design-context` (Mean-Reversion-Anker, kein Live-Score-Change)
-   
-   ⚠️ **Codex-Hinweis (WARN):** B26-B28 als `active-scoring` klassifiziert in Pages, aber Fließtext sagt selbst „kein Live-Score-Change". Status auf `active-scoring-validation` / `design-context` re-klassifizieren — passt zur tatsächlichen Wirkung. **Entscheidung in B1 fällen.**
+### 🎯 Phase C — Nächste Session
 
-2. **§29.7 / M&P-Discount** entweder im DEFCON-SSoT (`INSTRUKTIONEN.md` §29) formal anlegen ODER in `McLean-Pontiff-2016.md:70` als unverabschiedete Idee zurückstufen. Empfehlung: **anlegen** (passt zur §29-Backtest-Validation-Architektur, sauberer Layer 7).
+**Reihenfolge nach Codex-Review (Zwischen B + C):**
 
-3. **SKILL.md Schritt-2.5 Backlinks** für B25-B28 (`01_Skills/dynastie-depot/SKILL.md`).
+1. **C-1 Synthesis-Update**: `wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` — Quellen-Übersicht von 20 auf 34 Paper erweitern (= +14 aus Phase A: B25-B28 + 10 SOURCE-ONLY-Anker). Neue Tabellen-Zeilen: McLean-Pontiff, Lakonishok-Lee, Ke-Huddart-Petroni, Tetlock + Mauboussin-Callahan, Asness-Frazzini-Pedersen-QMJ, Fama-French-2015, Fama-French-2006, Hou-Xue-Zhang, Harvey-Liu-Zhu, Amundi-4-Pillars, 2iQ-Meta, FinGPT, plus 2 weitere SOURCE-ONLY-Pages (siehe Phase-A-Commit für vollständige Liste).
 
-4. **INSTRUKTIONEN.md §-Updates**: §29 (B25 + Discount), Insider-Block (B26+B27 deferred-Pipeline-Note), Sentiment-Block (B28 Mean-Reversion-Anker für `feedback_score_stability`-Memory).
+2. **C-2 index.md Update**: alle Phase-A + Phase-B-neuen Pages eintragen — 14 Source-Pages, 6 neue Concept-Pages, 30 Entity-Pages.
 
-#### **Phase B2 — Concept-Pages (5 neu + 2 Updates):**
+3. **C-3 log.md Bulk-Eintrag**: ein zusammenhängender Eintrag für die gesamte Phase A+B (oder zwei Einträge: A am 26.04., B am 27.04.). WIKI-SCHEMA Auto-Lint danach: Orphans + broken Links prüfen, sofort fixen. Final-Commit + Push.
 
-- Neu: `Post-Publication-Decay`, `Insider-Trading-Primary-Signal`, `Earnings-Foreknowledge-Window`, `Media-Pessimism-Sentiment`, `Noise-Trader-Model`
-- Mauboussin-Special: Concept-Updates `Moat-Taxonomie-Morningstar` + `ROIC-vs-WACC` mit CAP-Verweis; ggf. neue `Competitive-Advantage-Period`-Page
-- Optional: `Quality-Investing-Multidimensional` (4-Pillars-Framing aus QMJ + Amundi)
+### 🔍 Codex-Review-Block (vor Phase C, in dieser Session vorbereitet)
 
-#### **Phase B3 — Entity-Pages (~25 Autoren, kompakt):**
-
-McLean, Pontiff, Lakonishok, Lee, Ke, Huddart, Petroni, Tetlock, Asness, Frazzini, Pedersen, Mauboussin, Callahan, Lepetit, Cherief, Ly, Sekine, Fama, French, Harvey (Cam), Liu (Yan), Zhu (Heqing), Moskowitz, Hou, Xue, Zhang (Lu), Yang (Hongyang), Liu (Xiao-Yang), Wang (Christina Dan), Hable.
-
-#### **Phase C — Synthesis + Final:**
-
-- Synthesis-Update: `Wissenschaftliche-Fundierung-DEFCON.md` Quellen-Übersicht von 20 auf **34 Paper** erweitern + B-Befunde-Counter B25-B28 aufnehmen
-- `index.md` Update — alle 14 neuen Source-Pages + 5+ neue Concept-Pages + ~25 Entity-Pages eintragen
-- `log.md` Eintrag (ein zusammenhängender Bulk-Ingest-Eintrag)
-- WIKI-SCHEMA Auto-Lint: alle neuen/geänderten Pages auf Orphans + broken Links prüfen
-- Commit + Push
-
-#### **Should-Fix (in Phase B mit erledigen):**
-
-5. `McLean-Pontiff-2016.md:30` — Tabelle `-31% / -55%` vs Headline `26% / 58% / 32%`: Rechenbasis erklären oder angleichen
-6. `Tetlock-2007.md:41` + `Lakonishok-Lee-2001.md:22` — Confidence-Markierung wo Primärquelle nicht textextrahierbar
-7. FinGPT-Venue bibliografisch entmischen (Konferenz 2023 vs. arXiv v2 Nov 2025)
-
-#### **Nice-to-have (deferred):**
-
-8. Repo-weite Schema-Drift-Entscheidung (House-Schema vs. WIKI-SCHEMA `medium/created/updated/sources`)
-9. Year-only `date`-Felder → ISO-8601
-10. JEL-Codes + Sample-Period-Metadaten für SOURCE-ONLY-Academics
-
-### Codex-Review-Verdikt (Stand 26.04.)
-
-**14 Files Form-Konformität:** PASS (raw_path), WARN (Schema-Drift House vs. WIKI-SCHEMA), PASS (aliases vorhanden)
-**Inhaltliche Akkuratesse:** Großteils PASS bei B-Papers; einige WARN bei Magnitude-Spezifika ohne Primär-Beleg
-**DEFCON-Mapping:** **2× FAIL** (Status-Matrix-Eintrag + §29.7-Anchor) → muss vor Phase B-Workflow gefixt werden
-**Cross-Refs:** **2× FAIL** (2iQ + Hou-Xue-Zhang Alias-Mismatch) → 2-Minuten-Fix
-**Tonalität:** PASS, kleinere Normativ-zu-früh-Hinweise
-**Risiken:** Hauptpunkt = vorauseilende Aktivierungs-Sprache vor SSoT-Eintrag
+**Reviewer-Aufgabe (siehe Codex-Review-Anstoß im Chat):**
+- B1 Status-Matrix-Eintrag B25-B28 inkl. neue Status-Labels — Konsistenz mit Page-Body verifizieren
+- §29.7 M&P-Discount in INSTRUKTIONEN.md — Renumber-Korrektheit (alt §29.7 → §29.8, alt §29.8 → §29.9), Cross-Refs in §18/§27/§28/§30/§4-Router-Routing
+- B2 Concept-Pages — Frontmatter-Schema-Konformität gegen WIKI-SCHEMA, Backlink-Disziplin (no Orphans, alle Backlinks resolven), Inhaltliche Akkuratesse (Magnitude-Quellen)
+- B3 Entity-Pages — Standard-Naming kebab-case, Aliases-Block korrekt, Backlinks zu Source-Pages konsistent
+- Codex Should-Fix #5/#6/#7 — Implementations-Korrektheit
+- Cross-Cutting: nicht-existente Backlinks aus den 6 Concept-Pages identifizieren (z.B. [[Insider-Trading-Primary-Signal]] aus B26 source-page — jetzt aufgelöst)
 
 ### Standing-Focus (unverändert)
 
@@ -78,11 +68,10 @@ McLean, Pontiff, Lakonishok, Lee, Ke, Huddart, Petroni, Tetlock, Asness, Frazzin
 
 ### Wichtige Notizen
 
-**Files-Layout post-Ingest:** `raw/papers/` enthält jetzt 26 Files (12 alt + 14 neu). Mislabeled-Duplikat (`Lakonishok & Lee.pdf` ≡ `Ke, Huddart, Petroni.pdf`) wurde gelöscht im Vorlauf. Empty `Neuer Ordner` aufgeräumt. F/F 2004 Draft (Matrix #14) als Sibling-Note in `Fama-French-2006-Profitability.md` gefoldet (User-Decision: „nur ein Auszug aus #12").
-
-**Lakonishok-Lee PDF ist image-only** — Text aus 2iQ-Sekundärquelle + Wissensbasis synthesisiert (Codex-WARN: Confidence-Markierung in Page deutlicher setzen).
-
-**CodeRabbit-CLI** läuft via WSL Ubuntu (`feedback_coderabbit_via_wsl.md`).
+- **Bonus-Concept-Page** `Competitive-Advantage-Period.md` zusätzlich zur Handover-Liste angelegt — beide Updates (Moat-Taxonomie + ROIC-vs-WACC) verlinken auf die Page; ohne sie wären 2 Backlink-Orphans entstanden.
+- **Optional Quality-Investing-Multidimensional Page** aus dem Handover NICHT angelegt — bestehende `QMJ-Faktor.md` deckt das 4-Pillars-Framing strukturell ab, deferred bis Bedarf.
+- **Score-Archiv unangetastet** — kein DEFCON-Trigger in dieser Session, kein `score_history.jsonl`-Append.
+- **CodeRabbit-CLI** läuft via WSL Ubuntu (`feedback_coderabbit_via_wsl.md`).
 
 ---
 

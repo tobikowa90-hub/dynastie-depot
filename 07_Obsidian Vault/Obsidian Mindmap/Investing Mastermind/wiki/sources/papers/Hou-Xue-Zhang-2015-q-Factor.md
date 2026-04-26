@@ -13,6 +13,7 @@ related: "[[Fama-French-2015-Five-Factor]], [[Fama-French-2006-Profitability]], 
 raw_path: "../../../raw/papers/Digesting Anomalies An Investment Approach.pdf"
 aliases:
   - "Hou Xue Zhang 2015"
+  - "Hou-Xue-Zhang-q-Factor"
   - "q-Factor Model"
   - "Digesting Anomalies"
 ---

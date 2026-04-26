@@ -1,11 +1,13 @@
 ---
 title: "Moat-Taxonomie nach Morningstar"
 type: concept
-tags: [defcon, moat, economic-moat, competitive-advantage, morningstar, wide-moat]
+tags: [defcon, moat, economic-moat, competitive-advantage, morningstar, wide-moat, cap]
 source: "[[Morningstar-Wide-Moat]]"
-related: "[[DEFCON-System]], [[ROIC-vs-WACC]], [[Buffett-Faktorlogik]], [[Wissenschaftliche-Fundierung-DEFCON]], [[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
+sources: [Morningstar-Wide-Moat, Mauboussin-Callahan-2024-Measuring-Moat]
+related: "[[DEFCON-System]], [[ROIC-vs-WACC]], [[Buffett-Faktorlogik]], [[Competitive-Advantage-Period]], [[Mauboussin-Callahan-2024-Measuring-Moat]], [[Wissenschaftliche-Fundierung-DEFCON]], [[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
 defcon_block: "Moat-Block (20 Pt.)"
-operative_regel: "8 Moat-Quellen prüfen; Wide Moat ≠ automatisch Excess Return — erst in Kombination mit Fundamentals und attraktiver Bewertung."
+operative_regel: "8 Moat-Quellen prüfen; Wide Moat ≠ automatisch Excess Return — erst in Kombination mit Fundamentals und attraktiver Bewertung. CAP-Mapping (Mauboussin/Callahan 2024): Wide = >20J CAP, Narrow = 10-20J, None = transient."
+updated: 2026-04-27
 ---
 
 # Moat-Taxonomie nach Morningstar
@@ -74,3 +76,21 @@ Morningstar-Moat-Rating ist qualitative Variante des akademischen **Quality (QMJ
 - Aghassi 2023 validiert Quality als robuster Faktor mit SR-Hurdle-Überschreitung (t-Stat >>3)
 - Moat-Breite (wide/narrow/none) korreliert mit QMJ-Komponenten (Profitability/Growth/Safety/Payout)
 - → [[Aghassi-2023-Fact-Fiction]], [[QMJ-Faktor]], [[Factor-Investing-Framework]]
+
+## CAP-Erweiterung — Competitive Advantage Period (Mauboussin & Callahan 2024)
+
+Mauboussin/Callahan (3. Auflage „Measuring the Moat") systematisieren Moat-Bewertung um zwei Dimensionen, von denen Morningstar nur die erste explizit operationalisiert:
+
+| Dimension | Morningstar | Mauboussin/Callahan |
+|---|---|---|
+| **Magnitude** (ROIC-WACC-Spread) | Implizit via 8-Quellen-Check | Explizit: ROIC-WACC-Spread × Größe der Investments mit positivem Spread |
+| **Sustainability (CAP)** | Wide = >20J implizit | Explizit: **Competitive Advantage Period** = Zeitraum, in dem das Unternehmen ROIC > WACC halten kann |
+
+**CAP-Mapping zur Morningstar-Taxonomie:**
+- **Wide Moat** ≈ CAP >20 Jahre (langfristige strukturelle Vorteile)
+- **Narrow Moat** ≈ CAP 10-20 Jahre (mittelfristig erodierbare Vorteile)
+- **None / No Moat** ≈ CAP <10 Jahre (transient oder erodierend)
+
+Die ROIC-WACC-Logik allein quantifiziert Wertschöpfung *im Moment*, aber nur die Kombination mit CAP modelliert *aggregate* Value Creation über die Lebenszeit der Investments. Siehe [[Competitive-Advantage-Period]] für die operative Anwendung in DEFCON-Tiefen-Analysen (Briefing-Argumentation, Bull/Bear-DCF-Szenarien). **CAP wird NICHT als Score-Element implementiert** — Estimation passt nicht in 4-Min-Score-Routine; Sprachregel für DEFCON ≥ 80 + !CAPEX-FCF-ANALYSIS-Tiefen-Analysen.
+
+→ [[Mauboussin-Callahan-2024-Measuring-Moat]] — Primärquelle (SOURCE-ONLY, Decision User 26.04.2026: kein active-scoring B)

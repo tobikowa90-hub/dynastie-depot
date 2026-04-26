@@ -25,13 +25,13 @@ McLean und Pontiff testen 97 Cross-Sectional-Predictoren aus 80 publizierten Stu
 
 ## Drei Kernzahlen für die Faktortabelle
 
-| Periode | Avg. Monthly Return | Decay vs. In-Sample |
-|---|---|---|
-| In-Sample (Original-Studie) | 0.582% | — |
-| Out-of-Sample, Pre-Publication | 0.402% | **−31%** (statistical bias upper bound: 26%) |
-| Post-Publication | 0.264% | **−55%** (publication effect lower bound: 32%) |
+| Periode | Avg. Monthly Return | Decay vs. In-Sample (raw) | M&P-Headline-Estimate |
+|---|---|---|---|
+| In-Sample (Original-Studie) | 0,582% | — | — |
+| Out-of-Sample, Pre-Publication | 0,402% | **−31%** (raw arithmetisch) | **26%** statistical bias upper bound (M&P Tabelle 4, post-Adjustment für 97-Predictor-Cross-Section) |
+| Post-Publication | 0,264% | **−55%** (raw arithmetisch) | **58%** post-publication decline (M&P Tabelle 4, mean across 97 predictors) — **Differenz = 32pp = publication-effect lower bound** |
 
-(Werte aus der Studie selbst, Section II.)
+**Hinweis zur Rechenbasis:** Die *raw arithmetische* Spalte ist die direkte (In-Sample − Periode) / In-Sample-Berechnung der drei illustrativen Avg.-Monthly-Return-Zeilen — sie skaliert die Größenordnung. Die *M&P-Headline-Estimates* (26% / 58% / 32pp) sind die im Paper Section II + Tabelle 4 berichteten Cross-Section-Aggregate über alle 97 Predictoren mit Standard-Error-Adjustment, **nicht** der Quotient der drei Zeilen oben. In der DEFCON-Anwendung (§29.7 M&P-Discount) wird der **58%-Wert** verwendet → Discount-Faktor 1 − 0,58 = **0,42**. Die 32pp-Differenz ist die Lower-Bound-Schätzung des reinen Publikations-Effekts (vs. statistical-bias-Upper-Bound). Quelle: McLean & Pontiff (2016) JF 71(1) S. 5-32, Section II + Tabelle 4.
 
 ## Drei Hypothesen — und wer gewinnt
 
@@ -67,7 +67,7 @@ Das Paper ist **kein** Live-Scoring-Trigger, sondern ein **strukturelles Methode
 | §29.3 (Decay/Half-Life — B17) | Direkter Match. Flint-Vermaak-Half-Life misst sehr ähnliches Phänomen. Layer 3. |
 | §29.4 (t-Hurdle ≥3 — B16) | Notwendig, nicht hinreichend. M&P zeigt: HÖHERE t-Stats decayen STÄRKER. Layer 4. |
 | §29.5 (Seven-Sins — B18) | Sin #6 "Look-Ahead-Bias" verwandt; aber Publikations-Decay ist kein klassischer Seven-Sins-Punkt. Eigener Layer 5. |
-| **NEU §29.7 (geplant)** | **"M&P-Discount":** in-sample-Result × 0.42 (=1 − 0.58) als Plausibilitätsprüfung post-publication. |
+| **§29.7 (angelegt 26.04.2026)** | **"M&P-Discount":** in-sample-Result × 0.42 (=1 − 0.58) als Plausibilitätsprüfung post-publication. INSTRUKTIONEN.md §29.7 vollständig dokumentiert. |
 
 ## Operative Schlussfolgerungen für die Faktortabelle
 

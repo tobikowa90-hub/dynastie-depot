@@ -117,12 +117,14 @@ Impuls / Idee
 
 ### Befunde-Router (Pflicht vor jedem Scoring-Start)
 
-**Single Source of Truth:** Die kanonische **Status-Matrix** in `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` §Status-Matrix klassifiziert jeden wissenschaftlichen Befund (aktuell B1–B24, jeder zukünftige Befund BxN) mit einem von vier Status-Labels. §4 ist **nur der Router** — Befund-Content wird nicht hier dupliziert.
+**Single Source of Truth:** Die kanonische **Status-Matrix** in `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` §Status-Matrix klassifiziert jeden wissenschaftlichen Befund (aktuell B1–B28, jeder zukünftige Befund BxN) mit einem von sechs Status-Labels. §4 ist **nur der Router** — Befund-Content wird nicht hier dupliziert.
 
 | Status | Aktion in !Analysiere |
 |--------|-----------------------|
 | `active-scoring` | **Pflicht-Anwendung** im zugehörigen DEFCON-Block; Nennung im Output-Block "Befunde angewendet" (SKILL.md-Template) |
-| `meta-gate` | **Nicht verwenden** in per-Ticker-Analyse — feuert ausschließlich bei Migration (§28), Retrospective (§29), Skill-Self-Audit (§33) |
+| `active-scoring-validation` | **Optional-Nennung** als Validation-Suffix zur bestehenden Block-Begründung (z.B. „Insider-Block: B26-validated"). Kein neuer Score-Pfad, keine Migration nötig (eingeführt 26.04.2026 — Codex-Re-Klassifikation B26) |
+| `design-context` | **NICHT erwähnen** im !Analysiere-Output. Verwendung nur in: Skill-Roadmap, Konsolidierungstag-Reviews, Wiki-Synthesis-Updates (eingeführt 26.04.2026 — Codex-Re-Klassifikation B27, B28) |
+| `meta-gate` | **Nicht verwenden** in per-Ticker-Analyse — feuert ausschließlich bei Migration (§28), Retrospective (§29: B15→§29.1, B16→§29.2/4, B17→§29.3, B18/B19→§29.5, B20→§29.1+6, **B25→§29.7**), Skill-Self-Audit (§33) |
 | `design-rejected` | **Nicht reaktivieren** — bei Rückfrage "warum fehlt X?" Rejection-Begründung aus Status-Matrix zitieren (nicht ad-hoc einführen) |
 | `future-arch` | **Keine Adoption im aktiven Scoring** — Bewertung ausschließlich via §33 Skill-Self-Audit-Gate |
 
@@ -133,7 +135,7 @@ Impuls / Idee
 3. **B10 Chain-of-Thought**: Vor der Punktvergabe pro DEFCON-Block die zutreffenden Befunde durchdenken. Reasoning vor Score, nicht Score vor Reasoning.
 4. **Output-Block "Befunde angewendet"** pro DEFCON-Block die angewandten Befund-IDs listen (SKILL.md-Template — reine Transparenz, kein Score-Impact).
 
-**Neue Befunde (B25+):** Werden in der Synthesis-Matrix klassifiziert, nicht in §4 dupliziert. §4 bleibt Router, wächst nicht mit neuen Papers mit.
+**Neue Befunde (B29+):** Werden in der Synthesis-Matrix klassifiziert, nicht in §4 dupliziert. §4 bleibt Router, wächst nicht mit neuen Papers mit. B25-B28 wurden 26.04.2026 in der Synthesis-Matrix eingetragen (Codex-Re-Klassifikation: B26 → `active-scoring-validation`, B27/B28 → `design-context`, B25 → `meta-gate` mit §29.7-Mapping).
 
 ### Scoring-Skalen, DEFCON-Schwellen, FLAGs
 
@@ -149,6 +151,12 @@ Impuls / Idee
 >
 > Strong-Buy-Ratio / Sell-Ratio / PT-Upside — v3.7-Kalibrierung (B11: Crowd-Consensus-Malus, Extrem-Consensus-Warnung).
 
+**Wissenschaftliche Anker (4 Layer, kein Score-Effekt — `design-context` + `active-scoring`-Validation):**
+- **B11 Jadhav/Mirza 2025** — `active-scoring`: Crowd-Consensus-Bias-Korrektur (Sell-Ratio dreistufig + >60% Strong-Buy-Malus)
+- **B19 FINSABER 2026** — `meta-gate`: Bull/Bear-Asymmetrie + Skill-Self-Audit (§29.5/§33)
+- **B24 FinDPO 2025** — `future-arch`: DPO-Pipeline für künftige Sentiment-Block-Architektur (orthogonal heute)
+- **B28 Tetlock 2007** — `design-context` (eingeführt 26.04.2026): Mean-Reversion-Anker. **Operative Konsequenz** — Score-Stabilität gegen Tagesnachrichten: Score-Updates an strukturelle Trigger gebunden (Earnings, FLAG-Events, Watch-Resolves), NICHT an kurzfristige Sentiment-Schwankungen. Tetlock zeigt empirisch (5-10-Tage-Reversion zu Fundamentals nach Media-Pessimism-Schock), warum kurzfristiges Sentiment Mean-reverted und kein Score-relevantes Signal sein darf. Anker für `feedback_score_stability_over_drift`-Memory (geplant Konsolidierungstag).
+
 ---
 
 ## 6. Insider-Scoring — Pflichtregeln
@@ -156,6 +164,10 @@ Impuls / Idee
 > **Scoring-Skala + Cashless-Exercise-Ausnahme → [SKILL.md §Insider (10 Punkte)](../01_Skills/dynastie-depot/SKILL.md)**
 >
 > Kurz: OpenInsider HEILIG, 10b5-1 "M"-Check bei Verkäufen >$20M, Fallback SEC EDGAR Form 4.
+
+**Wissenschaftliche Anker (Validation + Roadmap — kein Score-Effekt):**
+- **B26 Lakonishok-Lee 2001** — `active-scoring-validation` (eingeführt 26.04.2026): Primärquelle für die operative Heuristik (Buy>Sell-Asymmetrie, Aggregate-Predictability, Small-Cap-Concentration, Contrarian-Timing). Bestätigt die seit insider-intelligence-v1 operativen Filter (Form-4-X/M-Filter via OpenInsider, Buy-Side höher gewichtet, $5M-Cluster-Schwelle für Buys vs $20M-FLAG-Schwelle für Sells). **Keine Architektur-Änderung — primär-empirische Validation.**
+- **B27 Ke/Huddart/Petroni 2003** — `design-context` (eingeführt 26.04.2026): **Deferred-Pipeline-Note für insider-intelligence v2.** Sell-Detection-Window aktuell 6 Monate (~2 Quartale). Q-9 bis Q-3 Pre-Earnings-Break-Sell-Zone wird strukturell verfehlt (Legal-Jeopardy + ITSFEA 1988 unterdrücken Q-2/Q-1-Sells, Insider verkaufen 9-3 Quartale früher). Pipeline-Erweiterung auf 24-Monats-Lookback wartet auf §29-Backtest-Gate-Kriterien (Score-Archiv ausreichend gefüllt + §29.7 M&P-Discount-Plausibility-Check). **Kein Live-Score-Change** bis v2-Deploy. Bridge-Befund: Insider-Trades führen Earnings-Disclosures bis zu 2 Jahre — Insider-Block ist strukturell informativer als Sentiment-EPS-Revision-Delta + Fundamentals-fcf_trend-Watches.
 
 ---
 
@@ -761,11 +773,11 @@ Für diese Fälle reicht: Commit + zugehöriges Hub-Set-Update (PORTFOLIO bei Sc
 
 ## 29. Retrospective-Analyse-Gate
 
-> **`[FUTURE-ACTIVATION: 2028-04-01]` für §29.1-4 + §29.6. §29.5 Seven-Sins-Gate aktiv bereits jetzt bei Migration-Events.**
+> **`[FUTURE-ACTIVATION: 2028-04-01]` für §29.1-4 + §29.6 + §29.7. §29.5 Seven-Sins-Gate aktiv bereits jetzt bei Migration-Events.**
 
 Systemischer Gate für jede retrospektive Analyse der `score_history.jsonl` (Strategy-Selection, Parameter-Tuning, Portfolio-Return-Validation). Aktivierung: Review 2028-04-01 ODER erste DEFCON-Parameter-Variation. §28 (Migration-Workflow) ist **komplementär**, nicht konkurrierend: §28 schützt Versions-Sprünge, §29 schützt Retrospective-Auswertungen.
 
-**4-Dimensionen-Gate-Framework** (jede Dimension unabhängig validierbar):
+**4-Dimensionen-Gate-Framework** (jede Dimension unabhängig validierbar — erweitert 26.04.2026 um §29.7 M&P-Discount-Layer aus B25 McLean-Pontiff):
 
 ### 29.1 Methoden-Gate — Overfitting (Bailey et al. 2015)
 
@@ -859,22 +871,63 @@ Quelle: [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] / [[LLM-Investing-Bias-Audit]] / [
 
 Quelle: [[Palomar-2025-Portfolio-Optimization]] / [[Palomar-Methods-Reference]] / [[Sheppert-2026-GT-Score]] / [[Composite-Anti-Overfitting-Objective]]
 
-### 29.7 Aktivierungs-Reihenfolge bei Review 2028
+### 29.7 M&P-Discount-Gate — Post-Publication-Decay (McLean & Pontiff 2016, B25)
+
+**Regel:** In-sample-Performance-Claims aus akademischen oder externen Quellen werden vor Adoption mit dem **M&P-Discount-Faktor 0,42** multipliziert (= 1 − 0,58, Post-Publication-Decay-Median). Das Ergebnis ist die neue Plausibility-Erwartung für Forward-Performance.
+
+```
+realistische_forward_erwartung = in_sample_claim × 0,42
+```
+
+**Anwendungs-Bereich:** Externe Faktor-/Strategy-Claims (Paper, Vendor-Pitches, Backtest-Whitepapers) BEVOR sie in DEFCON-Erweiterungen, §28-Migrations oder §29-Validation-Vergleichen verankert werden. NICHT auf eigenes `score_history.jsonl` anwendbar — Score-Archiv ist seit 17.04.2026 post-publication-Sample (forward-only) und benötigt keinen zusätzlichen Discount.
+
+**Wissenschaftliche Basis:** McLean & Pontiff (2016, JF 71(1)) testen 97 Cross-Sectional-Predictoren aus 80 Studien:
+- Out-of-Sample-Decay −26% (statistical bias upper bound)
+- Post-Publication-Decay −58% (publication-effect lower bound = 32pp Differenz)
+- Decay stärker bei höheren in-sample-Returns/t-Stats (Mispricing + Investor-Learning-Hypothese)
+- Korrelation zwischen Predictor-Portfolios STEIGT post-publication → Crowded-Trade-Risiko in Stress-Events
+
+**Komplementarität zu anderen §29-Layern:**
+
+| §29-Layer | M&P-Beitrag |
+|---|---|
+| §29.1 PBO/CSCV (Bailey) | Reicht nicht — testet nur in-sample-Overfitting; M&P-Discount adressiert zusätzlichen Post-Publication-Decay |
+| §29.2 External Bench (Aghassi) | Reicht nicht — externe Daten reduzieren in-sample-Bias, nicht Publication-Decay |
+| §29.3 Decay/Half-Life (Flint-Vermaak) | Direkter Match — beide messen verwandte Phänomene; §29.7 ist makro-publikationsbezogen, §29.3 mikro-faktoren-bezogen |
+| §29.4 t-Hurdle ≥3 (Harvey/Liu/Zhu) | Notwendig, nicht hinreichend — M&P zeigt: HÖHERE t-Stats decayen STÄRKER |
+| §29.5 Seven-Sins (Palomar) | Sin #6 Look-Ahead-Bias verwandt; Publication-Decay ist eigener Layer |
+
+**Operative Konsequenzen:**
+
+1. **Briefing-Sprache:** Keine in-sample-Performance-Claims im Briefing ohne Diskontierungsformel `claim × 0,42`. Jede zitierte Faktor-Outperformance aus Paper/Vendor → realistische Erwartung explizit ausweisen.
+2. **§28.1-Erweiterung:** Migration-Workflow Step 1 (Paper/Evidence-Check) prüft NEU, ob Paper-Claim post-publication validiert wurde. Wenn nicht: M&P-Discount auf in-sample-Werte anwenden vor §29.4 t-Hurdle-Vergleich.
+3. **Crowding-Watch:** Post-Publication-Increase in Predictor-Korrelationen (Lee/Shleifer/Thaler-Pattern) → DEFCON-Wide-Moat-Strategien können in Stress-Events korrelierter abstürzen als in-sample-Sharpe suggeriert. Faktor 5b FRED-Regime-Filter (geplant) adressiert das partiell.
+4. **Score-Archiv-Markierung:** Bei retrospektiven Analysen der `score_history.jsonl` ab 2028 explizit ausweisen, dass Sample-Periode post-publication ist (kein zusätzlicher Discount nötig).
+
+**Aktivierungs-Trigger:** Review 2028-04-01 ODER erste DEFCON-Parameter-Variation (parallel zu §29.1-4 + §29.6).
+
+**Strukturelle DEFCON-Bestätigung (kein Aktion-Item):** M&P zeigen, dass Fundamentals-/Accounting-Predictoren STRUKTURELL robuster gegen Post-Publication-Decay sind als Price-/Trading-only-Predictoren (höhere Arbitragekosten, langsamere Korrektur). Das bestätigt die DEFCON-Block-Gewichtung 50/20/10/10/10 (Fundamentals + Moat dominieren) als wissenschaftlich tragfähige Architektur-Entscheidung.
+
+Quelle: [[McLean-Pontiff-2016]] / [[Post-Publication-Decay]] (Concept-Page, Phase B2)
+
+### 29.8 Aktivierungs-Reihenfolge bei Review 2028
 
 1. §29.5 Sünden-Pre-Flight (Sin #1-#6) — wenn nicht alle grün: Stopp
 2. §29.1 Methoden-Gate (PBO/CSCV, walk-forward Cross-Check)
 3. §29.2 External-Benchmark (AQR/Ilmanen-Band)
 4. §29.3 Temporal-Konsistenz (Cadence vs. Half-Life)
 5. §29.6 Portfolio-Return-Metriken
-6. Dann Options A–D aus [[Backtest-Methodik-Roadmap]] anwendbar
+6. **§29.7 M&P-Discount auf alle externen In-Sample-Claims (jede zitierte Paper-Outperformance × 0,42 vor Vergleich)**
+7. Dann Options A–D aus [[Backtest-Methodik-Roadmap]] anwendbar
 
-### 29.8 Rückverweise
+### 29.9 Rückverweise
 
 Andere §§ die auf §29-Gates verweisen:
 - §18 Sync-Pflicht → §29.5 Sin #2 (Look-Ahead)
 - §27 Scoring-Hygiene → §29.4 t-Hurdle
-- §28 Migration-Workflow → §29.1 PBO + §29.5 Seven-Sins
+- §28 Migration-Workflow → §29.1 PBO + §29.5 Seven-Sins + **§29.7 M&P-Discount auf externe In-Sample-Claims**
 - §30 Live-Monitoring → §29.3 Half-Life (ab Phase 4)
+- **§4 Befunde-Router → `meta-gate`-Befunde (B15, B16, B17, B18, B19, B20, B25) verweisen alle auf §29-Layer (B25 → §29.7)**
 
 ---
 

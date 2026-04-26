@@ -3,12 +3,12 @@ title: "Are Insiders' Trades Informative?"
 date: 2001
 type: source
 subtype: academic-paper
-tags: [defcon, insider-trading, contrarian-signal, small-cap-effect, primary-evidence, b26]
+tags: [defcon, insider-trading, contrarian-signal, small-cap-effect, primary-evidence, b26, active-scoring-validation]
 url: https://www.nber.org/papers/w6656
 venue: "Review of Financial Studies 14(1), 2001, 79-111. NBER Working Paper 6656 (1998 Draft)"
 authors: "Josef Lakonishok (University of Illinois Urbana-Champaign), Inmoo Lee (Korea University)"
 status: processed
-defcon_relevanz: "Befund B26 (`active-scoring`, neu seit 26.04.2026). Insider-Block (5 Pt.) Primärquelle. Validiert die seit insider-intelligence-Skill-Launch operativen Heuristiken: (1) Insider-Käufe > Insider-Verkäufe in Informationsgehalt — Verkäufe haben Liquiditäts-/Diversifikations-Rauschen. (2) Aggregate Insider-Aktivität prädiziert Markt-Returns. (3) Insider sind Contrarians (Kaufen wenn überverkauft, Verkaufen wenn überbewertet). (4) Effekt ist stärker bei Small-Caps und Small-Growth-Stocks. Operative Konsequenz für DEFCON: Aktuelle Form-4-Auswertung im Insider-Block sollte Buy-Side höher gewichten als Sell-Side; bei Sell-Signalen muss Liquiditäts-/Optionsausübungs-Filter greifen (Spalte M/X-Filter via [[OpenInsider]] bereits implementiert). Validation, kein Architektur-Change."
+defcon_relevanz: "Befund B26 (`active-scoring-validation`, eingeführt 26.04.2026 mit Codex-Re-Klassifikation — Status-Label NEU in Status-Matrix-Legende). Insider-Block (5 Pt.) Primärquelle. Validiert die seit insider-intelligence-Skill-Launch operativen Heuristiken: (1) Insider-Käufe > Insider-Verkäufe in Informationsgehalt — Verkäufe haben Liquiditäts-/Diversifikations-Rauschen. (2) Aggregate Insider-Aktivität prädiziert Markt-Returns. (3) Insider sind Contrarians (Kaufen wenn überverkauft, Verkaufen wenn überbewertet). (4) Effekt ist stärker bei Small-Caps und Small-Growth-Stocks. Operative Konsequenz für DEFCON: Aktuelle Form-4-Auswertung im Insider-Block sollte Buy-Side höher gewichten als Sell-Side; bei Sell-Signalen muss Liquiditäts-/Optionsausübungs-Filter greifen (Spalte M/X-Filter via [[OpenInsider]] bereits implementiert). Validation, kein Architektur-Change."
 related: "[[Insider-Trading-Primary-Signal]], [[Ke-Huddart-Petroni-2003]], [[insider-intelligence]], [[OpenInsider]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/ARE INSIDERS' TRADES INFORMATIVE.pdf"
 aliases:
@@ -19,7 +19,7 @@ aliases:
 
 # Lakonishok & Lee (2001) — Are Insiders' Trades Informative?
 
-> **Hinweis:** Raw-PDF ist image-only (kein Text-Layer). Diese Source-Page synthesisiert aus dem 2iQ Insider Meta-Review ([[2iQ-Insider-Meta-Review]]) plus etablierter Sekundärliteratur. Bei Bedarf an Primärzitaten: NBER WP 6656 oder RFS 14(1) konsultieren.
+> ⚠️ **CONFIDENCE-WARNUNG (sekundärer Beleg):** Raw-PDF ist image-only (kein Text-Layer extrahierbar). Diese Source-Page synthesisiert **NICHT aus der Primärquelle**, sondern aus (1) [[2iQ-Insider-Meta-Review]] (industry-meta-review, kein peer review), (2) etablierter Sekundärliteratur und (3) der weithin zitierten Befund-Architektur (Buy>Sell, Aggregate-Predictability, Small-Cap-Concentration, Contrarian-Timing). **Spezifische Magnituden** (z.B. „50-68 bps/Monat" aus 2iQ-Tabelle 33) sind sekundär-zitiert und sollten bei jeder !Analysiere-Insider-Block-Diskussion **NICHT als Primär-Zitat** verwendet werden. **Pflicht bei Bedarf an Primärzitaten:** NBER WP 6656 (1998 Draft) oder RFS 14(1) S. 79-111 konsultieren — Original-Tabellen-Werte verifizieren bevor sie in Briefings/Skill-Roadmap-Dokumente einfließen. Confidence-Level: **Inhaltliche Befunde HOCH** (kanonische Primärreferenz weithin repliziert), **numerische Magnituden MITTEL** (sekundär-zitiert, image-only-Trap).
 
 ## Abstract (eigene Worte)
 
@@ -35,7 +35,7 @@ Lakonishok und Lee untersuchen Insider-Transaktionen auf NYSE, AMEX und Nasdaq �
 
 4. **Contrarian-Timing** — Insider erhöhen Käufe nach Markt-Drawdowns, reduzieren sie nach Rallies. Das passt zur Mispricing-Hypothese: Insider sehen Bewertungsabweichungen vor dem Markt.
 
-## DEFCON-Implikation (B26 `active-scoring`)
+## DEFCON-Implikation (B26 `active-scoring-validation`)
 
 | Existierendes Element | L&L-Validation | Anpassungs-Bedarf |
 |---|---|---|

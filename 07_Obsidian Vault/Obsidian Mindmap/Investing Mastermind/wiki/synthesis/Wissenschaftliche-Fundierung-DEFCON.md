@@ -2,19 +2,20 @@
 title: "Wissenschaftliche Fundierung DEFCON v3.7"
 type: synthesis
 tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung, validation-gate]
-sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]], [[Arun-et-al-2025-FinReflectKG]], [[Labre-2025-FinReflectKG-Companion]], [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]], [[Iacovides-Zhou-Mandic-2025-FinDPO]]"
+sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]], [[Arun-et-al-2025-FinReflectKG]], [[Labre-2025-FinReflectKG-Companion]], [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]], [[Iacovides-Zhou-Mandic-2025-FinDPO]], [[McLean-Pontiff-2016]], [[Lakonishok-Lee-2001]], [[Ke-Huddart-Petroni-2003]], [[Tetlock-2007]]"
 concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]], [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]], [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[LLM-as-a-Judge-Evaluation]], [[RAG-Uncertainty-Quantification]], [[LLM-Preference-Optimization-Finance]], [[Sentiment-Strength-Logit-Extraction]]"
 related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Non-US-Scoring]], [[Backtest-Methodik-Roadmap]]"
 entities: "[[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
-datum: 2026-04-19
+datum: 2026-04-26
 status: aktiv
 ---
 
 # Wissenschaftliche Fundierung DEFCON v3.7
 
 > Dieses Dokument belegt, dass das DEFCON-Scoring-System auf peer-reviewed Forschung basiert.
-> 20 Quellen → 24 Befunde → operative Konsequenzen für das Dynasty-Depot.
+> 20 Quellen → 28 Befunde → operative Konsequenzen für das Dynasty-Depot.
 > **Stand 2026-04-20 Abend nach Phase-1b-Ingest:** B21-B24 sind **keine Scoring-Änderungen**, sondern Architektur/Methoden-Befunde für zukünftige Skill-Erweiterungen + Validation-Pflichten.
+> **Stand 2026-04-26 nach Paper-Ingest Phase A:** B25-B28 ergänzt. B25 ist `meta-gate` (§29.7 M&P-Discount geplant). B26 ist `active-scoring-validation` (Codex-Re-Klassifikation: bestätigt Insider-Block-Heuristik, kein neues Score-Element). B27 + B28 sind `design-context` (Codex-Re-Klassifikation: insider-intelligence-v2-Roadmap-Anker + Sentiment-Mean-Reversion-Architektur-Anker). Quellen-Übersicht 20 → 34 erfolgt in Phase C-1 (10 SOURCE-ONLY-Pages aus Phase A bleiben nicht-Befund-Anker).
 
 ---
 
@@ -34,7 +35,7 @@ status: aktiv
 
 ---
 
-## 24-Befunde Entscheidungsmatrix (Stand: 20.04.2026, post Phase-1b-Ingest)
+## 28-Befunde Entscheidungsmatrix (Stand: 26.04.2026, post Phase-A-Ingest)
 
 | # | Befund | Quelle | Block | Empfehlung | Konsequenz |
 |---|--------|--------|-------|------------|------------|
@@ -62,6 +63,10 @@ status: aktiv
 | **B22** | Reflection-Entropy-Paradox — Coverage-Gain geht einher mit Diversity-Reduktion (Shannon Rel. -22%); Praktiker-Mitigation via Pre-Correction-Entropy-Monitor | [[Labre-2025-FinReflectKG-Companion]] | Architektur-Caveat | Bei hypothetischer 10-K-KG: Entropy-Monitor als Qualitäts-Gate verpflichtend | Keine §-Änderung; dokumentiert in [[Knowledge-Graph-Architektur-Roadmap]] Gate 2 |
 | **B23** | Epistemic-Uncertainty-Quantification via Monte-Carlo-Dropout auf Embeddings; Score $S_i = \mu_i - \lambda \cdot \sigma_i$; -26,8% ECE vs. BM25 bzw. -52% ECE vs. Standard RAG (Paper-Baseline-abhängig), -27,8% Halluzinationen bei 15ms Latency | [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] | Architektur (nicht Scoring) | Wissenschaftliche Fundierung für v3.0.3 Morning-Briefing Korrektheits-Prinzip (n.v.-Markierung + Soft-Alert-Schema); keine operative Änderung heute (Tavily-API erlaubt kein MC-Dropout) | Keine §-Änderung; Alignment-Referenz für `feedback_correctness_over_runtime.md` |
 | **B24** | Direct-Preference-Optimization + Logit-to-Score-Konverter enables causal-LLM-Integration in Long-Short-Portfolios; +11% F1 vs. FinGPT v3.3 SOTA, 67% p.a. bei 5bps Transaction Costs | [[Iacovides-Zhou-Mandic-2025-FinDPO]] | Methoden-Kontext (nicht Dynasty-Depot-operativ) | Long-Short orthogonal zu DEFCON Long-Only; FINSABER-Audit-Pflicht (B19) vor Adoption; Future-Option für News-Sentiment-Block | Keine §-Änderung; dokumentiert als Wissenschaftskontext für zukünftige Sentiment-Revisionen |
+| **B25** | Cross-Sect Predictoren −26% Out-of-Sample (statistical bias upper bound) + −58% Post-Publication (publication-effect lower bound 32pp); Decay stärker bei höheren in-sample-Returns/t-Stats | [[McLean-Pontiff-2016]] | Validation-Methode (§29.7 geplant) | M&P-Discount als 7. §29-Layer: in-sample-Result × 0.42 als Plausibility-Test post-publication | §29.7 anlegen (Phase B1-2); Block-Gewichtung 50/20/10/10/10 strukturell robust gegen M&P-Decay-Pattern bestätigt |
+| **B26** | Insider-Käufe > Insider-Verkäufe in Information; Aggregate-Predictability; Small-Cap-Concentration; Contrarian-Timing | [[Lakonishok-Lee-2001]] | Insider-Block (5 Pt.) — Validation | Bestätigt Status-quo-Heuristik (Buy-Side höher gewichtet, Form-4-X/M-Filter via [[OpenInsider]]) | Keine Score-Änderung; primär-empirische Validation der seit insider-intelligence-v1 operativen Filter |
+| **B27** | Insider-Verkäufe Q-9 bis Q-3 vor Earnings-Break (Legal-Jeopardy-vermeidet); Q-2/Q-1 fast Null abnormal; aktuelles 6M-Window verfehlt strukturell | [[Ke-Huddart-Petroni-2003]] | Insider-Block — Window-Erweiterung deferred | Pipeline-Item: insider-intelligence v2 mit 24-Monats-Lookback gegen Performance-Backtest auf Score-Archiv | Kein Score-Element heute; erklärt scheinbare Buy>Sell-Asymmetrie aus B26 als Window-Artefakt |
+| **B28** | Hohe Media-Pessimism prädiziert kurzfrist Drawdown + komplette Reversion zu Fundamentals (5-10 Tage); Volume-Pattern in Absolut-Wert (Liquidity-Trader-Modell) | [[Tetlock-2007]] | Sentiment-Block (10 Pt.) — Architektur-Anker | Mean-Reversion-Prinzip ankert Score-Stabilität gegen Tagesnachrichten; validiert B11 Crowd-Consensus-Malus | Keine Score-Änderung; begründet Sentiment-Block-Existenz empirisch (gegen Sideshow-Hypothese) |
 
 ---
 
@@ -72,6 +77,8 @@ status: aktiv
 ### Legende
 
 - **`active-scoring`** — wirkt per-Ticker im DEFCON-Scoring; Pflicht-Nennung im !Analysiere-Output pro DEFCON-Block (B1-B11 + B14-implicit)
+- **`active-scoring-validation`** — primär-empirische Bestätigung eines bestehenden `active-scoring`-Elements; KEIN neuer Score-Pfad. Im !Analysiere-Output kann die Befund-ID **zusätzlich** zum bestehenden Block-Befund genannt werden (z.B. „Insider-Block: B26-validated"). Keine Migration nötig (eingeführt 26.04.2026 — Codex-Re-Klassifikation B26)
+- **`design-context`** — Architektur-Anker oder Roadmap-Begründung für deferred Skill-Erweiterung; KEIN per-Ticker-Scoring, KEIN §29-Gate-Trigger. Im !Analysiere-Output NICHT erwähnt; nur in Pipeline-/Skill-Roadmap-Diskussionen referenzieren (eingeführt 26.04.2026 — Codex-Re-Klassifikation B27, B28)
 - **`meta-gate`** — feuert bei Migration (§28), Retrospective (§29) oder Skill-Self-Audit (§33); **nicht** per-Ticker
 - **`design-rejected`** — bewusst NICHT integriert (§27.1 Double-Counting); Wiedereinführung nur mit formaler §27.1-Revision; Rejection-Begründung MUSS erhalten bleiben
 - **`future-arch`** — Architektur-Option für zukünftige Skill-Erweiterungen; Bewertung ausschließlich via §33 Skill-Self-Audit-Gate
@@ -104,13 +111,19 @@ status: aktiv
 | B22 | `future-arch` | [[Knowledge-Graph-Architektur-Roadmap]] Gate 2 | Entropy-Monitor bei hypothetischer 10-K-KG |
 | B23 | `future-arch` | [[Knowledge-Graph-Architektur-Roadmap]] Szenario 3 | Tavily-API erlaubt kein MC-Dropout; Alignment-Anker für `feedback_correctness_over_runtime.md` |
 | B24 | `future-arch` | [[Knowledge-Graph-Architektur-Roadmap]] Szenario 3-Erweiterung | Long-Short orthogonal zu DEFCON Long-Only |
+| B25 | `meta-gate` | §29.7 (angelegt 26.04.2026) — M&P-Discount-Layer (in-sample × 0.42) | Phase B1-2: §29.7 in INSTRUKTIONEN.md anlegen |
+| B26 | `active-scoring-validation` | Insider-Block (5 Pt.) — bestätigt Buy>Sell + Form-4-X/M-Filter via [[OpenInsider]] | Codex-WARN re-klassifiziert (Page-Body: „kein neues Scoring-Element, primär-empirische Validation") |
+| B27 | `design-context` | insider-intelligence v2 Pipeline (24-Monats-Sell-Window für Pre-Earnings-Break-Detection) | Codex-WARN re-klassifiziert (Page-Body: „Kein Live-Score-Change bis insider-intelligence v2 deployed"); deferred bis §29-Backtest-Gate-Kriterien erfüllt |
+| B28 | `design-context` | Sentiment-Block (10 Pt.) — Architektur-Anker für Mean-Reversion-Score-Stabilität + B11-Crowd-Consensus-Validation | Codex-WARN re-klassifiziert (Page-Body: „B28 deaktiviert KEINEN bestehenden Score-Pfad"); ankert die Anti-Tagesnachrichten-Architektur |
 
 ### Aktivierungs-Regeln (bindend)
 
 1. **`active-scoring`:** Pflicht-Nennung im !Analysiere-Output pro DEFCON-Block (SKILL.md-Output-Template). Neue active-scoring-Befunde nur über §28.1 Migration-Workflow einführbar (inkl. §29.4 t≥3 Hurdle).
-2. **`meta-gate`:** Aktiv nur bei den in "Aktivierungs-Stelle" genannten §§. Kein Zugriff aus per-Ticker-!Analysiere. Wenn Migration ansteht: §28.1 Step 1 (Paper/Evidence-Check) verweist auf diese Matrix.
-3. **`design-rejected`:** Wiederaufnahme NUR nach formaler Überarbeitung von §27.1 Double-Counting-Definition. Wenn in !Analysiere die Frage auftaucht "warum fehlt F-Score/GP/TA?" → Antwort aus Rejection-Begründung zitieren, nicht ad-hoc einführen.
-4. **`future-arch`:** Bewertung ausschließlich via §33 Skill-Self-Audit-Gate (3 Qualitäts-Gates aus [[Knowledge-Graph-Architektur-Roadmap]]). Keine stille Adoption in bestehende Skills.
+2. **`active-scoring-validation`:** Optional-Nennung im !Analysiere-Output als Validation-Suffix zur bestehenden Block-Begründung. Keine Migration, kein Score-Effekt. Wenn die Validation einen impliziten Score-Pfad würdigt, der noch nicht expliziert ist (Beispiel: B26 würdigt Form-4-X/M-Filter), darf die Page-Begründung im Block-Text referenziert werden.
+3. **`design-context`:** Niemals im !Analysiere-Output erwähnt. Verwendung ausschließlich in: Skill-Roadmap-Diskussionen, Konsolidierungstag-Reviews, Phase-B/C-Wiki-Synthesis-Updates, INSTRUKTIONEN-Pipeline-Notes. Wenn ein `design-context`-Befund später in `active-scoring` migriert werden soll: §28.1 Migration-Workflow Pflicht (inkl. §29.4 t≥3 Hurdle + ggf. §29.7 M&P-Discount-Plausibility-Check).
+4. **`meta-gate`:** Aktiv nur bei den in "Aktivierungs-Stelle" genannten §§. Kein Zugriff aus per-Ticker-!Analysiere. Wenn Migration ansteht: §28.1 Step 1 (Paper/Evidence-Check) verweist auf diese Matrix.
+5. **`design-rejected`:** Wiederaufnahme NUR nach formaler Überarbeitung von §27.1 Double-Counting-Definition. Wenn in !Analysiere die Frage auftaucht "warum fehlt F-Score/GP/TA?" → Antwort aus Rejection-Begründung zitieren, nicht ad-hoc einführen.
+6. **`future-arch`:** Bewertung ausschließlich via §33 Skill-Self-Audit-Gate (3 Qualitäts-Gates aus [[Knowledge-Graph-Architektur-Roadmap]]). Keine stille Adoption in bestehende Skills.
 
 ### Regel für neue Befunde (B25+)
 
@@ -242,10 +255,11 @@ Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] �
 | 2026-04-19 | 4 Backtest-Validation-Papers integriert: Bailey PBO/CSCV (B15), Aghassi AQR Fact/Fiction (B16), Flint/Vermaak Information Decay (B17), Palomar Seven Sins (B18). 10→14 Quellen, 14→18 Befunde. B15-B18 sind **keine Scoring-Änderungen**, sondern Validation-Gate-Framework — §29 (Retrospective-Analyse-Gate, FUTURE-ACTIVATION 2028-04-01). §29.5 Seven-Sins-Gate aktiv auch bei Migration-Events. Applied Learning verletzt NICHT — Paper-Ingest ≠ System-Update, nur Gate-Infrastruktur. |
 | 2026-04-20 | **Phase 1a** des 6-Paper-Ingest-Projekts (siehe log.md): 2 Severity-🔴-Papers integriert — FINSABER (B19, Li/Kim/Cucuringu/Ma KDD '26) + GT-Score (B20, Sheppert JRFM 2026). 14→16 Quellen, 18→20 Befunde. B19+B20 sind **keine Scoring-Änderungen**, sondern: (1) Audit-Pflicht für DEFCON als Selection-Strategy via FINSABER-Pattern (§29.5 erweitert + ggf. neue §33 Skill-Self-Audit); (2) Composite-Anti-Overfitting-Lens für DEFCON-Block-Gewichtungen + Track 5b Grid-Search (§29.1 + §29.6 erweitert). Codex-Round-2-bestätigt: keine LLM-Sicherheitsdebatte, keine zwingenden Skill-Code-Changes. Phase 1b (4 Severity-🟡-Papers) folgt nächste Session. |
 | 2026-04-20 Abend | **Phase 1b** des 6-Paper-Ingest-Projekts: 4 Severity-🟡-Papers integriert — FinReflectKG (B21, Arun et al. Domyn 2025) + Labre-Companion (B22, Towards AI 2025) + Bayesian RAG (B23, Ngartera et al. Frontiers 2026) + FinDPO (B24, Iacovides et al. Imperial 2025). 16→20 Quellen, 20→24 Befunde. B21-B24 sind **keine Scoring-Änderungen**, sondern: (1) Architektur-Referenzen für zukünftige KG/RAG-Skill-Erweiterungen (neue Synthesis [[Knowledge-Graph-Architektur-Roadmap]] v0.1 mit Entscheidungsvorlage Gate 1-3); (2) wissenschaftliche Fundierung des v3.0.3 Morning-Briefing Korrektheits-Prinzips; (3) Methoden-Kontext für Future-News-Sentiment-Integration. **Vault-only-Phase** — DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert. Hard-Checkpoint vor Phase 2 (System-Konsequenzen) eingehalten. |
+| 2026-04-26 | **Paper-Ingest Phase A** Phase-B1: 4 neue Befunde B25-B28 in Status-Matrix + Entscheidungsmatrix integriert. **Codex-Re-Klassifikation übernommen** (Page-Tags `active-scoring` widersprachen Page-Body): B25 = `meta-gate` (§29.7 M&P-Discount geplant, in B1-2 in INSTRUKTIONEN.md angelegt), B26 = `active-scoring-validation` (NEUES Status-Label — Insider-Block-Heuristik primär-empirisch bestätigt, kein neues Score-Element), B27 = `design-context` (NEUES Status-Label — insider-intelligence-v2-Window-Erweiterung deferred), B28 = `design-context` (Sentiment-Block Mean-Reversion-Architektur-Anker). 20 Quellen → 28 Befunde. **Vault-only-Phase** — DEFCON v3.7 unverändert, Scores unverändert. Quellen-Übersicht-Tabelle (20→34 inkl. 10 SOURCE-ONLY-Pages aus Phase A) erfolgt in Phase C-1. |
 
 ## Validierung der Befunde (Backtest-Ready-Infrastructure, seit 2026-04-17)
 
-Die 14 Befunde sind heute **nicht formal validiert** — das Scoring-System ist wissenschaftlich fundiert (peer-reviewed Papers) und hart kalibriert (AVGO/MKL/SNPS als Anker), aber statistische Forward-Return-Validation scheitert an Sample-Size (11 Satelliten × ~2 Jahre Historie, sparse FLAG-Events).
+Die 28 Befunde sind heute **nicht formal validiert** — das Scoring-System ist wissenschaftlich fundiert (peer-reviewed Papers) und hart kalibriert (AVGO/MKL/SNPS als Anker), aber statistische Forward-Return-Validation scheitert an Sample-Size (11 Satelliten × ~2 Jahre Historie, sparse FLAG-Events).
 
 **Lösung:** Nicht heute validieren, sondern Infrastruktur bauen, die 2028+ **überhaupt Validierung ermöglicht**. Ab 17.04.2026 wird jeder Score + jedes FLAG-Event unveränderlich in `05_Archiv/*.jsonl` archiviert.
 
@@ -261,9 +275,9 @@ Infrastruktur-Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FL
 
 ---
 
-## 4-Dimensionen-Validation-Gate (§29, seit 2026-04-19, erweitert 2026-04-20)
+## 4-Dimensionen-Validation-Gate (§29, seit 2026-04-19, erweitert 2026-04-20 + 2026-04-26)
 
-B15-B20 bilden zusammen das **formelle Gate-Framework** für jede zukünftige retrospektive Analyse. Keine Scoring-Änderung — Gate-Infrastruktur oberhalb der Options A–D:
+B15-B20 + B25 bilden zusammen das **formelle Gate-Framework** für jede zukünftige retrospektive Analyse. Keine Scoring-Änderung — Gate-Infrastruktur oberhalb der Options A–D:
 
 | Dimension | Anker-Befund | Operative §-Komponente |
 |---|---|---|
@@ -274,8 +288,9 @@ B15-B20 bilden zusammen das **formelle Gate-Framework** für jede zukünftige re
 | Sünden (Pre-Flight) | B18 Palomar | §29.5 Seven-Sins-Gate (Sin #7 n.a.) |
 | **Sünden (Selection-Strategy-Audit)** | **B19 FINSABER** | **§29.5 erweitert um Bias-Audit (Reject-Set, Iteration-Count, Bull/Bear-Subsample) + ggf. §33 Skill-Self-Audit** |
 | Portfolio-Metriken | — + B20 Downside-Comp. | §29.6 risk-metrics-calculation (Palomar Ch. 6 Formeln + GT-Score Downside-Komponente) |
+| **Publikation (Post-Publication-Decay)** | **B25 McLean/Pontiff** | **§29.7 M&P-Discount: in-sample-Claim × 0,42 als Plausibility-Test (angelegt 26.04.2026); externe Paper-Outperformance vor Adoption diskontieren; eigenes Score-Archiv post-publication-Sample → kein zusätzlicher Discount** |
 
-Aktivierungs-Trigger: **Review 2028-04-01** oder erste DEFCON-Parameter-Variation. §29.5 Seven-Sins-Gate greift **bereits jetzt** bei Migration-Events. **B19/B20-Mapping ist Phase-2-Konsequenz aus 2026-04-20-Ingest** — formelle INSTRUKTIONEN-Edits folgen nach Phase 2.5 Codex-Skill-Audit-Gate.
+Aktivierungs-Trigger: **Review 2028-04-01** oder erste DEFCON-Parameter-Variation. §29.5 Seven-Sins-Gate greift **bereits jetzt** bei Migration-Events. §29.7 M&P-Discount greift **bereits jetzt** bei Briefing-Sprache und §28.1 Migration-Workflow Step 1 (externe Paper-Claim-Validation). **B19/B20-Mapping ist Phase-2-Konsequenz aus 2026-04-20-Ingest**; B25-Mapping ist Phase-A-Konsequenz aus 2026-04-26 — INSTRUKTIONEN §29.7 vollständig dokumentiert.
 
 **§30 Live-Monitoring (seit 2026-04-19, R1 Paper-Integration Phase 4):** Operative Konsequenz aus Flint-Vermaak 2021 Investment-Faktor-Half-Life ~1M. Monthly-Refresh-Pflicht für **aktive Investment-FLAGs** (Scope: MSFT CapEx/OCF 83.6%). Keine Scoring-Änderung — nur Monitoring-Cadence. TMO fcf_trend_neg bleibt Schema-Watch (nicht-aktiviert). Details: INSTRUKTIONEN §30.
 

@@ -181,13 +181,27 @@ IF Non-US-Ticker: ASML, RMS, SU
 | \*\*Keine PTs als Bewertungsbasis\*\* | Analysten-Ziele nur im Sentiment-Block |
 | \*\*Zweifel\*\* | Nachfragen – niemals raten oder schätzen |
 
-### Schritt 2.5: Befunde-Check (Phase-2 2026-04-20)
+### Schritt 2.5: Befunde-Check (Phase-2 2026-04-20, erweitert 2026-04-26 um B25-B28)
 
 **Pflicht vor Scoring-Start.** Status-Matrix lesen in `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` §Status-Matrix.
 
-Nur `active-scoring`-klassifizierte Befunde in die Analyse einbeziehen. `meta-gate`/`design-rejected`/`future-arch` werden NICHT per-Ticker angewandt (Details: INSTRUKTIONEN §4 Befunde-Router + §28/§29/§33-Gates).
+Nur `active-scoring`- und `active-scoring-validation`-klassifizierte Befunde in die Analyse einbeziehen. `meta-gate`/`design-context`/`design-rejected`/`future-arch` werden NICHT per-Ticker angewandt (Details: INSTRUKTIONEN §4 Befunde-Router + §28/§29/§33-Gates).
+
+**6 Status-Labels (seit 26.04.2026):**
+- `active-scoring` — Pflicht-Anwendung im DEFCON-Block (B1-B11 + B14-implicit)
+- `active-scoring-validation` (NEU) — primär-empirische Validation eines bestehenden Score-Pfads (B26 Lakonishok-Lee → Insider-Block-Heuristik). Optional als Validation-Suffix nennen, kein neuer Score-Pfad.
+- `meta-gate` — feuert nur bei Migration/Retrospective (B15-B20 + **B25 → §29.7 M&P-Discount**)
+- `design-context` (NEU) — Architektur-Anker oder Roadmap (B27 → insider-intelligence v2; B28 → Sentiment-Mean-Reversion-Anker). NICHT im !Analysiere-Output.
+- `design-rejected` — bewusst nicht integriert (B12 F-Score, B13 GP/TA — § 27.1 Double-Counting)
+- `future-arch` — KG/RAG-Architektur (B21-B24)
 
 Im Output-Template pro DEFCON-Block eine **Befunde:**-Zeile mit den angewandten Befund-IDs ausweisen. Ticker-spezifische Befunde: z.B. B6 Quality-Trap nur bei Wide Moat × teurer Bewertung kombiniert; B4 8-Quellen-Check pro Moat-Analyse. Reasoning vor Score (B10 Chain-of-Thought-Prinzip).
+
+**Backlinks B25-B28 (Source-Pages für Cross-Reference):**
+- [[McLean-Pontiff-2016]] (B25) — `meta-gate` → §29.7 M&P-Discount (Briefing-Sprache + §28.1-Migration-Check)
+- [[Lakonishok-Lee-2001]] (B26) — `active-scoring-validation` → Insider-Block (5 Pt.) — Buy>Sell + Form-4-X/M-Filter empirisch validiert
+- [[Ke-Huddart-Petroni-2003]] (B27) — `design-context` → insider-intelligence v2 (24-Monats-Sell-Window, deferred)
+- [[Tetlock-2007]] (B28) — `design-context` → Sentiment-Block Mean-Reversion-Architektur (kein Score-Update durch Tagesnachrichten)
 
 ### Schritt 3: 100-Punkte-Matrix scoren
 
@@ -229,13 +243,13 @@ Verwende die **Scoring-Skalen** (siehe nächster Abschnitt) und gib das Ergebnis
 
 \[Net Buy/Sell, Ownership %, diskretionäres Selling \>$20M?\] \[web:Quelle\]
 
-\*\*Befunde angewendet:\*\* — \(Disziplin-Regel, nicht Paper-abgeleitet\)
+\*\*Befunde angewendet:\*\* — \(Disziplin-Regel, nicht Paper-abgeleitet\) \[+ B26 Lakonishok-Lee `active-scoring-validation`: Buy>Sell + Form-4-X/M-Filter empirisch validiert; B27 Ke/Huddart/Petroni `design-context`: 24-Monats-Window deferred\]
 
 \#\#\#\# 📊 Sentiment: X/10
 
 \[Analyst-Rating, Ø PT, Anzahl Analysten, Sell-Ratio\] \[web:Quelle\]
 
-\*\*Befunde angewendet:\*\* B11 (News-Positivity-Bias + Analyst-Bias-Kalibrierung, Cap 10 Pt.)
+\*\*Befunde angewendet:\*\* B11 (News-Positivity-Bias + Analyst-Bias-Kalibrierung, Cap 10 Pt.) \[+ B28 Tetlock `design-context`: Mean-Reversion-Architektur-Anker (kein Score-Update durch Tagesnachrichten)\]
 
 \#\#\# 2. Gesamt-Score
 

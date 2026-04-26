@@ -13,6 +13,7 @@ related: "[[Lakonishok-Lee-2001]], [[Ke-Huddart-Petroni-2003]], [[insider-intell
 raw_path: "../../../raw/papers/Profiting From Insider Transactions_ A Review Of The Academic Research.md"
 aliases:
   - "2iQ Insider Meta Review"
+  - "2iQ-Insider-Meta-Review"
   - "Profiting From Insider Transactions"
   - "Hable 2021 Insider"
 ---
@@ -30,7 +31,7 @@ Strukturierter Inhalt:
 | 1968 (Erstevidenz) | Insider-Trading prädiziert Returns, gegen prior conventional wisdom | Lorie & Niederhoffer (J. Law Econ 1968) |
 | 1980er | Quality-Distinktion (Chairmen > sonstige Insider); Aggregate-Indicator prädiziert Markt | Seyhun (JFE 1986, JBU 1988, QJE 1992) |
 | 1990er-frühe-2000er | Insider sind Contrarians; Buy > Sell in Information; Effekt stärker bei Small-Caps; Insider-Returns 50-68 bps/Monat erste 6M post-Buy | Lakonishok/Lee 2001 (RFS, **B26**); Jeng/Metrick/Zeckhauser 2003 (REStat) |
-| 2010er Europe | Long-term excess returns nach Buy/Sell, "high conviction" >>>>"low conviction" (20.94% vs. -3.40% 12-Monats-Excess) | Dardas 2011 (EBS) |
+| 2010er Europe | Long-term excess returns nach Buy/Sell, "high conviction" >> "low conviction" (20.94% vs. -3.40% 12-Monats-Excess) | Dardas 2011 (EBS) |
 | 2010er Cluster | Cluster-Buys haben 0.9-2x höhere abnormal returns als isolierte Buys | Alldredge/Blank 2017 (JFR); Kang/Kim/Wang 2018 (APJFS) |
 
 **Operative Heuristik (Hable's Synthese):**

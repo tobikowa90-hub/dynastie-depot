@@ -5,7 +5,11 @@ type: source
 subtype: academic-paper
 tags: [llm-finance, open-source, data-centric-pipeline, finllm, lora, sentiment-analysis, source-only]
 url: https://arxiv.org/abs/2306.06031
-venue: "International Symposium on Large Language Models for Financial Services (FinLLM 2023) @ IJCAI 2023. arXiv 2306.06031v2 (Nov 2025)"
+venue:
+  conference: "International Symposium on Large Language Models for Financial Services (FinLLM 2023), IJCAI Workshop, 2023"
+  preprint_v1: "arXiv:2306.06031v1, Juni 2023 (zur Konferenz-Submission)"
+  preprint_v2: "arXiv:2306.06031v2, November 2025 (revidierte Fassung — Update gegenüber Conference-Version, enthält erweiterte Empirie)"
+  citation_default: "Bei Zitation kanonisch die Konferenz-Fassung (FinLLM 2023 @ IJCAI) verwenden; arXiv-v2 nur bei expliziter Referenz auf revidierte Magnituden."
 authors: "Hongyang Yang (AI4Finance Foundation), Xiao-Yang Liu (Columbia University), Christina Dan Wang (NYU Shanghai)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY. Open-Source-Pendant zu BloombergGPT — End-to-End-Framework (5-Layer: Data Source / Engineering / LLMs / Tasks / Applications) für Finance-LLMs. Operative Konsequenz für DEFCON: KEINE direkte Score-Anbindung, weil DEFCON Long-Only ist und keine LLM-Sentiment-Pipeline als Hauptfaktor verwendet. **Konzeptioneller Wert:** Begründet Open-Source-Approach für künftige Finance-LLM-Adoption (Transparenz, Customization, Educational), gegenüber proprietären Black-Boxes. Komplementär zu FinDPO ([[Iacovides-Zhou-Mandic-2025-FinDPO]]) — FinGPT etabliert die Architektur, FinDPO refined das Training-Verfahren (DPO statt SFT). Beide gelten unter FINSABER-Bias-Audit (B19) erst als evidence-grade nach 20J-Hold-Out + Bull/Bear-Subsample-Test."

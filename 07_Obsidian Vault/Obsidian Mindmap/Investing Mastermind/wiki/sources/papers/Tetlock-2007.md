@@ -3,12 +3,12 @@ title: "Giving Content to Investor Sentiment: The Role of Media in the Stock Mar
 date: 2007
 type: source
 subtype: academic-paper
-tags: [defcon, media-sentiment, investor-sentiment, noise-trader-model, mean-reversion, sentiment-block, b28]
+tags: [defcon, media-sentiment, investor-sentiment, noise-trader-model, mean-reversion, sentiment-block, b28, design-context]
 url: https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-6261.2007.01232.x
 venue: "Journal of Finance 62(3), 2007, 1139-1168"
 authors: "Paul C. Tetlock (Columbia Business School / damals McCombs School of Business, University of Texas at Austin)"
 status: processed
-defcon_relevanz: "Befund B28 (`active-scoring`, neu seit 26.04.2026). Sentiment-Block (10 Pt.) — Kalibrierungs-Anker. Kern: Hohe Media-Pessimism prädiziert kurzfristig fallende Kurse + nachfolgende Reversion zu Fundamentals; ungewöhnlich hohe ODER niedrige Pessimism prädizieren hohes Trading-Volume. Das ist Noise-Trader/Liquidity-Trader-Modell-konsistent (DeLong/Shleifer/Summers/Waldmann 1990) und INKONSISTENT mit drei alternativen Hypothesen: Media als (a) Fundamental-Information-Proxy, (b) Volatility-Proxy, (c) Sideshow ohne Markt-Bezug. Operative Konsequenz für DEFCON: Sentiment-Block (Analyst-Konsensus + PT-Abstand + Sell-Ratio) wird durch B28 nicht erweitert (DEFCON nutzt strukturierten Analyst-Sentiment, kein Media-Text-Sentiment), aber B28 begründet die EXISTENZ des Sentiment-Blocks als kausal relevant — Sentiment ist nicht nur Rauschen, sondern hat empirisch messbaren Markt-Impact. Wichtig: B28's Mean-Reversion-Befund ist Anker für die DEFCON-Prämisse `Score = Long-Term-Quality-Bewertung, kein Short-Term-Trade-Signal` — kurzfristige Sentiment-Schwankungen sollten KEINEN Score-Drift triggern."
+defcon_relevanz: "Befund B28 (`design-context`, eingeführt 26.04.2026 mit Codex-Re-Klassifikation — Status-Label NEU in Status-Matrix-Legende; Architektur-Anker für Mean-Reversion-Score-Stabilität, kein Score-Element). Sentiment-Block (10 Pt.) — Kalibrierungs-Anker. Kern: Hohe Media-Pessimism prädiziert kurzfristig fallende Kurse + nachfolgende Reversion zu Fundamentals; ungewöhnlich hohe ODER niedrige Pessimism prädizieren hohes Trading-Volume. Das ist Noise-Trader/Liquidity-Trader-Modell-konsistent (DeLong/Shleifer/Summers/Waldmann 1990) und INKONSISTENT mit drei alternativen Hypothesen: Media als (a) Fundamental-Information-Proxy, (b) Volatility-Proxy, (c) Sideshow ohne Markt-Bezug. Operative Konsequenz für DEFCON: Sentiment-Block (Analyst-Konsensus + PT-Abstand + Sell-Ratio) wird durch B28 nicht erweitert (DEFCON nutzt strukturierten Analyst-Sentiment, kein Media-Text-Sentiment), aber B28 begründet die EXISTENZ des Sentiment-Blocks als kausal relevant — Sentiment ist nicht nur Rauschen, sondern hat empirisch messbaren Markt-Impact. Wichtig: B28's Mean-Reversion-Befund ist Anker für die DEFCON-Prämisse `Score = Long-Term-Quality-Bewertung, kein Short-Term-Trade-Signal` — kurzfristige Sentiment-Schwankungen sollten KEINEN Score-Drift triggern."
 related: "[[Media-Pessimism-Sentiment]], [[Noise-Trader-Model]], [[News Sentiment Analysis]], [[Iacovides-Zhou-Mandic-2025-FinDPO]], [[Jadhav-Mirza-2025]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Tetlock_Media_Sentiment_JF.pdf"
 aliases:
@@ -36,15 +36,17 @@ Das Paper ist die **kanonische Erstevidenz** für quantifizierbares Media-Sentim
 
 ## Drei Quantitativ-Befunde
 
-| VAR-Befund | Magnitude | Horizont |
+⚠️ **CONFIDENCE-WARNUNG zu Magnituden:** Die folgenden ~-Werte sind aus der Sekundärliteratur-Standard-Zitation des Tetlock-2007-Pessimism-Index synthesisiert (Replikationen Tetlock 2008 + García 2013 verwenden ähnliche Magnitude-Bänder). Raw-PDF wurde nicht textextrahiert für Magnitude-Verifikation. **Pflicht bei Bedarf an Primärzitaten:** Tetlock (2007) JF 62(3) S. 1139-1168 Abschnitt III.B (VAR-Estimates) + Tabelle II konsultieren — Original-Standard-Errors + 1-σ-Schockgrößen verifizieren bevor sie in Briefings/Sentiment-Block-Diskussionen einfließen. **Inhaltliches Reversion-Pattern HOCH-konfident** (von García 2013 + DeLong/Shleifer/Summers/Waldmann 1990 mehrfach repliziert), **konkrete bps-Werte MITTEL-konfident** (sekundär-zitiert).
+
+| VAR-Befund | Magnitude (sekundär-zitiert) | Horizont |
 |---|---|---|
 | Pessimism → Returns (negativ) | ~10-15 bps/Tag bei 1-σ-Pessimism-Schock | 1-3 Tage Drawdown |
 | Reversion → Fundamentals | Komplette Reversion innerhalb ~5-10 Handelstage | Mittel-frist |
 | Pessimism → Volume (Absolut-Wert) | +5-8% Volume bei 1-σ |Pessimism|-Schock | Same-day |
 
-→ **Reversion-Pattern** ist der entscheidende Befund: Media-Pessimism erzeugt **temporären** Kursdruck, NICHT permanente Repricing — also Mispricing, nicht Information.
+→ **Reversion-Pattern** ist der entscheidende Befund: Media-Pessimism erzeugt **temporären** Kursdruck, NICHT permanente Repricing — also Mispricing, nicht Information. **Dieser Befund ist HOCH-konfident** und Architektur-Anker für Sentiment-Block-Mean-Reversion (B28 `design-context`); die spezifischen bps-Magnituden sind nicht Score-relevant.
 
-## DEFCON-Implikation (B28 `active-scoring`)
+## DEFCON-Implikation (B28 `design-context`)
 
 ### Was B28 NICHT ändert
 
