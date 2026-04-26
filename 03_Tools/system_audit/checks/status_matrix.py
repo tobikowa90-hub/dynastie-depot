@@ -8,7 +8,18 @@ from pathlib import Path
 
 from system_audit.types import AuditContext, CheckResult, FailureDetail
 
-B_LABEL_RE = re.compile(r"\bB(\d+)\b")
+# Row-anchored: only matches B-labels that lead a markdown table row, i.e.
+# `| Bn | <status> | <activation> | <annotation> |`. Any Bn appearing in
+# prose (legend ranges like "B1-B11", forward-placeholders like "B25+",
+# or self-references inside a row's annotation cell) is ignored.
+#
+# Why: file-wide `\bB(\d+)\b` flagged false-positives — the Legende sentence
+# "(B1-B11 + B14-implicit)" double-counted B1/B11/B14 against their actual
+# table rows; "(B25+)" in section-prose double-counted with future row inserts;
+# and a row's own `B14-Bonus` annotation triple-counted within its line.
+# Real duplicate-rows (someone accidentally pasting the same Bn twice as a
+# row) are still caught — that's the actual semantic the check protects.
+B_ROW_RE = re.compile(r"^\|\s*B(\d+)\s*\|", re.MULTILINE)
 # Header-anchored match prevents false-negatives when "Status-Matrix" appears
 # in prose before the actual heading (Code-Review Blocker #1).
 HEADER_RE = re.compile(r"^#{1,6}\s+[^\n]*Status-Matrix[^\n]*$", re.MULTILINE | re.IGNORECASE)
@@ -42,7 +53,7 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:  # noqa: ARG001 
     next_h = re.search(term_pattern, after[body_start:], re.MULTILINE | re.IGNORECASE)
     section = after[:body_start + next_h.start()] if next_h else after
 
-    all_nums = [int(lm.group(1)) for lm in B_LABEL_RE.finditer(section)]
+    all_nums = [int(lm.group(1)) for lm in B_ROW_RE.finditer(section)]
     numbers = sorted(set(all_nums))
     failures: list[FailureDetail] = []
     dup_numbers: set[int] = set()

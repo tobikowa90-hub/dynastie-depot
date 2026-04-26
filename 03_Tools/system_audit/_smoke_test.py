@@ -831,7 +831,7 @@ def test_vault_backlinks_fail_on_missing() -> None:
     assert any("Nonexistent" in f.expected or "Nonexistent" in f.actual for f in result.failures)
 
 def test_status_matrix_pass_fixture() -> None:
-    """PASS: B1-B5 lückenlos, keine Duplikate."""
+    """PASS: B1-B5 lückenlos, keine Duplikate. Table-row format."""
     import tempfile
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
@@ -839,7 +839,14 @@ def test_status_matrix_pass_fixture() -> None:
         target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
         target.parent.mkdir(parents=True)
         target.write_text(
-            "# Doc\n\n## Status-Matrix\n\n- B1 first\n- B2 second\n- B3 third\n- B4 fourth\n- B5 fifth\n\n## Anderer Abschnitt\n",
+            "# Doc\n\n## Status-Matrix\n\n"
+            "| Befund | Status | Note |\n|---|---|---|\n"
+            "| B1 | active | first |\n"
+            "| B2 | active | second |\n"
+            "| B3 | active | third |\n"
+            "| B4 | active | fourth |\n"
+            "| B5 | active | fifth |\n\n"
+            "## Anderer Abschnitt\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=True)
@@ -847,7 +854,7 @@ def test_status_matrix_pass_fixture() -> None:
     assert result.status == "PASS", f"failures={result.failures}"
 
 def test_status_matrix_fail_on_gap() -> None:
-    """FAIL: B3 fehlt zwischen B2 und B4."""
+    """FAIL: B3 fehlt zwischen B2 und B4. Table-row format."""
     import tempfile
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
@@ -855,7 +862,13 @@ def test_status_matrix_fail_on_gap() -> None:
         target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
         target.parent.mkdir(parents=True)
         target.write_text(
-            "## Status-Matrix\n\n- B1\n- B2\n- B4\n- B5\n\n## Other\n",
+            "## Status-Matrix\n\n"
+            "| Befund | Status |\n|---|---|\n"
+            "| B1 | active |\n"
+            "| B2 | active |\n"
+            "| B4 | active |\n"
+            "| B5 | active |\n\n"
+            "## Other\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=True)
@@ -864,7 +877,7 @@ def test_status_matrix_fail_on_gap() -> None:
     assert any("B3" in f.actual for f in result.failures)
 
 def test_status_matrix_fail_on_duplicate() -> None:
-    """FAIL: B2 erscheint 2×."""
+    """FAIL: B2 erscheint 2× als Tabellen-Row. Real-dup-detection (row-anchored)."""
     import tempfile
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
@@ -872,13 +885,65 @@ def test_status_matrix_fail_on_duplicate() -> None:
         target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
         target.parent.mkdir(parents=True)
         target.write_text(
-            "## Status-Matrix\n\n- B1\n- B2\n- B2\n- B3\n\n## Other\n",
+            "## Status-Matrix\n\n"
+            "| Befund | Status |\n|---|---|\n"
+            "| B1 | active |\n"
+            "| B2 | active |\n"
+            "| B2 | rejected |\n"
+            "| B3 | active |\n\n"
+            "## Other\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=True)
         result = run(tdp, ctx)
     assert result.status == "FAIL"
     assert any("B2" in f.actual and "2" in f.actual for f in result.failures)
+
+
+def test_status_matrix_no_dup_on_legend_range_mention() -> None:
+    """Regression: Legenden-Prosa wie '(B1-B11 + B14-implicit)' und Forward-
+    Placeholder '(B25+)' DÜRFEN NICHT als Duplikate zählen. Nur tatsächliche
+    Tabellen-Rows (`| Bn |`-Pattern) sind Definitions-Quellen.
+
+    Vorher (file-wide regex): false-positive flood — jede B-Nummer in Range-
+    Erwähnungen gegen die echte Tabellen-Zeile gezählt.
+    Nachher (row-anchored): Prose-Mentions ignored, Tabelle clean.
+    """
+    import tempfile
+    from system_audit.checks.status_matrix import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target.parent.mkdir(parents=True)
+        target.write_text(
+            "## Status-Matrix\n\n"
+            "> SSoT für §4-Router. Neue Befunde (B25+) müssen Status-Label kriegen.\n\n"
+            "### Legende\n\n"
+            "- `active-scoring` — wirkt per-Ticker (B1-B3 + B5-implicit)\n"
+            "- `meta-gate` — feuert bei Migration\n\n"
+            "### Matrix\n\n"
+            "| Befund | Status | Note |\n|---|---|---|\n"
+            "| B1 | active | — |\n"
+            "| B2 | active | B2-Bonus rejected §27.1 |\n"
+            "| B3 | active | — |\n"
+            "| B4 | meta-gate | — |\n"
+            "| B5 | meta-gate | — |\n\n"
+            "### Regel für neue Befunde (B25+)\n\nFreitext-Prose mit (B25+) Vorausverweis.\n\n"
+            "## Other\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=True)
+        result = run(tdp, ctx)
+    # Legend mentions B1, B2, B3, B5 als Range; Forward-Placeholder B25+ 2×;
+    # Annotation in B2-Row referenziert "B2-Bonus" — alle dürfen NICHT
+    # als Duplikate zählen, weil keine ist eine Tabellen-Row-Definition.
+    assert result.status == "PASS", (
+        f"prose/legend/forward-placeholder must not count as duplicates; "
+        f"got {result.status}, failures={result.failures}"
+    )
+    assert result.n_checked == 5, (
+        f"expected exactly 5 unique row-defined Bs (B1-B5); got {result.n_checked}"
+    )
 
 
 def test_vault_backlinks_skip_on_missing_vault() -> None:
@@ -907,7 +972,11 @@ def test_status_matrix_header_anchored_not_prose_match() -> None:
         target.write_text(
             "# Titel\n\nDiese Seite enthält eine **Status-Matrix** mit B-Nummern.\n\n"
             "## Einleitung\n\nVorbemerkung.\n\n"
-            "## Status-Matrix\n\n- B1\n- B3\n\n## Andere Sektion\n",
+            "## Status-Matrix\n\n"
+            "| Befund | Status |\n|---|---|\n"
+            "| B1 | active |\n"
+            "| B3 | active |\n\n"
+            "## Andere Sektion\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=True)
@@ -932,7 +1001,11 @@ def test_status_matrix_subsections_are_scanned() -> None:
         target.write_text(
             "## Status-Matrix\n\n"
             "### Legende\n\nDoc.\n\n"
-            "### Matrix\n\n- B1\n- B2\n- B3\n\n"
+            "### Matrix\n\n"
+            "| Befund | Status |\n|---|---|\n"
+            "| B1 | active |\n"
+            "| B2 | active |\n"
+            "| B3 | active |\n\n"
             "## Nachfolgender Abschnitt\n",
             encoding="utf-8",
         )
@@ -956,7 +1029,12 @@ def test_status_matrix_n_passed_arithmetic_with_gaps() -> None:
         target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
         target.parent.mkdir(parents=True)
         target.write_text(
-            "## Status-Matrix\n\n- B1\n- B3\n- B5\n\n## Other\n",
+            "## Status-Matrix\n\n"
+            "| Befund | Status |\n|---|---|\n"
+            "| B1 | active |\n"
+            "| B3 | active |\n"
+            "| B5 | active |\n\n"
+            "## Other\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=True)
