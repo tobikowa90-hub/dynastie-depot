@@ -51,15 +51,19 @@
 
 3. **C-3 log.md Bulk-Eintrag**: ein zusammenhängender Eintrag für die gesamte Phase A+B (oder zwei Einträge: A am 26.04., B am 27.04.). WIKI-SCHEMA Auto-Lint danach: Orphans + broken Links prüfen, sofort fixen. Final-Commit + Push.
 
-### 🔍 Codex-Review-Block (vor Phase C, in dieser Session vorbereitet)
+### 🔍 Codex-Review-Verdikt Phase B (Commit 7e4712e — durchgeführt 27.04.2026)
 
-**Reviewer-Aufgabe (siehe Codex-Review-Anstoß im Chat):**
-- B1 Status-Matrix-Eintrag B25-B28 inkl. neue Status-Labels — Konsistenz mit Page-Body verifizieren
-- §29.7 M&P-Discount in INSTRUKTIONEN.md — Renumber-Korrektheit (alt §29.7 → §29.8, alt §29.8 → §29.9), Cross-Refs in §18/§27/§28/§30/§4-Router-Routing
-- B2 Concept-Pages — Frontmatter-Schema-Konformität gegen WIKI-SCHEMA, Backlink-Disziplin (no Orphans, alle Backlinks resolven), Inhaltliche Akkuratesse (Magnitude-Quellen)
-- B3 Entity-Pages — Standard-Naming kebab-case, Aliases-Block korrekt, Backlinks zu Source-Pages konsistent
-- Codex Should-Fix #5/#6/#7 — Implementations-Korrektheit
-- Cross-Cutting: nicht-existente Backlinks aus den 6 Concept-Pages identifizieren (z.B. [[Insider-Trading-Primary-Signal]] aus B26 source-page — jetzt aufgelöst)
+**Cluster 1 — Codex-Round-1-Fix-Implementierung:**
+- #3 Alias `[[2iQ-Insider-Meta-Review]]` → **PASS**
+- #4 Alias `[[Hou-Xue-Zhang-q-Factor]]` → **PASS**
+- #10 `>>>>` Cleanup → **PASS**
+- #5 McLean-Pontiff Magnitude → **WARN → Must-Fix appliziert in Follow-Up-Commit:** `defcon_relevanz`-Field referenzierte fälschlich „32%" als operativen Discount, korrekt sind 58% (Faktor 0,42). 32pp ist nur der publication-effect lower bound (= 58% − 26%), NICHT der operative Discount. Korrigiert.
+- #6 Confidence-Markierungen → **N/V** (Codex declined commands, manuell zu verifizieren in Phase C)
+- #7 FinGPT Venue-Entmischung → **N/V** (Codex declined commands, manuell zu verifizieren in Phase C)
+
+**Cluster 2-4 (Status-Matrix, §29.7-Renumber, 6 Concept-Pages, 30 Entity-Stubs):** **N/V — Codex-Coverage unvollständig** durch declined commands auf Vault-Dateien. Empfehlung für Phase-C-Start: dedizierter zweiter Codex-Run gegen `7e4712e..HEAD` für Cluster 2-4 BEVOR die C-Files (Synthesis-Counter-Update, index.md, log.md) erstellt werden — sonst propagieren etwaige Schema-/Backlink-Drifts in die C-Synthesis 1:1.
+
+**Hauptrisiko Phase C:** Beim Synthesis-Update 20→34 konsistente Nutzung von `58%` (operativer M&P-Discount) statt `32%` (publication-effect lower bound) prüfen. Beide Zahlen sind zulässig, aber kontextuell verschieden — präzises Vokabular Pflicht.
 
 ### Standing-Focus (unverändert)
 
