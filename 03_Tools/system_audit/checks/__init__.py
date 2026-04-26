@@ -19,7 +19,8 @@ CORE: dict[str, str] = {
     "header_freshness": "system_audit.checks.header_freshness:run",
     "governance_parity": "system_audit.checks.governance_parity:run",
     "cross_source_reverse": "system_audit.checks.cross_source_reverse:run",
-}      # name → "system_audit.checks.<module>:run"
+    "pointer_completeness": "system_audit.checks.pointer_completeness:run",
+}      # name → "system_audit.checks.<module>:run"  (14 core checks)
 OPTIONAL: dict[str, str] = {
     "vault_backlinks": "system_audit.checks.vault_backlinks:run",
     "status_matrix": "system_audit.checks.status_matrix:run",

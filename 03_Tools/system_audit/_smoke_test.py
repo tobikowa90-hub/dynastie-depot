@@ -1504,6 +1504,89 @@ def test_cross_source_reverse_skip_on_missing_config() -> None:
     assert result.status == "SKIP"
 
 
+def test_pointer_completeness_pass_on_existing_targets() -> None:
+    import tempfile
+    from system_audit.checks.pointer_completeness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "00_Core").mkdir()
+        (tdp / "00_Core" / "PIPELINE.md").write_text("ok\n", encoding="utf-8")
+        (tdp / "CLAUDE.md").write_text(
+            "## Pointer (Ausgelagertes)\n\n"
+            "| Datei | Zweck |\n"
+            "|-------|-------|\n"
+            "| `00_Core/PIPELINE.md` | Pipeline-SSoT |\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_pointer_completeness_fail_on_missing_pointer_target() -> None:
+    """F12-style: Pointer auf existing Target ist OK; aber Pointer auf
+    fehlende Datei muss FAIL."""
+    import tempfile
+    from system_audit.checks.pointer_completeness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "CLAUDE.md").write_text(
+            "## Pointer (Ausgelagertes)\n\n"
+            "| Datei | Zweck |\n"
+            "|-------|-------|\n"
+            "| `00_Core/MISSING.md` | Some-SSoT |\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL"
+    assert any(
+        "MISSING.md" in f.actual or "MISSING.md" in f.location
+        for f in result.failures
+    )
+
+def test_pointer_completeness_skip_on_no_claude_md() -> None:
+    import tempfile
+    from system_audit.checks.pointer_completeness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+
+def test_pointer_completeness_section_scoped_not_routing_table() -> None:
+    """P2-09: Backtick-Pfade in Routing-Tabelle (anderer Section) duerfen
+    nicht als Pointer-Behauptung gewertet werden."""
+    import tempfile
+    from system_audit.checks.pointer_completeness import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "00_Core").mkdir()
+        (tdp / "00_Core" / "PIPELINE.md").write_text("ok\n", encoding="utf-8")
+        (tdp / "CLAUDE.md").write_text(
+            "# CLAUDE.md\n\n"
+            "## Routing-Table\n\n"
+            "| Trigger | Lies zusaetzlich |\n"
+            "|---------|------------------|\n"
+            "| `!Analysiere` | `00_Core/NONEXISTENT-IN-ROUTING.md` |\n\n"
+            "## Pointer (Ausgelagertes)\n\n"
+            "| Datei | Zweck |\n"
+            "|-------|-------|\n"
+            "| `00_Core/PIPELINE.md` | Pipeline-SSoT |\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", (
+        f"section-scope muss Routing-Tabelle ignorieren; got {result.status}, "
+        f"failures={result.failures}"
+    )
+    assert all(
+        "NONEXISTENT-IN-ROUTING" not in f.location and
+        "NONEXISTENT-IN-ROUTING" not in f.actual
+        for f in result.failures
+    ), "Routing-Tabellen-Pfad darf nicht als Pointer-Failure gewertet werden"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -1607,3 +1690,8 @@ if __name__ == "__main__":
     test_cross_source_reverse_dotted_ticker_extracted()
     test_cross_source_reverse_skip_on_missing_config()
     print("[OK] cross_source_reverse smoke tests passed")
+    test_pointer_completeness_pass_on_existing_targets()
+    test_pointer_completeness_fail_on_missing_pointer_target()
+    test_pointer_completeness_skip_on_no_claude_md()
+    test_pointer_completeness_section_scoped_not_routing_table()
+    print("[OK] pointer_completeness smoke tests passed")
