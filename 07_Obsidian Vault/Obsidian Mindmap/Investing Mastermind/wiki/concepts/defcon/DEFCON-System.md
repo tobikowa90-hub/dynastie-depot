@@ -85,12 +85,12 @@ Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 - [[AI in Investment Analysis]] — Zentrale Synthese: JPM-Forschung → DEFCON-Implementierung
 - [[Score-Archiv]] — Append-only Score-Historie (History-Layer)
 - [[FLAG-Event-Log]] — Append-only FLAG-Events (History-Layer)
-- [[Backtest-Ready-Infrastructure]] — 4-Layer-Architektur (seit 17.04.2026, Skill-Orchestrator seit 19.04.2026)
+- [[Backtest-Ready-Infrastructure]] — 5-Layer-Architektur (seit 17.04.2026, Hub+Live-State-Split via Tier-2-Refactor 25.04.2026; Skill-Orchestrator seit 19.04.2026)
 - [[backtest-ready-forward-verify]] (Skill, 01_Skills/) — orchestriert Schritt-7-Persistence-Pipeline seit v3.7.2
 
-## Datenhaltung — 4-Layer-Architektur (ab 2026-04-17)
+## Datenhaltung — 5-Layer-Architektur (ab 2026-04-17, Hub-Split 25.04.2026)
 
-Das DEFCON-System hält seinen Zustand in vier getrennten Layern (siehe KONTEXT.md §11):
+Das DEFCON-System hält seinen Zustand in fünf getrennten Layern (siehe KONTEXT.md §11), plus ein Persistenz-Sync-Target (`config.yaml`):
 
 | Layer | Datei(en) | Mutation |
 |-------|-----------|----------|

@@ -1,7 +1,8 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-25 (Vault-Concept-Seiten-Sanierung Tier-2-00_Core-Refactor — 14 Files: Hub-Split STATE→Hub+PORTFOLIO/PIPELINE/SYSTEM, CORE-MEMORY §1→§12/§13, §18 v2.1 Trigger-Mapping, Tripwire-Migration STATE→PORTFOLIO. Keine neuen Pages, nur Drift-Sanierung)
+> Last updated: 2026-04-26 (Hub-Split-Lückenschluss: 3 neue Vault-Stubs PORTFOLIO/PIPELINE/SYSTEM als Backlink-Anker + DEFCON-System 4-Layer→5-Layer Inkonsistenz gefixt; Lint-Follow-up zur Vault-Sanitation 25.04.)
+> Last updated (zuvor): 2026-04-25 (Vault-Concept-Seiten-Sanierung Tier-2-00_Core-Refactor — 14 Files: Hub-Split STATE→Hub+PORTFOLIO/PIPELINE/SYSTEM, CORE-MEMORY §1→§12/§13, §18 v2.1 Trigger-Mapping, Tripwire-Migration STATE→PORTFOLIO. Keine neuen Pages, nur Drift-Sanierung)
 > Schema: [[WIKI-SCHEMA]]
 
 ---
@@ -183,6 +184,10 @@ _(noch leer)_
 - [[Sentiment-Strength-Logit-Extraction]] — Kontinuierliche Sentiment-Scores aus causal-LLM-Logits; Long-Short-Enabler (B24) ← NEU 2026-04-20 Phase 1b
 
 ### Token-Effizienz & System
+- [[STATE]] — Hub: Verweise + Critical-Alerts + Last-Audit (~40 Z, Vault-Stub für `00_Core/STATE.md`, seit Tier-2-Hub-Split 25.04.2026)
+- [[PORTFOLIO]] — Live-State: 11 Satelliten Scores/DEFCON/FLAGs/Sparraten + 30-Tage-Trigger (Vault-Stub für `00_Core/PORTFOLIO.md`, default-load bei Session-Start)
+- [[PIPELINE]] — Pipeline-SSoT + Long-Term-Gates (Vault-Stub für `00_Core/PIPELINE.md`)
+- [[SYSTEM]] — System-Zustand + Infrastruktur: DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog (Vault-Stub für `00_Core/SYSTEM.md`)
 - [[Token-Mechanik]] — Strukturiertes Token-Management; Snapshot-First, MCP-Minimalset
 - [[Context-Hygiene]] — On-demand Loading; Compact-Regeln; MCP-Session-Typen
 - [[CLAUDE-md-Konstitution]] — CLAUDE.md als Wahrheitsquelle; Hub+PORTFOLIO Default-Load; Routing-Table-Trigger (Tier-1 24.04. + Tier-2 25.04.2026)

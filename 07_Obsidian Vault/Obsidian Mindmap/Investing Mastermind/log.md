@@ -929,3 +929,11 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
   - §5/§4 CORE-MEMORY-Refs (Sektionen existieren weiter, nicht stale)
 - **Branch:** `claude/remote-access-google-drive-GW8o2` (Remote-Web-Session, kein Konflikt-Risiko mit lokaler SystemAudit-Execution).
 - **Risiko:** Null Live-System-Impact — pure Markdown-Prose-Updates. Keine Score/FLAG/Sparraten/JSONL/YAML-Touches.
+
+## [2026-04-26] lint | Hub-Split-Lückenschluss — 3 Vault-Stubs + DEFCON-Layer-Fix (Lint-Follow-up zu 25.04. Vault-Sanitation)
+- **Anlass:** Wiki-Lint auf PR #1 (Vault-Sanitation 25.04.) zeigte 3 broken Wikilinks (`[[PORTFOLIO]]`, `[[PIPELINE]]`, `[[SYSTEM]]`) + 1 patch-interne Inkonsistenz in [[DEFCON-System]] (Tabelle hat 6 Zeilen, Section-Header + Verweis-Bullet sagten weiter "4-Layer"). Hub-Split-Refactor 25.04. hatte die 00_Core-Files (`PORTFOLIO.md`/`PIPELINE.md`/`SYSTEM.md`) erstellt, aber die Vault-Stub-Backlink-Anker fehlten.
+- **Pages created (3):** [[PORTFOLIO]], [[PIPELINE]], [[SYSTEM]] — Backlink-Anker-Pattern analog [[STATE]] (yaml-Frontmatter + Rolle + Sync-Pflicht-Hinweis + 00_Core-Pfad).
+- **Pages updated (3):** `index.md` (4 neue Concept-Bullets STATE/PORTFOLIO/PIPELINE/SYSTEM unter `### Token-Effizienz & System` + Header-Timestamp 26.04.), [[DEFCON-System]] (Z.88 Verweis-Bullet "4-Layer" → "5-Layer + Hub+Live-State-Split" / Z.91 Section-Header analog), `log.md` (dieser Eintrag).
+- **Bewusst NICHT angefasst:** [[Backtest-Ready-Infrastructure]] (`## 4-Layer-Architektur`-Sektion sagt weiter 4-Layer mit STATE als Projection — wäre 2. Follow-up; aktueller PR-Scope hatte BRI explizit gedroppt wegen lokal-main-Wording-Drift). Historische 4-Layer-Refs in datierten log.md-Einträgen (17.04. ff.) bleiben erhalten.
+- **Branch:** `claude/remote-access-google-drive-GW8o2` (Follow-up-Commit auf demselben Branch, derselben PR #1).
+- **Risiko:** Null Live-System-Impact — pure Markdown-Prose, 3 neue Backlink-Anker-Pages, 2 Lint-Korrekturen. Wiki-Lint danach erwartet GREEN für die 16 Patch-Files + 3 neuen Stubs.
