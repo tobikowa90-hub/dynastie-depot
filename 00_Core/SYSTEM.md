@@ -1,5 +1,4 @@
 # SYSTEM.md — System-Zustand + Infrastruktur
-**Stand:** 25.04.2026
 
 ## Verweise
 - [INSTRUKTIONEN.md §18](INSTRUKTIONEN.md#18-sync-pflicht-logmd--core-memorymd--faktortabellemd--statemd--score_historyjsonl--flag_eventsjsonl) — System-Event-Sync-Pflicht
@@ -36,4 +35,4 @@
 
 ---
 
-*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table*
+*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 25.04.2026*

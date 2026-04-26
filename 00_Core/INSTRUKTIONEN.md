@@ -1,5 +1,5 @@
 # ⚙️ INSTRUKTIONEN.md — Handlungsanweisungen & Skill-Guidance
-**Version:** 1.11 (§28-30 Migration + Retrospective-Gate + Live-Monitoring) | **Stand:** 20.04.2026 Phase-2-Complete
+**Version:** 1.11 (§28-30 Migration + Retrospective-Gate + Live-Monitoring)
 > Dieses Dokument beschreibt das WIE — User-Workflows, Befehle, Meta-Regeln.
 > Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 
@@ -354,6 +354,10 @@ Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Sc
 Alle zum Event-Set gehörenden Files in **einem** Commit bündeln (atomar). Pipeline-Items können separat committet werden, wenn der Score-Event-Commit schon draußen ist.
 
 **Wissenschaftlicher Anker:** Point-in-Time-Persistenz aller Pflicht-Files schützt vor §29.5 Sin #2 (Look-Ahead Bias). Jeder Record muss zum Zeitpunkt der Daten-Sichtung geschrieben werden, nicht rückwirkend. → §29.5 / [[Seven-Sins-Backtesting]]
+
+### 18.4 Stand-Footer-Konvention (seit 2026-04-26)
+
+Alle 8 `00_Core/`-Files (`PORTFOLIO`, `STATE`, `CORE-MEMORY`, `Faktortabelle`, `PIPELINE`, `SYSTEM`, `INSTRUKTIONEN`, `KONTEXT`) tragen `**Stand:** YYYY-MM-DD` ausschließlich im **Footer-Versions-Banner** am Datei-Ende, nicht im Header. Beim Stand-Update wird nur die letzte Footer-Zeile editiert — Header und Body bleiben unberührt. Vorteil: Konsistenz beim File-Touch (Stand-Pflege ist mechanisch, nicht inhaltlich) + within-Session KV-Cache-Stabilität bei Re-Reads nach Stand-Edit.
 
 **Änderungsprotokoll:**
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
