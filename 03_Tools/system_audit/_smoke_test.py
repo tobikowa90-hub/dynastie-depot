@@ -1404,6 +1404,60 @@ def test_governance_parity_skip_on_missing_slash_cmd() -> None:
     assert result.status == "SKIP"
 
 
+def test_cross_source_reverse_pass_on_aligned() -> None:
+    """PASS: alle Vault/PORTFOLIO-Ticker auch in config (satelliten OR watchlist)."""
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cfg_dir = tdp / "01_Skills" / "dynastie-depot"
+        cfg_dir.mkdir(parents=True)
+        (cfg_dir / "config.yaml").write_text(
+            "satelliten:\n  - ticker: AVGO\n    score: 84\n    defcon: D4\n"
+            "watchlist:\n  - ticker: MA\n    name: Mastercard\n",
+            encoding="utf-8",
+        )
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        (vault / "ersatzbank").mkdir(parents=True)
+        (vault / "AVGO.md").write_text("---\nticker: AVGO\n---\n", encoding="utf-8")
+        (vault / "ersatzbank" / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
+def test_cross_source_reverse_warn_on_orphan_vault_ticker() -> None:
+    """F18-Pathologie: MA im Vault, fehlt in config (alle 3 Listen)."""
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cfg_dir = tdp / "01_Skills" / "dynastie-depot"
+        cfg_dir.mkdir(parents=True)
+        (cfg_dir / "config.yaml").write_text(
+            "satelliten:\n  - ticker: AVGO\n    score: 84\n    defcon: D4\n",
+            encoding="utf-8",
+        )
+        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault.mkdir(parents=True)
+        (vault / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "WARN"
+    assert any(
+        "MA" in f.actual and "config.yaml" in f.expected
+        for f in result.failures
+    ), f"orphan-ticker MA muss als warning gefangen werden; got {result.failures}"
+
+def test_cross_source_reverse_skip_on_missing_config() -> None:
+    import tempfile
+    from system_audit.checks.cross_source_reverse import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "SKIP"
+
+
 if __name__ == "__main__":
     test_check_result_pass_semantics()
     test_check_result_fail_error()
@@ -1501,3 +1555,7 @@ if __name__ == "__main__":
     test_governance_parity_warn_on_missing_minimal_baseline_mention()
     test_governance_parity_skip_on_missing_slash_cmd()
     print("[OK] governance_parity smoke tests passed")
+    test_cross_source_reverse_pass_on_aligned()
+    test_cross_source_reverse_warn_on_orphan_vault_ticker()
+    test_cross_source_reverse_skip_on_missing_config()
+    print("[OK] cross_source_reverse smoke tests passed")

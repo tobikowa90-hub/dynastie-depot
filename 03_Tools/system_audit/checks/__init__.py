@@ -18,6 +18,7 @@ CORE: dict[str, str] = {
     "skill_frontmatter": "system_audit.checks.skill_frontmatter:run",
     "header_freshness": "system_audit.checks.header_freshness:run",
     "governance_parity": "system_audit.checks.governance_parity:run",
+    "cross_source_reverse": "system_audit.checks.cross_source_reverse:run",
 }      # name → "system_audit.checks.<module>:run"
 OPTIONAL: dict[str, str] = {
     "vault_backlinks": "system_audit.checks.vault_backlinks:run",
