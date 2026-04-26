@@ -39,12 +39,25 @@ WRONG_VERSIONS = ("v1.7", "v2.0")  # known prior versions to detect drift
 # not in narrative prose.
 _LIST_MARKER_RE = re.compile(r"[,'\"|`]|@\(|^\s*[-*]\s", re.MULTILINE)
 
+# Sliding-window size for clustering-detection. The §18 7-File-Set is
+# always declared as a contiguous list (markdown bullets, PowerShell array,
+# inline comma-list). Drift in the canonical block + decoy mention 200+
+# lines away (e.g. SKILL.md table-of-files) must NOT cover for the missing
+# entry. 25 lines is generous enough to span a numbered list with prose
+# between bullets but tight enough to stop spanning unrelated sections.
+_CLUSTER_WINDOW_LINES = 25
+
+
 def _scan_text_for_basenames(text: str) -> set[str]:
     """Return basenames that appear in list-entry contexts (commas, quotes,
     table cells, PowerShell arrays, markdown bullets) — not raw prose.
     Avoids FP where a basename appears in narrative text (e.g., 'die log.md
     Datei wird ...') but is not declared as part of the §18 file set.
     Codex-Review TaskID 12 follow-up.
+
+    NOTE: file-wide scan. Use `_basenames_in_best_window` for §18-parity
+    where scattered mentions across unrelated sections must not cover for
+    a missing entry in the canonical list block.
     """
     found: set[str] = set()
     for line in text.splitlines():
@@ -54,6 +67,52 @@ def _scan_text_for_basenames(text: str) -> set[str]:
             if bn in line:
                 found.add(bn)
     return found
+
+
+def _basenames_in_best_window(
+    text: str,
+    expected: tuple[str, ...],
+    window_lines: int = _CLUSTER_WINDOW_LINES,
+) -> set[str]:
+    """Sliding-window basename-cluster detection. Returns the set of expected
+    basenames found in the best (most-coverage) window of `window_lines`
+    consecutive lines, scanning only list-entry contexts.
+
+    Why sliding-window instead of file-wide scan: a basename mention in an
+    unrelated table-of-files (e.g., SKILL.md L70 lists `config.yaml` as a
+    skill-file) must NOT cover for a missing entry in the canonical §18
+    7-File-Set block (e.g., L306). The §18 list is always contiguous; a
+    25-line window captures it whether it's a markdown bullet-list with
+    prose between bullets, a PowerShell `@(...)` array, or an inline comma
+    list. Scattered single-token hits across widely-separated sections do
+    not cluster within any window.
+
+    Codex-Review Phase-2-Final Important #1 fix.
+    """
+    lines = text.splitlines()
+    if not lines or not expected:
+        return set()
+
+    line_hits: list[set[str]] = []
+    for line in lines:
+        hits: set[str] = set()
+        if _LIST_MARKER_RE.search(line):
+            for bn in expected:
+                if bn in line:
+                    hits.add(bn)
+        line_hits.append(hits)
+
+    best: set[str] = set()
+    for start in range(len(lines)):
+        window: set[str] = set()
+        end = min(start + window_lines, len(lines))
+        for offset in range(end - start):
+            window |= line_hits[start + offset]
+        if len(window) > len(best):
+            best = window
+            if len(best) == len(expected):
+                break  # full hit — no larger window possible
+    return best
 
 
 # §18 as governing-rule reference: NOT followed by '.' + digit (subsection)
@@ -97,7 +156,10 @@ def _audit_source(
         )]
 
     text = path.read_text(encoding="utf-8", errors="replace")
-    found = _scan_text_for_basenames(text)
+    if expected_basenames:
+        found = _basenames_in_best_window(text, expected_basenames)
+    else:
+        found = set()
     missing = set(expected_basenames) - found
     rel_loc = str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
 
@@ -143,8 +205,15 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     sources = [
         ("README", repo_root / "03_Tools" / "backtest-ready" / "README.md", True,
          CANONICAL_SCORE_EVENT_BASENAMES),
+        # briefing-sync tracks Briefing-relevant state files (00_Core/* + config.yaml),
+        # not the §18 score-event-set. F4 driver-intent is specifically: config.yaml
+        # MUST appear in $briefingFiles (added in §18 v2.1 since 25.04.2026).
+        # Auditing the full 7-set here was overly broad and only passed via comment-
+        # mention false-positives in the file-wide scan; cluster-scan exposes that
+        # the array genuinely doesn't list log.md / score_history.jsonl / flag_events.jsonl
+        # (they're score-event JSONLs, not briefing-trigger inputs).
         ("briefing-sync", repo_root / "03_Tools" / "briefing-sync-check.ps1", False,
-         CANONICAL_SCORE_EVENT_BASENAMES),
+         ("config.yaml",)),
         ("dynastie-depot SKILL", repo_root / "01_Skills" / "dynastie-depot" / "SKILL.md", False,
          CANONICAL_SCORE_EVENT_BASENAMES),
         ("INSTRUKTIONEN", repo_root / "00_Core" / "INSTRUKTIONEN.md", True,

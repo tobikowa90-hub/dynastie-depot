@@ -1185,6 +1185,86 @@ def test_score_event_parity_no_fp_on_basename_in_prose() -> None:
     assert "log.md" in found2 and "CORE-MEMORY.md" in found2
 
 
+def test_score_event_parity_fail_on_drift_in_section_with_decoy_outside() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #1: drift inside the
+    canonical §18 list must FAIL even if the dropped basename appears in an
+    unrelated list-context elsewhere in the same file (e.g. a table-of-files
+    on L70 covering for a missing entry in the §18 block on L306).
+    Sliding-window cluster-detection must catch this.
+    """
+    import tempfile
+    from system_audit.checks.score_event_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        # README.md: §18 block missing config.yaml (drift), but config.yaml
+        # appears 60+ lines earlier in an unrelated table — file-wide scan
+        # would find it; cluster-window must not.
+        rd = tdp / "03_Tools" / "backtest-ready"
+        rd.mkdir(parents=True)
+        decoy_padding = "\n".join(
+            f"| col-{i} | `config.yaml` skill-file |" for i in range(40)
+        )
+        readme_body = (
+            "# Backtest-Ready README\n\n"
+            "## Skill-File-Table (NOT the §18 list)\n\n"
+            f"{decoy_padding}\n\n"
+            "## §18 v2.1 Score-Event-Set\n\n"
+            "Sync-Pflicht-Welle §18 INSTRUKTIONEN v2.1\n\n"
+            "7-File-Set: log.md, CORE-MEMORY.md, Faktortabelle.md, "
+            "PORTFOLIO.md, score_history.jsonl, flag_events.jsonl\n"
+            # ^ DRIFT: config.yaml dropped from the canonical block.
+        )
+        (rd / "README.md").write_text(readme_body, encoding="utf-8")
+        (tdp / "03_Tools" / "briefing-sync-check.ps1").write_text("# stub\n", encoding="utf-8")
+        sd = tdp / "01_Skills" / "dynastie-depot"
+        sd.mkdir(parents=True)
+        (sd / "SKILL.md").write_text("# stub\n", encoding="utf-8")
+        instr = tdp / "00_Core" / "INSTRUKTIONEN.md"
+        instr.parent.mkdir(parents=True)
+        instr.write_text("v2.1\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx)
+    assert result.status == "FAIL", (
+        f"drift in §18 block must FAIL despite decoy mention; got {result.status}, "
+        f"failures={result.failures}"
+    )
+    assert any(
+        "config.yaml" in f.expected and f.severity == "error"
+        for f in result.failures
+    ), f"missing config.yaml in canonical block must be reported; got {result.failures}"
+
+
+def test_score_event_parity_window_helper_clusters_only() -> None:
+    """Unit-Test: sliding-window helper returns only basenames that cluster
+    within the same N-line window.
+    """
+    from system_audit.checks.score_event_parity import (
+        _basenames_in_best_window,
+        CANONICAL_SCORE_EVENT_BASENAMES,
+    )
+    # Cluster: 7 basenames in one line
+    text_clustered = (
+        "Header\n\n"
+        "Files: log.md, CORE-MEMORY.md, Faktortabelle.md, PORTFOLIO.md, "
+        "score_history.jsonl, config.yaml, flag_events.jsonl\n"
+    )
+    out_clustered = _basenames_in_best_window(text_clustered, CANONICAL_SCORE_EVENT_BASENAMES)
+    assert out_clustered == set(CANONICAL_SCORE_EVENT_BASENAMES)
+
+    # Scattered: each basename in its own line, separated by 30+ lines
+    padding = "\n".join("intermediate line" for _ in range(30))
+    text_scattered = "\n".join(
+        f"- {bn}\n{padding}" for bn in CANONICAL_SCORE_EVENT_BASENAMES
+    )
+    out_scattered = _basenames_in_best_window(
+        text_scattered, CANONICAL_SCORE_EVENT_BASENAMES
+    )
+    # Best window catches at most 1-2 basenames (they are 30+ lines apart)
+    assert len(out_scattered) < len(CANONICAL_SCORE_EVENT_BASENAMES), (
+        f"scattered basenames must not cluster; got {out_scattered}"
+    )
+
+
 def test_skill_frontmatter_pass_on_complete() -> None:
     import tempfile
     from system_audit.checks.skill_frontmatter import run
