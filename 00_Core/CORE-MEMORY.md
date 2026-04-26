@@ -207,7 +207,7 @@ Bei Unternehmen mit signifikanter Produktion in Risikoländern (Malaysia, Thaila
 
 **Systemkonsequenzen (Phase 2, docs + SKILL.md-Output-Only, KEIN Scoring-Impact):**
 
-1. **Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix** — kanonische Klassifikation jedes Befunds (B1-B24+) mit 4 Labels: `active-scoring` / `meta-gate` / `design-rejected` / `future-arch`. Single Source of Truth; ohne Status-Label kein Phase-1-Complete bei zukünftigem Ingest.
+1. **Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix** — kanonische Klassifikation jedes Befunds (B1-B28+) mit 6 Labels: `active-scoring` / `active-scoring-validation` / `meta-gate` / `design-context` / `design-rejected` / `future-arch` (4 Originale + `active-scoring-validation` + `design-context` ergänzt 26.04.2026 durch Codex-Re-Klassifikation B26/B27/B28 in Phase A). Single Source of Truth; ohne Status-Label kein Phase-1-Complete bei zukünftigem Ingest.
 2. **INSTRUKTIONEN §4 Befunde-Router** — Mini-Tabelle B1-B11 durch Status-Router ersetzt (Aktion pro Label, Pflicht-Abfolge 4 Schritte, §4 wächst nicht mehr mit neuen Papers mit).
 3. **INSTRUKTIONEN §2 Pipeline-Schritt [BEFUNDE]** — Status-Matrix-Check explizit zwischen Stufe 1 und Stufe 2 sichtbar; kein Filter-Tor, sondern Pflicht-Vorbereitung für Scoring.
 4. **INSTRUKTIONEN §29.5 Regime-Audit-Addendum (B19 FINSABER)** — Bull/Bear-Subsample-SR-Trennung + Symbol-Breite + Zeitfenster-Deklaration bei Migration-/Retrospective-Events.

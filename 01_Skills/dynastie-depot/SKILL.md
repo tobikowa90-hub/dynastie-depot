@@ -191,7 +191,7 @@ Nur `active-scoring`- und `active-scoring-validation`-klassifizierte Befunde in 
 - `active-scoring` — Pflicht-Anwendung im DEFCON-Block (B1-B11 + B14-implicit)
 - `active-scoring-validation` (NEU) — primär-empirische Validation eines bestehenden Score-Pfads (B26 Lakonishok-Lee → Insider-Block-Heuristik). Optional als Validation-Suffix nennen, kein neuer Score-Pfad.
 - `meta-gate` — feuert nur bei Migration/Retrospective (B15-B20 + **B25 → §29.7 M&P-Discount**)
-- `design-context` (NEU) — Architektur-Anker oder Roadmap (B27 → insider-intelligence v2; B28 → Sentiment-Mean-Reversion-Anker). NICHT im !Analysiere-Output.
+- `design-context` (NEU) — Architektur-Anker oder Roadmap (B27 → insider-intelligence v2; B28 → Sentiment-Mean-Reversion-Anker). **Nicht als Score-relevante Befund-ID** und **kein eigenständiger Score-Pfad** (verändert keinen Block-Score, keinen Subscore, kein Gate-Verhalten); als nicht-scorender Architektur-Anker in Klammer-Notation mit `design-context`-Suffix und Erklärtext im Output zulässig (vgl. Insider-/Sentiment-Block-Templates in Schritt 3). Verhindert „phantom score path" beim Lesen des Outputs durch Dritte.
 - `design-rejected` — bewusst nicht integriert (B12 F-Score, B13 GP/TA — § 27.1 Double-Counting)
 - `future-arch` — KG/RAG-Architektur (B21-B24)
 

@@ -80,7 +80,7 @@ Das Paper ist **kein** Live-Scoring-Trigger, sondern ein **strukturelles Methode
 
 - **Vorgänger:** Schwert (2003) — Size+Value-ETFs ohne Alpha post-publication. Anekdotisch, kein systematisches Sample.
 - **Verwandt:** Jegadeesh/Titman (2001) — Momentum-Returns STIEGEN nach 1993-Publikation (Gegenbeispiel zur Decay-Hypothese; M&P zeigen aber, dass das eine Ausnahme im 97-Predictor-Sample ist).
-- **Komplementär:** Harvey/Liu/Zhu (2016, [[Harvey-Liu-Zhu-2016]]) — t≥3-Hurdle für neue Faktoren. M&P sagt: SELBST mit t≥3 erleidet der Faktor 32%+ Post-Publication-Decay.
+- **Komplementär:** Harvey/Liu/Zhu (2016, [[Harvey-Liu-Zhu-2016]]) — t≥3-Hurdle für neue Faktoren. M&P sagt: SELBST mit t≥3 erleidet der Faktor **58% Post-Publication-Decay** (operativer Total-Decline; davon ≈32pp reiner Publikations-Effekt-Lower-Bound oberhalb des 26%-Out-of-Sample-Bias).
 - **Forschungsfront:** Hanson/Sundareram (2014), Akbas/Armstrong/Sorescu/Subrahmanyam (2014) — Sophisticated-Capital-Levels als Decay-Treiber (M&P kontrolliert das nicht, ist explizit als Limitation genannt).
 
 ## Backlinks
