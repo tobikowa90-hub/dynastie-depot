@@ -1428,7 +1428,8 @@ def test_governance_parity_pass_on_aligned() -> None:
         cmd.write_text(
             "# /SystemAudit\n\n"
             "Default ohne $ARGUMENTS = --core (alle 11 Kern-Checks).\n"
-            "Verfuegbare Flags: --core --full --vault --minimal-baseline --no-write --json\n",
+            "Verfuegbare Flags: --core --full --vault --minimal-baseline "
+            "--no-write --json -v --timeout-per-check\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=False)
@@ -1462,8 +1463,11 @@ def test_governance_parity_warn_on_missing_minimal_baseline_mention() -> None:
         tdp = Path(td)
         cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
         cmd.parent.mkdir(parents=True)
+        # Note: includes -v + --timeout-per-check so the new alt-form coverage
+        # passes; only --minimal-baseline absent, isolating the WARN assertion.
         cmd.write_text(
-            "Default = --core (11 Kern-Checks). Flags: --core --full --vault --no-write --json\n",
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+            "--no-write --json -v --timeout-per-check\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=False)
@@ -1473,6 +1477,80 @@ def test_governance_parity_warn_on_missing_minimal_baseline_mention() -> None:
         "minimal-baseline" in f.expected.lower()
         for f in result.failures
     )
+
+
+def test_governance_parity_fail_on_missing_timeout_per_check_flag() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #3: --timeout-per-check
+    is a real argparse flag and removing it from the slash-doc must FAIL (not
+    silently pass via the prior under-specified EXPECTED_FLAGS list).
+    """
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+            "--minimal-baseline --no-write --json -v\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "FAIL", f"got {result.status}, failures={result.failures}"
+    assert any(
+        "--timeout-per-check" in f.expected and f.severity == "error"
+        for f in result.failures
+    ), f"missing --timeout-per-check must error; got {result.failures}"
+
+
+def test_governance_parity_accepts_short_or_long_v_form() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #3: -v and --verbose
+    are alt-forms of the same flag. Documentation passes if either appears.
+    """
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    base = (
+        "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+        "--minimal-baseline --no-write --json --timeout-per-check"
+    )
+    for v_form in ("-v", "--verbose"):
+        with tempfile.TemporaryDirectory() as td:
+            tdp = Path(td)
+            cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+            cmd.parent.mkdir(parents=True)
+            cmd.write_text(f"{base} {v_form}\n", encoding="utf-8")
+            ctx = AuditContext(repo_root=tdp, include_optional=False)
+            result = run(tdp, ctx, expected_core_count=11)
+        assert result.status == "PASS", (
+            f"v_form={v_form} should pass alt-form; got {result.status}, "
+            f"failures={result.failures}"
+        )
+
+
+def test_governance_parity_fail_on_no_v_form_at_all() -> None:
+    """Regression Codex-Phase-2-Final-Review Important #3: with NEITHER -v
+    NOR --verbose in the doc, the alt-set fails.
+    """
+    import tempfile
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+            "--minimal-baseline --no-write --json --timeout-per-check\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "FAIL"
+    assert any(
+        "-v/--verbose" in f.expected and f.severity == "error"
+        for f in result.failures
+    ), f"missing both -v and --verbose must error; got {result.failures}"
+
 
 def test_governance_parity_skip_on_missing_slash_cmd() -> None:
     import tempfile

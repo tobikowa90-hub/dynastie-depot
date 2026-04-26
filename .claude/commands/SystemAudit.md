@@ -1,5 +1,5 @@
 ---
-description: Run systemweiten Drift-Audit via 03_Tools/system_audit.py. Übergib Flags wie --core, --full, --vault, --json, --no-write, -v als $ARGUMENTS.
+description: Run systemweiten Drift-Audit via 03_Tools/system_audit.py. Übergib Flags wie --core, --full, --vault, --json, --no-write, -v, --timeout-per-check als $ARGUMENTS.
 ---
 
 Run the following command and report the N/M PASS result to the user:
