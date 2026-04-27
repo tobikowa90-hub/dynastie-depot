@@ -1,5 +1,6 @@
 # DEFCON Faktortabelle
 
+**Stand:** 27.04.2026 (AVGO Insider-FLAG aktiviert)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -26,7 +27,7 @@
 <!-- DATA:ASML -->
 | ASML | 33,8% | 26,48% | 52,8% | 0,21x | Wide | 68 | 🟡 3 | ✅ Clean | 2026-04-17 | Q2 2026 Earnings — FY27 Fwd P/E Watch (30,30 → D4-Kandidat <30) |
 <!-- DATA:AVGO -->
-| AVGO | ~30% | >20% | ~65% | ~2.5x | Wide | 84 | 🟢 4 | ⚠️ Insider $123M (vermutl. Post-Vesting — OpenInsider prüfen!) | 2026-04-17 | Q3 FY26 Earnings |
+| AVGO | ~30% | >20% | ~65% | ~2.5x | Wide | 84 | 🟢 4 | 🔴 Insider-Selling 90d $106M+ (FLAG aktiv 27.04.2026 — Sparrate 0€) | 2026-04-17 | Q3 FY26 — !Analysiere Re-Eval |
 <!-- DEFCON-Label-Drift-Fix 18.04.: BRK.B/VEEV/SU/COST/RMS D4→D3, APH D3→D2 (Schema-Thresholds auf SKILL.md aligned). Sparraten unverändert bei D3/D4-Übergängen. -->
 <!-- V-Score-Update 18.04.: 86 (Backfill) → 63 (Forward-Vollanalyse + Rescoring nach Advisor-Review). D4→D2, Sparrate 33,53€→17,81€. -->
 <!-- Nenner 8.5→8.0, volle Rate 33,53€→35,63€. -->
@@ -58,13 +59,13 @@
 | COST | ~3% 5J | 5.6% GAAP (MY 15.2%) | ~12.7% | <1x | Wide | 69 | 🟡 3 | ✅ Clean (Screener-Exception) | 2026-04-17 | Q1 FY27 Earnings ~Dez 2026 |
 <!-- END_TABLE -->
 
-**Aktive FLAGs:** MSFT (CapEx/OCF >60%) | AVGO (Insider $123M unter Review) | APH (Score-basiert, DEFCON 2 seit Threshold-Alignment)
+**Aktive FLAGs:** MSFT (CapEx/OCF >60%) | **AVGO (Insider-Selling 90d $106M+ — aktiviert 27.04.2026)** | APH (Score-basiert, DEFCON 2 seit Threshold-Alignment)
 **Struktureller Disclosure (kein FLAG):** ~~TMO (fcf_trend_neg)~~ **Resolved 23.04.2026** (Q1 FY26 FCF $825M +121% YoY, WC-Unwind-These bestätigt)
-**Unter Review:** AVGO (Insider $123M — wahrscheinlich Post-Vesting, manueller OpenInsider-Check vor FLAG-Aktivierung)
+**Unter Review:** — (AVGO 27.04.2026 zu aktivem FLAG promotet)
 **Analysierte Positionen:** 11/11 ✅ ALLE SATELLITEN auf v3.7 rekalibriert (V 18.04. + TMO 18.04./23.04. Forward-Vollanalyse, Rest Algebra-Projektion)
 **Offene Scores:** 0/11
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
-**Sparraten-Nenner:** 8×1,0 + 1×0,5 + 2×0 = **8,5** → volle Rate **33,53€** / D2-Rate (V) **16,76€** / FLAG (APH, MSFT) **0€**
+**Sparraten-Nenner:** 7×1,0 + 1×0,5 + 3×0 = **7,5** → volle Rate **38,00€** / D2-Rate (V) **19,00€** / FLAG (APH, MSFT, AVGO) **0€**
 
 > ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Algebra-Projektion v3.5→v3.7: ASML 68→66 (bleibt D3, **Post-Q1 17.04. Vollanalyse: 68**), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74.
 >
@@ -86,7 +87,7 @@
 | Mai 2026 | CPRT/ZTS/PEGA | B | Earnings → Watchlist-Review |
 | Juni 2026 | — | — | Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung |
 | Q2 2026 | GOOGL | C | FLAG-Review nach Earnings |
-| Q3 FY26 | AVGO | C | Insider-FLAG-Review — erneuter OpenInsider-Check |
+| Q3 FY26 | AVGO | C | !Analysiere — FLAG-Re-Eval (insider_selling_20m) + voller DEFCON-Refresh |
 
 ---
 
@@ -137,4 +138,4 @@ Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · 
 
 ---
 
-*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 23.04.2026 (TMO Q1 Upshift D2→D3 + FLAG-Resolve) | Nächste Vollaktualisierung: 17.07.2026*
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 27.04.2026 (AVGO Insider-FLAG aktiviert + Sparraten-Kaskade Nenner 8,5→7,5) | Nächste Vollaktualisierung: 17.07.2026*

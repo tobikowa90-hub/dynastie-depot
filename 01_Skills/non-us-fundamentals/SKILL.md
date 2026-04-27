@@ -1,5 +1,7 @@
 ---
 name: non-us-fundamentals
+version: "1.1"
+Stand: "2026-04-24"
 description: >
   Dynastie-Depot Non-US Fundamentals Module v1.1.
   Automatisierte DEFCON-Fundamentaldaten fuer ASML, RMS (Hermes), SU (Schneider Electric)

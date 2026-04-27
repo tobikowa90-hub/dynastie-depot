@@ -1,5 +1,5 @@
 # 🧠 CORE-MEMORY.md — Institutionelles Gedächtnis
-**Version:** 1.9 (v3.7 + Topic-Auflösung §1→§12/§13)
+**Version:** 1.9 (v3.7 + Topic-Auflösung §1→§12/§13) | **Stand:** 27.04.2026
 
 ## Verweise
 - [STATE.md](STATE.md) — Hub + Last-Audit
@@ -429,6 +429,7 @@ Analyse-spezifische Chronik pro Satellit (Live-Verify, Vollanalysen, Earnings-Up
 ### 12.1 AVGO
 
 - 17.04.2026 — v3.7-Backtest-Rekalibrierung Score 85→84, DEFCON 4 bestätigt, FLAG (Insider $123M 06.04.) bleibt aktiv (Detail §13 [Scoring] v3.7-Ratifikation; Methoden-Anker §5 10b5-1-Footnote-Lücke + Tariff-Exposure-Kalibrierung).
+- 27.04.2026 — **Insider-FLAG (insider_selling_20m) aktiviert.** OpenInsider-Cross-Check 9 Transaktionen 90d, alle „S - Sale" ohne 10b5-1-Suffix; kein Cashless-Pattern (M+S gleicher Tag). Skript-Lesart $106M (5× Schwelle), OpenInsider-Lesart $280M+ inkl. Samueli (Dir, $250M am 25.03. ohne 10b5-1-Marker). Watchlist-These „Post-Vesting" widerlegt (TAN $34M außerhalb 90d, kein Cashless-Pattern bei Brazeal/Kawwas/Spears/Velaga). Score 84/D4 unverändert — FLAG überschreibt. Sparrate 33,53€→0€. Kaskade: Nenner 8,5→7,5, andere D3/D4 33,53€→38,00€, V D2 16,76€→19,00€. Re-Eval bei Q3 FY26 Earnings via !Analysiere AVGO. flag_events.jsonl-Append via archive_flag.py.
 
 ### 12.2 APH
 

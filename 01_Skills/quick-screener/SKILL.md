@@ -1,6 +1,7 @@
 ---
 name: quick-screener
 version: 1.0.0
+Stand: "2026-04-25"
 description: >
   Schnell-Screener (Stufe 0) fuer das Dynastie-Depot. Filtert Ticker mit drei
   harten Kriterien (P/FCF, ROIC, Moat-Proxy) und gibt ein Ampel-Ergebnis

@@ -6,18 +6,18 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill akt
 
 ## Verhalten
 
-- `CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
+- `00_Core/CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
 - Stil: direkt, faktenbasiert, kein Filler — siehe INSTRUKTIONEN.md
 - **Code-Verhalten (Karpathy-Regeln):** Bei Code-/File-Edit-Operationen gelten Think-Before-Coding, Simplicity-First, Surgical-Changes, Goal-Driven-Execution. Detail: `INSTRUKTIONEN.md §0`. Nicht verbindlich für Markdown-Sync und Wiki-Operationen.
 - **Sync-Pflicht (§18 v2.1):** Trigger-basiertes Event-Mapping. Score/FLAG/Sparraten-Change → log.md + CORE-MEMORY.md + Faktortabelle + **PORTFOLIO.md** + score_history.jsonl + **`01_Skills/dynastie-depot/config.yaml`** (+ ggf. flag_events.jsonl), alles in einem git-Commit. Pipeline-Item → PIPELINE.md + log.md. System-Zustand-Change → SYSTEM.md + log.md. Multi-Event-Aktionen = Union der Sets. **score_history.jsonl-Write** via Skill `backtest-ready-forward-verify` (v1.0.1, seit dynastie-depot v3.7.3 Schritt 7). **flag_events.jsonl** CLI-direkt via `03_Tools/backtest-ready/archive_flag.py`. **config.yaml** manuell sync auch ohne FLAG-Change (Lücke 25.04. nach 7-Tage-Drift TMO 23.04. gefixt — siehe §18 v2.0→v2.1).
 - **Briefing-Sync:** Vor Session-Ende `!SyncBriefing` falls 00_Core/ geändert wurde (§25). SessionEnd-Hook warnt automatisch.
-- **Remote-Control (User-Trigger):** Wenn User `remote-Control` eingibt (oder sinngemäße Phrase „remote weiter"/„mobile weiter"), Remote-Routine mit State-Snapshot via `ccr` spawnen (Memory `remote-trigger-api.md`). Sonst kein automatischer Prompt — User-gesteuert, Zero-Overhead. Spawn-Mechanismus + Kontext-Scope final am Konsolidierungstag 24.04. festlegen.
+- **Remote-Control (User-Trigger):** Wenn User `remote-Control` eingibt (oder sinngemäße Phrase „remote weiter"/„mobile weiter"), Remote-Routine mit State-Snapshot via `ccr` spawnen (Memory remote-trigger-api.md). Sonst kein automatischer Prompt — User-gesteuert, Zero-Overhead. Spawn-Mechanismus + Kontext-Scope final am Konsolidierungstag 24.04. festlegen.
 
 ## Kontinuierliches Lernen
 
 | Tier | Speicherort | Wer schreibt | Wann gelesen | Pflege |
 |------|------------|--------------|-------------|--------|
-| 1. Auto-Memory | `~/.claude/.../memory/*.md` | Claude automatisch | Session-Start | Auto-Dream konsolidiert |
+| 1. Auto-Memory | ~/.claude/.../memory/*.md | Claude automatisch | Session-Start | Auto-Dream konsolidiert |
 | 2. Applied Learning | `00_Core/APPLIED-LEARNING.md` | Manuell bei Review | On-Demand (per Routing-Table) | Monatlich + Kurator-Regel |
 | 3. Formelle Regeln | `00_Core/INSTRUKTIONEN.md` §§ | Bei bewiesenem Bedarf | Per Routing-Table | Bei Systemänderungen |
 
@@ -29,10 +29,10 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 - `01_Skills/` — dynastie-depot · backtest-ready-forward-verify · insider-intelligence · non-us-fundamentals · quick-screener · `_extern/` (read-only)
 - `02_Analysen/` — DEFCON-Analysen als Excel
 - `03_Tools/` — Rebalancing · Satelliten-Monitor · Watchlist · Briefing-Hook · system_audit
-- `04_Templates/` — Pointer + spezifische Templates (z.B. `CAPEX-FCF-ANALYSE.md` zeigt auf `01_Skills/dynastie-depot/capex-fcf-template.md` v4.0)
+- `04_Templates/` — Pointer + spezifische Templates (z.B. `04_Templates/CAPEX-FCF-ANALYSE.md` zeigt auf `01_Skills/dynastie-depot/capex-fcf-template.md` v4.0)
 - `05_Archiv/` — Historische Dateien
 - `06_Skills-Pakete/` — Installierbare ZIP-Skills
-- `07_Obsidian Vault/` — Wiki (71 Notes, Schema + Workflows via `WIKI-SCHEMA.md`)
+- `07_Obsidian Vault/` — Wiki (71 Notes, Schema + Workflows via WIKI-SCHEMA.md)
 
 ## Routing-Table
 
@@ -41,12 +41,12 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 | Trigger | Lies zusätzlich | Skippe | Skill-Call |
 |---------|-----------------|--------|------------|
 | `Session starten` (default) | (Resume-Fall: SESSION-HANDOVER.md) | PIPELINE, SYSTEM, CORE-MEMORY, INSTRUKTIONEN, KONTEXT, Faktortabelle, Wissenschaftliche-Fundierung-DEFCON | — |
-| `!Analysiere <Ticker>` | INSTRUKTIONEN.md, Faktortabelle.md, `…/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` | KONTEXT, CORE-MEMORY (außer §5 bei Scoring-Edge-Case) | `dynastie-depot` + `backtest-ready-forward-verify` (Schritt 7, programmatisch) |
+| `!Analysiere <Ticker>` | INSTRUKTIONEN.md, Faktortabelle.md, …/synthesis/Wissenschaftliche-Fundierung-DEFCON.md | KONTEXT, CORE-MEMORY (außer §5 bei Scoring-Edge-Case) | `dynastie-depot` + `backtest-ready-forward-verify` (Schritt 7, programmatisch) |
 | `!QuickCheck <Ticker>` | Faktortabelle.md | INSTRUKTIONEN, KONTEXT, CORE-MEMORY, Wiss-Fundierung | `quick-screener` |
 | `!Rebalancing` | INSTRUKTIONEN.md, KONTEXT.md | CORE-MEMORY, Faktortabelle, Wiss-Fundierung | — |
 | `!SyncBriefing` | INSTRUKTIONEN.md (§25) + SYSTEM.md §Briefing-Status (nur wenn Briefing-Version/Deploy-Status seit letztem Sync geändert) | alle anderen | — |
 | Wiki-Ops (`ingest`/`lint`/`query`, „Vault"/„Obsidian"/„Faktortabelle-Edit"/„Score-Update"/„Insider scan"/„entity"/„Satellit Seite") | `07_Obsidian Vault/.../WIKI-SCHEMA.md` | INSTRUKTIONEN, KONTEXT, CORE-MEMORY (außer Wiki-Bezug) | je nach WIKI-SCHEMA-Workflow (`insider-intelligence`, `non-us-fundamentals`, …) |
-| `remote-Control` / „mobile weiter" | Auto-Memory `remote-trigger-api.md` | alles andere (Snapshot reicht) | — (User-getriggerter `ccr`-Spawn) |
+| `remote-Control` / „mobile weiter" | Auto-Memory remote-trigger-api.md | alles andere (Snapshot reicht) | — (User-getriggerter `ccr`-Spawn) |
 | Konsolidierungstag / System-Audit / Backlog-Review | SESSION-HANDOVER.md, STATE.md (Hub für Critical-Alerts + Last-Audit-Block) + PIPELINE.md + SYSTEM.md | KONTEXT, Faktortabelle (außer ticker-spezifisch) | `SystemAudit` (slash) bei Audit-Lauf |
 | Strategie-/Allokations-Frage | KONTEXT.md | Faktortabelle, Wiss-Fundierung | — |
 | Code-Edit-Session ohne anderen Trigger (z.B. „fix bug in X.py", „refactor Y") | INSTRUKTIONEN.md (§0 zuerst lesen) | alle anderen Pflicht-Lese-Files | — |

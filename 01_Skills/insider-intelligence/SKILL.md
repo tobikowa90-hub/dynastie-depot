@@ -1,5 +1,7 @@
 ---
 name: insider-intelligence
+version: "1.0"
+Stand: "2026-04-25"
 description: >
   Dynastie-Depot Insider Intelligence Module v1.0.
   Automatisiertes Form-4-Scanning der 8 US-Satelliten via SEC EDGAR API.

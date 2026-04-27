@@ -10,7 +10,7 @@
 
 ### Was diese Session GETAN hat
 
-**1. Phase 3.5 Probe-E2E-Verify PASS (Briefing v3.0.6)** — Manual-Run #2 ~20:50 MESZ via Tavily-Connector-UI-Reattach (UUID-Rotation `4a633350-...` → `0da14a12-...`) lieferte alle 9 B1-B9-Marker (6 hart). Auto-Memory `feedback_tavily_connector_uuid_rotation.md` geschrieben.
+**1. Phase 3.5 Probe-E2E-Verify PASS (Briefing v3.0.6)** — Manual-Run #2 ~20:50 MESZ via Tavily-Connector-UI-Reattach (UUID-Rotation `4a633350-...` → `0da14a12-...`) lieferte alle 9 B1-B9-Marker (6 hart). Auto-Memory feedback_tavily_connector_uuid_rotation.md geschrieben.
 
 **2. QuickCheck-Sweep 22 Tickers** (Option B / 10 high-priority) — Score-Drifts erkannt + reconciled: SNPS 79→76, SPGI 79→74, FICO 70→67, EXPN 74→61. KONTEXT.md/Faktortabelle/INSTRUKTIONEN §7 gezogen.
 
@@ -52,15 +52,15 @@
 
 ### Memory-Hooks aktiv
 
-- `feedback_tavily_connector_uuid_rotation.md` (NEU 27.04.) — Key-Rotation = Pflicht-UI-Reattach, nicht nur Body-Update
-- `feedback_review_via_codex_not_advisor.md` — Reviews via Codex (heute genutzt für 5a/5b-Sparring, single-pass ausreichend)
-- `feedback_codex_sparring_heuristic.md` — Single-Pass Default; heute 1× Pass mit klarem Verdict, kein Reconcile-Loop nötig
-- `feedback_onedrive_edit_collision.md`, `feedback_pre_commit_diff_inspection.md` — Standing-Practices
+- feedback_tavily_connector_uuid_rotation.md (NEU 27.04.) — Key-Rotation = Pflicht-UI-Reattach, nicht nur Body-Update
+- feedback_review_via_codex_not_advisor.md — Reviews via Codex (heute genutzt für 5a/5b-Sparring, single-pass ausreichend)
+- feedback_codex_sparring_heuristic.md — Single-Pass Default; heute 1× Pass mit klarem Verdict, kein Reconcile-Loop nötig
+- feedback_onedrive_edit_collision.md, feedback_pre_commit_diff_inspection.md — Standing-Practices
 
 ---
 
 ## 📜 Handover-Policy
 
-Nur **aktiver** RESUME-INPUT-Block. Historie kanonisch in `git log` (handover-Commits) + `CORE-MEMORY.md §13` + `PIPELINE.md`. Bei Session-Ende: aktiven Block ersetzen, nicht anhängen.
+Nur **aktiver** RESUME-INPUT-Block. Historie kanonisch in `git log` (handover-Commits) + `00_Core/CORE-MEMORY.md` §13 + `00_Core/PIPELINE.md`. Bei Session-Ende: aktiven Block ersetzen, nicht anhängen.
 
 *🔁 SESSION-HANDOVER.md v2.0 | Slim-Resume — Policy B*

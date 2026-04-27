@@ -1,10 +1,11 @@
 ---
 name: dynastie-depot
 version: "3.7.3"
+Stand: "2026-04-25"
 zieljahr: 2058
 system: DEFCON v3.7
 description: >
-Investmentanalyse-System für das Dynastie-Depot (Zieljahr 2058). Verwende diesen Skill bei JEDEM Gespräch über Aktienanalyse, Portfolio-Bewertung, DEFCON-Scoring, Sparplan, Rebalancing, Depot-Strategie, Watchlist, Ersatzbank oder Steuerplanung. Bei Unsicherheit: lieber aktivieren als ignorieren.
+  Investmentanalyse-System für das Dynastie-Depot (Zieljahr 2058). Verwende diesen Skill bei JEDEM Gespräch über Aktienanalyse, Portfolio-Bewertung, DEFCON-Scoring, Sparplan, Rebalancing, Depot-Strategie, Watchlist, Ersatzbank oder Steuerplanung. Bei Unsicherheit: lieber aktivieren als ignorieren.
 trigger_words:
 - "!Analysiere"
 - "!CAPEX-FCF-ANALYSIS"

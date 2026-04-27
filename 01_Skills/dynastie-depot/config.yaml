@@ -1,6 +1,6 @@
 # Dynastie-Depot – Portfolio State
 # Regeln: SKILL.md | Strategie: manifest.md | Pipeline: PIPELINE.md
-# Stand: 17.04.2026 (DEFCON v3.7 System-Gap-Release)
+# Stand: 27.04.2026 (AVGO Insider-FLAG aktiviert — Sparraten-Kaskade)
 
 # ─────────────────────────────────────────────
 # PORTFOLIO-RAHMEN
@@ -67,13 +67,13 @@ system_regeln:
     gewichte: "D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0"
     formel: "Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht"
     beispiel: |
-      Aktueller Stand (23.04.2026, post-TMO Q1 Forward-Vollanalyse Resolve-Gate CLEAR): 8× D4/D3 (Gewicht 1.0) + 1× D2 (V, Gewicht 0.5) + 2× 🔴 eingefroren (MSFT + APH)
-      Nenner = (8 × 1.0) + (1 × 0.5) + (2 × 0) = 8.5
-      D4/D3-Einzelrate = 285€ / 8.5 × 1.0 = 33,53€
-      D2-Einzelrate (V) = 285€ / 8.5 × 0.5 = 16,76€
+      Aktueller Stand (27.04.2026, post-AVGO Insider-FLAG-Aktivierung): 7× D4/D3 (Gewicht 1.0) + 1× D2 (V, Gewicht 0.5) + 3× 🔴 eingefroren (MSFT + APH + AVGO)
+      Nenner = (7 × 1.0) + (1 × 0.5) + (3 × 0) = 7.5
+      D4/D3-Einzelrate = 285€ / 7.5 × 1.0 = 38,00€
+      D2-Einzelrate (V) = 285€ / 7.5 × 0.5 = 19,00€
       🔴/D1-Rate = 0€
-      Summencheck: 8 × 33,53 + 1 × 16,76 = 268,24 + 16,76 = 285€ ✓
-      Vorgänger-Beispiel (18.04.2026, V+TMO beide D2): Nenner 8.0, D4/D3 35,63€, D2 17,81€ — historisch, durch TMO-Upshift 23.04. obsolet.
+      Summencheck: 7 × 38,00 + 1 × 19,00 = 266,00 + 19,00 = 285€ ✓
+      Vorgänger-Beispiel (23.04.2026, post-TMO Q1 Resolve-Gate): Nenner 8.5, D4/D3 33,53€, D2 16,76€ — historisch, durch AVGO-FLAG 27.04. obsolet.
 
   tariff_exposure_quelle:
     beschreibung: "Primärquelle für Tariff-Exposure-Scoring (Pflicht bei jedem !Analysiere)"
@@ -136,12 +136,13 @@ satelliten:
     score: 84
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
-    flag: false
-    flag_review: true
-    flag_hinweis: "⚠️ Unter Review — Insider $123M (Tan $24.3M + Brazeal $27.1M). Wahrscheinlich Post-Vesting. OpenInsider Spalte X/M manuell prüfen vor FLAG-Aktivierung."
-    sparrate_hinweis: "DEFCON 4, kein bestätigtes 🔴 FLAG → Gewicht 1.0 (volle Rate). Sparplan läuft."
-    naechste_pruefung: "Q3 FY26 Earnings — erneuter OpenInsider-Check"
-    scoring_notiz: "Score 84 (v3.7 Algebra 85→84, Quality-Trap-Anwendung auf Top-Level): Fabless-Modell = CapEx/OCF <15%, Referenz für Top-Score. Kalibrierungsanker. Sub-Audit pending Q3 FY26."
+    flag: true
+    flag_grund: "Insider-Selling FLAG (insider_selling_20m): Diskretionäre Verkäufe 90d $106M (Skript-Lesart) bzw. $280M+ (OpenInsider-Lesart inkl. Samueli) — beide Lesarten 5-14× über $20M-Schwelle. OpenInsider-Cross-Check 27.04.2026 zeigt 9 Transaktionen, alle als 'S - Sale' ohne 10b5-1-Suffix. Kein Cashless-Pattern (M+S gleicher Tag) — Watchlist-These 'Post-Vesting' widerlegt."
+    flag_seit: "2026-04-27"
+    flag_wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON 4."
+    flag_aufloesung: "Diskretionäre Insider-Verkäufe 90d ≤ $20M (rolling re-check). Re-Eval bei Q3 FY26 Earnings via !Analysiere AVGO."
+    naechste_pruefung: "Q3 FY26 Earnings — Insider-Block + Re-Eval FLAG-Status"
+    scoring_notiz: "Score 84 (v3.7 Algebra 85→84, Quality-Trap-Anwendung auf Top-Level): Fabless-Modell = CapEx/OCF <15%, Referenz für Top-Score. Kalibrierungsanker. FLAG aktiv ab 27.04.2026 — überschreibt Score."
     ersatz: "NVDA / MRVL"
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: USA
@@ -176,7 +177,7 @@ satelliten:
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Screener-Exception #3: ROIC 24% >> WACC 6,5% — Label D3 nach Schema-SKILL-Alignment 18.04. (Score 68 in 65-79-Range), Sparrate bei D3/D4 identisch."
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Screener-Exception #3: ROIC 24% >> WACC 6,5% — Label D3 nach Schema-SKILL-Alignment 18.04. (Score 68 in 65-79-Range), Sparrate bei D3/D4 identisch."
     naechste_pruefung: "H1 2026 Report Juli/Aug 2026"
     scoring_notiz: "Score 68 (v3.7 Live-Verify, 71→68 inkl. Q1-Recap). Revenue +6% CER/-1% rep. Kursreaktion -8,4%. Moat 19/20 intakt, ROIC 24% >> WACC 6,5%, Insider-Käufe +€7,67M (90d). D4-Exception #3: ROIC-Spread +17,5 PP."
     ersatz: RACE
@@ -192,7 +193,7 @@ satelliten:
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 74 in 65-79-Range)."
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 74 in 65-79-Range)."
     naechste_pruefung: "Nächste Earnings"
     scoring_notiz: "Score 74: Wide Moat (Life Sciences Vault-Monopol). Bewertung drückt Score unter 80."
     ersatz: "ZTS / SAP"
@@ -208,7 +209,7 @@ satelliten:
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 69 in 65-79-Range)."
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 69 in 65-79-Range)."
     naechste_pruefung: "H1 2026 Earnings Juli/Aug 2026"
     scoring_notiz: "Score 69 (v3.7 Algebra 71→69): CapEx/OCF 25.2% (ausgezeichnet), ROIC 10.48% > WACC 8.96%, FCF-Wachstum +41% 3J. Schwächen: P/FCF 37.7x, Goodwill 40.2% (AVEVA). Moat Narrow."
     ersatz: DE
@@ -224,7 +225,7 @@ satelliten:
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 75 in 65-79-Range). Screener-Exception: Insurance/Float-Modell."
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 75 in 65-79-Range). Screener-Exception: Insurance/Float-Modell."
     naechste_pruefung: "Q-Earnings Mai 2026"
     scoring_notiz: "Score 75: P/B 1.44x (Screener-Exception). Moat 19/20 (Float $686B, BNSF, 60J Track-Record). Insider 9/10: Greg Abel $15.3M Open-Market. CapEx/OCF 45.6% (BNSF+BHE, kein FLAG). Schwächen: ROIC 5.6-7.8% GAAP, Technicals 4/10."
     ersatz: "MKL / FFH.TO"
@@ -241,7 +242,7 @@ satelliten:
     score_datum: "2026-04-18"
     score_valid_until: "2026-10-15"
     flag: false
-    sparrate_hinweis: "DEFCON 2, kein 🔴 FLAG → Gewicht 0.5 (halbe Rate 17,81€)"
+    sparrate_hinweis: "DEFCON 2, kein 🔴 FLAG → Gewicht 0.5 (halbe Rate 19,00€)"
     naechste_pruefung: "2026-04-28 Q2 FY26 Earnings — D2-Entscheidung (Technicals-Reversal bei Beat + Guidance?)"
     scoring_notiz: "Score 63 (v3.7 Forward-Vollanalyse 18.04. nach Advisor-Review): Fundamentals 30/50 (Fwd P/E 5 / P/FCF 1 QT-cap Wide+28x / Bilanz 8 / CapEx/OCF 9 Fabless / ROIC 1 — GAAP 9,89% < WACC 10,48%, Regel-4-Gating GW/Assets 19,95% <30% greift NICHT / FCF-Y 4 / OpM 2), Moat 19 (Wide, kein Pricing-Power-Bonus mangels Transcript-Verifikation), Technicals 3 (RelStärke -13,97pp vs SPY, Kurs -4,97% unter fallendem 200MA), Insider 5 (<1% Ownership strikt), Sentiment 6 (Crowd-Warnung: 0% Sell + PT-Dispersion 32%). Algebra-Projektion 86 empirisch nicht haltbar (-23 pts). Q2 FY26 Earnings 28.04. entscheidet Reversal-Pfad."
     ersatz: MA
@@ -258,7 +259,7 @@ satelliten:
     score_valid_until: "2026-10-20"
     flag: false
     flag_hinweis: "fcf_trend_neg Resolve-Gate CLEAR (23.04.2026 Q1 FY26 Beat): FCF $825M +121% YoY, OCF +64,9%, ΔWC -1.112M vs -1.425M (+$313M besser) — WC-Unwind-These bestätigt. Schema-Watch deaktiviert. Management FY26-FCF-Guide $6,9-7,4B."
-    sparrate_hinweis: "DEFCON 3, kein 🔴 FLAG → Gewicht 1.0 (volle Rate 33,53€)"
+    sparrate_hinweis: "DEFCON 3, kein 🔴 FLAG → Gewicht 1.0 (volle Rate 38,00€)"
     scoring_notiz: "Score 67 (v3.7 Forward-Vollanalyse 23.04. Q1 FY26 Earnings-Trigger): Fundamentals 32/50 (Fwd P/E 7 19,3 / P/FCF 1 QT-cap Wide+27,27x / Bilanz 6 / CapEx/OCF 7 31,5% Q1-Standalone / ROIC 6 bereinigt 17,18% / FCF-Y 4 / OpM 1), Moat 18 (Wide unverändert), Technicals 6 (ATH -18,5% / RelStärke 0 / Trend 3), Insider 4 (Skip-Window <14d), Sentiment 7 (SB 4 / Sell 1 / PT-Up 2 / EPS-Revision-Up +1 Guidance-Raise / PT-Disp -1). Δ vs Pre-Score 64: Fundamentals +2 (fwd_pe 6→7, fcf_yield 3→4), Sentiment +1 (eps_revision_delta 0→+1). Beat-Headline: Adj EPS $5,44 vs $5,24 Konsens (+3,8%); Revenue $11,01B (+6,2% reported / +1% organic). Guidance-Raise FY26: Revenue $47,3-48,1B, Adj EPS $24,64-25,12, FCF $6,9-7,4B."
     naechste_pruefung: "2026-07 Q2 FY26 ~Ende Juli — Organic-Akzeleration (Q1 +1% → H2 3-4% Guide bestätigen) + Clario-Integration-Execution-Check."
     earnings_trigger: "DEFCON 4 bei: Q2 Organic ≥3% + Clario-Integration on-track + Sustained-FCF-Recovery. DEFCON 3 bleibt bei: Q2 Organic 1-3% + Plan-konformes Track-Record. DEFCON 2 bei: Q2 Organic <1% + Lab-Tools-Softness persistent + Clario-Friktion. DEFCON 1 / ZTS-Aktivierung bei: Score <50 oder Moat-Downgrade."
@@ -294,7 +295,7 @@ satelliten:
     score_datum: "2026-04-17"
     score_valid_until: "2026-10-14"
     flag: false
-    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 35,63€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 69 in 65-79-Range). Screener-Exception: Membership Yield 15.2% > WACC 12.3% als ökonomischer Return."
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 69 in 65-79-Range). Screener-Exception: Membership Yield 15.2% > WACC 12.3% als ökonomischer Return."
     naechste_pruefung: "Q1 FY27 Earnings ~Dez 2026"
     scoring_notiz: "Score 69: ROIC 5.6% GAAP (strukturell durch niedriges Book Value). Membership Yield 15.2% ($5.3B / $34.9B IC) als ökonomischer Return > WACC 12.3%. Moat 19/20 (Membership-Loyalty). Schwächen: P/FCF 53x, FCF Yield 1.88%."
     ersatz: null
@@ -320,13 +321,13 @@ flags_aktiv:
     wirkung: "Sparrate komplett gestoppt (0 €)"
     naechste_pruefung: "Q2 2026 Earnings 23.07."
 
-flags_review:
   - ticker: AVGO
-    grund: "Insider-Selling $123M (Tan $24.3M + Brazeal $27.1M) — wahrscheinlich Post-Vesting"
-    seit: "2026-04-02"
-    status: "Unter Review — OpenInsider-Check ausstehend vor FLAG-Aktivierung"
-    wirkung: "Sparplan läuft weiter (kein bestätigtes FLAG)"
-    naechste_pruefung: "Q3 FY26 Earnings — erneuter OpenInsider-Check"
+    grund: "Insider-Selling 90d $106M (Skript) bzw. $280M+ (OpenInsider-Lesart inkl. Samueli $250M) — beide Lesarten 5-14× über $20M-Schwelle. OpenInsider-Cross-Check 27.04.2026: 9 Transaktionen, alle 'S - Sale' ohne 10b5-1-Suffix, kein Cashless-Pattern. Watchlist-These 'Post-Vesting' widerlegt."
+    seit: "2026-04-27"
+    wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON 4"
+    naechste_pruefung: "Q3 FY26 Earnings — Re-Eval via !Analysiere AVGO + 90d-rolling-Insider-Check"
+
+flags_review: []  # AVGO 2026-04-27 → flags_aktiv promotet (Insider-FLAG)
 
 flags_watchlist:
   - ticker: GOOGL
@@ -467,7 +468,7 @@ termine:
   - datum: "Q2 2026"
     event: "GOOGL FLAG-Review nach Earnings"
   - datum: "Q3 FY26"
-    event: "AVGO Insider-FLAG-Review – erneuter OpenInsider-Check nach Earnings"
+    event: "AVGO !Analysiere — FLAG-Re-Eval (insider_selling_20m, getriggert 27.04.2026) + voller DEFCON-Refresh"
 
 # ─────────────────────────────────────────────
 # API-AUDIT-LOG (Quarterly Sanity Check)

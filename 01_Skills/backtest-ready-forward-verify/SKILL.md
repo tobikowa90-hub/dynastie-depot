@@ -1,6 +1,7 @@
 ---
 name: backtest-ready-forward-verify
 version: "1.0.1"
+Stand: "2026-04-25"
 description: >
   Orchestriert den Persistence-Teil jeder !Analysiere-Forward-Vollanalyse.
   Konsumiert einen ScoreRecord-Draft (JSON) aus dynastie-depot Schritt 7,
