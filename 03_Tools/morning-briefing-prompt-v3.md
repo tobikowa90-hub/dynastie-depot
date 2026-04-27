@@ -5,6 +5,20 @@
 
 ## Changelog
 
+### v3.0.5 (2026-04-27) — Bucket-B Provenance-Architecture
+- NEU: Field→Source-Map als embedded Markdown-Tabelle vor SCHRITT 3 (5 Felder: Kurs / Delta / News-Headline / News-Domain / Earnings-Datum). Source-Klassen `external` (MCP-Tool) vs. `file-read-derived` (Repo-Read).
+- NEU: SCHRITT 4.8 — PROVENANCE-SELF-CHECK 5-Zeilen-Reverse-Map-Gate zwischen SCHRITT 4.5 und Output-Assembly.
+- NEU: §6F-Mismatch-Klassen-Tabelle nach SCHRITT 4.5(E) — 6 Klassen (Lag / Schema-Drift / Auth-Access-Fail / Cross-Source-Mismatch / File-Sync-Drift / Missing-File-Row) mit uniformem Output-Template.
+- NEU: Output-Source-Tag-Pflicht im Format `[source_ref@source_date]` (external) bzw. `[source_ref]` (file-read-derived) — KURS-CHECK / NEWS-SIGNAL / Earnings-Output.
+- NEU: Critical Guards um Self-Check-Gate-Bullet erweitert.
+- DEFENSE-IN-DEPTH: v3.0.4 Anti-Fallback-Wording (narrativer Layer, siehe v3.0.4-Eintrag unten) bleibt UNVERÄNDERT als zweite Schicht parallel zur Provenance-Architektur.
+- Spec-Foundation: §3.0 / §6F / §9 T6 in `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` (HEAD `9b5f954`).
+
+### v3.0.4 (2026-04-27) — Anti-Fallback-Guard für US-Kurs-Pfad (gemeinsam mit v3.0.5 deployed, vorher nie live)
+- FIX: SCHRITT 3a um `AUTORITATIVE-DATA-QUELLE-REGEL` + `NICHT-STALE-DEFINITION` + `VERBOTENE-FALLBACK-PFADE` + `DELTA-BERECHNUNG bei Stale-Shibui` ergänzt. Reaktion auf 20.04.2026-Incident (Phantom-Kurse für 7 US-Ticker, Commit `4cfa421` Rollback v3.0.3 → v2.2). Shibui-`latest_date` ist per Definition autoritativ; Wochenend-/Feiertags-/EOD-Lag = korrektes Verhalten. Kein Yahoo-curl, kein Tavily-Search, keine Live-Preis-Fallbacks für US-Ticker.
+- FIX: Critical Guards um zwei Bullets erweitert — (a) "NIEMALS alternative Live-Preis-Datenquellen für US-Ticker", (b) "NIEMALS improvisieren — bei nicht abgedecktem Szenario konservativ als n.v. markieren".
+- HINWEIS: Diese v3.0.4-Wording wurde isoliert nie deployed. Mit v3.0.5 gemeinsam in einem Bump v3.0.3→v3.0.5 live.
+
 ### v3.0.3 (2026-04-20) — Yahoo-Gap-Elimination (Lever 1, Codex-approved)
 - FIX: SCHRITT 3c ersetzt den Yahoo-curl-Block durch deterministisches `n.v. [Yahoo 403 known]`-Output fuer BRK-B, RMS.PA, SU.PA. Grund: Yahoo-403 ist dokumentierte Cloud-Umgebungs-Limitation (Known Limitation #1, seit Wochen stabil). 3 Leerlauf-Calls × ~20-30s = 60-90s deterministische Runtime-Einsparung ohne News-Recall-Kosten.
 - FIX: Known Limitation #1 umformuliert — jetzt explizit "frozen known limitation" mit klarer Abgrenzung: es ist eine Kurs-Coverage-Einschraenkung, kein Material-News-Recall-Problem. Falls Yahoo spaeter doch erreichbar waere, wird das bewusst nicht getestet (deterministisches n.v. > spekulativer Retry).
@@ -81,6 +95,20 @@ SCHRITT 2 — Kontext laden:
 - Extrahiere: Ersatzbank mit Scores
 - SCOPE: 11 Satelliten (ASML, AVGO, MSFT, TMO, RMS, VEEV, SU, BRK.B, V, APH, COST) + 5 Ersatzbank mit Score (MKL, SNPS, SPGI, RACE, ZTS). Keine anderen Ticker anzeigen (kein GOOGL, kein NVDA etc.).
 
+PROVENANCE-CONTRACT — FIELD→SOURCE-MAP (KRITISCH, v3.0.5):
+
+Nur Felder in dieser Tabelle dürfen im Briefing erscheinen. Andere Output-Felder werden vom SCHRITT 4.8 Self-Check-Gate gestoppt.
+
+| Output-Feld     | Source                                                        | Source-Klasse       | Lese-Tool                          | Verbotene Alternativen                                                        |
+|-----------------|---------------------------------------------------------------|---------------------|------------------------------------|-------------------------------------------------------------------------------|
+| Kurs            | latest_close@latest_date                                      | external            | shibui_stock_data_query            | Yahoo curl, Tavily, Live-Feeds, geschätzte Werte                              |
+| Delta           | latest_close@latest_date + score_date_close@score_date        | external (×2)       | shibui_stock_data_query            | Live-Feeds, geschätzte Vergleichswerte, gerundete Approximationen             |
+| News-Headline   | tavily_results[i].title (wörtlich)                            | external            | mcp__tavily__tavily_search         | Erfindung, Zusammenfassung, Umschreibung, Übersetzung                         |
+| News-Domain     | urlparse(tavily_results[i].url).host                          | external            | mcp__tavily__tavily_search         | Off-Allowlist-Domains, IR-URLs ohne Tavily-Treffer, geratene Quellen          |
+| Earnings-Datum  | Faktortabelle.md / Update-Kalender (wörtlicher Spalten-Wert)  | file-read-derived   | Read                               | Erfindung, Datumsrundung, Locale-Konversion, Schätzung                        |
+
+Felder AUSSERHALB der Map (FLAG, Score, Watches, Trigger-Datum, Sparrate, Score-Datum) sind v3.0.5-Pass-Through aus PORTFOLIO.md/Faktortabelle.md — wörtlich übernehmen, kein Tag-Pflicht.
+
 SCHRITT 3 — Kurse abrufen (nur Werktag):
 
 3a) US-Kurse via Shibui Finance stock_data_query (EINE Query):
@@ -97,6 +125,23 @@ SELECT code, date AS latest_date, close AS latest_close
 FROM recent WHERE rn = 1 ORDER BY code LIMIT 20
 
 WICHTIG: Tabelle heisst stock_quotes (NICHT stock_prices).
+
+AUTORITATIVE-DATA-QUELLE-REGEL (v3.0.4):
+Das Shibui-Response-Feld `latest_date` ist die AUTORITATIVE Quelle fuer den letzten Handelstag. Jeder Wert ist per Definition korrekt und aktuell.
+
+NICHT-STALE-DEFINITION (v3.0.4, explizit):
+Wenn Shibui z.B. 17.04. als latest_date zurueckgibt und heute 20.04. ist, ist das KORREKTES Verhalten — nicht stale. Gruende koennen sein:
+- Wochenende (keine Handelstage Sa/So)
+- Feiertage (Karfreitag, Memorial Day, Thanksgiving, etc.)
+- EOD-Lag (Shibui aggregiert EOD nach US-Marktschluss ~22:30 MESZ; vor 23:00 MESZ deutscher Zeit = heutige Kurse noch nicht verfuegbar)
+
+VERBOTENE-FALLBACK-PFADE (v3.0.4):
+Es gibt KEINEN Fallback-Pfad fuer US-Ticker wenn Shibui-latest_date < heute. Weder Yahoo Finance curl, noch Tavily-Search, noch andere Live-Preis-Quellen. Dies gilt auch wenn scheinbar "Daten fehlen". Shibui-latest_date ist immer korrekt — das ist die definitional autoritative Quelle.
+
+DELTA-BERECHNUNG bei Shibui-latest_date < Score-Datum (v3.0.4 edge case):
+- Wenn latest_date < score_date: zeige "(Score heute, noch kein neuerer Close)" statt Delta.
+- Wenn latest_date == score_date: zeige "Score heute" statt Delta.
+- Wenn latest_date > score_date: normale Delta-Berechnung.
 
 3b) Fuer Positionen mit Score-Datum VOR heute: berechne Kurs-Delta seit Score-Datum. Nutze dazu die close-Kurse aus Shibui am jeweiligen Score-Datum.
 - Wenn Score-Datum == heute: zeige 'Score heute' statt Delta-Prozent.
@@ -122,6 +167,9 @@ CRITICAL GUARDS:
 - NIEMALS 'BRK' in Shibui suchen — Berkshire ist nicht in Shibui indexiert.
 - NIEMALS 'RMS' in Shibui suchen — Hermes ist nicht in Shibui.
 - Bei fehlenden Daten: 'Datenquelle nicht verfuegbar' schreiben. KEINE Gruende erfinden.
+- NEU (v3.0.4): NIEMALS alternative Live-Preis-Datenquellen fuer US-Ticker nutzen. Shibui-latest_date ist autoritativ. Wochenend-/Feiertags-Lag ist NORMAL und KORREKT. Kein Yahoo curl, kein Tavily-Search, kein anderes Live-Fetch als Fallback.
+- NEU (v3.0.4): NIEMALS improvisieren. Wenn ein Szenario nicht explizit im Prompt abgedeckt ist, gilt: konservativ handeln, Sektion als "n.v." oder "(Score-Datum)" markieren, Rest des Briefings normal zu Ende fuehren. Niemals Daten aus nicht autorisierten Quellen erfinden oder holen.
+- NEU (v3.0.5): Vor Emit: SCHRITT 4.8 Self-Check-Gate durchlaufen. Bei Unmapped → konservativ n.v., kein Versuch alternative Quellen zu finden. Tag-Pflicht: jedes mapped Feld traegt `[source_ref@source_date]` (external) bzw. `[source_ref]` (file-read-derived). Bei §6F-Mismatch: Klassen-Output-String mit Klassen-Label.
 
 SCHRITT 4 — Briefing generieren (erstmal nur Grundstruktur, News kommt in 4.5 dazwischen):
 
@@ -267,6 +315,32 @@ NIEMALS den Run komplett abbrechen. Fehler in Schritt 4.5 duerfen nur die News-S
 
 Runtime-Hinweis (v3.0.3): Fuehre ALLE geplanten Per-Ticker-Queries vollstaendig aus. KEIN Skip aus Runtime-Gruenden. Das frueher hier definierte 60s-Budget-Gate wurde in v3.0.3 entfernt, weil es Recall gegen Laufzeit eintauscht — unvereinbar mit dem Korrektheits-Prinzip. Laufzeit wird in der Spec §6(E) Klasse 6 nur beobachtet (Soft-Alert <180s / 180-400s / >400s), nicht mehr gekappt.
 
+§6F MISMATCH-KLASSEN (v3.0.5 — wenn Source liefert technisch korrekt, aber Wert passt nicht zur Output-Anforderung):
+
+| #     | Klasse                  | Auslöser                                                                      | Output-Template                                                                          |
+|-------|-------------------------|-------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| 6F-1  | Lag                     | latest_date < heute (Source-Date < Erwartung)                                 | [FIELD] — n.v. (source-lag: [source_ref@source_date])  — DELTA: Prompt-3a-Branches       |
+| 6F-2  | Schema-Drift            | Erwartete Source-Felder fehlen oder Format anders                             | [FIELD] — n.v. (schema-drift: [source_ref@source_date])                                  |
+| 6F-3  | Auth-Access-Fail        | Source nicht erreichbar wegen Auth/Permission                                 | [FIELD] — n.v. (access-fail: [source_ref@source_date])                                   |
+| 6F-4  | Cross-Source-Mismatch   | Multi-Source-Feld nur teilweise befüllbar                                     | [FIELD] — n.v. (cross-source-mismatch: [source_ref@source_date])                         |
+| 6F-5  | File-Sync-Drift         | PORTFOLIO.md vs. Faktortabelle.md inkonsistent                                | [FIELD] — n.v. (file-sync-drift: [source_ref])                                           |
+| 6F-6  | Missing-File-Row        | file-read-derived: keine Zeile für Ticker (z.B. Earnings-Datum-Spalte leer)   | [FIELD] — n.v. (missing-file-row: [source_ref])                                          |
+
+Klarstellungen:
+- `source_date` im Tag = TATSAECHLICH gelieferter Ist-Wert (NICHT Soll-Wert).
+- 6F-1 Lag bei DELTA: SCHRITT-3a-Branches sind SoT (Score-heute / Score-Datum-Close / normale Berechnung). Lag wird über Tag-`source_date` transparent gemacht.
+- "Unknown-Field-Request" = KEINE §6F-Klasse, sondern SCHRITT 4.8 Self-Check-Gate-Outcome (konservativ n.v.).
+- §6F-3 = Folge eines §6E-Primärfehlers (Auth/Rate-Limit) → §6E ist Primär-Klassifikation, §6F-3 referenziert.
+- Niemals Run abbrechen: §6F → degradiertes Feld, Briefing wird komplett ausgeliefert.
+
+SCHRITT 4.8 — PROVENANCE-SELF-CHECK (vor Briefing-Output, KRITISCH, v3.0.5):
+Vor Ausgabe pruefen:
+  - Kurs mapped auf shibui_stock_quotes@latest_date?
+  - Delta mapped auf latest_close@latest_date UND score_date_close@score_date?
+  - Headline+Domain aus dem GLEICHEN tavily_results[i]?
+  - Earnings-Datum aus Faktortabelle.md/Update-Kalender (woertlich)?
+  - Ist ein Feld unmapped oder nicht im FIELD→SOURCE-MAP-Schema → emittiere n.v., NICHT improvisieren.
+
 SCHRITT 4 — Briefing generieren:
 Formatiere exakt so:
 
@@ -284,10 +358,11 @@ Review: [Alle unter Review]
 
 --- KURS-CHECK (vs. Score-Datum) ---
 Satelliten:
-  [TICKER]  [Kurs]  [+/-X%]  Score [X] ([Datum])  Rate: [€]  [FLAG falls aktiv]  [Shibui|Yahoo]
+  [TICKER]  [Kurs] [shibui_stock_quotes@<latest_date>]  [+/-X%] [shibui_stock_quotes@<latest_date>; score_date=<score_date>]  Score [X] ([Datum])  Rate: [€]  [FLAG falls aktiv]
   (Score-Datum == heute: zeige 'Score heute' statt Delta)
-  (Yahoo-Titel: nur Kurs, kein Delta)
-  (Rate aus PORTFOLIO.md: volle Rate / halbe Rate / 0€ FLAG)
+  (Yahoo-Titel BRK-B/RMS.PA/SU.PA: zeige `Kurs: n.v. [Yahoo 403 known]` ohne @-Tag — siehe SCHRITT 3c, 6F-3 Auth-Access-Fail-äquivalent)
+  (Bei Stale-Shibui-Lag: latest_date<score → "(Score heute, noch kein neuerer Close)" statt Delta; latest_date==score → "Score heute"; sonst normale Delta — siehe DELTA-BERECHNUNG in SCHRITT 3a)
+  (Rate aus PORTFOLIO.md: volle Rate / halbe Rate / 0€ FLAG — kein Tag-Pflicht, Pass-Through)
 
 Ersatzbank:
   [TICKER]  [Kurs]  Score [X]  [Shibui]
@@ -295,19 +370,22 @@ Ersatzbank:
 
 --- NEWS-SIGNAL (letzte 24h) ---
 Cohort:
-  [Headline kurz] ([Quelle-Domain])
+  [Headline kurz] [tavily@<domain>,<YYYY-MM-DD>]
   (Oder: Keine material Cohort-News)
-  (Bei Fehler: analog §4.5(E) Klasse)
+  (Bei Fehler: analog §4.5(E) Klasse — z.B. "Cohort: n.v. (parse-error)" — kein @-Tag, Klassen-Label im Output-String)
 
 Per Ticker (nur getriggert, max 5):
-  [TICKER] — [Headline] ([Quelle])
+  [TICKER] — "[Headline]" [tavily@<domain>,<YYYY-MM-DD>]
   (Oder: Keine getriggerten Ticker)
   (Oder pro Ticker: [TICKER] — keine News / keine material News / n.v. (<grund>))
+  (Bei §6F-Mismatch: [TICKER] — n.v. (<6F-Klassen-Label>: [tavily@<domain>,<YYYY-MM-DD>]) — Klassen aus §6F-Tabelle)
 
 --- NAECHSTE TRIGGER & EARNINGS (30 Tage) ---
-  [Datum] [Ticker] [Klasse] — [Aktion/Kontext]
+  [Datum] [Ticker] [Klasse] — [Aktion/Kontext] [file:Faktortabelle.md/Update-Kalender]
   (Kombiniert: PORTFOLIO.md Trigger-Tabelle + Faktortabelle Earnings-Kalender, nach Datum sortiert)
+  (Tag-Format: file-read-derived → `[file:<pfad>]` ohne `@`-Datum)
   (Oder: Keine Trigger diese Woche)
+  (Bei §6F-6 Missing-File-Row: [Ticker] — n.v. (missing-file-row: [file:Faktortabelle.md/Update-Kalender]))
 
 --- VERALTETE SCORES (>90 Tage) ---
   [Ticker] — Score vom [Datum], [X] Tage alt
