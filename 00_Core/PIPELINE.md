@@ -53,7 +53,7 @@
 
 | Datum | Gate | Owner-Aktion |
 |-------|------|--------------|
-| ~04.05.2026 | Tavily Dev-Key Rotation #2 | **Vorherige Rotation 27.04.2026 DONE** — alter Key `tvly-dev-4PYXp...` ersetzt (Prod-Connector via Delete+Recreate da URL read-only, lokal `~/.claude.json:777`). Connector heißt weiter `tavily`, friendly-name-Resolution unverändert. **TODO User:** alten Key auf tavily.com revoken nach Smoke-Test (~10:00 MESZ Briefing-Cron). 7-Tage-Uhr läuft formal ab v3.0.4-Prod-Deploy, pragmatisch ~04.05. (7d-rolling). |
+| ~04.05.2026 | Tavily Dev-Key Rotation #2 | **Rotation 27.04.2026 KOMPLETT verified** — alter Key `tvly-dev-4PYXp...` ersetzt + post-Restart Smoke-Test PASS (V-Headline-Query lieferte konsistente Daten zu Pre-Earnings-Brief) + alter Key auf tavily.com revoked. Neue Connector-UUID `0da14a12-17bb-4609-bcba-ba2b21152c9b` (alte `4a633350-...` disconnected). Connector-Name weiter `tavily`, friendly-name-Resolution `mcp__tavily__` greift unverändert — Repo-Prompts (`03_Tools/morning-briefing-prompt-v3.md`) unangetastet richtig. Spec-Doc `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` enthält weiter alte UUID als historische Referenz (Doku, nicht operativ — kein Edit nötig). 7-Tage-Uhr läuft formal ab v3.0.4-Prod-Deploy, pragmatisch ~04.05. (7d-rolling ab 27.04.). |
 | 2026-07-19 | Track 5a 90-Tage-Audit | EDGAR-Skill Performance-Review (falls promoted) |
 | 2026-10-17 | Score-Archiv-Interim-Gate | 6-Monats-Sanity-Check `score_history.jsonl` (Forward-Window + Duplicate-Guard) |
 | 2027-10-19 | R5 Interim-Gate | 18-Mo-Dry-Run `risk-metrics-calculation` + Data-Quality `portfolio_returns.jsonl` (inkl. FX-Conversion-Check) |
