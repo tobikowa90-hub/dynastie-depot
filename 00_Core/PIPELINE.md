@@ -25,12 +25,10 @@
 - **28.04. V Q2 FY26** — D2-Entscheidung (Technicals-Reversal?).
 - **29.04. MSFT Q3 FY26** — FLAG-Review CapEx/OCF (bereinigt <60% = Auflösung, >60% = Veto-Verschärfung).
 
-### 🟡 Bereit, wartet auf Gate A (Prod-Deploy v3.0.6 nach Earnings 28./29.04.)
+### 🟡 Bereit, wartet auf Earnings-Window-Schluss (post-29.04.)
 
-6. **Track 5a SEC EDGAR Skill-Promotion** — Plan `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks). Re-Validation-Check nach 6-Paper-Ingest B21-B24 möglicherweise nötig. **Entscheidung 5a/5b kann Dashboard v2 beeinflussen** (EDGAR-Daten in Faktortabelle-Parser integrierbar, FRED-Macro-Headline als Tavily-Alternative).
-7. **Track 5b FRED Macro-Regime-Filter** — Plan `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks). User-Aktion vor Start: FRED-API-Key registrieren. B19 (LLM-Regime-Shift-Bias) stärkt wissenschaftliche Begründung.
-7a. **Track 5a/5b Entscheidungspunkt (NEU 23.04.)** — am Konsolidierungstag Fr 24.04. **Block 0 Teil 2 (15 Min)** vor Dashboard v2: ja/nein für 5a, ja/nein für 5b. Grund: Dashboard-Scope (Block 3) hängt von Feed-Entscheidung ab — EDGAR/FRED-Daten im Faktortabelle-Parser wären nachträgliche Re-Integration. User-Pre-Aktion: FRED-API-Key registrieren (falls 5b = ja vorgesehen). Gate: v3.0.4 muss Block 2 PASS haben.
-7b. **Dashboard v2** (`dynasty-depot-dashboard` Artifact) — **wartet auf Gate A (v3.0.4 + Tavily-Key-Rotation) + 5a/5b-Entscheidung (Block 0 Teil 2)**. Architektur entschieden 22.04. (Opus+Sonnet Advisory): Faktortabelle-Parser + Shibui-primär + Tavily-scoped + FLAG-Lösungs-Pfade. Scheduled Task `dynasty-dashboard-refresh` läuft bereits (07:09 Mo-Fr). **Ausführung: Konsolidierungstag Fr 24.04., Block 3 (nach v3.0.4 + Key-Rotation + 5a/5b).** **Scope-Entscheidung 22.04. (final):** Rebalancing_Tool / Satelliten_Monitor / Watchlist_Ersatzbank XLSX bleiben externe Arbeitsblätter — kein XLSX-Parsing im Dashboard (zu fehleranfällig). Dashboard-Fokus = aktuelle 11 Satelliten-Positionen.
+6. **Track 5a SEC EDGAR Skill-Promotion** — Plan `docs/superpowers/plans/2026-04-20-track5a-edgar-skill-promotion.md` (9 Tasks, ~2-3h). **Decision A1-Final 27.04.2026** (Decision-Spec `docs/superpowers/specs/2026-04-27-track5a-5b-decision.md` nach Codex-Sparring): freigegeben für Execution post-V/MSFT-Earnings (30.04.+). Skill-Move `_extern/sec-edgar-skill/` → `01_Skills/sec-edgar-skill/`, EdgarTools-Install + `set_identity()`. Eskalations-Fallback (NICHT auto in `!Analysiere`).
+7b. **Dashboard v2** (`dynasty-depot-dashboard` Artifact) — **entkoppelt von 5a/5b** (Decision-Spec 27.04.). Architektur (Opus+Sonnet Advisory 22.04.): Faktortabelle-Parser + Shibui-primär + Tavily-scoped + FLAG-Lösungs-Pfade. Scheduled Task `dynasty-dashboard-refresh` läuft bereits (07:09 Mo-Fr). XLSX-Tools bleiben externe Arbeitsblätter (kein XLSX-Parsing im Dashboard). Dashboard-Fokus = aktuelle 11 Satelliten-Positionen. Sequenzierung: nach 5a-Skill-Promotion.
 
 ### 🔵 Deferred / Explizit zurückgestellt
 
@@ -38,6 +36,7 @@
 9. **Track 4 ETF+Gold-Erweiterung** — Blockiert auf User-Input (ETF-Ticker IWDA.AS/SWDA.L/EUNL.DE? Gold-Ticker SGLD.DE/4GLD.DE/GC=F?). Cron-/Hook-Mechanismus für Auto-Persist kann jetzt auf `portfolio_risk.py --persist daily --as-of $(date -I)` aufsetzen (Backfill-Flag seit 23.04. verfügbar).
 10. **KG-Roadmap v0.1 `draft-frozen`** (`07_Obsidian Vault/.../synthesis/Knowledge-Graph-Architektur-Roadmap.md`). Re-Review-Trigger: Cross-Entity-Bedarf ODER Score-Archiv-Interim-Gate 2026-10-17.
 11. ❄️ **Atomic-Write-Hardening `portfolio_risk.py`** (Frozen — 23.04.2026 B-Entscheidung) — aktueller Patch (`fsync` + try/truncate-Rollback) deckt Software-Exceptions. CR-Vorschlag temp+`os.replace`+dir-fsync nicht umgesetzt: Solo-Betrieb 1×/Tag, Hard-Crash-Window µs. **Re-Activation-Trigger:** Incident ODER Track-4-Auto-Hook konkret. Bei Re-Activation: (a) Recovery-Script `repair_daily_persist.py` für Split-State + (b) Hardening.
+7. ❄️ **Track 5b FRED Macro-Regime-Filter** (Deferred — 27.04.2026 A1-Final-Entscheidung) — Plan `docs/superpowers/plans/2026-04-20-track5b-fred-regime-filter.md` (15 Tasks) bleibt unverändert archiviert. Decision-Spec `docs/superpowers/specs/2026-04-27-track5a-5b-decision.md` dokumentiert Codex-Sparring-Befund: bei aktuellem Sparraten-Volumen 285€/Monat realistisch <20bps/Jahr Alpha → Effort/Reward-Verhältnis nicht gegeben. **Re-Activation-Trigger (mind. einer):** (a) Sparrate >1.000€/Monat ODER (b) Depotwert >50.000€ ODER (c) konkret aufgetretener Regime-Aware-Schmerz (Drawdown-Ex-post-Reduktion oder Bull-Phase-Ex-post-Erhöhung sichtbar besser). Bei Re-Activation: Plan-Update mit (i) Hysterese-Smoothing-Layer (Codex-Stress #3 Caveat — ISM-Volatilität würde Composite instabilisieren) + (ii) Empfohlener-vs-Eingetragener-Detector (Codex-Stress #4 Caveat — User-vergisst-Zelle ist primärer Failure-Mode).
 14. 👁 **Vault-Discoverability für INSTRUKTIONEN.md §§** (monitor-only, 2026-04-26) — Tier-3-Verortung außerhalb Vault intentional + voll integriert (5 Pointer 00_Core + 3 Wikilinks Vault). §§ vom Wiki-Modus aus nicht per Wikilink springbar — reine Bequemlichkeits-Lücke. **Mögliche Optionen** falls relevant: (a) Vault `INSTRUKTIONEN-§§-Index.md` Concept-Page; (b) Reverse-Backlinks-Footer in INSTRUKTIONEN.md. **Re-Activation-Trigger:** konkret aufgetretener Discoverability-Schmerz.
 
 ## ⏰ Long-Term-Gates (chronologisch)
@@ -54,4 +53,4 @@
 
 ---
 
-*🦅 PIPELINE.md v1.1 | Dynasty-Depot | Pipeline-SSoT — on-demand via Routing-Table | Stand: 27.04.2026 (DONE-Bereinigung: Items #1/#4/#5/#12/#13/#15 + 23.04.-TMO-Trigger entfernt — Archive: CORE-MEMORY §13 + git log)*
+*🦅 PIPELINE.md v1.2 | Dynasty-Depot | Pipeline-SSoT — on-demand via Routing-Table | Stand: 27.04.2026 (Track-5a/5b-Decision A1-Final: 5a freigegeben post-Earnings, 5b deferred mit Re-Activation-Triggern, 7a Decision-Point DONE)*
