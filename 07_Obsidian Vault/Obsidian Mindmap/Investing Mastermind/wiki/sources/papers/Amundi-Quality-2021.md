@@ -9,7 +9,7 @@ venue: "Amundi Working Paper 113-2021, June 2021. Document for professional clie
 authors: "Frédéric Lepetit, Amina Cherief, Yannick Ly, Takaya Sekine (alle Quantitative Research, Amundi)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY. Practitioner-Validation der QMJ-Quality-Definition über ein anderes 18J-Sample (developed markets, large/mid-caps post-2003). Vier Pillars: **Profitability, Earnings Quality, Safety, Investment** — leicht verschoben gegenüber AFP-QMJ (Growth → Investment, Payout → Earnings Quality). Long-Only-Outperformance +2,8% p.a., Information Ratio 0,81, sehr konsistent post-GFC 2008. Drei Befunde sind operativ relevant: (1) Eurozone-Region zeigt Eurozone-spezifische Sektor-Bias (Sector-Neutral-Konstruktion empfohlen); (2) Safety-Pillar wird in Crisis-Phasen (GFC, Covid) entscheidend; (3) Pillars sind weak-correlated → komplementär. Kein active-scoring — DEFCON nutzt Quality dekomponiert (siehe QMJ + Wolff-Echterling-2023)."
-related: "[[QMJ-Faktor]], [[Quality-Investing-Multidimensional]], [[Asness-Frazzini-Pedersen-2013-QMJ]], [[Wolff-Echterling-2023]], [[F-Score-Quality-Signal]], [[Non-US-Scoring]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+related: "[[QMJ-Faktor]], [[Asness-Frazzini-Pedersen-2013-QMJ]], [[Wolff-Echterling-2023]], [[F-Score-Quality-Signal]], [[Non-US-Scoring]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/2021.06 - Revisiting Quality Investing - EN.pdf"
 aliases:
   - "Amundi Quality 2021"
@@ -50,8 +50,7 @@ Methodisch interessant: Pillar-Definition divergiert zu QMJ (Asness/Frazzini/Ped
 
 ## Backlinks
 
-- [[QMJ-Faktor]] — komplementäre Primärquelle
-- [[Quality-Investing-Multidimensional]] — neue Concept-Page (Phase B2, 4-Pillars-Framing)
+- [[QMJ-Faktor]] — komplementäre Primärquelle (4-Pillars-Framing-Anker)
 - [[Asness-Frazzini-Pedersen-2013-QMJ]] — kanonische Quality-Definition
 - [[Wolff-Echterling-2023]] — STOXX-600-Validation
 - [[F-Score-Quality-Signal]] — diskrete Implementierung
