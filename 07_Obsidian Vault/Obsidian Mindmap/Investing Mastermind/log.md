@@ -1014,3 +1014,14 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
   - Total Mai-Investment ~1.633€ (ETF-Core 1.347,50€ + Satelliten 285€ + Gold 47,50€) plus Cash-Konsolidierung.
 - **AVGO/V Übergewicht:** keine Aktion — V Earnings 28.04. abends + MSFT 29.04. abends können beide Richtungen verschieben. Post-Earnings Re-Bewertung via `!Analysiere V` + `!Analysiere MSFT`.
 - **Live-System-Impact:** Null — keine Score/FLAG/Sparraten-Standard-Änderung. Mai-Aufstockung ist Einmalmaßnahme im operativen Sparplan, nicht im 00_Core-Live-State. Standard-Sparraten 950€/Monat unverändert (KONTEXT.md §3 + PORTFOLIO.md Sparraten-Nenner 8,5).
+
+## [2026-04-27] tools-sync | Watchlist_Ersatzbank_Monitor v1.1 Score-Drift-Reconcile
+- **Anlass:** Nach KONTEXT.md/Faktortabelle-Reconcile heute (`db66d99`) war die XLSX-Tabelle `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` mit Stand 15.04.2026 die letzte unsynchronisierte SSoT-Drift-Quelle für SNPS/SPGI/FICO. Satelliten_Monitor v2.0 (Stand 23.04.) bereits konsistent mit Live-State (alle 11 Satelliten-Scores match PORTFOLIO.md), kein Edit nötig.
+- **Edits (8 Cells in Watchlist_Ersatzbank_Monitor_v1.1.xlsx):**
+  - Z1 Header: "Stand: 15.04.2026" → "Stand: 27.04.2026"
+  - Z13 SNPS Score-Cell: 79→76 + Hinweis-Note (DEFCON v3.5 Audit 16.04. 79→76)
+  - Z15 SPGI Score-Cell: 79→74 + Hinweis-Note (M&A-Goodwill-Verzerrung, Non-GAAP ~82) — Status "🟢 Einstieg prüfen" beibehalten wegen Goodwill-Edge-Case
+  - Z20 FICO Score-Cell: 70→67 + Hinweis-Note (TTM-Kurscrash-Verzerrung, Quick-Screener-Sweep 27.04. ROIC 42-45% bestätigt)
+  - Z23 QuickScreen-Header: "15.04.2026" → "27.04.2026"
+  - Z28/29/40 QuickScreen-Nächster-Schritt-Spalte: SNPS/SPGI/FICO-Score-Texte synchronisiert
+- **Live-System-Impact:** Null — reine Tool-File-Sync zur SSoT, kein neuer Live-State-Event. Markt-Drift in Tabellen-P/FCF/ROIC-Werten (z.B. AVGO 22x [KB] vs aktuell 71-93x, NVDA 42x vs aktuell 50-66x, VEEV 45x vs aktuell 22-35x) bewusst NICHT angepasst — die Tabelle ist Snapshot-basiert mit Quellen-Tags ([KB]/[V]/[~]), nicht Live-Feed.
