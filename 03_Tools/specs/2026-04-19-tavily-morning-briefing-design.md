@@ -1,9 +1,9 @@
 # Design Spec — Tavily Integration in Morning Briefing
 
-**Date:** 2026-04-19 (v3.0.3 rebase: 2026-04-20, siehe Revision Log unten)
-**Author:** Tobias Kowalski (via Claude + 2× Codex review rounds + v3.0.3 rebase review)
-**Status:** Implemented (v3.0 → v3.0.1 → v3.0.2 → v3.0.3 Soft-Alert-Rebase)
-**Target:** Morning Briefing Remote Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, prompt v2.2 → v3.0.3
+**Date:** 2026-04-19 (v3.0.3 rebase: 2026-04-20; v3.0.4 Anti-Fallback-Hotfix: 2026-04-27, siehe Revision Log unten)
+**Author:** Tobias Kowalski (via Claude + 2× Codex review rounds + v3.0.3 rebase review + v3.0.4 post-incident hotfix)
+**Status:** Spec aktualisiert für v3.0.4 (Prompt-SoT bumped, Probe-Deploy + T5/T1/T3/T4-Tests + Prod-Deploy noch ausstehend — siehe Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md`)
+**Target:** Morning Briefing Remote Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, prompt v2.2 → v3.0.3 (rolled back) → v2.2 stable Prod → v3.0.4 (in Vorbereitung)
 **Architecture:** **MCP via `mcp__tavily__tavily_search`** (CLI-Pivot wurde 2026-04-19 getestet, musste zurückgenommen werden — Tavily Dev-Keys haben REST-Host-Allowlist; nur MCP-Proxy-Pfad funktioniert ohne Paid-Plan. Siehe Appendix D.)
 **Spec location:** `03_Tools/specs/` (co-located with prompt files, not `docs/superpowers/specs/` — project has no `docs/` root)
 
@@ -12,6 +12,12 @@
 - **v3.0.1 (2026-04-20):** TZ='Europe/Berlin' hotfix for weekday detection (prompt-level, no spec change).
 - **v3.0.2 (2026-04-20):** Sequenzierungs-Direktive SCHRITT 3 → 4.5 (prompt-level, no spec change).
 - **v3.0.3 (2026-04-20):** Lever-1 Yahoo-Gap-Elimination + Soft-Alert-Rebase. Rationale: T1-Rerun FAIL mit 360s bei funktional korrekter Ausgabe + User-Prinzip "Korrektheit > Laufzeit" (feedback_correctness_over_runtime memory). Hard 90s-Rollback-Gate in §6(E) Klasse 6 + 60s-Budget-Fallback ENTFERNT. Ersetzt durch Soft-Alert-Schema <180s healthy / 180-400s observe / >400s alert (kein Auto-Rollback). Per-Ticker-Calls laufen vollstaendig durch. §8 Error-Handling-Tabelle, §11 Rollback-Trigger, §12 Monitoring-Tabelle, §13 Risk #9 entsprechend aktualisiert.
+- **v3.0.4 (2026-04-27):** Anti-Fallback-Guard für US-Kurs-Pfad. Post-Incident-Hotfix nach v3.0.3-Halluzination 20.04.2026 Nacht-Spät (Manual-Run gab Phantom-Intraday-Kurse für 7 US-Ticker aus, Ursache: Shibui-EOD lieferte 17.04. als latest_date wegen Karfreitag/Osterwochenende, Agent improvisierte unautorisierten Yahoo/Tavily-Live-Preis-Fallback). v3.0.3 wurde 20.04. auf v2.2 zurückgerollt (Commit `4cfa421`); Prod läuft seither v2.2.
+  - **Spec-Änderung §3a US-Kurse (Prompt-Wording):** Drei neue Direktiven (i) `AUTORITATIVE-DATA-QUELLE-REGEL` (Shibui `latest_date` ist per Definition autoritativ — kein "stale"), (ii) `NICHT-STALE-DEFINITION` (Wochenend-/Feiertags-/EOD-Lag = korrektes Verhalten, kein Fehler), (iii) `VERBOTENE-FALLBACK-PFADE` (kein Yahoo-curl, kein Tavily-Search, keine alternativen Live-Preis-Quellen für US-Ticker), (iv) `DELTA-BERECHNUNG bei Stale-Shibui` (3 Edge-Case-Branches: latest_date<score / ==score / >score).
+  - **Spec-Änderung §3 Critical Guards:** Zwei neue Bullets — (a) "NIEMALS alternative Live-Preis-Datenquellen für US-Ticker", (b) "NIEMALS improvisieren — bei nicht abgedecktem Szenario konservativ als n.v. markieren".
+  - **Test-Suite-Erweiterung:** Neuer Probe-Test **T5 Adversarial-Stale-Shibui** (verifiziert dass Agent bei latest_date<heute keinen Fallback improvisiert). Gate-A-Re-Start-Kriterien erweitert auf T5 PASS + T1/T3/T4 Retest PASS.
+  - **Non-Goals:** Keine Tavily-Entfernung (News-Pfad §4.5 nicht betroffen — Halluzination war im Kurs-Pfad §3, nicht im News-Pfad). Kein Runtime-Ziel — Korrektheit > Laufzeit bleibt oberstes Prinzip.
+  - **Hotfix-Plan:** `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks). Hotfix-Lessons in Sektion "Lessons Learned" des Plans dokumentiert (Anti-Hallucination-Guards zweigleisig: Narrativ + Datenpfad; Edge-Case-Definitionen explizit; autoritative Quellen als Sprach-Anker; Probe-Tests mit Adversarial-Scenarios).
 
 ---
 
