@@ -1,73 +1,59 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-27 ~19:40 — **Phase 3.5 Probe-Trigger-Update v3.0.6 DEPLOYED + GET-Verify PASS (9/9 Marker)**. Manual-Run via Desktop App queued für heute 20:00 MESZ (User-Action). Resume nach Run mit Output-Verify B1-B9.
+**Aktualisiert:** 2026-04-27 ~21:30 — **Mini-Sweep „Pipeline verschlanken" DONE** (Items A-F). Resume-Trigger ab hier: **„Phase-3.5 nach V Earnings"** ODER **`!Analysiere V`** (29.04. morgens nach AMC-Release).
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `1a3cf51` (v3.0.6-Hotfix-Commit, lokal + origin/main synchron). Vorgänger-Chain: `6011a5d` (handover-Doc) → `b51205a` (Phase-1) → `91d0f02` → `e777ff2`.
+**Branch:** `main`. **HEAD:** zuletzt `9d74a40` (Watchlist-XLSX-Sync) + heutige Mini-Sweep-Commits. Push synchron mit `origin/main`.
 
-**v3.0.6-Hotfix-Plan-File:** `docs/superpowers/plans/2026-04-27-briefing-v3.0.6-hotfix.md` (18 Tasks). Nicht ins Repo committed (Standing-Convention: Plan-Files separater Commit oder gar nicht — Plan wird in nächster Session bei Resume reaktiviert).
-
-**v3.0.5-Plan-File:** `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md` (8 Phasen, weiterhin gültig — Phase 1+2 DONE, Phase 3 FAIL→3.5 Hotfix, Phase 4-6 queued nach Probe-Re-Test).
+**Letzte 6 Commits 27.04.** (vor Mini-Sweep): `0e5300c` (v3.0.6 Phase-3.5 Sync) → `33d9933` (SNPS) → `caddd0c` (Vault-Cleanup) → `db66d99` (KONTEXT/Faktortabelle Watchlist-Reconcile) → `c08ed89` (Rebalancing) → `9d74a40` (Watchlist-XLSX-Sync). **Plus:** Mini-Sweep-Commit „chore(pipeline): mini-sweep verschlankung A-F".
 
 ### Was diese Session GETAN hat
 
-**Phase 3 Adversarial-Test (T-Stale-Shibui) — FAIL mit 4 echten Cracks:**
-1. WebSearch-Fallback bei Tavily-Domain-Block (Anti-Fallback v3.0.4 nicht stark genug)
-2. Saturday-Score-Date-Substitut für V (Anti-Improvisation v3.0.4 nicht stark genug)
-3. SCHRITT 4.8 Self-Check-Gate hat Unmapped-Tool nicht gefangen
-4. Tag-Schema-Erfindung `[websearch@<domain>]` ad-hoc
+**Phase 3.5 Probe-E2E-Verify PASS (Briefing v3.0.6):** Manual-Run #2 ~20:50 MESZ via Tavily-Connector-UI-Reattach (UUID-Rotation `4a633350-...` → `0da14a12-...`) lieferte alle 9 B1-B9-Marker (6 hart). Auto-Memory `feedback_tavily_connector_uuid_rotation.md` geschrieben (Body-Update-RemoteTrigger refresht NUR Body-Cache, nicht UI-Connector-Bindung).
 
-**Codex-Review-Pass (2 Runden Single-Pass):**
-- Round 1 (4× HIGH + 1× MEDIUM): alle FAILs bestätigt + neuer FAIL-4 (Tag-Erfindung als eigenständiges Vergehen)
-- Round 2 Diff-Re-Review (1× HIGH + 2× MEDIUM): Empty-Results-Anti-Inferenz + EU-Feiertag-Edge + Regex-Konsistenz
+**QuickCheck-Sweep 22 Tickers (Option B / 10 high-priority).** Score-Drifts erkannt + reconciled: SNPS 79→76, SPGI 79→74, FICO 70→67, EXPN 74→61. KONTEXT.md/Faktortabelle/INSTRUKTIONEN §7 + 4-Layer-Vault-Sub-Drift gefixt im Mini-Sweep.
 
-**v3.0.6 Hotfix-Edits committed + pushed (`1a3cf51`):** 9 Edits (7× Prompt + 2× Spec):
-- Critical-Guards 3 neue Bullets (Tools verboten / Domain-Subset-Retries verboten / Score-Datum-Substituts verboten)
-- SCHRITT 4.8 Tool-Provenance-Check-Bullet
-- §4.5(E) Tool-Nicht-Verfügbar-Klasse + Domain-Block-Hinweis + Empty-Results-Anti-Inferenz
-- §6F-4 Calendar-Mismatch-Sub-Case (Listing-Markt-Feiertag NYSE/Euronext Paris)
-- Spec §9 T6 Anti-Fabrikation-Sub-Assert (6) + Regex-Konsistenz `tavily@`
+**Rebalancing Mai-Plan:** ING/Scalable Live-Beträge eingelesen (Depotwert 10.384,20€ + Cash 1.550,53€). User-Entscheidung: 01.05. Sparplan EXUSA 825€ + reguläre Allokation. V Q2 Earnings 28.04. AMC abwarten, dann Re-Eval.
 
-**Phase-3-Pre-Step (Probe-Tavily-Key-Swap) DONE:** Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh` hat seit 15:27 UTC neuen Tavily-Key `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`. Shibui-Connector unverändert.
+**Mini-Sweep „Pipeline verschlanken" (Items A-F):**
+- **A** AVGO §7-Anker INSTRUKTIONEN.md Z.178: 85→84 (Live-State-Sync mit PORTFOLIO/Faktortabelle 4 Belege, post-17.04. Forward-Vollanalyse-Drift).
+- **B** BRI Vault-Sub-Drift: `wiki/concepts/defcon/Backtest-Ready-Infrastructure.md` 4-Layer→5-Layer-Architektur mit Hub-Split + Persistenz-Sync-Target. Frontmatter-Bump v3.7.2→v3.7.3.
+- **C** PIPELINE.md #11 Atomic-Write-Hardening: Frozen markiert + kompaktiert. Re-Activation-Trigger Incident/Track-4-Auto-Hook.
+- **D** PIPELINE.md #14 Vault-Discoverability: monitor-only markiert + kompaktiert.
+- **E** SystemAudit `--core` Lauf 27.04.2026T20:23:07Z — 9/14 PASS, 2 FAIL (known: Check-3 first-Stand-Match-Bug + Check-5 existence deferred), 3 WARN (known). STATE.md Last-Audit-Block auto-updated, Footer 25.04.→27.04.
+- **F** SESSION-HANDOVER.md (dieses File) + Push.
 
-### NEXT-SESSION-RESUME — Manual-Run-Output-Verify + Phase 4-6
+### NEXT-SESSION-RESUME — V/MSFT Earnings + Phase 4-6
 
-**Trigger:** „Phase 3.5 Output verifizieren" oder Output-Paste direkt.
+**Trigger:** „Phase-3.5 nach V Earnings" / „!Analysiere V" (29.04. morgens) / „!Analysiere MSFT" (30.04.).
 
-**Stand JETZT (19:40):**
-- Probe-Trigger v3.0.6 ist deployed (`updated_at: 2026-04-27T17:38:50Z`). 9/9 v3.0.6-Marker im GET-Roundtrip verifiziert.
-- Tavily-Connector unverändert mit neuem Key `tvly-dev-4er43M-...`.
-- Body-Konstruktion-Erkenntnis (für Memory): RemoteTrigger update mit `body` als Inline-Record-Object funktioniert auch bei ~25k-char-Bodies, wenn JSON sauber escaped (ASCII-mode `\uXXXX` für Umlaute, sauberer Newline-Escape `\n`). Vorherige Versuche failten weil Body unsauber war. Phase-1+2-Split (kleiner Test → full body) hat bestätigt dass Tool-Call-Frontend records korrekt klassifiziert.
+**Earnings-Kalender:**
+- **28.04.** V Q2 FY26 AMC (~22:00 MESZ) + Conf Call 23:00 MESZ — D2-Entscheidung (Technicals-Reversal?). Pre-Brief `02_Analysen/V_pre-earnings_2026-04-28.md`.
+- **29.04.** MSFT Q3 FY26 AMC (~22:30 MESZ) — FLAG-Review CapEx/OCF (bereinigt <60% = Auflösung, >60% = Veto-Verschärfung). Pre-Brief `02_Analysen/MSFT_pre-earnings_2026-04-29.md`.
+- **28.04.** SNPS + SPGI Q1 (parallel).
+- **01.05.** Sparplan-Tag — EXUSA 825€ + reguläre Allokation + ING-Überweisung 1.107,72€ (User-Action).
 
-**User-Action heute 20:00 MESZ:**
-1. Claude Desktop App → Routines → tavily-probe → Run now.
-2. Vollständigen Output reinpasten (Briefing-Header bis "NAECHSTES GROSSES EVENT").
-
-**Resume-Step danach:**
-1. Output-Verify gegen 9 B1-B9-Asserts (Plan Task 17): kein WebSearch-Fallback (B1), kein Domain-Subset-Retry (B2), kein Saturday-Substitut (B3), SCHRITT-4.8-Tool-Provenance (B4), Allow-List-Tags only (B5), tool-unavailable-Header bei mapped-tool-fail (B6), Empty-Results = `Keine material News` ohne Inferenz (B7), §6F-4 Calendar-Mismatch wörtlich (B8), Provenance-Tags konsistent (B9).
-2. Bei PASS → Phase 4-6 (T6 voll-test + T1/T3/T4 Retest + Prod-Deploy v3.0.6) per `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md`.
-3. Sync-Pflicht (Plan Task 18) am Ende: log.md + CORE-MEMORY.md (§13 Lifecycle) + SYSTEM.md + PIPELINE.md.
+**Phase-4-6 Re-Test (PIPELINE #2)** queued nach Earnings-Window: T6 voll-Test + T1/T3/T4-Retest gegen v3.0.6 + Prod-Deploy auf `trig_01PyAVAxFpjbPkvXq7UrS2uG`. Voraussichtlich Mi 30.04. ODER Konsolidierungstag.
 
 ### Operativ unverändert
 
-- 11 Satelliten, Sparraten 285€, V 28.04. / MSFT 29.04. Earnings-Briefs in `02_Analysen/`
-- Pre-Earnings-Briefs ready: `02_Analysen/V_pre-earnings_2026-04-28.md`, `02_Analysen/MSFT_pre-earnings_2026-04-29.md`
-- DEFCON v3.7 unverändert, alle Scores unverändert, FLAG-Status unverändert
-- Tavily-Key live in PROD + Probe (alter Key revoked)
+- 11 Satelliten, Sparraten 285€, DEFCON v3.7
+- AVGO Score 84 (post-17.04. Forward), MKL 82, SNPS 76 (post-Drift), SPGI 74 (post-Drift), TMO 63 (post-Q1-Upshift)
+- FLAG-Status unverändert
+- Tavily-Key live in PROD + Probe; Connector-UUID `0da14a12-...`; alter Key revoked
 
-### Critical Operational (zeitkritisch — verdrängt v3.0.6-Probe-Re-Test wenn Konflikt)
+### Critical Operational
 
-- **28.04.** V Q2 FY26 Earnings (~22:00 MEZ) — D2-Entscheidung. Brief ready.
-- **29.04.** MSFT Q3 FY26 Earnings (~22:30 MEZ) — FLAG-Review CapEx/OCF. Brief ready.
+- **28.04.** V Q2 FY26 Earnings — D2-Entscheidung
+- **29.04.** MSFT Q3 FY26 Earnings — FLAG-Review CapEx/OCF
+- **30.04.+** Briefing v3.0.6 Phase 4-6 Re-Test + Prod-Deploy (PIPELINE #2)
+- **01.05.** Sparplan-Tag (EXUSA 825€ + reguläre Allokation)
 
-### Wichtige Erkenntnisse + Memory-Hooks
+### Memory-Hooks aktiv
 
-- **OneDrive Edit-Collision** (Memory `feedback_onedrive_edit_collision.md`) — Diff-Verify nach Edits beachten. War in dieser Session nicht relevant.
-- **Pre-Commit-Diff-Inspection** (Memory `feedback_pre_commit_diff_inspection.md`) — vor Commit `git diff --cached` prüfen. War kritisch in `1a3cf51`-Commit (Standing-Dirty draußen).
-- **Codex-Sparring-Heuristik** (Memory `feedback_codex_sparring_heuristic.md`) — Single-Pass-Default + Diff-Re-Review-Pfad bei HIGH-Count ≥2. Beide Runden in dieser Session waren effektiv.
-- **Codex-statt-advisor** (Memory `feedback_review_via_codex_not_advisor.md`) — bestätigt, weiter so.
-- **NEU für Memory (sollten als Auto-Memory geschrieben werden):** Tool-Call-Inline-Pattern für RemoteTrigger update mit großem body — full ccr-Schema-replace inkl. environment_id + session_context + events.data.{parent_tool_use_id, session_id, type, uuid} nötig, da partial-update auf ccr-Subtree als full-replace interpretiert wird.
+- `feedback_tavily_connector_uuid_rotation.md` (NEU 27.04.) — Key-Rotation = Pflicht-UI-Reattach, nicht nur Body-Update
+- `feedback_onedrive_edit_collision.md`, `feedback_pre_commit_diff_inspection.md`, `feedback_codex_sparring_heuristic.md`, `feedback_review_via_codex_not_advisor.md` — Standing-Practices
 
 ---
 

@@ -29,11 +29,11 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-26T19:16:11Z
+**Timestamp (UTC):** 2026-04-27T20:23:07Z
 **Result:** 9/14 PASS (2 FAIL, 3 WARN)
 **Run:** `python 03_Tools/system_audit.py --core`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->
 
-*🦅 STATE.md Hub v2.0 | Dynasty-Depot | Navigation + Critical-Alert + Last-Audit | Stand: 25.04.2026*
+*🦅 STATE.md Hub v2.0 | Dynasty-Depot | Navigation + Critical-Alert + Last-Audit | Stand: 27.04.2026*

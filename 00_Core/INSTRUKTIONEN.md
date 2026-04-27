@@ -175,7 +175,7 @@ Impuls / Idee
 
 | Ticker | Score | DEFCON | Lektion |
 |--------|-------|--------|---------|
-| AVGO | 85 | 🟢 4 | Fabless-Modell = CapEx/OCF <15%, Referenz für Top-Score |
+| AVGO | 84 | 🟢 4 | Fabless-Modell = CapEx/OCF <15%, Referenz für Top-Score (post-17.04. Forward-Vollanalyse 85→84) |
 | MKL | 82 | 🟢 4 | Float-Modell = FCF-Sonderregel, Versicherungs-Exception |
 | SNPS | 76 | 🟡 3 | Goodwill-Malus durch Ansys-Akquisition (-3 Punkte) |
 | SPGI | 74 | 🟡 3 | ROIC-Verzerrung durch M&A-Goodwill → Non-GAAP ~82 |

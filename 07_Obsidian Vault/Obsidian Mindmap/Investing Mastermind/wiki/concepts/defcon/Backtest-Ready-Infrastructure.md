@@ -3,8 +3,8 @@ title: "Backtest-Ready-Infrastructure"
 type: concept
 tags: [defcon, backtest, infrastructure, roadmap, kern]
 created: 2026-04-17
-updated: 2026-04-19
-version: v3.7.2
+updated: 2026-04-27
+version: v3.7.3
 sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha]
 related: [DEFCON-System, Score-Archiv, FLAG-Event-Log, Backtest-Methodik-Roadmap, Analyse-Pipeline, Wissenschaftliche-Fundierung-DEFCON]
 wissenschaftlicher_anker: "Operative Voraussetzung für spätere Validierung aller 14 DEFCON-Befunde (B1–B14)"
@@ -30,14 +30,17 @@ Das DEFCON-Scoring-System ist wissenschaftlich fundiert (4 Papers, 14 Befunde), 
 
 Statt heute zu validieren → Infrastruktur bauen, die es **2028+ ermöglicht, überhaupt validieren zu können**. Jeder Score und jedes FLAG-Event wird ab sofort unveränderlich archiviert. Parallel läuft eine einmalige deskriptive FLAG-Event-Study als Sanity-Check der Datenmodelle.
 
-## 4-Layer-Architektur
+## 5-Layer-Architektur (ab 2026-04-17, Hub-Split 2026-04-25)
 
-Siehe KONTEXT.md §11 für Details:
+Siehe KONTEXT.md §11 + [[DEFCON-System]] für Details:
 
 1. **State-Layer** — [[Faktortabelle]] (überschrieben)
 2. **Narrative-Layer** — log.md, [[CORE-MEMORY]] (menschenlesbar, evolvierend)
 3. **History-Layer** — [[Score-Archiv]] + [[FLAG-Event-Log]] (append-only, unveränderlich)
-4. **Projection-Layer** — [[STATE]] (Session-Entry, synchron gehalten)
+4. **Projection-Layer (Live-State)** — [[PORTFOLIO]] (Live-Portfolio-Snapshot, default-load bei Session-Start)
+5. **Hub-Layer** — [[STATE]] (Navigation + Critical-Alerts + Last-Audit, ~40 Z., keine eigenständige Wahrheitsquelle), plus [[PIPELINE]] + [[SYSTEM]] als ko-projizierte Hub-Files
+
+**Persistenz-Sync-Target (kein eigenständiger Layer):** `01_Skills/dynastie-depot/config.yaml` (§18 v2.1 Score-Event-Set seit 2026-04-25).
 
 ## Komponenten (Stand 19.04.2026)
 
