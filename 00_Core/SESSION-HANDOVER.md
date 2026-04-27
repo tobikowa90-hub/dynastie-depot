@@ -1,72 +1,51 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-27 sehr spät — **Phase C komplett durch.** Paper-Ingest-Bogen Phase A+B+Pre-C+C+Round-3+Final-Lint abgeschlossen. Vault-only-Phase, kein Score/FLAG/Sparraten-Change.
+**Aktualisiert:** 2026-04-27 sehr spät — **Earnings-Vorbereitung + Schema-Drift Phase 1 + Tavily-Key-Rotation done.** Vault-only-Operations + 2 operative Briefs, kein Score/FLAG/Sparraten-Change.
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `d15034a fix(wiki): post-phase-c lint — remove dangling [[Quality-Investing-Multidimensional]]`.
+**Branch:** `main`. **HEAD:** `f51b94a feat(analyses): pre-earnings briefs V (28.04.) + MSFT (29.04.)`.
 
-**Phase-A-bis-C-Bogen (8 Commits):**
+**Diese Session committed (2 Commits):**
 
 ```
-d15034a fix(wiki): post-phase-c lint — remove dangling [[Quality-Investing-Multidimensional]]
-e75d755 fix(wiki): post-phase-c — codex round-3 must-fix M2 + M3
-fae0626 feat(wiki): paper-ingest Phase C — synthesis 20→34, index, log, errata-fix
-3bbe194 handover: pre-phase-c done — phase c queued for post-reset 01:50
-c847dba fix(wiki): pre-phase-c — codex cluster 2-4 fixes
-cde7fa9 fix(wiki): McLean-Pontiff defcon_relevanz operativer Discount 58% statt 32%
-7e4712e feat(wiki): paper-ingest Phase B — B25-B28 Status-Matrix + §29.7 + 6 concepts + 30 entities
-b8306df feat(wiki): paper-ingest Phase A — 14 source-pages (B25-B28 + 10 SOURCE-ONLY)
+f51b94a feat(analyses): pre-earnings briefs V (28.04.) + MSFT (29.04.)
+531f459 fix(wiki): schema-drift cleanup phase 1 — sources/related YAML-Array
 ```
 
-**Heute (27.04.) abgeschlossen:**
+**Heute (27.04. spät) abgeschlossen:**
 
-- **C-1** Synthesis-Quellen-Übersicht 20 → 34 in `wiki/synthesis/Wissenschaftliche-Fundierung-DEFCON.md` (B25-B28 + 10 SOURCE-ONLY-Anker, Counter-Update, Frontmatter-Sources-Array). McLean-Pontiff-Eintrag konsistent **58% operativer Total-Decline** (Hauptrisiko vermieden).
-- **C-2** `index.md` um 14 source + 6 concept + 30 entity-pages erweitert; Synthesis-Description aktualisiert auf "28-Befunde-Matrix: 34 Paper".
-- **C-2-Errata** (im Final-Lint entdeckt + gefixt): 3 Phase-B-Entity-Files mit halluzinierten Vornamen via `git mv` umbenannt: `jean-baptiste-lepetit` → `frederic-lepetit`, `nazim-cherief` → `amina-cherief`, `thy-ly` → `yannick-ly`. Broken `Amundi-2024-Quality-Pillars` → `Amundi-Quality-2021` in 4 Amundi-Entity-Pages. QMJ-vs-Amundi-4-Pillar-Verwechslung im Lepetit-Body korrigiert.
-- **C-3** log.md Bulk-Eintrag (Phase A 26.04. + Phase B+Pre-C+C 27.04.). WIKI-SCHEMA Step-9 Auto-Lint clean.
-- **Final-Codex-Run** (`b8306df^..HEAD`, ~50 Files) Verdikt **FIX-AND-APPROVE**. Round-3-Fixes appliziert: M2 (`INSTRUKTIONEN.md` §4 design-context-Regel an SKILL.md + Synthesis-SSoT angeglichen — zulässig in Klammer-Notation mit `design-context`-Suffix), M3 (`DEFCON-System.md` Counter-Drift B1-B24/20/24 → B1-B28/34/28).
-- **Final-Lint** vor Session-Schluss: 226 unique [[X]]-refs vs. 484 known (basenames + Aliases + subfolder-pages), 0 dangling. 1 dangling ref `[[Quality-Investing-Multidimensional]]` in 2 Phase-A-Source-Pages entfernt (Concept-Page nicht angelegt; QMJ-Faktor existiert als gleichwertiger Anker; WIKI-SCHEMA Growth-Rule §5 verlangt 3+ Sources für eigene Synthesis-Page).
-- **Standing-Dirty unangetastet** (gleiche Liste seit 26.04.): app.json, wiki/concepts/PORTFOLIO.md, gelöschte canvas/base/2026-04-23.md.
+- **Pre-Earnings-Briefs**: `02_Analysen/V_pre-earnings_2026-04-28.md` + `02_Analysen/MSFT_pre-earnings_2026-04-29.md` via `anthropic-skills:earnings-preview` (yfinance). V-Setup: technisch angeschlagen (-7,2 % unter 200MA, RelStärke -14pp), Konsens $3,099 EPS / $10,75 Mrd Rev, 4/4 Beats aber Surprise-Magnitude decel auf <1 %. MSFT-Setup: Recovery (+10,5 % in 2W, über 50DMA), Konsens $4,065 EPS / $81,40 Mrd Rev, 4/4 Beats +8,5 % Schnitt. Beide Briefs enthalten Bull/Base/Bear-Decision-Matrix + Schritt-für-Schritt-Earnings-Tag-Workflow inkl. Sync-Pflicht §18 für FLAG-Auflösungs-Szenario MSFT.
+- **Tavily-Key-Rotation DONE**: alter Key `tvly-dev-4PYXp...` ersetzt. PROD-Connector (Claude.ai Web-UI) via Delete+Recreate (URL read-only) — Connector-Name bleibt `tavily`, friendly-name-Resolution `mcp__tavily__tavily_search` unverändert, **Repo-Prompts brauchen keinen Edit**. Lokal `~/.claude.json:777` editiert + Trailing-Space-Fix. **TODO User:** alten Key auf tavily.com revoken nach Smoke-Test (~10:00 MESZ Briefing-Cron). Claude Code lädt neuen Key erst nach Restart.
+- **Schema-Drift-Cleanup Phase 1 DONE** (`531f459`, 16 Files, +222/-18): 14 Phase-A-Source-Pages + Synthesis-Page `Wissenschaftliche-Fundierung-DEFCON.md` von quoted-string `related: "[[A]], [[B]]"` auf YAML-Block-Array konvertiert + fehlendes `sources: []` ergänzt. Pattern an McLean-Pontiff validiert (Karpathy-Surgical), Block-Form gewählt für Konsistenz mit bereits bestehender `aliases:`-Struktur. PyYAML-Bulk-Validation 14/14 PASS, Synthesis-Page 74 Wikilinks (sources 34 + concepts 23 + related 6 + entities 11) intakt. **Codex-Final-Run M1 closed.**
+- **PIPELINE-Sync DONE**: Item #15 Phase-2-Schema-Drift (vault-wide ~30 weitere Pages) als Deferred angelegt + Long-Term-Gates Tavily-Entry auf Rotation #2 ~04.05.2026 aktualisiert.
+- **Standing-Dirty unverändert** (gleiche Liste seit 26.04.): app.json, wiki/concepts/PORTFOLIO.md, gelöschte canvas/base/2026-04-23.md.
 
-### 🎯 Nächster Task — Deferred-Liste
+### 🎯 Nächster Task — Earnings-First
 
 **Priorität 1 (operativ, zeitkritisch — verdrängt alles andere):**
 
-- **28.04.** V Q2 FY26 — D2-Entscheidung (Technicals-Reversal?). Klasse B Update.
-- **29.04.** MSFT Q3 FY26 — FLAG-Review (CapEx/OCF bereinigt <60% = Auflösung). Klasse C critical.
+- **28.04.** V Q2 FY26 (after market close, ~22:00 MEZ) — D2-Entscheidung (Technicals-Reversal?). Brief liegt: `02_Analysen/V_pre-earnings_2026-04-28.md` §6 Decision-Matrix, §7 Schritt-für-Schritt-Workflow.
+- **29.04.** MSFT Q3 FY26 (after market close, ~22:30 MEZ) — FLAG-Review CapEx/OCF (bereinigt <60 % = Auflösung). Brief liegt: `02_Analysen/MSFT_pre-earnings_2026-04-29.md` §6 + §7. Wichtig: **finale FLAG-Entscheidung erst mit 10-Q** (Press-Release reicht nicht für Finance-Lease-Bereinigung).
 
-**Priorität 2 (Tech-Debt — Codex-Round-3 deferred items):**
+**Priorität 2 (Tech-Debt, deferred):**
 
-#### Schema-Drift-Cleanup `sources:`/`related:` Frontmatter — Phase 1: Phase-A-Scope
-
-**Issue:** Codex Final-Run flagged M1 (Must-Fix) + Should-Fix: alle 14 neuen Phase-A-Source-Pages haben `sources:` Frontmatter-Feld komplett fehlend + `related:` als quoted-Wiki-Link-String statt YAML-Array (`WIKI-SCHEMA.md:53-65` schreibt Array vor). Dasselbe Drift gilt für die Synthesis-Page selbst (`Wissenschaftliche-Fundierung-DEFCON.md:5`).
-
-**Pre-existing Pattern:** Auch ältere Source-Pages (Sloan-1996, arXiv-1711.04837, Gu-Kelly-Xiu-2020 etc.) nutzen identisches quoted-string-Format — ~33 Source-Pages insgesamt drifted. Phase A ist nicht die Quelle, sondern Fortsetzung des bestehenden Patterns.
-
-**Vorgeschlagene Reihenfolge (focused first, vault-wide optional):**
-
-1. **Phase-1-Cleanup (4-6k Token):** Nur die 14 Phase-A-Source-Pages konvertieren (`sources:`-Feld ergänzen + `related:` als YAML-Array). Plus `Wissenschaftliche-Fundierung-DEFCON.md`. Pattern validieren — Obsidian Backlink-Resolution + WIKI-SCHEMA-Konformität bestätigen.
-2. **Phase-2-Vault-Wide (10-15k Token, optional):** Falls Phase-1 erfolgreich, restliche ~30 Source-Pages + ggf. Concept-Pages konvertieren. Eigener PR.
-
-**Token-Budget Phase 1:** ~5-8k. Klein genug für Earnings-Tag-Slot oder Off-Hours.
-
-**Warum Phase 1 erst (nicht direkt Vault-Wide):** Karpathy-Surgical-Change-Regel — Pattern an kleinem Scope validieren, dann expandieren. Vault-Wide-Bulk-Refactor ohne validierten Pattern hat hohes Drift-Risiko (siehe Memory `feedback_pre_commit_diff_inspection.md`).
-
-**Alternative-Defer:** Wenn Schema-Drift unkritisch (Obsidian resolved beide Formate korrekt), kann der Task wegen Operational-Priority (V/MSFT-Earnings) bis Mai 2026 verschoben werden. Entscheidung beim nächsten Konsolidierungstag.
+- **Schema-Drift-Cleanup Phase 2 (vault-wide)** — siehe PIPELINE.md #15. ~30 weitere drifted Source/Concept-Pages, Token-Budget 10-15k, eigener PR. **Pre-Validation:** vor Phase-2-Bulk Block-Form-Pattern in Obsidian Backlink-Resolver per Sichtprüfung verifizieren (User-Aktion nach nächstem Vault-Open). Trigger: Off-Hours-Slot ODER Konsolidierungstag ODER Obsidian-Backlink-Bruch (bisher keiner bestätigt).
+- **Backtest-Strategie mit Inhalt füllen** (User-Initiative 27.04. spät) — Brainstorm angefangen aber zugunsten Tavily/Schema-Drift vertagt. Status: 28 score_history-Records (24 Backfill-Stubs ohne metriken_roh + 4 Forward), 2 FLAG-Events, 5 Tage portfolio_returns. Infrastructure groß, analytischer Output dünn. Frage offen: welche Backtest-Frage soll der erste Substantielle-Output beantworten? (Score-Predictiveness, FLAG-Event-Study, Sparraten-Kaskade-Sim, Real-Backfill, ...). **Trigger:** eigener Slot, brainstorming-Skill startet von vorn.
+- **Morning Briefing v3.0.4 Hotfix** (PIPELINE #2, ~90 Min) — gates Dashboard v2 + Track 5a/5b. Eigener ungestörter Slot empfohlen.
 
 ### 🚨 Standing-Focus (operativ, unverändert)
 
-- 28.04. V Q2 FY26 — D2-Entscheidung (Technicals-Reversal?)
-- 29.04. MSFT Q3 FY26 — FLAG-Review (CapEx/OCF bereinigt <60% = Auflösung)
+- 28.04. V Q2 FY26 — D2-Entscheidung (Technicals-Reversal?) — Brief ready
+- 29.04. MSFT Q3 FY26 — FLAG-Review (CapEx/OCF bereinigt <60% = Auflösung) — Brief ready
 
 ### Wichtige Notizen
 
-- **Score-Archiv unangetastet** — kein DEFCON-Trigger in dieser Session, kein `score_history.jsonl`-Append. Phase-A-bis-C war reine Vault-Operation.
+- **Score-Archiv unangetastet** — kein DEFCON-Trigger in dieser Session, kein `score_history.jsonl`-Append.
 - **DEFCON v3.7 unverändert**, 11 Satelliten-Scores unverändert, Sparraten unverändert, FLAG-Status unverändert.
-- **Dynastie-Depot Skill v3.7.3** geladen, aber kein operativer Skill-Call (Wiki-only-Bogen).
-- **CodeRabbit-CLI** verfügbar via WSL Ubuntu (Memory `feedback_coderabbit_via_wsl.md`) — Backup-Reviewer falls Codex-Capacity-Issue.
-- **Final-Codex-Run-Output** vollständig in `git log -1 e75d755`-Body + diesem Handover dokumentiert; nicht erneut ausführen, sondern direkt mit Schema-Drift-Cleanup oder Earnings starten.
+- **Dynastie-Depot Skill v3.7.3** geladen, aber kein operativer Skill-Call.
+- **Tavily-Key**: neuer Key live in PROD + lokal. Alten Key revoken erst nach Smoke-Test morgen.
+- **CodeRabbit-CLI** verfügbar via WSL Ubuntu (Memory `feedback_coderabbit_via_wsl.md`).
 
 ---
 
