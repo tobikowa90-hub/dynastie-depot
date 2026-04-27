@@ -4,12 +4,12 @@
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `<phase-2-commit>` (Schema-Drift Phase 2 vault-wide).
+**Branch:** `main`. **HEAD:** `11a1b69` (Schema-Drift Phase 2 vault-wide).
 
 **Diese Session committed:**
 
 ```
-<phase-2-commit>  fix(wiki): schema-drift cleanup phase 2 — 34 vault-wide pages YAML-Array
+11a1b69  fix(wiki): schema-drift cleanup phase 2 — 34 vault-wide pages YAML-Array
 ```
 
 **Vorgänger-Session (Stand vor Phase 2):**
