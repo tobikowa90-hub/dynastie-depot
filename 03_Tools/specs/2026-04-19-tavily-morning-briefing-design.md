@@ -5,7 +5,7 @@
 **Status:** Spec aktualisiert für v3.0.4 (Prompt-SoT bumped, Probe-Deploy + T5/T1/T3/T4-Tests + Prod-Deploy noch ausstehend — siehe Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md`)
 **Target:** Morning Briefing Remote Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, prompt v2.2 → v3.0.3 (rolled back) → v2.2 stable Prod → v3.0.4 (in Vorbereitung)
 **Architecture:** **MCP via `mcp__tavily__tavily_search`** (CLI-Pivot wurde 2026-04-19 getestet, musste zurückgenommen werden — Tavily Dev-Keys haben REST-Host-Allowlist; nur MCP-Proxy-Pfad funktioniert ohne Paid-Plan. Siehe Appendix D.)
-**Spec location:** `03_Tools/specs/` (co-located with prompt files, not `docs/superpowers/specs/` — project has no `docs/` root)
+**Spec location:** `03_Tools/specs/` (co-located with prompt files; `docs/superpowers/plans/` existiert für Implementation-Plans, aber Spec bleibt bei Prompt-SoT-Co-Location)
 
 ### Revision Log
 - **v3.0 (2026-04-19):** Initial MCP-based Tavily integration with hard 90s PASS / >90s×2 Rollback-Gate in §6(E) Klasse 6.
@@ -72,7 +72,7 @@ Diese Features kommen nach Go-Live in v3.1 wenn gebraucht.
 - **JSON-Nesting:** `parent_tool_use_id`, `session_id`, `type`, `uuid` auf data-Level, nicht in message.
 - **`run` endpoint:** Noop für Cron-Trigger. Manual runs nur via Desktop App.
 - **Tavily Free Tier:** 1000 Queries/Monat.
-- **Prompt-Size:** Kein dokumentiertes Limit bekannt; 32 MB Anthropic-Request-Cap. v2.2 ~5000 Zeichen, v3.0 ~6500 Zeichen — unkritisch.
+- **Prompt-Size:** Kein dokumentiertes Limit bekannt; 32 MB Anthropic-Request-Cap. v2.2 ~9.5kB, v3.0.3 ~18.6kB (Stand 27.04.2026) — unkritisch unter Cap.
 
 ### New Dependency
 - **Tavily MCP (hosted):** `https://mcp.tavily.com/mcp/?tavilyApiKey=<KEY>`
@@ -346,12 +346,12 @@ Per Ticker (nur getriggert):
 
 ```
 1. Git Repo (tobikowa90-hub/dynastie-depot)
-   ├─ 00_Core/STATE.md         → Sparraten, Watches, Trigger-Tabelle
+   ├─ 00_Core/PORTFOLIO.md     → Sparraten, Watches, Trigger-Tabelle (24.04. STATE-Split)
    └─ 00_Core/Faktortabelle.md → Scores, DEFCON, FLAGs, Earnings, Score-Alter
 
 2. Shibui MCP → 13 US-Ticker Close-Prices    (UNVERAENDERT)
 
-3. Bash curl (Yahoo) → BRK-B, RMS.PA, SU.PA Close-Prices   (UNVERAENDERT)
+3. Deterministische n.v.-Zuweisung für BRK-B, RMS.PA, SU.PA   (v3.0.3: Yahoo-curl entfernt — frozen known limitation, siehe Prompt §3c)
 
 4. Trigger-Liste berechnen (in-prompt, rein aus Schritt-1-Daten)
 
@@ -610,7 +610,7 @@ Konsolidiert aus Codex-Review Round 1 (`a6353fc19fe65e09a`) + Round 2 (pending) 
 | 1 | MCP `connector_uuid` Requirement | CRITICAL | ✅ Resolved (UI-Registrierung) | UUID `4a633350-…` via Claude.ai Web-UI |
 | 2 | MCP Tool-Name Korrektheit | HIGH | ✅ Resolved (Phase 0 R1 Test B) | `mcp__tavily__tavily_search` bestätigt |
 | 3 | Prompt-Fail-Open bei Tool-Fehler | HIGH | ✅ Resolved (Phase 0 R1 Test C) | HTTP 422 sauber gecatched, Run bis FERTIG |
-| 4 | API-Key in URL-Query — Exposure | HIGH | ⚠️ Acknowledged, posture-only | Rotation nach Go-Live + monatlich; Dev-Key separat vom Billing-Account |
+| 4 | API-Key in URL-Query — Exposure | HIGH | ✅ Mitigated (Rotation #1 verified 27.04.2026, alter Key revoked) | Rotation-Cycle empirisch verifiziert; Dev-Key separat vom Billing-Account; monatliche Rotation operativ |
 | 5 | MCP Connector-Level-Fail (MCP offline) | MEDIUM | ⚠️ Accepted for v3.0 | Healthcheck-Fallback v3.1-Backlog; Tavily-Hosted-Uptime historisch hoch |
 | 6 | Tavily-Behavior-Drift (third-party) | MEDIUM | ⚠️ Accepted | Monitoring erfasst Degradation |
 | 7 | Budget-Exhaust bei Retries | LOW | ⚠️ Accepted | Hard-Cap 6 Queries/Run (1 Cohort + max 5 Per-Ticker). 60s-Runtime-Budget-Fallback v3.0.3 ENTFERNT (Recall-Regression). |
@@ -629,6 +629,18 @@ Konsolidiert aus Codex-Review Round 1 (`a6353fc19fe65e09a`) + Round 2 (pending) 
 | #5 | Rollback nicht reproduzierbar | Section 11 Exact Runbook |
 | #6 | 70%-Threshold nicht messbar | Section 12 Logging-Format + konkrete Actions |
 | #7 | Post-Deploy-Cache-Interference | Section 8 + 10 Post-Update-Verify-Gate |
+
+### Codex-Findings-Trace (Round 2, alle integriert in Commit `6bd32f4` post-MCP-Revert)
+
+| Codex # | Finding | Integration |
+|---|---|---|
+| R2-#1 | §9 T1 "Cohort-curl + Per-Ticker-curl" CLI-Residue nach MCP-Revert | §9 T1 auf MCP-tool-call-Sprache umgeschrieben |
+| R2-#2 | §9 T3 "curl-Body" inspection CLI-Residue | §9 T3 auf "emittierter tavily_search.query"-Inspektion |
+| R2-#3 | §10 Gate-Step 1 "Phase 0 Round 2 PASS" als Prerequisite obsolet | Schritt entfernt (Round 2 abgebrochen via CLI-pivot revert), Steps 2-8 re-numbered |
+| R2-#4 | §10 Gate-Step 7 "curl-Fehler-Pfad" CLI-Residue | "MCP-Tool-Fehlerpfad" |
+| R2-#5 | §6(E) Klasse 2 unvollständig — kein Bucket für non-HTTP-Errors | 2z "Generischer MCP-Tool-Error" subclass für Protocol/Serialisation/Unknown |
+| R2-#6 | §6(E) Klassen 2c/2d/3/4/5 nur Per-Ticker-Output, kein Cohort-Output | Cohort-spezifische Output-Strings ergänzt |
+| R2-#7 | §8 Error-Tabelle ohne Cohort/Per-Ticker-Distinction | Tabelle um Cohort/Per-Ticker-Spalten erweitert |
 
 ---
 
@@ -649,10 +661,11 @@ Verschoben aus v3.0-Scope, Kandidaten wenn Go-Live stabil:
 
 ## 15. Appendix
 
-### A. Prompt v3.0 Skeleton (full text in `03_Tools/morning-briefing-prompt-v3.md` after writing-plans phase)
+### A. Prompt v3.0 Skeleton (siehe `03_Tools/morning-briefing-prompt-v3.md` — aktive v3.0.3 Rollback-Stand seit 20.04.2026)
 
 Strukturell: v2.2 + neuer SCHRITT 4.5 + neue Output-Sektion. Alle anderen Teile (CRITICAL GUARDS, WOCHENEND-MODUS, WICHTIG-Liste) unverändert ausser:
-- `Keine News-Suche` (WICHTIG-Liste) → entfernen
+- `Keine News-Suche` (WICHTIG-Liste) → entfernt
+- v3.0.3-Hotfixes (TZ='Europe/Berlin', Sequenzierung 3→4.5, Yahoo-Gap-Elimination, Soft-Alert §6E Klasse 6) → siehe Prompt-Datei Changelog
 
 ### B. Codex Review Summary
 
@@ -664,9 +677,10 @@ Strukturell: v2.2 + neuer SCHRITT 4.5 + neue Output-Sektion. Alle anderen Teile 
 - Agent-ID: `aede6311232389387`
 - 7 Findings (3 HIGH, 3 MEDIUM, 1 LOW) — alle in Round-2-Spec-Revision integriert (siehe Trace in Section 13)
 
-**Round 2 (Final-Review, nach CLI-Pivot):**
-- Status: PENDING nach Spec-Commit
-- Fokus: CLI-spezifische Risks, Integrität der Codex-1-Fixes, neue Gaps
+**Round 2 (Final-Review, post-MCP-Revert):**
+- Commit: `6bd32f4` (2026-04-19 14:18)
+- Status: COMPLETE — 5 surgical fixes integriert (vollständiger Trace in §13 "Codex-Findings-Trace Round 2")
+- Fokus war: CLI-Residue nach surgical MCP-Revert + Error-Taxonomy-Gaps (Klasse 2z, Cohort/Per-Ticker-Distinction)
 
 ### C. Phase 0 Test Results
 
@@ -691,9 +705,11 @@ Strukturell: v2.2 + neuer SCHRITT 4.5 + neue Output-Sektion. Alle anderen Teile 
 | 2026-04-19 (User-Prompt) | Pivot MCP → CLI | Fragestellung "CLI vs. MCP" | Eliminiert Connector-Fail-Risk, matcht Yahoo-Pattern, Bearer-Header statt URL-Query |
 | 2026-04-19 (Revision) | Spec v2 mit CLI + 7 Codex-Fixes | Zwischenstand | Siehe Git-History Commit `9df9e3d` |
 | 2026-04-19 (Phase 0 Round 2) | **Revert CLI → MCP** | B2 Test FAIL: Dev-Key rejected by REST `api.tavily.com` (HTTP 403 "Host not in allowlist"); Free-Tier bietet nur Dev-Keys, Production-Keys = Paid-Plan | Budget-vs-Nutzen-Analyse zeigt: MCP-Residual-Risks (Connector-Fail MEDIUM, Key-URL-Exposure HIGH mit Rotation-Mitigation) akzeptabler als Paid-Plan für News-Feature. Surgical Revert keeps Codex-Fixes #1-7 intact. |
-| 2026-04-19 (Final) | Spec v3 MCP-Architektur mit allen Codex-Fixes | AKTUELL | Siehe Sections 5-13 final |
+| 2026-04-19 (Final) | Spec v3 MCP-Architektur mit allen Codex-Fixes | Round-1 + Round-2 PASS | Siehe Sections 5-13 final |
+| 2026-04-20 Nacht-Spät | v3.0.3 Manual-Run-FAIL → Rollback v3.0.3 → v2.2 | Phantom-Kurse 7 US-Ticker (z.B. AVGO -21.8% phantom), Stale-Shibui Karfreitag/Oster-EOD-Lag löste improvisierten Yahoo-Fallback aus | Commit `4cfa421` Incident+Rollback. Trigger für v3.0.4 Anti-Fallback-Hotfix-Plan + Applied-Learning Bullet 11 (zweigleisige Anti-Hallucination-Guards) |
+| 2026-04-27 | Tavily-Key-Rotation #1 verifiziert | Risk #4 Mitigation-Loop | Alter Key revoked, neuer Key in Connector-URL aktiv. Rotation-Posture empirisch validiert. |
 
-### D. Referenzen
+### E. Referenzen
 
 - `03_Tools/morning-briefing-prompt-v2.md` — SoT der v2.2-Prompt
 - `memory/morning-briefing-config.md` — v2.1-Scope + Known Issues
