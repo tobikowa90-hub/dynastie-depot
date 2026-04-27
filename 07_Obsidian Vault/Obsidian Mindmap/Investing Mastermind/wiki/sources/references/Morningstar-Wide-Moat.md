@@ -8,7 +8,11 @@ url: https://assets.contentstack.io/v3/assets/bltabf2a7413d5a8f05/blt7578a4e5713
 authors: "Morningstar Research"
 status: processed
 defcon_relevanz: "Moat-Block (20 Pt.) — 8 operative Moat-Quellen; Moat allein ≠ Excess Return"
-related: "[[Moat-Taxonomie-Morningstar]], [[DEFCON-System]], [[ROIC-vs-WACC]]"
+sources: []
+related:
+  - "[[Moat-Taxonomie-Morningstar]]"
+  - "[[DEFCON-System]]"
+  - "[[ROIC-vs-WACC]]"
 ---
 
 # Equity Investing with a Moat Focus

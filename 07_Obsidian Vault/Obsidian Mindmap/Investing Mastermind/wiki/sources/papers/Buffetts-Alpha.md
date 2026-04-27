@@ -8,7 +8,13 @@ url: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3197185
 authors: "Frazzini, Kabiller, Pedersen (AQR Capital Management)"
 status: processed
 defcon_relevanz: "Fundamentals + Moat + BRK.B — PFLICHT: Float-Leverage ~1,6x nicht replizierbar; übertragbar nur cheap+safe+quality"
-related: "[[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[BRKB]], [[DEFCON-System]], [[Moat-Taxonomie-Morningstar]]"
+sources: []
+related:
+  - "[[Buffett-Faktorlogik]]"
+  - "[[QMJ-Faktor]]"
+  - "[[BRKB]]"
+  - "[[DEFCON-System]]"
+  - "[[Moat-Taxonomie-Morningstar]]"
 ---
 
 # Buffett's Alpha (AQR 2018)

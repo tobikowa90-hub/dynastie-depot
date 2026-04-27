@@ -3,7 +3,13 @@ title: "Buffett-Faktorlogik (AQR)"
 type: concept
 tags: [defcon, buffett, faktor, qualitaet, cheap-safe-quality, qmj, bab]
 source: "[[Buffetts-Alpha]]"
-related: "[[QMJ-Faktor]], [[Moat-Taxonomie-Morningstar]], [[DEFCON-System]], [[BRKB]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[QMJ-Faktor]]"
+  - "[[Moat-Taxonomie-Morningstar]]"
+  - "[[DEFCON-System]]"
+  - "[[BRKB]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 defcon_block: "Fundamentals + Moat (kombiniert)"
 operative_regel: "PFLICHT: Float-Leverage (~1,6x) nicht replizierbar. Übertragbar: nur cheap + safe + high-quality als operativer Dreiklang."
 ---

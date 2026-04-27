@@ -3,7 +3,23 @@ title: "FCF-Primacy"
 type: concept
 tags: [defcon, fcf, bewertung, forward-pe, trailing-pe, earnings-quality]
 source: "[[Gu-Kelly-Xiu-2020]]"
-related: "[[DEFCON-System]], [[CapEx-FLAG]], [[5J-Fundamental-Fenster]], [[Wissenschaftliche-Fundierung-DEFCON]], [[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
+sources: []
+related:
+  - "[[DEFCON-System]]"
+  - "[[CapEx-FLAG]]"
+  - "[[5J-Fundamental-Fenster]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[ASML]]"
+  - "[[AVGO]]"
+  - "[[MSFT]]"
+  - "[[RMS]]"
+  - "[[VEEV]]"
+  - "[[SU]]"
+  - "[[BRKB]]"
+  - "[[V]]"
+  - "[[APH]]"
+  - "[[COST]]"
+  - "[[TMO]]"
 defcon_block: "Fundamentals (50 Pt.) — P/FCF + Fwd P/E"
 operative_regel: "PFLICHT: Trailing P/E verliert Vorhersagekraft — forward P/E bleibt valide. FCF-Yield und P/FCF sind primäre Bewertungsanker."
 ---

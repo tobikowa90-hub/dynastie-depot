@@ -3,7 +3,23 @@ title: "5J-Fundamental-Fenster"
 type: concept
 tags: [defcon, fundamental-analyse, zeitperspektive, ml-faktoren]
 source: "[[arXiv-1711.04837]]"
-related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[FCF-Primacy]], [[Wissenschaftliche-Fundierung-DEFCON]], [[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
+sources: []
+related:
+  - "[[DEFCON-System]]"
+  - "[[Analyse-Pipeline]]"
+  - "[[FCF-Primacy]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[ASML]]"
+  - "[[AVGO]]"
+  - "[[MSFT]]"
+  - "[[RMS]]"
+  - "[[VEEV]]"
+  - "[[SU]]"
+  - "[[BRKB]]"
+  - "[[V]]"
+  - "[[APH]]"
+  - "[[COST]]"
+  - "[[TMO]]"
 defcon_block: "Fundamentals (50 Pt.)"
 operative_regel: "5-Jahres-Durchschnitt als Pflichtperspektive — Spot-Werte allein sind unzureichende Prädiktoren. Jede DEFCON-Analyse prüft 5J-Trend neben aktuellem Wert."
 ---

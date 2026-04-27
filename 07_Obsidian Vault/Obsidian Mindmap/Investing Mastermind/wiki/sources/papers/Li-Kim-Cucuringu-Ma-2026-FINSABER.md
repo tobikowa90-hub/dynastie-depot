@@ -10,7 +10,14 @@ venue: "ACM SIGKDD '26 Conference on Knowledge Discovery and Data Mining (Jeju I
 authors: "Weixian Waylon Li (Edinburgh AIAI), Hyeonjun Kim (Sungkyunkwan), Mihai Cucuringu (UCLA Math/Stats + Oxford OMI), Tiejun Ma (Edinburgh AIAI)"
 status: processed
 defcon_relevanz: "Validation-Gate-Verschärfung §29.2 + §29.5. Empirisch belegte Bias-Quellen (Survivorship, Look-Ahead, Data-Snooping) im LLM-Investing-Kontext. Regime-Asymmetrie (Bull-Underperform, Bear-Overshoot) zwingt zur expliziten Audit-Pflicht für jede LLM-/Selection-Strategie. DEFCON ist regelbasiert, NICHT LLM-Inferenz — aber als Composite-Selection-Output bias-anfällig und damit auditierbar mit FINSABER-Pattern. Konsequenz: Phase 2 §33 Skill-Self-Audit-Kandidat (siehe Codex Round 2)."
-related: "[[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[PBO-Backtest-Overfitting]], [[Seven-Sins-Backtesting]], [[Backtest-Methodik-Roadmap]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[LLM-Investing-Bias-Audit]]"
+  - "[[Regime-Aware-LLM-Failure-Modes]]"
+  - "[[PBO-Backtest-Overfitting]]"
+  - "[[Seven-Sins-Backtesting]]"
+  - "[[Backtest-Methodik-Roadmap]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 ---
 
 # Li, Kim, Cucuringu, Ma — FINSABER (KDD '26)

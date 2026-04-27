@@ -2,7 +2,11 @@
 title: "Context-Hygiene — Claude Code spezifisch"
 type: concept
 tags: [system, claude-code, token-effizienz, mcp, settings]
-related: "[[Context-Hygiene]], [[CLAUDE-md-Konstitution]], [[Token-Mechanik]]"
+sources: []
+related:
+  - "[[Context-Hygiene]]"
+  - "[[CLAUDE-md-Konstitution]]"
+  - "[[Token-Mechanik]]"
 defcon_block: "System-Hygiene Claude Code"
 operative_regel: "Tool Search (v2.1.7+) reduziert Token-Last um ~95% — nur mit Sonnet 4 / Opus 4 verfügbar."
 ---

@@ -8,7 +8,14 @@ url: https://www.jstor.org/stable/248290
 authors: "Richard G. Sloan (University of Pennsylvania, The Accounting Review 71(3))"
 status: processed
 defcon_relevanz: "Fundamentals — Grundlagenpaper für Accrual Ratio. Low-Accrual-Firmen outperformen High-Accrual um +10,4% p.a. Validiert bestehende Accrual-Schwellen (<5% / >10%) wissenschaftlich (Befund B14)."
-related: "[[Accruals-Anomalie-Sloan]], [[F-Score-Quality-Signal]], [[FCF-Primacy]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]], [[Gross-Profitability-Premium]]"
+sources: []
+related:
+  - "[[Accruals-Anomalie-Sloan]]"
+  - "[[F-Score-Quality-Signal]]"
+  - "[[FCF-Primacy]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[Gross-Profitability-Premium]]"
 ---
 
 # Sloan: Accruals Anomaly (1996)

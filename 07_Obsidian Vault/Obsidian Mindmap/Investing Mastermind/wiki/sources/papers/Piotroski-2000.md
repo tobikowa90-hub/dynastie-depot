@@ -8,7 +8,14 @@ url: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=249455
 authors: "Joseph D. Piotroski (University of Chicago, Journal of Accounting Research 38, Supplement)"
 status: processed
 defcon_relevanz: "Fundamentals — Quality-Bonus: F-Score ≥7 → +2 Pt. Fundamentals-Bonus (Befund B12). Belegt Quality als PRÄDIKTOR, nicht nur Risiko-Signal."
-related: "[[F-Score-Quality-Signal]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]], [[FCF-Primacy]]"
+sources: []
+related:
+  - "[[F-Score-Quality-Signal]]"
+  - "[[Buffett-Faktorlogik]]"
+  - "[[QMJ-Faktor]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[FCF-Primacy]]"
 ---
 
 # Piotroski F-Score (2000)

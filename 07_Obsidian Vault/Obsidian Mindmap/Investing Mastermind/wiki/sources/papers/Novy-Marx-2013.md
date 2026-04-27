@@ -8,7 +8,14 @@ url: https://www.sciencedirect.com/science/article/abs/pii/S0304405X13000044
 authors: "Robert Novy-Marx (University of Rochester, Journal of Financial Economics 108)"
 status: processed
 defcon_relevanz: "Fundamentals — GP/TA als eigenständige Metrik (2 Pt.). Gross Profitability prognostiziert Returns ~gleich stark wie Book-to-Market. Moat-Block-GM wird in Fundamentals promoted (Befund B13)."
-related: "[[Gross-Profitability-Premium]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]], [[QMJ-Faktor]]"
+sources: []
+related:
+  - "[[Gross-Profitability-Premium]]"
+  - "[[FCF-Primacy]]"
+  - "[[Moat-Taxonomie-Morningstar]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[QMJ-Faktor]]"
 ---
 
 # Novy-Marx: Gross Profitability Premium (2013)

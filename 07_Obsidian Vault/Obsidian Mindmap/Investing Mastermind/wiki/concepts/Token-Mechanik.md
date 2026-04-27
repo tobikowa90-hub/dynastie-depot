@@ -2,7 +2,12 @@
 title: "Token-Mechanik"
 type: concept
 tags: [system, token-effizienz, claude, session-management]
-related: "[[Context-Hygiene]], [[CLAUDE-md-Konstitution]], [[Context-Hygiene-Code]], [[Update-Klassen-DEFCON]]"
+sources: []
+related:
+  - "[[Context-Hygiene]]"
+  - "[[CLAUDE-md-Konstitution]]"
+  - "[[Context-Hygiene-Code]]"
+  - "[[Update-Klassen-DEFCON]]"
 defcon_block: "System-Hygiene"
 operative_regel: "Token-Kosten durch strukturiertes Laden minimieren — kein redundantes Vollladen großer Dateien."
 ---

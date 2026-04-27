@@ -9,7 +9,14 @@ journal: "The Journal of Portfolio Management, Quantitative Special Issue 49(2),
 authors: "Michele Aghassi, Cliff Asness, Charles Fattouche, Tobias J. Moskowitz — AQR Capital"
 status: processed
 defcon_relevanz: "Externer Kalibrierungsanker: DEFCON = impliziter Long-Only-Multi-Faktor-Selektor (Value/Quality/Momentum/Defensive). Retrospective-Gate §29.2 — aggregierte Portfolio-SR muss im Band der AQR/Ilmanen-Benchmark liegen. NICHT pro Ticker anwendbar (AQR-Value-Spread ist Long-Short-Faktor-Instrument)."
-related: "[[Factor-Investing-Framework]], [[QMJ-Faktor]], [[Buffett-Faktorlogik]], [[Backtest-Methodik-Roadmap]], [[Wissenschaftliche-Fundierung-DEFCON]], [[DEFCON-System]]"
+sources: []
+related:
+  - "[[Factor-Investing-Framework]]"
+  - "[[QMJ-Faktor]]"
+  - "[[Buffett-Faktorlogik]]"
+  - "[[Backtest-Methodik-Roadmap]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[DEFCON-System]]"
 ---
 
 # Aghassi, Asness, Fattouche, Moskowitz — Fact, Fiction, and Factor Investing (2023)

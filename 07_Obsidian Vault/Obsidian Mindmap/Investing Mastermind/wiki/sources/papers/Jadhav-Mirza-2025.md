@@ -9,7 +9,13 @@ authors: "[[Aakanksha Jadhav]], [[Vishal Mirza]]"
 journal: "Frontiers in Artificial Intelligence (PMC)"
 status: processed
 defcon_relevanz: "Sentiment-Block (10 Pt.) — News-Positivity-Bias begrenzt Sentiment-Gewichtung | Multi-Modal-Hierarchie bestätigt B7 | Reinforcement Learning + Memory = zukünftige Analysearchitektur"
-related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[LLM-Based Stock Rating]], [[AI in Investment Analysis]], [[Chain-of-Thought Prompting]]"
+sources: []
+related:
+  - "[[DEFCON-System]]"
+  - "[[Analyse-Pipeline]]"
+  - "[[LLM-Based Stock Rating]]"
+  - "[[AI in Investment Analysis]]"
+  - "[[Chain-of-Thought Prompting]]"
 aliases:
   - "large-language-models-equity-markets"
 

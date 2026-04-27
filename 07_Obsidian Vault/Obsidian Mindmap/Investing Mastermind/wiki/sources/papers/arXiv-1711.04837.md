@@ -8,7 +8,11 @@ url: https://arxiv.org/abs/1711.04837
 authors: "Gu, Kelly, Xiu"
 status: processed
 defcon_relevanz: "Fundamentals-Block (50 Pt.) — 5J-Fenster als Pflichtperspektive; Score-Versionierung +2,7% CAGR"
-related: "[[5J-Fundamental-Fenster]], [[DEFCON-System]], [[Analyse-Pipeline]]"
+sources: []
+related:
+  - "[[5J-Fundamental-Fenster]]"
+  - "[[DEFCON-System]]"
+  - "[[Analyse-Pipeline]]"
 ---
 
 # Empirical Asset Pricing via Machine Learning

@@ -2,7 +2,12 @@
 title: "Context-Hygiene"
 type: concept
 tags: [system, token-effizienz, claude, context-management]
-related: "[[Token-Mechanik]], [[CLAUDE-md-Konstitution]], [[Context-Hygiene-Code]], [[Update-Klassen-DEFCON]]"
+sources: []
+related:
+  - "[[Token-Mechanik]]"
+  - "[[CLAUDE-md-Konstitution]]"
+  - "[[Context-Hygiene-Code]]"
+  - "[[Update-Klassen-DEFCON]]"
 defcon_block: "System-Hygiene"
 operative_regel: "Nur Pflicht-Lektüren im Session-Init laden — alles weitere strikt on-demand."
 ---

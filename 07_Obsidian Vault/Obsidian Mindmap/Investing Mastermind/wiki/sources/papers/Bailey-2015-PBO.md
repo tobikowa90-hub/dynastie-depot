@@ -9,7 +9,13 @@ pdf_alt: https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf
 authors: "David H. Bailey (LBL/UC Davis), Jonathan M. Borwein (Newcastle), Marcos López de Prado (Guggenheim/LBL), Qiji Jim Zhu (Western Michigan) — Journal of Computational Finance"
 status: processed
 defcon_relevanz: "Retrospective-Analyse-Gate §29.1 — PBO/CSCV als formaler Overfitting-Test bei Strategy-Selection + Parameter-Tuning. Aktivierung 2028-04-01 oder erste DEFCON-Parameter-Variation. Nicht anwendbar auf aktuelles Forward-Score-Append (kein Selection-Kontext)."
-related: "[[PBO-Backtest-Overfitting]], [[Backtest-Methodik-Roadmap]], [[Score-Archiv]], [[Backtest-Ready-Infrastructure]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[PBO-Backtest-Overfitting]]"
+  - "[[Backtest-Methodik-Roadmap]]"
+  - "[[Score-Archiv]]"
+  - "[[Backtest-Ready-Infrastructure]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 ---
 
 # Bailey, Borwein, López de Prado, Zhu — The Probability of Backtest Overfitting (2015)

@@ -10,7 +10,15 @@ isbn: "9781009428088"
 authors: "Daniel P. Palomar (HKUST — Hong Kong University of Science and Technology)"
 status: processed
 defcon_relevanz: "Institutionelles Lehrbuch, selektiv wertvoll. Kap. 8.2 Seven Sins of Quantitative Investing = Pre-Flight-Gate §29.5. Kap. 8.3-8.5 walk-forward/CV/synthetic als methodische Erg\u00e4nzung zu Bailey PBO. Kap. 6 Risk-Metric-Formeln als Referenz f\u00fcr bestehenden risk-metrics-calculation-Skill. Kap. 7.5 + 11 als Validation-Reading f\u00fcr Equal-Weight/65-30-5-Allokation."
-related: "[[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Backtest-Methodik-Roadmap]], [[Wissenschaftliche-Fundierung-DEFCON]], [[DEFCON-System]]"
+sources: []
+related:
+  - "[[Seven-Sins-Backtesting]]"
+  - "[[Palomar-Methods-Reference]]"
+  - "[[PBO-Backtest-Overfitting]]"
+  - "[[Factor-Investing-Framework]]"
+  - "[[Backtest-Methodik-Roadmap]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[DEFCON-System]]"
 ---
 
 # Palomar — Portfolio Optimization: Theory and Application (2025)

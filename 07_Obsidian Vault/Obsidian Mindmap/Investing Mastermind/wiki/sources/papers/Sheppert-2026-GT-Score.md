@@ -9,7 +9,14 @@ venue: "Journal of Risk and Financial Management (MDPI), 2026, 1, 0 — Open Acc
 authors: "Alexander Pearson Sheppert (Capitol Technology University, Department of Computer and Data Science)"
 status: processed
 defcon_relevanz: "Methoden-Anker §29.1 (Komplement zu Bailey PBO: in-the-loop statt post-hoc) und §29.6 Portfolio-Metriken (Downside-Risk-Komponente). DEFCON ist Composite-Score (5 Blöcke); GT-Score-Pattern (Performance × Significance × Consistency × Downside-Risk) ist ein Validation-Lens für unsere Block-Gewichtungen — kein zwingender Code-Change im Skill, sondern Audit-Methodik (Codex Round 2 A5). Direkte Anwendung in Track 5b FRED Grid-Search (1620 Combos) als robusteres Acceptance-Criterion."
-related: "[[Composite-Anti-Overfitting-Objective]], [[PBO-Backtest-Overfitting]], [[Palomar-Methods-Reference]], [[Backtest-Methodik-Roadmap]], [[Seven-Sins-Backtesting]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Composite-Anti-Overfitting-Objective]]"
+  - "[[PBO-Backtest-Overfitting]]"
+  - "[[Palomar-Methods-Reference]]"
+  - "[[Backtest-Methodik-Roadmap]]"
+  - "[[Seven-Sins-Backtesting]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 ---
 
 # Sheppert — The GT-Score (JRFM 2026)

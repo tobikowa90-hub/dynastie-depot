@@ -2,7 +2,14 @@
 title: "CLAUDE.md Konstitution"
 type: concept
 tags: [system, claude, konfiguration, session-management]
-related: "[[Context-Hygiene]], [[Token-Mechanik]], [[Context-Hygiene-Code]], [[Session-Start-Protokoll]], [[Faktortabelle-Architektur]], [[INSTRUKTIONEN-SKILL-Trennung]]"
+sources: []
+related:
+  - "[[Context-Hygiene]]"
+  - "[[Token-Mechanik]]"
+  - "[[Context-Hygiene-Code]]"
+  - "[[Session-Start-Protokoll]]"
+  - "[[Faktortabelle-Architektur]]"
+  - "[[INSTRUKTIONEN-SKILL-Trennung]]"
 defcon_block: "System-Konfiguration"
 operative_regel: "CLAUDE.md ist die einzige Wahrheitsquelle für Session-Verhalten — jede strukturelle Änderung sofort dort dokumentieren. Seit 17.04.2026: Session-Init liest nur STATE.md, andere 00_Core-Dateien on-demand. Seit 24.04.2026 (Tier-1-Refactor): 71-Zeilen-Hub mit Routing-Table + Pointer; Applied-Learning und Token-Rules ausgelagert nach `00_Core/APPLIED-LEARNING.md` + `00_Core/TOKEN-RULES.md`."
 ---

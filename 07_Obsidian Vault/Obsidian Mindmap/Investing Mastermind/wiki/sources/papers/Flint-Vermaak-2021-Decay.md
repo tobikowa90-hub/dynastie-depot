@@ -10,7 +10,14 @@ quantpedia_summary: https://quantpedia.com/how-often-should-we-rebalance-equity-
 authors: "Emlyn Flint, Rademeyer Vermaak"
 status: processed
 defcon_relevanz: "Validiert unsere Earnings-Trigger-Cadence (~3 Monate) als wissenschaftlich fundiert für Value/Quality/Momentum. Keine System-Änderung nötig. §29.3 Temporal-Konsistenz-Check bei Review 2028. Watch: Investment-Faktor-Half-Life = 1 Monat → bei aktiven FLAGs (MSFT CapEx, TMO fcf_trend_neg) Monthly-Fundamentals-Refresh erwägen."
-related: "[[Factor-Information-Decay]], [[Factor-Investing-Framework]], [[Update-Klassen-DEFCON]], [[DEFCON-System]], [[Backtest-Methodik-Roadmap]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Factor-Information-Decay]]"
+  - "[[Factor-Investing-Framework]]"
+  - "[[Update-Klassen-DEFCON]]"
+  - "[[DEFCON-System]]"
+  - "[[Backtest-Methodik-Roadmap]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 ---
 
 # Flint, Vermaak — Factor Information Decay: A Global Study (2021)

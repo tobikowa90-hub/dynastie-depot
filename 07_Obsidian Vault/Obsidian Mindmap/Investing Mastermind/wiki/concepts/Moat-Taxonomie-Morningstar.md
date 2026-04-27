@@ -4,7 +4,24 @@ type: concept
 tags: [defcon, moat, economic-moat, competitive-advantage, morningstar, wide-moat, cap]
 source: "[[Morningstar-Wide-Moat]]"
 sources: [Morningstar-Wide-Moat, Mauboussin-Callahan-2024-Measuring-Moat]
-related: "[[DEFCON-System]], [[ROIC-vs-WACC]], [[Buffett-Faktorlogik]], [[Competitive-Advantage-Period]], [[Mauboussin-Callahan-2024-Measuring-Moat]], [[Wissenschaftliche-Fundierung-DEFCON]], [[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
+related:
+  - "[[DEFCON-System]]"
+  - "[[ROIC-vs-WACC]]"
+  - "[[Buffett-Faktorlogik]]"
+  - "[[Competitive-Advantage-Period]]"
+  - "[[Mauboussin-Callahan-2024-Measuring-Moat]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[ASML]]"
+  - "[[AVGO]]"
+  - "[[MSFT]]"
+  - "[[RMS]]"
+  - "[[VEEV]]"
+  - "[[SU]]"
+  - "[[BRKB]]"
+  - "[[V]]"
+  - "[[APH]]"
+  - "[[COST]]"
+  - "[[TMO]]"
 defcon_block: "Moat-Block (20 Pt.)"
 operative_regel: "8 Moat-Quellen prüfen; Wide Moat ≠ automatisch Excess Return — erst in Kombination mit Fundamentals und attraktiver Bewertung. CAP-Mapping (Mauboussin/Callahan 2024): Wide = >20J CAP, Narrow = 10-20J, None = transient."
 updated: 2026-04-27

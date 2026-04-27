@@ -2,7 +2,25 @@
 title: "Faktortabelle — Snapshot-First Architektur"
 type: concept
 tags: [token-effizienz, defcon, datenbasis, snapshot-first]
-related: "[[insider-intelligence]], [[Context-Hygiene]], [[Update-Klassen-DEFCON]], [[Context-Hygiene-Code]], [[Token-Mechanik]], [[Session-Start-Protokoll]], [[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[TMO]], [[APH]], [[COST]]"
+sources: []
+related:
+  - "[[insider-intelligence]]"
+  - "[[Context-Hygiene]]"
+  - "[[Update-Klassen-DEFCON]]"
+  - "[[Context-Hygiene-Code]]"
+  - "[[Token-Mechanik]]"
+  - "[[Session-Start-Protokoll]]"
+  - "[[ASML]]"
+  - "[[AVGO]]"
+  - "[[MSFT]]"
+  - "[[RMS]]"
+  - "[[VEEV]]"
+  - "[[SU]]"
+  - "[[BRKB]]"
+  - "[[V]]"
+  - "[[TMO]]"
+  - "[[APH]]"
+  - "[[COST]]"
 defcon_block: "System-Datenbasis"
 operative_regel: "Faktortabelle vor API-Abfragen lesen — spart ~60-70% Token-Kosten pro Session."
 ---

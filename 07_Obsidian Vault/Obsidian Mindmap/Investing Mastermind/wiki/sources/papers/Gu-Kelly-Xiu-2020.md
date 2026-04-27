@@ -8,7 +8,12 @@ url: https://onlinelibrary.wiley.com/doi/full/10.1002/for.3021
 authors: "Gu, Kelly, Xiu"
 status: processed
 defcon_relevanz: "Faktor-Kalibrierung — PFLICHT: trailing P/E verliert Vorhersagekraft; forward P/E bleibt valide"
-related: "[[FCF-Primacy]], [[DEFCON-System]], [[CapEx-FLAG]], [[Analyse-Pipeline]]"
+sources: []
+related:
+  - "[[FCF-Primacy]]"
+  - "[[DEFCON-System]]"
+  - "[[CapEx-FLAG]]"
+  - "[[Analyse-Pipeline]]"
 ---
 
 # Empirical Asset Pricing via Machine Learning (RFS 2020)

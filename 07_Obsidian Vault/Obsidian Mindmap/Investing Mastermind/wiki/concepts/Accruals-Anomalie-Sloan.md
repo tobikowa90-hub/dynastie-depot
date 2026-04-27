@@ -3,7 +3,14 @@ title: "Accruals-Anomalie (Sloan 1996)"
 type: concept
 tags: [defcon, accruals, earnings-quality, sloan, anomaly, fundamentals, cash-flow]
 source: "[[Sloan-1996]]"
-related: "[[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[FCF-Primacy]], [[QMJ-Faktor]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[F-Score-Quality-Signal]]"
+  - "[[Gross-Profitability-Premium]]"
+  - "[[FCF-Primacy]]"
+  - "[[QMJ-Faktor]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 defcon_block: "Fundamentals (Accrual Ratio Malus — unverändert, wissenschaftlich fundiert)"
 operative_regel: "Accrual Ratio < 5% kein Effekt | 5–10% -1 Pt. | >10% -2 Pt. Malus. v3.6-Erweiterung: <3% → +2 Pt. Bonus (Piotroski-Parallelität)."
 aliases:

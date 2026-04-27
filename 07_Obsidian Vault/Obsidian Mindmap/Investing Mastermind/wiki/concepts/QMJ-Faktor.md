@@ -3,7 +3,13 @@ title: "QMJ-Faktor (Quality Minus Junk)"
 type: concept
 tags: [defcon, faktor, qualitaet, qmj, assetpricing, buffett]
 source: "[[Buffetts-Alpha]]"
-related: "[[Buffett-Faktorlogik]], [[Moat-Taxonomie-Morningstar]], [[DEFCON-System]], [[BRKB]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Buffett-Faktorlogik]]"
+  - "[[Moat-Taxonomie-Morningstar]]"
+  - "[[DEFCON-System]]"
+  - "[[BRKB]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 defcon_block: "Fundamentals + Moat (Qualitätsfaktor)"
 operative_regel: "QMJ + BAB + Value erklärt Buffetts Alpha vollständig — cheap+safe+quality ist wissenschaftlich fundiert und operativ replizierbar."
 ---

@@ -2,7 +2,13 @@
 title: "Session-Start-Protokoll — Hub + PORTFOLIO Default-Load"
 type: concept
 tags: [token-effizienz, session-management, snapshot-first, claude-md]
-related: "[[CLAUDE-md-Konstitution]], [[Faktortabelle-Architektur]], [[Context-Hygiene]], [[Token-Mechanik]], [[Update-Klassen-DEFCON]]"
+sources: []
+related:
+  - "[[CLAUDE-md-Konstitution]]"
+  - "[[Faktortabelle-Architektur]]"
+  - "[[Context-Hygiene]]"
+  - "[[Token-Mechanik]]"
+  - "[[Update-Klassen-DEFCON]]"
 defcon_block: "System-Konfiguration"
 operative_regel: "Session-Start liest STATE.md (Hub, ~40 Z) + PORTFOLIO.md (Live-State). Andere 00_Core-Dateien on-demand via Routing-Table. Spart ~80% Auto-Read-Token gegenüber 4-Datei-Auto-Load."
 ---

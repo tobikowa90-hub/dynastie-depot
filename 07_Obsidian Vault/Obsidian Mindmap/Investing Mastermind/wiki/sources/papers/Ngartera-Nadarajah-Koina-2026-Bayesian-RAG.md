@@ -9,7 +9,11 @@ venue: "Frontiers in Artificial Intelligence (Frontiers) Vol. 8, 1668172 — Pub
 authors: "Lebede Ngartera (TeraSystemsAI, Philadelphia PA), Saralees Nadarajah (Department of Mathematics, University of Manchester), Rodoumta Koina (University of N'Djamena, Chad; Present: ENSTP N'Djamena)"
 status: processed
 defcon_relevanz: "Keine DEFCON-Scoring-Änderung. Methoden-Anker für Morning-Briefing-Infrastruktur (Tavily-RAG-Pipeline): Bayesian RAG fügt einen 'epistemic uncertainty'-Score zu jeder Retrieval-Antwort hinzu (Monte Carlo Dropout auf Embeddings), der potenziell als Confidence-Signal für Tavily-Tavily-Quellen nutzbar wäre. ABER: produktionsbereit heute nicht — erfordert Model-Weights-Zugriff (Dropout-Inference), nicht verfügbar bei Third-Party-APIs wie Tavily. Relevanz eher konzeptuell: Validiert, dass Morning-Briefing v3.0.3 'Soft-Alert-Schema' + 'n.v.-deterministisch'-Markierungen der richtigen Design-Richtung folgen (Uncertainty explizit, nicht verschleiert)."
-related: "[[RAG-Uncertainty-Quantification]], [[Knowledge-Graph-Finance-Architecture]], [[Knowledge-Graph-Architektur-Roadmap]]"
+sources: []
+related:
+  - "[[RAG-Uncertainty-Quantification]]"
+  - "[[Knowledge-Graph-Finance-Architecture]]"
+  - "[[Knowledge-Graph-Architektur-Roadmap]]"
 ---
 
 # Ngartera, Nadarajah, Koina — Bayesian RAG (Frontiers AI, Jan 2026)
