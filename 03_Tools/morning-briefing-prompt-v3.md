@@ -5,6 +5,14 @@
 
 ## Changelog
 
+### v3.0.6 (2026-04-27) — Anti-Fallback-Crack-Closure (Reaktion auf Phase-3 Adversarial-Test FAIL)
+- FIX: Critical Guards um 3 Bullets erweitert — (a) Tools ausserhalb FIELD→SOURCE-MAP verboten (insb. WebSearch/WebFetch/curl als News-Fallback); (b) Domain-Subset-Retries bei Tavily verboten; (c) Score-Datum-Substituts-Improvisation bei Sa/So/Feiertag verboten.
+- FIX: SCHRITT 4.8 um Tool-Provenance-Check-Bullet erweitert — Self-Check-Gate prüft jetzt Tool-Provenance pro mapped Feld, nicht nur Source-Mapping.
+- FIX: §4.5(E) um zwei neue Klassen erweitert — (a) Tool-Nicht-Verfügbar (`NEWS-SIGNAL: n.v. (tool-unavailable)`); (b) Domain-Block-Hinweis (0-Treffer mit Original-Allowlist = `Keine material News`, kein Allowlist-Retry).
+- FIX: §6F-4 Cross-Source-Mismatch um Calendar-Mismatch-Sub-Case erweitert (Sa/So/Feiertag-Score-Datum) — KEIN neues §6F-7, KEIN Schema-Drift-Reframe.
+- FIX (Spec): §9 T6 Assertion-Liste um (6) Anti-Fabrikation erweitert — Tag-Authentizität auch im Failure-Modus enforced.
+- ROOT-CAUSE: Phase-3 Manual-Run 27.04.2026 (Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh`) zeigte 4 echte FAILs — (1) WebSearch-Fallback bei Tavily-Domain-Block, (2) Saturday-Score-Date-Improvisation für V, (3) SCHRITT 4.8 Self-Check-Gate hat Unmapped-Tool nicht gefangen, (4) Tag-Schema-Erfindung `[websearch@<domain>]`. Codex-Review bestätigte 4× HIGH + 1× MEDIUM. Hotfix-Wording aus Codex-Refinements.
+
 ### v3.0.5 (2026-04-27) — Bucket-B Provenance-Architecture
 - NEU: Field→Source-Map als embedded Markdown-Tabelle vor SCHRITT 3 (5 Felder: Kurs / Delta / News-Headline / News-Domain / Earnings-Datum). Source-Klassen `external` (MCP-Tool) vs. `file-read-derived` (Repo-Read).
 - NEU: SCHRITT 4.8 — PROVENANCE-SELF-CHECK 5-Zeilen-Reverse-Map-Gate zwischen SCHRITT 4.5 und Output-Assembly.
@@ -170,6 +178,9 @@ CRITICAL GUARDS:
 - NEU (v3.0.4): NIEMALS alternative Live-Preis-Datenquellen fuer US-Ticker nutzen. Shibui-latest_date ist autoritativ. Wochenend-/Feiertags-Lag ist NORMAL und KORREKT. Kein Yahoo curl, kein Tavily-Search, kein anderes Live-Fetch als Fallback.
 - NEU (v3.0.4): NIEMALS improvisieren. Wenn ein Szenario nicht explizit im Prompt abgedeckt ist, gilt: konservativ handeln, Sektion als "n.v." oder "(Score-Datum)" markieren, Rest des Briefings normal zu Ende fuehren. Niemals Daten aus nicht autorisierten Quellen erfinden oder holen.
 - NEU (v3.0.5): Vor Emit: SCHRITT 4.8 Self-Check-Gate durchlaufen. Bei Unmapped → konservativ n.v., kein Versuch alternative Quellen zu finden. Tag-Pflicht: jedes mapped Feld traegt `[source_ref@source_date]` (external) bzw. `[source_ref]` (file-read-derived). Bei §6F-Mismatch: Klassen-Output-String mit Klassen-Label.
+- NEU (v3.0.6): Tools ausserhalb der FIELD→SOURCE-MAP-Lese-Tool-Spalte sind VERBOTEN, auch wenn die Runtime sie zur Verfuegung stellt. Insbesondere: WebSearch, WebFetch, curl, Glob/Grep fuer News-Quellen, oder beliebige andere Subagent-/Skill-Calls zur Daten-Beschaffung. Wenn das mapped Tool nicht verfuegbar ist (z.B. mcp__tavily__tavily_search nicht in der Tool-Liste): Feld als `n.v. (tool-unavailable)` markieren, NIEMALS auf Ersatz-Tool ausweichen.
+- NEU (v3.0.6): KEINE Domain-Subset-Retries bei Tavily-Fehlern. include_domains-Liste ist hardcoded (siehe SCHRITT 4.5 A/C) und wird nicht reduziert oder partiell verwendet. Wenn Tavily mit Original-Allowlist 0 Ergebnisse liefert, ist das `Keine material News`, kein Anlass zur Allowlist-Reduktion.
+- NEU (v3.0.6): KEINE Substituts-Improvisation bei nicht-handelbarem Score-Datum. Wenn Faktortabelle ein Score-Datum auf Sa/So oder Listing-Markt-Feiertag (NYSE fuer US-Ticker; Euronext Paris fuer RMS.PA/SU.PA) listet und die zugehoerige Source dafuer keinen Close hat: §6F-4 Cross-Source-Mismatch — Output `Delta — n.v. (cross-source-mismatch: shibui_stock_quotes@<latest_date>; score_date=<datum> nicht handelbar im Listing-Markt)`. KEIN Substitut auf vorherigen Handelstag, KEIN Asterisk-Note.
 
 SCHRITT 4 — Briefing generieren (erstmal nur Grundstruktur, News kommt in 4.5 dazwischen):
 
@@ -298,6 +309,14 @@ Wenn mcp__tavily__tavily_search einen Fehler oder Error-Status zurueckgibt:
     - Fuer Per-Ticker: "<TICKER> — n.v. (tool-error)"
     - WEITER
 
+  NEU (v3.0.6) Tool-Nicht-Verfuegbar (mcp__tavily__tavily_search ist nicht in allowed_tools, oder Connector liefert "tool not found" / Connector-Disabled-Fehler):
+    - Ausgabe im News-Signal-Header: "NEWS-SIGNAL: n.v. (tool-unavailable)"
+    - ALLE weiteren News-Queries SKIPPEN (weder Cohort noch Per-Ticker)
+    - KEIN Ausweich auf WebSearch, WebFetch, curl oder andere Tools — Anti-Fallback-Bullet aus Critical Guards (v3.0.6) gilt absolut
+    - Rest des Briefings NORMAL zu Ende fuehren
+
+  NEU (v3.0.6) Domain-Block-Hinweis: Wenn Tavily-Response mit Original-Allowlist 0 Ergebnisse liefert, ist das `Keine material News` (siehe "Valides Result aber results[] leer" unten). KEIN Retry mit reduzierter include_domains-Liste, KEINE Allowlist-Modifikation.
+
   Response-Schema malformed (results[] fehlt oder unerwartetes Format):
     - Fuer Cohort: "Cohort: n.v. (parse-error)"
     - Fuer Per-Ticker: "<TICKER> — n.v. (parse-error)"
@@ -306,6 +325,7 @@ Wenn mcp__tavily__tavily_search einen Fehler oder Error-Status zurueckgibt:
   Valides Result aber results[] leer (KEIN Fehler):
     - Fuer Cohort: "Cohort: Keine material News"
     - Fuer Per-Ticker: "<TICKER> — keine News"
+    - NEU (v3.0.6): KEINE Inferenz auf Domain-Block, Shadow-Block oder internes Filtering aus leerem results[]. Einzig zulaessige Klassifikation bleibt "Keine material News" / "keine News". Insbesondere KEIN Anlass fuer Domain-Subset-Retry (siehe Critical Guards v3.0.6).
 
   Valides Result, results[] nicht-leer, aber Materialitaets-Filter verwirft alles (KEIN Fehler):
     - Fuer Cohort: "Cohort: Keine material News"
@@ -322,7 +342,7 @@ Runtime-Hinweis (v3.0.3): Fuehre ALLE geplanten Per-Ticker-Queries vollstaendig 
 | 6F-1  | Lag                     | latest_date < heute (Source-Date < Erwartung)                                 | [FIELD] — n.v. (source-lag: [source_ref@source_date])  — DELTA: Prompt-3a-Branches       |
 | 6F-2  | Schema-Drift            | Erwartete Source-Felder fehlen oder Format anders                             | [FIELD] — n.v. (schema-drift: [source_ref@source_date])                                  |
 | 6F-3  | Auth-Access-Fail        | Source nicht erreichbar wegen Auth/Permission                                 | [FIELD] — n.v. (access-fail: [source_ref@source_date])                                   |
-| 6F-4  | Cross-Source-Mismatch   | Multi-Source-Feld nur teilweise befüllbar                                     | [FIELD] — n.v. (cross-source-mismatch: [source_ref@source_date])                         |
+| 6F-4  | Cross-Source-Mismatch   | Multi-Source-Feld nur teilweise befüllbar; ODER (v3.0.6) Calendar-Mismatch: score_date in Faktortabelle ist Sa/So oder Listing-Markt-Feiertag, Source hat dafür keinen Close | [FIELD] — n.v. (cross-source-mismatch: [source_ref@source_date])                         |
 | 6F-5  | File-Sync-Drift         | PORTFOLIO.md vs. Faktortabelle.md inkonsistent                                | [FIELD] — n.v. (file-sync-drift: [source_ref])                                           |
 | 6F-6  | Missing-File-Row        | file-read-derived: keine Zeile für Ticker (z.B. Earnings-Datum-Spalte leer)   | [FIELD] — n.v. (missing-file-row: [source_ref])                                          |
 
@@ -331,15 +351,17 @@ Klarstellungen:
 - 6F-1 Lag bei DELTA: SCHRITT-3a-Branches sind SoT (Score-heute / Score-Datum-Close / normale Berechnung). Lag wird über Tag-`source_date` transparent gemacht.
 - "Unknown-Field-Request" = KEINE §6F-Klasse, sondern SCHRITT 4.8 Self-Check-Gate-Outcome (konservativ n.v.).
 - §6F-3 = Folge eines §6E-Primärfehlers (Auth/Rate-Limit) → §6E ist Primär-Klassifikation, §6F-3 referenziert.
+- 6F-4 Calendar-Mismatch (NEU v3.0.6): Wenn `score_date` Sa/So oder Listing-Markt-Feiertag ist (NYSE fuer US-Ticker; Euronext Paris fuer RMS.PA/SU.PA) und die zugehoerige Source keinen Close für dieses Datum hat, Output `Delta — n.v. (cross-source-mismatch: shibui_stock_quotes@<latest_date>; score_date=<datum> nicht handelbar im Listing-Markt)`. KEIN Substitut auf vorherigen Handelstag, KEIN Asterisk-Note. Auch nicht §6F-2 Schema-Drift (kein Schema fehlt — der Trading-Calendar enthaelt Sa/So und Markt-Feiertage einfach nicht).
 - Niemals Run abbrechen: §6F → degradiertes Feld, Briefing wird komplett ausgeliefert.
 
-SCHRITT 4.8 — PROVENANCE-SELF-CHECK (vor Briefing-Output, KRITISCH, v3.0.5):
+SCHRITT 4.8 — PROVENANCE-SELF-CHECK (vor Briefing-Output, KRITISCH, v3.0.5+v3.0.6):
 Vor Ausgabe pruefen:
   - Kurs mapped auf shibui_stock_quotes@latest_date?
   - Delta mapped auf latest_close@latest_date UND score_date_close@score_date?
   - Headline+Domain aus dem GLEICHEN tavily_results[i]?
   - Earnings-Datum aus Faktortabelle.md/Update-Kalender (woertlich)?
   - Ist ein Feld unmapped oder nicht im FIELD→SOURCE-MAP-Schema → emittiere n.v., NICHT improvisieren.
+  - NEU (v3.0.6) Tool-Provenance-Check: Stammt jedes mapped Feld aus dem in der FIELD→SOURCE-MAP genannten Lese-Tool? Tool-Name-Abweichung oder Runtime-Tool ausserhalb der Map (z.B. WebSearch statt mcp__tavily__tavily_search) → emittiere `n.v. (tool-unavailable)` bzw. `n.v. (tool-error)` und KEIN weiterer Suchversuch mit Ersatz-Tool.
 
 SCHRITT 4 — Briefing generieren:
 Formatiere exakt so:
