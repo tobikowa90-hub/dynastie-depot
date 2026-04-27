@@ -737,7 +737,7 @@ Konsolidiert aus Codex-Review Round 1 (`a6353fc19fe65e09a`) + Round 1-bis (`aede
 
 | # | Risk | Severity | Status | Mitigation |
 |---|---|---|---|---|
-| 1 | MCP `connector_uuid` Requirement | CRITICAL | ✅ Resolved (UI-Registrierung) | UUID `4a633350-…` via Claude.ai Web-UI |
+| 1 | MCP `connector_uuid` Requirement | CRITICAL | ✅ Resolved (UI-Registrierung), ⚠️ Re-Auth-Pflicht bei Key-Rotation (NEU 27.04.) | Initial-UUID via Claude.ai Web-UI registriert. **Erweiterung 27.04.2026 nach Phase-3.5-Run-#1-FAIL:** „Resolved" gilt nur bis erste Key-Rotation. Bei jeder Key-Rotation MUSS der Tavily-Connector im Web-UI in jeder konsumierenden Routine entfernt + neu attached werden — sonst bleibt UUID stale, Cloud-Runtime lädt alten Auth-State, Tool fehlt in `allowed_tools` (kein 401/403-Signal). Body-RemoteTrigger-update refresht nur Body-Cache, nicht UI-Connector-Bindung. **Verify-Pflicht nach jeder Rotation:** Manual-Run mit Tavily-Aufruf, NICHT nur Body-GET-Roundtrip (war Quelle der „Rotation #1 verified"-Selbsttäuschung pre-Run-#1). Aktuelle Probe-UUID `0da14a12-17bb-4609-bcba-ba2b21152c9b` (UI-Reattach 27.04.2026 18:37:24Z, alt: `4a633350-...`). |
 | 2 | MCP Tool-Name Korrektheit | HIGH | ✅ Resolved (Phase 0 R1 Test B) | `mcp__tavily__tavily_search` bestätigt |
 | 3 | Prompt-Fail-Open bei Tool-Fehler | HIGH | ✅ Resolved (Phase 0 R1 Test C) | HTTP 422 sauber gecatched, Run bis FERTIG |
 | 4 | API-Key in URL-Query — Exposure | HIGH | ✅ Mitigated (Rotation #1 verified 27.04.2026, alter Key revoked) | Rotation-Cycle empirisch verifiziert; Dev-Key separat vom Billing-Account; monatliche Rotation operativ |
@@ -844,6 +844,7 @@ Strukturell: v2.2 + neuer SCHRITT 4.5 + neue Output-Sektion. Alle anderen Teile 
 | 2026-04-19 (Final) | Spec v3 MCP-Architektur mit allen Codex-Fixes | Round-1 + Round-2 PASS | Siehe Sections 5-13 final |
 | 2026-04-20 Nacht-Spät | v3.0.3 Manual-Run-FAIL → Rollback v3.0.3 → v2.2 | Phantom-Kurse 7 US-Ticker (z.B. AVGO -21.8% phantom), Stale-Shibui Karfreitag/Oster-EOD-Lag löste improvisierten Yahoo-Fallback aus | Commit `4cfa421` Incident+Rollback. Trigger für v3.0.4 Anti-Fallback-Hotfix-Plan + Applied-Learning Bullet 11 (zweigleisige Anti-Hallucination-Guards) |
 | 2026-04-27 | Tavily-Key-Rotation #1 verifiziert | Risk #4 Mitigation-Loop | Alter Key revoked, neuer Key in Connector-URL aktiv. Rotation-Posture empirisch validiert. |
+| 2026-04-27 abend | Probe v3.0.6 Phase 3.5 PASS (B1-B9 9/9, 6 hart) | Hotfix-Verify nach Anti-Fabrikations-Cracks aus Phase 3 | v3.0.6-Body deployed 17:38:50Z (`1a3cf51`, 9/9 GET-Marker). Manual-Run #1 ~20:00 MESZ tool-unavailable wegen stale UI-Connector-Bindung nach Key-Rotation 15:27 UTC; Diagnose ergab Hypothese B (UI-Bindung kaputt, NICHT Server-Auth-Fail). Fix Pfad 1: User UI-Reattach 18:37:24Z, Tavily-UUID rotiert `4a633350-...` → `0da14a12-17bb-4609-bcba-ba2b21152c9b`. Run #2 ~20:50 MESZ lieferte echte Headlines + Material-Filter sauber + Cohort-0-results ohne Inferenz. **Lesson:** Body-update refresht nur Body-Cache, nicht UI-Connector-Bindung. **Risk #1-Erweiterung:** Re-Auth-Pflicht bei jeder Key-Rotation. Phase 4-6 (T6 voll-test + T1/T3/T4-Retest + Prod-Deploy v3.0.6) freigegeben, blockiert durch V (28.04.) + MSFT (29.04.) Earnings. |
 
 ### E. Referenzen
 
