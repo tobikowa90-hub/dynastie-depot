@@ -1,21 +1,34 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-27 sehr spät (Folge-Session) — **v3.0.5 Implementation-Plan SCHRIFTLICH DONE + codex-reviewed** (10 Findings, 2 HIGH/5 MEDIUM/3 LOW, alle inline gefixt). Execution-Phase startet in nächster Session mit frischem Context bei **Phase 1** des Plans.
+**Aktualisiert:** 2026-04-27 spät (Mid-Plan-State) — **v3.0.5 Phase 1 + Phase 2 DONE**. Phase 3 Adversarial-Test-Block queued für nächste Session mit frischem Context. **Phase 3 Pre-Step zwingend: Probe-MCP-Connector Tavily-Key-Swap** — alter Key `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` ist auf tavily.com bereits revoked (User-Bestätigung 27.04. spät), Probe-Connector hat ihn aber noch hardcoded → ohne Swap würde T-Stale-Shibui-Manual-Run mit Tavily HTTP 401 (Klasse-1-Auth-Fehler) starten und das Adversarial-Setup invalidieren.
 
-### 🟢 Resume-Stand
+### 🟢 Mid-Plan-Resume-Stand
 
-**Branch:** `main`. **HEAD:** `22c057c` (writing-plans v3.0.5 complete + codex-pass + handover). Vorgänger-Commit `9b5f954` (v3.0.5-Spec foundation).
+**Branch:** `main`. **HEAD:** `b51205a` (Phase-1-Commit, lokal + origin/main synchron). Vorgänger-Chain: `91d0f02` → `e777ff2` → `22c057c` (Plan-File-Schreib-Stand).
 
-**Plan-File:** `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md` (~1320 Zeilen, 8 Phasen, 38 Tasks/Phase-Header).
+**Plan-File:** `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md` (~1320 Zeilen, 8 Phasen).
 
-**NEXT-SESSION-RESUME — Execution Phase 1:**
+**Phase 1 DONE (Commit `b51205a`):** 6 Prompt-Edits + Changelog v3.0.4 + v3.0.5 in `03_Tools/morning-briefing-prompt-v3.md`. 85 ins / 7 del. HARTER STAGING-CONTRACT eingehalten (pre-existing dirty `app.json` / Sloan / wiki/PORTFOLIO / canvas außerhalb des Commits gehalten). Push origin/main ✓ (Cron-Read-Voraussetzung Spec §10 Schritt 3).
+
+**Phase 2 DONE (kein neuer Commit, Server-State-Mutation):**
+- Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh` Baseline geholt (`environment_id: env_01Ek3HiKjymFoWzrQoyvMTEk`, allowed_tools: `["Bash","Read","Glob","Grep","mcp__tavily__tavily_search"]`, model: `claude-sonnet-4-6`, sources: GitHub `tobikowa90-hub/dynastie-depot`, events[0].uuid: `11111111-aaaa-bbbb-cccc-777777777777`).
+- Probe-Trigger Update mit v3.0.5-Embedded-Body (Z.75-416 von `03_Tools/morning-briefing-prompt-v3.md`). HTTP 200, `updated_at: 2026-04-27T15:17:55Z`. Roundtrip-GET identisch.
+- POST-UPDATE-VERIFY 7 Asserts auf `ccr.events[0].data.message.content` alle PASS: SCHRITT 4.5 / SCHRITT 4.8 / PROVENANCE-SELF-CHECK / `Keine News-Suche` absent / AUTORITATIVE-DATA-QUELLE-REGEL / VERBOTENE-FALLBACK-PFADE / FIELD→SOURCE-MAP (Unicode-Pfeil korrekt erhalten).
+
+**NEXT-SESSION-RESUME — Phase 3 (T-Stale-Shibui Adversarial-Test):**
 
 1. Standard Session-Start: STATE.md + PORTFOLIO.md.
-2. **Skill: superpowers:executing-plans** ODER **superpowers:subagent-driven-development** (User-Wahl, beide laden Plan-File und gehen task-by-task durch).
-3. Plan-File `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md` lesen — speziell den Plan-Header (Trigger-IDs, Pre-existing-Dirty-Liste, HARTER STAGING-CONTRACT) und Phase 1 (Tasks 1.1-1.8).
-4. **Phase 1 ausführen:** 6 Prompt-Edits in `03_Tools/morning-briefing-prompt-v3.md` (Changelog v3.0.4+v3.0.5 / FIELD→SOURCE-MAP / SCHRITT 3a Anti-Fallback / Critical-Guards-Erweiterung / §6F-Tabelle + SCHRITT 4.8 / Output-Tag-Direktive in KURS-CHECK+NEWS-SIGNAL+Earnings) — jede Edit-Operation einzeln mit grep-Verify nach OneDrive-Persistenz. Dann Commit + Push (Task 1.7 + Task 1.8). Phase-1-Estimate: 35-50 Min.
-5. **Phase 2-6:** Probe-Update / T-Stale-Shibui / T6 Provenance / T1+T3+T4 Retest / Prod-Deploy. Estimate: 60-70 Min für Phase 2-6 zusammen.
-6. **Phase 7-8:** Tag-1-Cron-Review (Folgetag, 5 Min) + Sync-Pflicht (15 Min, log + CORE-MEMORY + SYSTEM + PIPELINE + SESSION-HANDOVER in einem Commit; Plan-File separater Commit gemäß Plan Task 8.6 Step 3).
+2. `superpowers:executing-plans` Skill aktivieren.
+3. Plan-File ab Zeile ~596 (Phase 3 Header) lesen + 7 Hotfix-Plan-Asserts der T-Stale-Shibui-Tasks.
+4. **PRE-STEP vor Manual-Run — Probe-Connector Tavily-Key-Swap:**
+   - **Quelle für neuen Key:** lokales `~/.claude.json` (PROD-Connector hat seit 27.04. spät den neuen Key live; `tavily`-Connector-Eintrag, Friendly-Name-Resolution `mcp__tavily__tavily_search`).
+   - **Operation:** `RemoteTrigger update trigger_id=trig_01XYuQ5mugsvZGZD4K52rjXh` mit `mcp_connections`-Body, in dem die Tavily-`url` auf `https://mcp.tavily.com/mcp/?tavilyApiKey=<NEUER-KEY>` gesetzt wird. **Wichtig:** Full-Replace-Pattern wie in Phase 2 — `mcp_connections` muss als Array mit BEIDEN Connectors (Shibui + Tavily) übergeben werden, sonst kappt der Update den Shibui-Connector mit. Shibui-Block aus aktuellem Probe-State unverändert übernehmen (`connector_uuid: 3ecc8248-4bff-4b40-bab2-9bff78a30413`, `url: https://mcp.shibui.finance/mcp`).
+   - **POST-SWAP-VERIFY:** `RemoteTrigger get` + im Response `mcp_connections[?name='Tavily'].url` enthält neuen Key, NICHT mehr `tvly-dev-4PYXpD...`.
+5. Erst NACH PASS des Key-Swap-Verify: Manual-Run auf Probe-Trigger via Claude Desktop App (Spec §11 sagt Routines-API `RemoteTrigger run` ist noop für Cron-Trigger — Desktop-App nötig). Output gegen 7 Anti-Fallback-Asserts prüfen.
+6. **Phase 4-6:** T6 Provenance / T1+T3+T4 Retest / Prod-Deploy.
+7. **Phase 7-8:** Tag-1-Cron-Review + Sync-Pflicht (log + CORE-MEMORY + SYSTEM + PIPELINE + SESSION-HANDOVER in einem Commit; Plan-File separater Commit gemäß Plan Task 8.6 Step 3).
+
+**Probe-Trigger-Sicherheitsnetz (falls Phase 3 fehlschlägt und Rollback gebraucht wird):** Phase-2-Update hat alten v3.0.3-Probe-Content komplett ersetzt. Falls Rollback auf v3.0.3-Probe-State nötig wäre, Inhalt steht in commit `91d0f02` history (Probe-Trigger spielt aber keine Production-Rolle — Rollback nicht zeitkritisch).
 
 **Codex-Review-Pass (siehe Plan-File Sektion „Codex-Review-Pass (2026-04-27)"):**
 - HIGH #5 T-Numbering: Phase 3 Test heißt **T-Stale-Shibui** (NICHT T5), um Drift mit Spec-T5 (Post-Update-Content-Verify) zu vermeiden.
