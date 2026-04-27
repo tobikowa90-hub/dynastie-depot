@@ -1,9 +1,9 @@
 # Design Spec — Tavily Integration in Morning Briefing
 
-**Date:** 2026-04-19 (v3.0.3 rebase: 2026-04-20; v3.0.4 Anti-Fallback-Hotfix: 2026-04-27, siehe Revision Log unten)
-**Author:** Tobias Kowalski (via Claude + 2× Codex review rounds + v3.0.3 rebase review + v3.0.4 post-incident hotfix)
-**Status:** Spec aktualisiert für v3.0.4 (Prompt-SoT bumped, Probe-Deploy + T5/T1/T3/T4-Tests + Prod-Deploy noch ausstehend — siehe Plan `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md`)
-**Target:** Morning Briefing Remote Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, prompt v2.2 → v3.0.3 (rolled back) → v2.2 stable Prod → v3.0.4 (in Vorbereitung)
+**Date:** 2026-04-19 (v3.0.3 rebase: 2026-04-20; v3.0.4 Anti-Fallback-Hotfix: 2026-04-27; v3.0.5 Bucket-B Provenance-Architecture: 2026-04-27, siehe Revision Log unten)
+**Author:** Tobias Kowalski (via Claude + 2× Codex review rounds + v3.0.3 rebase review + v3.0.4 post-incident hotfix + v3.0.5 Bucket-B Provenance-Architecture, 5 Codex Brainstorm-Runden)
+**Status:** Spec aktualisiert für v3.0.5 (Provenance-Contract als §3.0 + §6F Mismatch-Klassen + §9 T6 Adversarial-Provenance-Test; Prompt-SoT-Bump v3.0.4→v3.0.5 + Probe-Deploy + T1/T3/T4/T5/T6-Tests + Prod-Deploy noch ausstehend — Implementation-Plan folgt aus writing-plans-Phase nach diesem Spec-Commit)
+**Target:** Morning Briefing Remote Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`, prompt v2.2 → v3.0.3 (rolled back) → v2.2 stable Prod → v3.0.4 (Hotfix-Wording, nie deployed) → v3.0.5 (Provenance-Architecture, in Vorbereitung)
 **Architecture:** **MCP via `mcp__tavily__tavily_search`** (CLI-Pivot wurde 2026-04-19 getestet, musste zurückgenommen werden — Tavily Dev-Keys haben REST-Host-Allowlist; nur MCP-Proxy-Pfad funktioniert ohne Paid-Plan. Siehe Appendix D.)
 **Spec location:** `03_Tools/specs/` (co-located with prompt files; `docs/superpowers/plans/` existiert für Implementation-Plans, aber Spec bleibt bei Prompt-SoT-Co-Location)
 
@@ -18,6 +18,25 @@
   - **Test-Suite-Erweiterung:** Neuer Probe-Test **T5 Adversarial-Stale-Shibui** (verifiziert dass Agent bei latest_date<heute keinen Fallback improvisiert). Gate-A-Re-Start-Kriterien erweitert auf T5 PASS + T1/T3/T4 Retest PASS.
   - **Non-Goals:** Keine Tavily-Entfernung (News-Pfad §4.5 nicht betroffen — Halluzination war im Kurs-Pfad §3, nicht im News-Pfad). Kein Runtime-Ziel — Korrektheit > Laufzeit bleibt oberstes Prinzip.
   - **Hotfix-Plan:** `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (13 Tasks). Hotfix-Lessons in Sektion "Lessons Learned" des Plans dokumentiert (Anti-Hallucination-Guards zweigleisig: Narrativ + Datenpfad; Edge-Case-Definitionen explizit; autoritative Quellen als Sprach-Anker; Probe-Tests mit Adversarial-Scenarios).
+- **v3.0.5 (2026-04-27):** Bucket-B Provenance-Architecture — strukturelle Härtung des Anti-Hallucination-Patterns. v3.0.4 hat den Datenpfad narrativ adressiert (CRITICAL GUARDS Wording, "VERBOTENE FALLBACK-PFADE"). v3.0.5 verankert dasselbe Prinzip strukturell als first-class Provenance-Contract: Output-Felder werden auf autoritative Quellen gemapped, ein Pre-Output-Self-Check-Gate verhindert unmapped Emit, sichtbare `[source_ref@source_date]`-Tags machen die Quellen-Bindung im Output beweisbar. v3.0.4-Wording bleibt unverändert als Defense-in-Depth-Layer (Narrativ + Struktur). Spec-Phase deckt Foundation, Implementation folgt via writing-plans-Plan.
+  - **Spec-Änderungen:**
+    - **§3.0 NEU — Provenance-Contract** (vor §3 Background): drei Komponenten — (a) Field→Source-Map mit 5 Feldern (Kurs / Delta multi-source / News-Headline / News-Domain / Earnings-Datum) und Source-Klassen `external` vs. `file-read-derived`; (b) Emit-Only-If-Mapped-Self-Check-Gate (5-Zeilen-Reverse-Map vor Output-Assembly); (c) Output-Source-Tag-Pflicht im Format `[source_ref@source_date]`.
+    - **§6F NEU — Mismatch-Klassen-Taxonomie** (analog §6E-Pattern, flach mit Sub-Buckets): 6 Klassen — Lag / Schema-Drift / Auth-Access-Fail / Cross-Source-Mismatch / File-Sync-Drift / Missing-File-Row. Uniform Output-Template `[FIELD] — n.v. (<type>: [source_ref@source_date])`. `source_date` im Tag = tatsächlich gelieferter Ist-Wert (nicht Soll-Wert). Cross-Reference §6F → §6E (kein Doppel-Klassen-Logging — Mismatches als Folge von §6E-Primärfehlern referenzieren §6E).
+    - **§9 erweitert — T6 Adversarial-Provenance-Test:** verifiziert Tag-Pflicht, Tag-Authentizität (manueller Cross-Check gegen `RemoteTrigger get`-Tool-Response-Log), §6F-Klassen-Compliance bei Mismatch-Trigger. Pre-Deploy-Gate-Bedingung. Auto-Capture-Diff-Skript ist v3.1-Backlog (manueller Verify reicht für 5 Felder).
+    - **§13 Risk-Tabelle:** neue Mitigations für Risk #11 (Halluzinations-Tag-Fabrikation, mitigiert via T6 manuelle Authentizitäts-Verifikation) und Risk #12 (File-Sync-Drift PORTFOLIO/Faktortabelle, mitigiert via §6F-5 + Self-Check-Gate-Anker).
+    - **§14 v3.1-Backlog:** neuer Eintrag "T6-Auto-Capture-Diff-Skript" (Automation der Tag-Authentizitäts-Verifikation, aktiviert wenn Map-Scope auf >10 Felder wächst oder Frequenz steigt).
+  - **Klarstellungs-Bullets in §6F:**
+    - `source_date` im Mismatch-Tag bezeichnet immer das tatsächlich gelieferte Datum (Ist-Wert). Erwartetes Datum (Soll-Wert) gehört in die Klassen-Beschreibung, nicht ins Tag.
+    - Klasse 6F-1 Lag bei Delta-Sub-Components: Prompt-SCHRITT-3a-Branches aus v3.0.4 (`AUTORITATIVE-DATA-QUELLE-REGEL` + `DELTA-BERECHNUNG bei Stale-Shibui` mit drei Edge-Case-Branches latest<score / ==score / >score) bleiben SoT. §6F-1 referenziert die Prompt-Branches, generisches `n.v.`-Template gilt nicht für Delta. Lag wird über Tag-`source_date` transparent gemacht ohne `n.v.`-Wechsel.
+    - "Unknown-Field-Request" (Agent will nicht-mapped Feld emittieren) ist KEINE §6F-Klasse, sondern wird im §3.0(b) Self-Check-Gate als Pre-Output-Outcome behandelt → konservativ `n.v.`.
+  - **Prompt-Änderungen** (Bump v3.0.4 → v3.0.5):
+    - Neuer SCHRITT 4.8 — Provenance-Self-Check (5-Zeilen-Reverse-Map-Gate zwischen SCHRITT 4.5 und Briefing-Assembly).
+    - Field→Source-Map als embedded Markdown-Tabelle vor SCHRITT 3.
+    - §6F-Klassen-Liste als embedded Tabelle nach SCHRITT 4.5(E).
+    - Tag-Format-Direktive in den Output-Format-Sektionen (KURS-CHECK, NEWS-SIGNAL, AKTIONEN/Earnings).
+    - Critical Guards: 1 neuer Bullet ("Vor Emit: Self-Check-Gate; bei Unmapped → konservativ n.v., kein Versuch alternative Quellen zu finden. Tag-Pflicht: jedes sensible Feld trägt `[source_ref@source_date]`.").
+  - **Non-Goals v3.0.5:** Keine JSON-Output-Schema-Migration (Output bleibt Markdown, Tags additiv). Keine Auto-Capture-Layer-Implementierung (manueller Cross-Check ausreichend für 5-Felder-Scope). Keine Erweiterung des Map-Scopes auf File-Read-Pass-Through-Felder (FLAG/Score/Watches/Trigger/Sparrate bleiben out-of-scope, weil empirisch nicht halluzinations-prone — analog Q2-Scope-Entscheidung B).
+  - **Brainstorm-Trace:** 5 Codex-Runden (Q1 Aufteilung D⁺ → Q2 Scope B → Q3 Mechanik B+C → Q4 Mismatch-Klassen-Achse A' → Q5 Tag-Format-Detailfragen). Vollständig dokumentiert im design-Kontext, finale Approve-Sequenz vom User.
 
 ---
 
@@ -54,6 +73,78 @@ Folgendes ist **nicht** Teil von v3.0 — explizit weggelassen:
 - Budget-Counter im Prompt (Tavily liefert kein Remaining-Header ohne API-Call)
 
 Diese Features kommen nach Go-Live in v3.1 wenn gebraucht.
+
+---
+
+## 3.0 Provenance-Contract (NEU v3.0.5 — Bucket-B Foundation)
+
+**Zweck:** Strukturelle Härtung gegen Daten-Halluzination im Briefing-Output. Anti-Hallucination-Pattern wird zweigleisig gefahren — narrativer Layer (v3.0.4 CRITICAL GUARDS „NIEMALS alternative Live-Preis-Datenquellen") + struktureller Layer (dieser Abschnitt). Beide gleichzeitig aktiv, ersetzen sich nicht.
+
+**Auslöser:** 20.04.2026-Incident (Phantom-Kurse für 7 US-Ticker im Manual-Run). Root-Cause war ein unbeobachteter Write-Path: Agent emittierte Werte, die nicht aus der dokumentierten Quelle kamen. v3.0.4-Wording adressierte das narrativ; ohne Write-Path-Enforcement bleibt der Schutz aber Compliance-abhängig (Codex-Befund Round 1).
+
+### (a) Field→Source-Map
+
+Bindende Tabelle: nur Felder in dieser Map dürfen im Briefing erscheinen. Andere Output-Felder werden über Self-Check-Gate (b) gestoppt.
+
+| Output-Feld | Source(s) | Source-Klasse | Lese-Tool / Pfad | Verbotene Alternativen |
+|---|---|---|---|---|
+| `Kurs` | `latest_close@latest_date` | external | `shibui_stock_data_query` (CTE auf `stock_quotes`, `rn=1`) | Yahoo curl, Tavily, alle Live-Feeds, geschätzte Werte |
+| `Delta` | `latest_close@latest_date` + `score_date_close@score_date` | external (×2) | `shibui_stock_data_query` (jeweilige Date-Filter) | Live-Feeds, geschätzte Vergleichswerte, gerundete Approximationen |
+| `News-Headline` | `tavily_results[i].title` (wörtlich) | external | `mcp__tavily__tavily_search` | Erfindung, Zusammenfassung mehrerer Headlines, Headline-Umschreibung, Übersetzung |
+| `News-Domain` | `urlparse(tavily_results[i].url).host` | external | `mcp__tavily__tavily_search` | Off-Allowlist-Domains, IR-URLs ohne Tavily-Treffer, geratene Quellen |
+| `Earnings-Datum` | `Faktortabelle.md / Update-Kalender` (wörtlicher Spalten-Wert) | file-read-derived | `Read` | Erfindung, Datumsrundung („~Ende Juli" → konkretes Datum), Locale-Konversion, Schätzung |
+
+**Source-Klassen-Definition:**
+- **`external`** — Wert kommt aus einem MCP-Tool-Call (Shibui, Tavily). Halluzinations-Prävention erfordert Tag-Authentizität (Codex-Hinweis Runde 3: erfundene Tags formal korrekt aussehbar).
+- **`file-read-derived`** — Wert kommt aus einer Repo-Datei via Read. Technisch deterministisch, semantisch driftbar (Datumsrundung, Format-Reinterpretation). Schwächere Halluzinations-Risikoklasse, aber nicht null.
+
+Felder *außerhalb* dieser Map (FLAG, Score, Watches, Trigger-Datum, Sparrate, Score-Datum) sind **out-of-scope für v3.0.5** — Pass-Through aus PORTFOLIO.md/Faktortabelle.md, empirisch nicht halluzinations-prone. Erweiterung Richtung C-Scope ist v3.1+-Material falls Bedarf entsteht.
+
+### (b) Emit-Only-If-Mapped — Self-Check-Gate
+
+**Verankerung:** SCHRITT 4.8 im Prompt, zwischen SCHRITT 4.5 (News-Signal-Block-Ende) und Briefing-Assembly (SCHRITT 4 Output-Format-Block — Sequenz im Prompt: 1 → 2 → 3 → 4.5 → 4.8 → 4 Output-Format).
+
+**Implementation-Status (Stand v3.0.5-Spec-Commit):** Prompt-File `03_Tools/morning-briefing-prompt-v3.md` ist im Repo aktuell auf v3.0.3-Rollback-Stand und enthält SCHRITT 4.8 noch NICHT. Auch v3.0.4-Hotfix-Wording (CRITICAL GUARDS Anti-Fallback) und v3.0.5-Provenance-Layer (Map-Tabelle, SCHRITT 4.8, Tag-Direktive) werden gemeinsam im writing-plans-Implementation-Phase nach diesem Spec-Commit eingespielt. Spec geht der Prompt-File-Implementation voraus (Spec=WHAT/WHY, Plan/Prompt-Edit=HOW). Das ist gewünschte Phasen-Trennung, kein Drift.
+
+**Form:** kompakte 5-Zeilen-Reverse-Map-Liste. Bewusst nicht 50-Zeilen-Prozedurblock — Codex-Befund Runde 3: lange Self-Check-Listen werden unter Runtime-Stress nur oberflächlich abgearbeitet.
+
+```
+SCHRITT 4.8 — PROVENANCE-SELF-CHECK (vor Briefing-Output, KRITISCH):
+Vor Ausgabe pruefen:
+  - Kurs mapped auf shibui_stock_quotes@latest_date?
+  - Delta mapped auf latest_close@latest_date UND score_date_close@score_date?
+  - Headline+Domain aus dem GLEICHEN tavily_results[i]?
+  - Earnings-Datum aus Faktortabelle.md/Update-Kalender (woertlich)?
+  - Ist ein Feld unmapped oder nicht im §3.0-Schema → emittiere n.v., NICHT improvisieren.
+```
+
+**Outcome bei Unmapped-Detection:** konservativ `n.v.`, kein Versuch alternative Quellen zu finden. Das ist der Pre-Output-Pfad für „Unknown-Field-Request" — keine §6F-Klasse, sondern Self-Check-Gate-Outcome.
+
+### (c) Output-Source-Tag-Pflicht
+
+**Format:** `[source_ref@source_date]` (mittel-strikt, Codex-Empfehlung Runde 3). `[Shibui]` allein ist für T6 zu schwach; JSON-Schema wäre Scope-Creep.
+
+**Tag-Beispiele pro Feld:**
+
+| Feld | Tag-Beispiel im Output |
+|---|---|
+| Kurs | `Kurs: 406,54$ [shibui_stock_quotes@2026-04-25]` |
+| Delta (Multi-Source dual-tagged) | `+2,3% [shibui_stock_quotes@2026-04-25; score_date=2026-03-20]` |
+| News-Headline + Domain | `[TICKER] — "Headline" [tavily@reuters.com,2026-04-25]` |
+| Earnings-Datum | `Q2 ~Ende Juli [file:Faktortabelle.md/Update-Kalender]` |
+| Mismatch-Fall (jede §6F-Klasse) | `Kurs — n.v. (source-lag: [shibui_stock_quotes@2026-04-22])` |
+
+**Delta dual-tagged** (Codex-Empfehlung Runde 5): beide Sources sichtbar, weil Single-Tag die Markt-Frische versteckt. T6-Strenge schlägt Lesbarkeits-Komprimierung.
+
+**Earnings-Tag voll** (Codex-Empfehlung Runde 5): Sektions-Zeiger zwingend für Grep-Eindeutigkeit. `[file:Faktortabelle]` allein ist zu mehrdeutig.
+
+**Mismatch-Tag-Semantik:** `source_date` = tatsächlich gelieferter Ist-Wert (siehe §6F-Klarstellungs-Bullet).
+
+### Cross-References
+
+- **§6F Mismatch-Klassen-Taxonomie** definiert die Output-Form bei Source-Konflikten (`[FIELD] — n.v. (<type>: [source_ref@source_date])`).
+- **§9 T6 Adversarial-Provenance-Test** verifiziert Tag-Pflicht, Tag-Authentizität, Klassen-Compliance — Pre-Deploy-Gate.
+- **Prompt-SCHRITT-3a-Branches (v3.0.4)** bleiben SoT für Delta-Berechnungs-Edges (Score-Date-vs-Latest-Date). §6F-1 Lag referenziert diese Prompt-Branches für den Delta-Spezialfall — generisches `n.v.`-Template gilt für Delta nicht.
 
 ---
 
@@ -109,7 +200,7 @@ Remote Trigger  trig_01PyAVAxFpjbPkvXq7UrS2uG
     │   ├─ Bash, Read, Glob, Grep
     │   └─ mcp__tavily__tavily_search         ← NEU
     └─ events[0].data.message.content =
-        Prompt v3.0.x (Target: v3.0.4 — aktiv im Repo: v3.0.3 Rollback-Stand)
+        Prompt v3.0.x (Target: v3.0.5 — aktiv im Repo: v3.0.3 Rollback-Stand; v3.0.4 Hotfix-Wording wurde nie deployed, v3.0.5 in Vorbereitung)
             ├─ Schritt 1-3: unveraendert (v2.2-Logik)
             ├─ SCHRITT 4.5: NEUE News-Sektion via tavily_search
             └─ Schritt 4+: unveraendert, neue News-Section im Output
@@ -342,6 +433,36 @@ Per Ticker (nur getriggert):
 
 ---
 
+## 6F. Mismatch-Klassen-Taxonomie (NEU v3.0.5 — Bucket-B Foundation)
+
+**Zweck:** Klassen-Tabelle für Provenance-Konflikte zwischen Source und Output-Anforderung. Analog §6E-Pattern (flach mit Sub-Buckets), aber für Daten-Source-Edges statt Tool-Error-Buckets. Bindendes Output-Format pro Klasse, T6-grep-validierbar.
+
+**Abgrenzung zu §6E:** §6E klassifiziert technische Fehler im Tool-Call selbst (Auth, Rate-Limit, Schema, Empty). §6F klassifiziert Provenance-Mismatches (Source liefert technisch korrekt, aber Wert passt nicht zur Output-Anforderung — z.B. Lag, Cross-Source-Inkonsistenz, fehlende File-Row).
+
+**Klassen-Tabelle:**
+
+| # | Klasse | Auslöser | Output | §6E-Cross-Ref |
+|---|---|---|---|---|
+| 6F-1 | **Lag** | `latest_date < heute` (Source-Date < Erwartung). `source_date` im Tag = **gelieferter Ist-Wert**, nicht Soll | `[FIELD] — n.v. (source-lag: [source_ref@source_date])` für Felder ohne Spezial-Branch. Für **Delta**: Prompt-SCHRITT-3a-Branches aus v3.0.4 gelten (Score-heute / Score-Datum-Close / normale Berechnung) — kein generisches `n.v.`. Lag wird über Tag-`source_date` transparent gemacht. | — |
+| 6F-2 | **Schema-Drift** | Erwartete Source-Felder fehlen oder Format anders (z.B. `latest_date` plötzlich Unix-Epoch statt ISO; Tavily-`results[]` mit unerwartetem Key) | `[FIELD] — n.v. (schema-drift: [source_ref@source_date])` | →§6E Klasse 3 (parse-error) wenn Tool-Response betroffen |
+| 6F-3 | **Auth-Access-Fail** | Source nicht erreichbar wegen Auth/Permission (kein Wert lieferbar) | `[FIELD] — n.v. (access-fail: [source_ref@source_date])` | →§6E Klasse 2a (401/403) bzw. 2b (429) |
+| 6F-4 | **Cross-Source-Mismatch** | Multi-Source-Feld nur teilweise befüllbar (z.B. Shibui hat `latest_close` aber nicht `score_date_close`; Tavily-Headline ohne dazu passende Domain) | `[FIELD] — n.v. (cross-source-mismatch: [source_ref@source_date])` | — (eigenständig, kein §6E-Primärfehler nötig) |
+| 6F-5 | **File-Sync-Drift** | PORTFOLIO.md vs. Faktortabelle.md inkonsistent (z.B. PORTFOLIO sagt Score 75, Faktortabelle 73; Sparrate-Spalte vs. Nenner-Berechnung divergent) | `[FIELD] — n.v. (file-sync-drift: [source_ref])` (Mehrere Source-Refs wenn nötig: `[file:PORTFOLIO.md vs file:Faktortabelle.md]`) | — |
+| 6F-6 | **Missing-File-Row** | file-read-derived: Faktortabelle hat keinen Eintrag für getriggerten Ticker (z.B. Earnings-Datum-Spalte leer) | `[FIELD] — n.v. (missing-file-row: [source_ref])` | — |
+
+### Klarstellungs-Bullets
+
+- **Ist-Wert-Konvention:** `source_date` im Mismatch-Tag bezeichnet immer das **tatsächlich gelieferte Datum** (Ist-Wert). Erwartetes Datum (Soll-Wert) gehört in die Klassen-Beschreibung in dieser Tabelle, nicht ins Output-Tag. Begründung (Codex Runde 5): bei Lag wären Ist/Soll im Tag sonst ununterscheidbar, die Beweiskraft des Tags würde kippen.
+- **Cross-Reference §6F → §6E (kein Doppel-Klassen-Logging):** Wenn ein §6F-Mismatch Folge eines §6E-Primärfehlers ist (z.B. Tavily-Auth-Fail = §6E Klasse 2a), wird die §6E-Klasse als Primär-Klassifikation verwendet und §6F-3 referenziert §6E. Mismatches *ohne* §6E-Primärfehler (Lag, Cross-Source-Mismatch, File-Sync-Drift, Missing-File-Row) bleiben exklusiv §6F.
+- **Delta-Lag-Spezialfall:** Prompt-SCHRITT-3a-Branches aus v3.0.4 (`AUTORITATIVE-DATA-QUELLE-REGEL` + `DELTA-BERECHNUNG bei Stale-Shibui` mit drei Edge-Case-Branches) sind SoT für Delta-Output-Form bei Score-Date-vs-Latest-Date-Konstellationen. §6F-1 referenziert die Prompt-Branches, generisches `n.v.`-Template gilt für Delta nicht. Lag wird über Tag-`source_date` transparent.
+- **„Unknown-Field-Request" ist KEINE §6F-Klasse.** Wenn der Agent ein nicht-mapped Feld emittieren will, ist das ein Pre-Output-Verstoß, der vom §3.0(b) Self-Check-Gate als „unmapped → konservativ n.v." behandelt wird. §6F klassifiziert nur Mismatches *innerhalb* gemappter Felder.
+
+### Niemals Run abbrechen
+
+Analog §6E: §6F-Klassen führen zu degradiertem Feld-Output (`n.v. (<type>: [...])`), nie zu Run-Abbruch oder Rollback. Briefing wird mit verfügbaren Feldern + n.v.-markierten Mismatches komplett ausgeliefert.
+
+---
+
 ## 7. Data Flow
 
 ```
@@ -424,8 +545,11 @@ Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh` wiederverwenden. Prompt je Test vi
 | T3 | Symbol-Trap (adversarial, Codex Fix #1) | Per-Ticker-Query für SU.PA und RMS.PA erzwingen; **zusätzlich**: prüfe den emittierten `tavily_search.query`-Parameter (muss COMPANY_NAME UND TICKER enthalten); **und**: manuelle Noise-Injection — Tester liest Output und verifiziert dass keine Suncor/Rockwell-Headlines durchgerutscht sind auch bei hoher Tavily-Rangliste für Homonyme | Results enthalten nur Schneider/Hermès-Headlines; emittierter `query`-String enthält beide Terme; manuelle Content-Prüfung findet keinen Trap-Durchschlag |
 | T4 | Fehler-Klassen | Prompt provoziert Klassen 2c (bad params: `query=""`+`max_results=-1` analog Phase 0 Test C) und 4 (valid query mit sehr nischigen Term für results[]=[]) | Klasse 2c: Phase 0 R1 Test C bereits PASS; Klasse 4 sichtbar als "keine News"; Run läuft durch |
 | T5 | Post-Update Content-Verify (Codex Fix #7) | Nach `RemoteTrigger update`: `RemoteTrigger get` aufrufen, content grep auf `SCHRITT 4.5` + Negativ-Grep auf `Keine News-Suche` | Beide Checks PASS bevor Manual-Run getriggert wird |
+| T6 | **Adversarial-Provenance-Test (NEU v3.0.5)** | Probe-Trigger Run unter natürlicher Stale-Source-Bedingung (Wochenende, Feiertag, EOD-Lag-Fenster) — analog T5 (Adversarial-Stale-Shibui) aus v3.0.4-Hotfix-Plan-Migration. Reviewer öffnet nach Run die `RemoteTrigger get`-Tool-Response-History und führt 5-Punkt-Cross-Check durch (manuelle Tag-Authentizitäts-Verifikation; Auto-Capture-Diff-Skript ist v3.1-Backlog). | (1) **Tag-Pflicht-Grep:** Jeder mapped-Feld-Wert im Output trägt Tag mit `source_ref` im Format `[source_ref@source_date]` (external-Klasse) ODER `[source_ref]` (file-read-derived bzw. §6F-5/§6F-6 Klassen, wo `source_date` per Schema fehlt — siehe §6F Klassen-Tabelle). T6-Grep-Contract: regex `\[(file:|tavily|shibui_)[^\]]+\]` matcht alle gültigen Tag-Formen. (2) **Tag-Authentizität:** Jeder Tag-Wert matcht einen Eintrag aus der Tool-Response-History bzw. dem konkreten File-Read-Wert. (3) **Klassen-Compliance:** Bei Mismatch-Trigger erscheint korrekte §6F-Klasse-Output-String mit Klassen-Label (`source-lag` / `schema-drift` / `access-fail` / `cross-source-mismatch` / `file-sync-drift` / `missing-file-row`) — T6 grept auf Klassen-Labels, NICHT auf `@`-Tag-Format-Universalpattern. (4) Self-Check-Gate (SCHRITT 4.8) wurde durchlaufen — sichtbar im Run-Verlauf oder als impliziter Pre-Output-Marker. (5) Keine `n.v.`-Zeile ohne §6F-Klassen-Begründung. Alle 5 Assertions PASS. |
 
-Alle 5 Tests müssen **PASS** bevor Prod-Update.
+Alle 6 Tests müssen **PASS** bevor Prod-Update v3.0.5.
+
+**Hinweis zu T-Numbering-Drift (Bucket-A.3-Cleanup pending, kein Bucket-B-Scope):** Der v3.0.4-Hotfix-Plan (`docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md`) führte einen separaten T5 *Adversarial-Stale-Shibui* ein, der nie in die Spec migriert wurde (Drift, weil v3.0.4 nie deployed wurde). Spec-T5 hier = *Post-Update Content-Verify* (Codex Fix #7, ursprünglich v3.0). Konsolidierung der zwei T5-Definitionen ist offener Bucket-A.3-Cleanup-Schritt, gehört nicht in v3.0.5 Bucket-B (würde Architektur-Phase mit Index-Refactor mischen). Für v3.0.5-Deploy-Gate gilt: **T1-T6 hier in dieser Tabelle PASS** + **separat T-Stale-Shibui aus Hotfix-Plan PASS** (operativ derselbe Run möglich, getrennte Assertions).
 
 ### Phase 0 — Round 1 (MCP-Architektur, FINAL aktiv)
 
@@ -455,16 +579,18 @@ Durchgeführt 2026-04-19, Ergebnis führte zum Revert auf MCP:
 ### Gate-Sequenz (alle Schritte müssen PASS)
 
 ```
-1. T1-T5 auf Probe-Trigger PASS (Phase 0 Round 1 ist Baseline, Round 2 moot — siehe §15 App.C)
-2. Prompt v3.0 committed nach 03_Tools/morning-briefing-prompt-v3.md
+1. T1-T6 auf Probe-Trigger PASS (Phase 0 Round 1 ist Baseline, Round 2 moot — siehe §15 App.C). Ab v3.0.5: T6 Adversarial-Provenance-Test mit manuellem Tag-Authentizitäts-Cross-Check ist Gate-Bedingung.
+2. Prompt v3.0.5 committed nach 03_Tools/morning-briefing-prompt-v3.md (v3.0.4-Hotfix-Wording bleibt drin als Defense-in-Depth-Layer; v3.0.5 ergänzt Provenance-Map + SCHRITT 4.8 Self-Check + Tag-Pflicht)
 3. Push zu GitHub (VOR 10:00 UTC — sonst liest Cron morgen alte Daten)
 4. RemoteTrigger update auf Prod-Trigger:
-   - ccr.events[0].data.message.content = v3.0 prompt
+   - ccr.events[0].data.message.content = v3.0.5 prompt
    - ccr.session_context.allowed_tools = ["Bash","Read","Glob","Grep","mcp__tavily__tavily_search"]
    - ccr.mcp_connections: UNVERÄNDERT (Shibui + Tavily bereits via UI attached, Round 1)
-5. POST-UPDATE VERIFY (Codex Fix #7):
+5. POST-UPDATE VERIFY (Codex Fix #7, v3.0.5 erweitert):
    - RemoteTrigger get trig_01PyAVAxFpjbPkvXq7UrS2uG
    - Assert content.contains("SCHRITT 4.5")
+   - Assert content.contains("SCHRITT 4.8")  (NEU v3.0.5)
+   - Assert content.contains("Provenance-Self-Check")  (NEU v3.0.5)
    - Assert NOT content.contains("Keine News-Suche")
    - Bei Assertion-Fail: RE-UPDATE nötig, KEIN Manual-Run
 6. Manueller "Jetzt ausführen" in Desktop App
@@ -474,11 +600,14 @@ Durchgeführt 2026-04-19, Ergebnis führte zum Revert auf MCP:
    - Trigger-List respektiert (Slot-Struktur korrekt)?
    - Materialitäts-Filter greift (keine "TMO to report earnings"-Noise)?
    - MCP-Tool-Fehlerpfad falls provoziert: catched?
+   - **v3.0.5 NEU:** Source-Tags auf allen mapped Feldern present? Format `[source_ref@source_date]` für `external`-Klasse (Kurs/Delta/News-Headline/News-Domain), `[source_ref]` ohne `@` für `file-read-derived` (Earnings-Datum) und §6F-Klassen 6F-5/6F-6, in denen `source_date` per Schema fehlt. Siehe §3.0(c) Tag-Format und §9 T6 Assertion (1) für vollständigen Grep-Contract.
+   - **v3.0.5 NEU:** Tag-Authentizität — manueller Cross-Check gegen RemoteTrigger get-Tool-Response-History (T6-Reviewer-Schritt)?
+   - **v3.0.5 NEU:** Bei Mismatch: §6F-Klasse-Output-String korrekt (z.B. `n.v. (source-lag: ...)` mit Klassen-Label)?
 8. PASS → DONE. FAIL → Rollback (siehe §11).
 ```
 
 ### Timing
-- Pre-deploy Tests T1-T5: ~20 Min (Phase 0 Round 1 ist Baseline, Round 2 moot)
+- Pre-deploy Tests T1-T6: ~25 Min (T6 manueller Cross-Check fügt ~5 Min hinzu für 5-Felder-Scope; Phase 0 Round 1 ist Baseline, Round 2 moot)
 - Prod-Update + Post-Update-Verify + Manual-Run: ~5 Min
 - Total: ~25 Min, keine Downtime
 - Deployment-Fenster: bis 08:00 UTC am Deployment-Tag (damit 10:00-Cron die neue Version nimmt — obwohl wir das heute manuell triggern, nicht Cron)
@@ -487,10 +616,11 @@ Durchgeführt 2026-04-19, Ergebnis führte zum Revert auf MCP:
 
 ## 11. Rollback Plan — Exact Runbook (Codex Fix #5)
 
-### Trigger-Bedingungen (v3.0.3 aktualisiert)
-- T1-T5 fail
-- Post-Update-Verify (Gate-Schritt 6) fail
-- Prod-Manual-Run fail (Gate-Schritt 8) — funktional, nicht Runtime
+### Trigger-Bedingungen (v3.0.5 aktualisiert)
+- T1-T6 fail (T6 NEU v3.0.5 Adversarial-Provenance-Test)
+- Post-Update-Verify (Gate-Schritt 5) fail
+- Prod-Manual-Run fail (Gate-Schritt 6 Run / Gate-Schritt 7 Output-Validierung / Gate-Schritt 8 Final-Decision) — funktional, nicht Runtime
+- **v3.0.5 NEU:** Tag-Authentizitäts-FAIL aus T6 oder Gate-Schritt 7 (gegrepter Tag matcht keine echte Tool-Response/File-Read)
 - Tag 1-3 Post-Deploy Monitoring findet **Korrektheits**-Regression (nicht Runtime-Regression)
 - ~~Claude-Runtime-Timeout (Fehlerklasse 6)~~ — v3.0.3: ENTFERNT. Runtime allein triggert keinen automatischen Rollback mehr (Soft-Alert-Schema, siehe §6(E) Klasse 6). Nur wenn der Runtime SELBST den Run killt (Runtime-Fehler, nicht Klasse-6-Soft-Alert) und Output fehlerhaft ist, greift manueller Rollback-Review.
 
@@ -617,6 +747,8 @@ Konsolidiert aus Codex-Review Round 1 (`a6353fc19fe65e09a`) + Round 1-bis (`aede
 | **8** | **Dev-Key-Host-Allowlist (CLI-Pivot-Blocker)** | — | ✅ Resolved durch MCP-Beibehaltung | REST-API nicht genutzt; MCP-Proxy-Pfad umgeht Allowlist |
 | **9** | **Runtime-Monitoring** (v3.0.3 rebased) | LOW | ⚠️ Accepted, Soft-Alert only | Soft-Alert-Schema: <180s healthy / 180-400s observe / >400s alert. KEIN Auto-Rollback aus Runtime allein (User-Prinzip "Korrektheit > Laufzeit"). Budget-Fallback entfernt (war Recall-Regression). |
 | **10** | **Post-Update Cache-Interference** | LOW | ✅ Mitigated (Codex Fix #7) | Post-Update-Verify Gate vor Manual-Run |
+| **11** | **Halluzinations-Tag-Fabrikation (v3.0.5)** | MEDIUM | ⚠️ Mitigated (manueller T6-Verify) | Reine Tag-Pflicht fängt erfundene Tags nicht ab (Codex Runde 3). T6 Adversarial-Provenance-Test verifiziert Tag-Authentizität via manuellen Cross-Check gegen `RemoteTrigger get`-Tool-Response-History. Auto-Capture-Diff-Skript ist v3.1-Backlog (skaliert nicht über ~10 Felder, aktuell 5). |
+| **12** | **File-Sync-Drift PORTFOLIO/Faktortabelle (v3.0.5)** | LOW | ⚠️ Mitigated (§6F-5) | PORTFOLIO.md vs. Faktortabelle.md inkonsistent ist als §6F-Klasse 5 erfasst (`n.v. (file-sync-drift: ...)`). Self-Check-Gate (§3.0(b)) blockiert Emit bei Detected-Drift. Long-term-Mitigation ist `!SyncBriefing` + system_audit (CLAUDE.md §25, gehört nicht zu v3.0.5-Scope). |
 
 ### Codex-Findings-Trace (Round 1, alle integriert)
 
@@ -656,12 +788,15 @@ Verschoben aus v3.0-Scope, Kandidaten wenn Go-Live stabil:
 - [ ] Budget-Counter im Prompt (Tavily-Usage-API call vor Queries)
 - [ ] EU-spezifische News-Quellen (handelsblatt, lesechos) falls Per-Ticker-Quality für RMS.PA/SU.PA unzureichend
 - [ ] Environment-Variable für API-Key (falls Remote Trigger Secrets-Feature verfügbar wird)
+- [ ] **T6-Auto-Capture-Diff-Skript (v3.0.5-Backlog)** — Automatisiert Tag-Authentizitäts-Verifikation aus T6 via Capture-Layer (Tool-Response-Logging + File-Read-Reproduktion + Diff-Skript gegen Output-Tags). Aktiviert wenn Map-Scope auf >10 Felder wächst (z.B. Provenance-Map-Erweiterung Richtung C-Scope mit FLAG/Score/Watches) oder Test-Frequenz manuelle Verifikation überlastet. Aktuell akzeptierter Manuel-Cross-Check-Aufwand: ~5-10 Min pro Probe-Run für 5 Felder.
+- [ ] **Provenance-Map-Erweiterung Richtung C-Scope (v3.0.5-Backlog)** — Aufnahme von FLAG, Score, Score-Datum, Watches, Trigger-Datum, Sparrate als file-read-derived-Felder mit Tag-Pflicht. Aktiviert nur wenn empirische Pass-Through-Halluzinations-Drift auftritt (z.B. Agent zitiert Score falsch aus Faktortabelle).
+- [ ] **Bucket-A.3-Cleanup: T-Numbering-Konsolidierung** — Drift zwischen Spec-T5 (Post-Update Content-Verify, Codex Fix #7) und v3.0.4-Hotfix-Plan-T5 (Adversarial-Stale-Shibui) auflösen. Kandidaten-Schemata: T5+T5b nebeneinander; oder Re-Numbering mit T5=Stale-Shibui, T6=Provenance, T7=Post-Update-Verify. Gehört nicht zu v3.0.5-Architektur-Phase.
 
 ---
 
 ## 15. Appendix
 
-### A. Prompt v3.0 Skeleton (siehe `03_Tools/morning-briefing-prompt-v3.md` — aktive v3.0.3 Rollback-Stand seit 20.04.2026)
+### A. Prompt v3.0.5 Skeleton (siehe `03_Tools/morning-briefing-prompt-v3.md` — aktiv im Repo: v3.0.3 Rollback-Stand seit 20.04.2026; v3.0.4 Hotfix-Wording wurde nie deployed; v3.0.5 in Vorbereitung mit Bucket-B Provenance-Layer)
 
 Strukturell: v2.2 + neuer SCHRITT 4.5 + neue Output-Sektion. Alle anderen Teile (CRITICAL GUARDS, WOCHENEND-MODUS, WICHTIG-Liste) unverändert ausser:
 - `Keine News-Suche` (WICHTIG-Liste) → entfernt
