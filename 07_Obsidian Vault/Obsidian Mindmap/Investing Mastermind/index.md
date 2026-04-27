@@ -1,7 +1,8 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-26 (Hub-Split-Lückenschluss: 3 neue Vault-Stubs PORTFOLIO/PIPELINE/SYSTEM als Backlink-Anker + DEFCON-System 4-Layer→5-Layer Inkonsistenz gefixt; Lint-Follow-up zur Vault-Sanitation 25.04.)
+> Last updated: 2026-04-27 (Paper-Ingest Phase A+B+C: 14 source-pages B25-B28 + 10 SOURCE-ONLY, 6 neue concept-pages, 30 entity-pages. Phase-B-Errata gefixt: 3 entity-files mit halluzinierten Vornamen umbenannt + broken sources-link `Amundi-2024-Quality-Pillars` → `Amundi-Quality-2021` korrigiert in 4 entity-pages.)
+> Last updated (zuvor): 2026-04-26 (Hub-Split-Lückenschluss: 3 neue Vault-Stubs PORTFOLIO/PIPELINE/SYSTEM als Backlink-Anker + DEFCON-System 4-Layer→5-Layer Inkonsistenz gefixt; Lint-Follow-up zur Vault-Sanitation 25.04.)
 > Last updated (zuvor): 2026-04-25 (Vault-Concept-Seiten-Sanierung Tier-2-00_Core-Refactor — 14 Files: Hub-Split STATE→Hub+PORTFOLIO/PIPELINE/SYSTEM, CORE-MEMORY §1→§12/§13, §18 v2.1 Trigger-Mapping, Tripwire-Migration STATE→PORTFOLIO. Keine neuen Pages, nur Drift-Sanierung)
 > Schema: [[WIKI-SCHEMA]]
 
@@ -36,6 +37,22 @@
 - [[Labre-2025-FinReflectKG-Companion]] — Towards AI (2025-09-29): Praktiker-Lens + Entropy-Paradox-Mitigation für Reflection-KG (B22) ← NEU 2026-04-20 Phase 1b
 - [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] — Frontiers AI (Jan 2026): MC-Dropout-Uncertainty für Finance-QA; -27,8% Halluzinationen (B23) ← NEU 2026-04-20 Phase 1b
 - [[Iacovides-Zhou-Mandic-2025-FinDPO]] — arXiv 2507.18417 (Imperial, 2025): DPO + Logit-to-Score für Long-Short-Portfolios; 67% p.a. bei 5bps (B24) ← NEU 2026-04-20 Phase 1b
+
+### Akademische Paper (Paper-Ingest Phase A — B25-B28 + 10 SOURCE-ONLY) — `wiki/sources/papers/`
+- [[McLean-Pontiff-2016]] — Journal of Finance 2016: Cross-Sect Predictoren −26% Out-of-Sample + −58% Post-Publication-Decay (operativer Total-Decline; davon ≈32pp publication-effect lower bound) (B25 `meta-gate` § 29.7) ← NEU 2026-04-26 Phase A
+- [[Lakonishok-Lee-2001]] — Review of Financial Studies 2001: Insider-Käufe informativer als -Verkäufe; Aggregate-Predictability + Small-Cap-Concentration (B26 `active-scoring-validation`) ← NEU 2026-04-26 Phase A
+- [[Ke-Huddart-Petroni-2003]] — JAE 2003: Insider-Verkäufe Q-9 bis Q-3 vor Earnings-Break (Legal-Jeopardy-Window); Q-2/Q-1 ≈ Null abnormal (B27 `design-context`) ← NEU 2026-04-26 Phase A
+- [[Tetlock-2007]] — Journal of Finance 2007: Hohe Media-Pessimism prädiziert kurzfrist Drawdown + komplette Reversion zu Fundamentals (5-10 Tage) (B28 `design-context`) ← NEU 2026-04-26 Phase A
+- [[Asness-Frazzini-Pedersen-2013-QMJ]] — AQR/Review of Accounting Studies 2013/2019: QMJ Long-Short, 4-Pillars-Quality (Profit/Growth/Safety/Payout) (SOURCE-ONLY anchors B5) ← NEU 2026-04-26 Phase A
+- [[Mauboussin-Callahan-2024-Measuring-Moat]] — Morgan Stanley Counterpoint Global 2024: Competitive Advantage Period (CAP) als zweite Moat-Dimension (Magnitude × Sustainability) (SOURCE-ONLY anchors B4, B6) ← NEU 2026-04-26 Phase A
+- [[Amundi-Quality-2021]] — Amundi WP 113-2021: Practitioner-Validation 4-Pillars (Profit/Earnings-Quality/Safety/Investment); +2,8% p.a. IR 0,81 post-GFC (SOURCE-ONLY anchors B5, B8) ← NEU 2026-04-26 Phase A
+- [[Fama-French-2015-Five-Factor]] — JFE 2015: RMW + CMA Faktoren; HML wird redundant für Cross-Section-Erklärung (SOURCE-ONLY anchors B2, B8) ← NEU 2026-04-26 Phase A
+- [[Harvey-Liu-Zhu-2016]] — Review of Financial Studies 2016: t≥3-Hurdle für Faktor-Discovery (Multiple-Testing über 313 Studien) (SOURCE-ONLY anchors B16) ← NEU 2026-04-26 Phase A
+- [[Asness-Moskowitz-Pedersen-2013-VME]] — Journal of Finance 2013: Value + Momentum global, persistent, neg. korreliert über 8 Asset-Klassen (SOURCE-ONLY anchors B7) ← NEU 2026-04-26 Phase A
+- [[Fama-French-2006-Profitability]] — JFE 2006: Valuation-Equation; B/M, Profitability, Investment prädizieren Cross-Section-Returns (SOURCE-ONLY anchors B2, B8; gefoldete Sibling-Note F/F 2004 Draft) ← NEU 2026-04-26 Phase A
+- [[Hou-Xue-Zhang-2015-q-Factor]] — Review of Financial Studies 2015: q-Theory-Faktor (Mkt+ME+I/A+ROE) — konvergente Evidenz zu FF-5 (SOURCE-ONLY anchors B2, B8) ← NEU 2026-04-26 Phase A
+- [[Yang-Liu-Wang-2023-FinGPT]] — FinLLM 2023 @ IJCAI: Open-Source 5-Layer-Framework für Finance-LLMs; LoRA-Fine-Tuning (SOURCE-ONLY komplementär B19, B24) ← NEU 2026-04-26 Phase A
+- [[2iQ-Insider-Meta-Review-2021]] — 2iQ Research Blog 2021 (industry-meta): Konsolidiertes Review Insider-Trading-Akademie 1968-2018 (SOURCE-ONLY anchors B26, B27) ← NEU 2026-04-26 Phase A
 
 ### Datenquellen-APIs (`wiki/sources/tools/`)
 - [[defeatbeta]] — US-Fundamentals (Primär): Income, Cash Flow, ROIC, WACC, Geographic Revenue
@@ -106,6 +123,36 @@ _(noch leer)_
 - [[Giorgos Iacovides]] — Erstautor FinDPO + FinLlama (Imperial College London) ← NEU 2026-04-20 Phase 1b
 - [[Wuyang Zhou]] — Co-Autor FinDPO (Imperial College London) ← NEU 2026-04-20 Phase 1b
 - [[Danilo Mandic]] — Senior-Author FinDPO, Professor Imperial College London ← NEU 2026-04-20 Phase 1b
+- [[r-david-mclean]] — Erstautor McLean/Pontiff (B25) — Georgetown McDonough; Cross-Section-Predictability + Post-Publication-Decay ← NEU 2026-04-26 Phase A
+- [[jeffrey-pontiff]] — Co-Autor McLean/Pontiff (B25) — Boston College Carroll ← NEU 2026-04-26 Phase A
+- [[josef-lakonishok]] — Erstautor Lakonishok/Lee (B26) — UIUC; Insider-Trading-Akademiker ← NEU 2026-04-26 Phase A
+- [[inmoo-lee]] — Co-Autor Lakonishok/Lee (B26) — Korea University ← NEU 2026-04-26 Phase A
+- [[bin-ke]] — Erstautor Ke/Huddart/Petroni (B27) — Penn State; Earnings-Quality + Insider-Trading ← NEU 2026-04-26 Phase A
+- [[steven-huddart]] — Co-Autor Ke/Huddart/Petroni (B27) — Penn State Smeal ← NEU 2026-04-26 Phase A
+- [[kathy-petroni]] — Co-Autorin Ke/Huddart/Petroni (B27) — Michigan State Eli Broad ← NEU 2026-04-26 Phase A
+- [[paul-tetlock]] — Alleinautor Tetlock 2007 (B28) — Columbia Business School; Sentiment-Mean-Reversion ← NEU 2026-04-26 Phase A
+- [[michael-mauboussin]] — Erstautor Mauboussin/Callahan 2024 (SOURCE-ONLY) — Morgan Stanley Counterpoint Global; CAP-Konzept ← NEU 2026-04-26 Phase A
+- [[dan-callahan]] — Co-Autor Mauboussin/Callahan 2024 — Morgan Stanley Counterpoint Global ← NEU 2026-04-26 Phase A
+- [[clifford-asness]] — Co-Autor QMJ 2013 + VME 2013 (SOURCE-ONLY) — AQR Capital Management Founder ← NEU 2026-04-26 Phase A
+- [[andrea-frazzini]] — Co-Autor QMJ 2013 (SOURCE-ONLY) — AQR Capital Management ← NEU 2026-04-26 Phase A
+- [[lasse-pedersen]] — Co-Autor QMJ 2013 + VME 2013 (SOURCE-ONLY) — NYU Stern + Copenhagen Business School + AQR ← NEU 2026-04-26 Phase A
+- [[tobias-moskowitz]] — Co-Autor VME 2013 (SOURCE-ONLY) — University of Chicago Booth + NBER ← NEU 2026-04-26 Phase A
+- [[frederic-lepetit]] — Co-Autor Amundi-Quality-2021 (SOURCE-ONLY) — Amundi Asset Management Quantitative Research ← NEU 2026-04-26 Phase A (Errata 27.04.: Vorname von "Jean-Baptiste" zu "Frédéric" korrigiert)
+- [[amina-cherief]] — Co-Autorin Amundi-Quality-2021 (SOURCE-ONLY) — Amundi AM ← NEU 2026-04-26 Phase A (Errata 27.04.: Vorname von "Nazim" zu "Amina" korrigiert)
+- [[yannick-ly]] — Co-Autor Amundi-Quality-2021 (SOURCE-ONLY) — Amundi AM ← NEU 2026-04-26 Phase A (Errata 27.04.: Vorname von "Thy" zu "Yannick" korrigiert)
+- [[takaya-sekine]] — Co-Autor Amundi-Quality-2021 (SOURCE-ONLY) — Amundi AM ← NEU 2026-04-26 Phase A
+- [[eugene-fama]] — Co-Autor Fama-French 2006 + 2015 (SOURCE-ONLY) — University of Chicago Booth, Nobel-Preisträger 2013 ← NEU 2026-04-26 Phase A
+- [[kenneth-french]] — Co-Autor Fama-French 2006 + 2015 (SOURCE-ONLY) — Dartmouth Tuck ← NEU 2026-04-26 Phase A
+- [[campbell-harvey]] — Erstautor Harvey/Liu/Zhu 2016 (SOURCE-ONLY) — Duke Fuqua + NBER; t≥3-Hurdle ← NEU 2026-04-26 Phase A
+- [[yan-liu]] — Co-Autor Harvey/Liu/Zhu 2016 (SOURCE-ONLY) — Texas A&M ← NEU 2026-04-26 Phase A
+- [[heqing-zhu]] — Co-Autor Harvey/Liu/Zhu 2016 (SOURCE-ONLY) — University of Oklahoma ← NEU 2026-04-26 Phase A
+- [[kewei-hou]] — Erstautor Hou/Xue/Zhang 2015 q-Factor (SOURCE-ONLY) — Ohio State Fisher ← NEU 2026-04-26 Phase A
+- [[chen-xue]] — Co-Autor Hou/Xue/Zhang 2015 q-Factor (SOURCE-ONLY) — University of Cincinnati Lindner ← NEU 2026-04-26 Phase A
+- [[lu-zhang]] — Co-Autor Hou/Xue/Zhang 2015 q-Factor (SOURCE-ONLY) — Ohio State Fisher + NBER ← NEU 2026-04-26 Phase A
+- [[hongyang-yang]] — Erstautor FinGPT 2023 (SOURCE-ONLY) — AI4Finance Foundation ← NEU 2026-04-26 Phase A
+- [[xiao-yang-liu]] — Co-Autor FinGPT 2023 (SOURCE-ONLY) — Columbia University ← NEU 2026-04-26 Phase A
+- [[christina-dan-wang]] — Co-Autorin FinGPT 2023 (SOURCE-ONLY) — NYU Shanghai ← NEU 2026-04-26 Phase A
+- [[robert-hable]] — Alleinautor 2iQ-Insider-Meta-Review 2021 (SOURCE-ONLY industry-meta) — 2iQ Research ← NEU 2026-04-26 Phase A
 
 ### Satelliten (aktive Positionen)
 - [[AVGO]] — Broadcom Inc. | DEFCON 🟢 4 | Score 84 | Kalibrierungsanker #1 (v3.7)
@@ -164,6 +211,11 @@ _(noch leer)_
 - [[F-Score-Quality-Signal]] — Piotroski 9-Kriterien-Score; ≥7 → +2 Pt. Fundamentals-Bonus (B12) ← NEU
 - [[Gross-Profitability-Premium]] — Novy-Marx GP/TA; eigenständiger Renditefaktor, +2 Pt. Fundamentals-Metrik (B13) ← NEU
 - [[Accruals-Anomalie-Sloan]] — Sloan 1996; Low-Accrual outperformt +10,4% p.a.; validiert v3.5-Schwellen (B14) ← NEU
+- [[Insider-Trading-Primary-Signal]] — Insider-Block-Konzept-Anker; Buy>Sell-Asymmetrie + Form-4-X/M-Filter via OpenInsider; primär aus Lakonishok/Lee 2001 (B26) ← NEU 2026-04-26 Phase B
+- [[Earnings-Foreknowledge-Window]] — Insider-Verkaufs-Window Q-9 bis Q-3 vor Earnings-Break (Legal-Jeopardy-Avoidance); Architektur-Anker für insider-intelligence v2 (B27 design-context) ← NEU 2026-04-26 Phase B
+- [[Media-Pessimism-Sentiment]] — Tetlock 2007 Mean-Reversion-Anker; hohe Media-Pessimism → kurzfrist Drawdown + komplette Reversion zu Fundamentals 5-10 Tage; ankert Sentiment-Block-Architektur (B28 design-context) ← NEU 2026-04-26 Phase B
+- [[Noise-Trader-Model]] — Liquidity-Trader-Modell zu Tetlock 2007 Volume-Pattern (Absolut-Wert); ergänzt B28-Architektur ← NEU 2026-04-26 Phase B
+- [[Competitive-Advantage-Period]] — Mauboussin/Callahan 2024 CAP-Konzept; zweite Moat-Dimension neben ROIC-WACC-Spread (Magnitude × Sustainability) ← NEU 2026-04-26 Phase B
 
 ### Backtest-Validation-Framework (§29 Gate — FUTURE-ACTIVATION 2028-04-01)
 - [[PBO-Backtest-Overfitting]] — Bailey PBO/CSCV-Methode; §29.1 Methoden-Gate (B15) ← NEU 2026-04-19
@@ -174,6 +226,7 @@ _(noch leer)_
 - [[LLM-Investing-Bias-Audit]] — FINSABER-Pattern (Survivorship/Look-Ahead/Data-Snooping) für DEFCON-Self-Audit (B19) ← NEU 2026-04-20
 - [[Regime-Aware-LLM-Failure-Modes]] — FINSABER Bull/Bear-Asymmetrie; Anker für Track 5b FRED Regime-Filter (B19) ← NEU 2026-04-20
 - [[Composite-Anti-Overfitting-Objective]] — GT-Score-Pattern (in-the-loop); Tie-Break R0 für Track 5b Grid-Search (B20) ← NEU 2026-04-20
+- [[Post-Publication-Decay]] — McLean/Pontiff 2016 §29.7 M&P-Discount; in-sample-Claim × 0,42 als Plausibility-Test post-publication (B25 meta-gate) ← NEU 2026-04-26 Phase B
 
 ### KG-/RAG-/LLM-Architektur (Phase 1b 6-Paper-Ingest — 2026-04-20)
 - [[Knowledge-Graph-Finance-Architecture]] — Schema-guided KG-Primitive für SEC-Filings; 5-Tuple + 10 Entity-Types + 10 Relation-Types (B21) ← NEU 2026-04-20 Phase 1b
@@ -209,7 +262,7 @@ _(noch leer)_
 - [[AI in Investment Analysis]] — Zentrale Synthese: KI in Aktienanalyse, Depot-Strategie, Trading; wächst mit jeder neuen Quelle
 - [[Investing-Mastermind-Index]] — Zentraler Navigationsindex: Depot-State, Satelliten, Konzepte, Skills
 - [[Depot-State-April-2026]] — Monatlicher Snapshot; Sparplan-Verteilung; offene Entscheidungen
-- [[Wissenschaftliche-Fundierung-DEFCON]] — 14-Befunde-Matrix: 10 Paper → operative Konsequenzen für DEFCON v3.5 (Stand 17.04.2026)
+- [[Wissenschaftliche-Fundierung-DEFCON]] — 28-Befunde-Matrix: 34 Paper → operative Konsequenzen für DEFCON v3.7; Status-Matrix mit 6 Labels (active-scoring, active-scoring-validation, design-context, meta-gate, design-rejected, future-arch); §29-Validation-Gate-Framework inkl. §29.7 M&P-Discount (Phase A+B+C 26-27.04.2026)
 - [[Backtest-Methodik-Roadmap]] — Entscheidungsmatrix für 2028-Review; Options A–D je nach Datenlage; welcher Paper als Benchmark wann anlegbar (neu 17.04.2026)
 - [[Knowledge-Graph-Architektur-Roadmap]] — v0.1 `draft-frozen` (Codex-Verdikt Option D, 20.04.2026 Nacht-Spät): Entscheidungsvorlage KG/RAG vs. XML-Direkt-Parsing für insider-intelligence + zukünftige Skills; 3 Qualitäts-Gates + 3 Szenarien (Form-4-XML bleibt / 10-K-KG DEFER 2027+ / Bayesian-RAG-Briefing verworfen). Re-Review-Trigger: Cross-Entity-Bedarf ODER 2026-10-17 Score-Archiv-Interim-Gate.
 

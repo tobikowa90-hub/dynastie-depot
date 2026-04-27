@@ -2,20 +2,21 @@
 title: "Wissenschaftliche Fundierung DEFCON v3.7"
 type: synthesis
 tags: [defcon, scoring, wissenschaft, entscheidungsmatrix, faktor-kalibrierung, validation-gate]
-sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]], [[Arun-et-al-2025-FinReflectKG]], [[Labre-2025-FinReflectKG-Companion]], [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]], [[Iacovides-Zhou-Mandic-2025-FinDPO]], [[McLean-Pontiff-2016]], [[Lakonishok-Lee-2001]], [[Ke-Huddart-Petroni-2003]], [[Tetlock-2007]]"
+sources: "[[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[Morningstar-Wide-Moat]], [[Buffetts-Alpha]], [[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]], [[llms-for-equity-stock-ratings]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Flint-Vermaak-2021-Decay]], [[Palomar-2025-Portfolio-Optimization]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]], [[Arun-et-al-2025-FinReflectKG]], [[Labre-2025-FinReflectKG-Companion]], [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]], [[Iacovides-Zhou-Mandic-2025-FinDPO]], [[McLean-Pontiff-2016]], [[Lakonishok-Lee-2001]], [[Ke-Huddart-Petroni-2003]], [[Tetlock-2007]], [[Asness-Frazzini-Pedersen-2013-QMJ]], [[Mauboussin-Callahan-2024-Measuring-Moat]], [[Amundi-Quality-2021]], [[Fama-French-2015-Five-Factor]], [[Harvey-Liu-Zhu-2016]], [[Asness-Moskowitz-Pedersen-2013-VME]], [[Fama-French-2006-Profitability]], [[Hou-Xue-Zhang-2015-q-Factor]], [[Yang-Liu-Wang-2023-FinGPT]], [[2iQ-Insider-Meta-Review-2021]]"
 concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]], [[Chain-of-Thought Prompting]], [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Seven-Sins-Backtesting]], [[Palomar-Methods-Reference]], [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]], [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[LLM-as-a-Judge-Evaluation]], [[RAG-Uncertainty-Quantification]], [[LLM-Preference-Optimization-Finance]], [[Sentiment-Strength-Logit-Extraction]]"
 related: "[[DEFCON-System]], [[Analyse-Pipeline]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Non-US-Scoring]], [[Backtest-Methodik-Roadmap]]"
 entities: "[[ASML]], [[AVGO]], [[MSFT]], [[RMS]], [[VEEV]], [[SU]], [[BRKB]], [[V]], [[APH]], [[COST]], [[TMO]]"
-datum: 2026-04-26
+datum: 2026-04-27
 status: aktiv
 ---
 
 # Wissenschaftliche Fundierung DEFCON v3.7
 
 > Dieses Dokument belegt, dass das DEFCON-Scoring-System auf peer-reviewed Forschung basiert.
-> 20 Quellen → 28 Befunde → operative Konsequenzen für das Dynasty-Depot.
+> 34 Quellen → 28 Befunde → operative Konsequenzen für das Dynasty-Depot.
 > **Stand 2026-04-20 Abend nach Phase-1b-Ingest:** B21-B24 sind **keine Scoring-Änderungen**, sondern Architektur/Methoden-Befunde für zukünftige Skill-Erweiterungen + Validation-Pflichten.
-> **Stand 2026-04-26 nach Paper-Ingest Phase A:** B25-B28 ergänzt. B25 ist `meta-gate` (§29.7 M&P-Discount angelegt 26.04.2026). B26 ist `active-scoring-validation` (Codex-Re-Klassifikation: bestätigt Insider-Block-Heuristik, kein neues Score-Element). B27 + B28 sind `design-context` (Codex-Re-Klassifikation: insider-intelligence-v2-Roadmap-Anker + Sentiment-Mean-Reversion-Architektur-Anker). Quellen-Übersicht 20 → 34 erfolgt in Phase C-1 (10 SOURCE-ONLY-Pages aus Phase A bleiben nicht-Befund-Anker).
+> **Stand 2026-04-26 nach Paper-Ingest Phase A:** B25-B28 ergänzt. B25 ist `meta-gate` (§29.7 M&P-Discount angelegt 26.04.2026). B26 ist `active-scoring-validation` (Codex-Re-Klassifikation: bestätigt Insider-Block-Heuristik, kein neues Score-Element). B27 + B28 sind `design-context` (Codex-Re-Klassifikation: insider-intelligence-v2-Roadmap-Anker + Sentiment-Mean-Reversion-Architektur-Anker).
+> **Stand 2026-04-27 Phase C-1:** Quellen-Übersicht-Tabelle 20 → 34 erweitert. 10 SOURCE-ONLY-Pages aus Phase A (QMJ, Mauboussin/Callahan, Amundi, FF-2015, HLZ-2016, AMP-VME, FF-2006, HXZ-q-Factor, FinGPT, 2iQ-Meta) als **nicht-Befund-Anker** integriert — sie ankern bestehende Befunde (B2, B5, B7, B8, B16, B26) wissenschaftlich, ohne eigenständigen Score-Pfad oder neue B-Befund-ID. Befund-Zähler bleibt bei 28.
 
 ---
 
@@ -143,7 +144,7 @@ Jeder zukünftige Befund MUSS bei Ingest in diese Matrix eingetragen werden mit 
 
 ---
 
-## Quellen-Übersicht (20 Paper — Stand: 20.04.2026)
+## Quellen-Übersicht (34 Paper — Stand: 27.04.2026 — Phase A + C-1)
 
 | Quelle | Jahr | Kernthese | DEFCON-Block | Neue Befunde |
 |--------|------|-----------|--------------|-------------|
@@ -167,6 +168,20 @@ Jeder zukünftige Befund MUSS bei Ingest in diese Matrix eingetragen werden mit 
 | [[Labre-2025-FinReflectKG-Companion]] | 2025 | Praktiker-Lens + Entropy-Paradox-Mitigation für Reflection-KG | Architektur-Caveat | B22 ← NEU 2026-04-20 Phase 1b |
 | [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] | 2026 | Bayesian RAG mit MC-Dropout-Uncertainty für Finance-QA | Architektur-Referenz | B23 ← NEU 2026-04-20 Phase 1b |
 | [[Iacovides-Zhou-Mandic-2025-FinDPO]] | 2025 | DPO-Alignment + Logit-to-Score für Long-Short-Portfolios | Methoden-Kontext (nicht operativ) | B24 ← NEU 2026-04-20 Phase 1b |
+| [[McLean-Pontiff-2016]] | 2016 | Cross-Sect Predictoren −26% Out-of-Sample (statistical bias upper bound) + −58% Post-Publication (operativer Total-Decline; davon ≈32pp publication-effect lower bound) | Validation-Methode (§29.7 M&P-Discount) | B25 ← NEU 2026-04-26 Phase A |
+| [[Lakonishok-Lee-2001]] | 2001 | Insider-Käufe informativer als -Verkäufe; Aggregate-Predictability + Small-Cap-Concentration + Contrarian-Timing | Insider-Block (5 Pt.) Validation | B26 ← NEU 2026-04-26 Phase A |
+| [[Ke-Huddart-Petroni-2003]] | 2003 | Insider-Verkäufe Q-9 bis Q-3 vor Earnings-Break (Legal-Jeopardy-Window); Q-2/Q-1 ≈ Null abnormal | Insider-Block — Architektur-Anker (insider-intelligence v2 deferred) | B27 ← NEU 2026-04-26 Phase A |
+| [[Tetlock-2007]] | 2007 | Hohe Media-Pessimism prädiziert kurzfrist Drawdown + komplette Reversion zu Fundamentals (5-10 Tage) | Sentiment-Block — Mean-Reversion-Architektur-Anker | B28 ← NEU 2026-04-26 Phase A |
+| [[Asness-Frazzini-Pedersen-2013-QMJ]] | 2013 | QMJ Long-Short, 4-Pillars-Quality-Definition (Profitability/Growth/Safety/Payout); 23/24 Länder positives Alpha | Fundamentals + Moat (Sprachregel + Buffett-Faktorlogik-Anker) | SOURCE-ONLY (anchors B5) ← NEU 2026-04-26 Phase A |
+| [[Mauboussin-Callahan-2024-Measuring-Moat]] | 2024 | Competitive Advantage Period (CAP) als zweite Moat-Dimension neben ROIC-WACC-Spread (Magnitude × Sustainability) | Moat-Block (Sprachregel + Tiefen-Analyse) | SOURCE-ONLY (anchors B4, B6) ← NEU 2026-04-26 Phase A |
+| [[Amundi-Quality-2021]] | 2021 | Practitioner-Validation 4-Pillars (Profit/Earnings-Quality/Safety/Investment); +2,8% p.a. IR 0,81 post-GFC | Fundamentals (Quality-Faktor-Validation) | SOURCE-ONLY (anchors B5, B8) ← NEU 2026-04-26 Phase A |
+| [[Fama-French-2015-Five-Factor]] | 2015 | RMW + CMA Faktoren; HML wird redundant für Cross-Section-Erklärung | Fundamentals (Profitability + Investment-Anker) | SOURCE-ONLY (anchors B2, B8) ← NEU 2026-04-26 Phase A |
+| [[Harvey-Liu-Zhu-2016]] | 2016 | t≥3-Hurdle für Faktor-Discovery (Multiple-Testing-Korrektur über 313 Studien) | Validation-Methode (§29.4 t-Stat-Hurdle Anker) | SOURCE-ONLY (anchors B16) ← NEU 2026-04-26 Phase A |
+| [[Asness-Moskowitz-Pedersen-2013-VME]] | 2013 | Value + Momentum global, persistent, neg. korreliert über 8 Asset-Klassen | Block-Gewichtung 50/20/10/10/10 Validation | SOURCE-ONLY (anchors B7) ← NEU 2026-04-26 Phase A |
+| [[Fama-French-2006-Profitability]] | 2006 | Valuation-Equation: B/M, Profitability, Investment prädizieren Cross-Section-Returns; Sloan-Accruals schrumpft mit Profit/Invest-Kontrollen | Fundamentals (Theorie-Anker FF-5-Vorgänger) | SOURCE-ONLY (anchors B2, B8) ← NEU 2026-04-26 Phase A |
+| [[Hou-Xue-Zhang-2015-q-Factor]] | 2015 | q-Theory-Faktor-Modell (Mkt+ME+I/A+ROE) — konvergente Evidenz zu FF-5 aus zweiter, theoretisch unabhängiger Methodologie | Fundamentals (Profitability + Investment-Validation) | SOURCE-ONLY (anchors B2, B8) ← NEU 2026-04-26 Phase A |
+| [[Yang-Liu-Wang-2023-FinGPT]] | 2023 | Open-Source 5-Layer-Framework für Finance-LLMs (Data Source / Engineering / LLMs / Tasks / Applications); LoRA-Fine-Tuning | Architektur-Kontext (DEFCON-orthogonal Long-Only) | SOURCE-ONLY (komplementär B19, B24) ← NEU 2026-04-26 Phase A |
+| [[2iQ-Insider-Meta-Review-2021]] | 2021 | Industry-Meta-Review Insider-Trading 1968-2018 (Lorie/Niederhoffer/Seyhun/L&L/JMZ/Dardas/Alldredge/Kang) | Insider-Block (insider-intelligence-Skill-Begründung) | SOURCE-ONLY (industry-meta — anchors B26, B27) ← NEU 2026-04-26 Phase A |
 
 ---
 
@@ -256,6 +271,7 @@ Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] �
 | 2026-04-20 | **Phase 1a** des 6-Paper-Ingest-Projekts (siehe log.md): 2 Severity-🔴-Papers integriert — FINSABER (B19, Li/Kim/Cucuringu/Ma KDD '26) + GT-Score (B20, Sheppert JRFM 2026). 14→16 Quellen, 18→20 Befunde. B19+B20 sind **keine Scoring-Änderungen**, sondern: (1) Audit-Pflicht für DEFCON als Selection-Strategy via FINSABER-Pattern (§29.5 erweitert + ggf. neue §33 Skill-Self-Audit); (2) Composite-Anti-Overfitting-Lens für DEFCON-Block-Gewichtungen + Track 5b Grid-Search (§29.1 + §29.6 erweitert). Codex-Round-2-bestätigt: keine LLM-Sicherheitsdebatte, keine zwingenden Skill-Code-Changes. Phase 1b (4 Severity-🟡-Papers) folgt nächste Session. |
 | 2026-04-20 Abend | **Phase 1b** des 6-Paper-Ingest-Projekts: 4 Severity-🟡-Papers integriert — FinReflectKG (B21, Arun et al. Domyn 2025) + Labre-Companion (B22, Towards AI 2025) + Bayesian RAG (B23, Ngartera et al. Frontiers 2026) + FinDPO (B24, Iacovides et al. Imperial 2025). 16→20 Quellen, 20→24 Befunde. B21-B24 sind **keine Scoring-Änderungen**, sondern: (1) Architektur-Referenzen für zukünftige KG/RAG-Skill-Erweiterungen (neue Synthesis [[Knowledge-Graph-Architektur-Roadmap]] v0.1 mit Entscheidungsvorlage Gate 1-3); (2) wissenschaftliche Fundierung des v3.0.3 Morning-Briefing Korrektheits-Prinzips; (3) Methoden-Kontext für Future-News-Sentiment-Integration. **Vault-only-Phase** — DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert. Hard-Checkpoint vor Phase 2 (System-Konsequenzen) eingehalten. |
 | 2026-04-26 | **Paper-Ingest Phase A** Phase-B1: 4 neue Befunde B25-B28 in Status-Matrix + Entscheidungsmatrix integriert. **Codex-Re-Klassifikation übernommen** (Page-Tags `active-scoring` widersprachen Page-Body): B25 = `meta-gate` (§29.7 M&P-Discount in B1-2 in INSTRUKTIONEN.md angelegt 26.04.2026), B26 = `active-scoring-validation` (NEUES Status-Label — Insider-Block-Heuristik primär-empirisch bestätigt, kein neues Score-Element), B27 = `design-context` (NEUES Status-Label — insider-intelligence-v2-Window-Erweiterung deferred), B28 = `design-context` (Sentiment-Block Mean-Reversion-Architektur-Anker). 20 Quellen → 28 Befunde. **Vault-only-Phase** — DEFCON v3.7 unverändert, Scores unverändert. Quellen-Übersicht-Tabelle (20→34 inkl. 10 SOURCE-ONLY-Pages aus Phase A) erfolgt in Phase C-1. |
+| 2026-04-27 | **Paper-Ingest Phase C-1**: Quellen-Übersicht-Tabelle 20 → 34 Zeilen erweitert. 14 neue Zeilen integriert: B25-B28 (McLean-Pontiff, Lakonishok-Lee, Ke-Huddart-Petroni, Tetlock) mit voller B-Befund-ID + DEFCON-Block-Mapping; 10 SOURCE-ONLY (Asness/Frazzini/Pedersen QMJ, Mauboussin/Callahan, Amundi-Quality, Fama/French 2015 Five-Factor, Harvey/Liu/Zhu 2016, Asness/Moskowitz/Pedersen VME, Fama/French 2006, Hou/Xue/Zhang q-Factor, Yang/Liu/Wang FinGPT, 2iQ-Insider-Meta) als nicht-Befund-Anker mit `SOURCE-ONLY (anchors BX)`-Notation in Spalte 5. Header-Counter 20 → 34 Quellen aktualisiert (Befund-Zähler 28 unverändert — SOURCE-ONLY-Pages erzeugen keine neuen B-IDs). Frontmatter-`sources:`-Array um 10 Einträge erweitert. McLean-Pontiff-Eintrag verwendet konsistent **58% operativer Total-Decline** (cde7fa9 / c847dba) statt 32pp publication-effect lower bound (Vermeidung Discount-Verschmelzung — Hauptrisiko Phase C). DEFCON v3.7 unverändert, Scores unverändert. |
 
 ## Validierung der Befunde (Backtest-Ready-Infrastructure, seit 2026-04-17)
 
