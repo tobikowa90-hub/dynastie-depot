@@ -82,7 +82,7 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 
 ---
 
-## 6. Ersatzbank & Watchlist (Stand: 04.04.2026)
+## 6. Ersatzbank & Watchlist (Stand: 27.04.2026)
 
 | Ticker | Score | DEFCON | Rolle |
 |--------|-------|--------|-------|
@@ -93,11 +93,11 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 | RACE | 73 | 🟢 4 | RMS-Ersatz (Luxury) |
 | PEGA | 85 | 🟢 4 | ⭐ Slot-16-Kandidat (Earnings Mai 2026) |
 | SNPS | 76 | 🟡 3 | ASML-Ersatz (Goodwill-Malus Ansys-Akquisition -3 Pkt seit DEFCON v3.5 Audit 16.04.2026) |
-| SPGI | 79 | 🟢 4 | Watchlist — Neueinstieg-Kandidat |
-| FICO | 70 | 🟡 3 | VEEV-Ersatz #1 (Kurscrash -52%, Fwd P/FCF ~19x) |
+| SPGI | 74 | 🟡 3 | Watchlist — Neueinstieg-Kandidat (ROIC-Verzerrung durch IHS Markit M&A-Goodwill, Non-GAAP ROIC ~82; DEFCON v3.5 Audit 16.04.2026 77→74) |
+| FICO | 67 | 🟡 3 | VEEV-Ersatz #1 (TTM-Verzerrung durch Kurscrash -52%, Fwd P/FCF ~19x; DEFCON v3.5 Audit 16.04.2026 70→67) |
 | HON | 71 | 🟡 3 | Post-Spinoff 2026 abwarten |
 | SAP | 72 | 🟡 3 | VEEV-Swap — ZTS bevorzugt |
-| EXPN | 74 | 🟡 3 | EU-Kredite, langsames Wachstum |
+| EXPN | 61 | 🟡 3 | EU-Kredite, langsames Wachstum (Datenlücken erzwingen konservatives Scoring — siehe INSTRUKTIONEN §7) |
 | GOOGL | 72 | 🟡 3 | 🔴 FLAG: CapEx FY26 ~75% OCF — kein Einstieg |
 
 **Keine Zuteilung (strukturell):** CLPBY, MSCI (Exposure via ETFs), BA.L

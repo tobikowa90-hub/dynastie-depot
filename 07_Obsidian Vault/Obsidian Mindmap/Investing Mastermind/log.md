@@ -988,3 +988,18 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Live-System-Impact:** Null — DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert, FLAGs unverändert. PROD-Trigger v2.1 unangetastet (Prod-Deploy v3.0.6 in Phase 4-6 deferred bis nach V/MSFT-Earnings).
 - **Sub-Observation (out-of-scope, Follow-up):** SNPS Score-Discrepancy Trigger-Tabelle "79" vs Ersatzbank "76" — minor file-sync-drift zwischen Briefing-Body und Vault, separater Reconcile-Task.
 - **Next:** Phase 4-6 (T6 voll-test + T1/T3/T4 Retest + Prod-Deploy v3.0.6 auf `trig_01PyAVAxFpjbPkvXq7UrS2uG`) blockiert durch V Q2 FY26 (28.04. ~22:00 MESZ) + MSFT Q3 FY26 (29.04. ~22:30 MESZ).
+
+## [2026-04-27] reconcile | KONTEXT.md/Faktortabelle Watchlist-Drift gegen SSoT
+- **Anlass:** Quick-Screener-Sweep auf 10 high-priority Tickers (9 Sat minus V/MSFT pre-Earnings + 4 Watchlist NVDA/ZTS/FICO/SPGI fokussiert) zeigte Multi-Source-Drift in KONTEXT.md (Stand-Header noch 04.04.2026, 24 Tage stale) gegen SSoT (INSTRUKTIONEN §7 Kalibrierungsanker + CORE-MEMORY §13 16.04.2026 v3.5-Audit-Eintrag).
+- **Markt-Drift-Befunde (Sweep — kein Score-Change ausgelöst):** AVGO/NVDA P/FCF 50-93 weit über thresholds.md-Anker ~30 (Quality-Trap-Interaktionsterm v3.7 fängt das ab); TMO ROIC 8.92-10.50% strukturell unter 12%-Schwelle (Q1-Beat hat Score 64→67 gestützt); FICO ROIC 42-45% extrem stark trotz -48% YTD (Multiple-Compression, Forward-Vollanalyse-Kandidat bei nächstem Earnings); ZTS -33% vom 52W-High mit FCF +21.6% YoY (Score-Premium möglicherweise nicht mehr passend). Doku in Session-Output, kein Live-State-Change.
+- **Pure Doc-Drift gefixt (3 SPGI/FICO/EXPN + Header):**
+  - KONTEXT.md Z.85 Header "Stand: 04.04.2026" → "Stand: 27.04.2026"
+  - KONTEXT.md Z.96 SPGI: 79 (D4) → 74 (D3) — IHS Markit M&A-Goodwill-Verzerrung, Non-GAAP ROIC ~82, post-DEFCON-v3.5-Audit 16.04.
+  - KONTEXT.md Z.97 FICO: 70 (D3) → 67 (D3) — TTM-Verzerrung durch Kurscrash -52%, post-DEFCON-v3.5-Audit 16.04.
+  - KONTEXT.md Z.100 EXPN: 74 (D3) → 61 (D3) — Datenlücken erzwingen konservatives Scoring, größte Drift (-13).
+  - Faktortabelle.md Z.84 Update-Kalender SPGI: Score 77 → 74 (Sync-Lücke wie SNPS Z.83 heute morgen, jetzt geschlossen).
+- **Pages updated:** `00_Core/KONTEXT.md`, `00_Core/Faktortabelle.md`, `07_Obsidian Vault/.../log.md` (dieser Eintrag).
+- **Bewusst NICHT angefasst (offene Follow-ups):**
+  - INSTRUKTIONEN.md §7 AVGO 85 vs Live-State 84 (PORTFOLIO/Faktortabelle 4 Belege) — separater Mini-Audit nötig: ist 85 der bewusste Kalibrierungsanker post-v3.5 oder Drift?
+  - Quick-Screener-Empfehlung Forward-Vollanalyse-Slots für FICO/ZTS/VEEV bei nächstem Earnings-Trigger — nicht jetzt, kein Earnings-Druck.
+- **Live-System-Impact:** Null — kein Score-Change, kein FLAG-Event, keine Sparraten-Änderung, kein score_history.jsonl-Append. Reine Doc-Reconciliation gegen SSoT (§18 Sync-Pflicht greift nicht, da kein Score/FLAG/Sparraten-Event).
