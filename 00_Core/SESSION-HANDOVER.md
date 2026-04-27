@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-27 spät — **Phase 3 FAIL + v3.0.6-Hotfix Edits DONE/Committed/Pushed**. Probe-Trigger-Update + Manual-Run-Adversarial-Test queued für nächste Session.
+**Aktualisiert:** 2026-04-27 ~19:40 — **Phase 3.5 Probe-Trigger-Update v3.0.6 DEPLOYED + GET-Verify PASS (9/9 Marker)**. Manual-Run via Desktop App queued für heute 20:00 MESZ (User-Action). Resume nach Run mit Output-Verify B1-B9.
 
 ### 🟢 Resume-Stand
 
@@ -31,20 +31,23 @@
 
 **Phase-3-Pre-Step (Probe-Tavily-Key-Swap) DONE:** Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh` hat seit 15:27 UTC neuen Tavily-Key `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`. Shibui-Connector unverändert.
 
-### NEXT-SESSION-RESUME — Phase 3.5 Re-Test + Phase 4-6
+### NEXT-SESSION-RESUME — Manual-Run-Output-Verify + Phase 4-6
 
-**Trigger:** „Phase 3.5 weiter" oder „Probe-Trigger v3.0.6 update"
+**Trigger:** „Phase 3.5 Output verifizieren" oder Output-Paste direkt.
 
-**Was zu tun ist:**
+**Stand JETZT (19:40):**
+- Probe-Trigger v3.0.6 ist deployed (`updated_at: 2026-04-27T17:38:50Z`). 9/9 v3.0.6-Marker im GET-Roundtrip verifiziert.
+- Tavily-Connector unverändert mit neuem Key `tvly-dev-4er43M-...`.
+- Body-Konstruktion-Erkenntnis (für Memory): RemoteTrigger update mit `body` als Inline-Record-Object funktioniert auch bei ~25k-char-Bodies, wenn JSON sauber escaped (ASCII-mode `\uXXXX` für Umlaute, sauberer Newline-Escape `\n`). Vorherige Versuche failten weil Body unsauber war. Phase-1+2-Split (kleiner Test → full body) hat bestätigt dass Tool-Call-Frontend records korrekt klassifiziert.
 
-1. Standard Session-Start: STATE.md + PORTFOLIO.md.
-2. **superpowers:executing-plans** Skill aktivieren (NICHT writing-plans — Plan-File existiert).
-3. Plan-File `docs/superpowers/plans/2026-04-27-briefing-v3.0.6-hotfix.md` ab Task 13 lesen (Probe-Get + Body-Konstruktion ab Zeile 350).
-4. **Probe-Trigger-Update v3.0.6 ausführen.** Body-Konstruktion: Python-Helper liegt parat — Body endet als JSON in `C:/tmp/body_singleline_v2.json` (lokal, nicht commited). **Wichtige Erkenntnis aus dieser Session:** RemoteTrigger-Tool-Call mit body-Object inline funktioniert, ABER (a) `environment_id` MUSS in `job_config.ccr` sein (sonst HTTP 400 "missing ccr.environment_id"), (b) `events[0]` braucht zusätzlich `parent_tool_use_id: null, session_id: "", type: "user", uuid: "11111111-aaaa-bbbb-cccc-777777777777"` (Phase-2-Pattern). **Mögliches Issue:** beim 2. Versuch der Tool-Call hat body als string statt record interpretiert — Hypothese: JSON-Syntax-Parse-Stumble bei sehr großen inline-Strings (~25k chars). **Workaround-Option:** ggf. Body in mehreren chunks via curl + extracted OAuth-Token (war NICHT erreichbar in `~/.claude.json` aktuell), ODER kürzere Body-Konstruktion + Server-Patch-Pattern testen.
-5. Post-Update-Verify mit 9 erweiterten Asserts auf `events[0].data.message.content` (Plan Task 15).
-6. Manual-Run via Claude Desktop App (Plan Task 16) — Werktag empfohlen, idealerweise Di 28.04. vor US-EOD damit Stale-Bedingung greift (latest_date=2026-04-27).
-7. Run-Output-Verify (Plan Task 17). Bei PASS → Phase 4-6 (T6 voll + T1/T3/T4-Retest + Prod-Deploy v3.0.6).
-8. Sync-Pflicht (Plan Task 18) am Ende.
+**User-Action heute 20:00 MESZ:**
+1. Claude Desktop App → Routines → tavily-probe → Run now.
+2. Vollständigen Output reinpasten (Briefing-Header bis "NAECHSTES GROSSES EVENT").
+
+**Resume-Step danach:**
+1. Output-Verify gegen 9 B1-B9-Asserts (Plan Task 17): kein WebSearch-Fallback (B1), kein Domain-Subset-Retry (B2), kein Saturday-Substitut (B3), SCHRITT-4.8-Tool-Provenance (B4), Allow-List-Tags only (B5), tool-unavailable-Header bei mapped-tool-fail (B6), Empty-Results = `Keine material News` ohne Inferenz (B7), §6F-4 Calendar-Mismatch wörtlich (B8), Provenance-Tags konsistent (B9).
+2. Bei PASS → Phase 4-6 (T6 voll-test + T1/T3/T4 Retest + Prod-Deploy v3.0.6) per `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md`.
+3. Sync-Pflicht (Plan Task 18) am Ende: log.md + CORE-MEMORY.md (§13 Lifecycle) + SYSTEM.md + PIPELINE.md.
 
 ### Operativ unverändert
 
