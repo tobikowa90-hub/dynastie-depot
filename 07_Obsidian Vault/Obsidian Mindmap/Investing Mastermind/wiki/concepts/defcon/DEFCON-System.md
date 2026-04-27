@@ -3,11 +3,11 @@ title: "DEFCON-System"
 type: concept
 tags: [konzept, defcon, scoring, kern]
 created: 2026-04-08
-updated: 2026-04-20
+updated: 2026-04-27
 version: v3.7
-stand: 2026-04-20
+stand: 2026-04-27
 sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha, llms-for-equity-stock-ratings, Wolff-Echterling-2023, Jadhav-Mirza-2025, Piotroski-F-Score, Novy-Marx-Gross-Profitability, Sloan-Accruals]
-wissenschaftlicher_anker: "B1–B24 (20 Quellen / 24 Befunde) — kanonische Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]]"
+wissenschaftlicher_anker: "B1–B28 (34 Quellen / 28 Befunde) — kanonische Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]]"
 konfidenzstufe: peer-reviewed
 related: [CapEx-FLAG, ROIC-vs-WACC, Analyse-Pipeline, Tariff-Exposure-Regel, Non-US-Scoring, Update-Klassen-DEFCON, Backtest-Ready-Infrastructure, Score-Archiv, FLAG-Event-Log, Knowledge-Graph-Architektur-Roadmap, Wissenschaftliche-Fundierung-DEFCON]
 aliases:
@@ -103,9 +103,9 @@ Das DEFCON-System hält seinen Zustand in fünf getrennten Layern (siehe KONTEXT
 
 Jede Score/FLAG/Sparraten-Änderung triggert §18 v2.1 Sync-Pflicht (Trigger-basiertes Event-Mapping) auf das vollständige Score-Event-File-Set im gleichen git-Commit. Details: [[Backtest-Ready-Infrastructure]], [[Score-Archiv]], [[FLAG-Event-Log]].
 
-## Wissenschaftliche Fundierung (nachträglich 19.04.2026, erweitert 20.04.2026)
+## Wissenschaftliche Fundierung (nachträglich 19.04.2026, erweitert 20.04.2026 + 26-27.04.2026)
 
-Der DEFCON-Score wird durch ein erweitertes Paper-Framework methodisch validiert. **Kanonische Single-Source-of-Truth ist die Status-Matrix** in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]] (24 Befunde aus 20 Quellen, Stand 20.04.2026 Nacht nach 6-Paper-Ingest-Closure).
+Der DEFCON-Score wird durch ein erweitertes Paper-Framework methodisch validiert. **Kanonische Single-Source-of-Truth ist die Status-Matrix** in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]] (28 Befunde aus 34 Quellen, Stand 27.04.2026 nach Paper-Ingest Phase A+B+C: B25-B28 + 10 SOURCE-ONLY-Anker).
 
 **Kern-Framework (B1-B18, active-scoring / active-audit):**
 - **Aghassi 2023** (B12) — Factor-Mapping (Value/Quality/Momentum/Defensive/Investment) validiert 5-Block-Scoring-Struktur, siehe [[Factor-Investing-Framework]]
