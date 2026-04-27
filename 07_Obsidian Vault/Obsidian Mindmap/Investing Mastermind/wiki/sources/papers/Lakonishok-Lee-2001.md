@@ -9,7 +9,14 @@ venue: "Review of Financial Studies 14(1), 2001, 79-111. NBER Working Paper 6656
 authors: "Josef Lakonishok (University of Illinois Urbana-Champaign), Inmoo Lee (Korea University)"
 status: processed
 defcon_relevanz: "Befund B26 (`active-scoring-validation`, eingeführt 26.04.2026 mit Codex-Re-Klassifikation — Status-Label NEU in Status-Matrix-Legende). Insider-Block (5 Pt.) Primärquelle. Validiert die seit insider-intelligence-Skill-Launch operativen Heuristiken: (1) Insider-Käufe > Insider-Verkäufe in Informationsgehalt — Verkäufe haben Liquiditäts-/Diversifikations-Rauschen. (2) Aggregate Insider-Aktivität prädiziert Markt-Returns. (3) Insider sind Contrarians (Kaufen wenn überverkauft, Verkaufen wenn überbewertet). (4) Effekt ist stärker bei Small-Caps und Small-Growth-Stocks. Operative Konsequenz für DEFCON: Aktuelle Form-4-Auswertung im Insider-Block sollte Buy-Side höher gewichten als Sell-Side; bei Sell-Signalen muss Liquiditäts-/Optionsausübungs-Filter greifen (Spalte M/X-Filter via [[OpenInsider]] bereits implementiert). Validation, kein Architektur-Change."
-related: "[[Insider-Trading-Primary-Signal]], [[Ke-Huddart-Petroni-2003]], [[insider-intelligence]], [[OpenInsider]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Insider-Trading-Primary-Signal]]"
+  - "[[Ke-Huddart-Petroni-2003]]"
+  - "[[insider-intelligence]]"
+  - "[[OpenInsider]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/ARE INSIDERS' TRADES INFORMATIVE.pdf"
 aliases:
   - "Lakonishok Lee 2001"

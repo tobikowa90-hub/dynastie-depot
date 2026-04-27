@@ -13,7 +13,15 @@ venue:
 authors: "Hongyang Yang (AI4Finance Foundation), Xiao-Yang Liu (Columbia University), Christina Dan Wang (NYU Shanghai)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY. Open-Source-Pendant zu BloombergGPT — End-to-End-Framework (5-Layer: Data Source / Engineering / LLMs / Tasks / Applications) für Finance-LLMs. Operative Konsequenz für DEFCON: KEINE direkte Score-Anbindung, weil DEFCON Long-Only ist und keine LLM-Sentiment-Pipeline als Hauptfaktor verwendet. **Konzeptioneller Wert:** Begründet Open-Source-Approach für künftige Finance-LLM-Adoption (Transparenz, Customization, Educational), gegenüber proprietären Black-Boxes. Komplementär zu FinDPO ([[Iacovides-Zhou-Mandic-2025-FinDPO]]) — FinGPT etabliert die Architektur, FinDPO refined das Training-Verfahren (DPO statt SFT). Beide gelten unter FINSABER-Bias-Audit (B19) erst als evidence-grade nach 20J-Hold-Out + Bull/Bear-Subsample-Test."
-related: "[[Iacovides-Zhou-Mandic-2025-FinDPO]], [[Jadhav-Mirza-2025]], [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[LLM-Investing-Bias-Audit]], [[News Sentiment Analysis]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Iacovides-Zhou-Mandic-2025-FinDPO]]"
+  - "[[Jadhav-Mirza-2025]]"
+  - "[[Li-Kim-Cucuringu-Ma-2026-FINSABER]]"
+  - "[[LLM-Investing-Bias-Audit]]"
+  - "[[News Sentiment Analysis]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Yang et al. (2023).pdf"
 aliases:
   - "FinGPT 2023"

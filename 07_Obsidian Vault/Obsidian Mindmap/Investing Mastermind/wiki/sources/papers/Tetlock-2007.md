@@ -9,7 +9,15 @@ venue: "Journal of Finance 62(3), 2007, 1139-1168"
 authors: "Paul C. Tetlock (Columbia Business School / damals McCombs School of Business, University of Texas at Austin)"
 status: processed
 defcon_relevanz: "Befund B28 (`design-context`, eingeführt 26.04.2026 mit Codex-Re-Klassifikation — Status-Label NEU in Status-Matrix-Legende; Architektur-Anker für Mean-Reversion-Score-Stabilität, kein Score-Element). Sentiment-Block (10 Pt.) — Kalibrierungs-Anker. Kern: Hohe Media-Pessimism prädiziert kurzfristig fallende Kurse + nachfolgende Reversion zu Fundamentals; ungewöhnlich hohe ODER niedrige Pessimism prädizieren hohes Trading-Volume. Das ist Noise-Trader/Liquidity-Trader-Modell-konsistent (DeLong/Shleifer/Summers/Waldmann 1990) und INKONSISTENT mit drei alternativen Hypothesen: Media als (a) Fundamental-Information-Proxy, (b) Volatility-Proxy, (c) Sideshow ohne Markt-Bezug. Operative Konsequenz für DEFCON: Sentiment-Block (Analyst-Konsensus + PT-Abstand + Sell-Ratio) wird durch B28 nicht erweitert (DEFCON nutzt strukturierten Analyst-Sentiment, kein Media-Text-Sentiment), aber B28 begründet die EXISTENZ des Sentiment-Blocks als kausal relevant — Sentiment ist nicht nur Rauschen, sondern hat empirisch messbaren Markt-Impact. Wichtig: B28's Mean-Reversion-Befund ist Anker für die DEFCON-Prämisse `Score = Long-Term-Quality-Bewertung, kein Short-Term-Trade-Signal` — kurzfristige Sentiment-Schwankungen sollten KEINEN Score-Drift triggern."
-related: "[[Media-Pessimism-Sentiment]], [[Noise-Trader-Model]], [[News Sentiment Analysis]], [[Iacovides-Zhou-Mandic-2025-FinDPO]], [[Jadhav-Mirza-2025]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Media-Pessimism-Sentiment]]"
+  - "[[Noise-Trader-Model]]"
+  - "[[News Sentiment Analysis]]"
+  - "[[Iacovides-Zhou-Mandic-2025-FinDPO]]"
+  - "[[Jadhav-Mirza-2025]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Tetlock_Media_Sentiment_JF.pdf"
 aliases:
   - "Tetlock 2007"

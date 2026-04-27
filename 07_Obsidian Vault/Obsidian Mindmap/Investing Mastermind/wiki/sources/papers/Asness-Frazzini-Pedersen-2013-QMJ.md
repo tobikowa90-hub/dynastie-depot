@@ -9,7 +9,17 @@ venue: "AQR Working Paper, October 2013 Draft. Final: Review of Accounting Studi
 authors: "Clifford S. Asness (AQR Capital Management), Andrea Frazzini (AQR Capital Management), Lasse Heje Pedersen (NYU Stern, Copenhagen Business School, AQR, CEPR, NBER)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY. QMJ ist die kanonische Definition des Quality-Faktors (4 Pillars: Profitability, Growth, Safety, Payout) und die Primärquelle für die Quality-Komponente in Buffetts Alpha (B5). Kein direkter Score-Pfad — DEFCON nutzt Quality bereits dekomponiert (ROIC/FCF/OpM/Bilanz). Wert dieser Quelle: (1) Sprachregel für Briefings/Analysen — wenn 'Quality' diskutiert wird, dann mit 4-Pillars-Framing. (2) Buffett-Faktorlogik (B5) ankert hier methodologisch. (3) Komplementäre Lesart zu Piotroski F-Score (B12, dekomponiert) und Wolff-Echterling 2023 (B8/B9, ROIC+FCF+OpM-Top-Prädiktoren)."
-related: "[[QMJ-Faktor]], [[Buffett-Faktorlogik]], [[Buffetts-Alpha]], [[Piotroski-2000]], [[Novy-Marx-2013]], [[Wolff-Echterling-2023]], [[F-Score-Quality-Signal]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[QMJ-Faktor]]"
+  - "[[Buffett-Faktorlogik]]"
+  - "[[Buffetts-Alpha]]"
+  - "[[Piotroski-2000]]"
+  - "[[Novy-Marx-2013]]"
+  - "[[Wolff-Echterling-2023]]"
+  - "[[F-Score-Quality-Signal]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/asness-frazzini-pedersen.pdf"
 aliases:
   - "QMJ Asness Frazzini Pedersen"

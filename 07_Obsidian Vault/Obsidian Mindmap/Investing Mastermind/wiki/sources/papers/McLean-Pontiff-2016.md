@@ -9,7 +9,17 @@ venue: "Journal of Finance 71(1), 2016, 5-32. SSRN abstract 2156623"
 authors: "R. David McLean (University of Alberta), Jeffrey Pontiff (Boston College)"
 status: processed
 defcon_relevanz: "Befund B25 (`meta-gate`). §29 Backtest-Validation-Framework. Diese Studie ist die strukturelle Grundlage für den 2028-04-01 Backtest-Review-Gate. Kern: Cross-sectional Predictoren verlieren 26% out-of-sample (statistical bias upper bound) und 58% post-publication insgesamt (Differenz 32pp = publication-effect lower bound, mispricing erodiert durch Aufmerksamkeit). Folgen für DEFCON: (1) JEDE externe in-sample-Outperformance-Behauptung muss um den **operativen M&P-Discount von 58%** (Faktor 0,42 = 1 − 0,58) diskontiert werden bevor sie als 'Edge' gilt — siehe §29.7. Die 32pp sind der reine Publikations-Effekt-Anteil (zusätzlich zu out-of-sample-Bias), NICHT der operative Discount. (2) §29-Gate-Aktivierung kann nicht 'einfach Backtest-Code laufen lassen' bedeuten — der Gate muss in-sample/post-sample/post-publication trennen. (3) Faktoren mit höherer in-sample-t-Statistik haben STÄRKEREN Decay (kein Schutz vor 'starker' Evidenz). (4) Korrelation zwischen Predictor-Portfolios STEIGT post-publication (Crowding-Effekt, Liquiditätsrisiko bei Stress-Events). Operative Konsequenz: §29.4 t≥3-Hurdle (B16) reicht nicht — §29.7 M&P-Discount-Layer ist zusätzlich Pflicht."
-related: "[[Post-Publication-Decay]], [[PBO-Backtest-Overfitting]], [[Factor-Investing-Framework]], [[Factor-Information-Decay]], [[Backtest-Methodik-Roadmap]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]], [[Aghassi-2023-Fact-Fiction]], [[Bailey-2015-PBO]]"
+sources: []
+related:
+  - "[[Post-Publication-Decay]]"
+  - "[[PBO-Backtest-Overfitting]]"
+  - "[[Factor-Investing-Framework]]"
+  - "[[Factor-Information-Decay]]"
+  - "[[Backtest-Methodik-Roadmap]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
+  - "[[Aghassi-2023-Fact-Fiction]]"
+  - "[[Bailey-2015-PBO]]"
 raw_path: "../../../raw/papers/McLean & Pontiff.pdf"
 aliases:
   - "McLean Pontiff 2016"

@@ -9,7 +9,17 @@ venue: "Journal of Financial Economics 82(3), 2006, 491-518. First Draft Sep 200
 authors: "Eugene F. Fama (University of Chicago Booth), Kenneth R. French (Dartmouth Tuck)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY. Theorie-historisch wichtig: erste vollständige Empirik der Valuation-Equation-Decomposition (Mt/Bt = Σ E(Yt+τ − dBt+τ) / (1+r)^τ / Bt) für Cross-Section-Returns. Drei Vorhersagen werden bestätigt: (i) höheres B/M bei kontrolliertem Earnings/Investment → höhere Returns; (ii) höhere Profitability bei kontrolliertem B/M/Investment → höhere Returns; (iii) höheres Investment bei kontrolliertem B/M/Profitability → niedrigere Returns. Direkter Vorgänger zum FF-5-Faktor-Modell ([[Fama-French-2015-Five-Factor]]). Auch: Sloan-1996-Accruals-Effekt schrumpft auf <1% p.a. wenn man für B/M+Profit+Investment kontrolliert — wichtige Limitation der Accruals-Anomalie. **Sibling-Note:** Das geplante Paper #14 ('F/F 2004/2005 Draft Profitability, Growth, and Average Returns') ist die Working-Paper-Vorgängerversion dieses publizierten Papers — gleiche Autoren, gleiche These, frühere Iteration. Wird hier in der Source-Page mitgeführt, keine separate Page nötig (User-Decision 26.04.2026)."
-related: "[[FCF-Primacy]], [[5J-Fundamental-Fenster]], [[Novy-Marx-2013]], [[Fama-French-2015-Five-Factor]], [[Hou-Xue-Zhang-q-Factor]], [[Sloan-1996]], [[Accruals-Anomalie-Sloan]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[FCF-Primacy]]"
+  - "[[5J-Fundamental-Fenster]]"
+  - "[[Novy-Marx-2013]]"
+  - "[[Fama-French-2015-Five-Factor]]"
+  - "[[Hou-Xue-Zhang-q-Factor]]"
+  - "[[Sloan-1996]]"
+  - "[[Accruals-Anomalie-Sloan]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Profitability, Investment, and Average Returns.pdf"
 aliases:
   - "Fama French 2006"

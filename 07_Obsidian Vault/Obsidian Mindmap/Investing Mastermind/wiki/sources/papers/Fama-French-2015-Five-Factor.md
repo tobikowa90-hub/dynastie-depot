@@ -9,7 +9,17 @@ venue: "Journal of Financial Economics 116(1), 2015, 1-22. Original SSRN draft J
 authors: "Eugene F. Fama (University of Chicago Booth), Kenneth R. French (Dartmouth Tuck)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY. Erweitert FF-3-Faktor-Modell (Mkt/SMB/HML) um Profitability (RMW) und Investment (CMA) Faktoren. **Zentraler Befund:** mit RMW + CMA wird HML (Value-Faktor) statistisch redundant für Cross-Section-Erklärung. Operative Konsequenzen: (1) DEFCON's Profitability+Investment-Fokus (ROIC, OpM, CapEx-FLAG) ist methodisch ankerfest — FF zeigen, dass diese Dimensionen das Pricing-Cross-Section dominieren. (2) Trailing-P/E-De-Priorisierung (B2) ist FF-konsistent — Value als isolierter Faktor verliert Erklärungskraft wenn Profitability + Investment kontrolliert werden. (3) **Forward-Looking-Variablen** (Mt-Anteil aus dividend-discount-Equation) ankern unsere Fwd-P/E + ROIC-Forward-Logik. Kein Scoring-Change, aber strukturelle Validation."
-related: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Hou-Xue-Zhang-q-Factor]], [[Novy-Marx-2013]], [[Fama-French-2006-Profitability]], [[arXiv-1711.04837]], [[Gu-Kelly-Xiu-2020]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[5J-Fundamental-Fenster]]"
+  - "[[FCF-Primacy]]"
+  - "[[Hou-Xue-Zhang-q-Factor]]"
+  - "[[Novy-Marx-2013]]"
+  - "[[Fama-French-2006-Profitability]]"
+  - "[[arXiv-1711.04837]]"
+  - "[[Gu-Kelly-Xiu-2020]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/fama & french.pdf"
 aliases:
   - "Fama French 2015 Five Factor"

@@ -9,7 +9,16 @@ venue: "Journal of Accounting and Economics 35(3), 2003, 315-346 (Original Mar 2
 authors: "Bin Ke (Penn State University, Smeal College), Steven Huddart (Penn State University, Smeal College), Kathy Petroni (Michigan State University, Eli Broad)"
 status: processed
 defcon_relevanz: "Befund B27 (`design-context`, eingeführt 26.04.2026 mit Codex-Re-Klassifikation — Status-Label NEU in Status-Matrix-Legende; deferred bis insider-intelligence v2). Insider-Block (5 Pt.) Time-Window-Erweiterung. Kern: Insider-Verkäufe vor einem Earnings-Break (Ende einer Serie konsekutiver Quartals-EPS-Steigerungen) konzentrieren sich 9-3 Quartale VOR dem Break — NICHT in den letzten 2 Quartalen. Grund: Legal jeopardy + ITSFEA 1988 + 10(b)-Antifraud verhindern proximate Sell-Aktivität. Operative Konsequenz für insider-intelligence-Skill: aktuelles Sell-Detection-Window (6-Monats-Lookback) verfehlt strukturell die echten Pre-Break-Sells. Pipeline-Erweiterung auf 24-Monats-Window deferred (insider-intelligence v2). Bridge-Befund zu Fundamentals-Block: Insider haben **Earnings-Foreknowledge** — bestätigt warum EPS-Revision-Delta (Sentiment-Block) nachlaufend ist gegenüber Insider-Trades."
-related: "[[Insider-Trading-Primary-Signal]], [[Earnings-Foreknowledge-Window]], [[Lakonishok-Lee-2001]], [[insider-intelligence]], [[OpenInsider]], [[FCF-Primacy]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Insider-Trading-Primary-Signal]]"
+  - "[[Earnings-Foreknowledge-Window]]"
+  - "[[Lakonishok-Lee-2001]]"
+  - "[[insider-intelligence]]"
+  - "[[OpenInsider]]"
+  - "[[FCF-Primacy]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Ke, Huddart, Petroni.pdf"
 aliases:
   - "Ke Huddart Petroni 2003"

@@ -9,7 +9,15 @@ venue: "Journal of Finance 68(3), 2013, 929-985. Chicago Booth Working Paper No.
 authors: "Clifford S. Asness (AQR Capital Management), Tobias J. Moskowitz (University of Chicago Booth, NBER), Lasse Heje Pedersen (NYU Stern, Copenhagen Business School, AQR, CEPR, NBER)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY (anchors B7 Block-Gewichtung 50/20/10/10/10). Value + Momentum-Faktoren existieren kohärent über 8 globale Asset-Klassen (Aktien US/UK/Europa/Japan, Country-Equity-Indices, Government Bonds, Currencies, Commodities). Kern: Value und Momentum sind **global, persistent, und negativ korreliert intra/inter-asset-class**. Funding-Liquidity-Risk erklärt einen Teil der Returns. Operative Konsequenz: bestätigt **Block-Gewichtung 50/20/10/10/10** — Value/Trailing-Bewertung muss Faktor sein (über Fwd-P/E + P/FCF im Fundamentals-Block), Momentum/Technicals als sekundärer 10-Pt-Block ist methodisch ankerfest. Liquidity-Risk-Befund ankert APH-FLAG-Logik (Score-basierter Stopp-Trigger bei Funding-Stress). Kein active-scoring — DEFCON ist Long-Only, keine Faktor-Portfolio-Konstruktion."
-related: "[[QMJ-Faktor]], [[Asness-Frazzini-Pedersen-2013-QMJ]], [[Buffetts-Alpha]], [[Factor-Investing-Framework]], [[Aghassi-2023-Fact-Fiction]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[QMJ-Faktor]]"
+  - "[[Asness-Frazzini-Pedersen-2013-QMJ]]"
+  - "[[Buffetts-Alpha]]"
+  - "[[Factor-Investing-Framework]]"
+  - "[[Aghassi-2023-Fact-Fiction]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Asness, Moskowitz, Pedersen (2013).pdf"
 aliases:
   - "Asness Moskowitz Pedersen 2013"

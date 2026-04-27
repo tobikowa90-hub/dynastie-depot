@@ -9,7 +9,15 @@ venue: "Morgan Stanley Counterpoint Global Insights, October 15, 2024 (3rd editi
 authors: "Michael J. Mauboussin (Morgan Stanley Counterpoint Global), Dan Callahan (Morgan Stanley Counterpoint Global)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY (Decision User 26.04.2026: kein active-scoring B). Hauptbeitrag: **Competitive Advantage Period (CAP)** als zweite Dimension der Value-Creation neben ROIC-WACC-Spread. Erweitert Morningstar-8-Quellen-Taxonomie ([[Morningstar-Wide-Moat]]) um zeitliche Komponente: Wide Moat = >20 Jahre erwartete CAP, Narrow = 10-20J, None = transient. Operative Konsequenz: Concept-Pages [[Moat-Taxonomie-Morningstar]] und [[ROIC-vs-WACC]] werden um CAP-Verweis erweitert (Phase B2). KEIN neues B-Element — CAP-Estimation passt nicht in 4-Min-Score-Routine; aber Sprachregel für Tiefen-Analysen + Briefing-Argumente."
-related: "[[Moat-Taxonomie-Morningstar]], [[ROIC-vs-WACC]], [[Competitive-Advantage-Period]], [[Morningstar-Wide-Moat]], [[Buffett-Faktorlogik]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Moat-Taxonomie-Morningstar]]"
+  - "[[ROIC-vs-WACC]]"
+  - "[[Competitive-Advantage-Period]]"
+  - "[[Morningstar-Wide-Moat]]"
+  - "[[Buffett-Faktorlogik]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/article_measuringthemoat.pdf"
 aliases:
   - "Mauboussin Measuring the Moat"

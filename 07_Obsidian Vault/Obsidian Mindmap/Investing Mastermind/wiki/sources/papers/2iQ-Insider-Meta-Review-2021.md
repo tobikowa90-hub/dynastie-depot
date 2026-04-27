@@ -9,7 +9,15 @@ venue: "2iQ Research Blog Post (industry meta-review, no peer review)"
 authors: "Robert Hable (2iQ Research)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY (`source-type: industry-meta`). Konsolidiertes Industry-Meta-Review der Insider-Trading-Akademie 1968-2018 — bündelt Lorie/Niederhoffer (1968), Seyhun (1986/1988/1992), Lakonishok/Lee (2001, B26), Jeng/Metrick/Zeckhauser (2003), Dardas (2011 European Coverage), Alldredge/Blank (2017 Cluster), Kang/Kim/Wang (2018 Cluster). Operative Konsequenz: kompakte Sekundärquelle für insider-intelligence-Skill-Begründung — fasst die High-Conviction-Heuristik zusammen (Buy>Sell, Top-Insider, Large Trades, Small Caps, Cluster-Buying). Keine direkte Primärquelle — wenn Primär-Zitat nötig, dann zu Lakonishok/Lee 2001 (B26) oder Ke/Huddart/Petroni 2003 (B27) verweisen."
-related: "[[Lakonishok-Lee-2001]], [[Ke-Huddart-Petroni-2003]], [[insider-intelligence]], [[OpenInsider]], [[Insider-Trading-Primary-Signal]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Lakonishok-Lee-2001]]"
+  - "[[Ke-Huddart-Petroni-2003]]"
+  - "[[insider-intelligence]]"
+  - "[[OpenInsider]]"
+  - "[[Insider-Trading-Primary-Signal]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Profiting From Insider Transactions_ A Review Of The Academic Research.md"
 aliases:
   - "2iQ Insider Meta Review"

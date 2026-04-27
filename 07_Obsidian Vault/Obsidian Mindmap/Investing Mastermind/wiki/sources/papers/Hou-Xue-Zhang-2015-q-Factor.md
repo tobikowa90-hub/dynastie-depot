@@ -9,7 +9,16 @@ venue: "Review of Financial Studies 28(3), 2015, 650-705. Original Working Paper
 authors: "Kewei Hou (Ohio State University, Fisher College), Chen Xue (University of Cincinnati, Lindner College), Lu Zhang (Ohio State University, Fisher College + NBER)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY. q-Factor-Modell (Mkt + ME + I/A + ROE) als Alternative zum FF-5-Faktor-Modell, motiviert aus q-theory of investment. Outperformt Carhart-4-Faktor in Pricing von 7+ Anomalien (Earnings Surprise, Idiosyncratic Vola, Distress, Equity Issues, Investment, ROE). **Konvergente Evidenz** zu FF-2015 ([[Fama-French-2015-Five-Factor]]): unabhängiger Theorie-Rahmen, ähnliche operative Faktoren — Profitability + Investment dominieren das Cross-Section-Pricing. DEFCON-Konsequenz: validiert die Block-Architektur aus zweiter, theoretisch unabhängiger Methodologie. q-Factor underperformt im Pricing der Total-Accruals-Deciles — konsistent mit FF-2006-Befund, dass Accruals-Anomaly schrumpft mit Profit/Invest-Kontrollen."
-related: "[[Fama-French-2015-Five-Factor]], [[Fama-French-2006-Profitability]], [[Novy-Marx-2013]], [[Factor-Investing-Framework]], [[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Fama-French-2015-Five-Factor]]"
+  - "[[Fama-French-2006-Profitability]]"
+  - "[[Novy-Marx-2013]]"
+  - "[[Factor-Investing-Framework]]"
+  - "[[5J-Fundamental-Fenster]]"
+  - "[[FCF-Primacy]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Digesting Anomalies An Investment Approach.pdf"
 aliases:
   - "Hou Xue Zhang 2015"

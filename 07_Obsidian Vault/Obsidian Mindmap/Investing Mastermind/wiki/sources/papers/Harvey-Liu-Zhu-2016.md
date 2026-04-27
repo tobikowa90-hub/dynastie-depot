@@ -9,7 +9,15 @@ venue: "Review of Financial Studies 29(1), 2016, 5-68. NBER Working Paper 20592 
 authors: "Campbell R. Harvey (Duke Fuqua, NBER), Yan Liu (Texas A&M), Heqing Zhu (University of Oklahoma)"
 status: processed
 defcon_relevanz: "SOURCE-ONLY (anchors B16 §29.4-Hurdle). Strukturelle Begründung für die **t≥3-Hurdle** im DEFCON-Backtest-Validation-Framework (B16). Kern: Bei 313 publizierten Cross-Section-Faktor-Studien und multiple-testing-adjustierten Schwellen muss ein neuer Faktor **t≥3.0** erreichen, um echte Signifikanz zu beanspruchen — der traditionelle t≥2-Cutoff ist nach 50 Jahren Faktor-Mining nicht mehr zulässig. **Komplementär zu McLean/Pontiff (B25):** während HLZ multiple-testing-Bias adressiert (in-sample-Inflation), zeigt M&P den zusätzlichen Post-Publication-Decay (32% lower-bound). DEFCON-Konsequenz: §29.4 t≥3-Hurdle ist SOFORT aktiv (nicht erst 2028) — bei jedem zukünftigen Score-Element-Add muss t-Stat aus underlying-Forschung ≥3 sein."
-related: "[[Factor-Investing-Framework]], [[McLean-Pontiff-2016]], [[Bailey-2015-PBO]], [[Aghassi-2023-Fact-Fiction]], [[Backtest-Methodik-Roadmap]], [[DEFCON-System]], [[Wissenschaftliche-Fundierung-DEFCON]]"
+sources: []
+related:
+  - "[[Factor-Investing-Framework]]"
+  - "[[McLean-Pontiff-2016]]"
+  - "[[Bailey-2015-PBO]]"
+  - "[[Aghassi-2023-Fact-Fiction]]"
+  - "[[Backtest-Methodik-Roadmap]]"
+  - "[[DEFCON-System]]"
+  - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/harvey, liu & zhu.pdf"
 aliases:
   - "Harvey Liu Zhu 2016"
