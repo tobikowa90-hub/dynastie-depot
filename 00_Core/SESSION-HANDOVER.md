@@ -23,6 +23,9 @@
 - MEDIUM #3a Push: neuer Task 1.8 (Spec §10 Schritt 3) zwischen Phase-1-Commit und Phase-2-Update.
 - weitere 7 Findings (3 MEDIUM, 3 LOW, 1 LOW) inline gefixt.
 
+**Codex-Sparring-Option (siehe Auto-Memory `feedback_codex_sparring_heuristic.md`):**
+Falls Phase-1-Execution drift produziert (Edit-Anker schlagen fehl) oder Phase 3/4 unerwartete Failure-Modi zeigen, ist `SendMessage` an Agent-ID **`a26d1ecda8d7ae53b`** der billigste Re-Review-Schritt (~5-10k Tokens statt 50-65k Volltext, weil Spec + Plan bereits im Reviewer-Kontext). Single-Pass-Default greift sonst — kein automatischer Sparring-Loop.
+
 **Diese Session committed:**
 
 ```
