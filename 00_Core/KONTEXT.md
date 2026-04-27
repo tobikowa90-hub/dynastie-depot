@@ -92,7 +92,7 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 | ZTS | 81 | 🟢 4 | VEEV-Ersatz (Healthcare) |
 | RACE | 73 | 🟢 4 | RMS-Ersatz (Luxury) |
 | PEGA | 85 | 🟢 4 | ⭐ Slot-16-Kandidat (Earnings Mai 2026) |
-| SNPS | 79 | 🟡 3 | ASML-Ersatz (1 Punkt unter Schwelle) |
+| SNPS | 76 | 🟡 3 | ASML-Ersatz (Goodwill-Malus Ansys-Akquisition -3 Pkt seit DEFCON v3.5 Audit 16.04.2026) |
 | SPGI | 79 | 🟢 4 | Watchlist — Neueinstieg-Kandidat |
 | FICO | 70 | 🟡 3 | VEEV-Ersatz #1 (Kurscrash -52%, Fwd P/FCF ~19x) |
 | HON | 71 | 🟡 3 | Post-Spinoff 2026 abwarten |

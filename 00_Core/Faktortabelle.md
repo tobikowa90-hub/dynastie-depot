@@ -80,7 +80,7 @@
 |-------|----------|--------|---------|
 | **2026-04-28** | **V** | **B** | **Q2 FY26 Earnings — D2-Entscheidung (Technicals-Reversal?)** |
 | 2026-04-23 | TMO | B | Q1 2026 Earnings — FCF >$7.3B nötig für FCF-Yield >4% |
-| 2026-04-28 | SNPS | B | Q1 Earnings — Watchlist (Score 79, Ersatz ASML) |
+| 2026-04-28 | SNPS | B | Q1 Earnings — Watchlist (Score 76, Ersatz ASML) |
 | 2026-04-28 | SPGI | B | Q1 Earnings — Watchlist (Score 77) |
 | 2026-04-29 | MSFT | C | Q3 FY26 Earnings — FLAG-Review: CapEx/OCF <60% = FLAG-Auflösung |
 | Mai 2026 | CPRT/ZTS/PEGA | B | Earnings → Watchlist-Review |
