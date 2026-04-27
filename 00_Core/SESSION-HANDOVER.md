@@ -4,7 +4,7 @@
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `<plan-handover-commit-hash>` (writing-plans v3.0.5 complete + codex-pass + handover). Vorgänger-Commit `9b5f954` (v3.0.5-Spec foundation).
+**Branch:** `main`. **HEAD:** `22c057c` (writing-plans v3.0.5 complete + codex-pass + handover). Vorgänger-Commit `9b5f954` (v3.0.5-Spec foundation).
 
 **Plan-File:** `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md` (~1320 Zeilen, 8 Phasen, 38 Tasks/Phase-Header).
 
