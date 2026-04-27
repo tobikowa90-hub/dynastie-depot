@@ -1003,3 +1003,14 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
   - INSTRUKTIONEN.md §7 AVGO 85 vs Live-State 84 (PORTFOLIO/Faktortabelle 4 Belege) — separater Mini-Audit nötig: ist 85 der bewusste Kalibrierungsanker post-v3.5 oder Drift?
   - Quick-Screener-Empfehlung Forward-Vollanalyse-Slots für FICO/ZTS/VEEV bei nächstem Earnings-Trigger — nicht jetzt, kein Earnings-Druck.
 - **Live-System-Impact:** Null — kein Score-Change, kein FLAG-Event, keine Sparraten-Änderung, kein score_history.jsonl-Append. Reine Doc-Reconciliation gegen SSoT (§18 Sync-Pflicht greift nicht, da kein Score/FLAG/Sparraten-Event).
+
+## [2026-04-27] rebalancing | Depotwert-Update + Mai-Sparplan-Anpassung geplant
+- **Anlass:** User hat aktuelle ING + Scalable Capital Depotwerte in `03_Tools/Rebalancing_Tool_v3.4.xlsx` eingetragen (Stichtag 23.04.2026). Gesamtdepot 10.384,20€ + Cash Scalable 1.550,53€ = 11.934,73€ Bruttovermögen vor Mai-Aufstockung.
+- **Drift-Befund:** Größte Lücke EXUSA (US-ex-USA-Hedge) -7,10pp = 840€ unter Ziel. IWDA -4,96pp, EIMI -1,52pp. AVGO +1,22pp / V +0,80pp Kursgewinn-Drift, beide auf "Halten" (FIFO-Steuer-Bremse, kein aktiver Verkauf). US-Exposure 46,99% / Ziel 49,51% / Hard-Cap 63% — ✅ leicht unter Ziel, kein Cap-Risiko.
+- **Mai-Sparplan-Plan (User-Entscheidung 27.04.):**
+  - **EXUSA-Aufstockung 825€** am 01.05.2026 (statt regulärer 142,50€) — schließt ~99% der EXUSA-Drift in einem Monat. Einmalige Sparplan-Anpassung, ETF-Core-Block.
+  - Übrige ETFs + Gold + Satelliten regulär (IWDA 285€, EIMI 95€, AVGC 95€, Gold 47,50€, Satelliten 285€).
+  - ING-Überweisung 1.107,72€ Cash-Reserve-Konsolidierung am 01.05.
+  - Total Mai-Investment ~1.633€ (ETF-Core 1.347,50€ + Satelliten 285€ + Gold 47,50€) plus Cash-Konsolidierung.
+- **AVGO/V Übergewicht:** keine Aktion — V Earnings 28.04. abends + MSFT 29.04. abends können beide Richtungen verschieben. Post-Earnings Re-Bewertung via `!Analysiere V` + `!Analysiere MSFT`.
+- **Live-System-Impact:** Null — keine Score/FLAG/Sparraten-Standard-Änderung. Mai-Aufstockung ist Einmalmaßnahme im operativen Sparplan, nicht im 00_Core-Live-State. Standard-Sparraten 950€/Monat unverändert (KONTEXT.md §3 + PORTFOLIO.md Sparraten-Nenner 8,5).
