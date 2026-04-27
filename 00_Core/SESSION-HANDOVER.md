@@ -1,59 +1,65 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-27 sehr spät — **v3.0.4-Spec-Foundation-Cleanup (A1-A14) DONE**, Architektur-Phase startet in nächster Session mit frischem Context.
+**Aktualisiert:** 2026-04-27 sehr spät — **v3.0.5 Bucket-B Provenance-Architecture (B0/B0.5/B0.6) DONE im Spec**. Implementation-Phase (writing-plans-Skill) startet in nächster Session mit frischem Context.
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `7514ba7` (v3.0.4-Spec foundation-complete, ready für Architektur-Brainstorming).
+**Branch:** `main`. **HEAD:** `9b5f954` (v3.0.5-Spec foundation-complete inkl. §3.0 Provenance-Contract + §6F Mismatch-Klassen + §9 T6 Adversarial-Provenance-Test).
 
 **Diese Session committed:**
 
 ```
-7514ba7  docs(spec): drift cleanup A.2 (A12-A14) — codex-round-3 catch
-374ef50  docs(spec): drift cleanup A1-A11 vor v3.0.4 architektur-rework
+9b5f954  docs(spec): v3.0.5 Bucket-B Provenance-Architecture — §3.0 + §6F + §9 T6
 ```
 
-### 🟢 NEXT-SESSION-RESUME — v3.0.4 Architektur-Phase B0
+**Codex-Trace dieser Session (insgesamt 7 Codex-Subagent-Runden):**
+- Q1 Aufteilung D⁺ — B0=§3.0 / B0.5=§6F / B0.6=§9-T6
+- Q2 Scope B — 5 Felder (Kurs / Delta multi-source / News-Headline / News-Domain / Earnings-Datum), Source-Klassen `external` vs. `file-read-derived`
+- Q3 Mechanik B+C — Map + 5-Zeilen-Self-Check-Gate (SCHRITT 4.8) + Tag-Pflicht `[source_ref@source_date]`
+- Q4 §6F-Klassen-Achse A' — 6 Klassen flach mit §6F→§6E Cross-Ref
+- Q5 Detailfragen — Delta dual-tagged, Earnings-Tag voll, Mismatch-`source_date` = Ist-Wert
+- Final-Review (Round 5) — 5 Findings (2 HIGH, 3 MEDIUM), alle gefixt
+- Sanity-Check (Round 6) — 2 echte FAIL gefunden (Implementation-Status SCHRITT 4.8 nicht klar als Pending markiert; §10 Tag-Format-Bullet widersprach §3.0(c) für file-read-Tags), beide gefixt
 
-**Trigger:** "weiter mit v3.0.4 architektur-phase" oder "B0 Provenance-Contract starten" oder schlicht "Architektur-Phase Briefing weitermachen".
+### 🟢 NEXT-SESSION-RESUME — v3.0.5 Implementation-Plan
+
+**Trigger:** "writing-plans v3.0.5 starten" oder "Implementation-Plan für v3.0.5 schreiben" oder "weiter mit v3.0.5 implementation".
 
 **Was dann zu tun ist:**
 
 1. STATE.md + PORTFOLIO.md lesen (Standard Session-Start).
-2. **Nicht** dynastie-depot-Skill als ersten Schritt — die Architektur-Phase ist Spec-Brainstorming, nicht DEFCON-Analyse.
-3. **superpowers:brainstorming** Skill aktivieren (HARD-GATE: keine Implementation vor Design-Approval).
+2. **Nicht** dynastie-depot-Skill als ersten Schritt — Implementation-Phase ist Plan-Schreiben, nicht DEFCON-Analyse.
+3. **superpowers:writing-plans** Skill aktivieren.
 4. **3 Files lesen für Kontext:**
-   - `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` (Spec, post-foundation-cleanup HEAD `7514ba7`)
-   - `03_Tools/morning-briefing-prompt-v3.md` (aktiver Prompt v3.0.3 Rollback-Stand)
-   - `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (alter Hotfix-Plan, deckt nur §3 ab — wird in writing-plans-Phase ersetzt)
-5. **Erste Brainstorm-Frage stellen:** B0 Provenance-Contract — "welche Source ist autorisiert für welches Output-Feld der Briefing-Output-Sektionen?"
+   - `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` (v3.0.5-Spec, HEAD `9b5f954`) — speziell §3.0, §6F, §9 T6, Revision-Log v3.0.5-Eintrag
+   - `03_Tools/morning-briefing-prompt-v3.md` (aktiver Prompt v3.0.3 Rollback-Stand — wird zu v3.0.5 gebumpt mit BEIDEN Layern: v3.0.4-Hotfix-Wording UND v3.0.5-Provenance-Layer)
+   - `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (alter 13-Task-Hotfix-Plan — wird vom neuen v3.0.5-Plan ERSETZT, nicht ergänzt)
+5. **Plan-Scope-Wording:** ein einziger Implementation-Plan, der v3.0.4-Hotfix-Wording UND v3.0.5-Provenance-Layer gemeinsam in einem Prompt-Bump v3.0.3→v3.0.5 einspielt. Spec §3.0 Implementation-Status-Bullet ist Anker.
 
-**Bucket-B-Reihenfolge (festgelegt diese Session, Codex-validiert):**
+**v3.0.5-Implementation-Plan-Struktur (Empfehlung, vom writing-plans-Skill final geschnitten):**
 
-| # | Item | Anmerkung |
-|---|------|-----------|
-| **B0** | Provenance-Contract (auth source-list pro Output-Feld) als first-class Spec-Sektion | **BLOCKER** für B1-B7. Codex-Catch: ohne Provenance-Layer wird ship/cut/trim ohne Kontroll-Layer evaluiert |
-| **B0.5** | §13-Risk-Klasse "Unauthorized source substitution / agent improvisation under ambiguity" | Codex-Catch: §13 ist connector/runtime-zentriert, modelt 20.04.-Failure-Mode unter |
-| **B0.6** | Machine-checkable Test "no unauthorized fallback path occurred" | Codex-Catch: §12/§13 nur output-symptom-checks, keine source-control-Tests |
-| B1 | News-Feature ship/cut/trim Entscheidung post-Incident | erst nach B0/B0.5/B0.6 sinnvoll evaluierbar |
-| B2 | Anti-Fallback-Guard Perimeter (§3 only / §3+§4.5 / §3+§4.5+§3c+§2) | Spec-Wording-Tiefe je Sektion |
-| B3 | `briefing_freshness` / `briefing_correctness` Audit-Checks (`03_Tools/system_audit/checks/`) | netto-neue Feature-Arbeit, ersetzt §12 Manual-Headline-Counting |
-| B4 | §12 Monitoring redesign mit Audit-Integration | konsumiert B3 |
-| B5 | T5-Numbering-Collision (Spec §9 T5 = Post-Update-Verify vs. Hotfix-Plan T5 = Adversarial-Stale-Shibui) | Renumber-Entscheidung |
-| B6 | §0/§25 Process-Refs (Karpathy / SyncBriefing) in Spec aufnehmen | Spec-Process-Sektion |
-| B7 | Test-Strategy-Erweiterung (T6+ adversarial cases — Connector-Mid-Run-Failure, Cache-Staleness, …) | post-B1-Scoping abhängig |
-
-**Nach B7:** Spec ist v3.0.4 final → writing-plans Skill → ein Implementations-Plan ersetzt den alten 13-Task-Hotfix-Plan → Implementierung.
+| Phase | Inhalt |
+|-------|--------|
+| 1. Prompt-Bump v3.0.3 → v3.0.5 | (a) §3.0-Field→Source-Map als embedded Markdown-Tabelle vor SCHRITT 3; (b) SCHRITT 4.8 Self-Check-Gate-Block; (c) Tag-Format-Direktive in KURS-CHECK + NEWS-SIGNAL + Earnings-Output; (d) v3.0.4 CRITICAL GUARDS Anti-Fallback-Wording integrieren (war nie deployed); (e) §6F-Klassen-Tabelle als embedded Block nach SCHRITT 4.5(E); (f) Critical-Guards-Erweiterung um Self-Check-Gate-Bullet |
+| 2. Probe-Trigger Update + Verify | RemoteTrigger update auf Probe `trig_01XYuQ5mugsvZGZD4K52rjXh` mit v3.0.5-Content; POST-UPDATE VERIFY mit den 3 v3.0.5-Asserts (`SCHRITT 4.5` + `SCHRITT 4.8` + `Provenance-Self-Check`, NOT `Keine News-Suche`) |
+| 3. T5 Adversarial-Stale-Shibui (v3.0.4-Hotfix-Plan-Migration) | T5-Run unter natürlicher Stale-Source-Bedingung, Anti-Fallback-Wording-Verifikation |
+| 4. T6 Adversarial-Provenance-Test (v3.0.5 NEU) | Probe-Run unter Stale-Source; manueller Tag-Authentizitäts-Cross-Check via `RemoteTrigger get`-Tool-Response-History; 5-Punkt-Assertion-Liste aus §9 T6 |
+| 5. T1/T3/T4-Retest | Happy-Path / Symbol-Trap / Fehler-Klassen weiter PASS |
+| 6. Prod-Deploy v3.0.5 | RemoteTrigger update auf Prod `trig_01PyAVAxFpjbPkvXq7UrS2uG`; POST-UPDATE VERIFY; Manual-Run-Validierung |
+| 7. Gate-A-Tag-1 Cron | Nächster Werktag 10:00 MESZ Cron-Lauf, Output-Review |
+| 8. Sync-Pflicht | log.md + CORE-MEMORY (Lifecycle-Eintrag v3.0.5-Deploy) + SYSTEM.md §Briefing-Status |
 
 **Was NICHT verloren gehen darf:**
 
-- v3.0.4-Architektur-Re-Eval ist **nicht** identisch mit dem 13-Task-Hotfix-Plan — der adressiert nur §3 Anti-Fallback-Guard, nicht B0/B3/B4. Neuer Plan wird breiter.
-- 20.04.-Incident-Lesson: Anti-Hallucination zweigleisig (Narrativ + Datenpfad-Improvisation). Provenance-Contract ist die strukturelle Antwort darauf — nicht punktuelles §3-Wording.
-- Codex-Reviews via `codex:codex-rescue`-Subagent (nicht advisor) — Memory-Feedback im User-Profil.
-- Prod läuft v2.2 (Rollback-Stand seit 20.04.), nicht v2.1. Hotfix-Plan-File hatte falsches v2.1-Label, lokal gefixt aber gitignored.
-- Foundation-Drift-Audit-Trail: A1-A11 in `374ef50`, A12-A14 in `7514ba7`, A15 lokal (gitignored). 11+3+1 = 15 Drift-Items in dieser Session aufgespürt + 11+3 committed.
-- T5-Collision (B5) ist nicht Cleanup, ist Architektur-Entscheidung — bewusst nach B0 verschoben.
-- App.D Decision Log + §13 Round-2-Findings-Trace sind jetzt vollständig — kein nachträglicher Edit-Bedarf während B0.
+- **v3.0.5-Spec ist Architektur-Foundation, nicht Implementation.** Plan muss Spec lesen + Tasks ableiten, nicht Spec neu schreiben.
+- **v3.0.4-Hotfix-Wording wurde nie deployed** — gemeinsamer Bump v3.0.3→v3.0.5 macht beide Layer gleichzeitig live (Defense-in-Depth, beide bewusst integriert).
+- **T6 ist manuell** in v3.0.5 (Auto-Capture-Diff = v3.1-Backlog). Reviewer-Schritt: `RemoteTrigger get` öffnen + Output-Tags vs. Tool-Response-Datums-Felder vergleichen.
+- **Bucket-B B1-B7 in altem Handover** sind großteils obsolet — B0/B0.5/B0.6 sind in v3.0.5 strukturell adressiert; B1 (News-Feature ship/cut/trim) ist nicht mehr blockiert; B2 (Anti-Fallback-Guard-Perimeter) ist via §3.0-Map gelöst; B5 (T-Numbering) bleibt offener Bucket-A.3-Cleanup im v3.1-Backlog. B3/B4 (Audit-Checks/Monitoring-Redesign) und B6 (Process-Refs) bleiben offene v3.1-Themen.
+- **Codex-Reviews via `codex:codex-rescue`-Subagent** (nicht advisor) — Memory-Feedback im User-Profil.
+- **Prod läuft v2.2** (Rollback-Stand seit 20.04.), nicht v2.1. Hotfix-Plan-File hatte falsches v2.1-Label, lokal gefixt aber gitignored.
+- **OneDrive Edit-Collision-Memory** beachten — Spec ist im OneDrive-Pfad, Edit-Persistenz immer mit `git diff --stat` verifizieren.
+- **Pre-Commit-Diff-Inspection-Memory** beachten — pre-existing dirty in Vault-Files (PORTFOLIO.md / Accruals-Anomalie-Sloan / app.json + 3 deleted) ist nicht v3.0.5-Scope; nur Plan-File staging beim Commit.
+- **CodeRabbit verzichtet für Spec**, sinnvoller in Implementation-Phase (Prompt-Edits + Plan-File). Memory-Reference: `feedback_review_via_codex_not_advisor.md` + `reference_coderabbit_via_wsl.md`.
 
 ---
 
