@@ -109,7 +109,7 @@ Remote Trigger  trig_01PyAVAxFpjbPkvXq7UrS2uG
     │   ├─ Bash, Read, Glob, Grep
     │   └─ mcp__tavily__tavily_search         ← NEU
     └─ events[0].data.message.content =
-        Prompt v3.0
+        Prompt v3.0.x (Target: v3.0.4 — aktiv im Repo: v3.0.3 Rollback-Stand)
             ├─ Schritt 1-3: unveraendert (v2.2-Logik)
             ├─ SCHRITT 4.5: NEUE News-Sektion via tavily_search
             └─ Schritt 4+: unveraendert, neue News-Section im Output
@@ -603,7 +603,7 @@ Assert NOT content.contains("SCHRITT 4.5")      ← kein v3.0-Reste
 
 ## 13. Risks & Mitigations
 
-Konsolidiert aus Codex-Review Round 1 (`a6353fc19fe65e09a`) + Round 2 (pending) + Phase 0 Round 1 (MCP) + Round 2 (CLI, pending).
+Konsolidiert aus Codex-Review Round 1 (`a6353fc19fe65e09a`) + Round 1-bis (`aede6311232389387`) + Round 2 (`6bd32f4`, COMPLETE) + Phase 0 Round 1 (MCP, PASS) + Phase 0 Round 2 (CLI, ABORTED).
 
 | # | Risk | Severity | Status | Mitigation |
 |---|---|---|---|---|
@@ -689,11 +689,12 @@ Strukturell: v2.2 + neuer SCHRITT 4.5 + neue Output-Sektion. Alle anderen Teile 
 - Test B: Tool-Name + Connectivity OK (2 Results für TMO earnings, 0.88s)
 - Test C: Fail-Open OK (HTTP 422 bei `query=""`+`max_results=-1` → "FAIL-OPEN OK" in Output)
 
-**Round 2 (CLI-Architektur, pending vor finaler Approval):**
-- Test A2: curl-Verfügbarkeit (implizit durch Yahoo-curl in v2.2 bestätigt)
-- Test B2: curl gegen `api.tavily.com/search` mit Bearer-Token liefert JSON
-- Test C2: Claude-Agent parst JSON ohne jq
-- Test D2: HTTP 401/403 wird gecatched und löst "Auth-Fehler"-Flag aus
+**Round 2 (CLI-Architektur, ABORTED 2026-04-19 nach B2 FAIL):**
+- Test A2: curl-Verfügbarkeit ✅ (implizit durch Yahoo-curl in v2.2 bestätigt)
+- Test B2: ❌ **FAIL — HTTP 403 "Host not in allowlist"** (Dev-Keys auf MCP-Proxy beschränkt, REST nur mit Production-Keys/Paid-Plan)
+- Test C2: nicht durchgeführt (B2 failed)
+- Test D2: HTTP 403 wird gecatched ✅ (siehe §9 Round 2 Tabelle)
+- Konsequenz: Surgical Revert CLI → MCP, Codex Round-2-Review (Commit `6bd32f4`) addressierte CLI-Residue
 
 ### D. Architecture Decision Log
 
