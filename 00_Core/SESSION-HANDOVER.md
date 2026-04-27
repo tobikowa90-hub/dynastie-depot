@@ -1,26 +1,74 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-27 später Tagesabschnitt — **Schema-Drift Phase 2 done (vault-wide)** + Tavily Rotation #1 final-verified (Vorgänger). Vault-only-Operation, kein Score/FLAG/Sparraten-Change.
+**Aktualisiert:** 2026-04-27 sehr spät — **v3.0.4-Spec-Foundation-Cleanup (A1-A14) DONE**, Architektur-Phase startet in nächster Session mit frischem Context.
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `11a1b69` (Schema-Drift Phase 2 vault-wide).
+**Branch:** `main`. **HEAD:** `7514ba7` (v3.0.4-Spec foundation-complete, ready für Architektur-Brainstorming).
 
 **Diese Session committed:**
 
 ```
+7514ba7  docs(spec): drift cleanup A.2 (A12-A14) — codex-round-3 catch
+374ef50  docs(spec): drift cleanup A1-A11 vor v3.0.4 architektur-rework
+```
+
+### 🟢 NEXT-SESSION-RESUME — v3.0.4 Architektur-Phase B0
+
+**Trigger:** "weiter mit v3.0.4 architektur-phase" oder "B0 Provenance-Contract starten" oder schlicht "Architektur-Phase Briefing weitermachen".
+
+**Was dann zu tun ist:**
+
+1. STATE.md + PORTFOLIO.md lesen (Standard Session-Start).
+2. **Nicht** dynastie-depot-Skill als ersten Schritt — die Architektur-Phase ist Spec-Brainstorming, nicht DEFCON-Analyse.
+3. **superpowers:brainstorming** Skill aktivieren (HARD-GATE: keine Implementation vor Design-Approval).
+4. **3 Files lesen für Kontext:**
+   - `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` (Spec, post-foundation-cleanup HEAD `7514ba7`)
+   - `03_Tools/morning-briefing-prompt-v3.md` (aktiver Prompt v3.0.3 Rollback-Stand)
+   - `docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md` (alter Hotfix-Plan, deckt nur §3 ab — wird in writing-plans-Phase ersetzt)
+5. **Erste Brainstorm-Frage stellen:** B0 Provenance-Contract — "welche Source ist autorisiert für welches Output-Feld der Briefing-Output-Sektionen?"
+
+**Bucket-B-Reihenfolge (festgelegt diese Session, Codex-validiert):**
+
+| # | Item | Anmerkung |
+|---|------|-----------|
+| **B0** | Provenance-Contract (auth source-list pro Output-Feld) als first-class Spec-Sektion | **BLOCKER** für B1-B7. Codex-Catch: ohne Provenance-Layer wird ship/cut/trim ohne Kontroll-Layer evaluiert |
+| **B0.5** | §13-Risk-Klasse "Unauthorized source substitution / agent improvisation under ambiguity" | Codex-Catch: §13 ist connector/runtime-zentriert, modelt 20.04.-Failure-Mode unter |
+| **B0.6** | Machine-checkable Test "no unauthorized fallback path occurred" | Codex-Catch: §12/§13 nur output-symptom-checks, keine source-control-Tests |
+| B1 | News-Feature ship/cut/trim Entscheidung post-Incident | erst nach B0/B0.5/B0.6 sinnvoll evaluierbar |
+| B2 | Anti-Fallback-Guard Perimeter (§3 only / §3+§4.5 / §3+§4.5+§3c+§2) | Spec-Wording-Tiefe je Sektion |
+| B3 | `briefing_freshness` / `briefing_correctness` Audit-Checks (`03_Tools/system_audit/checks/`) | netto-neue Feature-Arbeit, ersetzt §12 Manual-Headline-Counting |
+| B4 | §12 Monitoring redesign mit Audit-Integration | konsumiert B3 |
+| B5 | T5-Numbering-Collision (Spec §9 T5 = Post-Update-Verify vs. Hotfix-Plan T5 = Adversarial-Stale-Shibui) | Renumber-Entscheidung |
+| B6 | §0/§25 Process-Refs (Karpathy / SyncBriefing) in Spec aufnehmen | Spec-Process-Sektion |
+| B7 | Test-Strategy-Erweiterung (T6+ adversarial cases — Connector-Mid-Run-Failure, Cache-Staleness, …) | post-B1-Scoping abhängig |
+
+**Nach B7:** Spec ist v3.0.4 final → writing-plans Skill → ein Implementations-Plan ersetzt den alten 13-Task-Hotfix-Plan → Implementierung.
+
+**Was NICHT verloren gehen darf:**
+
+- v3.0.4-Architektur-Re-Eval ist **nicht** identisch mit dem 13-Task-Hotfix-Plan — der adressiert nur §3 Anti-Fallback-Guard, nicht B0/B3/B4. Neuer Plan wird breiter.
+- 20.04.-Incident-Lesson: Anti-Hallucination zweigleisig (Narrativ + Datenpfad-Improvisation). Provenance-Contract ist die strukturelle Antwort darauf — nicht punktuelles §3-Wording.
+- Codex-Reviews via `codex:codex-rescue`-Subagent (nicht advisor) — Memory-Feedback im User-Profil.
+- Prod läuft v2.2 (Rollback-Stand seit 20.04.), nicht v2.1. Hotfix-Plan-File hatte falsches v2.1-Label, lokal gefixt aber gitignored.
+- Foundation-Drift-Audit-Trail: A1-A11 in `374ef50`, A12-A14 in `7514ba7`, A15 lokal (gitignored). 11+3+1 = 15 Drift-Items in dieser Session aufgespürt + 11+3 committed.
+- T5-Collision (B5) ist nicht Cleanup, ist Architektur-Entscheidung — bewusst nach B0 verschoben.
+- App.D Decision Log + §13 Round-2-Findings-Trace sind jetzt vollständig — kein nachträglicher Edit-Bedarf während B0.
+
+---
+
+### 📜 Vorherige Session (27.04. später Tagesabschnitt) — Schema-Drift Phase 2 vault-wide
+
+Vorgänger-Stand (vor dieser Session):
+
+```
 11a1b69  fix(wiki): schema-drift cleanup phase 2 — 34 vault-wide pages YAML-Array
+737d647  chore(pipeline): tavily rotation #1 fully verified — old key revoked
+f51b94a  feat(analyses): pre-earnings briefs V (28.04.) + MSFT (29.04.)
+531f459  fix(wiki): schema-drift cleanup phase 1 — sources/related YAML-Array
 ```
 
-**Vorgänger-Session (Stand vor Phase 2):**
-
-```
-737d647 chore(pipeline): tavily rotation #1 fully verified — old key revoked
-f51b94a feat(analyses): pre-earnings briefs V (28.04.) + MSFT (29.04.)
-531f459 fix(wiki): schema-drift cleanup phase 1 — sources/related YAML-Array
-```
-
-**Heute (27.04. spät / später Tagesabschnitt) abgeschlossen:**
+Damals abgeschlossen (Ausschnitt — siehe Git-History für volle Chronik):
 
 - **Schema-Drift Phase 2 DONE (vault-wide)**: 34 drifted Pages konvertiert (15 concepts + 18 sources/papers + 1 sources/references) — Phase-1-Pattern (Block-Form `related:` + `sources: []`-Insert wenn fehlend) via neuem Tool `03_Tools/schema_drift_phase2.py` (line-end-preserving, regex-basiert, Dry-Run + Apply). 220 Wikilinks konvertiert, 33/34 `sources: []`-Inserts (Moat-Taxonomie hatte schon `sources:`). PyYAML-Bulk-Validation vault-weit 185/0 (367 Wikilinks in Arrays). Diffstat +287/-34. PIPELINE #15 → DONE. **Limitation:** 8 concept-pages mit `source:` (singular) bleiben unverändert (Phase-1 hat das auch nicht migriert; kein Pflicht-Feld, keine Backlink-Auswirkung).
 
@@ -43,7 +91,7 @@ f51b94a feat(analyses): pre-earnings briefs V (28.04.) + MSFT (29.04.)
 
 - ~~**Schema-Drift-Cleanup Phase 2 (vault-wide)**~~ **DONE 27.04. später Tagesabschnitt** (siehe oben + PIPELINE #15). Pre-Validation User-Sichtprüfung: Obsidian-Backlinks der Phase-2-Pages bei nächstem Vault-Open kurz checken (Phase-1-Pattern war 5h+ live ohne Bug-Report; konservative Annahme).
 - **Backtest-Strategie mit Inhalt füllen** (User-Initiative 27.04. spät) — Brainstorm angefangen aber zugunsten Tavily/Schema-Drift vertagt. Status: 28 score_history-Records (24 Backfill-Stubs ohne metriken_roh + 4 Forward), 2 FLAG-Events, 5 Tage portfolio_returns. Infrastructure groß, analytischer Output dünn. Frage offen: welche Backtest-Frage soll der erste Substantielle-Output beantworten? (Score-Predictiveness, FLAG-Event-Study, Sparraten-Kaskade-Sim, Real-Backfill, ...). **Trigger:** eigener Slot, brainstorming-Skill startet von vorn.
-- **Morning Briefing v3.0.4 Hotfix** (PIPELINE #2, ~90 Min) — gates Dashboard v2 + Track 5a/5b. Eigener ungestörter Slot empfohlen.
+- **Morning Briefing v3.0.4 Architektur-Phase** (PIPELINE #2 — **scope erweitert** vs. Hotfix-Plan, siehe NEXT-SESSION-RESUME oben) — gates Dashboard v2 + Track 5a/5b. **Foundation A1-A14 done (`7514ba7`)**. Eigener ungestörter Slot mit frischem Context-Window empfohlen — Brainstorming-Skill, B0 Provenance-Contract first, ~90-180 Min je nach Bucket-B-Reichweite.
 
 ### 🚨 Standing-Focus (operativ, unverändert)
 
