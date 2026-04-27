@@ -1,10 +1,27 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-27 sehr spät — **v3.0.5 Bucket-B Provenance-Architecture (B0/B0.5/B0.6) DONE im Spec**. Implementation-Phase (writing-plans-Skill) startet in nächster Session mit frischem Context.
+**Aktualisiert:** 2026-04-27 sehr spät (Folge-Session) — **v3.0.5 Implementation-Plan SCHRIFTLICH DONE + codex-reviewed** (10 Findings, 2 HIGH/5 MEDIUM/3 LOW, alle inline gefixt). Execution-Phase startet in nächster Session mit frischem Context bei **Phase 1** des Plans.
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `9b5f954` (v3.0.5-Spec foundation-complete inkl. §3.0 Provenance-Contract + §6F Mismatch-Klassen + §9 T6 Adversarial-Provenance-Test).
+**Branch:** `main`. **HEAD:** `<plan-handover-commit-hash>` (writing-plans v3.0.5 complete + codex-pass + handover). Vorgänger-Commit `9b5f954` (v3.0.5-Spec foundation).
+
+**Plan-File:** `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md` (~1320 Zeilen, 8 Phasen, 38 Tasks/Phase-Header).
+
+**NEXT-SESSION-RESUME — Execution Phase 1:**
+
+1. Standard Session-Start: STATE.md + PORTFOLIO.md.
+2. **Skill: superpowers:executing-plans** ODER **superpowers:subagent-driven-development** (User-Wahl, beide laden Plan-File und gehen task-by-task durch).
+3. Plan-File `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md` lesen — speziell den Plan-Header (Trigger-IDs, Pre-existing-Dirty-Liste, HARTER STAGING-CONTRACT) und Phase 1 (Tasks 1.1-1.8).
+4. **Phase 1 ausführen:** 6 Prompt-Edits in `03_Tools/morning-briefing-prompt-v3.md` (Changelog v3.0.4+v3.0.5 / FIELD→SOURCE-MAP / SCHRITT 3a Anti-Fallback / Critical-Guards-Erweiterung / §6F-Tabelle + SCHRITT 4.8 / Output-Tag-Direktive in KURS-CHECK+NEWS-SIGNAL+Earnings) — jede Edit-Operation einzeln mit grep-Verify nach OneDrive-Persistenz. Dann Commit + Push (Task 1.7 + Task 1.8). Phase-1-Estimate: 35-50 Min.
+5. **Phase 2-6:** Probe-Update / T-Stale-Shibui / T6 Provenance / T1+T3+T4 Retest / Prod-Deploy. Estimate: 60-70 Min für Phase 2-6 zusammen.
+6. **Phase 7-8:** Tag-1-Cron-Review (Folgetag, 5 Min) + Sync-Pflicht (15 Min, log + CORE-MEMORY + SYSTEM + PIPELINE + SESSION-HANDOVER in einem Commit; Plan-File separater Commit gemäß Plan Task 8.6 Step 3).
+
+**Codex-Review-Pass (siehe Plan-File Sektion „Codex-Review-Pass (2026-04-27)"):**
+- HIGH #5 T-Numbering: Phase 3 Test heißt **T-Stale-Shibui** (NICHT T5), um Drift mit Spec-T5 (Post-Update-Content-Verify) zu vermeiden.
+- HIGH #9 Self-Check-Gate-Marker: bei nicht-zugänglicher Run-Trace ist Status **UNVERIFIED**, NICHT PASS — Phase-7+-Monitoring greift.
+- MEDIUM #3a Push: neuer Task 1.8 (Spec §10 Schritt 3) zwischen Phase-1-Commit und Phase-2-Update.
+- weitere 7 Findings (3 MEDIUM, 3 LOW, 1 LOW) inline gefixt.
 
 **Diese Session committed:**
 
