@@ -58,6 +58,9 @@ Diese Skill mutiert **ausschließlich** `05_Archiv/score_history.jsonl` (Append-
 | `00_Core/INSTRUKTIONEN.md §27.4` | Multi-Source-Drift Prevention |
 | `00_Core/INSTRUKTIONEN.md §28.2` | Algebra-Δ-Tabelle + Outcome-Buckets |
 | `00_Core/PORTFOLIO.md` (Portfolio-State-Sektion) | Tripwire-Quelle: aktuelle 11-Satelliten-Tabelle (Score/DEFCON/Rate/FLAG) |
+| `03_Tools/backtest-ready/provenance_gate.py::check_provenance` | Schicht B Pipeline-Gate (P3.5), 8 Checks fail-close inkl. Carryover-Whitelist |
+| `03_Tools/backtest-ready/versions.py::DEFCON_ACTIVE_VERSION` | SSoT für aktive DEFCON-Version (Schicht B Check #6, schemas._check_forward_version) |
+| `03_Tools/backtest-ready/schemas.py::ScoreRecord._check_vollanalyse_block_coverage` | Schicht D Block-Coverage (4 Blöcke, insider ausgenommen, technicals dual-naming) |
 
 **Drift-Prevention (§27.4):** Bucketing-Logik (|Δ|≤2/3-5/>5) NICHT hier kopieren.
 Sie lebt in `schemas.py::MigrationEvent._check_outcome_bucket` und in
@@ -100,6 +103,7 @@ alle drei Keys müssen gesetzt sein, sonst P1 Fehler.
 | P1 | Draft-Read + Parse | `parse_wrapper(args)` | FAIL P1 |
 | P2a | Freshness-Check | `check_freshness(repo_root)` | Warnung (nicht blockierend) |
 | P2b | Tripwire | `parse_state_row(ticker, PORTFOLIO.md)` | FAIL P2b |
+| **P3.5** | **Provenance-Gate** | **`check_provenance(record_dict, freshness_missing, skill_meta)`** | **FAIL P3.5 (fail-close, kein Archiv-Write)** |
 | P3 | Δ-Gate (conditional) | `build_migration_event(skill_meta, forward_score)` | STOP signal (nicht blockierend) |
 | P4 | Dry-Run | `archive_score.py --file <draft> --dry-run` | FAIL P4 |
 | P5 | Real Append | `archive_score.py --file <draft>` | FAIL P5 |
@@ -141,6 +145,35 @@ Vergleiche Ergebnis `{score, defcon, flags_active}` gegen `record_dict`:
 - **Neu analysierter Ticker** (noch nicht in PORTFOLIO.md): Tripwire überspringen, Report: `[tripwire: ticker 'XYZ' not in PORTFOLIO.md — new position]`.
 
 Bei jedem `FAIL phase=P2b`: **Pipeline abbrechen — P3/P4/P5/P6 nicht ausführen. Kein Archiv-Write.** (Konsistent zu P4/P5 Stopp-Semantik.)
+
+### P3.5 — Provenance-Gate (fail-close)
+
+Importiere `check_provenance` aus `03_Tools/backtest-ready/provenance_gate.py`.
+Aufruf:
+
+```python
+passed, reasons = check_provenance(
+    record_dict=record_dict,         # aus P1
+    freshness_missing=missing_files,  # aus P2a
+    skill_meta=skill_meta,            # aus P1 ({} falls leer)
+)
+```
+
+- `passed=True` → weiter zu P3.
+- `passed=False` → **Pipeline abbrechen — P3/P4/P5/P6 nicht ausführen. Kein Archiv-Write.**
+  Emit: `FAIL phase=P3.5 reason="<reasons[0]>"`. Exit-Code 1.
+
+Acht Checks fail-close in Reihenfolge (Spec §5.2):
+1. `source="backfill"` → skip (Schicht B prüft nur Forward-Pfad).
+2. `analyse_typ="vollanalyse"` aber `freshness_missing != []` → FAIL.
+3. `analyse_typ="vollanalyse"` aber `kurs.referenz != "close_of_score_datum"` → FAIL.
+4. `analyse_typ="rescoring"` aber `skill_meta` leer → FAIL.
+5. `analyse_typ="delta"` aber `source != "forward"` → FAIL.
+6. `defcon_version != versions.DEFCON_ACTIVE_VERSION` → FAIL.
+7. Platzhalter (`unknown`/`tbd`/`todo`/`?` etc., case-insensitive) in einem der 5 Pflicht-`quellen`-Felder → FAIL. Carryover-Suffixe (`*_carryover`) sind über Whitelist akzeptiert: Source-Token als Whole-Word (`gurufocus_carryover`), Source-Prefix (`ir_apple_carryover`), Reason-Token terminal (`skip_window_..._pre_score_carryover`). Naive Kombinationen wie `pre_gate_xyzzy_carryover` werden abgelehnt.
+8. `skill_meta` vorhanden + `skill_meta["migration_to_version"] != record.defcon_version` → FAIL (recycled meta).
+
+Recovery siehe Spec §7.2 Recovery-Matrix. Kein `--force`-Flag — Provenance-Verletzungen werden via Workflow-Korrektur gelöst (Daten ergänzen / `analyse_typ` umklassifizieren).
 
 ### P3 — Algebra-Δ-Gate (conditional)
 
@@ -213,8 +246,10 @@ Line 5: STOP: §28.2 |Δ|=<N> > 5. Fan-Out (7 Oberflächen) blockiert bis Algebr
 
 **Bei Fehler (Exit 1 oder 2):**
 ```
-FAIL phase=<P1|P2b|P4|P5|P6> reason="<Fehlermeldung>"
+FAIL phase=<P1|P2b|P3.5|P4|P5|P6> reason="<Fehlermeldung>"
 ```
+
+P3.5-Beispiel: `FAIL phase=P3.5 reason="vollanalyse requires fresh session (missing: ['log.md']); reclassify as rescoring or complete workflow"`.
 
 ---
 
