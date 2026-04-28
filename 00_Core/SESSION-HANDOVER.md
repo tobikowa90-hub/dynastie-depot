@@ -1,164 +1,81 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-28 Spätnachmittag (vor Compact). Provenance-Gate Plan v3.1 Tasks 0/0.5/1/2 committed. Codex-Round-1+Round-2-Sparring ergab 1 HIGH (SKILL.md Pre-Flight-Klausel) + 1 MEDIUM (Plan-File-Drift) + 2 LOWs. Joint-Confidence aktuell 92% — V/MSFT-Live-Runs benötigen vor Execution 4 Reconcile-Items (Variante C: Mini-Patches A+B sofort, Task 6.5 nach Task 6, V-Pre-Append-Audit als Workflow-Notiz). **Resume-Trigger nach Compact: „Provenance-Gate Plan weiter — Tasks 3-6.5 ausstehend"**.
+**Aktualisiert:** 2026-04-28 Abend. **Provenance-Gate Plan v3.1 KOMPLETT ABGESCHLOSSEN** (Tasks 0-6.5 + Mini-Patches A/B + V/MSFT-Pre-Append-Audit-Notices + Codex-Round-3-Reconcile). Joint-Confidence ~95%. Pipeline ready für **V Q2 First-Live-Run** (heute 28.04. AMC ~22:00, Auswertung 29.04. morgens). **Resume-Trigger nach Pause: „!Analysiere V Q2 FY26 — First-Live-Run mit Provenance-Gate"**.
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `5f4a6c5` (Task 2 Schicht D Block-Coverage-Validator). Working tree clean.
+**Branch:** `main`. **HEAD:** `267a216` (Codex-Round-3 sec_edgar Multi-Word + Schritt-7 P3.5). Working tree clean. **9 Commits ahead** seit Handover `889becb`.
 
-**Bereits committed in dieser Session (28.04.):**
+**Smoke-Test-Status:** schemas 14/14 ✓ + archive_score 5/5 ✓ + provenance_gate 9/9 ✓ (jetzt 8a-8o inkl. Multi-Word) + skill 8/8 ✓ = **36/36**. Re-Validate-Sweep jsonl 28/28 PASS.
+
+**Provenance-Gate Plan v3.1 — Commits (chronologisch):**
 | Commit | Task | Was |
 |---|---|---|
-| `5d97ddc` | 0.5 | TMO #28 Block-Coverage-Backfill via Migration-Helper (5 Felder gefüllt: gm_trend +0.5 / rel_strength -16 / kurs_vs_200ma -2.13 / ma200_slope rising) |
+| `5d97ddc` | 0.5 | TMO #28 Block-Coverage-Backfill (Migration-Helper, byte-level Line-Endings, idempotent) |
 | `ef6979c` | 1 | versions.py SSoT + schemas Refactor |
-| `5f4a6c5` | 2 | Schicht D Validator + Tests D1-D4 + archive_score-Fixture-Patch |
-
-**Smoke-Test-Status (zuletzt grün):** schemas 14/14 ✓ + archive_score 5/5 ✓ + skill 6/6 ✓ + Re-Validate-Sweep jsonl 28/28 PASS ✓.
-
----
-
-### 📋 Offene Tasks (Resume-Reihenfolge)
-
-| # | Task | Tool | Geschätzt |
-|---|---|---|---|
-| **A+B** | Mini-Patches: Doc-Typo + Plan-File D1-D4 Inline-Edit (Sammelcommit) | direkt Edit | 5 min |
-| 3 | provenance_gate.py Schicht B (3.1a-3.1d) + 9/9 Smoke-Tests + Commit | subagent oder direkt | 45-60 min |
-| 4 | backtest-ready-forward-verify SKILL.md Phase P3.5 + Authoritative-Sources + Commit | direkt Markdown | 15-20 min |
-| 5 | _smoke_test.py Case 7+8 (P3.5 fail-close + Pipeline-Sequence) + Commit | subagent oder direkt | 30-40 min |
-| 6 | SYSTEM.md + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log.md Union-Scope + Commit | direkt Markdown | 20-30 min |
-| **6.5** | **NEU: dynastie-depot SKILL.md Pre-Flight-Klausel + ma200_slope-Threshold** | direkt Markdown | 15-20 min |
-| Verification | VC.1 + VC.2 End-to-End | inline | 10 min |
-| First-Live-Run | !Analysiere V Q2 FY26 (heute 28.04. AMC ~22:00, Daten morgen früh) — **mit manuellem Pre-Append-Audit** | dynastie-depot Skill | ~2-3h |
+| `5f4a6c5` | 2 | Schicht D Block-Coverage-Validator + Tests D1-D4 + archive_score-Fixture-Patch |
+| `06ff82c` | A+B | Mini-Patches: Doc-Typo + Plan-File D1-D4 IDs |
+| `cacf2a0` | 3 | provenance_gate.py Schicht B — 8 Checks fail-close, Carryover-Whitelist, 9/9 Smoke-Tests |
+| `d039a5b` | 4 | forward-verify SKILL.md Phase P3.5 + Authoritative-Sources + FAIL-Phase-Enum |
+| `e3547e9` | 5 | _smoke_test.py Case 7 (Integration fail-close) + Case 8 (Pipeline-Sequence-Order) |
+| `507eb64` | 6 | SYSTEM.md + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log.md Union-Scope |
+| `bd83631` | 6.5 | dynastie-depot Schritt 6c Pre-Flight-Klausel + ma200_slope-Threshold |
+| `4ca4654` | V/MSFT | Pre-Append-Audit-Klausel in Pre-Earnings-Briefs |
+| `267a216` | R3 | Codex-Round-3 Sofort-Fixes (sec_edgar Multi-Word + Schritt-7-Summary) |
 
 ---
 
-### 🔧 Mini-Patches A+B (Sammelcommit, ~5 min)
+### 🎯 Nächster Schritt — V Q2 First-Live-Run
 
-**Patch A — Doc-Typo (LOW, Codex-Round-1):**
-- File: `03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py`
-- Z. 64: `# TMO 6M -9.38% vs SPY 6M +6.55% (anchor 2026-10-22 → 2026-04-22)` → `2025-10-22 → 2026-04-22`
+**Heute 28.04. AMC ~22:00 MESZ:** V Q2 FY26 Earnings (Quarter ending 31.03.2026). Daten morgen früh verfügbar.
 
-**Patch B — Plan-File D1-D4 Inline-Edit (MEDIUM, Codex-Round-1):**
-- File: `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md`
-- Step 2.1 (~ Z. 475-477+): D1/D2/D3/D4 Record-IDs umstellen
-  - `2026-04-21_D1_vollanalyse` → `2026-04-21_AVGO_vollanalyse`
-  - `2026-04-21_D2_vollanalyse` → `2026-04-22_AVGO_vollanalyse`
-  - `2026-04-21_D3_rescoring` → `2026-04-23_AVGO_rescoring`
-  - `2026-04-21_D4_vollanalyse` → `2026-04-24_AVGO_vollanalyse`
-- Begründung: RECORD_ID_RE schemas.py:48 `[A-Z]{1,5}` für Ticker-Slot — "D1" enthält Ziffer, fail. Repo-Konvention: Plans inline-gepatcht (Patch-Note im Header), NICHT Header-Notice.
-- Plan-Header optional: Patch-Note v3.1.1 mit Hinweis auf D1-D4-Korrektur.
+**Pipeline-Erwartung im Erfolgsfall:**
+1. Pre-Brief in `02_Analysen/V_pre-earnings_2026-04-28.md` enthält Pre-Append-Audit-Klausel (committed `4ca4654`).
+2. `!Analysiere V` 29.04. morgens via dynastie-depot Skill.
+3. dynastie-depot Schritt 6c Pre-Flight-Klausel pro Block durchgehen (Sub-Score!=0 ↔ Rohwert/Carryover-Konsistenz).
+4. Schritt 7 Archive-Write via backtest-ready-forward-verify Skill — Pipeline-Sequenz: P1 → P2a (alle 3 Pflicht-Files modified) → P2b (V in PORTFOLIO.md) → **P3.5 (NEU, 8 Checks pass)** → P3 (skill_meta=ja → Δ-Gate) → P4/P5/P6 grün.
+5. Joint-Confidence 92% → 95%+ erwartet.
 
-**Sammelcommit-Message:**
-```
-fix(provenance-gate): codex-sparring resolution — doc-typo + plan-file-drift
+**Falls P3.5 FAIL:** Recovery-Pfad via Workflow-Korrektur (Pflicht-Touch-Files berühren / `analyse_typ` umklassifizieren / `quellen` mit echten Quellen oder legitimen `*_carryover`-Suffixen befüllen / Versions-Drift via Migration-Pipeline lösen). Kein `--force`-Bypass.
 
-Mini-Patches aus Codex-Round-1-Sparring:
-- migrate_tmo_28_block_coverage.py:64 Anchor-Typo (2026-10-22 -> 2025-10-22)
-- Plan v3.1 Step 2.1 D1-D4 Record-IDs auf AVGO+Datum (RECORD_ID_RE
-  erlaubt nur [A-Z]{1,5} fuer Ticker-Slot; Code/Tests bereits in
-  Commit 5f4a6c5 gefixt, Plan-Markdown drifted bis dahin).
-
-Spec/Code unverändert, nur Doku.
-```
-
----
-
-### 🆕 Task 6.5 NEU — Pre-Flight-Klausel + ma200_slope-Threshold
-
-**Codex-Round-2 HIGH-Befund:** TMO #28 zeigt `scores.technicals.gesamt=6` trotz null Roh-Werte pre-Migration. `quellen.insider` markiert `_carryover` explizit, `quellen.technicals` aber NICHT. Workflow-Bug kann morgen bei V Q2 / MSFT Q3 wieder auftreten — Provenance-Gate (Block-Coverage) hat keine Greifkraft.
-
-**Was zu ergänzen:**
-
-1. **`01_Skills/dynastie-depot/SKILL.md` Schritt 3 Output-Template-Erweiterung** (NEU `Score-Konsistenz-Pre-Flight v3.7.4`):
-   ```markdown
-   **Score-Konsistenz-Pre-Flight (v3.7.4, eingeführt 28.04.2026):**
-   Vor Schritt 7 (Archiv-Write) prüfen: Ein Sub-Score != 0 ist NUR
-   zulässig wenn (a) der korrespondierende Rohwert in `metriken_roh`
-   nicht null ist, ODER (b) `quellen.<block>` enthält explizit ein
-   legitimes `_carryover`-Suffix (Source-Token Whole-Word, Source-Prefix
-   `ir_`, oder Reason-Token terminal — Carryover-Whitelist analog
-   provenance_gate.py).
-
-   Verstöße = Workflow-Bug. Beispiel: TMO #28 (23.04.) hatte
-   `scores.technicals.trend_lage=3` aber `metriken_roh.kurs_vs_200ma_pct=null`,
-   `quellen.technicals="yfinance_pre_briefing_22_04"` (kein _carryover) —
-   Sub-Scores wurden offenbar vom 18.04.-Snapshot copy-paste übernommen
-   ohne Roh-Werte-Update. Migration via Task 0.5 heilte metriken_roh,
-   Algebra-Drift bleibt bis Score-Reconstruction-Tool ausstehend.
-   ```
-
-2. **`01_Skills/dynastie-depot/SKILL.md` Technicals-Section ma200_slope-Threshold-Doc:**
-   ```markdown
-   **ma200_slope-Threshold-Konvention (Schema-Literal {rising, falling, flat}):**
-   - 21-Trading-Days-Slope `> +0.1%` → `rising`
-   - 21-Trading-Days-Slope `< -0.1%` → `falling`
-   - sonst `flat`
-   Reproduzierbar via `yfinance.history(period='1y', end=<datum>)`,
-   200MA via `rolling(200).mean()`, Slope = `MA200(t) / MA200(t-21) - 1`.
-   ```
-
-**Sync-Pflicht:** §18.2-Union-Scope = SKILL-File-Edit. Aber: kein Score/FLAG/Sparraten-Change → KEIN PORTFOLIO/CORE-MEMORY/Faktortabelle/score_history/config.yaml-Sync. Sync-Set: `01_Skills/dynastie-depot/SKILL.md + 00_Core/log.md` (System-Event-Pflicht).
-
-**Commit-Message:**
-```
-fix(skill): dynastie-depot Pre-Flight-Klausel + ma200_slope-Threshold
-
-Codex-Round-2 HIGH (Punkt 1+3, 28.04.): TMO #28 enthüllte Workflow-Bug —
-Sub-Scores wurden offenbar vom Vor-Snapshot copy-paste übernommen ohne
-Roh-Werte-Update; quellen markiert das nicht als _carryover. Pre-Flight-
-Klausel in Schritt 3 Output-Template + ma200_slope-Threshold-Konvention
-in Technicals-Section schließen die Drift-Lücke vor V/MSFT-Live-Runs.
-
-Joint-Confidence-Lift: 92% -> 95%+ (mit V-Pre-Append-Audit).
-
-Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md (Folge-Hardening)
-```
-
----
-
-### 🛡️ V-Pre-Brief: Manueller Pre-Append-Audit (HIGH, Codex-4. Punkt)
-
-**Im V_pre-earnings_2026-04-28.md (vor !Analysiere V Q2 morgen früh)** Workflow-Notiz ergänzen:
-
-> **Pre-Append-Audit (Provenance-Gate-Hardening 28.04.2026):**
-> Vor Schritt 7 prüfen pro Block (fundamentals/moat/technicals/insider/sentiment):
-> - Wenn ein Sub-Score != 0 → korrespondierender Rohwert in `metriken_roh` darf nicht null sein, ODER `quellen.<block>` enthält legitimes `*_carryover`-Suffix.
-> - Bei Verstoß → Sub-Score auf 0 setzen ODER Rohwert nachtragen ODER `quellen` mit `_carryover`-Markierung versehen.
-> - Beispiel-Verstoß: TMO #28 (23.04.) — Pre-Flight-Klausel ab v3.7.4 fängt das.
-
-Identische Notiz für MSFT Q3 (29.04. AMC) im `02_Analysen/MSFT_pre-earnings_2026-04-29.md`.
-
----
-
-### 📊 Codex-Sparring-Bilanz (Session 28.04.)
-
-- **Round 1** (Single-Pass): 0 HIGHs, 1 MEDIUM (Plan-File-Drift), 2 LOWs (Doc-Typo + 1 OK), 4 PASSes. Code-Diff der 3 Commits clean.
-- **Round 2** (Reconcile auf 3 offene Punkte + 95%-Frage): **1 NEUER HIGH** (SKILL.md Pre-Flight-Klausel war Round-1 nicht aufgefallen, weil Frame anders war), 1 MEDIUM (Plan-Inline-Edit empfohlen), 1 LOW (ma200_slope-Doc), **1 NEUER 4. Punkt** (V/MSFT manueller Pre-Append-Audit) zum 95%-Lift.
-- **Bilanz:** Reconcile-Round-2 fand HIGH dass Round-1 nicht hatte — Single-Pass-Default ist NICHT immer ausreichend bei semantischen Live-Run-Risk-Fragen. Memory-Hook `feedback_codex_sparring_heuristic.md` validiert: HIGH-Count ≥2 NACH Reconcile = ehrliche Heuristik.
+**Eigener CORE-MEMORY §10-Eintrag** nach erfolgreicher Pipeline-Sequenz: konkrete P3.5-Output + tatsächlicher Δ-Gate-Outcome + Pre-Flight-Audit-Result.
 
 ---
 
 ### 📅 Critical Operational
 
-- **HEUTE 28.04. AMC ~22:00:** V Q2 FY26 Earnings — Pre-Brief in `02_Analysen/V_pre-earnings_2026-04-28.md`. **First-Live-Run mit Provenance-Gate UND Pre-Flight-Klausel** geplant für 29.04. morgens.
-- **MORGEN 29.04. AMC ~22:30:** MSFT Q3 FY26 Earnings — FLAG-Review CapEx/OCF (bereinigt <60% = Auflösung).
+- **HEUTE 28.04. AMC ~22:00:** V Q2 FY26 — D2-Entscheidung (Technicals-Reversal?).
+- **MORGEN 29.04. AMC ~22:30:** MSFT Q3 FY26 — FLAG-Review CapEx/OCF (bereinigt <60% = Auflösung, >60% = Veto-Verschärfung). Pre-Append-Audit-Klausel auch in MSFT-Pre-Brief committed.
 - **30.04. morgens:** !Analysiere MSFT als Second-Live-Run.
-- **01.05.:** Sparplan-Tag (EXUSA 825€ + reguläre Allokation). User-Action.
+- **01.05.:** Sparplan-Tag (EXUSA 825€ Aufstockung + reguläre Allokation). User-Action.
+
+### 🔵 Deferred / Follow-up (PIPELINE.md)
+
+- **#15 Pipeline-Test-Architektur-Hardening (Codex-Round-3 MEDIUM #2 + LOW #3):** Case 7+8 sind Stub-Pipeline-Tests, kein echter Python-Entry-Point. Re-Activation-Trigger: nach 3-4 realen Live-Runs P3-vor-P3.5-Bypass-Audit. Mitigation aktiv via Schritt 6c + Pre-Append-Audit.
+- **#11 Atomic-Write-Hardening portfolio_risk.py:** frozen, Re-Activation bei Incident oder Track-4-Auto-Hook.
+- **#7 Track 5b FRED Macro-Regime-Filter:** deferred bis Sparrate >1.000€/Monat oder Depotwert >50.000€ oder Regime-Aware-Schmerz.
 
 ### Operativ unverändert
 
-- 11 Satelliten, Sparraten 285€, DEFCON v3.7
-- AVGO 84 (FLAG Insider seit 27.04.), TMO 67 D3 (post-Q1-Upshift 23.04.), MKL 82
+- 11 Satelliten, Sparraten 285€ (FLAG-modifiziert), DEFCON v3.7 / Skill-Paket v3.7.4
+- AVGO 84 (FLAG Insider seit 27.04., Sparrate→0€), TMO 67 D3, MKL 82
 - 3 FLAGs aktiv: AVGO Insider, APH Score, MSFT CapEx
 - Tavily-Key live PROD + Probe; Connector-UUID `0da14a12-...`
 
+### 📊 Codex-Sparring-Bilanz (Session 28.04.)
+
+- **Round 1** (Single-Pass auf Tasks 0-2): 0 HIGHs, 1 MEDIUM (Plan-File-Drift), 2 LOWs, 4 PASSes.
+- **Round 2** (Reconcile + 95%-Frage): 1 NEUER HIGH (Pre-Flight-Klausel war Frame-blind in R1), 1 MEDIUM (Plan-Inline), 1 LOW (ma200_slope), 1 NEUER 4. Punkt (V/MSFT Audit).
+- **Round 3** (Single-Pass auf Tasks 3-6.5 + Mini-Patches + Audit-Notices): 0 HIGHs, 2 MEDIUMs (sec_edgar toter Whitelist-Eintrag + Case 7 tautologisch), 2 LOWs (Case 8 Stub + Schritt-7-Summary fehlt P3.5). Variante 1 sofort committed (`267a216`), Variante 2 deferred via PIPELINE #15.
+- **Bilanz:** Reconcile-Round-2 fand HIGH dass R1 nicht hatte. Round-3 fand realen Whitelist-Bug (sec_edgar Multi-Word) + Doku-Drift (Schritt-7-Summary). Memory `feedback_codex_sparring_heuristic.md` validiert.
+
 ### Memory-Hooks aktiv
 
-- feedback_review_via_codex_not_advisor.md — 2 Codex-Rounds in Session 28.04.
-- feedback_codex_sparring_heuristic.md — **VALIDIERT**: Round-1-Single-Pass fand 0 HIGHs, Round-2-Reconcile fand 1 HIGH (Live-Run-Risk-Frame). Diff-Re-Review-Heuristik ist die billigste 2nd-Order-Versicherung.
-- feedback_windows_python_crlf_text_mode.md — Migration-Helper byte-level Line-Ending-Preservation (0 ungewollte CRLF↔LF-Konvertierungen empirisch belegt).
-- feedback_pre_commit_diff_inspection.md — alle 3 Commits via `git diff --cached --stat` vor commit verifiziert.
-- feedback_onedrive_edit_collision.md — keine Kollisionen, alle Edits straight-through.
+- feedback_review_via_codex_not_advisor.md — 3 Codex-Rounds in Session 28.04.
+- feedback_codex_sparring_heuristic.md — VALIDIERT Round 3: Single-Pass-Default fand 2 MEDIUM/2 LOW ohne Reconcile-Bedarf.
+- feedback_windows_python_crlf_text_mode.md — byte-level Line-Ending-Preservation (0 ungewollte Konvertierungen).
+- feedback_pre_commit_diff_inspection.md — alle 11 Commits via `git diff --cached --stat` vor commit verifiziert.
+- feedback_onedrive_edit_collision.md — keine Kollisionen.
 
 ---
 
@@ -166,4 +83,4 @@ Identische Notiz für MSFT Q3 (29.04. AMC) im `02_Analysen/MSFT_pre-earnings_202
 
 Nur **aktiver** RESUME-INPUT-Block. Historie kanonisch in `git log` (handover-Commits) + `00_Core/CORE-MEMORY.md` §13 + `00_Core/PIPELINE.md`. Bei Session-Ende: aktiven Block ersetzen, nicht anhängen.
 
-*🔁 SESSION-HANDOVER.md v2.0 | Slim-Resume — Policy B*
+*🔁 SESSION-HANDOVER.md v2.0 | Slim-Resume — Policy B | Stand: 2026-04-28*
