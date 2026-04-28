@@ -471,15 +471,17 @@ In `_smoke_tests()` von `schemas.py` nach Case 10 (vor `print("[OK] all schema s
 ```python
     # Case D1: vollanalyse mit min. 1 Rohmetrik in jedem geprüften Block → parses OK
     # Build from valid AVGO base; metriken_roh hat bereits fwd_pe/p_fcf/op_margin/gm_trend/rel_strength/eps_revisions
+    # Note: RECORD_ID_RE erlaubt nur [A-Z]{1,5} im Ticker-Slot — daher AVGO+Datum als
+    # Differentiator (D1/D2/D3/D4 sind Case-Labels in Kommentaren, nicht im record_id).
     d1 = copy.deepcopy(avgo)
-    d1["record_id"] = "2026-04-21_D1_vollanalyse"
+    d1["record_id"] = "2026-04-21_AVGO_vollanalyse"
     rec_d1 = ScoreRecord.model_validate(d1)
-    assert rec_d1.record_id == "2026-04-21_D1_vollanalyse"
+    assert rec_d1.record_id == "2026-04-21_AVGO_vollanalyse"
     print("  [D1] block-coverage: all 4 blocks filled → parses OK")
 
     # Case D2: vollanalyse, fundamentals-Block leer → ValidationError
     d2 = copy.deepcopy(avgo)
-    d2["record_id"] = "2026-04-21_D2_vollanalyse"
+    d2["record_id"] = "2026-04-22_AVGO_vollanalyse"
     # Wipe all fundamentals raw fields
     for f in (
         "fwd_pe", "p_fcf", "net_debt_ebitda", "current_ratio",
@@ -500,7 +502,7 @@ In `_smoke_tests()` von `schemas.py` nach Case 10 (vor `print("[OK] all schema s
 
     # Case D3: rescoring mit 0 Rohmetriken → parses OK (Skip-Condition)
     d3 = copy.deepcopy(avgo)
-    d3["record_id"] = "2026-04-21_D3_rescoring"
+    d3["record_id"] = "2026-04-23_AVGO_rescoring"
     d3["analyse_typ"] = "rescoring"
     d3["metriken_roh"] = {}
     rec_d3 = ScoreRecord.model_validate(d3)
@@ -509,7 +511,7 @@ In `_smoke_tests()` von `schemas.py` nach Case 10 (vor `print("[OK] all schema s
 
     # Case D4: Backfill mit 0 Rohmetriken → parses OK (Skip-Condition)
     d4 = copy.deepcopy(avgo)
-    d4["record_id"] = "2026-04-21_D4_vollanalyse"
+    d4["record_id"] = "2026-04-24_AVGO_vollanalyse"
     d4["source"] = "backfill"
     d4["defcon_version"] = "historical"  # backfill allows free version
     d4["metriken_roh"] = {}

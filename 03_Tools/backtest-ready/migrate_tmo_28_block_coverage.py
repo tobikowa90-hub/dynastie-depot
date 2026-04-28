@@ -61,7 +61,7 @@ BACKFILL_VALUES: dict[str, float | int | str] = {
     # Quelle: yfinance income_stmt (Gross Profit / Total Revenue), siehe Module-Docstring
     "gm_trend_3j_pct_p_a": 0.5,
 
-    # TMO 6M -9.38% vs SPY 6M +6.55% (anchor 2026-10-22 → 2026-04-22)
+    # TMO 6M -9.38% vs SPY 6M +6.55% (anchor 2025-10-22 → 2026-04-22)
     # Quelle: yfinance history end='2026-04-23', auto_adjust=False
     "rel_strength_sp500_6m_pct": -16,
     "rel_staerke_sp500_6m_pct": -16,  # = rel_strength (v3.5-Rename-Alias-Spiegel)
