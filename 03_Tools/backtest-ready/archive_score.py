@@ -353,6 +353,11 @@ def _build_valid_forward_record(score_datum: date) -> dict[str, Any]:
             "fwd_pe": 22.1,
             "p_fcf": 19.8,
             "operating_margin_ttm_pct": 32.1,
+            # Provenance-Gate Plan Task 2: Block-Coverage-Validator verlangt
+            # min. 1 Rohmetrik pro Block (moat/technicals/sentiment).
+            "gm_trend_3j_pct_p_a": 0.3,
+            "rel_strength_sp500_6m_pct": 4,
+            "eps_revisions_up_90d": 4,
         },
         "quellen": {
             "fundamentals": "defeatbeta",

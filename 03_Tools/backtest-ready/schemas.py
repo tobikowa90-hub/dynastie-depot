@@ -412,6 +412,62 @@ class ScoreRecord(BaseModel):
 
         return self
 
+    @model_validator(mode="after")
+    def _check_vollanalyse_block_coverage(self) -> ScoreRecord:
+        """Schicht D Provenance-Plausibilität (Spec §5.3).
+
+        Bei source='forward' + analyse_typ='vollanalyse':
+        Mindestens 1 Rohmetrik muss in jedem der 4 geprüften Score-Blöcke
+        (fundamentals, moat, technicals, sentiment) befüllt sein.
+
+        insider-Block ausgenommen: Roh-Felder existieren nicht in MetrikenRoh
+        (alle Insider-Daten sind Sub-Scores, keine Rohwerte).
+
+        technicals-Block prüft BEIDE Alias-Felder (rel_strength_sp500_6m_pct +
+        rel_staerke_sp500_6m_pct) defensiv ggü. _sync_rel_staerke_alias.
+
+        KEIN Freshness-Beweis-Anspruch (das macht Schicht B in provenance_gate.py).
+        Backfill + rescoring + delta werden übersprungen.
+        """
+        if self.source != "forward" or self.analyse_typ != "vollanalyse":
+            return self
+
+        BLOCK_FIELDS: dict[str, tuple[str, ...]] = {
+            "fundamentals": (
+                "fwd_pe", "p_fcf", "net_debt_ebitda", "current_ratio",
+                "goodwill_pct_assets", "capex_ocf_pct_gaap", "capex_ocf_pct_bereinigt",
+                "roic_gaap_pct", "roic_bereinigt_pct", "wacc_pct",
+                "fcf_yield_pct", "sbc_revenue_pct", "sbc_ocf_pct",
+                "accruals_ratio_pct", "tariff_exposure_pct",
+                "operating_margin_ttm_pct",
+            ),
+            "moat": ("gm_trend_3j_pct_p_a",),
+            "technicals": (
+                # Dual-Naming-Defensive: any() prüft beide Alias-Felder direkt
+                "rel_strength_sp500_6m_pct", "rel_staerke_sp500_6m_pct",
+                "kurs_vs_200ma_pct", "ma200_slope",
+            ),
+            # insider: Roh-Metriken nicht in metriken_roh → skip im Loop unten
+            "sentiment": (
+                "eps_revisions_up_90d", "eps_revisions_down_90d", "pt_dispersion_pct",
+            ),
+        }
+
+        empty_blocks: list[str] = []
+        for block, fields in BLOCK_FIELDS.items():
+            if not fields:
+                continue
+            filled = any(getattr(self.metriken_roh, f) is not None for f in fields)
+            if not filled:
+                empty_blocks.append(block)
+
+        if empty_blocks:
+            raise ValueError(
+                f"vollanalyse block-coverage violation: no raw metrics filled in blocks: "
+                f"{empty_blocks}. Fill at least one field per block or reclassify analyse_typ."
+            )
+        return self
+
 
 # ---------------------------------------------------------------------------
 # FlagEvent
@@ -834,6 +890,58 @@ def _smoke_tests() -> None:
     br = BenchmarkReturnRecord.model_validate(bench_valid)
     assert br.benchmark == "SPY"
     print("  [10/10] BenchmarkReturnRecord parsed")
+
+    # ------------------------------------------------------------------
+    # Cases D1-D4: Block-Coverage-Validator (Provenance-Gate Plan Task 2)
+    # ------------------------------------------------------------------
+
+    # Case D1: vollanalyse mit min. 1 Rohmetrik in jedem geprueften Block -> parses OK
+    # (Plan v3.1 schlug 'D1' als Ticker vor — RECORD_ID_RE erlaubt aber nur [A-Z]{1,5},
+    # daher Datum als Differenzierer; Plan-Patch dokumentiert in Task-2-Commit-Body.)
+    d1 = copy.deepcopy(avgo)
+    d1["record_id"] = "2026-04-21_AVGO_vollanalyse"
+    rec_d1 = ScoreRecord.model_validate(d1)
+    assert rec_d1.record_id == "2026-04-21_AVGO_vollanalyse"
+    print("  [D1] block-coverage: all 4 blocks filled -> parses OK")
+
+    # Case D2: vollanalyse, fundamentals-Block leer -> ValidationError
+    d2 = copy.deepcopy(avgo)
+    d2["record_id"] = "2026-04-22_AVGO_vollanalyse"
+    for f in (
+        "fwd_pe", "p_fcf", "net_debt_ebitda", "current_ratio",
+        "goodwill_pct_assets", "capex_ocf_pct_gaap", "capex_ocf_pct_bereinigt",
+        "roic_gaap_pct", "roic_bereinigt_pct", "wacc_pct",
+        "fcf_yield_pct", "sbc_revenue_pct", "sbc_ocf_pct",
+        "accruals_ratio_pct", "tariff_exposure_pct", "operating_margin_ttm_pct",
+    ):
+        d2["metriken_roh"][f] = None
+    try:
+        ScoreRecord.model_validate(d2)
+    except ValidationError as e:
+        assert "block-coverage violation" in str(e), f"wrong error: {e}"
+        assert "fundamentals" in str(e), f"fundamentals not in error: {e}"
+        print("  [D2] block-coverage: empty fundamentals -> ValidationError")
+    else:
+        raise AssertionError("expected block-coverage ValidationError")
+
+    # Case D3: rescoring mit 0 Rohmetriken -> parses OK (Skip-Condition)
+    d3 = copy.deepcopy(avgo)
+    d3["record_id"] = "2026-04-23_AVGO_rescoring"
+    d3["analyse_typ"] = "rescoring"
+    d3["metriken_roh"] = {}
+    rec_d3 = ScoreRecord.model_validate(d3)
+    assert rec_d3.analyse_typ == "rescoring"
+    print("  [D3] block-coverage: rescoring skipped -> parses OK")
+
+    # Case D4: Backfill mit 0 Rohmetriken -> parses OK (Skip-Condition)
+    d4 = copy.deepcopy(avgo)
+    d4["record_id"] = "2026-04-24_AVGO_vollanalyse"
+    d4["source"] = "backfill"
+    d4["defcon_version"] = "historical"  # backfill allows free version
+    d4["metriken_roh"] = {}
+    rec_d4 = ScoreRecord.model_validate(d4)
+    assert rec_d4.source == "backfill"
+    print("  [D4] block-coverage: backfill skipped -> parses OK")
 
     try:
         print("\u2705 all schema smoke tests passed")
