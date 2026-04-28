@@ -274,6 +274,11 @@ def check_freshness(repo_root: str) -> list[str]:
             continue
         # porcelain format: XY<space>path — always 3-char prefix
         filepath = line[3:].strip()
+        # Git quotes paths containing spaces or special chars with surrounding "..."
+        # (default core.quotePath=true). Strip quotes so basename matching works
+        # for files in paths like "07_Obsidian Vault/.../log.md".
+        if len(filepath) >= 2 and filepath[0] == '"' and filepath[-1] == '"':
+            filepath = filepath[1:-1]
         basename = Path(filepath).name
         modified_basenames.add(basename)
 
