@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 28.04.2026 (V Q2 FY26 Forward-Vollanalyse — D2→D3 Re-Rating, Nenner 7,5→8,0)
+**Stand:** 28.04.2026 spätabends (V Rescoring-Revert nach Codex-HIGH-1+HIGH-2 — D3→D2, Nenner 8,0→7,5)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -34,8 +34,9 @@
 <!-- DATA:V_OLD_BACKFILL -->
 <!-- | V | ~54% 5J | ~9.9% Q TTM | ~80% | 0.31x | Wide | 86 | 🟢 4 | ✅ Clean | 2026-04-17 | Q2 FY26 Earnings ~22.04. | -->
 <!-- DATA:V -->
-<!-- V-Score-Update 28.04.: 63 → 68 (Q2 FY26 Forward-Vollanalyse, Beat-Cascade). D2→D3, Sparrate 19,00€→35,63€. Beat: Net Rev +17%, Non-GAAP EPS +20%, Cross-Border +12% cc, Other Rev +41% VAS, $20B neue Buyback. ROIC-Methodology-Correction 1→7 via SKILL absolute alternative scale post-Q2 NOPAT/IC ~48% (18.04. defeatbeta 9,89% empirisch inkonsistent — Q3-Verify offen). Nenner 7,5→8,0, volle Rate 38,00€→35,63€. -->
-| V | ~54% 5J | **~48% post-Q2 NOPAT/IC vs WACC 8% [SKILL absolute alt-scale; defeatbeta 9,89% Q3-Verify-Watch]** | 80,4% | 0,36x post-Q2 | Wide | **68** | **🟡 3** | ✅ Clean (D2-Watch RESOLVED 28.04.) | **2026-04-28** | **Q3 FY26 ~Ende Juli** — Cross-Border-Velocity-Check |
+<!-- V-Score-Update 28.04. mittags: 63 → 68 (Q2 FY26 Forward-Vollanalyse, Beat-Cascade). D2→D3, Sparrate 19,00€→35,63€. -->
+<!-- V-Rescoring-Revert 28.04. spätabends nach Codex-HIGH-1+HIGH-2-Review: 68 → 64, D3→D2, Sparrate 35,63€→19,00€. HIGH-1: ROIC 1→7 via SKILL absolute alt-scale war regelwidrig (WACC vorhanden 10,48%); HIGH-2: kurs.referenz close_of_score_datum verletzt (27.04.-Proxy statt 28.04.-Close $309,30). ROIC-Carryover (1/8) + WACC-Carryover (10,48%) + Sentiment-Δ +1 (EPS-Rev post-beat) bleibt legitim. Nenner 8,0→7,5, volle Rate 35,63€→38,00€. defeatbeta-ROIC-Methodology-Watch in PIPELINE #21 für Q3 FY26 ~Ende Juli. -->
+| V | ~54% 5J | **9,89% defeatbeta vs WACC 10,48% [carryover 18.04.; Q3-Verify-Watch PIPELINE #21]** | 80,4% | 0,31x | Wide | **64** | **🟠 2** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **2026-04-28** | **Q3 FY26 ~Ende Juli** — Cross-Border-Velocity + ROIC-Methodology-Verify |
 <!-- DATA:MSFT -->
 | MSFT | ~25% | 7.5% | ~69% | ~1x | Wide | 59 | 🟠 2 | 🔴 CapEx/OCF >60% | 2026-04-17 | 2026-04-29 Q3 FY26 |
 <!-- TMO-Score-Update 18.04.: 63 (Backfill) → 64 (Forward-Vollanalyse). fcf_trend_neg schema-getriggert (FCF FY25 -13,4% YoY), NICHT aktiviert (WC-Noise-Erklärung, 4J-Plateau). Q1 23.04. = Resolve-Gate. -->
@@ -66,7 +67,7 @@
 **Analysierte Positionen:** 11/11 ✅ ALLE SATELLITEN auf v3.7 rekalibriert (V 18.04. + TMO 18.04./23.04. Forward-Vollanalyse, Rest Algebra-Projektion)
 **Offene Scores:** 0/11
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
-**Sparraten-Nenner:** 8×1,0 + 0×0,5 + 3×0 = **8,0** → volle Rate **35,63€** / D2-Rate entfällt (war nur V, nun D3) / FLAG (APH, MSFT, AVGO) **0€**
+**Sparraten-Nenner:** 7×1,0 + 1×0,5 + 3×0 = **7,5** → volle Rate **38,00€** / D2-Rate **19,00€** (V allein) / FLAG (APH, MSFT, AVGO) **0€**
 
 > ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Algebra-Projektion v3.5→v3.7: ASML 68→66 (bleibt D3, **Post-Q1 17.04. Vollanalyse: 68**), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74.
 >
@@ -80,7 +81,7 @@
 
 | Datum | Position | Klasse | Trigger |
 |-------|----------|--------|---------|
-| ~~2026-04-28~~ | ~~V~~ | — | **DONE** Q2 FY26 Beat-Cascade — D2→D3 Re-Rating (Score 63→68, Sparrate 19,00€→35,63€). Neue Watch: Cross-Border-Velocity Q3 FY26. |
+| ~~2026-04-28~~ | ~~V~~ | — | **DONE (mittags)** Q2 FY26 Beat-Cascade — D2→D3 (Score 63→68). **REVERTED (spätabends)** nach Codex-HIGH-1+HIGH-2: Score 68→64, D3→D2, Sparrate 35,63€→19,00€. ROIC-Methodology-Verify Q3 FY26 in PIPELINE #21. |
 | 2026-04-23 | TMO | B | Q1 2026 Earnings — FCF >$7.3B nötig für FCF-Yield >4% |
 | 2026-04-28 | SNPS | B | Q1 Earnings — Watchlist (Score 76, Ersatz ASML) |
 | 2026-04-28 | SPGI | B | Q1 Earnings — Watchlist (Score 74) |
@@ -108,7 +109,7 @@
 | VEEV | 74 | 🟡 3 | 17.04.2026 | Nächste Earnings |
 | SU | 69 | 🟡 3 | 17.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
 | BRK.B | 75 | 🟡 3 | 17.04.2026 | Q-Earnings Mai 2026 |
-| **V** | **68** | **🟡 3** | **28.04.2026** | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity-Check** |
+| **V** | **64** | **🟠 2** | **2026-04-28** | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity + ROIC-Methodology-Verify (PIPELINE #21)** |
 | APH | 63 | 🟠 2 | 17.04.2026 | Q2 2026 Earnings 23.07. (FLAG aktiv) |
 | COST | 69 | 🟡 3 | 17.04.2026 | Q1 FY27 Earnings ~Dez 2026 |
 
@@ -139,4 +140,4 @@ Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · 
 
 ---
 
-*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 28.04.2026 (V Q2 FY26 Beat-Cascade D2→D3 + Sparraten-Kaskade Nenner 7,5→8,0) | Nächste Vollaktualisierung: 17.07.2026*
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 28.04.2026 spätabends (V Rescoring-Revert nach Codex-HIGH-1+HIGH-2 — D3→D2 + Sparraten-Kaskade Nenner 8,0→7,5) | Nächste Vollaktualisierung: 17.07.2026*

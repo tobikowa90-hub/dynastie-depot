@@ -8,7 +8,6 @@
 - [SESSION-HANDOVER.md](SESSION-HANDOVER.md) — Session-Banner-Chronik
 
 ## ⚠️ Critical-Alerts (≤ 10 Tage — handgepflegt)
-- **28.04.** V Q2 FY26 — D2-Entscheidung (Technicals-Reversal?)
 - **29.04.** MSFT Q3 FY26 — FLAG-Review (CapEx/OCF bereinigt <60% = Auflösung)
 
 ## Navigation (on-demand)
