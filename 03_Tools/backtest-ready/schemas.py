@@ -316,10 +316,12 @@ class ScoreRecord(BaseModel):
 
     @model_validator(mode="after")
     def _check_forward_version(self) -> ScoreRecord:
-        """Forward-Records müssen v3.7 deklarieren; Backfill ist frei."""
-        if self.source == "forward" and self.defcon_version != "v3.7":
+        """Forward-Records müssen aktive DEFCON-Version deklarieren; Backfill ist frei."""
+        from versions import DEFCON_ACTIVE_VERSION
+        if self.source == "forward" and self.defcon_version != DEFCON_ACTIVE_VERSION:
             raise ValueError(
-                f"forward record must use defcon_version 'v3.7', got '{self.defcon_version}'"
+                f"forward record must use defcon_version '{DEFCON_ACTIVE_VERSION}', "
+                f"got '{self.defcon_version}'"
             )
         return self
 
