@@ -2,15 +2,26 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+**Plan-Version:** v3 (Refresh 2026-04-28) — drift-patch + hardened carryover-policy + task-6-union-scope
+
 **Goal:** Fail-close Pipeline-Gate `P3.5` plus reduzierter Schema-Guard verhindern, dass Rescoring- oder unvollständige Forward-Runs als `analyse_typ="vollanalyse"` in `05_Archiv/score_history.jsonl` persistiert werden.
 
 **Architecture:** Variante E (Hybrid) — zwei disjunkte Schichten. Schicht B = neuer Pipeline-Helper `provenance_gate.py::check_provenance` (Eingabe: Pipeline-Zustand + Record + skill_meta), eingehängt in `backtest-ready-forward-verify` zwischen P2b und P3. Schicht D = neuer Pydantic-Validator `_check_vollanalyse_block_coverage` in `schemas.py::ScoreRecord` (minimale Plausibilität für Direkt-CLI an `archive_score.py`). Single-Source-of-Truth für DEFCON-Version in neuer `versions.py`.
 
 **Tech Stack:** Python 3.11+, Pydantic v2, `subprocess` für git, vorhandene Smoke-Test-Harness (kein pytest). Append-Pfad bleibt `archive_score.py` unverändert.
 
-**Spec:** `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`
+**Spec:** `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` (v2)
 
-**Non-Goals (aus Spec §3):** kein `--force`-Override, keine Schema-Migration der 27 existierenden Records, keine config.yaml-Erweiterung, keine INSTRUKTIONEN-§-Promotion (Applied-Learning-Stufe reicht bis 3-4 reale Anwendungen).
+**Non-Goals (aus Spec §3):** kein `--force`-Override, keine Schema-Migration der 28 existierenden Records, keine `01_Skills/dynastie-depot/config.yaml`-Erweiterung, keine INSTRUKTIONEN-§-Promotion (Applied-Learning-Stufe reicht bis 3-4 reale Anwendungen; §18.5 ist Sub-Section, kein neuer Top-Level-§).
+
+**Drift-Refresh-Note (v3 28.04.2026):** Plan v2 (21.04.) ist gegenüber dem aktuellen Repo-Stand 7 Tage gedriftet. v3 patcht:
+- Alle Code-Edit-Anker (Zeilen-Nummern in schemas.py, archive_score.py, SKILL.md, _smoke_test.py via Recon-Agents 28.04. verifiziert).
+- Pflicht-Touch-Files: STATE.md → PORTFOLIO.md überall (00_Core-Split 22.04., `REQUIRED_TOUCH_FILES = ("PORTFOLIO.md", "Faktortabelle.md", "log.md")` bereits in `_forward_verify_helpers.py`).
+- Baseline 27 → 28 Records (TMO Q1 23.04. = Record #28, ohne Gate appendiert, fungiert als Pre-Gate-Audit-Subjekt).
+- Task 6 (Go-Live-Doku) erweitert auf §18.2-Union-Scope: SYSTEM.md (NICHT STATE.md) + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log.md.
+- Schemas-Cases-Erwartung: 10 Pre-Cases (aktuell, inkl. Portfolio/Benchmark) + 4 D-Cases (D1-D4) = 14 Cases nach Task 2.
+- TMO-First-Live-Run-Hypothese gestrichen (Record #28 ist pre-gate; First-Live = nächste !Analysiere-Vollanalyse nach Deploy, V 28.04. oder MSFT 29.04.).
+- Carryover-Whitelist verschärft (Codex-HIGH 28.04.): Whole-Word-Source-Match + Source-Prefix + Terminal-Reason-Match statt naive Substring.
 
 ---
 
@@ -19,14 +30,14 @@
 | Datei | Aktion | Verantwortung |
 |---|---|---|
 | `03_Tools/backtest-ready/versions.py` | **NEU** | SSoT-Konstante `DEFCON_ACTIVE_VERSION` |
-| `03_Tools/backtest-ready/provenance_gate.py` | **NEU** | `check_provenance()` Pipeline-Gate (Schicht B) + Smoke-Tests |
+| `03_Tools/backtest-ready/provenance_gate.py` | **NEU** | `check_provenance()` Pipeline-Gate (Schicht B) + verschärfte Carryover-Whitelist + Smoke-Tests |
 | `03_Tools/backtest-ready/schemas.py` | Modifizieren | Refactor `_check_forward_version` auf `versions.py`; neuer Validator `_check_vollanalyse_block_coverage` (Schicht D); Smoke-Cases D1-D4 |
-| `01_Skills/backtest-ready-forward-verify/SKILL.md` | Modifizieren | Phase-Tabelle: P3.5 vor P3 einfügen; Report-Format Zeile P3.5; Version-Referenz auf `versions.py` |
+| `01_Skills/backtest-ready-forward-verify/SKILL.md` | Modifizieren | Phase-Tabelle: P3.5 vor P3 einfügen; Report-Format Zeile P3.5; Authoritative-Sources erweitern |
 | `01_Skills/backtest-ready-forward-verify/_smoke_test.py` | Modifizieren | Case 7 — Integrationstest fail-close P3.5, kein Archiv-Write |
-| `00_Core/STATE.md` | Modifizieren | System-Zustand-Eintrag: „Provenance-Gate aktiv seit YYYY-MM-DD" |
-| `00_Core/INSTRUKTIONEN.md §18` | Modifizieren | Sync-Pflicht-Zeile: Provenance-Gate als Teil der Append-Pipeline erwähnen |
-
-CORE-MEMORY §10 Audit-Log-Eintrag = Teil von Task 6 Go-Live (Spec §9 Alignment, Codex-Korrektur 21.04.).
+| `00_Core/SYSTEM.md` | Modifizieren | System-Zustand-Bullet: „Provenance-Gate aktiv seit YYYY-MM-DD" (Task 6.1, NICHT STATE.md) |
+| `00_Core/INSTRUKTIONEN.md` | Modifizieren | Neue §18.5 Provenance-Gate-Klausel + §18-Versionsbump v2.1→v2.2 (Task 6.2) |
+| `00_Core/CORE-MEMORY.md` | Modifizieren | §10 Audit-Log Go-Live-Eintrag (Task 6.3) |
+| `00_Core/log.md` | Append | §18.2-Union-Pflicht für System-Event (Task 6 Commit) |
 
 ---
 
@@ -34,7 +45,7 @@ CORE-MEMORY §10 Audit-Log-Eintrag = Teil von Task 6 Go-Live (Spec §9 Alignment
 
 **Files:** keine — read-only Validierung.
 
-**Rationale:** Codex-Review-Punkt 21.04. — bei fail-close hängt jeder neue Validator-Test an einer bekannt-sauberen Baseline. Drift-Migration `migrate_defcon_drift.py` lief am 21.04. Mittag (commit `ca76114`, 27/27 PASS). Wenn Plan in späterer Session executiert wird, könnten neue Records inzwischen wieder Drift introduziert haben (z.B. zwischen Migration und Execution archivierte Records). Pre-Check garantiert sauberen Boden für Tasks 1-6.
+**Rationale:** Bei fail-close hängt jeder neue Validator-Test an einer bekannt-sauberen Baseline. Drift-Migration `migrate_defcon_drift.py` lief 21.04. (commit `ca76114`, 27/27 PASS); seitdem ist TMO Q1 am 23.04. als Record #28 dazu gekommen. Plan v3 erwartet Pre-Check `28/28 PASS`. Wenn Plan in späterer Session executiert wird, könnten weitere Records dazu gekommen sein — Pre-Check zählt aktuell und prüft, dass alle Records gegen das aktuelle Schema validieren.
 
 - [ ] **Step 0.1: Re-Validate aller Records gegen aktuelles Schema**
 
@@ -59,7 +70,9 @@ for line_no, err in failed:
     print(f'  line {line_no}: {err}')
 "
 ```
-Expected: `PASS: N / FAIL: 0` (N = aktuelle Record-Anzahl, ≥27).
+Expected: `PASS: 28 / FAIL: 0` (Stand 28.04.2026 — TMO Q1 Record #28 ist appendiert).
+
+**TMO-Pre-Gate-Audit-Risiko (v3-Note):** Spec §10 markiert TMO-Record #28 als Pre-Gate-Audit-Subjekt. Wenn der Record im Pre-Check Block-Coverage-Validator (Task 2) failt, dann hat ein historischer Forward-Vollanalyse-Record unvollständige `metriken_roh` — entweder via separater Helper-Migration nachfüllen (eigener Commit vor Task 1) ODER `analyse_typ` retroaktiv auf `rescoring` umklassifizieren (eigener Commit vor Task 1). DANN Plan fortsetzen. Risiko ist gering (TMO-Record wurde am 23.04. mit Q1-Vollanalyse-Daten gefüllt, alle 5 quellen-Felder + alle 4 metriken_roh-Blöcke laut Handover-Verifikation), aber explizit auf der Pre-Check-Watchlist.
 
 - [ ] **Step 0.2: Bei FAIL — Migration nachholen, NICHT Tasks 1-6 starten**
 
@@ -80,7 +93,7 @@ Kein Code-Step — eine Zeile in der Execution-Session-Notiz. Falls Subagent-Dri
 
 **Files:**
 - Create: `03_Tools/backtest-ready/versions.py`
-- Modify: `03_Tools/backtest-ready/schemas.py:316-323` (Validator `_check_forward_version`)
+- Modify: `03_Tools/backtest-ready/schemas.py:317-324` (Validator `_check_forward_version`)
 
 **Rationale:** Single Source of Truth für `DEFCON_ACTIVE_VERSION`. Aktuell hard-coded `"v3.7"` in `schemas.py::_check_forward_version`. Provenance-Gate (Task 3) braucht dieselbe Konstante; ohne SSoT entstünden zwei Wartungs-Stellen für jede Version-Migration.
 
@@ -102,7 +115,7 @@ __all__ = ["DEFCON_ACTIVE_VERSION"]
 
 - [ ] **Step 1.2: Refactor `schemas.py::_check_forward_version`**
 
-Vorher (Zeilen 316-323):
+Vorher (Zeilen 317-324):
 ```python
     @model_validator(mode="after")
     def _check_forward_version(self) -> ScoreRecord:
@@ -133,7 +146,7 @@ Nachher:
 - [ ] **Step 1.3: Run existing schema smoke tests**
 
 Run: `python "03_Tools/backtest-ready/schemas.py"`
-Expected: `[OK] all schema smoke tests passed` (7/7 — keine Regression).
+Expected: `[OK] all schema smoke tests passed` (10 Cases — keine Regression; aktueller Stand inkl. PortfolioReturnRecord Cases 8/9 + BenchmarkReturnRecord Case 10 seit commit `404b057`).
 
 - [ ] **Step 1.4: Run archive_score smoke tests**
 
@@ -164,12 +177,15 @@ Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md �
 
 **Files:**
 - Modify: `03_Tools/backtest-ready/schemas.py` (Validator hinzufügen + Smoke-Cases D1-D4)
+- Modify (conditional): `03_Tools/backtest-ready/archive_score.py` (Test-Fixture-Update bei Regression)
 
-**Rationale:** Spec §5.3 + §8.2. Schicht D fängt Direkt-CLI-Aufrufe (`archive_score.py --file draft.json`), die Pipeline + Schicht B umgehen. Minimaler Anspruch: bei `source="forward"` + `analyse_typ="vollanalyse"` mindestens 1 Rohmetrik in jedem der 4 prüfbaren Score-Blöcke (`fundamentals`, `moat`, `technicals`, `sentiment`). `insider`-Block ist explizit ausgenommen (Roh-Felder existieren nicht in `metriken_roh`).
+**Rationale:** Spec §5.3 + §8.2. Schicht D fängt Direkt-CLI-Aufrufe (`archive_score.py --file draft.json`), die Pipeline + Schicht B umgehen. Minimaler Anspruch: bei `source="forward"` + `analyse_typ="vollanalyse"` mindestens 1 Rohmetrik in jedem der 4 prüfbaren Score-Blöcke (`fundamentals`, `moat`, `technicals`, `sentiment`). `insider`-Block ist explizit ausgenommen (Roh-Felder existieren nicht in `metriken_roh`). `technicals` prüft beide Field-Aliase (Dual-Naming-Defensive — Spec §5.3).
 
-- [ ] **Step 2.1: Failing test D1-D4 schreiben**
+**Anker-Verifikation (28.04.):** `class ScoreRecord` Z. 286, `_check_quality_trap` Z. 363-411, Insertion-Point für neuen Validator nach `_check_quality_trap`-Ende (Z. 411) und VOR `class FlagEvent` (Z. 418), also Z. 412-413. `class MetrikenRoh` Z. 224 (Felder Z. 230-265). `_smoke_tests()` aktuell mit 10 Cases (Z. 824-840), neue D-Cases werden ab Z. 841 angehängt.
 
-In `_smoke_tests()` von `schemas.py` nach Case 7 (vor `print("✅ all schema smoke tests passed")`) einfügen:
+- [ ] **Step 2.1: Failing tests D1-D4 schreiben**
+
+In `_smoke_tests()` von `schemas.py` nach Case 10 (vor `print("[OK] all schema smoke tests passed")`) einfügen:
 
 ```python
     # Case D1: vollanalyse mit min. 1 Rohmetrik in jedem geprüften Block → parses OK
@@ -221,7 +237,7 @@ In `_smoke_tests()` von `schemas.py` nach Case 7 (vor `print("✅ all schema smo
     print("  [D4] block-coverage: backfill skipped → parses OK")
 ```
 
-- [ ] **Step 2.2: Run tests — D1 passes, D2 fails (validator nicht implementiert), D3+D4 pass**
+- [ ] **Step 2.2: Run tests — D2 muss AssertionError raisen (Validator nicht implementiert)**
 
 Run: `python "03_Tools/backtest-ready/schemas.py"`
 Expected: D2 schlägt fehl mit `expected block-coverage ValidationError` → `AssertionError`. D1/D3/D4 laufen versehentlich PASS, weil der Validator noch nicht existiert (D1 ist sowieso valid, D3/D4 sollten skippen — aber Skip ist Default ohne Validator).
@@ -230,7 +246,7 @@ Wenn D1 PASS aber D2 raise AssertionError: Fail-Signal stimmt — weiter zu Step
 
 - [ ] **Step 2.3: Validator implementieren**
 
-In `schemas.py::ScoreRecord` nach `_check_quality_trap` (nach Zeile 410, vor Class-Ende auf Zeile 411) einfügen:
+In `schemas.py::ScoreRecord` zwischen `_check_quality_trap`-Ende (Z. 411) und `class FlagEvent` (Z. 418) einfügen (Insertion-Point Z. 412-413):
 
 ```python
     @model_validator(mode="after")
@@ -243,6 +259,9 @@ In `schemas.py::ScoreRecord` nach `_check_quality_trap` (nach Zeile 410, vor Cla
 
         insider-Block ausgenommen: Roh-Felder existieren nicht in MetrikenRoh
         (alle Insider-Daten sind Sub-Scores, keine Rohwerte).
+
+        technicals-Block prüft BEIDE Alias-Felder (rel_strength_sp500_6m_pct +
+        rel_staerke_sp500_6m_pct) defensiv ggü. _sync_rel_staerke_alias.
 
         KEIN Freshness-Beweis-Anspruch (das macht Schicht B in provenance_gate.py).
         Backfill + rescoring + delta werden übersprungen.
@@ -261,7 +280,9 @@ In `schemas.py::ScoreRecord` nach `_check_quality_trap` (nach Zeile 410, vor Cla
             ),
             "moat": ("gm_trend_3j_pct_p_a",),
             "technicals": (
-                "rel_strength_sp500_6m_pct", "kurs_vs_200ma_pct", "ma200_slope",
+                # Dual-Naming-Defensive: any() prüft beide Alias-Felder direkt
+                "rel_strength_sp500_6m_pct", "rel_staerke_sp500_6m_pct",
+                "kurs_vs_200ma_pct", "ma200_slope",
             ),
             # insider: Roh-Metriken nicht in metriken_roh → skip im Loop unten
             "sentiment": (
@@ -285,17 +306,17 @@ In `schemas.py::ScoreRecord` nach `_check_quality_trap` (nach Zeile 410, vor Cla
         return self
 ```
 
-- [ ] **Step 2.4: Run tests — alle 11 Cases müssen PASS**
+- [ ] **Step 2.4: Run tests — alle 14 Cases müssen PASS**
 
 Run: `python "03_Tools/backtest-ready/schemas.py"`
-Expected: `[OK] all schema smoke tests passed` mit 11 Output-Zeilen (1-7 vorher + D1-D4).
+Expected: `[OK] all schema smoke tests passed` mit 14 Output-Zeilen (10 Pre-Cases + D1-D4).
 
 - [ ] **Step 2.5: Regression-Check archive_score + skill smoke**
 
 Run: `python "03_Tools/backtest-ready/archive_score.py"` → `5/5 passed`
 Run: `python "01_Skills/backtest-ready-forward-verify/_smoke_test.py"` → `6/6 passed`
 
-Falls einer fehlschlägt: das in `_smoke_test.py` `_build_minimal_record` benutzt `source="backfill"` (Zeile 105) → `_check_vollanalyse_block_coverage` skipt → kein Konflikt. archive_score `_build_valid_forward_record` setzt `metriken_roh` mit `fwd_pe`, `p_fcf`, `operating_margin_ttm_pct` → Block fundamentals befüllt; aber `gm_trend_3j_pct_p_a` (moat) ist nicht gesetzt — **Regression-Risiko**.
+`_smoke_test.py::_build_minimal_record` benutzt `source="backfill"` → `_check_vollanalyse_block_coverage` skipt → kein Konflikt. `archive_score.py::_build_valid_forward_record` (Funktionsstart Z. 281, `metriken_roh`-Block Z. 352-356) setzt heute nur `fwd_pe`, `p_fcf`, `operating_margin_ttm_pct` → fundamentals befüllt; `gm_trend_3j_pct_p_a` (moat) / `rel_strength_sp500_6m_pct` (technicals) / `eps_revisions_up_90d` (sentiment) **nicht gesetzt** — **Regression-Risiko in 4 von 5 archive_score-Cases.**
 
 **Wenn archive_score Test 1/3/4/5 fehlschlagen mit "block-coverage violation":** `_build_valid_forward_record` in `archive_score.py:352-356` ergänzen:
 
@@ -331,10 +352,14 @@ git commit -m "feat(backtest-ready): Schicht D Block-Coverage-Validator (Provena
 ScoreRecord._check_vollanalyse_block_coverage prüft bei forward+vollanalyse,
 dass jeder der 4 Blöcke (fundamentals/moat/technicals/sentiment) mindestens
 1 Rohmetrik enthält. insider-Block ausgenommen (keine Roh-Felder in
-MetrikenRoh). Schmaler Schema-Guard für Direkt-CLI an archive_score.py;
-KEIN Freshness-Beweis-Anspruch (das macht Schicht B in Task 3).
+MetrikenRoh). technicals-Block prüft beide Alias-Felder
+(rel_strength_sp500_6m_pct + rel_staerke_sp500_6m_pct) defensiv ggü.
+_sync_rel_staerke_alias. Schmaler Schema-Guard für Direkt-CLI an
+archive_score.py; KEIN Freshness-Beweis-Anspruch (das macht Schicht B
+in Task 3).
 
-Test-Cases D1-D4 in schemas.py::_smoke_tests neu (11/11 passing).
+Test-Cases D1-D4 in schemas.py::_smoke_tests neu (14/14 passing,
+10 Pre-Cases + 4 D-Cases).
 archive_score._build_valid_forward_record metriken_roh um 3 Felder ergänzt
 (gm_trend, rel_strength, eps_revisions_up) damit fixture die neue
 Block-Coverage-Regel erfüllt.
@@ -365,7 +390,7 @@ for line_no, err in failed:
     print(f'  line {line_no}: {err}')
 "
 ```
-Expected: identisch zu Pre-Check `FAIL: 0`. Block-Coverage skippt backfill + rescoring + delta — die 3 Forward-Vollanalyse-Records (V_vollanalyse 17.04. nach Drift-Migration, V_rescoring 18.04., TMO_vollanalyse 18.04.) müssen alle befüllte Blöcke haben. Wenn FAIL: bedeutet historisch archivierter Forward-Vollanalyse-Record hat unvollständige `metriken_roh` — entweder via separater Helper-Migration nachfüllen ODER `analyse_typ` retroaktiv auf `rescoring` umklassifizieren (separater Commit), DANN Plan fortsetzen.
+Expected: identisch zu Pre-Check `28/28 PASS, FAIL: 0`. Block-Coverage skippt backfill + rescoring + delta — die Forward-Vollanalyse-Records (V_vollanalyse 17.04. nach Drift-Migration, V_rescoring 18.04. = rescoring/skip, TMO_vollanalyse 18.04., **TMO_vollanalyse 23.04. Record #28**, ggf. weitere) müssen alle befüllte Blöcke haben. **Insbesondere TMO Q1 23.04. Record #28** muss durchgehen (Pre-Gate-Audit-Subjekt — laut Spec §10 + Handover-Verifikation alle 5 quellen + 4 metriken_roh-Blöcke befüllt). Wenn FAIL: bedeutet historisch archivierter Forward-Vollanalyse-Record hat unvollständige `metriken_roh` — entweder via separater Helper-Migration nachfüllen ODER `analyse_typ` retroaktiv auf `rescoring` umklassifizieren (separater Commit), DANN Plan fortsetzen.
 
 §27.4-Pflicht (INSTRUKTIONEN 21.04. Erweiterung): bei jedem Schema-Validator-Hinzufüg-Commit Re-Validate-Sweep über alle persistierten Records, „N/M PASS" explizit ausschreiben, niemals weichgespültes „läuft".
 
@@ -378,7 +403,12 @@ Expected: identisch zu Pre-Check `FAIL: 0`. Block-Coverage skippt backfill + res
 
 **Rationale:** Spec §5.2 + §8.1. Schicht B kombiniert Pipeline-Kontext (Freshness-Ergebnis aus P2a) mit Record-Behauptungen + skill_meta. Acht Checks fail-close in Reihenfolge. Wird in Task 4 von SKILL.md als Phase P3.5 zwischen P2b und P3 aufgerufen.
 
-**Granularitäts-Hinweis (Codex 21.04.):** Originaler Step 3.1 enthielt ~250 LOC in einem Block. Aufgesplittet in 3.1a (Skeleton+Constants+Helper) / 3.1b (check_provenance Body) / 3.1c (Smoke-Tests Cases 1-5) / 3.1d (Smoke-Tests Cases 6-9), je 2-5 Min editierbar.
+**Carryover-Whitelist verschärft (Codex-HIGH 28.04., Spec v2 §5.2):** Statt naiver Substring-Whitelist (Bypass via `pre_gate_xyzzy_carryover`) jetzt:
+- Source-Tokens als Whole-Word im Stem (split auf `_`)
+- Source-Prefixes (`ir_`)
+- Reason-Tokens nur am Stem-Ende (terminal)
+
+**Granularitäts-Hinweis:** Originaler Step 3.1 enthielt ~250 LOC in einem Block. Aufgesplittet in 3.1a (Skeleton+Constants+Helper) / 3.1b (check_provenance Body) / 3.1c (Smoke-Tests Cases 1-5) / 3.1d (Smoke-Tests Cases 6-9 inkl. Carryover-Bypass-Tests), je 2-5 Min editierbar.
 
 - [ ] **Step 3.1a: Skeleton + Constants + `_is_placeholder` Helper schreiben**
 
@@ -415,6 +445,21 @@ PLATZHALTER_BLACKLIST: Final[frozenset[str]] = frozenset({
     "unknown", "tbd", "todo", "placeholder", "none", "na", "n/a", "?",
 })
 
+# Source-Tokens: echte Datenquellen, müssen als Whole-Word im Stem vorkommen
+CARRYOVER_SOURCE_TOKENS: Final[frozenset[str]] = frozenset({
+    "gurufocus", "defeatbeta", "shibui", "openinsider", "sec_edgar",
+    "yahoo", "zacks", "yfinance", "alphaspread", "tavily",
+    "stocktitan", "benzinga", "afm", "amf", "eodhd",
+})
+
+# Source-Prefixes: dynamische Source-Familien (Company-IR-Pages)
+CARRYOVER_SOURCE_PREFIXES: Final[tuple[str, ...]] = ("ir_",)
+
+# Reason-Tokens: Workflow-Begründungen, müssen am Stem-Ende stehen (terminal)
+CARRYOVER_REASON_TERMINAL: Final[frozenset[str]] = frozenset({
+    "skip_window", "pre_score", "pre_gate", "bridge", "carry_from",
+})
+
 QUELLEN_PFLICHT_FELDER: Final[tuple[str, ...]] = (
     "fundamentals", "technicals", "insider", "moat", "sentiment",
 )
@@ -423,16 +468,50 @@ _RE_QUESTION_MARKS = re.compile(r"\?+")
 
 
 def _is_placeholder(value: str) -> bool:
-    """True wenn value (case-insensitive, getrimmt) ein Platzhalter ist."""
+    """True wenn value ein Platzhalter ist. Carryover-Whitelist v2 (Codex-HIGH-Hardening 28.04.).
+
+    - PLATZHALTER_BLACKLIST → True.
+    - Pure `?+` → True.
+    - `*_carryover` → False (akzeptiert) NUR wenn:
+      (a) Stem enthält Source-Token als Whole-Word (split auf `_`); ODER
+      (b) Stem startet mit Source-Prefix; ODER
+      (c) Stem endet auf Reason-Token (terminal).
+    """
     stripped = value.strip().lower()
     if stripped in PLATZHALTER_BLACKLIST:
         return True
-    return bool(_RE_QUESTION_MARKS.fullmatch(stripped))
+    if _RE_QUESTION_MARKS.fullmatch(stripped):
+        return True
+    if not stripped.endswith("_carryover"):
+        return False  # kein Carryover, kein Platzhalter
+
+    stem = stripped[: -len("_carryover")]
+    if not stem:
+        return True  # bare "_carryover"
+
+    # (a) Source-Token als Whole-Word
+    stem_tokens = stem.split("_")
+    if any(t in CARRYOVER_SOURCE_TOKENS for t in stem_tokens):
+        return False
+
+    # (b) Source-Prefix
+    if any(stem.startswith(p) for p in CARRYOVER_SOURCE_PREFIXES):
+        return False
+
+    # (c) Reason-Token terminal
+    for r in CARRYOVER_REASON_TERMINAL:
+        if stem == r or stem.endswith("_" + r):
+            return False
+
+    return True  # Carryover ohne anerkannten Stamm
 
 
 __all__ = [
     "DEFCON_ACTIVE_VERSION",
     "PLATZHALTER_BLACKLIST",
+    "CARRYOVER_SOURCE_TOKENS",
+    "CARRYOVER_SOURCE_PREFIXES",
+    "CARRYOVER_REASON_TERMINAL",
     "QUELLEN_PFLICHT_FELDER",
     "check_provenance",
 ]
@@ -463,7 +542,7 @@ def check_provenance(
     Args:
         record_dict: ScoreRecord als dict (vor Pydantic-Validation).
         freshness_missing: Liste der nicht-modifizierten REQUIRED_TOUCH_FILES
-            aus check_freshness() in P2a.
+            aus check_freshness() in P2a (PORTFOLIO.md / Faktortabelle.md / log.md).
         skill_meta: optional dict mit migration-Info; None oder {} = leer.
 
     Returns:
@@ -509,7 +588,7 @@ def check_provenance(
             f"defcon_version '{record_version}' drift vs. active '{DEFCON_ACTIVE_VERSION}'"
         ]
 
-    # Check #7: Platzhalter in den 5 Pflicht-quellen-Feldern
+    # Check #7: Platzhalter in den 5 Pflicht-quellen-Feldern (mit Carryover-Whitelist)
     quellen = record_dict.get("quellen") or {}
     for field in QUELLEN_PFLICHT_FELDER:
         value = quellen.get(field, "")
@@ -568,13 +647,13 @@ def _smoke_tests() -> None:
     assert passed and reasons == [], f"[1] expected pass, got {passed} {reasons}"
     print("  [1/9] valid vollanalyse + fresh session -> pass")
 
-    # Case 2: vollanalyse + freshness_missing=["STATE.md"] → fail
+    # Case 2: vollanalyse + freshness_missing=["PORTFOLIO.md"] → fail
     rec = _build_valid_vollanalyse()
-    passed, reasons = check_provenance(rec, ["STATE.md"], None)
+    passed, reasons = check_provenance(rec, ["PORTFOLIO.md"], None)
     assert not passed, "[2] expected fail"
     assert "vollanalyse requires fresh session" in reasons[0], f"[2] {reasons}"
-    assert "STATE.md" in reasons[0], f"[2] STATE.md not in reason: {reasons}"
-    print("  [2/9] vollanalyse + missing STATE.md -> fail")
+    assert "PORTFOLIO.md" in reasons[0], f"[2] PORTFOLIO.md not in reason: {reasons}"
+    print("  [2/9] vollanalyse + missing PORTFOLIO.md -> fail")
 
     # Case 3: vollanalyse + kurs.referenz='close_2026-04-15' (stale) → fail
     rec = _build_valid_vollanalyse()
@@ -618,7 +697,7 @@ if __name__ == "__main__":
 
 Lauf-Check: `python "03_Tools/backtest-ready/provenance_gate.py"` → 5 PASS-Zeilen + „[partial] Cases 1-5 grün".
 
-- [ ] **Step 3.1d: Smoke-Test Cases 6-9 einfügen + final smoke-message**
+- [ ] **Step 3.1d: Smoke-Test Cases 6-9 + Carryover-Bypass-Tests einfügen**
 
 In `_smoke_tests()` den Block `# (Cases 6-9 folgen ...)` und `print("[partial] ...")` ersetzen durch:
 
@@ -627,7 +706,7 @@ In `_smoke_tests()` den Block `# (Cases 6-9 folgen ...)` und `print("[partial] .
     rec = _build_valid_vollanalyse()
     rec["source"] = "backfill"
     rec["analyse_typ"] = "vollanalyse"
-    passed, reasons = check_provenance(rec, ["STATE.md", "log.md"], None)
+    passed, reasons = check_provenance(rec, ["PORTFOLIO.md", "log.md"], None)
     assert passed and reasons == [], f"[6] backfill should skip, got {passed} {reasons}"
     print("  [6/9] backfill skipped -> pass")
 
@@ -639,18 +718,65 @@ In `_smoke_tests()` den Block `# (Cases 6-9 folgen ...)` und `print("[partial] .
     assert "drift vs. active" in reasons[0] and "v3.5" in reasons[0], f"[7] {reasons}"
     print("  [7/9] defcon_version drift -> fail")
 
-    # Case 8: quellen.insider='unknown' → fail (+ Variants)
+    # Case 8: Platzhalter-Tests inkl. Carryover-Whitelist (Codex-HIGH-Hardening)
+    # 8a: 'unknown' → fail
     rec = _build_valid_vollanalyse()
     rec["quellen"]["insider"] = "unknown"
     passed, reasons = check_provenance(rec, [], None)
     assert not passed, "[8a] expected fail"
     assert "placeholder source" in reasons[0] and "insider" in reasons[0], f"[8a] {reasons}"
+
+    # 8b: Variants TBD/?/N/A/PLACEHOLDER → all fail
     for placeholder in ("TBD", "?", "  N/A  ", "PLACEHOLDER"):
         rec_v = _build_valid_vollanalyse()
         rec_v["quellen"]["fundamentals"] = placeholder
         passed_v, reasons_v = check_provenance(rec_v, [], None)
         assert not passed_v, f"[8b:{placeholder!r}] expected fail"
-    print("  [8/9] placeholder in quellen -> fail (incl. case/whitespace variants)")
+
+    # 8c: 'gurufocus_carryover' (legitimer Source-Token whole-word) → pass
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = "gurufocus_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[8c] gurufocus_carryover should pass, got {reasons}"
+
+    # 8d: 'xyzzy_carryover' (kein anerkannter Stamm) → fail
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = "xyzzy_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[8d] xyzzy_carryover should fail"
+    assert "placeholder source" in reasons[0], f"[8d] {reasons}"
+
+    # 8e: 'skip_window_delta_lt_14d_pre_score_carryover' (Reason terminal) → pass
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = "skip_window_delta_lt_14d_pre_score_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[8e] reason-terminal carryover should pass, got {reasons}"
+
+    # 8f: 'pre_gate_xyzzy_carryover' (Reason NICHT terminal — Codex-HIGH-Bypass-Test) → fail
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = "pre_gate_xyzzy_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[8f] reason-not-terminal carryover should FAIL (Codex-HIGH bypass)"
+
+    # 8g: 'bridge_carryover' (Reason als kompletter Stem) → pass
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = "bridge_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[8g] bridge_carryover should pass, got {reasons}"
+
+    # 8h: 'ir_apple_carryover' (Source-Prefix) → pass
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = "ir_apple_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[8h] ir_-prefix carryover should pass, got {reasons}"
+
+    # 8i: 'gurufocusxyz_carryover' (kein Whole-Word-Match) → fail
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = "gurufocusxyz_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[8i] gurufocusxyz_carryover should fail (no whole-word match)"
+
+    print("  [8/9] placeholder + carryover whitelist (8a-8i) -> all checks pass")
 
     # Case 9: skill_meta.migration_to_version inconsistent → fail
     rec = _build_valid_vollanalyse()
@@ -670,16 +796,16 @@ In `_smoke_tests()` den Block `# (Cases 6-9 folgen ...)` und `print("[partial] .
 
 Lauf-Check folgt in Step 3.2.
 
-- [ ] **Step 3.2: Run — alle 9 Cases müssen PASS**
+- [ ] **Step 3.2: Run — alle 9 Cases müssen PASS (inkl. 8a-8i Carryover-Bypass-Coverage)**
 
 Run: `python "03_Tools/backtest-ready/provenance_gate.py"`
 Expected: `✅ all provenance_gate smoke tests passed (9/9)` mit 9 PASS-Zeilen.
 
-Wenn ein Test fehlschlägt: Logik in `check_provenance` an dem entsprechenden Check-Block prüfen. Kein neuer Plan-Step — Fix iterativ einarbeiten, bis 9/9 grün.
+Wenn ein Test fehlschlägt: Logik in `check_provenance` oder `_is_placeholder` an dem entsprechenden Check-Block prüfen. Insbesondere bei 8f (Codex-HIGH-Bypass): bedeutet die verschärfte Carryover-Whitelist greift nicht — Reason-Terminal-Logik in `_is_placeholder` reviewen. Kein neuer Plan-Step — Fix iterativ einarbeiten, bis 9/9 grün.
 
 - [ ] **Step 3.3: Regression-Check — alle bestehenden Tests grün?**
 
-Run: `python "03_Tools/backtest-ready/schemas.py"` → `[OK] all schema smoke tests passed`
+Run: `python "03_Tools/backtest-ready/schemas.py"` → `[OK] all schema smoke tests passed` (14/14)
 Run: `python "03_Tools/backtest-ready/archive_score.py"` → `5/5 passed`
 Run: `python "01_Skills/backtest-ready-forward-verify/_smoke_test.py"` → `6/6 passed`
 
@@ -699,8 +825,12 @@ fail-close in Reihenfolge:
   4. rescoring braucht skill_meta für Δ-Gate
   5. delta ist forward-only
   6. defcon_version == versions.DEFCON_ACTIVE_VERSION
-  7. Keine Platzhalter in den 5 Pflicht-quellen-Feldern
+  7. Keine Platzhalter in den 5 Pflicht-quellen-Feldern (mit Carryover-Whitelist)
   8. skill_meta.migration_to_version konsistent mit record.defcon_version
+
+Carryover-Whitelist (Codex-HIGH-Hardening): Source-Tokens als Whole-Word,
+Source-Prefixes (ir_), Reason-Tokens nur terminal — verhindert Bypass via
+'pre_gate_xyzzy_carryover' u.ä. Tests 8c-8i decken Bypass-Coverage ab.
 
 Smoke-Tests 9/9 grün. Caller-Integration in SKILL.md als Phase P3.5
 folgt in Task 4. Kein Direkt-CLI — Library-Funktion only.
@@ -713,19 +843,21 @@ Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md �
 ## Task 4: SKILL.md Update — Phase P3.5 vor P3 einhängen
 
 **Files:**
-- Modify: `01_Skills/backtest-ready-forward-verify/SKILL.md` (Phase-Tabelle + Pipeline-Diagramm + Section P3.5 neu + Report-Format)
+- Modify: `01_Skills/backtest-ready-forward-verify/SKILL.md` (Phase-Tabelle + Section P3.5 neu + Report-Format + Authoritative-Sources)
 
 **Rationale:** Spec §5.4. SKILL.md ist die Orchestration-Vorschrift, die der Skill-Aufrufer (`dynastie-depot` Schritt 7) sequenziell abarbeitet. P3.5 muss vor P3 stehen — Spec §4.3: P3 kann mit `skill_meta`-Parse-Fehler abbrechen, ohne dass P3.5 lief; das ist genau der Bypass, den wir schließen.
 
-- [ ] **Step 4.1: Phase-Tabelle (Section 4) erweitern**
+**Anker-Verifikation (28.04.):** Phase-Tabelle Z. 96-107, P3-Section-Header Z. 145, Stdout-Report-Section-Header Z. 195 (Error-Zeile mit `<P1|P2b|P4|P5|P6>` Z. 214-216), Authoritative-Sources-Tabelle Z. 50-60 (Insertion-Point neuer Einträge Z. 61). **Hinweis:** SKILL.md Z. 102 zeigt bereits `parse_state_row(ticker, PORTFOLIO.md)` — kein STATE→PORTFOLIO-Patch in Task 4 nötig (war in Plan v2 implizit angenommen, ist redundant). Task 4.1 in Plan v3 deshalb schmaler: nur reine P3.5-Phase-Einfügung in Tabelle.
 
-Vorher (Zeilen 92-100 von SKILL.md):
+- [ ] **Step 4.1: Phase-Tabelle (Section 4, Z. 96-107) erweitern**
+
+Vorher (aktueller Stand):
 ```
 | Phase | Name | Helper / Tool | Exit bei Fehler |
 |-------|------|---------------|-----------------|
 | P1 | Draft-Read + Parse | `parse_wrapper(args)` | FAIL P1 |
 | P2a | Freshness-Check | `check_freshness(repo_root)` | Warnung (nicht blockierend) |
-| P2b | Tripwire | `parse_state_row(ticker, STATE.md)` | FAIL P2b |
+| P2b | Tripwire | `parse_state_row(ticker, PORTFOLIO.md)` | FAIL P2b |
 | P3 | Δ-Gate (conditional) | `build_migration_event(skill_meta, forward_score)` | STOP signal (nicht blockierend) |
 | P4 | Dry-Run | `archive_score.py --file <draft> --dry-run` | FAIL P4 |
 | P5 | Real Append | `archive_score.py --file <draft>` | FAIL P5 |
@@ -738,7 +870,7 @@ Nachher:
 |-------|------|---------------|-----------------|
 | P1 | Draft-Read + Parse | `parse_wrapper(args)` | FAIL P1 |
 | P2a | Freshness-Check | `check_freshness(repo_root)` | Warnung (nicht blockierend) |
-| P2b | Tripwire | `parse_state_row(ticker, STATE.md)` | FAIL P2b |
+| P2b | Tripwire | `parse_state_row(ticker, PORTFOLIO.md)` | FAIL P2b |
 | **P3.5** | **Provenance-Gate** | **`check_provenance(record_dict, freshness_missing, skill_meta)`** | **FAIL P3.5 (fail-close, kein Archiv-Write)** |
 | P3 | Δ-Gate (conditional) | `build_migration_event(skill_meta, forward_score)` | STOP signal (nicht blockierend) |
 | P4 | Dry-Run | `archive_score.py --file <draft> --dry-run` | FAIL P4 |
@@ -750,7 +882,7 @@ Nachher:
 
 - [ ] **Step 4.2: Neue Section "P3.5 — Provenance-Gate" zwischen P2b und P3 einfügen**
 
-Nach der bestehenden P2b-Section (endet auf Zeile 135 mit "Bei jedem `FAIL phase=P2b`: ..."), VOR der P3-Section (beginnt auf Zeile 137 mit `### P3 — Algebra-Δ-Gate (conditional)`), folgenden Block einfügen:
+Insertion-Point: Z. 144 (vor `### P3 — Algebra-Δ-Gate (conditional)` Z. 145). Folgenden Block einfügen:
 
 ```markdown
 ### P3.5 — Provenance-Gate (fail-close)
@@ -777,15 +909,15 @@ Acht Checks fail-close in Reihenfolge (Spec §5.2):
 4. `analyse_typ="rescoring"` aber `skill_meta` leer → FAIL.
 5. `analyse_typ="delta"` aber `source != "forward"` → FAIL.
 6. `defcon_version != versions.DEFCON_ACTIVE_VERSION` → FAIL.
-7. Platzhalter (`unknown`/`tbd`/`todo`/`?` etc., case-insensitive) in einem der 5 Pflicht-`quellen`-Felder → FAIL.
+7. Platzhalter (`unknown`/`tbd`/`todo`/`?` etc., case-insensitive) in einem der 5 Pflicht-`quellen`-Felder → FAIL. Carryover-Suffixe (`*_carryover`) sind über Whitelist akzeptiert: Source-Token als Whole-Word (`gurufocus_carryover`), Source-Prefix (`ir_apple_carryover`), Reason-Token terminal (`skip_window_..._pre_score_carryover`). Naive Kombinationen wie `pre_gate_xyzzy_carryover` werden abgelehnt.
 8. `skill_meta` vorhanden + `skill_meta["migration_to_version"] != record.defcon_version` → FAIL (recycled meta).
 
 Recovery siehe Spec §7.2 Recovery-Matrix. Kein `--force`-Flag — Provenance-Verletzungen werden via Workflow-Korrektur gelöst (Daten ergänzen / `analyse_typ` umklassifizieren).
 ```
 
-- [ ] **Step 4.3: Report-Format Section 6 erweitern — neue P3.5-FAIL-Zeile**
+- [ ] **Step 4.3: Report-Format Section erweitern — neue P3.5-FAIL-Zeile**
 
-Vorher (Zeilen 206-209):
+Vorher (Z. 195 Section-Header, Z. 214-216 Error-Zeile):
 ```
 **Bei Fehler (Exit 1 oder 2):**
 ```
@@ -802,14 +934,14 @@ FAIL phase=<P1|P2b|P3.5|P4|P5|P6> reason="<Fehlermeldung>"
 P3.5-Beispiele: `FAIL phase=P3.5 reason="vollanalyse requires fresh session (missing: ['log.md']); reclassify as rescoring or complete workflow"`.
 ```
 
-- [ ] **Step 4.4: Authoritative-Sources-Tabelle (Section 2) erweitern**
+- [ ] **Step 4.4: Authoritative-Sources-Tabelle (Section 2, Z. 50-60) erweitern**
 
-In der Tabelle (Zeilen 46-54) nach der bestehenden `_forward_verify_helpers.py`-Zeile diese drei Zeilen einfügen:
+Insertion-Point Z. 61 (direkt nach der bestehenden Tabelle). Drei neue Zeilen am Tabellenende einfügen:
 
 ```
-| `03_Tools/backtest-ready/provenance_gate.py::check_provenance` | Schicht B Pipeline-Gate (P3.5), 8 Checks fail-close |
+| `03_Tools/backtest-ready/provenance_gate.py::check_provenance` | Schicht B Pipeline-Gate (P3.5), 8 Checks fail-close inkl. Carryover-Whitelist |
 | `03_Tools/backtest-ready/versions.py::DEFCON_ACTIVE_VERSION` | SSoT für aktive DEFCON-Version (Schicht B Check #6, schemas._check_forward_version) |
-| `03_Tools/backtest-ready/schemas.py::ScoreRecord._check_vollanalyse_block_coverage` | Schicht D Block-Coverage (4 Blöcke, insider ausgenommen) |
+| `03_Tools/backtest-ready/schemas.py::ScoreRecord._check_vollanalyse_block_coverage` | Schicht D Block-Coverage (4 Blöcke, insider ausgenommen, technicals dual-naming) |
 ```
 
 - [ ] **Step 4.5: Skill smoke tests laufen lassen (sollten weiter PASS bleiben)**
@@ -825,10 +957,11 @@ git commit -m "feat(skill): Phase P3.5 Provenance-Gate in backtest-ready-forward
 
 Phase-Tabelle erweitert um P3.5 zwischen P2b und P3 (vor Δ-Gate, da P3
 mit skill_meta-Parse-Fehler abbrechen kann und P3.5 sonst übersprungen
-würde). Neue Section 'P3.5 — Provenance-Gate' mit 8-Check-Tabelle und
-Aufruf-Pattern. Authoritative-Sources erweitert um provenance_gate.py +
-versions.py + schemas._check_vollanalyse_block_coverage. Report-Format
-Section 6 ergänzt um P3.5-FAIL-Zeile.
+würde). Neue Section 'P3.5 — Provenance-Gate' mit 8-Check-Tabelle,
+Aufruf-Pattern und Carryover-Whitelist-Hinweis. Authoritative-Sources
+erweitert um provenance_gate.py + versions.py +
+schemas._check_vollanalyse_block_coverage. Report-Format Section
+ergänzt um P3.5-FAIL-Zeile.
 
 Integration-Test (Caller simuliert Pipeline) folgt in Task 5.
 
@@ -844,9 +977,11 @@ Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md �
 
 **Rationale:** Spec §8.3 — bei fail-close hängt die Schutzwirkung an korrekt verdrahteter Pipeline. Unit-Tests einzelner Funktionen reichen nicht. Case 7 simuliert die SKILL.md-Orchestrierung in Python: P1 → P2a → P2b → P3.5, asserts fail-close (P3.5 returns passed=False, archive bleibt unverändert, P4/P5/P6 werden nicht aufgerufen).
 
+**Anker-Verifikation (28.04.):** `_smoke_test.py` nutzt bereits `PORTFOLIO_MD_FIXTURE` (Z. 39, umbenannt seit 22.04.). Imports Z. 180-186, CASES-Tupel Z. 498-505, Insertion-Point case_7 Z. 495. **Mock-Konvention (Spec §8.3):** Tests setzen `freshness_missing` direkt (synthetisch, ohne `check_freshness` zu instrumentieren) — wir testen die Gate-Logik, nicht den Helper-Output. Helper hängt an `REQUIRED_TOUCH_FILES = ("PORTFOLIO.md", "Faktortabelle.md", "log.md")` (`_forward_verify_helpers.py:25`).
+
 - [ ] **Step 5.1: Import erweitern**
 
-Vorher (Zeilen 180-190 in `_smoke_test.py`):
+Vorher (Z. 180-186):
 ```python
 try:
     from _forward_verify_helpers import (
@@ -877,14 +1012,14 @@ except ImportError as _imp_err:
     _IMPORT_ERROR = _imp_err
 ```
 
-- [ ] **Step 5.2: Case 7 nach Case 6 einfügen (vor `# Harness`-Trennlinie auf Zeile ~495)**
+- [ ] **Step 5.2: Case 7 nach Case 6 einfügen (vor `# Harness`-Trennlinie auf Z. 495)**
 
 ```python
 # ---------------------------------------------------------------------------
 # Case 7: Integration — P1 → P2a → P2b → P3.5 fail-close, no archive write
 # ---------------------------------------------------------------------------
 def case_7() -> None:
-    """Synthetischer vollanalyse-Draft mit Provenance-Fail (freshness_missing=['STATE.md']).
+    """Synthetischer vollanalyse-Draft mit Provenance-Fail (freshness_missing=['PORTFOLIO.md']).
     Asserts: P3.5 returns (False, reason), reason mentions vollanalyse+fresh,
     archive_score.py NICHT aufgerufen → Archiv-File unverändert.
     Spec §8.3: Integration-Test ist Pflicht (fail-close hängt an Pipeline-Verdrahtung).
@@ -928,15 +1063,16 @@ def case_7() -> None:
     assert skill_meta == {}
 
     # P2a (simulated): freshness_missing manuell setzen statt git-status zu mocken
-    # Spec §8.3: "freshness_missing=['STATE.md']" als Fail-Trigger.
-    freshness_missing = ["STATE.md"]
+    # Spec §8.3 Mock-Konvention: Tests mocken aus REQUIRED_TOUCH_FILES — wir testen
+    # Gate-Logik, nicht Helper-Output. Helper prüft PORTFOLIO/Faktortabelle/log.
+    freshness_missing = ["PORTFOLIO.md"]
 
-    # P2b: STATE-Tripwire (kein Konflikt — wir nutzen ZTS, das nicht im STATE_MD_FIXTURE ist)
+    # P2b: PORTFOLIO-Tripwire (kein Konflikt — wir nutzen ZTS, das nicht im
+    # PORTFOLIO_MD_FIXTURE ist; Caller würde "[tripwire: ticker 'ZTS' not in
+    # PORTFOLIO.md — new position]" emitten und weiter machen. Kein FAIL P2b.)
     try:
-        parse_state_row(ticker, STATE_MD_FIXTURE)
+        parse_state_row(ticker, PORTFOLIO_MD_FIXTURE)
     except (ValueError, KeyError):
-        # Erwartet: ZTS nicht in STATE.md → Caller würde "[tripwire: ticker 'ZTS' not in
-        # STATE.md — new position]" emitten und weiter machen. Kein FAIL P2b.
         pass
 
     # P3.5: hier muss fail-close greifen
@@ -950,7 +1086,7 @@ def case_7() -> None:
     assert "vollanalyse requires fresh session" in reasons[0], (
         f"reason should match Check #2: {reasons[0]!r}"
     )
-    assert "STATE.md" in reasons[0], f"missing-file detail in reason: {reasons[0]!r}"
+    assert "PORTFOLIO.md" in reasons[0], f"missing-file detail in reason: {reasons[0]!r}"
 
     # Verify: archive_score.py was NEVER called → real archive_history.jsonl unverändert.
     # We verify by snapshotting size before and after; case_7 must NOT subprocess archive_score.
@@ -968,7 +1104,7 @@ def case_7() -> None:
 
 - [ ] **Step 5.3: CASES-Tupel und run_all-Counter erweitern**
 
-Vorher (Zeilen 498-505 + 522-525):
+Vorher (Z. 498-505 + run_all-Counter):
 ```python
 CASES = [
     (1, "Wrapper-Parse-Helper basic", case_1),
@@ -1045,9 +1181,9 @@ Expected: keine Ausgabe (file unmodified). Falls modified → Test hat versehent
 git add "01_Skills/backtest-ready-forward-verify/_smoke_test.py"
 git commit -m "test(skill): Case 7 Integration-Test P3.5 fail-close (Provenance-Gate Task 5)
 
-Synthetischer vollanalyse-Draft mit freshness_missing=['STATE.md'] durchläuft
-P1 → P2a (simulated) → P2b (ZTS not in STATE.md = neuer Ticker, weiter) → P3.5.
-Asserts: passed=False, reason mentions vollanalyse+fresh+STATE.md,
+Synthetischer vollanalyse-Draft mit freshness_missing=['PORTFOLIO.md'] durchläuft
+P1 → P2a (simulated) → P2b (ZTS not in PORTFOLIO.md = neuer Ticker, weiter) → P3.5.
+Asserts: passed=False, reason mentions vollanalyse+fresh+PORTFOLIO.md,
 score_history.jsonl unverändert (kein archive_score-Aufruf).
 
 CASES-Counter dynamisch via len(CASES); 7/7 grün.
@@ -1057,70 +1193,92 @@ Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md �
 
 ---
 
-## Task 6: Documentation Go-Live — STATE.md + INSTRUKTIONEN §18 + CORE-MEMORY §10
+## Task 6: Documentation Go-Live — SYSTEM.md + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log.md
 
 **Files:**
-- Modify: `00_Core/STATE.md` (System-Zustand-Sektion)
-- Modify: `00_Core/INSTRUKTIONEN.md §18` (Sync-Pflicht-Zeile)
-- Modify: `00_Core/CORE-MEMORY.md §10` (Go-Live Audit-Log-Eintrag — Codex-Korrektur 21.04. gegenüber Plan v1)
+- Modify: `00_Core/SYSTEM.md` (System-Zustand-Bullet — NICHT STATE.md)
+- Modify: `00_Core/INSTRUKTIONEN.md` (neue §18.5 Sub-Section + §18-Versionsbump v2.1→v2.2)
+- Modify: `00_Core/CORE-MEMORY.md` §10 (Audit-Log Go-Live-Eintrag)
+- Append: `00_Core/log.md` (System-Event laut §18.2-Union-Pflicht)
 
-**Rationale:** Spec §9 markiert alle drei als „bei Go-Live". Go-Live = nach diesem Plan-Merge — der Gate ist mit dem letzten Commit live (P3.5 ist Teil der Pipeline). Codex-Review 21.04. korrigiert Plan v1: CORE-MEMORY §10-Eintrag gehört NICHT in den First-Live-Run, sondern in Task 6 (Spec-§9-Alignment). First-Live-Run bei TMO Q1 23.04.2026 produziert dann zusätzlich einen second §10-Eintrag mit dem konkreten First-Use-Result.
+**Rationale (Codex-HIGH-1 §18-Union-Scope-Resolution 28.04.):** §18 v2.1 ist event-typed (4 Event-Typen) + §18.2 Multi-Event-Union-Regel. Provenance-Gate Go-Live = **System-Event** (System-Zustand-Change → SYSTEM.md + log.md) + **Doku-Edits** (INSTRUKTIONEN-§18.5-Insertion + CORE-MEMORY-§10-Audit-Log). Sync-Set = Union: `SYSTEM.md + log.md + INSTRUKTIONEN.md + CORE-MEMORY.md`. **NICHT** STATE.md (das ist Hub seit 22.04.; System-Zustand liegt in SYSTEM.md). **NICHT** PIPELINE.md (kein Pipeline-Item-Change). **NICHT** PORTFOLIO.md (kein Score/FLAG/Sparraten-Change). **NICHT** Faktortabelle (kein ticker-spezifischer Score-Change). **NICHT** `01_Skills/dynastie-depot/config.yaml` (kein FLAG-Change). **NICHT** score_history.jsonl + flag_events.jsonl (kein Append durch Doku-Edit).
 
-Hinweis: Diese Markdown-Edits laufen direkt (kein Subagent — siehe Applied Learning Bullet 1: Subagents nur für Code+Tests).
+Hinweis: Diese Markdown-Edits laufen direkt (kein Subagent — Markdown-Sync ist nicht Karpathy-Code-Bereich).
 
-- [ ] **Step 6.1: STATE.md System-Zustand erweitern**
+- [ ] **Step 6.1: SYSTEM.md System-Zustand erweitern**
 
-In `00_Core/STATE.md` Section "## System-Zustand" — nach dem bestehenden `Forward-Verify-Pipeline via Skill`-Punkt (~Zeile 65) einen neuen Bullet einfügen:
+In `00_Core/SYSTEM.md` (System-Status-Datei seit 00_Core-Split 22.04.) — direkt nach dem bestehenden Forward-Verify-Pipeline-Bullet (kohärent platziert, beide score_history.jsonl-Pipeline) einen neuen Bullet einfügen:
 
 ```markdown
-- **Provenance-Gate aktiv** (seit YYYY-MM-DD, Schicht B + D): `provenance_gate.py::check_provenance` läuft als Phase P3.5 zwischen P2b und P3 in `backtest-ready-forward-verify`. Acht Checks fail-close (Backfill-Skip / Freshness / Kurs-Referenz / Skill-Meta-Pflicht / Delta-Forward / Version-Drift / Platzhalter / Recycled-Meta). Schema-Validator `_check_vollanalyse_block_coverage` als Schicht D gegen Direkt-CLI an `archive_score.py`. SSoT-Version in `versions.py::DEFCON_ACTIVE_VERSION`. Erste Live-Anwendung: TMO Q1 23.04.2026.
+- **Provenance-Gate aktiv** (seit YYYY-MM-DD, Schicht B + D): `provenance_gate.py::check_provenance` läuft als Phase P3.5 zwischen P2b und P3 in `backtest-ready-forward-verify`. Acht Checks fail-close (Backfill-Skip / Freshness / Kurs-Referenz / Skill-Meta-Pflicht / Delta-Forward / Version-Drift / Platzhalter+Carryover-Whitelist / Recycled-Meta). Schema-Validator `_check_vollanalyse_block_coverage` als Schicht D gegen Direkt-CLI an `archive_score.py`. SSoT-Version in `versions.py::DEFCON_ACTIVE_VERSION`.
 ```
 
 (Datum auf das tatsächliche Merge-Datum setzen, nicht hartcodieren.)
 
-- [ ] **Step 6.2: INSTRUKTIONEN §18 ergänzen**
+- [ ] **Step 6.2: INSTRUKTIONEN.md neue §18.5 als Sub-Section + §18-Versionsbump**
 
-In `00_Core/INSTRUKTIONEN.md §18` (Sync-Pflicht-Sektion) eine Klarstellungs-Zeile am Ende des §-Blocks anfügen:
+In `00_Core/INSTRUKTIONEN.md` als neue Sub-Section nach §18.4 (Stand-Footer-Konvention) einfügen:
 
 ```markdown
-**Provenance-Gate-Hinweis:** Score-Append läuft via `backtest-ready-forward-verify` Skill (Pipeline-Phase P3.5 fail-close). Bei `FAIL phase=P3.5` gibt es keinen `--force`-Bypass — Recovery durch Workflow-Korrektur (Pflicht-Touch-Files berühren / `analyse_typ` umklassifizieren / quellen-Felder mit echten Quellen befüllen / Versions-Drift via Migration-Pipeline lösen).
+### 18.5 Provenance-Gate für Score-Appends (seit YYYY-MM-DD, v3.7.4)
+
+Score-Append läuft via `backtest-ready-forward-verify` Skill, das nun Phase P3.5 (Provenance-Gate, fail-close) zwischen P2b und P3 ausführt. Bei `FAIL phase=P3.5` gibt es keinen `--force`-Bypass — Recovery durch Workflow-Korrektur (Pflicht-Touch-Files berühren / `analyse_typ` umklassifizieren / `quellen`-Felder mit echten Quellen oder legitimen `*_carryover`-Suffixen befüllen / Versions-Drift via Migration-Pipeline lösen). Carryover-Token-Whitelist in `03_Tools/backtest-ready/provenance_gate.py::CARRYOVER_SOURCE_TOKENS` + `CARRYOVER_SOURCE_PREFIXES` + `CARRYOVER_REASON_TERMINAL`.
+```
+
+Zusätzlich §18-Versionsgeschichte am Ende des §18-Blocks ergänzen:
+```markdown
+- v2.1 → v2.2 (YYYY-MM-DD): §18.5 Provenance-Gate-Klausel ergänzt.
 ```
 
 - [ ] **Step 6.3: CORE-MEMORY §10 Audit-Log Go-Live-Eintrag**
 
-In `00_Core/CORE-MEMORY.md §10` (Audit-Log-Sektion) am Ende einen neuen Eintrag anhängen:
+In `00_Core/CORE-MEMORY.md` §10 "API-Audit-Log" (Z. 277) am Ende einen neuen Eintrag anhängen. **Wahl §10 vs §11:** §10 = Audit-Log-Pattern, etabliertes Format, Provenance-Gate ist Audit-Mechanismus. §11 wäre semantisch näher zur Pipeline, aber §10 hat das passende Eintrags-Format.
 
 ```markdown
-### YYYY-MM-DD — Provenance-Gate Go-Live (Plan-Merge)
+### YYYY-MM-DD — Provenance-Gate Go-Live
 
-- **Was deployed:** P3.5 fail-close in `backtest-ready-forward-verify` (Schicht B `provenance_gate.py::check_provenance` mit 8 Checks) + Schicht D `ScoreRecord._check_vollanalyse_block_coverage` Validator + SSoT `versions.py::DEFCON_ACTIVE_VERSION`. Plan: `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md`. Spec: `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md`.
-- **Pre-Check vor Execution:** N/N PASS (siehe Task 0 Output).
-- **Smoke-Tests post-Execution:** schemas 11/11 + archive_score 5/5 + provenance_gate 9/9 + skill 7/7 (inkl. Case 7 Integration-Test fail-close).
-- **Drift-Migration prerequisite:** commit `ca76114` (21.04.2026) Snap-to-Schema 12/27→27/27.
-- **First-Live-Run erwartet:** TMO Q1 23.04.2026 (eigener §10-Eintrag mit konkretem Pipeline-Sequenz-Result folgt dort).
-- **Promotion-Trigger:** nach 3-4 realen Anwendungen Applied-Learning-Scan ob INSTRUKTIONEN-§-Promotion gerechtfertigt (Spec §10 Follow-up).
+- **Was deployed:** P3.5 fail-close in `backtest-ready-forward-verify` (Schicht B `provenance_gate.py` mit 8 Checks inkl. verschärfter Carryover-Whitelist) + Schicht D `ScoreRecord._check_vollanalyse_block_coverage` + SSoT `versions.py::DEFCON_ACTIVE_VERSION`.
+- **Plan:** `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (v3, refresh 28.04.).
+- **Spec:** `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` (v2).
+- **Pre-Check vor Execution:** 28/28 PASS (Step 0.1).
+- **Smoke-Tests post-Execution:** schemas 14/14 + archive_score 5/5 + provenance_gate 9/9 + skill 7/7 (inkl. Case 7 Integration-Test fail-close + Carryover-Bypass-Tests 8c-8i).
+- **Pre-Gate-Audit-Baseline:** TMO Q1 23.04.2026 Record #28 (ohne Gate appendiert, alle Provenance-Felder gesetzt — passiert Step 0.1 + Task 2.7 Re-Validate-Sweep).
+- **First-Live-Run erwartet:** nächste !Analysiere-Vollanalyse nach Deploy (V Q2 28.04. oder MSFT Q3 29.04.).
+- **Promotion-Trigger:** nach 3-4 realen Anwendungen Applied-Learning-Scan, ob §-Promotion (statt Sub-§18.5) gerechtfertigt ist.
 ```
 
-(Datum auf das tatsächliche Merge-Datum setzen, nicht hartcodieren. „N/N PASS" mit konkreter Zahl aus Task 0 ersetzen.)
+(Datum auf das tatsächliche Merge-Datum setzen. „N/N PASS" konkrete Zahlen aus Pre-Check + Smoke-Tests einsetzen.)
 
-- [ ] **Step 6.4: Briefing-Sync (falls 00_Core/ geändert wurde)**
+- [ ] **Step 6.4: log.md Eintrag (System-Event-Pflicht §18.2)**
 
-CLAUDE.md verlangt `!SyncBriefing` vor Session-Ende, wenn `00_Core/` modifiziert wurde. STATE.md + INSTRUKTIONEN.md + CORE-MEMORY.md sind in `00_Core/` → Sync nötig.
+In `00_Core/log.md` einen neuen Eintrag mit dem Merge-Datum anhängen:
+
+```markdown
+### YYYY-MM-DD — System-Event: Provenance-Gate Go-Live
+
+Pipeline-Phase P3.5 fail-close zwischen P2b und P3 deployed. Schicht B (`provenance_gate.py`) + Schicht D (`schemas.ScoreRecord._check_vollanalyse_block_coverage`) + SSoT (`versions.py::DEFCON_ACTIVE_VERSION`). Sync-Set: SYSTEM.md + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log.md (§18.2-Union-Pflicht). Plan v3 / Spec v2.
+```
+
+- [ ] **Step 6.5: Briefing-Sync (falls Briefing-Version berührt)**
+
+CLAUDE.md verlangt `!SyncBriefing` vor Session-Ende, wenn `00_Core/` modifiziert wurde UND Briefing-Version/Deploy-Status in SYSTEM.md geändert. SYSTEM.md + INSTRUKTIONEN.md + CORE-MEMORY.md + log.md sind in `00_Core/` → Sync-Hinweis. Falls Briefing-Version bei Step 6.1 nicht berührt wird, ist `!SyncBriefing` optional (nur SYSTEM.md §Briefing-Status-Block-Trigger laut Routing-Table).
 
 (Wird vom Caller als separater Schritt nach dem Plan ausgeführt — kein Code-Step. Erwähnt hier nur als Reminder.)
 
-- [ ] **Step 6.5: Commit (gemeinsam mit Briefing-Sync-Output, falls vorhanden)**
+- [ ] **Step 6.6: Commit (Sync-Set explizit, §18.2-Union-Scope)**
 
 ```bash
-git add "00_Core/STATE.md" "00_Core/INSTRUKTIONEN.md" "00_Core/CORE-MEMORY.md"
-git commit -m "docs(provenance-gate): Go-Live STATE.md + INSTRUKTIONEN §18 + CORE-MEMORY §10 (Task 6)
+git add "00_Core/SYSTEM.md" "00_Core/INSTRUKTIONEN.md" "00_Core/CORE-MEMORY.md" "00_Core/log.md"
+git commit -m "docs(provenance-gate): Go-Live SYSTEM + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log (Task 6)
 
-System-Zustand-Eintrag dokumentiert Provenance-Gate (Phase P3.5 fail-close,
-8 Checks, SSoT-Version, Schicht D Block-Coverage). INSTRUKTIONEN §18 um
-no-force-Bypass-Klarstellung erweitert. CORE-MEMORY §10 Audit-Log-Eintrag
-mit Pre-Check-Resultat + Smoke-Test-Summary + Drift-Migration-Prerequisite.
+System-Zustand-Bullet in SYSTEM.md dokumentiert Provenance-Gate (Phase P3.5
+fail-close, 8 Checks inkl. verschärfter Carryover-Whitelist, SSoT-Version,
+Schicht D Block-Coverage). INSTRUKTIONEN neue §18.5 Sub-Section + §18-
+Versionsbump v2.1→v2.2. CORE-MEMORY §10 Audit-Log-Eintrag mit Pre-Check-
+Resultat + Smoke-Test-Summary + Pre-Gate-Audit-Baseline (TMO #28).
+log.md System-Event-Eintrag (§18.2-Union-Pflicht).
 
-First-Live-Run-Eintrag bei TMO Q1 23.04.2026 als zweiter §10-Block.
+Sync-Set Union: SYSTEM.md + INSTRUKTIONEN.md + CORE-MEMORY.md + log.md.
 
 Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md §9"
 ```
@@ -1140,18 +1298,18 @@ python "01_Skills/backtest-ready-forward-verify/_smoke_test.py"
 ```
 
 Expected (in dieser Reihenfolge):
-- `[OK] all schema smoke tests passed` (11 Cases)
+- `[OK] all schema smoke tests passed` (14 Cases — 10 Pre + D1-D4)
 - `✅ all archive_score smoke tests passed` (5/5)
-- `✅ all provenance_gate smoke tests passed (9/9)`
+- `✅ all provenance_gate smoke tests passed (9/9)` (inkl. 8a-8i Carryover-Bypass-Coverage)
 - `✅ all 7/7 cases passed`
 
-- [ ] **VC.2: `score_history.jsonl` unverändert (27 Records, keine Test-Mutation)**
+- [ ] **VC.2: `score_history.jsonl` unverändert (28 Records, keine Test-Mutation)**
 
 ```bash
 wc -l "05_Archiv/score_history.jsonl"
 git status -- "05_Archiv/score_history.jsonl"
 ```
-Expected: `27` Zeilen, kein git-status-Output.
+Expected: `28` Zeilen, kein git-status-Output.
 
 - [ ] **VC.3: Plan-Status update**
 
@@ -1161,7 +1319,9 @@ Diesen Plan-Datei nicht löschen — referenziert von Spec §10 als Nachfolge-Ar
 
 ## Follow-up (außerhalb dieses Plans)
 
-- **First-Live-Run bei TMO Q1 23.04.2026:** Erwartete Pipeline-Sequenz im Erfolgsfall: P1 → P2a (alle 3 Pflicht-Files modified) → P2b (TMO in STATE) → P3.5 (alle 8 Checks pass) → P3 (skill_meta=ja → Δ-Gate fcf_trend_neg-Resolve) → P4/P5/P6 grün. **Zweiter** CORE-MEMORY §10 Audit-Log-Eintrag im selben `!Analysiere`-Sync (mit konkretem Pipeline-Sequenz-Result + tatsächlicher Δ-Gate-Outcome). Erster §10-Eintrag entstand bereits in Task 6 Step 6.3 als Go-Live-Marker.
-- **Evidence-basierte Promotion zu INSTRUKTIONEN-§:** Nach 3-4 realen Anwendungen Applied-Learning-Scan: wurde Gate genutzt? Wurde realer Fehler verhindert? Bei Ja → INSTRUKTIONEN §-Promotion (Spec §10).
+- **Pre-Gate-Audit-Baseline TMO Q1 23.04.2026:** Record #28 ist bereits **ohne Gate** appendiert. Spec §10 + Plan v3 Step 0.1/Task 2.7 erwarten, dass der Record alle Provenance-Felder + Block-Coverage erfüllt (verifiziert via Recon-Agent 28.04.). Falls Step 0.1 oder Task 2.7 daran failen, ist Migration-Recovery vor Tasks 1-6 nötig (siehe Step 0.2).
+- **First-Live-Run nach Deploy:** nächste `!Analysiere`-Vollanalyse. Kandidaten: V Q2 28.04. (heute AMC) oder MSFT Q3 29.04. (morgen AMC) — abhängig davon, wann Plan v3 executiert wird. Erwartete Pipeline-Sequenz im Erfolgsfall: P1 → P2a (alle 3 Pflicht-Files modified) → P2b (Ticker in PORTFOLIO.md) → P3.5 (alle 8 Checks pass, inkl. Carryover-Whitelist) → P3 (skill_meta=ja → Δ-Gate) → P4/P5/P6 grün. Eigener CORE-MEMORY §10-Eintrag mit konkretem Pipeline-Sequenz-Result + tatsächlicher Δ-Gate-Outcome.
+- **Evidence-basierte Promotion zu eigenem INSTRUKTIONEN-§:** Nach 3-4 realen Anwendungen Applied-Learning-Scan: wurde Gate genutzt? Wurde realer Fehler verhindert? Bei Ja → ggf. eigener § (statt Sub-§18.5).
 - **B20 GT-Score Future-Compatibility:** Bei §29.1-Aktivierung (Review 2028 oder erste DEFCON-Parameter-Variation) ggf. neue Phase P3.7 nach P3 — disjunkt zu P3.5 (Append-Time vs Parameter-Loop-Time). Nicht Teil dieses Plans.
 - **B18 Seven-Sins Future-Compatibility:** §29.5 Pre-Flight läuft bei Migration-Events (§28), nicht bei Standard-Forward-Appends. Falls bei Migration-Runs zusätzliche Pre-Flight-Checks nötig: separate Migration-Pipeline-Phase, nicht Erweiterung von P3.5.
+- **B27 Insider-Sell-Window 24M Future-Compatibility:** Bei `insider-intelligence v2`-Aktivierung muss `_check_vollanalyse_block_coverage` um insider-Block-Mapping erweitert werden (heute leer, weil keine Roh-Felder in `metriken_roh`). Spec §10 dokumentiert diese Future-Compat-Klausel.
