@@ -305,7 +305,7 @@ Diese Klausel ist **Workflow-Disziplin** (kein Skill-Code-Check) — Provenance-
 
 ### Schritt 7: Archiv-Write (via `backtest-ready-forward-verify`-Skill)
 
-Am Ende jeder `!Analysiere`-Ausgabe. Pipeline-Disziplin (Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git-add) ist in den Skill `backtest-ready-forward-verify` gekapselt.
+Am Ende jeder `!Analysiere`-Ausgabe. Pipeline-Disziplin (Freshness / Tripwire / Provenance-Gate P3.5 / §28.2 Δ-Gate / Dry-Run / Append / git-add) ist in den Skill `backtest-ready-forward-verify` gekapselt.
 
 **Ablauf:**
 

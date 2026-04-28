@@ -28,11 +28,18 @@ PLATZHALTER_BLACKLIST: Final[frozenset[str]] = frozenset({
     "unknown", "tbd", "todo", "placeholder", "none", "na", "n/a", "?",
 })
 
-# Source-Tokens: echte Datenquellen, muessen als Whole-Word im Stem vorkommen
+# Source-Tokens single-word: muessen als Whole-Word im Stem vorkommen (split auf "_")
 CARRYOVER_SOURCE_TOKENS: Final[frozenset[str]] = frozenset({
-    "gurufocus", "defeatbeta", "shibui", "openinsider", "sec_edgar",
+    "gurufocus", "defeatbeta", "shibui", "openinsider",
     "yahoo", "zacks", "yfinance", "alphaspread", "tavily",
     "stocktitan", "benzinga", "afm", "amf", "eodhd",
+})
+
+# Source-Tokens multi-word: muessen mit "_"-Boundary im Stem stehen
+# (Whole-Word-Match ueber stem.split("_") funktioniert nicht, da multi-Tokens
+# selbst Underscores enthalten — Codex-Round-3-MEDIUM 28.04.)
+CARRYOVER_SOURCE_TOKENS_MULTI: Final[frozenset[str]] = frozenset({
+    "sec_edgar",
 })
 
 # Source-Prefixes: dynamische Source-Familien (Company-IR-Pages)
@@ -60,7 +67,8 @@ def _is_placeholder(value: str) -> bool:
     - PLATZHALTER_BLACKLIST -> True.
     - Pure `?+` -> True.
     - `*_carryover` -> False (akzeptiert) NUR wenn:
-      (a) Stem enthaelt Source-Token als Whole-Word (split auf `_`); ODER
+      (a) Stem enthaelt Source-Token Single-Word als Whole-Word (split auf `_`); ODER
+      (a-multi) Stem enthaelt Source-Token Multi-Word mit `_`-Boundary; ODER
       (b) Stem startet mit Source-Prefix; ODER
       (c) Stem endet auf Reason-Token (terminal).
     """
@@ -78,10 +86,20 @@ def _is_placeholder(value: str) -> bool:
     if not stem:
         return True  # bare "_carryover"
 
-    # (a) Source-Token als Whole-Word
+    # (a) Source-Token Single-Word als Whole-Word
     stem_tokens = stem.split("_")
     if any(t in CARRYOVER_SOURCE_TOKENS for t in stem_tokens):
         return False
+
+    # (a-multi) Source-Token Multi-Word mit "_"-Boundary
+    for multi in CARRYOVER_SOURCE_TOKENS_MULTI:
+        if (
+            stem == multi
+            or stem.startswith(multi + "_")
+            or stem.endswith("_" + multi)
+            or ("_" + multi + "_") in stem
+        ):
+            return False
 
     # (b) Source-Prefix
     if any(stem.startswith(p) for p in CARRYOVER_SOURCE_PREFIXES):
@@ -177,6 +195,7 @@ __all__ = [
     "DEFCON_ACTIVE_VERSION",
     "PLATZHALTER_BLACKLIST",
     "CARRYOVER_SOURCE_TOKENS",
+    "CARRYOVER_SOURCE_TOKENS_MULTI",
     "CARRYOVER_SOURCE_PREFIXES",
     "CARRYOVER_REASON_TERMINAL",
     "QUELLEN_PFLICHT_FELDER",
@@ -342,7 +361,31 @@ def _smoke_tests() -> None:
     passed, reasons = check_provenance(rec, [], None)
     assert not passed, "[8k] whitespace-only should fail (empty after strip)"
 
-    print("  [8/9] placeholder + carryover whitelist (8a-8k) -> all checks pass")
+    # 8l: 'sec_edgar_carryover' (Multi-Word-Source-Token, Codex-Round-3-MEDIUM) -> pass
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["insider"] = "sec_edgar_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[8l] sec_edgar_carryover should pass (multi-word whole), got {reasons}"
+
+    # 8m: 'sec_edgarxyz_carryover' (Multi-Word ohne Boundary) -> fail
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["insider"] = "sec_edgarxyz_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[8m] sec_edgarxyz_carryover should fail (no _-boundary)"
+
+    # 8n: 'myir_sec_edgar_carryover' (Multi-Word terminal mit Boundary) -> pass
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["insider"] = "myir_sec_edgar_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[8n] myir_sec_edgar_carryover should pass (terminal multi), got {reasons}"
+
+    # 8o: 'sec_carryover' (partial multi-Token, kein single match) -> fail
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["insider"] = "sec_carryover"
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[8o] sec_carryover should fail (partial multi, no single match)"
+
+    print("  [8/9] placeholder + carryover whitelist (8a-8o) -> all checks pass")
 
     # Case 9: skill_meta.migration_to_version inconsistent -> fail
     rec = _build_valid_vollanalyse()
