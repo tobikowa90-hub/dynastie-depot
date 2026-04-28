@@ -36,4 +36,4 @@
 
 ---
 
-*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 28.04.2026 (Provenance-Gate aktiv — Phase P3.5 + Schicht D + SSoT versions.py)*
+*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 28.04.2026 spätabends (Provenance-Gate aktiv P3.5+Schicht D + §18 v2.3 xlsx-Tools-Pflicht-Sync)*

@@ -332,15 +332,15 @@ Ein Ad-hoc-Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 ---
 
-## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2.1, 2026-04-25)
+## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2.3, 2026-04-28 spätabends)
 
-Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 6 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.0: +1 manueller File (`config.yaml`).
+Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 8 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill + 2 xlsx-Tools) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.1: +2 xlsx-Tools (`Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx`) — User-Direktive 28.04.2026 spätabends: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte und Depot-Übersicht (Zero-Token-Lookup-Pflicht).
 
 ### 18.1 Event-Typ-Mapping
 
 | Event-Typ | Pflicht-Files |
 |---|---|
-| **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` + **`01_Skills/dynastie-depot/config.yaml`** (+ `flag_events.jsonl` bei FLAG-Trigger/Resolve) |
+| **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` + **`01_Skills/dynastie-depot/config.yaml`** + **`03_Tools/Rebalancing_Tool_v3.4.xlsx`** + **`03_Tools/Satelliten_Monitor_v2.0.xlsx`** (+ `flag_events.jsonl` bei FLAG-Trigger/Resolve) |
 | **Pipeline-Item** (neuer Plan, Gate-Passage, Status-Transition, Done/Deferred) | **`PIPELINE.md`** + `log.md` (+ `SESSION-HANDOVER.md` Pflicht bei Session-Abschluss; mid-Session optional) |
 | **System-Zustand-Change** (DEFCON-Version, MCP-Change, Briefing-Status, neuer Backlog-Eintrag, Infra-Deploy) | **`SYSTEM.md`** + `log.md` (+ `CORE-MEMORY.md §6` bei Versionsprung) |
 | **Critical-Alert-Slot** (Hub) | `STATE.md` Hub-Edit (nur Alert-Slot); kein Bi-Sync erzwungen |
@@ -350,6 +350,8 @@ Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Sc
 - `flag_events.jsonl` (05_Archiv/) — append-only via `archive_flag.py` (nur bei FLAG-Trigger oder Resolution). SKILL.md Schritt 6b.
 - `Faktortabelle.md` — Score + FLAG-Spalte (manuell, im selben Sync-Commit).
 - `01_Skills/dynastie-depot/config.yaml` — TMO/Ticker-Block (`score`, `defcon`, `score_datum`, `score_valid_until`, `flag_hinweis`, `sparrate_hinweis`, `scoring_notiz`, `naechste_pruefung`, `earnings_trigger`, `substitute_activation_rule`) manuell sync. **Bei reinem Score-Change OHNE FLAG-Trigger ebenfalls Pflicht** — Lücke 25.04. nach 7-Tage-Drift TMO 23.04. (post-Q1) entdeckt.
+- `03_Tools/Rebalancing_Tool_v3.4.xlsx` — formel-basiert, Pflicht-Felder pro Ticker: Spalte N (`DEFCON Score`, z.B. `'DEFCON 2 (64)'`) + Spalte O (`FLAG-Status`-Text mit Datum/Pfad-Note). Sparraten-Berechnung läuft formel-basiert über DEFCON-Spalte (parsed `LEFT(N18,8)="DEFCON X"`), Output passt sich automatisch an wenn N/O korrekt. Sync via `openpyxl` (siehe Memory `feedback_xlsx_tools_in_sync_set.md` für Edit-Pattern).
+- `03_Tools/Satelliten_Monitor_v2.0.xlsx` — display-orientiert (statische Strings). Pflicht-Felder bei Score/FLAG/Sparraten-Change: (a) R2 Stand-Stempel (Spalte O), (b) R3 Header-Sparraten-Zeile (Spalte B: D3/D4-Rate, D2-Sockelbetrag, Nenner mit Pfad-Note), (c) Ticker-Zeile (Spalte L Score-String, Spalte M Δ-Note, Spalte N Status/FLAG-Text), (d) R3 H Eingefroren-Liste, (e) R3 K Ergebnis-Liste, (f) R24/R25 Footer (Eingefroren-Liste + Volle-Rate-Liste mit Σ-Check). Sync via `openpyxl`.
 
 ### 18.2 Multi-Event-Union-Regel (bindender §18-Vertrags-Teil)
 
@@ -382,6 +384,7 @@ Score-Append läuft via `backtest-ready-forward-verify` Skill, das nun Phase P3.
 - v1.8 → v2.0 (2026-04-24): 00_Core Hub-Split — pauschale 6er-Liste → Trigger-basiertes Event-Mapping (§18.1) + Multi-Event-Union-Regel (§18.2). STATE.md = Hub (Critical-Alert-Slot), Live-State migriert in PORTFOLIO.md. Pipeline-Items in PIPELINE.md, System-Items in SYSTEM.md.
 - v2.0 → v2.1 (2026-04-25): `config.yaml` aus „Bei FLAG-Change manuell sync"-Sub-Note in das Score-Event-File-Set hochgezogen — Lücke aufgedeckt durch TMO 23.04.-Drift (Score 64→67, kein FLAG-Trigger ⇒ alte Klausel griff nicht ⇒ config.yaml stale für 7 Tage bis 25.04.-Finalize-Commit `bb9986e`). Kein Set-Wachstum bei FLAG-Events (config.yaml ohnehin schon im Set), aber +1 manueller File bei reinen Score/Sparraten-Changes.
 - v2.1 → v2.2 (2026-04-28): §18.5 Provenance-Gate-Klausel ergänzt (Pipeline-Phase P3.5 fail-close, kein `--force`-Bypass). Schicht B `provenance_gate.py` + Schicht D `_check_vollanalyse_block_coverage` + SSoT `versions.py::DEFCON_ACTIVE_VERSION` deployed.
+- v2.2 → v2.3 (2026-04-28 spätabends): xlsx-Tools `Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx` ins Score/FLAG/Sparraten-Pflicht-Set hochgezogen. Anlass User-Direktive: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte + Depot-Übersicht (Zero-Token-Lookup). Drift seit 23.04. (Satelliten-Monitor R3-Header + R24/R25 Footer noch auf 23.04.-Stand) bei V Rescoring-Revert (`b8cf4ae`/`1069e8d` 28.04. spätabends) durch User-Korrektur aufgedeckt. Mehraufwand: 2 xlsx-Edits pro Score-Event via `openpyxl` (Edit-Pattern siehe Memory `feedback_xlsx_tools_in_sync_set.md`).
 
 ---
 

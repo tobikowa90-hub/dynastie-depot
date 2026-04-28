@@ -24,7 +24,7 @@
 3. **SKILL-Wortlaut-Disziplin (Lesson V-HIGH-1):** Bei Methodology-Switches (Skala-Wechsel innerhalb Block, z.B. ROIC absolute vs. WACC-relativ) SKILL-Klausel literal prüfen. WACC-Eintrag im Record gesetzt → kein Switch auf alternative Skala. Carryover + Methodology-Watch + Reviewer-OK statt Switch.
 4. **Kurs-Frische (Lesson V-HIGH-2):** `kurs.referenz="close_of_score_datum"` semantisch erfüllen mit echtem Tagesschluss-Close, nicht Carryover-Proxy. defeatbeta-Cutoff prüfen mit `get_latest_data_update_date` → falls Cutoff < score_datum, yfinance-Fallback (analog V: $309,30 yahoo_close_28.04.2026).
 5. **Schritt 7 via `backtest-ready-forward-verify`-Skill** — Draft als bare ScoreRecord mit `analyse_typ: "vollanalyse"`. **Kein skill_meta** (kein Migration-Event bei normaler Vollanalyse, nur bei Version-Migration oder Korrektur-Record).
-6. **§18-Sync v2.1 (8 Files):** PORTFOLIO + Faktortabelle + CORE-MEMORY §12.5 (MSFT) + PIPELINE (FLAG-Status-Update) + STATE (Critical-Alert "29.04. MSFT" entfernen) + config.yaml + log.md + score_history.jsonl. Bei FLAG-Trigger/Resolve zusätzlich `flag_events.jsonl` via `archive_flag.py resolve|trigger`.
+6. **§18-Sync v2.3 (10 Files Pflicht + 1 conditional):** PORTFOLIO + Faktortabelle + CORE-MEMORY §12.5 (MSFT) + PIPELINE (FLAG-Status-Update) + STATE (Critical-Alert "29.04. MSFT" entfernen) + config.yaml + log.md + score_history.jsonl + **`03_Tools/Rebalancing_Tool_v3.4.xlsx`** (V-Style: Spalte N + O des MSFT-Tickers via openpyxl) + **`03_Tools/Satelliten_Monitor_v2.0.xlsx`** (V-Style: R3-Header Sparraten-Zeile + R3 Eingefroren-/Ergebnis-Strings + MSFT-Ticker-Zeile + R24/R25-Footer). Bei FLAG-Trigger/Resolve zusätzlich `flag_events.jsonl` via `archive_flag.py resolve|trigger`. **WICHTIG (NEU §18 v2.3 28.04. spätabends):** xlsx-Tools sind operative Zero-Token-Lookup-Quelle für Sparpläne + Depot-Übersicht — Pflicht-Sync, nicht optional. Edit-Pattern in Memory `feedback_xlsx_tools_in_sync_set.md`.
 7. **Sparraten-Kaskade je nach Outcome:**
    - **CapEx/OCF bereinigt <60%** → FLAG-Auflösung. MSFT in volle D-Stufe (Score 59 → ggf. höher post-Q3, aber Score Q3 dependent). Sparrate 0€ → Gewicht 1,0 oder 0,5 abhängig von Score-Δ. Nenner verschiebt sich.
    - **CapEx/OCF bereinigt ≥60%** → FLAG bleibt. MSFT-Sparrate weiter 0€. Nenner unverändert. Ggf. zusätzliche Watch oder DEFCON-1-Eskalation (wenn Score < 50).
@@ -32,6 +32,7 @@
 
 **Memory-Hooks für MSFT-Lauf:**
 - `feedback_skill_methodology_drift_v_q2.md` (NEU) — SKILL-Wortlaut-Disziplin
+- `feedback_xlsx_tools_in_sync_set.md` (NEU) — xlsx-Tools-Pflicht-Sync §18 v2.3
 - `feedback_review_via_codex_not_advisor.md` — Codex statt Advisor
 - `feedback_codex_sparring_heuristic.md` — Single-Pass Default
 
