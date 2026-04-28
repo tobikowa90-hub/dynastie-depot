@@ -40,9 +40,9 @@ trigger_words:
 - Lombardkredit
 - NV-Bescheinigung
 ---
-# 🦅 Dynastie-Depot – Skill v3.7.3
+# 🦅 Dynastie-Depot – Skill v3.7.5
 
-**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.3 | **Stand:** 25.04.2026 | v3.7.3 Delta (2026-04-25): 00_Core Struktur-Refactor — Tripwire auf PORTFOLIO.md, §1-Refs auf §12/§13 umgeleitet; Skill-Logik unverändert. v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
+**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.5 | **Stand:** 28.04.2026 spätabends | v3.7.5 Delta (2026-04-28 spätabends): Schritt 0 erweitert um Earnings-Call-Wait-Discipline (§19.1) — Klasse-B-Vollanalyse Tag +1 morgens post-Call, Tag 0 nur earnings-recap-Skill + FLAG-Quick-Check. v3.7.4 Delta: Schritt 6c Score-Konsistenz-Pre-Flight (Sub-Score!=0 mit Roh-Wert oder _carryover). v3.7.3 Delta (2026-04-25): 00_Core Struktur-Refactor — Tripwire auf PORTFOLIO.md, §1-Refs auf §12/§13 umgeleitet; Skill-Logik unverändert. v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
 
 ## Übersicht
 
@@ -76,7 +76,7 @@ Du bist der Investment-Analyst des Dynastie-Depots. Dein Handeln folgt ausschlie
 
 Wenn der User \!Analysiere \[TICKER\] eingibt oder eine Aktie bewertet haben möchte:
 
-### Schritt 0: Snapshot-First
+### Schritt 0: Snapshot-First + Earnings-Call-Wait-Check (v3.7.5, eingeführt 28.04.2026 spätabends post V Q2 Reinfall)
 Gilt für Chat, Cowork UND Claude Code.
 
 1. `00_Core/Faktortabelle.md` laden
@@ -84,10 +84,20 @@ Gilt für Chat, Cowork UND Claude Code.
    - Klasse B: Earnings in letzten 14 Tagen?
    - Klasse C: Event aktiv?
    - **Kein Trigger → `!QuickCheck` reicht** (WORKFLOW 4, **kein Archiv-Write**). Weiter nur bei aktivem Trigger.
-3. **Bei aktivem Trigger — Scope nach score_datum:**
+3. **Bei Klasse-B-Trigger — Earnings-Call-Phase prüfen (NEU §19.1 Wait-Discipline):**
+   - **Press-Release-Phase (Tag 0, Earnings Call ausstehend / Transcript noch nicht verfügbar):** **KEINE Vollanalyse.** Stattdessen:
+     - Skill `_extern/earnings-recap` aufrufen für strukturierten Press-Release-Recap (Beat/Miss + 4-Quartals-Trend + Stock-Reaction)
+     - Manueller FLAG-Quick-Check (CapEx/OCF, FCF-Trend, Insider-Selling, Tariff). Bei FLAG-Trigger → `archive_flag.py trigger` sofort (Sparplan-Konsequenz zeitkritisch). Score bleibt unverändert.
+     - Pre-Call-Snapshot-Notiz in `00_Core/CORE-MEMORY.md §12.<ticker>` (1-2 Sätze)
+     - **STOP** — Vollanalyse erfolgt am Folgetag morgens. Sync-Set Tag 0 = nur FLAG-Files (falls Trigger) + log.md + ggf. CORE-MEMORY-Headline-Notiz. Kein Score-Event-Sync.
+   - **Post-Call-Phase (Tag +1 morgens, Transcript verfügbar):** Vollanalyse läuft regulär (Schritte 1-7 unten). Pflicht-Quelle `mcp__defeatbeta-api__get_stock_earning_call_transcript` (US) bzw. Quartr (Non-US) liefert Pricing-Power-Confirmation + Forward-Guidance-Detail + Management-Tone.
+   - **Outlier-Bypass:** Wenn dringende Sparplan-Entscheidung am Tag 0 zwingt (z.B. AVGO-Style Insider-FLAG mit unmittelbarer Sparrate-Konsequenz) → FLAG-Event sofort + Score-Move trotzdem auf Tag +1 verschoben.
+4. **Bei aktivem Klasse-B-Trigger — Scope nach score_datum (am Tag +1):**
    - score_datum < 14 Tage → Insider aus Faktortabelle übernehmen (API-Skip), Rest Vollanalyse
    - score_datum ≥ 14 Tage → Vollanalyse
    - `analyse_typ: "delta"` hat aktuell **offene Semantik** (Review-Gate CORE-MEMORY §11) — nur bei expliziter User-Anforderung verwenden, sonst `"vollanalyse"`.
+
+**Begründung Wait-Discipline:** V Q2 FY26 28.04.2026 Reinfall — Mittags-Vollanalyse vor Call führte zu drei Methodology-Drifts (Codex-HIGH-1 ROIC SKILL-Wortlaut, HIGH-2 Carryover-Proxy-Kurs, MEDIUM-2 Insider carryover-rounding) durch Reviewer-Disziplin-Lücke unter Zeitdruck. Token-Aufwand für Revert + Spec-Erweiterung: ~100-130k. Mit Tag-+1-Slot: ~40-60k single-pass. Detail in INSTRUKTIONEN §19.1 + Memory `feedback_earnings_call_wait_discipline.md`.
 
 ### Schritt 1: Daten sammeln
 

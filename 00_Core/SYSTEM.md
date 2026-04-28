@@ -36,4 +36,4 @@
 
 ---
 
-*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 28.04.2026 spätabends (Provenance-Gate aktiv P3.5+Schicht D + §18 v2.3 xlsx-Tools-Pflicht-Sync)*
+*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 29.04.2026 (Provenance-Gate aktiv P3.5+Schicht D + §18 v2.3 xlsx-Tools-Pflicht-Sync + §19.1 Earnings-Call-Wait-Discipline + dynastie-depot v3.7.5)*

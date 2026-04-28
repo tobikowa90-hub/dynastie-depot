@@ -12,25 +12,43 @@
 
 ---
 
-### 🎯 Nächster Schritt — MSFT Q3 FY26 Vollanalyse (29.04.2026 morgens) **[NEUE SESSION PRIORITÄT 1]**
+### 🎯 Nächster Schritt — MSFT Q3 FY26 (Tag 0 / Tag +1 Split nach §19.1 Wait-Discipline) **[NEUE SESSION PRIORITÄT 1]**
 
-**Resume-Trigger:** „!Analysiere MSFT" oder „MSFT Q3 FY26 Vollanalyse starten"
+**Resume-Trigger Tag 0 (29.04. spätabends):** „MSFT Press-Release-Recap + FLAG-Quick-Check"
+**Resume-Trigger Tag +1 (30.04. morgens):** „!Analysiere MSFT" oder „MSFT Q3 FY26 Vollanalyse starten"
 
 **Kontext:** Earnings Release 29.04.2026 ~22:30 MESZ AMC. FLAG aktiv seit Q1 (CapEx/OCF Q2 FY26: 83,6% nominal; bereinigt um Finance Leases ~63%). FLAG-Auflösungs-Pfad: bereinigtes CapEx/OCF <60% = Auflösung; ≥60% = Veto-Verschärfung.
 
-**Pipeline-Disziplin:**
-1. **Pre-Brief lesen** (falls vor Ergebnis: Pre-Earnings-Snapshot von Pre-Brief). Nach Earnings-Release: PDF-Source ziehen (analog V Q2-2026-Earnings-Release_vF.pdf).
-2. **Schritt 6c Pre-Flight (v3.7.4) MANUELL durchgehen** — alle 5 Blöcke prüfen: Sub-Score!=0 mit Roh-Wert oder `_carryover`-Marker. Insbesondere bei Carryover-Blöcken: kein Up-Score ohne neue Rohdaten (Lesson V-MEDIUM-2 + neuer PIPELINE #23 Insider-Carryover-Disziplin).
-3. **SKILL-Wortlaut-Disziplin (Lesson V-HIGH-1):** Bei Methodology-Switches (Skala-Wechsel innerhalb Block, z.B. ROIC absolute vs. WACC-relativ) SKILL-Klausel literal prüfen. WACC-Eintrag im Record gesetzt → kein Switch auf alternative Skala. Carryover + Methodology-Watch + Reviewer-OK statt Switch.
-4. **Kurs-Frische (Lesson V-HIGH-2):** `kurs.referenz="close_of_score_datum"` semantisch erfüllen mit echtem Tagesschluss-Close, nicht Carryover-Proxy. defeatbeta-Cutoff prüfen mit `get_latest_data_update_date` → falls Cutoff < score_datum, yfinance-Fallback (analog V: $309,30 yahoo_close_28.04.2026).
-5. **Schritt 7 via `backtest-ready-forward-verify`-Skill** — Draft als bare ScoreRecord mit `analyse_typ: "vollanalyse"`. **Kein skill_meta** (kein Migration-Event bei normaler Vollanalyse, nur bei Version-Migration oder Korrektur-Record).
-6. **§18-Sync v2.3 (10 Files Pflicht + 1 conditional):** PORTFOLIO + Faktortabelle + CORE-MEMORY §12.5 (MSFT) + PIPELINE (FLAG-Status-Update) + STATE (Critical-Alert "29.04. MSFT" entfernen) + config.yaml + log.md + score_history.jsonl + **`03_Tools/Rebalancing_Tool_v3.4.xlsx`** (V-Style: Spalte N + O des MSFT-Tickers via openpyxl) + **`03_Tools/Satelliten_Monitor_v2.0.xlsx`** (V-Style: R3-Header Sparraten-Zeile + R3 Eingefroren-/Ergebnis-Strings + MSFT-Ticker-Zeile + R24/R25-Footer). Bei FLAG-Trigger/Resolve zusätzlich `flag_events.jsonl` via `archive_flag.py resolve|trigger`. **WICHTIG (NEU §18 v2.3 28.04. spätabends):** xlsx-Tools sind operative Zero-Token-Lookup-Quelle für Sparpläne + Depot-Übersicht — Pflicht-Sync, nicht optional. Edit-Pattern in Memory `feedback_xlsx_tools_in_sync_set.md`.
-7. **Sparraten-Kaskade je nach Outcome:**
-   - **CapEx/OCF bereinigt <60%** → FLAG-Auflösung. MSFT in volle D-Stufe (Score 59 → ggf. höher post-Q3, aber Score Q3 dependent). Sparrate 0€ → Gewicht 1,0 oder 0,5 abhängig von Score-Δ. Nenner verschiebt sich.
-   - **CapEx/OCF bereinigt ≥60%** → FLAG bleibt. MSFT-Sparrate weiter 0€. Nenner unverändert. Ggf. zusätzliche Watch oder DEFCON-1-Eskalation (wenn Score < 50).
-8. **Codex-Single-Pass-Review nach Schritt 7** — Single-Pass Default; Sparring nur bei HIGH-Count ≥2 oder strukturellen Coverage-Gaps (Memory `feedback_codex_sparring_heuristic.md`).
+**§19.1 Earnings-Call-Wait-Discipline (NEU 28.04. spätabends, post V Q2 Reinfall):** Klasse-B-Vollanalyse läuft strikt **Tag +1 morgens nach Earnings Call**, nicht Tag 0. V Q2 28.04. mittags-Reinfall (~100-130k Token Revert) als Präzedenz; Tag-+1-Slot spart ~50-70%.
+
+#### Tag 0 (29.04. spätabends, ~15-30 Min) — KEIN Score-Move
+
+1. **`_extern/earnings-recap`-Skill aufrufen** (yfinance-basiert) für strukturierten Press-Release-Recap: Beat/Miss-Headlines (EPS estimate vs actual, surprise %), 4-Quartals-Trend-Tabelle, Stock-Reaction
+2. **Manueller FLAG-Quick-Check** anhand Press-Release-PDF: CapEx/OCF (bereinigt um Finance Leases ASC 842!), FCF-Trend, Insider-Disclosures, Tariff. **Bei FLAG-Resolution** (CapEx/OCF bereinigt <60%) → `python 03_Tools/backtest-ready/archive_flag.py resolve --flag-id <ID> ...` sofort. **Bei FLAG-Verschärfung** (CapEx/OCF bereinigt ≥60% mit struktureller Eskalation) → bestehender FLAG bleibt aktiv, ggf. flag_events.jsonl-Update
+3. **Pre-Call-Snapshot-Notiz** in `00_Core/CORE-MEMORY.md §12.5 MSFT`: 1-2 Sätze (Beat/Miss-Magnitude, CapEx-Status, Guidance grob, FLAG-Outcome)
+4. **STOP** — keine Vollanalyse, kein Score-Move, kein D-Stufen-Wechsel, kein 8-File-Sync
+
+**Tag-0-Sync-Set (FLAG-Resolution-Fall):** flag_events.jsonl (via archive_flag.py) + log.md + PORTFOLIO.md (FLAG-Spalte CLEAN + ggf. Sparrate-Note) + Faktortabelle.md (FLAG-Spalte) + config.yaml (MSFT-FLAG-Sub-Block). Score 59 unverändert.
+
+**Tag-0-Sync-Set (kein FLAG-Wechsel):** log.md (Pre-Call-Snapshot) + CORE-MEMORY §12.5 (Headline-Notiz). Sonst nichts.
+
+#### Tag +1 (30.04. morgens, ~30-45 Min) — Vollanalyse
+
+1. **Pre-Brief lesen** (falls vor Ergebnis: Pre-Earnings-Snapshot). Earnings-Release-PDF + Q3-Press-Release als Source ziehen.
+2. **Earnings Call Transcript-Read PFLICHT** via `mcp__defeatbeta-api__get_stock_earning_call_transcript` (US): Pricing-Power-Suche („pricing", „price increase", „raised prices"), Forward-Guidance-Detail, CapEx-Outlook, Q&A-Tone. Pricing-Power-Confirmation → Moat +1 Bonus möglich.
+3. **Schritt 6c Pre-Flight (v3.7.4) MANUELL durchgehen** — alle 5 Blöcke prüfen: Sub-Score!=0 mit Roh-Wert oder `_carryover`-Marker. Carryover-Blöcke: kein Up-Score ohne neue Rohdaten (Lesson V-MEDIUM-2 + PIPELINE #23).
+4. **SKILL-Wortlaut-Disziplin (Lesson V-HIGH-1):** Bei Methodology-Switches SKILL-Klausel literal prüfen. WACC-Eintrag im Record gesetzt → kein Switch auf alternative Skala. Carryover + Methodology-Watch + Reviewer-OK statt Switch.
+5. **Kurs-Frische (Lesson V-HIGH-2):** `kurs.referenz="close_of_score_datum"` mit echtem 30.04.-Close (yfinance-Fallback wenn defeatbeta-Cutoff <30.04.).
+6. **Schritt 7 via `backtest-ready-forward-verify`-Skill** — Draft als bare ScoreRecord, `analyse_typ: "vollanalyse"`, kein skill_meta.
+7. **§18-Sync v2.3 (10 Files Pflicht + 1 conditional):** PORTFOLIO + Faktortabelle + CORE-MEMORY §12.5 + PIPELINE (FLAG-Status-Update) + STATE (Critical-Alert "29.04. MSFT" entfernen) + config.yaml + log.md + score_history.jsonl + **`03_Tools/Rebalancing_Tool_v3.4.xlsx`** (V-Style: Spalte N+O des MSFT-Tickers via openpyxl) + **`03_Tools/Satelliten_Monitor_v2.0.xlsx`** (V-Style: R3-Header + Ticker-Zeile + R24/R25-Footer). Bei FLAG-Resolution am Tag 0: `flag_events.jsonl` schon committed, hier nur referenzieren.
+8. **Sparraten-Kaskade je nach Tag-0+Tag+1-Outcome:**
+   - **FLAG aufgelöst Tag 0 + Score >65 Tag +1** → MSFT volle D3-Rate (Gewicht 1,0). Nenner 7,5 → 8,5; volle Rate 38,00€ → 33,53€ (alle 7 anderen D3/D4 -4,47€); MSFT-Rate 33,53€; V D2 19,00€ → 16,76€.
+   - **FLAG aufgelöst Tag 0 + Score 50-64 Tag +1** → MSFT D2-Halbrate. Nenner 7,5 → 8,0; volle Rate 38,00€ → 35,63€; MSFT 17,81€; V 19,00€ → 17,81€.
+   - **FLAG bleibt Tag 0** (CapEx/OCF bereinigt ≥60%) → MSFT-Sparrate weiter 0€, Nenner 7,5 unverändert. Ggf. DEFCON-1-Eskalation wenn Score <50.
+9. **Codex-Single-Pass-Review VOR Sync-Commit** (NEU §19.1 Lesson V) — Sparring nur bei HIGH-Count ≥2 oder strukturellen Coverage-Gaps. Codex-Review BEVOR der 8-File-Sync-Commit landet, NICHT danach (sonst Revert-Aufwand wie bei V Q2).
 
 **Memory-Hooks für MSFT-Lauf:**
+- `feedback_earnings_call_wait_discipline.md` (NEU) — Tag 0 / Tag +1 Split
 - `feedback_skill_methodology_drift_v_q2.md` (NEU) — SKILL-Wortlaut-Disziplin
 - `feedback_xlsx_tools_in_sync_set.md` (NEU) — xlsx-Tools-Pflicht-Sync §18 v2.3
 - `feedback_review_via_codex_not_advisor.md` — Codex statt Advisor

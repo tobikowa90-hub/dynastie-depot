@@ -399,6 +399,45 @@ Score-Append läuft via `backtest-ready-forward-verify` Skill, das nun Phase P3.
 
 Basis: SSRN 2022. 80% DEFCON-Score >12 Monate Halbwertszeit.
 
+### 19.1 Earnings-Call-Wait-Discipline (NEU 2026-04-28 spätabends, post V Q2 Reinfall)
+
+**Regel:** Klasse-B-Vollanalyse läuft strikt **Tag +1 morgens nach Earnings Call**, nicht am Press-Release-Tag selbst. Tag 0 ist FLAG-Quick-Check + Press-Release-Pre-Brief only — kein Score-Move, kein D-Stufen-Wechsel, kein Sparraten-Kaskaden-Sync.
+
+**Tag-0-Workflow (Press-Release-Tag, ~15-30 Min):**
+
+| Schritt | Tool | Output |
+|---|---|---|
+| 1. Press-Release-Recap | Skill `_extern/earnings-recap` (yfinance-basiert) | Beat/Miss-Headlines (EPS estimate vs actual, surprise %) + 4-Quartals-Trend-Tabelle (Revenue/Margins/EPS) + Stock-Price-Reaction |
+| 2. FLAG-Quick-Check | manuell + Press-Release-PDF | CapEx/OCF, FCF-Trend, Insider-Selling-Disclosures, Tariff-Exposure-Updates. Bei FLAG-Trigger: `archive_flag.py trigger` sofort (Sparplan-Konsequenz zeitkritisch). Bei FLAG-Resolution: `archive_flag.py resolve`. Kein Score-Move trotzdem. |
+| 3. Headline-Notiz | manuell | CORE-MEMORY §12.<ticker> Pre-Call-Snapshot-Eintrag (1-2 Sätze: Beat/Miss-Magnitude, Guidance grob, ggf. FLAG-Trigger) |
+
+**Tag-+1-Workflow (Folgetag morgens, ~30-45 Min):**
+
+Standard `dynastie-depot` Vollanalyse (Schritte 0-7) — mit folgenden Pflicht-Quellen, die am Tag 0 noch nicht verfügbar waren:
+- **Earnings Call Transcript** via `mcp__defeatbeta-api__get_stock_earning_call_transcript` (US) oder Quartr (Non-US) — Pricing-Power-Confirmation-Suche (Suchbegriffe „pricing", „price increase", „raised prices") → Moat +1 Bonus möglich
+- **Forward-Guidance-Detail** aus Call-Q&A (oft präziser als Press-Release)
+- **Zacks-EPS-Revisions-Refresh** (12-72h post-Call typisch verfügbar)
+- **Management-Tone / Q&A-Insights** in Risk-Map
+
+**Schritt 7 (ScoreRecord-Append) und §18-Sync laufen ausschließlich am Tag +1**, nicht am Tag 0. Damit ist 8-File-Sync atomar und eindeutig auf einen Workflow-Tag zugeordnet.
+
+**Outlier-Caveat:** Wenn Press-Release-Day einen FLAG-Trigger erzeugt (Insider >$20M, CapEx/OCF >60%, FCF-Trend-neg etc.), erfolgt der FLAG-Event-Append (`archive_flag.py trigger`) am Tag 0 sofort — **ohne** Score-Move. Score-/D-Stufen-Anpassung kommt am Tag +1 mit der vollen Vollanalyse. Diese Trennung ist sauber, weil `flag_events.jsonl` und `score_history.jsonl` orthogonale SSoTs sind.
+
+**Sync-Set-Trennung Tag 0 vs Tag +1:**
+- **Tag 0 Sync-Set (FLAG-Trigger-Fall):** `flag_events.jsonl` + `log.md` + ggf. `PORTFOLIO.md` (FLAG-Spalte + Sparrate auf 0€) + `Faktortabelle.md` (FLAG-Spalte) + `config.yaml` (FLAG-Sub-Block). Score bleibt unverändert.
+- **Tag 0 Sync-Set (kein FLAG-Trigger):** `log.md` (Pre-Call-Snapshot-Notiz) + ggf. `CORE-MEMORY.md §12.<ticker>` (Headline-Notiz). Sonst nichts.
+- **Tag +1 Sync-Set (Score-Event):** Volle 8-File-Pflicht-Liste gemäß §18.1 v2.3 + ggf. `flag_events.jsonl` (Resolve, falls FLAG am Tag 0 noch aktiv war).
+
+**Begründung (V Q2 28.04. Reinfall als Präzedenz):** Mittags-Vollanalyse vor Call führte zu drei Methodology-Drifts (HIGH-1 ROIC SKILL-Wortlaut, HIGH-2 Carryover-Proxy-Kurs, MEDIUM-2 Insider carryover-rounding). Hauptursache war **Reviewer-Disziplin-Lücke unter Zeitdruck** („heute Abend noch fertig"-Mentalität), nicht fehlende Daten. Tag-+1-Slot bietet:
+- Schritt 6c Pre-Flight ohne Zeitdruck
+- Codex-Review **vor** Sync-Commit (statt danach mit Revert-Aufwand)
+- Transcript-Daten verfügbar → Pricing-Power-Bonus erfassbar
+- Zacks-EPS-Revisions teilweise refreshed
+
+Token-Aufwand-Vergleich V-Reinfall: ~100-130k für Mittags-Lauf + Codex-Review + Revert + Spec-Erweiterung. Mit Wait-Discipline: ~40-60k für sauberen Single-Pass-Lauf am Tag +1. Token-Save **~50-70%** + keine operativen Drift-Risiken.
+
+**Wissenschaftlicher Anker:** Bricolage-Avoidance + Look-Ahead-Bias-Vermeidung (§29.5 Sin #2). Press-Release-only-Vollanalyse läuft auf unvollständiger Datenbasis (Pricing-Power-Bonus systematisch ausgeschlossen → konservativer Moat-Score-Bias).
+
 ---
 
 ## 20. Ersatzbank-Aktivierungsprotokoll
