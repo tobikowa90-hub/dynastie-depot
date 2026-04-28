@@ -54,4 +54,4 @@
 
 ---
 
-*🦅 PIPELINE.md v1.2 | Dynasty-Depot | Pipeline-SSoT — on-demand via Routing-Table | Stand: 27.04.2026 (Track-5a/5b-Decision A1-Final + AVGO Insider-FLAG-Aktivierung — Long-Term-Gate „AVGO OpenInsider Manual-Check" DONE)*
+*🦅 PIPELINE.md v1.3 | Dynasty-Depot | Pipeline-SSoT — on-demand via Routing-Table | Stand: 28.04.2026 (Provenance-Gate Plan v3.1 KOMPLETT — Item #3 DONE + Item #15 P3.5-Test-Architektur deferred + Item #16 INSTRUKTIONEN-Slim-Refactor ready post-Earnings)*
