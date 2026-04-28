@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Plan-Version:** v3 (Refresh 2026-04-28) — drift-patch + hardened carryover-policy + task-6-union-scope
+**Plan-Version:** v3.1 (Patch 2026-04-28 nach Codex-Round-2-Sparring) — drift-patch + hardened carryover-policy + task-6-union-scope + task-0.5-tmo-migration + empty-string-bypass-fix + pipeline-sequence-test
 
 **Goal:** Fail-close Pipeline-Gate `P3.5` plus reduzierter Schema-Guard verhindern, dass Rescoring- oder unvollständige Forward-Runs als `analyse_typ="vollanalyse"` in `05_Archiv/score_history.jsonl` persistiert werden.
 
@@ -10,18 +10,24 @@
 
 **Tech Stack:** Python 3.11+, Pydantic v2, `subprocess` für git, vorhandene Smoke-Test-Harness (kein pytest). Append-Pfad bleibt `archive_score.py` unverändert.
 
-**Spec:** `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` (v2)
+**Spec:** `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` (v2.1)
 
 **Non-Goals (aus Spec §3):** kein `--force`-Override, keine Schema-Migration der 28 existierenden Records, keine `01_Skills/dynastie-depot/config.yaml`-Erweiterung, keine INSTRUKTIONEN-§-Promotion (Applied-Learning-Stufe reicht bis 3-4 reale Anwendungen; §18.5 ist Sub-Section, kein neuer Top-Level-§).
 
-**Drift-Refresh-Note (v3 28.04.2026):** Plan v2 (21.04.) ist gegenüber dem aktuellen Repo-Stand 7 Tage gedriftet. v3 patcht:
+**Drift-Refresh-Note (v3 28.04.2026):** Plan v2 (21.04.) ist gegenüber dem aktuellen Repo-Stand 7 Tage gedriftet. v3 patchte:
 - Alle Code-Edit-Anker (Zeilen-Nummern in schemas.py, archive_score.py, SKILL.md, _smoke_test.py via Recon-Agents 28.04. verifiziert).
 - Pflicht-Touch-Files: STATE.md → PORTFOLIO.md überall (00_Core-Split 22.04., `REQUIRED_TOUCH_FILES = ("PORTFOLIO.md", "Faktortabelle.md", "log.md")` bereits in `_forward_verify_helpers.py`).
-- Baseline 27 → 28 Records (TMO Q1 23.04. = Record #28, ohne Gate appendiert, fungiert als Pre-Gate-Audit-Subjekt).
+- Baseline 27 → 28 Records (TMO Q1 23.04. = Record #28, ohne Gate appendiert).
 - Task 6 (Go-Live-Doku) erweitert auf §18.2-Union-Scope: SYSTEM.md (NICHT STATE.md) + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log.md.
 - Schemas-Cases-Erwartung: 10 Pre-Cases (aktuell, inkl. Portfolio/Benchmark) + 4 D-Cases (D1-D4) = 14 Cases nach Task 2.
-- TMO-First-Live-Run-Hypothese gestrichen (Record #28 ist pre-gate; First-Live = nächste !Analysiere-Vollanalyse nach Deploy, V 28.04. oder MSFT 29.04.).
-- Carryover-Whitelist verschärft (Codex-HIGH 28.04.): Whole-Word-Source-Match + Source-Prefix + Terminal-Reason-Match statt naive Substring.
+- TMO-First-Live-Run-Hypothese gestrichen (Record #28 ist pre-gate; First-Live = nächste !Analysiere-Vollanalyse nach Deploy).
+- Carryover-Whitelist verschärft: Whole-Word-Source-Match + Source-Prefix + Terminal-Reason-Match statt naive Substring.
+
+**Patch-Note (v3.1 28.04.2026 — Codex-Round-2-Sparring-Resolution):** Plan v3 single-pass-review ergab B-Verdikt mit 4× HIGH. Codex-Round-2 confirmed Lösungs-Pfade. v3.1 patcht:
+- **HIGH-1 + HIGH-4 TMO #28 Block-Coverage:** Empirische JSONL-Inspect-Verifikation (28.04.) zeigt TMO Q1 23.04. Record #28 hat `gm_trend_3j_pct_p_a=null` (moat 0/1) und alle 4 Technicals-Rohfelder null. Block-Coverage-Validator würde reißen. Sweep der anderen forward+vollanalyse-Records: V #25 PASS, TMO #27 PASS, **nur #28 betroffen**. Lösung: **neuer Task 0.5** zwischen Task 0 und Task 1 — idempotenter Migration-Helper `migrate_tmo_28_block_coverage.py` (dry-run + apply, eigener Commit vor Task 1, analog `ca76114`-Pattern). Step 0.1 Erwartung relaxed auf `>= 28 / FAIL: 0`. Spec §10 + Step 6.3 §10-Eintrag konsistent korrigiert (TMO-Pre-Gate-Audit nach Migration-Backfill).
+- **HIGH-2 Empty-String-Bypass:** `_is_placeholder("")` returned False (umgeht Check #7). Fix in Helper-Semantik (root cause): `if not stripped: return True` als Frühreturn. Tests 8j/8k (`""` und `"   "` → fail).
+- **HIGH-3 Case 7 testet keine Pipeline-Sequence:** Neuer **Case 8 "Pipeline-Sequence-Order"** in Task 5 mit 2 Pipeline-Runs (P3.5-fail → P3-Counter==0 explizit als Negativ-Aussage „P3 nicht aufgerufen"; P3.5-pass → P3-Counter==1). Counter beobachtet nur P3-Aufruf, nicht P3.5-Internals. Robuster gegen späteren Refactor als Case-7-Erweiterung.
+- **MEDIUMs:** Step 0.1 flexible Record-Anzahl (`>= 28`), Step 6.2 §18-Footer-Snippet inline (kein subagent search-and-find), Step 6.3 N/N statt 28/28, Task 6 Doku-Snippets inkl. konkreter Insertion-Anker.
 
 ---
 
@@ -29,11 +35,13 @@
 
 | Datei | Aktion | Verantwortung |
 |---|---|---|
+| `03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py` | **NEU** | Task 0.5 idempotenter Migration-Helper (TMO #28 moat + technicals nachfüllen) |
+| `05_Archiv/score_history.jsonl` | Modifizieren (Task 0.5) | Record #28 metriken_roh-Felder via Migration-Helper befüllt |
 | `03_Tools/backtest-ready/versions.py` | **NEU** | SSoT-Konstante `DEFCON_ACTIVE_VERSION` |
-| `03_Tools/backtest-ready/provenance_gate.py` | **NEU** | `check_provenance()` Pipeline-Gate (Schicht B) + verschärfte Carryover-Whitelist + Smoke-Tests |
+| `03_Tools/backtest-ready/provenance_gate.py` | **NEU** | `check_provenance()` Pipeline-Gate (Schicht B) + verschärfte Carryover-Whitelist + Empty-String-Fix + Smoke-Tests |
 | `03_Tools/backtest-ready/schemas.py` | Modifizieren | Refactor `_check_forward_version` auf `versions.py`; neuer Validator `_check_vollanalyse_block_coverage` (Schicht D); Smoke-Cases D1-D4 |
 | `01_Skills/backtest-ready-forward-verify/SKILL.md` | Modifizieren | Phase-Tabelle: P3.5 vor P3 einfügen; Report-Format Zeile P3.5; Authoritative-Sources erweitern |
-| `01_Skills/backtest-ready-forward-verify/_smoke_test.py` | Modifizieren | Case 7 — Integrationstest fail-close P3.5, kein Archiv-Write |
+| `01_Skills/backtest-ready-forward-verify/_smoke_test.py` | Modifizieren | Case 7 (Integrationstest fail-close) + Case 8 (Pipeline-Sequence-Order P3.5 vor P3) |
 | `00_Core/SYSTEM.md` | Modifizieren | System-Zustand-Bullet: „Provenance-Gate aktiv seit YYYY-MM-DD" (Task 6.1, NICHT STATE.md) |
 | `00_Core/INSTRUKTIONEN.md` | Modifizieren | Neue §18.5 Provenance-Gate-Klausel + §18-Versionsbump v2.1→v2.2 (Task 6.2) |
 | `00_Core/CORE-MEMORY.md` | Modifizieren | §10 Audit-Log Go-Live-Eintrag (Task 6.3) |
@@ -70,9 +78,9 @@ for line_no, err in failed:
     print(f'  line {line_no}: {err}')
 "
 ```
-Expected: `PASS: 28 / FAIL: 0` (Stand 28.04.2026 — TMO Q1 Record #28 ist appendiert).
+Expected: `PASS: N / FAIL: 0` mit `N >= 28` (Stand 28.04.2026 — TMO Q1 Record #28 ist appendiert; bei späterer Plan-Execution können neue Records dazu gekommen sein, dann höher).
 
-**TMO-Pre-Gate-Audit-Risiko (v3-Note):** Spec §10 markiert TMO-Record #28 als Pre-Gate-Audit-Subjekt. Wenn der Record im Pre-Check Block-Coverage-Validator (Task 2) failt, dann hat ein historischer Forward-Vollanalyse-Record unvollständige `metriken_roh` — entweder via separater Helper-Migration nachfüllen (eigener Commit vor Task 1) ODER `analyse_typ` retroaktiv auf `rescoring` umklassifizieren (eigener Commit vor Task 1). DANN Plan fortsetzen. Risiko ist gering (TMO-Record wurde am 23.04. mit Q1-Vollanalyse-Daten gefüllt, alle 5 quellen-Felder + alle 4 metriken_roh-Blöcke laut Handover-Verifikation), aber explizit auf der Pre-Check-Watchlist.
+**TMO-Pre-Gate-Audit-Befund (v3.1 verifiziert 28.04.):** TMO Record #28 hat `gm_trend_3j_pct_p_a=null` (moat 0/1) und alle 4 Technicals-Rohfelder null. Step 0.1 läuft GRÜN (kein aktiver Block-Coverage-Validator), aber Task 2.7 Re-Validate-Sweep (mit aktivem Validator) würde mit `empty_blocks=['moat','technicals']` reißen. **Deshalb Task 0.5: Migration-Helper VOR Task 1**, der TMO #28 nachfüllt. Sweep der anderen forward+vollanalyse-Records (28.04.): V #25 PASS, TMO #27 PASS, nur #28 betroffen.
 
 - [ ] **Step 0.2: Bei FAIL — Migration nachholen, NICHT Tasks 1-6 starten**
 
@@ -85,7 +93,280 @@ Wenn Step 0.1 FAIL meldet:
 
 - [ ] **Step 0.3: Note in Plan-Header oder Execution-Log: „Baseline N/N PASS @ <commit>"**
 
-Kein Code-Step — eine Zeile in der Execution-Session-Notiz. Falls Subagent-Driven: Subagent meldet Pre-Check-Ergebnis bevor er Task 1 startet.
+Kein Code-Step — eine Zeile in der Execution-Session-Notiz. Falls Subagent-Driven: Subagent meldet Pre-Check-Ergebnis bevor er Task 0.5 (oder Task 1, falls 0.5 obsolet) startet.
+
+---
+
+## Task 0.5: TMO #28 Block-Coverage Migration (Pre-Task-1, Codex-HIGH-1+4-Resolution)
+
+**Files:**
+- Create: `03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py` (idempotent Migration-Helper)
+- Modify (durch Helper, atomarer rewrite-replace): `05_Archiv/score_history.jsonl` Zeile 28
+
+**Rationale:** Codex-Plan-Review-Round-1 (28.04.) + empirische JSONL-Inspect-Verifikation: TMO #28 hat `gm_trend_3j_pct_p_a=null` und alle 4 Technicals-Rohfelder null. Task 2.7 Re-Validate-Sweep (mit Block-Coverage-Validator aktiv) würde reißen. Lösung Codex-Round-2-confirmed: idempotenter Migration-Helper, der **nur Record #28 patcht** und **Wert-Herkunft im Migrations-Artefakt dokumentiert** (auditierbar). Eigener Commit VOR Task 1 (Pattern wie `ca76114` Drift-Migration 21.04.). Sweep zeigte: V #25 + TMO #27 sind PASS — nur #28 betroffen, Scope ist single-record.
+
+**Akzeptanzkriterium (Codex-Round-2 explizit):** dry-run-Diff-Output und apply-Diff-Output müssen identisch sein (außer dass apply persistiert). Damit ist „idempotent" empirisch belegt, nicht nur behauptet.
+
+- [ ] **Step 0.5.1: Wert-Recherche für TMO #28 Migration-Backfill**
+
+Bevor der Helper geschrieben wird, müssen die Werte historisch korrekt zum Score-Datum 2026-04-23 ermittelt werden. Quellen + Werte als Pre-Migration-Notiz im Helper-Docstring + im Migrations-Commit-Body dokumentieren:
+
+| Feld | Wert (zu ermitteln) | Quelle |
+|---|---|---|
+| `gm_trend_3j_pct_p_a` | float (3-Jahres-Bruttomargen-Trend in Prozentpunkten p.a., aus TMO-IR FY23/24/25) | TMO Q1 FY26 Vollanalyse-Excel im 02_Analysen/ ODER GuruFocus 3j-GM-Historie |
+| `rel_strength_sp500_6m_pct` | int (6M relative Strength TMO vs SPY in pp, Datenstand 22.04.2026 Pre-Briefing) | yfinance Pre-Briefing-Snapshot 22.04. ODER reproduzierbar via `yf.Ticker('TMO').history(period='6mo', end='2026-04-22')` vs SPY |
+| `rel_staerke_sp500_6m_pct` | int (= Spiegel-Alias, identischer Wert) | dito |
+| `kurs_vs_200ma_pct` | float (Prozent Distanz zum 200-Tage-MA, 22.04.) | yfinance dito |
+| `ma200_slope` | float oder Enum (Slope-Klassifikation 200MA) | yfinance dito |
+
+**Falls TMO-Q1-Vollanalyse-Excel im `02_Analysen/` die Werte enthält:** primary-source. Falls nicht: yfinance-Reproduktion mit fixed end-date 2026-04-22 = Pre-Briefing-Datenstand (deterministisch).
+
+Wenn Werte nicht reproduzierbar sind, **Task 0.5 stoppen** und mit User klären (Fallback: TMO #28 retroaktiv auf `analyse_typ="rescoring"` umklassifizieren — semantisch unsauber, aber funktional). Standard-Pfad: Migration mit echten Werten.
+
+- [ ] **Step 0.5.2: Helper-Skript schreiben**
+
+Datei `03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py`:
+
+```python
+"""TMO Record #28 Block-Coverage Migration.
+
+Idempotenter Helper, der `metriken_roh` von Record-ID
+'2026-04-23_TMO_vollanalyse' um die fehlenden moat- und technicals-
+Rohfelder ergänzt. Pattern analog migrate_defcon_drift.py
+(commit ca76114, 21.04.2026).
+
+Hintergrund: Codex-Plan-Review (28.04.2026) zeigte, dass TMO #28
+mit gm_trend_3j_pct_p_a=null + 4 Technicals-Rohfelder null appendiert
+wurde (Task 0.1 PASS aktuell, weil Block-Coverage-Validator noch
+nicht existiert). Plan v3.1 Task 2 fügt den Validator hinzu — Task 2.7
+Re-Validate-Sweep würde dann ohne diese Migration mit
+empty_blocks=['moat','technicals'] reißen.
+
+Wert-Herkunft (siehe Step 0.5.1):
+- gm_trend_3j_pct_p_a: <Wert + Quelle>
+- rel_strength_sp500_6m_pct: <Wert + Quelle>
+- rel_staerke_sp500_6m_pct: <Wert + Quelle, identisch zu rel_strength>
+- kurs_vs_200ma_pct: <Wert + Quelle>
+- ma200_slope: <Wert + Quelle>
+
+Datenstand: TMO Q1 FY26 Vollanalyse 23.04.2026 / yfinance
+Pre-Briefing-Snapshot 22.04.2026.
+
+Idempotenz: dry-run und apply produzieren identische Diff-Outputs
+(außer Persistierung). Bei wiederholtem apply (Felder bereits gesetzt):
+exit-code 0, Message "no-op (already migrated)".
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+ARCHIVE_PATH = REPO_ROOT / "05_Archiv" / "score_history.jsonl"
+TARGET_RECORD_ID = "2026-04-23_TMO_vollanalyse"
+
+BACKFILL_VALUES: dict[str, float | int] = {
+    # Wert-Herkunft im Module-Docstring + Step 0.5.1
+    "gm_trend_3j_pct_p_a": ...,        # TODO Step 0.5.1
+    "rel_strength_sp500_6m_pct": ...,  # TODO Step 0.5.1
+    "rel_staerke_sp500_6m_pct": ...,   # = rel_strength (Alias-Spiegel)
+    "kurs_vs_200ma_pct": ...,          # TODO Step 0.5.1
+    "ma200_slope": ...,                # TODO Step 0.5.1
+}
+
+
+def _load_records() -> list[dict]:
+    with ARCHIVE_PATH.open(encoding="utf-8") as fh:
+        return [json.loads(line) for line in fh if line.strip()]
+
+
+def _diff_for_record(record: dict) -> dict[str, tuple]:
+    """Returns {field: (before, after)} mapping für Felder, die migriert werden."""
+    if record.get("record_id") != TARGET_RECORD_ID:
+        return {}
+    metriken = record.get("metriken_roh", {})
+    diffs: dict[str, tuple] = {}
+    for field, new_value in BACKFILL_VALUES.items():
+        old_value = metriken.get(field)
+        if old_value is None and new_value is not None:
+            diffs[field] = (old_value, new_value)
+    return diffs
+
+
+def _apply(records: list[dict]) -> int:
+    """Returns count of records modified (0 oder 1, da nur TMO #28)."""
+    count = 0
+    for record in records:
+        diffs = _diff_for_record(record)
+        if not diffs:
+            continue
+        for field, (_, new_value) in diffs.items():
+            record["metriken_roh"][field] = new_value
+        count += 1
+    return count
+
+
+def _format_diff(diffs: dict[str, tuple]) -> str:
+    if not diffs:
+        return "(no-op — keine null-Felder gefunden, Migration bereits applied?)"
+    lines = []
+    for field, (before, after) in diffs.items():
+        lines.append(f"  {field}: {before!r} -> {after!r}")
+    return "\n".join(lines)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--apply", action="store_true",
+                        help="Persist changes (default = dry-run).")
+    args = parser.parse_args()
+
+    # Guard: BACKFILL_VALUES darf keine unaufgelösten Ellipsis-Sentinels haben
+    # (Step 0.5.3 muss vor Lauf erfolgen — Codex-Round-3-LOW-Patch).
+    unresolved = [k for k, v in BACKFILL_VALUES.items()
+                  if v is Ellipsis or (isinstance(v, type(Ellipsis)) and v is ...)]
+    if unresolved:
+        print(
+            f"ERROR: BACKFILL_VALUES hat unaufgeloeste Ellipsis-Sentinels in "
+            f"{unresolved}. Step 0.5.3 (BACKFILL_VALUES mit echten Werten "
+            f"fuellen) muss vor dry-run/apply erfolgen.",
+            file=sys.stderr,
+        )
+        return 2
+
+    records = _load_records()
+    target = next(
+        (r for r in records if r.get("record_id") == TARGET_RECORD_ID),
+        None,
+    )
+    if target is None:
+        print(f"ERROR: Record-ID '{TARGET_RECORD_ID}' nicht gefunden.", file=sys.stderr)
+        return 2
+
+    diffs = _diff_for_record(target)
+    if not diffs:
+        print(f"no-op: {TARGET_RECORD_ID} hat bereits alle Backfill-Felder gesetzt.")
+        return 0
+
+    print(f"Target: {TARGET_RECORD_ID}")
+    print(f"Diffs ({len(diffs)} fields):")
+    print(_format_diff(diffs))
+
+    if not args.apply:
+        print("\n[DRY-RUN] Keine Persistierung. Führe mit --apply aus.")
+        return 0
+
+    # Apply
+    changed = _apply(records)
+    if changed != 1:
+        print(f"ERROR: Erwartete genau 1 Record-Mutation, got {changed}", file=sys.stderr)
+        return 1
+
+    # Atomic-rewrite
+    tmp_path = ARCHIVE_PATH.with_suffix(".jsonl.tmp")
+    with tmp_path.open("w", encoding="utf-8", newline="\n") as fh:
+        for record in records:
+            fh.write(json.dumps(record, ensure_ascii=False) + "\n")
+    tmp_path.replace(ARCHIVE_PATH)
+
+    print(f"\n[APPLIED] {changed} record(s) migrated, score_history.jsonl rewritten.")
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
+    except Exception:
+        pass
+    sys.exit(main())
+```
+
+**Wichtig:** `BACKFILL_VALUES` mit `...`-Sentinels schreiben ist **nicht executable**. Step 0.5.3 ersetzt die `...`-Sentinels durch die in Step 0.5.1 ermittelten konkreten Werte.
+
+- [ ] **Step 0.5.3: BACKFILL_VALUES mit echten Werten füllen**
+
+Die `...`-Sentinels in `BACKFILL_VALUES` durch die in Step 0.5.1 recherchierten Werte ersetzen. Werte als Inline-Kommentar mit Quelle dokumentieren:
+```python
+BACKFILL_VALUES: dict[str, float | int] = {
+    "gm_trend_3j_pct_p_a": 0.X,        # FY23 GM=Y%, FY25 GM=Z% (Quelle: <ref>)
+    "rel_strength_sp500_6m_pct": -A,   # 22.04. yfinance: TMO 6M -B%, SPY 6M +C% → diff -A pp
+    "rel_staerke_sp500_6m_pct": -A,    # = rel_strength, Alias-Spiegel
+    "kurs_vs_200ma_pct": -D,           # 22.04. yfinance close=$X, MA200=$Y → -D%
+    "ma200_slope": "downward",         # ODER float, je nach MetrikenRoh-Schema
+}
+```
+
+- [ ] **Step 0.5.4: Idempotenz-Test (dry-run + dry-run + apply + apply)**
+
+```bash
+# Dry-run #1
+python "03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py" > /tmp/dry1.txt
+# Dry-run #2 (muss byte-identisch zu #1 sein)
+python "03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py" > /tmp/dry2.txt
+diff /tmp/dry1.txt /tmp/dry2.txt
+# Expected: keine Ausgabe (identisch)
+
+# Apply
+python "03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py" --apply > /tmp/apply1.txt
+
+# Re-apply (muss no-op sein)
+python "03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py" --apply > /tmp/apply2.txt
+grep -q "no-op" /tmp/apply2.txt && echo "OK idempotent"
+```
+
+Akzeptanzkriterium (Codex-Round-2): dry-run-Output und apply-Diff-Sektion sind identisch (außer der `[APPLIED]`-Schlusszeile).
+
+- [ ] **Step 0.5.5: Re-Run Step 0.1 — Pre-Check muss weiter PASS sein**
+
+```bash
+python -c "
+import json, sys
+sys.path.insert(0, '03_Tools/backtest-ready')
+from schemas import ScoreRecord
+from pydantic import ValidationError
+passed, failed = 0, []
+with open('05_Archiv/score_history.jsonl', 'r', encoding='utf-8') as fh:
+    for i, line in enumerate(fh, 1):
+        if not line.strip(): continue
+        try:
+            ScoreRecord.model_validate(json.loads(line))
+            passed += 1
+        except ValidationError as e:
+            failed.append((i, str(e).split(chr(10))[1][:120] if chr(10) in str(e) else str(e)[:120]))
+print(f'PASS: {passed} / FAIL: {len(failed)}')
+"
+```
+Expected: identisch zu Pre-Migration `>= 28 / FAIL: 0`. Migration ändert nur metriken_roh-Felder, keine Schema-Verletzung.
+
+- [ ] **Step 0.5.6: Commit**
+
+```bash
+git add "03_Tools/backtest-ready/migrate_tmo_28_block_coverage.py" "05_Archiv/score_history.jsonl"
+git commit -m "migrate(score-history): TMO #28 Block-Coverage-Backfill (Provenance-Gate Plan Task 0.5)
+
+Codex-Plan-Review (28.04.2026) zeigte: TMO Q1 23.04.2026 Record #28
+('2026-04-23_TMO_vollanalyse') hat gm_trend_3j_pct_p_a=null und
+alle 4 Technicals-Rohfelder null. Block-Coverage-Validator (Task 2 D)
+würde mit empty_blocks=['moat','technicals'] reißen.
+
+Migration-Helper migrate_tmo_28_block_coverage.py (idempotent, dry-run
+default + --apply, atomic-rewrite via .tmp + replace) füllt:
+- gm_trend_3j_pct_p_a (Quelle: <ref>)
+- rel_strength_sp500_6m_pct + rel_staerke_sp500_6m_pct (Alias-Spiegel)
+- kurs_vs_200ma_pct
+- ma200_slope
+
+Idempotenz empirisch belegt (Step 0.5.4): dry-run #1==#2,
+apply-#2 = no-op. Sweep der anderen forward+vollanalyse-Records:
+V #25 + TMO #27 PASS, nur #28 betroffen.
+
+Pre-Check post-Migration: N/N PASS, FAIL=0 (Step 0.5.5).
+
+Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md §10 (v2.1)
+Plan: docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md Task 0.5"
+```
 
 ---
 
@@ -156,7 +437,7 @@ Expected: `✅ all archive_score smoke tests passed` (5/5).
 - [ ] **Step 1.5: Run skill smoke tests**
 
 Run: `python "01_Skills/backtest-ready-forward-verify/_smoke_test.py"`
-Expected: `✅ all 6/6 cases passed`.
+Expected: `✅ all 6/6 cases passed` (Pre-Task-5-State; Task 5 erweitert auf 8/8).
 
 - [ ] **Step 1.6: Commit**
 
@@ -468,8 +749,12 @@ _RE_QUESTION_MARKS = re.compile(r"\?+")
 
 
 def _is_placeholder(value: str) -> bool:
-    """True wenn value ein Platzhalter ist. Carryover-Whitelist v2 (Codex-HIGH-Hardening 28.04.).
+    """True wenn value ein Platzhalter ist. Carryover-Whitelist v2 (Codex-Round-1-HIGH).
 
+    Empty-String-Fix v2.1 (Codex-Round-2-HIGH-2 28.04.): Frühreturn schließt
+    Bypass-Lücke `quellen.{field}=""` an Helper-Semantik (root cause).
+
+    - Empty / Whitespace-only → True (NEU v2.1).
     - PLATZHALTER_BLACKLIST → True.
     - Pure `?+` → True.
     - `*_carryover` → False (akzeptiert) NUR wenn:
@@ -478,6 +763,8 @@ def _is_placeholder(value: str) -> bool:
       (c) Stem endet auf Reason-Token (terminal).
     """
     stripped = value.strip().lower()
+    if not stripped:
+        return True  # NEU v2.1: empty/whitespace-only → Platzhalter
     if stripped in PLATZHALTER_BLACKLIST:
         return True
     if _RE_QUESTION_MARKS.fullmatch(stripped):
@@ -776,7 +1063,20 @@ In `_smoke_tests()` den Block `# (Cases 6-9 folgen ...)` und `print("[partial] .
     passed, reasons = check_provenance(rec, [], None)
     assert not passed, "[8i] gurufocusxyz_carryover should fail (no whole-word match)"
 
-    print("  [8/9] placeholder + carryover whitelist (8a-8i) -> all checks pass")
+    # 8j: '' (empty string — Codex-Round-2-HIGH-2 Bypass-Test v2.1) → fail
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = ""
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[8j] empty string should fail (Codex-HIGH-2 bypass)"
+    assert "placeholder source" in reasons[0], f"[8j] {reasons}"
+
+    # 8k: '   ' (whitespace-only — empty after strip, v2.1) → fail
+    rec = _build_valid_vollanalyse()
+    rec["quellen"]["fundamentals"] = "   "
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[8k] whitespace-only should fail (empty after strip)"
+
+    print("  [8/9] placeholder + carryover whitelist (8a-8k) -> all checks pass")
 
     # Case 9: skill_meta.migration_to_version inconsistent → fail
     rec = _build_valid_vollanalyse()
@@ -801,7 +1101,7 @@ Lauf-Check folgt in Step 3.2.
 Run: `python "03_Tools/backtest-ready/provenance_gate.py"`
 Expected: `✅ all provenance_gate smoke tests passed (9/9)` mit 9 PASS-Zeilen.
 
-Wenn ein Test fehlschlägt: Logik in `check_provenance` oder `_is_placeholder` an dem entsprechenden Check-Block prüfen. Insbesondere bei 8f (Codex-HIGH-Bypass): bedeutet die verschärfte Carryover-Whitelist greift nicht — Reason-Terminal-Logik in `_is_placeholder` reviewen. Kein neuer Plan-Step — Fix iterativ einarbeiten, bis 9/9 grün.
+Wenn ein Test fehlschlägt: Logik in `check_provenance` oder `_is_placeholder` an dem entsprechenden Check-Block prüfen. Insbesondere bei 8f (Codex-Round-1-HIGH Bypass — Reason-Terminal-Logik) ODER 8j/8k (Codex-Round-2-HIGH-2 — Empty-String-Frühreturn fehlt): die jeweilige Verteidigungslinie reviewen. Kein neuer Plan-Step — Fix iterativ einarbeiten, bis 9/9 grün.
 
 - [ ] **Step 3.3: Regression-Check — alle bestehenden Tests grün?**
 
@@ -1102,7 +1402,87 @@ def case_7() -> None:
     # If archive doesn't exist yet, the assertion is trivially true
 ```
 
-- [ ] **Step 5.3: CASES-Tupel und run_all-Counter erweitern**
+- [ ] **Step 5.3: Case 8 — Pipeline-Sequence-Order (P3.5 vor P3, Codex-Round-2-HIGH-3)**
+
+Direkt nach `case_7` (vor `# Harness`-Trennlinie) einfügen:
+
+```python
+# ---------------------------------------------------------------------------
+# Case 8: Pipeline-Sequence-Order — P3.5 läuft vor P3, P3 wird bei Fail NICHT aufgerufen
+# ---------------------------------------------------------------------------
+def case_8() -> None:
+    """Codex-Round-2-HIGH-3 Resolution: testet die Gating-Garantie aus Spec §4.3
+    (P3 darf bei P3.5-Fail NICHT aufgerufen werden, P3 darf bei P3.5-Pass aufgerufen werden).
+
+    **Test-Aussage präzise:** Validiert Gating-Behavior + stubbed Sequence-Order
+    der `_run_pipeline`-Helper-Funktion — NICHT direkt-instrumentiert dass
+    `check_provenance()` zeitlich vor `build_migration_event()` läuft. Letzteres
+    folgt aus der Stub-Struktur, in der P3 nur via P3.5-Pass-Branch erreichbar ist.
+    Implizit: dieselbe Stub-Struktur muss in SKILL.md-Orchestrierung respektiert
+    werden (deshalb auch Task 4 SKILL.md Phase-Tabelle als parallele Authority).
+
+    Zwei Pipeline-Runs:
+      Run A: P3.5 fail (freshness_missing) → assert P3-Counter == 0
+        (Gating: 'P3 nicht aufgerufen' explizit als Negativ-Aussage)
+      Run B: P3.5 pass → assert P3-Counter == 1 (Reachability: P3 erreichbar nach Pass)
+
+    Counter beobachtet nur P3-Aufruf, nicht P3.5-Internals (Codex-Round-2-Refinement:
+    minimal-invasiv, gating-fokussiert, refactor-robust).
+    """
+    _require_helpers()
+
+    # Stub für P3 (build_migration_event-Aufruf): inkrementiert Counter
+    p3_call_count = {"n": 0}
+
+    def _stub_build_migration_event(skill_meta, forward_score):
+        p3_call_count["n"] += 1
+        return None  # nicht relevant — wir testen Sequence, nicht Δ-Gate-Output
+
+    def _run_pipeline(record_dict, freshness_missing, skill_meta):
+        """Simuliert SKILL.md-Orchestration: P3.5 vor P3, fail-close stoppt."""
+        passed, reasons = check_provenance(
+            record_dict=record_dict,
+            freshness_missing=freshness_missing,
+            skill_meta=skill_meta,
+        )
+        if not passed:
+            return ("P3.5_FAIL", reasons)
+        # P3 läuft NUR wenn P3.5 passed
+        _stub_build_migration_event(skill_meta, record_dict.get("score_gesamt"))
+        return ("P3_DONE", [])
+
+    # Run A: P3.5 fail
+    record_a = _build_minimal_record("ZTS", "2026-04-21", score_gesamt=65, defcon_level=3)
+    record_a["source"] = "forward"
+    record_a["analyse_typ"] = "vollanalyse"
+    record_a["defcon_version"] = "v3.7"
+    record_a["kurs"] = {"wert": 100.0, "waehrung": "USD",
+                        "referenz": "close_of_score_datum", "quelle": "yahoo_eod"}
+    record_a["quellen"] = {
+        "fundamentals": "defeatbeta", "technicals": "shibui",
+        "insider": "openinsider+sec_edgar", "moat": "gurufocus",
+        "sentiment": "zacks+yahoo",
+    }
+
+    p3_call_count["n"] = 0  # reset
+    result, reasons = _run_pipeline(record_a, ["PORTFOLIO.md"], {})
+    assert result == "P3.5_FAIL", f"Run A expected P3.5_FAIL, got {result}"
+    assert p3_call_count["n"] == 0, (
+        f"Run A: P3 nicht aufgerufen (Counter==0 erwartet bei P3.5-Fail), "
+        f"got Counter={p3_call_count['n']} (=Sequence-Bypass!)"
+    )
+
+    # Run B: P3.5 pass (kein freshness_missing)
+    p3_call_count["n"] = 0  # reset
+    result, reasons = _run_pipeline(record_a, [], {})
+    assert result == "P3_DONE", f"Run B expected P3_DONE, got {result}"
+    assert p3_call_count["n"] == 1, (
+        f"Run B: P3 muss 1x aufgerufen sein nach P3.5-Pass, "
+        f"got Counter={p3_call_count['n']}"
+    )
+```
+
+- [ ] **Step 5.4: CASES-Tupel und run_all-Counter erweitern**
 
 Vorher (Z. 498-505 + run_all-Counter):
 ```python
@@ -1126,6 +1506,7 @@ CASES = [
     (5, "parse_state_row — all style variants", case_5),
     (6, "check_freshness — git status detection", case_6),
     (7, "Integration — P3.5 fail-close, no archive write", case_7),
+    (8, "Pipeline-Sequence — P3.5 vor P3 (P3-Counter)", case_8),
 ]
 ```
 
@@ -1163,32 +1544,38 @@ Nachher:
 
 (Dynamisch via `len(CASES)` statt hard-coded 6 — vermeidet Drift bei zukünftigen Case-Erweiterungen.)
 
-- [ ] **Step 5.4: Run smoke tests — alle 7 müssen PASS**
+- [ ] **Step 5.5: Run smoke tests — alle 8 müssen PASS**
 
 Run: `python "01_Skills/backtest-ready-forward-verify/_smoke_test.py"`
-Expected: `✅ all 7/7 cases passed` mit 7 PASS-Zeilen `[1/7]`...`[7/7]`.
+Expected: `✅ all 8/8 cases passed` mit 8 PASS-Zeilen `[1/8]`...`[8/8]`.
 
-- [ ] **Step 5.5: Sanity — Archiv-File wirklich unverändert?**
+- [ ] **Step 5.6: Sanity — Archiv-File wirklich unverändert?**
 
 ```bash
 git status -- "05_Archiv/score_history.jsonl"
 ```
 Expected: keine Ausgabe (file unmodified). Falls modified → Test hat versehentlich appendiert. Stop, debuggen.
 
-- [ ] **Step 5.6: Commit**
+- [ ] **Step 5.7: Commit**
 
 ```bash
 git add "01_Skills/backtest-ready-forward-verify/_smoke_test.py"
-git commit -m "test(skill): Case 7 Integration-Test P3.5 fail-close (Provenance-Gate Task 5)
+git commit -m "test(skill): Case 7+8 Integration + Pipeline-Sequence (Provenance-Gate Task 5)
 
-Synthetischer vollanalyse-Draft mit freshness_missing=['PORTFOLIO.md'] durchläuft
-P1 → P2a (simulated) → P2b (ZTS not in PORTFOLIO.md = neuer Ticker, weiter) → P3.5.
-Asserts: passed=False, reason mentions vollanalyse+fresh+PORTFOLIO.md,
+Case 7 (Integration fail-close): Synthetischer vollanalyse-Draft mit
+freshness_missing=['PORTFOLIO.md'] durchläuft P1 → P2a (simulated) → P2b
+(ZTS not in PORTFOLIO.md = neuer Ticker, weiter) → P3.5. Asserts:
+passed=False, reason mentions vollanalyse+fresh+PORTFOLIO.md,
 score_history.jsonl unverändert (kein archive_score-Aufruf).
 
-CASES-Counter dynamisch via len(CASES); 7/7 grün.
+Case 8 (Pipeline-Sequence-Order, Codex-Round-2-HIGH-3): Stub-Pipeline mit
+P3-Counter testet explizit Spec §4.3 Reihenfolge-Garantie. Run A:
+P3.5-fail → P3-Counter==0 ('P3 nicht aufgerufen' Negativ-Aussage).
+Run B: P3.5-pass → P3-Counter==1.
 
-Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md §8.3"
+CASES-Counter dynamisch via len(CASES); 8/8 grün.
+
+Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md §8.3 + §4.3"
 ```
 
 ---
@@ -1217,7 +1604,14 @@ In `00_Core/SYSTEM.md` (System-Status-Datei seit 00_Core-Split 22.04.) — direk
 
 - [ ] **Step 6.2: INSTRUKTIONEN.md neue §18.5 als Sub-Section + §18-Versionsbump**
 
-In `00_Core/INSTRUKTIONEN.md` als neue Sub-Section nach §18.4 (Stand-Footer-Konvention) einfügen:
+**Anker-Recherche vor Edit (v3.1 explizit, Codex-Round-2-MEDIUM):** Der §18-Block hat eine Versionsgeschichte am Block-Ende (Stand-Footer-Konvention). Vor dem Edit lokal greppen, um aktuelle Footer-Stelle zu finden:
+```bash
+grep -n "v2\." "00_Core/INSTRUKTIONEN.md" | grep -i "18\."
+# Erwartet: Zeile mit "v2.0 -> v2.1 (...)" als bisheriger letzter Versionsbump-Eintrag
+# (oder ähnlicher Pattern — bei Drift seit Plan-Schreiben Footer-Konvention prüfen).
+```
+
+Insertion (1) — neue Sub-Section nach §18.4:
 
 ```markdown
 ### 18.5 Provenance-Gate für Score-Appends (seit YYYY-MM-DD, v3.7.4)
@@ -1225,10 +1619,19 @@ In `00_Core/INSTRUKTIONEN.md` als neue Sub-Section nach §18.4 (Stand-Footer-Kon
 Score-Append läuft via `backtest-ready-forward-verify` Skill, das nun Phase P3.5 (Provenance-Gate, fail-close) zwischen P2b und P3 ausführt. Bei `FAIL phase=P3.5` gibt es keinen `--force`-Bypass — Recovery durch Workflow-Korrektur (Pflicht-Touch-Files berühren / `analyse_typ` umklassifizieren / `quellen`-Felder mit echten Quellen oder legitimen `*_carryover`-Suffixen befüllen / Versions-Drift via Migration-Pipeline lösen). Carryover-Token-Whitelist in `03_Tools/backtest-ready/provenance_gate.py::CARRYOVER_SOURCE_TOKENS` + `CARRYOVER_SOURCE_PREFIXES` + `CARRYOVER_REASON_TERMINAL`.
 ```
 
-Zusätzlich §18-Versionsgeschichte am Ende des §18-Blocks ergänzen:
+Insertion (2) — §18-Versionsgeschichte am bestehenden Footer ergänzen. Bisheriger Footer (Stand 28.04.2026, Plan-Schreiben):
 ```markdown
-- v2.1 → v2.2 (YYYY-MM-DD): §18.5 Provenance-Gate-Klausel ergänzt.
+**§18 Versionsgeschichte:**
+- v1.0 (...): Initial-Sync-Pflicht-Definition.
+- v2.0 → v2.1 (YYYY-MM-DD): Trigger-basiertes Event-Mapping + Multi-Event-Union-Regel (§18.2).
 ```
+
+Neue Zeile am Ende der Versionsgeschichte:
+```markdown
+- v2.1 → v2.2 (YYYY-MM-DD): §18.5 Provenance-Gate-Klausel ergänzt (Pipeline-Phase P3.5 fail-close, kein --force-Bypass).
+```
+
+(Falls beim Edit eine andere Footer-Struktur vorliegt: an die bestehende Konvention anpassen, das Wesentliche ist der Versionsbump-Eintrag.)
 
 - [ ] **Step 6.3: CORE-MEMORY §10 Audit-Log Go-Live-Eintrag**
 
@@ -1239,10 +1642,11 @@ In `00_Core/CORE-MEMORY.md` §10 "API-Audit-Log" (Z. 277) am Ende einen neuen Ei
 
 - **Was deployed:** P3.5 fail-close in `backtest-ready-forward-verify` (Schicht B `provenance_gate.py` mit 8 Checks inkl. verschärfter Carryover-Whitelist) + Schicht D `ScoreRecord._check_vollanalyse_block_coverage` + SSoT `versions.py::DEFCON_ACTIVE_VERSION`.
 - **Plan:** `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (v3, refresh 28.04.).
-- **Spec:** `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` (v2).
-- **Pre-Check vor Execution:** 28/28 PASS (Step 0.1).
-- **Smoke-Tests post-Execution:** schemas 14/14 + archive_score 5/5 + provenance_gate 9/9 + skill 7/7 (inkl. Case 7 Integration-Test fail-close + Carryover-Bypass-Tests 8c-8i).
-- **Pre-Gate-Audit-Baseline:** TMO Q1 23.04.2026 Record #28 (ohne Gate appendiert, alle Provenance-Felder gesetzt — passiert Step 0.1 + Task 2.7 Re-Validate-Sweep).
+- **Spec:** `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` (v2.1).
+- **Pre-Check vor Execution:** N/N PASS (siehe Step 0.1, N >= 28).
+- **Migration vor Task 1:** TMO #28 Block-Coverage-Backfill via `migrate_tmo_28_block_coverage.py` (Task 0.5, idempotent dry-run + apply). Sweep der anderen forward+vollanalyse-Records: V #25 + TMO #27 PASS, nur #28 betroffen.
+- **Smoke-Tests post-Execution:** schemas 14/14 + archive_score 5/5 + provenance_gate 9/9 (inkl. Carryover-Bypass-Tests 8a-8k mit Empty-String-Coverage) + skill 8/8 (inkl. Case 7 Integration-Test fail-close + Case 8 Pipeline-Sequence-Order).
+- **Pre-Gate-Audit-Baseline:** TMO Q1 23.04.2026 Record #28 nach Task-0.5-Migration alle 4 metriken_roh-Blöcke gefüllt → passiert Task 2.7 Re-Validate-Sweep.
 - **First-Live-Run erwartet:** nächste !Analysiere-Vollanalyse nach Deploy (V Q2 28.04. oder MSFT Q3 29.04.).
 - **Promotion-Trigger:** nach 3-4 realen Anwendungen Applied-Learning-Scan, ob §-Promotion (statt Sub-§18.5) gerechtfertigt ist.
 ```
@@ -1300,16 +1704,16 @@ python "01_Skills/backtest-ready-forward-verify/_smoke_test.py"
 Expected (in dieser Reihenfolge):
 - `[OK] all schema smoke tests passed` (14 Cases — 10 Pre + D1-D4)
 - `✅ all archive_score smoke tests passed` (5/5)
-- `✅ all provenance_gate smoke tests passed (9/9)` (inkl. 8a-8i Carryover-Bypass-Coverage)
-- `✅ all 7/7 cases passed`
+- `✅ all provenance_gate smoke tests passed (9/9)` (inkl. 8a-8k Carryover-Bypass + Empty-String-Coverage)
+- `✅ all 8/8 cases passed` (inkl. Case 7 fail-close + Case 8 Sequence-Order)
 
-- [ ] **VC.2: `score_history.jsonl` unverändert (28 Records, keine Test-Mutation)**
+- [ ] **VC.2: `score_history.jsonl` post-Task-0.5-Migration, sonst unverändert (Test-Mutation = keine)**
 
 ```bash
 wc -l "05_Archiv/score_history.jsonl"
 git status -- "05_Archiv/score_history.jsonl"
 ```
-Expected: `28` Zeilen, kein git-status-Output.
+Expected: `N` Zeilen mit `N >= 28`, kein git-status-Output (post-commit clean). Task 0.5 mutiert Record #28 in eigenem Commit; nach Tasks 1-6 keine weitere Mutation.
 
 - [ ] **VC.3: Plan-Status update**
 

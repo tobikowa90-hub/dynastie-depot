@@ -1,7 +1,7 @@
 # Score-Append Provenance-Gate — Design Spec
 
-**Datum:** 2026-04-21 (Spec v1) · **Refresh:** 2026-04-28 (Spec v2)
-**Status:** v2 — Plan-v3-aligned, drift-patch + carryover-policy + STATE→PORTFOLIO-sweep
+**Datum:** 2026-04-21 (Spec v1) · **Refresh:** 2026-04-28 (Spec v2 / v2.1)
+**Status:** v2.1 — Plan-v3.1-aligned, drift-patch + carryover-policy + STATE→PORTFOLIO-sweep + empty-string-bypass-fix + TMO-pre-gate-audit-präzisierung
 **Scope-ID:** A1 (nur Schmerzpunkt #2 — Score-Append)
 **Architektur-Variante:** E (Hybrid: Pipeline-Gate B + reduziertes Schema-Guard D)
 **Nachfolge-Artefakt:** Implementation-Plan `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (Plan v3)
@@ -35,6 +35,8 @@ Brainstorm-Session 2026-04-21, ausgelöst durch Frage nach Integration externer 
 | 6 | Plan-v3-Drift-Refresh (28.04.) Round 1 — Plan-v2 vs aktueller Repo-Stand | A+ mit 2 HIGHs: §18-Union-Scope (Task 6) + Carryover-Policy für legitime `*_carryover`-Suffixe |
 | 7 | Plan-v3-Drift-Refresh (28.04.) Round 2 — HIGH-Resolution | parse_state_row-Helper bereits auf PORTFOLIO migriert (verifiziert via Recon-Agent); Carryover-Policy = Substring-Whitelist (Option C, User-approved) |
 | 8 | Spec-v2 Single-Pass-Review (28.04.) — Carryover-Bypass-Hardening | HIGH: naive `any(tok in stripped...)` umgehbar via Reason-Token-Kombination (`pre_gate_xyzzy_carryover`). Verschärft auf Whole-Word-Source-Match + Source-Prefix (`ir_`) + Terminal-Reason-Match. Tests 8e-8i ergänzt für Bypass-Coverage |
+| 9 | Plan-v3 Single-Pass-Review (28.04.) — B-Verdikt | 4× HIGH: TMO #28 Block-Coverage-Realismus (moat=null, technicals=null verifiziert via JSONL-Inspect — Sweep-Erwartung "28/28 PASS" unrealistisch); Empty-String-Bypass in `_is_placeholder` (`""` umgeht Check #7); Case 7 testet keine Pipeline-Sequence-Order P3.5-vor-P3; TMO-Baseline-Brittle aktiv blockerisch |
+| 10 | Plan-v3 Sparring-Round-2 (28.04.) — HIGH-Resolution | Migration-Helper Task 0.5 (TMO #28 Block-Coverage-Backfill, idempotent dry-run+apply, eigener Commit vor Task 1) confirmed; Empty-String-Fix als Helper-Semantik (root cause) confirmed mit Tests 8j/8k; Pipeline-Sequence-Test Option (b) als neuer Case 8 statt Case-7-Erweiterung confirmed (robuster gegen Refactor); MEDIUMs in selben Patch (Step 0.1 `>= 28`, Step 6.2 §18-Footer-Snippet inline, Step 6.3 `N/N` statt `28/28`). Codex-Verdikt B+ → Plan v3.1 schreiben |
 
 ---
 
@@ -179,8 +181,15 @@ _RE_QUESTION_MARKS = re.compile(r"\?+")
 def _is_placeholder(value: str) -> bool:
     """True wenn value (case-insensitive, getrimmt) ein Platzhalter ist.
 
-    Carryover-Policy (v2 Refresh 28.04., Codex-HIGH-Hardening):
-    - Bare PLATZHALTER_BLACKLIST-Treffer (`unknown`, `tbd`, `?`...) → True.
+    Empty-String-Bypass-Fix (v2.1 Codex-Round-2-HIGH-2 28.04.):
+    Erste Iteration ließ leere `quellen.{field}=""` durch (`""` ist nicht in
+    PLATZHALTER_BLACKLIST, nicht `?+`, nicht `*_carryover` → returned False).
+    Frühreturn `if not stripped: return True` schließt die Lücke an der Helper-
+    Semantik (root cause), nicht via Defense-in-Depth-Branch in Check #7.
+
+    Carryover-Policy (v2 Refresh 28.04., Codex-Round-1-HIGH-Hardening):
+    - Empty oder Whitespace-only → True (NEU v2.1).
+    - PLATZHALTER_BLACKLIST-Treffer (`unknown`, `tbd`, `?`...) → True.
     - Pure `?+` → True.
     - `*_carryover`-Suffix → akzeptiert (False) NUR wenn:
       (a) Stem enthält Source-Token als Whole-Word (split auf `_`), z.B.
@@ -194,6 +203,8 @@ def _is_placeholder(value: str) -> bool:
       `gurufocus` mit nicht-Whole-Word-Match → True (kein anerkannter Stamm).
     """
     stripped = value.strip().lower()
+    if not stripped:
+        return True  # NEU v2.1: empty/whitespace-only → Platzhalter (HIGH-2-Bypass-Fix)
     if stripped in PLATZHALTER_BLACKLIST:
         return True
     if _RE_QUESTION_MARKS.fullmatch(stripped):
@@ -381,6 +392,8 @@ Smoke-Tests analog zu existierendem `archive_score.py::_smoke_tests()`:
 | 8g | quellen.fundamentals="bridge_carryover" (Reason als kompletter Stem) | passed=True |
 | 8h | quellen.fundamentals="ir_apple_carryover" (Source-Prefix) | passed=True |
 | 8i | quellen.fundamentals="gurufocusxyz_carryover" (kein Whole-Word-Source-Match) | passed=False |
+| 8j | quellen.fundamentals="" (empty string — Codex-HIGH-2 Bypass-Test v2.1) | passed=False |
+| 8k | quellen.fundamentals="   " (whitespace-only — empty after strip, v2.1) | passed=False |
 | 9 | skill_meta.migration_to_version="v3.7" + record.defcon_version="v3.5" | passed=False |
 
 ### 8.2 Unit-Tests in `schemas.py`
@@ -429,7 +442,7 @@ Rationale (Codex Runde 5): Bei fail-close hängt die Schutzwirkung an korrekt ve
 
 ## 10. Offene Punkte / Follow-ups
 
-- **Pre-Gate-Audit-Subjekt (v2 28.04.):** TMO Q1 am 23.04.2026 ist als Record #28 bereits **ohne Gate appendiert** (forward + vollanalyse + alle 5 quellen-Felder befüllt, alle 4 metriken_roh-Blöcke gefüllt). Fungiert als Pre-Gate-Audit-Baseline für Plan-v3-Step-0.1 Pre-Check (28/28 PASS erwartet) + Task-2.7-Re-Validate-Sweep (Block-Coverage muss passieren).
+- **Pre-Gate-Audit-Subjekt (v2.1 Korrektur 28.04. nach Plan-Review-HIGH-1+4):** TMO Q1 am 23.04.2026 ist als Record #28 bereits **ohne Gate appendiert**. Codex-Plan-Review-Round-1 (28.04.) + empirische JSONL-Inspect-Verifikation zeigten: `metriken_roh` hat 6/16 fundamentals + 0/1 moat + 0/4 technicals + 2/3 sentiment befüllt. Block-Coverage-Validator (Task 2 Schicht D) würde mit `empty_blocks=['moat','technicals']` reißen. Sweep der anderen forward+vollanalyse-Records (V_vollanalyse 18.04. = #25, TMO_vollanalyse 18.04. = #27): beide PASS. → **Nur TMO #28 ist betroffen.** Plan v3.1 enthält neuen **Task 0.5: Migration-Helper `migrate_tmo_28_block_coverage.py`** (idempotent, dry-run + apply, eigener Commit vor Task 1) der `gm_trend_3j_pct_p_a` (TMO Q1 Vollanalyse-Wert) + 4 Technicals (yfinance Pre-Briefing 22.04.-Datenstand) nachfüllt. Pre-Gate-Audit-Baseline für Plan-v3.1-Step-0.1 Pre-Check (`>= 28 / FAIL: 0` nach Migration) + Task-2.7-Re-Validate-Sweep (Block-Coverage muss dann passieren).
 - **First-Live-Run nach Deploy:** nächste `!Analysiere`-Vollanalyse nach Plan-v3-Execution. Kandidaten: V Q2 28.04. (heute) ODER MSFT Q3 29.04. (morgen). Eigener CORE-MEMORY §10-Eintrag mit Pipeline-Sequenz-Result.
 - **Versions-Evolution:** Bei Migration v3.7 → v3.8 muss `versions.py::DEFCON_ACTIVE_VERSION` aktualisiert werden. Einzige Code-Stelle, keine Cross-File-Suche nötig.
 - **Evidence-basierte Promotion zu INSTRUKTIONEN-§-Block:** Nach 3-4 realen Anwendungen Applied-Learning-Scan: wurde Gate tatsächlich verwendet? Wurde ein realer Fehler verhindert? Bei Ja → ggf. eigener § (statt Sub-§18.5).
