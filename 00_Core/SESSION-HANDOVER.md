@@ -1,27 +1,14 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-28 Abend (Update #2 nach Pre-MKL-Pipeline-Test-Session + Codex-Sparring 4-Achsen-Architektur). **Provenance-Gate Plan v3.1 KOMPLETT ABGESCHLOSSEN** (Tasks 0-6.5 + Mini-Patches A/B + V/MSFT-Pre-Append-Audit-Notices + Codex-Round-3-Reconcile). Joint-Confidence ~95%. **Beispiele.md 4-Achsen-Architektur entschieden (Codex Round-1+2 96%)** — Execution post-MSFT (PIPELINE #17/#18/#19). Pipeline ready für **V Q2 First-Live-Run** (heute 28.04. AMC ~22:00, Auswertung 29.04. morgens). **Resume-Trigger nach Pause: „!Analysiere V Q2 FY26 — First-Live-Run mit Provenance-Gate + Anker-Promotion (notizen-Hint)"**.
+**Aktualisiert:** 2026-04-28 Abend. **Provenance-Gate v3.1 KOMPLETT** + **Beispiele.md 4-Achsen-Architektur entschieden** (Codex 96%, Execution post-MSFT via PIPELINE #17/#18) + **Ruflo Phase 1.1 Override-Block committed** (Codex 2-Round PASS, Phase 1.2 deferred bis post-#17). Pipeline ready für **V Q2 First-Live-Run** (heute 28.04. AMC ~22:00, Auswertung 29.04. morgens). **Resume-Trigger: „!Analysiere V Q2 FY26 — First-Live-Run mit Provenance-Gate + Anker-Promotion (notizen-Hint)"**.
 
 ### 🟢 Resume-Stand
 
 **Branch:** `main`. **HEAD:** `267a216` (Codex-Round-3 sec_edgar Multi-Word + Schritt-7 P3.5). Working tree clean. **9 Commits ahead** seit Handover `889becb`.
 
-**Smoke-Test-Status:** schemas 14/14 ✓ + archive_score 5/5 ✓ + provenance_gate 9/9 ✓ (jetzt 8a-8o inkl. Multi-Word) + skill 8/8 ✓ = **36/36**. Re-Validate-Sweep jsonl 28/28 PASS.
+**Smoke-Test-Status:** schemas 14/14 ✓ + archive_score 5/5 ✓ + provenance_gate 9/9 ✓ (8a-8o inkl. Multi-Word) + skill 8/8 ✓ = **36/36**. Re-Validate-Sweep jsonl 28/28 PASS.
 
-**Provenance-Gate Plan v3.1 — Commits (chronologisch):**
-| Commit | Task | Was |
-|---|---|---|
-| `5d97ddc` | 0.5 | TMO #28 Block-Coverage-Backfill (Migration-Helper, byte-level Line-Endings, idempotent) |
-| `ef6979c` | 1 | versions.py SSoT + schemas Refactor |
-| `5f4a6c5` | 2 | Schicht D Block-Coverage-Validator + Tests D1-D4 + archive_score-Fixture-Patch |
-| `06ff82c` | A+B | Mini-Patches: Doc-Typo + Plan-File D1-D4 IDs |
-| `cacf2a0` | 3 | provenance_gate.py Schicht B — 8 Checks fail-close, Carryover-Whitelist, 9/9 Smoke-Tests |
-| `d039a5b` | 4 | forward-verify SKILL.md Phase P3.5 + Authoritative-Sources + FAIL-Phase-Enum |
-| `e3547e9` | 5 | _smoke_test.py Case 7 (Integration fail-close) + Case 8 (Pipeline-Sequence-Order) |
-| `507eb64` | 6 | SYSTEM.md + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log.md Union-Scope |
-| `bd83631` | 6.5 | dynastie-depot Schritt 6c Pre-Flight-Klausel + ma200_slope-Threshold |
-| `4ca4654` | V/MSFT | Pre-Append-Audit-Klausel in Pre-Earnings-Briefs |
-| `267a216` | R3 | Codex-Round-3 Sofort-Fixes (sec_edgar Multi-Word + Schritt-7-Summary) |
+**Provenance-Gate Plan v3.1 — KOMPLETT** (11 Commits `5d97ddc`…`267a216`, Tasks 0-6.5 + Mini-Patches A/B + V/MSFT-Audit-Klausel + Codex-R3-Sofort-Fixes). Details: `git log --oneline 889becb..267a216` + CORE-MEMORY §10.
 
 ---
 
@@ -93,6 +80,7 @@
 - **#15 Pipeline-Test-Architektur-Hardening (Codex-Round-3 MEDIUM #2 + LOW #3):** Case 7+8 sind Stub-Pipeline-Tests, kein echter Python-Entry-Point. Re-Activation-Trigger: nach 3-4 realen Live-Runs P3-vor-P3.5-Bypass-Audit. Mitigation aktiv via Schritt 6c + Pre-Append-Audit.
 - **#11 Atomic-Write-Hardening portfolio_risk.py:** frozen, Re-Activation bei Incident oder Track-4-Auto-Hook.
 - **#7 Track 5b FRED Macro-Regime-Filter:** deferred bis Sparrate >1.000€/Monat oder Depotwert >50.000€ oder Regime-Aware-Schmerz.
+- **#20 Ruflo-Integration Phase 1.2:** Trigger post-#17/#18 (NICHT direkt nach Earnings). Pre-Read: `00_Core/RUFLO-INTEGRATION-PLAN.md` (committed `c9a3ed5`) + `00_Core/RUFLO-PLAN-META-REVIEW.md` (working-tree-Draft 28.04. — 10 Plan-Patches P1-P10 + 9 Pre-Conditions + 8-Schritt-Kickoff-Checkliste). Risiko-Re-Label MITTEL (OneDrive-AgentDB-Backend + Memory-Path-Pollution). Memory: `feedback_ruflo_memory_bridge_onedrive_pitfall.md`.
 
 ### Operativ unverändert
 
@@ -101,26 +89,10 @@
 - 3 FLAGs aktiv: AVGO Insider, APH Score, MSFT CapEx
 - Tavily-Key live PROD + Probe; Connector-UUID `0da14a12-...`
 
-### 📊 Codex-Sparring-Bilanz (Session 28.04.)
-
-- **Round 1** (Single-Pass auf Tasks 0-2): 0 HIGHs, 1 MEDIUM (Plan-File-Drift), 2 LOWs, 4 PASSes.
-- **Round 2** (Reconcile + 95%-Frage): 1 NEUER HIGH (Pre-Flight-Klausel war Frame-blind in R1), 1 MEDIUM (Plan-Inline), 1 LOW (ma200_slope), 1 NEUER 4. Punkt (V/MSFT Audit).
-- **Round 3** (Single-Pass auf Tasks 3-6.5 + Mini-Patches + Audit-Notices): 0 HIGHs, 2 MEDIUMs (sec_edgar toter Whitelist-Eintrag + Case 7 tautologisch), 2 LOWs (Case 8 Stub + Schritt-7-Summary fehlt P3.5). Variante 1 sofort committed (`267a216`), Variante 2 deferred via PIPELINE #15.
-- **Bilanz:** Reconcile-Round-2 fand HIGH dass R1 nicht hatte. Round-3 fand realen Whitelist-Bug (sec_edgar Multi-Word) + Doku-Drift (Schritt-7-Summary). Memory `feedback_codex_sparring_heuristic.md` validiert.
-
-### Memory-Hooks aktiv
-
-- feedback_review_via_codex_not_advisor.md — 3 Codex-Rounds Provenance-Gate-Cluster + 2 Codex-Rounds Beispiele.md-4-Achsen-Cluster in Session 28.04.
-- feedback_codex_sparring_heuristic.md — VALIDIERT Provenance-Round-3 + Beispiele-Round-2 (Reconcile brachte AVGO-D4-Argument + AVGO-ScoreRecord-Bug).
-- feedback_anchor_promotion_sync_gap.md (NEU 28.04.) — 4-Achsen-Pattern, Doppelrolle-via-Cross-Reference, Live-Frische schlägt Legacy-Subscores. Aktiviert für Refactor-Session post-MSFT.
-- feedback_windows_python_crlf_text_mode.md — byte-level Line-Ending-Preservation (0 ungewollte Konvertierungen).
-- feedback_pre_commit_diff_inspection.md — alle 11 Commits via `git diff --cached --stat` vor commit verifiziert.
-- feedback_onedrive_edit_collision.md — keine Kollisionen.
-
 ---
 
 ## 📜 Handover-Policy
 
 Nur **aktiver** RESUME-INPUT-Block. Historie kanonisch in `git log` (handover-Commits) + `00_Core/CORE-MEMORY.md` §13 + `00_Core/PIPELINE.md`. Bei Session-Ende: aktiven Block ersetzen, nicht anhängen.
 
-*🔁 SESSION-HANDOVER.md v2.0 | Slim-Resume — Policy B | Stand: 2026-04-28*
+*🔁 SESSION-HANDOVER.md v2.1 | Slim-Resume — Policy B | Stand: 2026-04-28 Abend*
