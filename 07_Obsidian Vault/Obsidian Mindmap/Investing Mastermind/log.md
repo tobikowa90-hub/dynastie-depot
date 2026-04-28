@@ -1056,3 +1056,12 @@ Pipeline-Phase P3.5 fail-close zwischen P2b und P3 deployed. Schicht B (`provena
 - **Carryover-Whitelist verschärft (Codex-Round-1-HIGH):** Whole-Word-Source-Tokens + IR-Prefix + Reason-Tokens nur terminal — verhindert Bypass via `pre_gate_xyzzy_carryover` u.ä.
 - **First-Live-Run erwartet:** V Q2 28.04.2026 AMC oder MSFT Q3 29.04.2026 AMC.
 - **Live-System-Impact:** Null — Pipeline-Hardening, kein Score/FLAG/Sparraten-Change. config.yaml + score_history.jsonl + flag_events.jsonl unberührt durch Doku-Edit (Task 0.5 hatte eigenen Migration-Commit `5d97ddc`).
+
+## [2026-04-28] system-event | dynastie-depot v3.7.4 — Pre-Flight-Klausel + ma200_slope-Threshold (Task 6.5)
+
+Codex-Round-2-HIGH-Befund (TMO #28 Workflow-Bug: Sub-Scores ohne Roh-Werte-Update copy-paste übernommen ohne `_carryover`-Markierung) adressiert via dynastie-depot SKILL.md:
+- **Schritt 6c (NEU):** Score-Konsistenz-Pre-Flight v3.7.4 — pro Block prüfen: Sub-Score!=0 nur zulässig wenn Rohwert nicht null ODER quellen mit legitimem `_carryover`-Suffix. Beispiel-Verstoß TMO #28 dokumentiert.
+- **Technicals-Section:** ma200_slope-Threshold-Konvention dokumentiert (>+0.1%/<-0.1%/flat über 21-Trading-Days, yfinance-reproduzierbar).
+- **Sync-Set §18.2:** SKILL-File-Edit + log.md (kein Score/FLAG/Sparraten-Change → kein PORTFOLIO/CORE-MEMORY/Faktortabelle/score_history/config.yaml-Sync nötig).
+- **Joint-Confidence-Lift:** 92% → 95%+ (mit V-Pre-Append-Audit 28.04. AMC).
+- **Live-System-Impact:** Null — Workflow-Disziplin-Doku, kein Skill-Code-Check, schließt Sub-Score/Roh-Wert-Inkonsistenz-Lücke vor V/MSFT-Live-Runs.

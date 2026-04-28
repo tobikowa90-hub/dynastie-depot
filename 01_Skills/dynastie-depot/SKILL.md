@@ -290,6 +290,19 @@ Nach Ausgabe der Depot-Einordnung (Output-Abschnitt 6): aktive FLAGs des analysi
 
 Kein Archive-Write in Schritt 7, bevor Resolution-Check gelaufen ist — sonst fehlt der `aktiv_ids`-Kontext im Score-Record.
 
+### Schritt 6c: Score-Konsistenz-Pre-Flight (v3.7.4, eingeführt 28.04.2026)
+
+Vor Schritt 7 (Archiv-Write) pro Block (fundamentals/moat/technicals/insider/sentiment) prüfen: Ein Sub-Score `!= 0` ist NUR zulässig wenn **(a)** der korrespondierende Rohwert in `metriken_roh` nicht null ist, ODER **(b)** `quellen.<block>` enthält explizit ein legitimes `_carryover`-Suffix (Source-Token Whole-Word, Source-Prefix `ir_`, oder Reason-Token terminal — Carryover-Whitelist analog `provenance_gate.py::CARRYOVER_SOURCE_TOKENS` / `CARRYOVER_SOURCE_PREFIXES` / `CARRYOVER_REASON_TERMINAL`).
+
+**Bei Verstoß** (Sub-Score gesetzt, aber Rohwert null und keine `_carryover`-Markierung): Workflow-Bug. Korrektur:
+- Sub-Score auf 0 setzen, ODER
+- Rohwert nachtragen (Daten neu erheben), ODER
+- `quellen.<block>` mit legitimem `*_carryover`-Suffix versehen (z.B. `gurufocus_carryover`, `ir_apple_carryover`, `skip_window_pre_score_carryover`).
+
+**Beispiel-Verstoß (TMO #28, 23.04.2026):** `scores.technicals.trend_lage=3` aber `metriken_roh.kurs_vs_200ma_pct=null`, `quellen.technicals="yfinance_pre_briefing_22_04"` (kein `_carryover`-Suffix) — Sub-Scores wurden offenbar vom 18.04.-Snapshot copy-paste übernommen ohne Roh-Werte-Update. Migration via `migrate_tmo_28_block_coverage.py` (Task 0.5, 28.04.) heilte `metriken_roh`; Algebra-Drift (trend_lage=3 vs. kurs_vs_200ma=-2.13% impliziert trend_lage=0) bleibt bis Score-Reconstruction-Tool ausstehend.
+
+Diese Klausel ist **Workflow-Disziplin** (kein Skill-Code-Check) — Provenance-Gate Schicht B+D fängt Roh-Werte-Lücken ab, aber NICHT Sub-Score/Roh-Wert-Inkonsistenzen ohne `_carryover`-Markierung. Bei V/MSFT-Live-Runs vor Schritt 7 manuell durchgehen.
+
 ### Schritt 7: Archiv-Write (via `backtest-ready-forward-verify`-Skill)
 
 Am Ende jeder `!Analysiere`-Ausgabe. Pipeline-Disziplin (Freshness / Tripwire / §28.2 Δ-Gate / Dry-Run / Append / git-add) ist in den Skill `backtest-ready-forward-verify` gekapselt.
@@ -539,6 +552,12 @@ Quelle: Quartr TICKER → letztes Earnings Call Transcript
 - Kurs über fallendem 200MA → 1–2/3 (schwächeres Signal)
 - Kurs unter 200MA → 0/3
 - Quelle: TradingView TICKER 1W Chart — MA-Richtung visuell prüfen
+
+**ma200_slope-Threshold-Konvention (Schema-Literal `{rising, falling, flat}`, eingeführt 28.04.2026 mit Provenance-Gate v3.7.4):**
+- 21-Trading-Days-Slope `> +0.1%` → `rising`
+- 21-Trading-Days-Slope `< -0.1%` → `falling`
+- sonst `flat`
+- Reproduzierbar via `yfinance.history(period='1y', end=<datum>)`, 200MA via `rolling(200).mean()`, Slope = `MA200(t) / MA200(t-21) - 1`. Quelle für Score-Block oben bleibt visuell (TradingView); diese Konvention dient der Roh-Wert-Persistenz in `metriken_roh.ma200_slope` für Backtest-Reproduzierbarkeit.
 
 ##### **Relative Stärke vs. S&P500 (6 Monate) — Scored Metric (v3.5):**
 
