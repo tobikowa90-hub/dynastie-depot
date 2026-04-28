@@ -6,6 +6,13 @@
 **Datenquelle:** Yahoo Finance via yfinance
 **Aktueller Score (PORTFOLIO.md):** 59 · DEFCON 🟠 2 · Sparrate 0€ · 🔴 FLAG CapEx/OCF 83,6 % · **FLAG-Review-Trigger**
 
+> **⚠️ Pre-Append-Audit (Provenance-Gate-Hardening 28.04.2026, dynastie-depot v3.7.4):**
+> Vor Schritt 7 (Archiv-Write) **manuell** pro Block (fundamentals/moat/technicals/insider/sentiment) prüfen:
+> - Wenn ein Sub-Score `!= 0` → korrespondierender Rohwert in `metriken_roh` darf nicht null sein, ODER `quellen.<block>` enthält legitimes `*_carryover`-Suffix (Whitelist analog `provenance_gate.py`).
+> - Bei Verstoß → Sub-Score auf 0 setzen ODER Rohwert nachtragen ODER `quellen` mit `_carryover`-Markierung versehen.
+> - Beispiel-Verstoß: TMO #28 (23.04.) — `trend_lage=3` aber `kurs_vs_200ma_pct=null`, `quellen.technicals` ohne `_carryover`-Markierung. Pre-Flight-Klausel ab v3.7.4 (SKILL.md Schritt 6c) fängt das.
+> - Second-Live-Run mit Provenance-Gate (P3.5 fail-close, 8 Checks) UND Pre-Flight-Klausel → Joint-Confidence-Lift 92% → 95%+.
+
 ---
 
 ## 1. Setup (Stand 27.04.2026)
