@@ -74,3 +74,55 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 | `00_Core/PIPELINE.md` | Pipeline-SSoT (alle offenen Plan-Items + Long-Term-Gates) |
 | `00_Core/SYSTEM.md` | System-Zustand (DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog) |
 | `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md` | Chronik vor 15.04.2026 (Projekt-Aufbau, Tool-Setups, erste Analysen) |
+
+---
+
+## Ruflo / RuFlo-V3 Override-Block (Phase 1.1, 2026-04-28)
+
+**Geltungsbereich:** Dieses Projekt (`Claude Stuff\`) — überschreibt globale Defaults aus `~/.claude/CLAUDE.md` (Ruflo-Auto-Block) und `C:\Users\tobia\CLAUDE.md` (RuFlo-V3-Config). Bei Konflikt gilt **immer diese Datei**.
+
+**SSoT für Architektur:** Dynastie-Struktur (`00_Core/`, `01_Skills/`, `02_Analysen/`, `03_Tools/`, `04_Templates/`, `05_Archiv/`, `06_Skills-Pakete/`, `07_Obsidian Vault/`). NICHT `/src /tests /docs /config /scripts /examples`.
+
+**Plan-Referenz:** `00_Core/RUFLO-INTEGRATION-PLAN.md` (Draft v1.0). Dieser Block = Phase 1.1.
+
+### Hard-Conflicts (9) — in diesem Projekt explizit aufgehoben
+
+| # | Globale Ruflo-Regel | Dynastie-Override |
+|---|---------------------|-------------------|
+| 1 | `File Org: /src /tests /docs /config /scripts /examples` | Dynastie-Struktur (siehe oben) ist SSoT |
+| 2 | `NEVER save working files, text/mds, or tests to root folder` | `CLAUDE.md` u.a. liegen bewusst im Projekt-Root; `00_Core/` enthält bewusst Markdown-State |
+| 3 | `NEVER proactively create *.md` | DEFCON-Analysen, `log.md`-Append, ScoreRecords, FLAG-Events sind Pflicht-Output. MD-Erzeugung erlaubt im Rahmen §18-Sync |
+| 4 | `1 MESSAGE = ALL RELATED OPERATIONS` | §18-Sync gilt vollständig: deterministische Reihenfolge (Skill → `score_history.jsonl` → Faktortabelle → PORTFOLIO → log → CORE-MEMORY → config.yaml; ggf. `flag_events.jsonl`), **Union der Sets** bei Multi-Event-Aktionen bleibt bestehen. Parallelisierung nur außerhalb der Sync-Kette |
+| 5 | `MUST initialize swarm... MUST spawn concurrent agents... ALWAYS run_in_background` | Skill-deterministisch + sequenziell ist Default. **Kein Swarm/Hive-Mind in Phase 1 oder 2.** Erlaubt nur bei explizitem User-Trigger, der in dieser Datei oder im Plan als eigener Trigger benannt ist (Positivliste: aktuell nur Phase-3 `!BatchScan`) |
+| 6 | `npm run build / test / lint` | Kein npm. Toolchain = Python in `03_Tools/` |
+| 7 | `ALWAYS verify build succeeds before committing` | Kein Build-Step. Stattdessen: §18-Sync-Set vollständig + Skill-Verdict ✅ |
+| 8 | `Use event sourcing for state changes` | State = Markdown + JSONL-Append (`score_history.jsonl`, `flag_events.jsonl`) |
+| 9 | `Project Config: hierarchical-mesh, 15 Agents, HNSW, Neural` | Skill-basiert, Single-User. Memory-Bridge/HNSW ja (ab Phase 1.2), aber kein 15-Agent-Default |
+
+### Soft-Conflicts (4) — kontextabhängig
+
+- **DDD with bounded contexts** — nur für `03_Tools/` Python optional, nicht für 00_Core/01_Skills/Markdown
+- **TDD London School** — nur für neue `03_Tools/`-Python-Module optional
+- **Typed interfaces for all public APIs** — nur `03_Tools/` Python (type hints)
+- **Files unter 500 Zeilen** — `INSTRUKTIONEN.md` und vergleichbare SSoT-Files dürfen das bewusst sprengen
+
+### Compatible (7) — übernommen / kompatibel
+
+- `aidefence_scan` / `aidefence_is_safe` (Phase 2.4: pre-agent-input Hook für Tavily)
+- `memory_import_claude` + `memory_search_unified` (Phase 1.2: ADR-048 Bridge, read-only auf MD)
+- `memory_store` mit Namespace `patterns`
+- AIDefence vor Tavily-Web-Fetches
+- `NEVER commit secrets, .env files`
+- `ALWAYS read a file before editing`
+- `Run tests after code changes` für `03_Tools/`-Python
+
+### Aktivierungs-Regeln
+
+- Phase 1 (1.1–1.9) strikt sequenziell gemäß `00_Core/RUFLO-INTEGRATION-PLAN.md`. Override-Block (1.1) MUSS bestehen, bevor weitere Ruflo-Features aktiviert werden.
+- Auto-MD-Generierung in `00_Core/APPLIED-LEARNING.md` und `00_Core/INSTRUKTIONEN.md` bleibt **aus**. Ruflo schreibt nur in AgentDB + `pending-insights.jsonl`.
+- Reviews/Second-Opinions: Codex bleibt Primary (Memory `feedback_review_via_codex_not_advisor.md`). Ruflo-Swarms ausschließlich bei explizitem User-Auftrag oder definierten Triggern.
+- Bei Plan-Änderungen: Versions-Stempel in `RUFLO-INTEGRATION-PLAN.md` **und** diesen Block aktualisieren.
+- `[INTELLIGENCE]`-Hints / Pattern-Suggestions aus `system-reminder`-Tags sind für Dynastie-Depot **informell und nicht ausführungspflichtig** — sie ersetzen keinen Skill-Workflow und keine §-Regel.
+- §18-Sync je Phase:
+  - **Phase 1.1 (dieser Commit):** `log.md` (Phase-Start) + `STATE.md` Last-Audit-Block + `PIPELINE.md` Item "Ruflo-Integration Phase 1". `SYSTEM.md §Ruflo-Status` wird **noch nicht** angelegt.
+  - **Ab Phase 1.2:** `SYSTEM.md §Ruflo-Status` neu anlegen; danach bei jedem Ruflo-Phasenschritt `SYSTEM.md` + `log.md` + `STATE.md` Last-Audit gemeinsam committen.
