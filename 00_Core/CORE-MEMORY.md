@@ -381,6 +381,19 @@ Differenz ~€1,2B/Jahr = normal für ASML-Leasingbasis. **Kein Fehler, kein Ale
 → Toleranz für Non-US OCF-Check: ±15% akzeptabel wenn Differenz mit Leasingbasis erklärbar.
 → CapEx-Toleranz bleibt ±1,5% (PP&E-Zahlen konvergieren unter beiden Standards).
 
+### 2026-04-28 — Provenance-Gate Go-Live
+
+- **Was deployed:** P3.5 fail-close in `backtest-ready-forward-verify` (Schicht B `provenance_gate.py` mit 8 Checks inkl. verschärfter Carryover-Whitelist) + Schicht D `ScoreRecord._check_vollanalyse_block_coverage` + SSoT `versions.py::DEFCON_ACTIVE_VERSION`.
+- **Plan:** `docs/superpowers/plans/2026-04-21-score-append-provenance-gate.md` (v3.1, refresh 28.04.).
+- **Spec:** `docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md` (v2.1).
+- **Pre-Check vor Execution:** 28/28 PASS (Re-Validate-Sweep score_history.jsonl post-TMO-#28-Migration).
+- **Migration vor Task 1:** TMO #28 Block-Coverage-Backfill via `migrate_tmo_28_block_coverage.py` (Task 0.5, idempotent dry-run + apply, Line-Endings byte-level preserviert). Sweep der anderen forward+vollanalyse-Records: V #25 + TMO #27 PASS, nur #28 betroffen.
+- **Smoke-Tests post-Execution:** schemas 14/14 + archive_score 5/5 + provenance_gate 9/9 (inkl. Carryover-Bypass-Tests 8a-8k mit Empty-String-Coverage) + skill 8/8 (inkl. Case 7 Integration-Test fail-close + Case 8 Pipeline-Sequence-Order).
+- **Pre-Gate-Audit-Baseline:** TMO Q1 23.04.2026 Record #28 nach Task-0.5-Migration alle 4 metriken_roh-Blöcke gefüllt → passiert Task 2.7 Re-Validate-Sweep.
+- **First-Live-Run erwartet:** nächste !Analysiere-Vollanalyse nach Deploy (V Q2 28.04. AMC oder MSFT Q3 29.04. AMC).
+- **Promotion-Trigger:** nach 3-4 realen Anwendungen Applied-Learning-Scan, ob §-Promotion (statt Sub-§18.5) gerechtfertigt ist.
+- **Carryover-Hardening (Codex-HIGH):** Round 1 (Bypass via `pre_gate_xyzzy_carryover`) + Round 2 (Empty-String `quellen.fundamentals=""`) beide via Whole-Word/Reason-Terminal-Logik + Helper-Frühreturn an root cause geschlossen. Tests 8c-8k decken Bypass-Coverage ab.
+
 ---
 
 ## 11. Backtest-Ready Infrastructure (aktiviert 2026-04-17)

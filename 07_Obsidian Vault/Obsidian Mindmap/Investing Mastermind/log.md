@@ -1045,3 +1045,14 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Sync-Welle (§18 v2.1):** PORTFOLIO.md + Faktortabelle.md + CORE-MEMORY.md §12.1 + 01_Skills/dynastie-depot/config.yaml (AVGO-Block + flags_aktiv + sparplan_verteilung-Beispiel + alle 7 sparrate_hinweis 35,63€/33,53€→38,00€ + V 17,81€/16,76€→19,00€) + 05_Archiv/flag_events.jsonl + log.md. User-Action manuell: `03_Tools/Rebalancing_Tool_v3.4.xlsx` + `03_Tools/Satelliten_Monitor_v2.0.xlsx` Sparraten-Spalten + FLAG-Status.
 - **Score-unverändert:** 84/D4 bleibt — FLAG überschreibt nur Sparrate, nicht Score. Score-Verfall regulär 14.10.2026.
 - **Re-Eval:** Q3 FY26 Earnings via !Analysiere AVGO + 90d-rolling-Insider-Check.
+
+## [2026-04-28] system-event | Provenance-Gate Go-Live (P3.5 + Schicht D + SSoT)
+
+Pipeline-Phase P3.5 fail-close zwischen P2b und P3 deployed. Schicht B (`provenance_gate.py`) + Schicht D (`schemas.ScoreRecord._check_vollanalyse_block_coverage`) + SSoT (`versions.py::DEFCON_ACTIVE_VERSION`). Sync-Set: SYSTEM.md + INSTRUKTIONEN §18.5 + CORE-MEMORY §10 + log.md (§18.2-Union-Pflicht). Plan v3.1 / Spec v2.1.
+
+- **Was deployed:** 8 Checks fail-close (Backfill-Skip / Freshness / Kurs-Referenz / Skill-Meta-Pflicht / Delta-Forward / Version-Drift / Platzhalter+Carryover-Whitelist / Recycled-Meta) + Pydantic-Validator Block-Coverage (4 Blöcke fundamentals/moat/technicals/sentiment, insider ausgenommen).
+- **Migration vor Task 1:** TMO #28 Block-Coverage-Backfill via `migrate_tmo_28_block_coverage.py` (Task 0.5, idempotent dry-run + apply, Line-Endings byte-level preserviert). 5 metriken_roh-Felder ergänzt (gm_trend, rel_strength dual, kurs_vs_200ma, ma200_slope) auf Basis yfinance-deterministischer Reproduktion 2026-04-22 Close.
+- **Smoke-Tests post-Execution:** schemas 14/14 + archive_score 5/5 + provenance_gate 9/9 (inkl. Carryover-Bypass-Tests 8a-8k mit Empty-String-Coverage Codex-Round-2-HIGH-2) + skill 8/8 (inkl. Case 7 Integration fail-close + Case 8 Pipeline-Sequence-Order Codex-Round-2-HIGH-3).
+- **Carryover-Whitelist verschärft (Codex-Round-1-HIGH):** Whole-Word-Source-Tokens + IR-Prefix + Reason-Tokens nur terminal — verhindert Bypass via `pre_gate_xyzzy_carryover` u.ä.
+- **First-Live-Run erwartet:** V Q2 28.04.2026 AMC oder MSFT Q3 29.04.2026 AMC.
+- **Live-System-Impact:** Null — Pipeline-Hardening, kein Score/FLAG/Sparraten-Change. config.yaml + score_history.jsonl + flag_events.jsonl unberührt durch Doku-Edit (Task 0.5 hatte eigenen Migration-Commit `5d97ddc`).

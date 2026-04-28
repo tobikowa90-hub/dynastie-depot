@@ -371,12 +371,17 @@ Alle zum Event-Set gehörenden Files in **einem** Commit bündeln (atomar). Pipe
 
 Alle 8 `00_Core/`-Files (`PORTFOLIO`, `STATE`, `CORE-MEMORY`, `Faktortabelle`, `PIPELINE`, `SYSTEM`, `INSTRUKTIONEN`, `KONTEXT`) tragen `**Stand:** YYYY-MM-DD` ausschließlich im **Footer-Versions-Banner** am Datei-Ende, nicht im Header. Beim Stand-Update wird nur die letzte Footer-Zeile editiert — Header und Body bleiben unberührt. Vorteil: Konsistenz beim File-Touch (Stand-Pflege ist mechanisch, nicht inhaltlich) + within-Session KV-Cache-Stabilität bei Re-Reads nach Stand-Edit.
 
+### 18.5 Provenance-Gate für Score-Appends (seit 2026-04-28, v3.7.4)
+
+Score-Append läuft via `backtest-ready-forward-verify` Skill, das nun Phase P3.5 (Provenance-Gate, fail-close) zwischen P2b und P3 ausführt. Bei `FAIL phase=P3.5` gibt es keinen `--force`-Bypass — Recovery durch Workflow-Korrektur (Pflicht-Touch-Files berühren / `analyse_typ` umklassifizieren / `quellen`-Felder mit echten Quellen oder legitimen `*_carryover`-Suffixen befüllen / Versions-Drift via Migration-Pipeline lösen). Carryover-Token-Whitelist in `03_Tools/backtest-ready/provenance_gate.py::CARRYOVER_SOURCE_TOKENS` + `CARRYOVER_SOURCE_PREFIXES` + `CARRYOVER_REASON_TERMINAL`.
+
 **Änderungsprotokoll:**
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
 - v1.6 → v1.7 (2026-04-19): Schritt 5 (score_history.jsonl) wird via Skill `backtest-ready-forward-verify` orchestriert — Pipeline-Kapsel statt Inline-CLI-Call in dynastie-depot Schritt 7.
 - v1.7 → v1.8 (2026-04-21): Zusatz-Trigger für STATE.md Pipeline-SSoT-Section ergänzt (Plan-Commit / Gate-Passage / Status-Transition). Kein Impact auf die 6-File-Liste selbst.
 - v1.8 → v2.0 (2026-04-24): 00_Core Hub-Split — pauschale 6er-Liste → Trigger-basiertes Event-Mapping (§18.1) + Multi-Event-Union-Regel (§18.2). STATE.md = Hub (Critical-Alert-Slot), Live-State migriert in PORTFOLIO.md. Pipeline-Items in PIPELINE.md, System-Items in SYSTEM.md.
 - v2.0 → v2.1 (2026-04-25): `config.yaml` aus „Bei FLAG-Change manuell sync"-Sub-Note in das Score-Event-File-Set hochgezogen — Lücke aufgedeckt durch TMO 23.04.-Drift (Score 64→67, kein FLAG-Trigger ⇒ alte Klausel griff nicht ⇒ config.yaml stale für 7 Tage bis 25.04.-Finalize-Commit `bb9986e`). Kein Set-Wachstum bei FLAG-Events (config.yaml ohnehin schon im Set), aber +1 manueller File bei reinen Score/Sparraten-Changes.
+- v2.1 → v2.2 (2026-04-28): §18.5 Provenance-Gate-Klausel ergänzt (Pipeline-Phase P3.5 fail-close, kein `--force`-Bypass). Schicht B `provenance_gate.py` + Schicht D `_check_vollanalyse_block_coverage` + SSoT `versions.py::DEFCON_ACTIVE_VERSION` deployed.
 
 ---
 
