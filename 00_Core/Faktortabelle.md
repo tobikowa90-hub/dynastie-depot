@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 28.04.2026 spätabends (V Rescoring-Revert nach Codex-HIGH-1+HIGH-2 — D3→D2, Nenner 8,0→7,5)
+**Stand:** 30.04.2026 (APH Q1 FY26 Tag-+1 Vollanalyse — Score 63→61, D2/FLAG aktiv unverändert, Codex-Review-Pass)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -56,7 +56,7 @@
 <!-- DATA:BRK.B -->
 | BRK.B | N/A (Float-Modell) | 5.6–7.8% GAAP | N/A (Holdings) | Netto-Cash | Wide | 75 | 🟡 3 | ✅ Clean (Insurance Exception) | 2026-04-17 | Q-Earnings Mai 2026 |
 <!-- DATA:APH -->
-| APH | — | — | ~32% | — | Narrow/Wide | 63 | 🟠 2 | 🔴 FLAG (Score-basiert) | 2026-04-17 | Q2 2026 Earnings 23.07. |
+| APH | 19,0% FY25 | 28% bereinigt §410 (CommScope-GW) vs WACC 14,30% | 36,9% FY25 | 1,6x Q1 FY26 (post-CommScope) | Wide | **61** | 🟠 2 | 🔴 FLAG (Score-basiert <65 D3) | **2026-04-30** | **Q2 FY26 ~23.07.** — China-Tax-ETR-27%-Verify + CommScope-Net-Lev-Verlauf + ROIC-GW-Bereinigung-Full-Year-Check |
 <!-- DATA:COST -->
 | COST | ~3% 5J | 5.6% GAAP (MY 15.2%) | ~12.7% | <1x | Wide | 69 | 🟡 3 | ✅ Clean (Screener-Exception) | 2026-04-17 | Q1 FY27 Earnings ~Dez 2026 |
 <!-- END_TABLE -->
@@ -110,7 +110,7 @@
 | SU | 69 | 🟡 3 | 17.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
 | BRK.B | 75 | 🟡 3 | 17.04.2026 | Q-Earnings Mai 2026 |
 | **V** | **64** | **🟠 2** | **2026-04-28** | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity + ROIC-Methodology-Verify (PIPELINE #21)** |
-| APH | 63 | 🟠 2 | 17.04.2026 | Q2 2026 Earnings 23.07. (FLAG aktiv) |
+| APH | **61** | 🟠 2 | **2026-04-30** | **Q2 FY26 ~23.07.** — China-Tax-ETR + CommScope-Net-Lev + ROIC-GW-Full-Year-Verify (FLAG aktiv) |
 | COST | 69 | 🟡 3 | 17.04.2026 | Q1 FY27 Earnings ~Dez 2026 |
 
 ---

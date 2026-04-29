@@ -1,6 +1,6 @@
 # PORTFOLIO.md — Depot-Live-State
 
-**Stand:** 28.04.2026 spätabends (V Rescoring-Revert nach Codex-HIGH-1+HIGH-2 — D3→D2, Nenner 8,0→7,5)
+**Stand:** 30.04.2026 (APH Q1 FY26 Tag-+1 Vollanalyse — Score 63→61, FLAG aktiv, Sparrate 0€ unverändert; Codex-Review-Pass mit 3 MEDIUM-Annotationen)
 
 ## Verweise
 - [INSTRUKTIONEN.md §22](INSTRUKTIONEN.md#22-sparplan-formel-aktuell-18042026-v37) — Sparplan-Formel (Nenner-Berechnung)
@@ -24,7 +24,7 @@
 | ASML | 68 | 🟡 3 | **38,00€** | ✅ | Q2 2026 (Q1 17.04. Vollanalyse ✅) |
 | TMO | 67 | 🟡 3 | **38,00€** | ✅ Clean (fcf_trend_neg Resolve-Gate CLEAR 23.04.) | Q2 FY26 ~Ende Juli — Organic-Akzeleration + Clario-Integration-Check |
 | **V** | **64** | **🟠 2** | **19,00€** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity + ROIC-Methodology-Verify** |
-| APH | 63 | 🟠 2 | **0€** | 🔴 Score-basiert | **29.04. Q1 done (Tag-0-Recap, Earnings-Calendar-Drift detektiert) → Vollanalyse 30.04. Tag +1 → next Q2 ~23.07.** |
+| APH | **61** | 🟠 2 | **0€** | 🔴 Score-basiert (Score 61 < 65 D3-Threshold) | **30.04. Q1 FY26 Tag-+1 Vollanalyse DONE — Score 63→61 (Δ -2). Methodology-Watch: China-Tax FY26-ETR 27% strukturell + CommScope-Net-Lev 1,6x. Next Q2 ~23.07.** |
 | MSFT | 59 | 🟠 2 | **0€** | 🔴 CapEx/OCF 83.6% | **29.04. Q3 FY26 — FLAG-Review** |
 
 **Sparraten-Nenner:** 7×1,0 + 1×0,5 + 3×0 = **7,5** → 38,00€ volle / 19,00€ D2 / 0€ FLAG. **Summe 285€** ✓ (7×38,00 + 1×19,00 + 3×0 = 266,00 + 19,00 = 285,00)
@@ -60,9 +60,9 @@
 | 28.04. | SNPS/SPGI | B | Watchlist-Review |
 | **29.04.** | **MSFT** | **C** | **Q3 FY26 — FLAG-Review** |
 | **29.04.** | **APH** | **C** | **Q1 FY26 — DONE Tag-0-Recap (Earnings-Calendar-Drift detektiert), Vollanalyse 30.04. Tag +1** |
-| **30.04.** | **APH** | **C** | **Q1 FY26 Vollanalyse Tag +1 — Sub-Score-Refresh + Methodology-Watch China-Tax/CommScope-Leverage** |
+| ~~30.04.~~ | ~~APH~~ | — | **DONE** Q1 FY26 Tag-+1 Vollanalyse — Score 63→61 (Δ -2), D2/FLAG aktiv unverändert. Codex-Review-Pass (1 HIGH Transmission-Artifact, 3 MEDIUM Annotations: M1 Bilanz-Mixed-Basis, M2 ROIC-Methodology-Watch, M3 Sentiment-7-halten). Score-Move-Driver: Multiple-Expansion (P/E 25→33,7) + CommScope-Net-Lev 1,6x — operativ massiv besser, bewertungsseitig QT-Trap §472-§478 deckelt 16 Pt. weg. |
 | Mai | BRK.B/ZTS/PEGA | B | Q-Earnings + Slot-16 |
 
 ---
 
-*🦅 PORTFOLIO.md v1.0 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 28.04.2026 spätabends (V Rescoring-Revert D3→D2 nach Codex-HIGH-1+HIGH-2, Nenner 8,0→7,5)*
+*🦅 PORTFOLIO.md v1.0 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 30.04.2026 (APH Q1 FY26 Tag-+1 Vollanalyse Score 63→61, FLAG aktiv unverändert)*

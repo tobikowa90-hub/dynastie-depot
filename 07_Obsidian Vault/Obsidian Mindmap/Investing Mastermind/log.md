@@ -1218,3 +1218,37 @@ V explizit OUT (Lessons-Learned-Material gehört in SKILL.md-Sub-Sektion oder Po
 **Decision:** Item #17 bleibt DEFERRED. Nächster Schritt nach MSFT Tag-+1-Vollanalyse 30.04. — bei driftfreiem MSFT-Run Coverage-Matrix entwerfen + Codex-Round-4 starten; bei Drift-Befund weiter deferred bis BRK.B Mai oder VEEV 27.05.
 
 **Sync-Set §18.2 (Pipeline-Item, kein Score-Event):** PIPELINE.md #17 (Plan-Revision auf 5-Anker-Mittelweg) + log.md (dieser Eintrag). Kein PORTFOLIO/Faktortabelle/score_history.jsonl/config.yaml/xlsx-Tools-Sync, da kein Score/FLAG/Sparraten-Change.
+
+## [2026-04-29] note | MSFT Tag-0 10-Q-Read (Q3 FY26 Pre-Call-Recap, kein Score-Event)
+
+User stellt 10-Q als PDF bereit (`02_Analysen/Earnings Reports/Microsoft/Form 10-Q_260429.pdf`, filed 29.04., 4748 Layout-Zeilen) — vor Earnings Call (~23:30 MEZ). §19.1 Wait-Discipline: KEIN Score-Move heute, Vollanalyse Tag +1 mit Transcript.
+
+**Headline (vs. Konsensus Pre-Brief 27.04.):** Diluted EPS Q3 FY26 **$4,27** vs $4,065 = **Beat +5,0%** (YoY +23,4%) — unterer Whisper-Rand. Revenue Q3 **~$82,9B** vs $81,40B = **Beat +1,8%** (MD&A: +18% reported / +15% cc, FX +3% Tailwind). Net Income $31,78B (+23,1% YoY), OpInc +20% (~$38,4B), **OpM ~46,3%** (>45%-Target trotz AI-Investments). Microsoft Cloud GM% = 66% (vs ~70% typisch) — AI-Margin-Pressure strukturell. OpenAI-Mark Q3 nur −$14M (immaterial; 9M-Lift +$4,5B / +$0,60 EPS).
+
+**FLAG-Review (MD&A authoritative, 9M FY26):** OCF **$127,5B** (+$34,0B / +36%); Cash CapEx **~$73,6B** (+$32,7B vs 9M FY25 $40,855B); Finance Lease ROU additions (non-cash) **$19,486B** vs $14,008B. Bereinigt CapEx/OCF (Cash CapEx ÷ OCF) = $73,6 / $127,5 = **57,7% → <60% Bull-Trigger A erfüllt ✅**. Raw inkl. FL ROU = 72,9% (Base-Range falls so gerechnet).
+
+**Aber:** Bull-Case Pre-Brief §6 ist UND-Verknüpfung mit (B) CapEx-Guide Q4/FY27 Plateau/Decel + (C) Azure ≥30% cc — beide NUR via Earnings Call. 10-Q hat keinen Forward-Guide-Text. **Trigger A allein reicht NICHT für FLAG-Resolve heute.** Risiko-Hinweis: 9M Cash used in investing $84,7B (+$42,6B YoY) inkl. $9,1B "other investing" für Component-Procurement → stützt Capacity-Constraint-Narrativ, könnte Trigger B konterkarieren.
+
+**Tag-0-Sync-Set §18.2 (Pipeline-Drift, kein Score-Event):** CORE-MEMORY.md §12.6 (Tag-0-10-Q-Read-Eintrag append) + log.md (dieser Eintrag). KEIN PORTFOLIO/Faktortabelle/score_history.jsonl/config.yaml/xlsx-Tools/flag_events.jsonl — Score/FLAG/Sparrate unverändert.
+
+**Tag +1 Plan (30.04. morgens):** MSFT Vollanalyse mit Earnings-Call-Transcript via defeatbeta-MCP `get_stock_earning_call_transcript` → Azure cc-Growth + CapEx-Guide Q4/FY27 + AI-Capacity-Statement + Pricing-Power → Bull/Base/Bear-Match Pre-Brief §6. Bei Bull-vollumfänglich: `archive_flag.py resolve --flag-id <MSFT_capex_ocf_*>` + Score-Move + 8-File-Sync inkl. Sparraten-Kaskade (Nenner-Effekt 7,5→8,0+; volle Rate sinkt; MSFT 0€→D2/D3-Class). **Slot-Kollision** mit APH Vollanalyse Tag +1 (Critical-Alert STATE) → Reihenfolge: APH zuerst (kleineres Sync-Set, kein FLAG-Resolve), MSFT zweitens (FLAG-Resolve-Kaskade-sensibel). Falls 30.04. beide nicht durchhaltbar: MSFT-Resolve auf 01.05. akzeptabel (FLAG seit längerem aktiv, ein Tag mehr ohne ökonomischen Effekt).
+
+**Caveat Layout-Drift:** Roh-Extraktion via `pdftotext -layout` zeigt Spalten-Verschiebung in Income-Statement und Cash-Flow-Statement. Verlässliche Quelle ist MD&A-Prosa (lines 1862-1908 + 2364-2369): "Revenue increased $12,8B or 18%", "Cash from operations increased $34,0B to $127,5B", "additions to PP&E ... $32,7 billion increase". Q3-only-CapEx aus Layout-Drift unsicher; 9M-Aggregat ist FLAG-Berechnungs-Basis.
+
+## [2026-04-30] note | APH Q1 FY26 Tag-+1 Vollanalyse — Score 63→61 (Δ -2), D2/FLAG aktiv unverändert, Codex-Review-Pass
+
+§19.1 Wait-Discipline angewandt (Tag-0 Press-Release-Recap 29.04. → Tag-+1-Vollanalyse heute mit vollständigem Seeking-Alpha-Transcript: CEO Norwitt + CFO Lampo + 12 Analyst Q&A).
+
+**Score-Block:** Fundamentals **25/50** (QT-Trap §472-§478 hart aktiv: Wide Moat × Fwd P/E 33,7 → 0/8 + Wide Moat × P/FCF 43,3 → 0/8 = 16 Pt. weg; ROIC §410 Goodwill-bereinigt CommScope $10,4B M&A >$5B → NOPAT/(IC-GW) ~28% ann vs WACC 14,30% → Spread +13,7pp → 6/8 konservativ; Bilanz mixed-snapshot Q1-Live NL 1,6x [Lampo Transcript] + FY25 CR 2,98 + GW 29,2% = 8/9; CapEx/OCF 18,5% = 8/9; FCF-Yield 2,31% = 2/8; OpM TTM 25,9% = 1/2; SBC 0,58% + Accruals -3,04% kein Abzug). Moat **17/20** (Wide bestätigt, kein Pricing-Power-Bonus per V-Q2-29.04.-Lehre — Lampo "the last lever is pricing… we've been able to offset" Statement ohne quantifizierte Implementierung). Tech **7/10** ($158,61 post-Beat +5,0%, 200MA klar drunter). Insider **5/10** (Diskr. 90d $0 = 3/3, Ownership 0,4% = 2/3, Net 6M -$217M 10b5-1-getrieben = 0/4). Sentiment **7/10** (23 Analysten 13B/4H/1S, Median PT $169, EPS-Rev pre-Beat +3,1%). **Total 61/100, D2, FLAG aktiv (<65)**.
+
+**Codex-Review-Verdict (30.04.):** APPROVE 61/D2 mit 1 HIGH (Transmission-Artifact, kein Drift) + 3 MEDIUM (M1 Bilanz-Mixed-Basis-Annotation, M2 ROIC 6/8 Methodology-Watch Q2-Full-Year-Verify, M3 Sentiment 7/10 halten bis post-Beat-Rev konsolidiert) + 7 LOW (alle PASS) + 8 PASS-Bestätigungen.
+
+**Score-Move-Driver:** Multiple-Expansion (P/E 25 → 33,7) + CommScope-Bilanz-Pressure (NL <1x → 1,6x), **nicht Operating-Deterioration** — Q1-Beat-Cascade (+33% organic, OpM 27,3% Adj, Book-to-Bill 1,24:1, FCF $831M, Q2-Guide +43-45%) operativ massiv stark, aber Bewertungs-QT-Trap deckelt aggregierten Score.
+
+**Methodology-Watch (Q2/Q3 FY26):** (1) China-Tax-FY26-ETR strukturell 27% (vs 24,5% Q1 FY25 = +2,5pp permanenter EPS-Drag) — Verify Q2/Q3 ob hält; (2) CommScope-Net-Lev-Verlauf 1,6x → Ziel <1,5x bis Q4 FY26; (3) ROIC-Goodwill-Bereinigung Full-Year-Confirmation Q4.
+
+**FLAG-Status:** APH-FLAG-aktiv (Score-basiert <65 D3-Threshold) bleibt — kein neuer Trigger (CapEx/OCF 18,5%, FCF +103%, Diskr. Insider $0, Tariff 14,7%), kein Resolve. Sparraten-Kaskade keine Wirkung (FLAG-Regime unverändert, Nenner 7,5).
+
+**Sync-Set §18.1 (Score-Event Δ -2, kein FLAG-Wechsel):** ScoreRecord `2026-04-30_APH_vollanalyse` (record 31, archive_score.py append) + Faktortabelle.md (APH-Row + Header-Stand) + PORTFOLIO.md (Z.27 + Trigger-Tabelle + Header) + STATE.md (Critical-Alert APH 30.04. → DONE) + CORE-MEMORY.md §12.2 APH (Per-Ticker-Append) + config.yaml (APH score 63→61 + flags_aktiv-Eintrag) + xlsx-Tools (Rebalancing_Tool_v3.4 + Satelliten_Monitor_v2.0 — separater Tool-Commit). Kein flag_events.jsonl (kein FLAG-Trigger/Resolve).
+
+**Slot-Kollision Tag +1 30.04.:** APH zuerst (kleineres Sync-Set, kein FLAG-Resolve). MSFT zweitens (FLAG-Resolve-Kaskade-sensibel mit Sparraten-Nenner-Effekt). Bei 30.04. nicht mehr durchhaltbar: MSFT-Vollanalyse auf 01.05. akzeptabel.

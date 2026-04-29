@@ -274,16 +274,16 @@ satelliten:
     name: "Amphenol"
     typ: "Asset-Light / Connectors"
     defcon: 2
-    score: 63
-    score_datum: "2026-04-17"
-    score_valid_until: "2026-10-14"
+    score: 61
+    score_datum: "2026-04-30"
+    score_valid_until: "2026-10-27"
     flag: true
-    flag_grund: "Score-basiert — Score 63, DEFCON 2 (Schema-SKILL-Threshold-Alignment 18.04.: 50-64 → D2). Tariff-Exposure: China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map aktiv."
+    flag_grund: "Score-basiert — Score 61 (v3.7, Q1 FY26 Tag-+1 Vollanalyse 30.04.), DEFCON 2 (<65 D3-Threshold). Tariff-Exposure: China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map aktiv. CommScope-Bilanz-Pressure (NL 1,6x post-Close)."
     flag_seit: "2026-04-09"
     flag_wirkung: "Sparrate komplett gestoppt (0 €)"
     sparrate_hinweis: "🔴 FLAG aktiv → Gewicht 0.0 (eingefroren)"
-    naechste_pruefung: "Q2 2026 Earnings 23.07. — Tariff-Impact-Check + Score-Review"
-    scoring_notiz: "Score 63 (v3.7): GM ~32%, Tariff CN/MY Risk-Map. Kein FLAG durch Revenue >35%, aber Score-basiertes FLAG wegen Score <65 + DEFCON 2 (seit 18.04. Threshold-Alignment)."
+    naechste_pruefung: "Q2 2026 Earnings ~23.07. — China-Tax-ETR-27%-Verify + CommScope-Net-Lev-Verlauf + ROIC-GW-Bereinigung-Full-Year-Check"
+    scoring_notiz: "Score 61 (v3.7, 30.04.2026 Q1 FY26 Vollanalyse): Fundamentals 25/50 (QT-Trap §472-§478 hart: Fwd P/E 33,7 + P/FCF 43,3 = 0+0; ROIC §410 GW-bereinigt CommScope >5B +13,7pp = 6/8; Bilanz mixed Q1-Live NL 1,6x + FY25 CR 2,98 + GW 29,2% = 8/9; CapEx/OCF 18,5% = 8/9; FCF-Yield 2,31% = 2/8; OpM 25,9% = 1/2). Moat 17/20 Wide kein Pricing-Bonus. Tech 7/10. Insider 5/10. Sentiment 7/10. Codex-Review-Pass mit 3 MEDIUM-Annotations. Score-Move-Driver: Multiple-Expansion + CommScope-Bilanz, nicht Operating-Deterioration."
     ersatz: null
     substitute_activation_rule: "Kein definierter Ersatz — bei DEFCON 1 Watchlist auf mögliche Kandidaten screenen"
     region: USA
@@ -318,10 +318,10 @@ flags_aktiv:
     naechste_pruefung: "2026-04-29 Q3 FY26 Earnings — bereinigtes CapEx/OCF <60% = Auflösung"
 
   - ticker: APH
-    grund: "Score-basiert — Score 63 (v3.7), DEFCON 2 seit 18.04. (Schema-SKILL-Threshold-Alignment). Tariff CN/MY Risk-Map aktiv."
+    grund: "Score-basiert — Score 61 (v3.7, 30.04.2026 Q1 FY26 Vollanalyse), DEFCON 2 (<65 D3-Threshold). CommScope-Bilanz-Pressure (NL 1,6x post-Close). Tariff CN/MY Risk-Map aktiv."
     seit: "2026-04-09"
     wirkung: "Sparrate komplett gestoppt (0 €)"
-    naechste_pruefung: "Q2 2026 Earnings 23.07."
+    naechste_pruefung: "Q2 2026 Earnings ~23.07. — China-Tax-ETR + CommScope-Net-Lev + ROIC-GW-Full-Year-Verify"
 
   - ticker: AVGO
     grund: "Insider-Selling 90d $106M (Skript) bzw. $280M+ (OpenInsider-Lesart inkl. Samueli $250M) — beide Lesarten 5-14× über $20M-Schwelle. OpenInsider-Cross-Check 27.04.2026: 9 Transaktionen, alle 'S - Sale' ohne 10b5-1-Suffix, kein Cashless-Pattern. Watchlist-These 'Post-Vesting' widerlegt."
