@@ -38,7 +38,8 @@
 <!-- V-Rescoring-Revert 28.04. spätabends nach Codex-HIGH-1+HIGH-2-Review: 68 → 64, D3→D2, Sparrate 35,63€→19,00€. HIGH-1: ROIC 1→7 via SKILL absolute alt-scale war regelwidrig (WACC vorhanden 10,48%); HIGH-2: kurs.referenz close_of_score_datum verletzt (27.04.-Proxy statt 28.04.-Close $309,30). ROIC-Carryover (1/8) + WACC-Carryover (10,48%) + Sentiment-Δ +1 (EPS-Rev post-beat) bleibt legitim. Nenner 8,0→7,5, volle Rate 35,63€→38,00€. defeatbeta-ROIC-Methodology-Watch in PIPELINE #21 für Q3 FY26 ~Ende Juli. -->
 | V | ~54% 5J | **9,89% defeatbeta vs WACC 10,48% [carryover 18.04.; Q3-Verify-Watch PIPELINE #21]** | 80,4% | 0,31x | Wide | **64** | **🟠 2** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **2026-04-28** | **Q3 FY26 ~Ende Juli** — Cross-Border-Velocity + ROIC-Methodology-Verify |
 <!-- DATA:MSFT -->
-| MSFT | ~25% | 7.5% | ~69% | ~1x | Wide | 59 | 🟠 2 | 🔴 CapEx/OCF >60% | 2026-04-17 | 2026-04-29 Q3 FY26 |
+<!-- MSFT-Score-Update 30.04.: 59 → 50 (Q3 FY26 Tag-+1 Vollanalyse, V-Q2-Mittelweg-Pfad). D2 unverändert, FLAG aktiv unverändert (Bull-Case Trigger A ✅ / B ❌ FAIL CY26 $190B vs Konsens $154,6B / C ✅✅ — UND nicht erfüllt). Sparrate 0€ unverändert (keine Kaskade). Codex-R1+R2-Doppel-Review (R1 strict 48 D1, R2 V-Q2-Mittelweg 50 D2 via Insider-Skip-Window-Carryover Backfill 6/10). Quality-Trap aktiv: Wide × Fwd P/E 22,44 → max 1; Wide × P/FCF 39,7x >35 → hart 0. ROIC 7,68% < WACC defeatbeta 13,64% (Methodology-Watch FRED-Baseline-Verify Q4). 4 PIPELINE-Items aktiv. -->
+| MSFT | ~58% (9M FY26 bereinigt 57,7%) | **7,68% defeatbeta vs WACC 13,64% [Methodology-Watch FRED-Baseline-Verify Q4 PIPELINE]** | ~69% | ~0,5x (Net-Cash) | Wide | **50** | 🟠 2 | 🔴 CapEx/OCF aktiv (Trigger A erfüllt 9M-bereinigt 57,7%, B FAIL CY26 $190B Surprise, C ✅✅ Azure +39%cc — UND nicht vollumfänglich) | **2026-04-30** | **Q4 FY26 ~Juli** — CapEx-Plateau-Recheck + WACC-Methodology-Verify + Insider-Block-Re-Score post-14.05. |
 <!-- TMO-Score-Update 18.04.: 63 (Backfill) → 64 (Forward-Vollanalyse). fcf_trend_neg schema-getriggert (FCF FY25 -13,4% YoY), NICHT aktiviert (WC-Noise-Erklärung, 4J-Plateau). Q1 23.04. = Resolve-Gate. -->
 <!-- TMO-Score-Update 23.04.: 64 → 67 (Q1 FY26 Forward-Vollanalyse). Beat + Guidance-Raise. FCF $825M +121% YoY, OCF +65%, ΔWC -313M besser → fcf_trend_neg Resolve-Gate CLEAR, Schema-Watch deaktiviert. D2→D3, Sparrate 17,81€→33,53€. Nenner 8,0→8,5, volle Rate 35,63€→33,53€. -->
 <!-- DATA:TMO_OLD_BACKFILL -->
@@ -85,7 +86,7 @@
 | 2026-04-23 | TMO | B | Q1 2026 Earnings — FCF >$7.3B nötig für FCF-Yield >4% |
 | 2026-04-28 | SNPS | B | Q1 Earnings — Watchlist (Score 76, Ersatz ASML) |
 | 2026-04-28 | SPGI | B | Q1 Earnings — Watchlist (Score 74) |
-| 2026-04-29 | MSFT | C | Q3 FY26 Earnings — FLAG-Review: CapEx/OCF <60% = FLAG-Auflösung |
+| ~~2026-04-29~~ | ~~MSFT~~ | — | **DONE Tag-0** 10-Q-Read 29.04. (CapEx/OCF 9M-bereinigt 57,7% Trigger A ✅) + **Tag-+1 Vollanalyse 30.04.**: Score 59→**50** (Δ-9), D2 unverändert, FLAG aktiv unverändert. Bull-Case nicht vollumfänglich (Trigger B FAIL CY26 $190B vs Konsens $154,6B Surprise +23%). Codex-R1+R2-Doppel-Review (V-Q2-Mittelweg via Insider-Carryover). Sparrate 0€ unverändert. 4 PIPELINE-Items aktiv. |
 | Mai 2026 | CPRT/ZTS/PEGA | B | Earnings → Watchlist-Review |
 | Juni 2026 | — | — | Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung |
 | Q2 2026 | GOOGL | C | FLAG-Review nach Earnings |
@@ -103,7 +104,7 @@
 |----------|-------|--------|--------------|-----------------|
 | ASML | 68 | 🟡 3 | 17.04.2026 | Q2 2026 Earnings + FY27 Fwd-P/E-Watch |
 | AVGO | 84 | 🟢 4 | 17.04.2026 | Q3 FY26 Earnings |
-| MSFT | 59 | 🟠 2 | 17.04.2026 | Q3 FY26 Earnings 29.04. (FLAG-Review) |
+| MSFT | **50** | 🟠 2 | **2026-04-30** | **Q4 FY26 ~Juli** — CapEx-Plateau-Recheck + WACC-Methodology-Verify (FLAG aktiv unverändert) |
 | TMO | **64** | 🟠 2 | **18.04.2026** | **Q1 FY26 Earnings 23.04.** (fcf_trend_neg Resolve-Gate) |
 | RMS | 68 | 🟡 3 | 17.04.2026 | H1 2026 Report Juli/Aug 2026 |
 | VEEV | 74 | 🟡 3 | 17.04.2026 | Nächste Earnings |
@@ -140,4 +141,4 @@ Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · 
 
 ---
 
-*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 28.04.2026 spätabends (V Rescoring-Revert nach Codex-HIGH-1+HIGH-2 — D3→D2 + Sparraten-Kaskade Nenner 8,0→7,5) | Nächste Vollaktualisierung: 17.07.2026*
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 30.04.2026 (MSFT Q3 FY26 Tag-+1 Vollanalyse Score 59→50 D2 unverändert FLAG aktiv unverändert; APH Tag-+1 morgens Score 63→61) | Nächste Vollaktualisierung: 17.07.2026*

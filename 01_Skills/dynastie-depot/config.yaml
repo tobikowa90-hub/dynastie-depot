@@ -154,19 +154,19 @@ satelliten:
     name: "Microsoft"
     typ: "Asset-Light / Cloud"
     defcon: 2
-    score: 59
-    score_datum: "2026-04-17"
-    score_valid_until: "2026-10-14"
+    score: 50
+    score_datum: "2026-04-30"
+    score_valid_until: "2026-10-27"
     flag: true
-    flag_grund: "CapEx/OCF FLAG aktiv — Q2 FY26: 83.6% (bereinigt um Finance Leases ~63%). Strukturell >60%."
+    flag_grund: "CapEx/OCF FLAG aktiv — Q3 FY26 (30.04.2026 Tag-+1 Vollanalyse): bereinigt 9M FY26 = 57,7% (Trigger A erfüllt), aber Bull-Case UND-Verknüpfung mit (B) CapEx-Plateau/Decel FAIL (CY26 CapEx $190B vs Konsens $154,6B Surprise +23%, Q4-Guide >$40B sequential von $31,9B = +25%) und (C) Azure ≥30% cc ✅✅ (Q3 +39% cc) — nicht vollumfänglich. FLAG bleibt aktiv."
     flag_seit: "2026-Q1"
     flag_wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt alle DEFCON-Stufen."
-    flag_aufloesung: "Q3 FY26 Earnings 29.04.2026 — bereinigtes CapEx/OCF muss <60% fallen"
-    naechste_pruefung: "2026-04-29 Q3 FY26 Earnings — FLAG-Auflösung oder Eskalation zu DEFCON 1"
-    roic_notiz: "ROIC 6Q-Ø 7.5% vs. WACC 13.35% — strukturell unter Kapitalkosten (CapEx-Ramp-Effekt)"
-    scoring_notiz: "Score 77→60 (-17 Punkte). DEFCON 3→2. Moat 19/20 unverändert. Worst Case: Score <50 → DEFCON 1."
+    flag_aufloesung: "Q4 FY26 Earnings ~Juli 2026 — Cash-CapEx Q4-bereinigt + FY27-Guide-Plateau-Hint + WACC-Methodology-Verify (FRED-Baseline)"
+    naechste_pruefung: "2026-07 Q4 FY26 Earnings — CapEx-Plateau-Recheck + WACC-Methodology-Verify + Insider-Block-Re-Score post-14.05. Skip-Window"
+    roic_notiz: "ROIC 6Q-Ø 7,68% vs. WACC defeatbeta 13,64% (Methodology-Watch: 10y-CAGR-ERP 12,87% suspekt; FRED-Baseline-Verify Q4 PIPELINE) — strukturell unter Kapitalkosten in beiden Methodologies (FRED 9,7% Spread -2pp)"
+    scoring_notiz: "30.04.2026 Tag-+1 Vollanalyse: Score 59→50 (Δ-9), D2 unverändert. Codex-R1+R2-Doppel-Review (R1 strict 48 D1, R2 V-Q2-Mittelweg 50 D2 via Insider-Skip-Window-Carryover Backfill 6/10). Quality-Trap aktiv (Wide × Fwd P/E 22,44 → max 1; Wide × P/FCF 39,7x >35 → hart 0). 4 PIPELINE-Items aktiv. 32-Jahre-Halten-Manifest dominiert über Score-Symbolik."
     ersatz: GOOGL
-    substitute_activation_rule: "GOOGL ist Ersatz aber selbst mit FLAG — bei DEFCON-1-Trigger: ZTS oder VEEV-Verstärkung prüfen"
+    substitute_activation_rule: "GOOGL ist Ersatz aber selbst mit FLAG — bei DEFCON-1-Trigger: ZTS oder VEEV-Verstärkung prüfen. Aktuell D2 — kein Replace-Trigger formell aktiviert."
     worst_case: "Score <50 → DEFCON 1 → Ersatz-Analyse eskalieren (GOOGL FLAG noch aktiv → alternativ ZTS/VEEV)"
     region: USA
     us_exposure: true
@@ -312,10 +312,10 @@ satelliten:
 # ─────────────────────────────────────────────
 flags_aktiv:
   - ticker: MSFT
-    grund: "CapEx/OCF Q2 FY26: 83.6% (bereinigt um Finance Leases ~63%) — strukturell >60%-Schwelle, Azure-Investitionszyklus"
+    grund: "CapEx/OCF FLAG aktiv (30.04.2026 Q3 FY26 Tag-+1 Re-Eval): 9M FY26 bereinigt 57,7% (Trigger A erfüllt) ABER Bull-Case UND-Verknüpfung mit (B) CapEx-Plateau/Decel ❌ FAIL (CY26 CapEx $190B vs Konsens $154,6B = +23% Surprise) — Trigger B blockiert FLAG-Resolve trotz <60%-Schwelle"
     seit: "2026-Q1"
     wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON"
-    naechste_pruefung: "2026-04-29 Q3 FY26 Earnings — bereinigtes CapEx/OCF <60% = Auflösung"
+    naechste_pruefung: "2026-07 Q4 FY26 Earnings — Q4-bereinigt-CapEx-Read + FY27-Guide-Plateau-Hint + WACC-Methodology-Verify (FRED-Baseline) + Insider-Block-Re-Score post-14.05."
 
   - ticker: APH
     grund: "Score-basiert — Score 61 (v3.7, 30.04.2026 Q1 FY26 Vollanalyse), DEFCON 2 (<65 D3-Threshold). CommScope-Bilanz-Pressure (NL 1,6x post-Close). Tariff CN/MY Risk-Map aktiv."

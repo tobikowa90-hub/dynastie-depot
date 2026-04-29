@@ -8,8 +8,9 @@
 - [SESSION-HANDOVER.md](SESSION-HANDOVER.md) — Session-Banner-Chronik
 
 ## ⚠️ Critical-Alerts (≤ 10 Tage — handgepflegt)
-- **29.04.** MSFT Q3 FY26 — FLAG-Review (CapEx/OCF bereinigt <60% = Auflösung)
+- **30.04.** MSFT Q3 FY26 Tag-+1 Vollanalyse — **DONE** (Score 59→**50** Δ-9, D2/FLAG aktiv unverändert; Bull-Case Trigger A ✅ / B ❌ FAIL CY26 $190B vs Konsens $154,6B Surprise +23% / C ✅✅; Codex-R1+R2-Doppel-Review V-Q2-Mittelweg via Insider-Skip-Carryover; 4 PIPELINE-Items #25-28 aktiv; Sparrate 0€ unverändert; Methodology-Watch defeatbeta-WACC 13,64% vs FRED-Baseline 9,7% Q4-Verify)
 - **30.04.** APH Q1 FY26 Tag-+1 Vollanalyse — DONE (Score 63→61, D2/FLAG aktiv unverändert, Codex-Review-Pass). Methodology-Watch Q2: China-Tax-ETR 27% strukturell + CommScope-Net-Lev 1,6x → <1,5x bis Q4 + ROIC-GW-Bereinigung Full-Year-Confirm
+- **14.05.** MSFT Insider-Block-Re-Score post-14d-Skip-Window via insider_intel.py (PIPELINE #26)
 
 ## Navigation (on-demand)
 | Wenn du brauchst… | Lies… |

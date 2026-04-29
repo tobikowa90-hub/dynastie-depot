@@ -1252,3 +1252,50 @@ User stellt 10-Q als PDF bereit (`02_Analysen/Earnings Reports/Microsoft/Form 10
 **Sync-Set §18.1 (Score-Event Δ -2, kein FLAG-Wechsel):** ScoreRecord `2026-04-30_APH_vollanalyse` (record 31, archive_score.py append) + Faktortabelle.md (APH-Row + Header-Stand) + PORTFOLIO.md (Z.27 + Trigger-Tabelle + Header) + STATE.md (Critical-Alert APH 30.04. → DONE) + CORE-MEMORY.md §12.2 APH (Per-Ticker-Append) + config.yaml (APH score 63→61 + flags_aktiv-Eintrag) + xlsx-Tools (Rebalancing_Tool_v3.4 + Satelliten_Monitor_v2.0 — separater Tool-Commit). Kein flag_events.jsonl (kein FLAG-Trigger/Resolve).
 
 **Slot-Kollision Tag +1 30.04.:** APH zuerst (kleineres Sync-Set, kein FLAG-Resolve). MSFT zweitens (FLAG-Resolve-Kaskade-sensibel mit Sparraten-Nenner-Effekt). Bei 30.04. nicht mehr durchhaltbar: MSFT-Vollanalyse auf 01.05. akzeptabel.
+
+## [2026-04-30] event | MSFT Q3 FY26 Tag-+1 Vollanalyse — Score 59→50 (Δ-9), D2 unverändert, FLAG aktiv unverändert (Bull-Case nicht vollumfänglich)
+
+§19.1 Wait-Discipline angewandt: Tag-0 (29.04.) 10-Q-Read in CORE-MEMORY §12.6, Tag-+1 (heute) Vollanalyse mit Earnings-Call-Transcript (TranscriptFY26Q3.docx, Nadella + Hood, 180 Zeilen).
+
+**Trigger-Matrix (Pre-Brief §6 Bull-Case UND-Verknüpfung):**
+- (A) CapEx/OCF bereinigt 9M FY26 = **57,7% <60%** ✅ (Cash CapEx $73,6B / OCF $127,5B per 10-Q MD&A)
+- (B) CapEx-Plateau/Decel ❌ **FAIL** — CY26 CapEx **$190B vs Konsensus $154,6B = +23% Surprise**, Q4-Guide >$40B sequential von $31,9B = +25% Eskalation, "remain constrained at least through 2026" [Transcript Hood Z.173-175]
+- (C) Azure ≥30% cc ✅✅ — Q3 **+39% cc**, Q4-Guide 39-40% cc [Transcript Z.141, 162]
+
+→ Bull-Case nicht vollumfänglich (B FAIL). FLAG bleibt aktiv. Base-Case-Pfad.
+
+**Operativer Beat (alle Beat):** EPS $4,27 vs $4,06 (+5,2%), Rev $82,9B vs $81,4B (+1,8%), OpM 46% (+1pp YoY), AI-Run-Rate $37B (+123% YoY), M365 Copilot 20M paid seats (+250% YoY adds), RPO $627B (+99% YoY incl OpenAI). Microsoft Cloud GM 66% Q3 (Q4-Guide 64% vs ~70% historisch) = AI-Margin-Pressure-Watch.
+
+**Score-Block (50/100):** Fundamentals **16/50** [Quality-Trap aktiv: Wide × Fwd P/E 22,44 → max 1; Wide × P/FCF ~39,7x >35 → hart 0; Bilanz 7/9 (NetDebt/EBITDA <1, CR ~1.4, Goodwill ~30%); CapEx/OCF bereinigt 57,7% = 2/9 (40-60%-Band, Q4-Forward ~71%); ROIC 6Q-Ø 7,68% < WACC defeatbeta 13,64% = 1/8; FCF-Y 2,51% = 3/8; OpM TTM 46% = 2/2 B8 v3.7; keine Mali]. Moat **18/20** (Wide canonical, GM-Compression-Watch). Technicals **3/10** (ATH-Distanz -25,0% Grenzfall = 3/4, RelStärke 6M -13pp = 0/3, Kurs $416,50 unter 200DMA $470,10 -11,4% = 0/3). Insider **6/10 carryover** (Skip-Window-Regel literal SKILL Schritt 0: score_datum 17.04. = 13d <14d → letzter Block-Aggregate-Wert aus 17.04.-Backfill 6/10). Sentiment **7/10** (SB-Ratio 17,9% = 4/4 B11 Anti-Crowd-Bonus, Sell 0% = 1/3 Extrem-Warnung, PT-Upside +37,3% = 3/3, EPS-Rev 0 konservativ V-Lehre + B28 Tetlock, PT-Dispersion 49,5% ≥30% = -1).
+
+**Codex-R1+R2-Doppel-Review:**
+- **R1 strict (vor Memory-Constraint):** 48/D1 commit-Empfehlung (Pfad a). SKILL-literal: Quality-Trap precedence (P/FCF >35 hart 0 governs); keine ad-hoc WACC-Methodology-Switch-Exception #7; Δ=-11 zulässig (forward-vollanalyse, keine Migration); Hold-Pfad zu passiv.
+- **R2 nach Memory-Constraint feedback_skill_methodology_drift_v_q2:** Revert auf V-Q2-Mittelweg-Pfad (b) = Score ~52/D2. R2-Annotations HIGH×3 + MEDIUM×1 + LOW×1: Memory-Direktive "Methodology-Watch + Carryover statt Switch" verlangt selektiven Sub-Score-Carryover bei suspekter Methodology, nicht Score-Hold (zu passiv) und nicht Live-Commit (zu strict).
+
+**Datenrealitäts-Korrektur des R2-Frame:** Mein R2-Sparring-Prompt nahm "ROIC-Carryover ~5/8 = +4 Pkt" an — Pull aus score_history.jsonl 17.04. zeigte: Backfill ohne dekomponierte Sub-Scores (alle Sub-Scores 0, nur Block-Aggregate gespeichert). ROIC-Carryover-Hebel real **nicht material** (1/8 unter beiden WACC-Methodologies: defeatbeta 13,64% UND FRED-Baseline 9,7% liefern ROIC<WACC). Materieller Carryover-Hebel = **Insider-Block** via Skip-Window-Regel literal: Live-Schätzung 4/10 → Backfill-Block-Aggregate 6/10 = +2 Pkt. → Score live 48 + Insider-Carryover +2 = **50/D2**.
+
+**Score-Drivers (was das −9 Δ erklärt):**
+- Quality-Trap-Aktivierung Fwd P/E + P/FCF: -5 bis -7 Pkt vs Standard (Markt-Cap-Drift seit 17.04. + TTM-FCF CapEx-Peak-bedingt depressed)
+- Tech-Schwäche Markt-Bewegung -3 Pkt (200MA-Drawdown verschärft Q1-Q2 2026)
+- Moat-Backfill-Korrektur +6 Pkt (17.04. Backfill MSFT als "narrow" 12/20 falsch — Live ist canonical Wide 18/20)
+- Insider-Carryover Skip-Window +2 Pkt (Backfill 6/10 vs Live-Schätzung 4/10)
+- Sentiment-Beat-Lift +1 Pkt (post-beat Anti-Crowd-Profil bestätigt)
+- OpM B8 v3.7 +2 Pkt (neu in v3.7, war nicht im 17.04. v3.4-Backfill)
+- ROIC-WACC-Drift 0-1 Pkt (defeatbeta 13,64% suspekt vs FRED 9,7% — beide Methodologies geben 1/8)
+- CapEx/OCF-Drift -3 bis -5 Pkt (Q3-Spike treibt Forward-Read in 60-75%-Band)
+
+Netto: ~-9 Pkt = Score 50/D2.
+
+**FLAG-Status (UPDATED):** CapEx/OCF-FLAG bleibt aktiv (Bull-Case UND-Verknüpfung Trigger B FAIL). KEIN flag_events.jsonl-Append (FLAG-State unverändert). KEIN archive_flag.py resolve.
+
+**Sparraten-Kaskade:** **KEINE** — DEFCON-Level (D2) unverändert + FLAG-State (aktiv) unverändert + Sparrate (0€) unverändert + Nenner (7,5) unverändert.
+
+**4 PIPELINE-Items (NEU 30.04.):**
+1. `MSFT_WACC_Methodology_Watch` — Trigger Q4 FY26 oder global-baseline-Adoption FRED+5%-ERP. defeatbeta 13,64% nutzt 10y-CAGR-ERP-Methodology (post-2025-Bull-Spike); Standard-CAPM-FRED-Baseline ~9,7%. Spread-Differenz -6pp vs -2pp → Score-Hebel 0-1 Pkt; Methodology-Disziplin > Score-Hebel (V-Q2-Lehre). **Parallel zu V #21 ROIC-Methodology-Watch.**
+2. `MSFT_Insider_Block_Methodology_Watch` — Trigger 14.05.2026 (post-14d-Skip-Window ab 30.04. score_datum). Re-Score Insider via `python 01_Skills/insider-intelligence/insider_intel.py scan MSFT`. Backfill-6/10-Wert methodologisch suspekt (max plausibel 3-4 für Mega-Cap-Tech ohne Insider-Buying-Pattern, Mgmt-Ownership <1%).
+3. `MSFT_CapEx_Plateau_Recheck` — Trigger Q4 FY26 Earnings (~Ende Juli 2026): Cash-CapEx Q4 vs OCF Q4-bereinigt + FY26 Full-Year-Read; Bull-Case-Re-Eval bei CapEx-Decel-Signal (Bull-Case A+B+C UND noch erfüllbar wenn FY27-CapEx-Guide Plateau zeigt).
+4. `DEFCON_v3.7_Quality_Trap_Methodology_Review` (System-Item, kein Ticker-Trigger) — Trigger nächste Session post-MSFT-Sync. Quality-Trap-Härte bei Wide-Moat-Mega-Cap im -25%+ Drawdown: MSFT 30.04. ist realer Stress-Test #2 nach V Q2 als #1. Frage: Soll Quality-Trap zwischen Bewertungs-NIVEAU (P/E in absoluter Range) und Bewertungs-BEWEGUNG (P/E vs eigener 5J-Range) differenzieren? User-initiierte Reflektion 30.04. als Ausgangspunkt.
+
+**Sync-Set §18 v2.3 (Score-Event Δ-9, kein FLAG-Wechsel, kein Sparraten-Effekt):** ScoreRecord `2026-04-29_MSFT_vollanalyse` (record 32, via backtest-ready-forward-verify-Skill) + PORTFOLIO.md + Faktortabelle.md + log.md (dieser Eintrag) + CORE-MEMORY.md §12.6 (Per-Ticker-Append) + 01_Skills/dynastie-depot/config.yaml (MSFT-Block) + Rebalancing_Tool_v3.4.xlsx + Satelliten_Monitor_v2.0.xlsx (Score-Felder, kein Sparraten-Effekt). + PIPELINE.md (4 neue Items im selben Commit für 00_Core-Konsistenz). KEIN flag_events.jsonl. **`!SyncBriefing` (§25)** vor Session-Ende Pflicht (4 von 7 Briefing-relevanten 00_Core-Files berührt: PORTFOLIO + CORE-MEMORY + Faktortabelle + PIPELINE).
+
+**MSFT-User-Reflektion (separat dokumentiert):** User stellte Methodology-Frage bei R1-Verdict 48/D1 ("eines der besten Unternehmen weltweit, soll aus dem Portfolio?"). Ehrliche Anerkennung: System-Stress-Test #2 nach V Q2; Quality-Trap-Mechanik-Review als PIPELINE-Item #4 promotet (System-Frage als System-Frage, nicht Score-Anpassung). 32-Jahre-Halten-Manifest dominiert über Score-getriebene Auswechslung; D1/D2-Differenz nominal-symbolisch + PIPELINE-Slot, nicht Liquidations-Pfad.
