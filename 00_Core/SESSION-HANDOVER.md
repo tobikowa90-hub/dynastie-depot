@@ -1,14 +1,20 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-28 nach V-Rescoring-Revert. **V Rescoring-Revert DONE** (Commit `b8cf4ae`, Pipeline P1-P6 ✅, Δ-Gate accepted Δ=+1, Record #30 `2026-04-28_V_rescoring`, Score 64/🟠D2, Sparrate 19,00€). **Nächster primärer Resume-Trigger: MSFT Q3 FY26 Earnings 29.04. ~22:30 MESZ → !Analysiere MSFT als Second-Live-Run (FLAG-Review CapEx/OCF)**.
+**Aktualisiert:** 2026-04-29 nachmittag. Heute drei Commits: APH Tag-0-Recap + Earnings-Calendar-Drift-Detection (`d314be4`), PIPELINE #24 Earnings-Calendar-Auto-Pull-Tool (`7684afd`), PIPELINE #17 REVISED auf 5-Anker-Mittelweg (`fe8eec9`, Codex-Round-3 84%, deferred bis MSFT-Drift-Audit). **Nächster primärer Resume-Trigger: MSFT Q3 FY26 Earnings 29.04. ~22:30 MESZ Tag-0-Routine (heute Abend, neue Session)**.
 
 ### 🟢 Resume-Stand
 
-**Branch:** `main`. **HEAD:** `b8cf4ae` (V Rescoring-Revert nach Codex-HIGH-1+HIGH-2). Working tree mit Untracked-Anomalie-Files (shell-escape-Artefakte: `15%`, `15%-Niveau`, `FCF-Delta`, `,-`, `1`, `80`, `WACC`, `new\`)`, `"50.000Ô\303\251\302\274"`) — alle empty/garbage, ignorieren oder bei Konsolidierung aufräumen (Plan-Kandidat). Plus `00_Core/RUFLO-PLAN-META-REVIEW.md` untracked (Phase-1.2-Pre-Read) + `02_Analysen/Q2-2026-Earnings-Release_vF.pdf` untracked (V-Source-PDF, optional).
+**Branch:** `main`. **HEAD:** `fe8eec9` (PIPELINE #17 REVISED 5-Anker-Mittelweg). Working tree clean (alte Shell-Escape-Anomalie-Files vom 28.04. nicht mehr aktuell). Untracked: keine relevanten.
 
-**V-Stand operativ:** 64/🟠D2/19,00€. Original-Record `2026-04-28_V_vollanalyse` bleibt historisch in jsonl (append-only). Alle 8 Sync-Files konsistent: PORTFOLIO/Faktortabelle/CORE-MEMORY/PIPELINE/STATE/config.yaml/log.md/score_history.jsonl. D2-Watch reaktiviert. Q3 FY26 ~Ende Juli mit ROIC-Methodology-Verify (PIPELINE #21).
+**V-Stand operativ:** unverändert 64/🟠D2/19,00€. Tag-+1-Transcript-Notiz heute morgen in CORE-MEMORY §12.10 + PIPELINE #21 Pre-Q3-Hint persistiert (kein Score-Event). Q3 FY26 ~Ende Juli mit ROIC-Methodology-Verify.
 
-**STATE.md Critical-Alert:** "28.04. V" entfernt. Verbleibender Alert: **29.04. MSFT Q3 FY26 — FLAG-Review (CapEx/OCF bereinigt <60% = Auflösung)**.
+**APH-Stand operativ:** unverändert 63/🟠D2/0€/FLAG-aktiv. Q1 FY26 Earnings heute 29.04. publiziert — Tag-0-Recap done, Pre-Call-Snapshot in CORE-MEMORY §12.APH. **Vollanalyse Tag +1 30.04. morgens** (§19.1) parallel zu MSFT.
+
+**Earnings-Calendar-Drift detektiert (29.04.):** APH Q1-Trigger stand auf „23.07. Q2", Q1 nie eingetragen. Strukturelles Defizit dokumentiert in PIPELINE #24 (Earnings-Calendar-Auto-Pull-Tool, yfinance-Probe 11/11 PASS, Trigger post-MSFT-Window).
+
+**PIPELINE #17 REVISED:** 5-Anker-Mittelweg-Plan (AVGO/ASML/MSFT/TMO/COST-oder-MKL) bei 84% Codex-Confidence < 95%-User-Threshold → DEFERRED. Trigger: „MSFT Tag-+1 fertig **+ driftfrei bestätigt**". Bei MSFT-Drift weiter deferred bis BRK.B Mai oder VEEV 27.05.
+
+**STATE.md Critical-Alerts (3):** **29.04. MSFT Q3 FY26 FLAG-Review** | 29.04. APH Q1 done Tag-0-Recap | **30.04. APH Q1 Vollanalyse Tag +1**.
 
 ---
 
@@ -56,16 +62,35 @@
 
 ---
 
-### 🟡 Folge-Resume nach MSFT-Live-Run (post-30.04. morgens)
+### 🟡 Parallel zu MSFT Tag +1: APH Q1 FY26 Vollanalyse (30.04. morgens)
 
-**Resume-Trigger:** „Beispiele.md 4-Achsen-Refactor (PIPELINE #17) starten — V/MSFT-Anker einarbeiten + AVGO-FLAG-Patch + Cross-File-§-Refs"
+**Resume-Trigger:** „!Analysiere APH" als Tag-+1-Vollanalyse (Q1 FY26 publiziert 29.04.).
 
-**Vorbedingung:** MSFT-Vollanalyse 30.04. morgens DONE (ScoreRecord mit Anker-Hint appended). Falls FAIL (P3.5 oder anders): Refactor blockiert bis Recovery.
+**Kontext:** APH Q1 PR 29.04. Beat-and-Raise (Sales $7,62B +33% organic, Adj. EPS $1,06 +68%, Adj. OpMargin 27,3%, Book-to-Bill 1,24x, FCF $831M +43%, Q2-Guide +43-45% Sales). Schatten: China Tax $290M discrete + CommScope-Leverage-Sprung (+$3,2B Net Debt, Goodwill +66%, Cash 11,1→4,1B). Pre-Call-Snapshot in CORE-MEMORY §12.APH. Score 63/D2/FLAG-aktiv (Score-basiert) heute unverändert. Vollanalyse Tag +1 entscheidet ob FLAG via Score-Lift gelöst wird.
 
-**WICHTIG — V als Anker-Pause:** Nach Codex-Review-Revert ist V als US-Voll-Anker für Beispiele.md #17 erst nach Q3 FY26 belastbar (nicht mehr "primär" wie ursprünglich Codex-96%-geplant). MSFT als Provenance-Gate-Second-Run-Demo bleibt valide. AVGO als sekundär (D4-Range 80-85 + FLAG-Override) bleibt valide. **Architektur-Update für #17:**
-- **A. US-Pfad:** ~~V primär~~ → MSFT primär (Provenance-Gate-Second-Run + CapEx-FLAG-Auflösungs-/Veto-Pfad), AVGO sekundär (D4-Range + FLAG-Override), V tertiär mit explizitem "Forward-vs-Rescoring-Revert-Korrektur"-Anker-Hint (Lesson HIGH-1+2), TMO Cross-Reference auf Sub#4
-- **B. Non-US-IFRS-Pfad:** ASML unverändert (frisch v3.7 17.04., FY27-Watch)
-- **C. Screener-Exception-Katalog:** unverändert 6 Subs (#4 TMO primary, #5 MSFT, #6 ASML)
+**Workflow analog MSFT:** Transcript-Read PFLICHT via defeatbeta-MCP, Schritt 6c Pre-Flight, SKILL-Wortlaut-Disziplin, Kurs-Frische, Schritt 7, §18-Sync v2.3 (10 Files), Codex-Single-Pass-Review VOR Sync-Commit. Methodology-Watch: China-Tax strukturell (Adj. ETR 27%) vs. Operating-Beat-Cascade-Argumentation; CommScope-Leverage-Sprung in Bilanz-Sub-Score; Pricing-Power-Statement im Transcript suchen; Carryover-Disziplin streng (V-Q2-Lehre).
+
+**Reihenfolge bei zwei Vollanalysen am 30.04.:** APH zuerst (kleineres Risiko, klarer Beat-Cascade-Pfad, FLAG-Score-Move-Test), dann MSFT (höheres Risiko durch Provenance-Gate-Second-Run-Erstanwendung + CapEx-Finance-Lease-Bereinigung). Optional: getrennte Sessions zwischen beiden zur Token-Hygiene.
+
+---
+
+### 🟡 Folge-Resume nach BEIDEN Live-Runs (post-30.04. morgens)
+
+**Resume-Trigger:** „Beispiele.md 5-Anker-Refactor (PIPELINE #17 REVISED) starten — Codex-Round-4-Sparring auf 95%+"
+
+**Vorbedingung:** APH + MSFT Vollanalysen 30.04. morgens DONE **+ Drift-Audit driftfrei bestätigt** (kein Codex-HIGH/MEDIUM-Befund analog V-Q2). Falls Drift-Befund bei MSFT: Item #17 weiter deferred bis BRK.B Mai oder VEEV 27.05.
+
+**Plan-Stand 29.04. (PIPELINE #17 REVISED, Codex-Round-3 84%):** 5-Anker-Mittelweg mit fixen Zwecken — AVGO (Standard-Forward + FLAG-Override mit harter Sektion-Trennung 17.04. | 27.04.), ASML (IFRS/Non-US + Bewertungs-Edge mit harter Trennung Operational | Valuation), MSFT (Provenance-Gate + CapEx-FLAG, post-Drift-Audit), TMO (Goodwill-bereinigte ROIC-Ausnahme), COST oder MKL (Premium-Multiple/Screener-Exception). V explizit OUT der Anker-Sammlung; Float-Modell BRK.B bewusst SKILL.md-only-Restspalt.
+
+**Pflicht-vor-Execution:** (a) Coverage-Matrix vorab schreiben mit „SKILL.md-only"-Markierung; (b) MSFT-Anker-Freigabe an Drift-Audit gebunden; (c) AVGO + ASML Doppelrolle mit harten Sektion-Labels; (d) V außerhalb Beispiele.md halten; (e) Anker-Zweck-Definition fest verdrahten; (f) Codex-Round-4 auf 5-Anker mit Matrix → Ziel ≥95%. **User-Direktive:** kein Rework, klares Fundament — bei <95% weiter deferred.
+
+---
+
+### 🟡 Earnings-Calendar-Auto-Pull-Tool (PIPELINE #24)
+
+**Resume-Trigger:** „Earnings-Calendar-Tool bauen — 03_Tools/earnings_calendar.py" post-MSFT-Window-Schluss.
+
+**Plan:** yfinance-basiert (`Ticker(t).earnings_dates` future-Filter primär, `calendar` Fallback), Watchlist-Lese aus config.yaml, Diff-Report gegen PORTFOLIO/STATE/PIPELINE. Probe 11/11 PASS am 29.04. (alle Satelliten inkl. Non-US ASML.AS/RMS.PA/SU.PA). 3-Stufen-Plan: Stufe 1 manuell, Stufe 2 system_audit.py-Integration, Stufe 3 SessionStart-Hook. Aufwand Stufe 1 ~45-60 Min.
 - **D. Live-Disziplin:** SKILL.md Schritt 6c + Schritt 7 SKILL-Wortlaut-Klausel (Lesson V-HIGH-1 als neuer Demo-Block)
 
 **Cross-File-Updates im selben Refactor-Commit:**
