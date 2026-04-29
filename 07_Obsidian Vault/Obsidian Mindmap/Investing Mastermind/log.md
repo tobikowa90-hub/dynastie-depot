@@ -1193,3 +1193,28 @@ Tag-0-Vorbereitung für MSFT Q3 FY26 Earnings Release ~22:30 MEZ AMC. Pre-Call-S
 **Sync-Set §18.2 (Pipeline-Item / Drift-Korrektur, kein Score-Event):** CORE-MEMORY.md §12.APH (Pre-Call-Snapshot-Append) + PORTFOLIO.md (Trigger-Korrektur Z.27 + 30d-Trigger-Tabelle 2 neue APH-Zeilen) + STATE.md (Critical-Alerts 2 neue APH-Zeilen) + PIPELINE.md (Kritische-Triggers-10d APH-Zeile) + log.md (dieser Eintrag). KEIN Faktortabelle/score_history.jsonl/flag_events.jsonl/config.yaml/xlsx-Tools-Sync — Score/FLAG/Sparrate unverändert.
 
 **Follow-Up — Earnings-Calendar-Tool als PIPELINE-Item:** User OK für Option B (eigenes Tool `03_Tools/earnings_calendar.py` mit yfinance, Watchlist-Filter aus config.yaml, Diff-Report gegen PORTFOLIO/STATE/PIPELINE) als Aufbau-Schritt nach MSFT-Earnings-Window. wenboyu2/yahoo-earnings-calendar (3J stale, Web-Scraping) als Code-Inspiration ja, als Live-Dependency nein. earnings-calendar-Skill in `01_Skills/_extern/earnings-calendar/` (FMP-API-basiert, Skripte fehlen) ist nicht lauffähig + Workflow-Mismatch (generischer Wochenreport vs. Watchlist-Diff). Item in nächster Session als reguläres PIPELINE-Item formalisieren.
+
+## [2026-04-29] note | Beispiele.md Anker-Refactor — Codex-Round-3 84%, REVISED auf 5-Anker-Mittelweg, DEFERRED bis MSFT-Drift-Audit
+
+User-Frage 29.04. nach V-Status hat Klarstellung getriggert: Beispiele.md soll mustergültige Anker für die drei Hauptpfade des Skills liefern (US-Standard / EU-IFRS / Screener-Exception), nicht jede Edge-Case abdecken. User-Vorschlag: Reduktion 4-Achsen-10-Touchpoints-Plan (Round-2 28.04. 96%) auf 3 Anker (AVGO/ASML/MSFT). User-Direktive vor Execute: Codex-Sparring + 95% Confidence Threshold + kein Rework.
+
+**Codex-Round-3-Verdikt (29.04.2026, 84% < 95% → DEFERRED):**
+- VERDIKT: MITTELWEG 5-Anker (3 zu wenig, 10 überinstrumentiert post-V)
+- HIGH-Risks: 3-Anker lässt Goodwill-ROIC TMO + Premium-FCF-Yield COST/MKL unanchored; MSFT vor Drift-Audit instabil
+- MEDIUM-Risks: AVGO/ASML Doppelrolle ohne harte Trennung = V-Q2-Anker-Unschärfe-Wiederholung; Float-Modell BRK.B offener Spalt
+- Trigger-Empfehlung: NICHT „MSFT fertig" allein, sondern „MSFT fertig **+ driftfrei bestätigt**"
+
+**5-Anker-Plan (PIPELINE #17 REVISED):**
+- (1) AVGO `Standard-Forward + FLAG-Override` mit harter Sektion-Trennung 17.04. Voll-Run | 27.04. FLAG-Override-Demo
+- (2) ASML `IFRS/Non-US + Bewertungs-Edge-Case` mit harter Trennung Operational | Valuation-Edge-Case
+- (3) MSFT `Provenance-Gate + CapEx-FLAG` (Freigabe nur post-Drift-Audit)
+- (4) TMO `ROIC/Goodwill-Sonderfall`
+- (5) COST oder MKL `Premium-Multiple/Screener-Exception`
+
+V explizit OUT (Lessons-Learned-Material gehört in SKILL.md-Sub-Sektion oder Postmortem-Doc, nicht Beispiele.md). Float-Modell BRK.B bewusst als SKILL.md-only akzeptiert.
+
+**Pflicht-vor-Execution (Codex-Round-3 5er-Liste):** (a) Coverage-Matrix vorab mit „SKILL.md-only"-Markierung; (b) MSFT-Drift-Audit-Bindung; (c) AVGO + ASML Sektion-Labels; (d) V raus aus Beispiele.md; (e) Anker-Zweck-Definition fest. Plus User-Pflicht: Codex-Round-4-Sparring auf 5-Anker-Variante mit Matrix → Ziel ≥95% Joint-Confidence vor Execute.
+
+**Decision:** Item #17 bleibt DEFERRED. Nächster Schritt nach MSFT Tag-+1-Vollanalyse 30.04. — bei driftfreiem MSFT-Run Coverage-Matrix entwerfen + Codex-Round-4 starten; bei Drift-Befund weiter deferred bis BRK.B Mai oder VEEV 27.05.
+
+**Sync-Set §18.2 (Pipeline-Item, kein Score-Event):** PIPELINE.md #17 (Plan-Revision auf 5-Anker-Mittelweg) + log.md (dieser Eintrag). Kein PORTFOLIO/Faktortabelle/score_history.jsonl/config.yaml/xlsx-Tools-Sync, da kein Score/FLAG/Sparraten-Change.
