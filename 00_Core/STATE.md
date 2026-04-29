@@ -9,6 +9,8 @@
 
 ## ⚠️ Critical-Alerts (≤ 10 Tage — handgepflegt)
 - **29.04.** MSFT Q3 FY26 — FLAG-Review (CapEx/OCF bereinigt <60% = Auflösung)
+- **29.04.** APH Q1 FY26 — DONE Tag-0-Recap (Earnings-Calendar-Drift detektiert, Trigger stand auf 23.07. Q2)
+- **30.04.** APH Q1 FY26 Vollanalyse Tag +1 (§19.1) — Sub-Score-Refresh, Methodology-Watch China-Tax/CommScope-Leverage
 
 ## Navigation (on-demand)
 | Wenn du brauchst… | Lies… |

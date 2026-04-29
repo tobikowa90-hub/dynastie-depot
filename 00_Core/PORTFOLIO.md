@@ -24,7 +24,7 @@
 | ASML | 68 | 🟡 3 | **38,00€** | ✅ | Q2 2026 (Q1 17.04. Vollanalyse ✅) |
 | TMO | 67 | 🟡 3 | **38,00€** | ✅ Clean (fcf_trend_neg Resolve-Gate CLEAR 23.04.) | Q2 FY26 ~Ende Juli — Organic-Akzeleration + Clario-Integration-Check |
 | **V** | **64** | **🟠 2** | **19,00€** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity + ROIC-Methodology-Verify** |
-| APH | 63 | 🟠 2 | **0€** | 🔴 Score-basiert | 23.07. Q2 |
+| APH | 63 | 🟠 2 | **0€** | 🔴 Score-basiert | **29.04. Q1 done (Tag-0-Recap, Earnings-Calendar-Drift detektiert) → Vollanalyse 30.04. Tag +1 → next Q2 ~23.07.** |
 | MSFT | 59 | 🟠 2 | **0€** | 🔴 CapEx/OCF 83.6% | **29.04. Q3 FY26 — FLAG-Review** |
 
 **Sparraten-Nenner:** 7×1,0 + 1×0,5 + 3×0 = **7,5** → 38,00€ volle / 19,00€ D2 / 0€ FLAG. **Summe 285€** ✓ (7×38,00 + 1×19,00 + 3×0 = 266,00 + 19,00 = 285,00)
@@ -59,6 +59,8 @@
 | ~~28.04.~~ | ~~V~~ | — | **DONE (mittags)** Q2 FY26 Beat-Cascade — D2→D3 Re-Rating (Score 63→68). **REVERTED (spätabends)** nach Codex-HIGH-1+HIGH-2-Review: Score 68→64, D3→D2, Sparrate 35,63€→19,00€. ROIC-Methodology-Verify Q3 FY26 in PIPELINE #21. |
 | 28.04. | SNPS/SPGI | B | Watchlist-Review |
 | **29.04.** | **MSFT** | **C** | **Q3 FY26 — FLAG-Review** |
+| **29.04.** | **APH** | **C** | **Q1 FY26 — DONE Tag-0-Recap (Earnings-Calendar-Drift detektiert), Vollanalyse 30.04. Tag +1** |
+| **30.04.** | **APH** | **C** | **Q1 FY26 Vollanalyse Tag +1 — Sub-Score-Refresh + Methodology-Watch China-Tax/CommScope-Leverage** |
 | Mai | BRK.B/ZTS/PEGA | B | Q-Earnings + Slot-16 |
 
 ---

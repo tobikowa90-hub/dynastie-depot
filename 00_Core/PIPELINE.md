@@ -24,6 +24,7 @@
 
 - ~~**28.04. V Q2 FY26**~~ — DONE (mittags Beat-Cascade D2→D3 Score 63→68; spätabends REVERTED nach Codex-HIGH-1+HIGH-2-Review zurück auf D2 Score 64). Q3 FY26 ~Ende Juli mit ROIC-Methodology-Verify (Item #21).
 - **29.04. MSFT Q3 FY26** — FLAG-Review CapEx/OCF (bereinigt <60% = Auflösung, >60% = Veto-Verschärfung).
+- **29.04. APH Q1 FY26 (Tag 0)** — Earnings-Calendar-Drift detektiert (Trigger stand auf "23.07. Q2"). PR-Recap erstellt: Beat-and-Raise (Sales $7,62B +33% organic, Adj. EPS $1,06 +68%, Adj. OpMargin 27,3%, Book-to-Bill 1,24:1, FCF $831M +43%, Q2-Guide +43-45% Sales). Schatten: China Tax $290M discrete + CommScope-Leverage-Sprung (+$3,2B Net Debt). Score 63/D2/FLAG-aktiv unverändert heute (Score-basierter FLAG, kein Outlier-Bypass-Trigger). **Vollanalyse Tag +1 30.04. morgens** via defeatbeta-MCP-Transcript.
 
 ### 🟡 Bereit, wartet auf Earnings-Window-Schluss (post-29.04.)
 
