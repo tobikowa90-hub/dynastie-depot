@@ -42,7 +42,7 @@ trigger_words:
 ---
 # 🦅 Dynastie-Depot – Skill v3.7.5
 
-**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.5 | **Stand:** 28.04.2026 spätabends | v3.7.5 Delta (2026-04-28 spätabends): Schritt 0 erweitert um Earnings-Call-Wait-Discipline (§19.1) — Klasse-B-Vollanalyse Tag +1 morgens post-Call, Tag 0 nur earnings-recap-Skill + FLAG-Quick-Check. v3.7.4 Delta: Schritt 6c Score-Konsistenz-Pre-Flight (Sub-Score!=0 mit Roh-Wert oder _carryover). v3.7.3 Delta (2026-04-25): 00_Core Struktur-Refactor — Tripwire auf PORTFOLIO.md, §1-Refs auf §12/§13 umgeleitet; Skill-Logik unverändert. v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
+**Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.6 | **Stand:** 30.04.2026 | v3.7.6 Delta (2026-04-30): B6 Quality-Trap-Drawdown-Modulator — `max 1`-Caps der Bewertungs-Subscores (Fwd P/E 22–30, P/FCF 22–35) deaktiviert per-Subscore wenn KUMULATIV (Drawdown ≥-20% vs 52W-High UND aktuelles Multiple unter 5J-Median). Hard-Caps unverändert (Bubble-Schutz unverletzt). Forward-only, Default-deny bei <12 belastbaren Stichtagen oder ≤0-Nennern, Non-US/IFRS-Freeze (ASML/SU INAKTIV bis separate Regel), Screener-Exceptions (BRK.B/COST/RMS/TMO) ausgenommen. Codex-R1→R4-Sparring 96% Confidence. v3.7.5 Delta (2026-04-28 spätabends): Schritt 0 erweitert um Earnings-Call-Wait-Discipline (§19.1) — Klasse-B-Vollanalyse Tag +1 morgens post-Call, Tag 0 nur earnings-recap-Skill + FLAG-Quick-Check. v3.7.4 Delta: Schritt 6c Score-Konsistenz-Pre-Flight (Sub-Score!=0 mit Roh-Wert oder _carryover). v3.7.3 Delta (2026-04-25): 00_Core Struktur-Refactor — Tripwire auf PORTFOLIO.md, §1-Refs auf §12/§13 umgeleitet; Skill-Logik unverändert. v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
 
 ## Übersicht
 
@@ -475,12 +475,52 @@ Applied Learning 17.04.2026 verbietet aggregierte Malus-Regeln auf Metriken, die
 | :--- | :--- |
 | Wide Moat (17–20) UND Fwd P/E \> 30 | Fwd-P/E-Subscore **hart 0** |
 | Wide Moat (17–20) UND P/FCF \> 35 | P/FCF-Subscore **hart 0** |
-| Wide Moat UND Fwd P/E 22–30 | Fwd-P/E-Subscore **max. 1** |
-| Wide Moat UND P/FCF 22–35 | P/FCF-Subscore **max. 1** |
+| Wide Moat UND Fwd P/E 22–30 | Fwd-P/E-Subscore **max. 1** *(siehe Drawdown-Modulator)* |
+| Wide Moat UND P/FCF 22–35 | P/FCF-Subscore **max. 1** *(siehe Drawdown-Modulator)* |
 
 - Regel greift NICHT bei Narrow/No Moat (P/E/P/FCF-Standardskala gilt)
 - Screener-Exceptions (BRK.B P/B, COST Membership-Yield) sind nicht betroffen
 - Moat-Block bleibt unverändert (reine Moat-Semantik) (→ Morningstar-Moat = qualitative QMJ-Variante, siehe [[QMJ-Faktor]] / [[Aghassi-2023-Fact-Fiction]])
+
+**Drawdown-Modulator (v3.7.6 — Stress-Test-Adjustment, NEU 30.04.2026):**
+
+**Versionsregel (forward-only):** v3.7.6 gilt ausschließlich für Bewertungen mit Bewertungsdatum ab Inkrafttreten (Skill-Version-Stempel). Bestehende ScoreRecords vor v3.7.6 werden NICHT retroaktiv angepasst.
+
+**Anwendungsbereich:** Modulator greift nur, wenn der zugrunde liegende QT-Subscore (Fwd P/E im 22–30-Korridor bzw. P/FCF im 22–35-Korridor) für den Ticker gemäß bestehender SKILL.md-Logik überhaupt anwendbar ist.
+- Modulator greift NICHT bei Screener-Exceptions (BRK.B P/B-Pfad, COST Membership-Yield-Pfad, RMS ROIC-Spread-Dominanz, TMO ROIC<WACC differenzierte QT; siehe bestehende SKILL.md Screener-Exceptions).
+- Modulator greift NICHT bei Non-US/IFRS-Tickern (ASML Pfad B, SU) bis eine separate Non-US-QT-Regel ergänzt ist (Default-deny).
+- **Non-US/IFRS-Freeze-Regime:** Für Non-US/IFRS-Ticker mit bestehendem QT-Pfad bleibt bis zur Freigabe einer separaten Non-US-QT-Regel ausschließlich die vor-v3.7.6-Logik des jeweiligen Pfads aktiv; der Drawdown-Modulator ist ausnahmslos INAKTIV. US-Schwellen dürfen bis dahin NICHT analog auf Non-US/IFRS-Ticker übertragen werden. ScoreRecord-`notizen`-Pflicht-Vermerk: `non-us-qt-modulator-default-deny`.
+
+**Aktivierungs-Bedingung (per-Subscore separat zu prüfen):**
+Der `max 1`-Cap eines Subscores wird deaktiviert, wenn KUMULATIV erfüllt:
+
+1. **Drawdown-Bedingung:** Schlusskurs am Bewertungsstichtag (`kurs.referenz="close_of_score_datum"`) ≤ 80% des 52-Wochen-Highs (≥-20% Drawdown).
+2. **Median-Bedingung:** Aktuelles Multiple unter 5J-Median des Tickers (Fwd P/E < 5J-Median-Fwd-P/E **bzw.** TTM-P/FCF < 5J-Median-P/FCF — pro Subscore separat).
+
+Bei Aktivierung greift die **Standard-Skala** des betroffenen Subscores. Hard-Caps (Fwd P/E >30 = hart 0; P/FCF >35 = hart 0) bleiben **unverändert** — Bubble-Schutz unverletzt. Modulator wirkt ausschließlich im moderate-Premium-Korridor.
+
+**Per-Subscore-Disziplin:** Aktivierung bei Fwd P/E impliziert NICHT automatisch Aktivierung bei P/FCF.
+
+**5J-Median-Operationalisierung (literal prüfbar):**
+- Beobachtungsmenge = letzte 20 verfügbare Quartalsendstichtage innerhalb der letzten 5 abgeschlossenen Geschäftsjahre relativ zum Bewertungsstichtag.
+- Mindestabdeckung = 12 belastbare Stichtage. Bei <12 gültigen Stichtagen → Modulator INAKTIV (Default-deny).
+- **5J-Median-Fwd-P/E:** Je Stichtag t gilt `Fwd-P/E_t = Schlusskurs_t / Forward-EPS-Konsens_t`. Schlusskurs_t aus defeatbeta `get_stock_price` (Quartalsend-Schlusskurs); Forward-EPS-Konsens_t aus Faktortabelle/Shibui historisch (Point-in-Time-Konsens-Schätzung mit Stichtag t für die folgenden 4 Quartale). Gültig sind nur Stichtage mit belastbarem Schlusskurs_t UND strikt positivem Forward-EPS-Konsens_t (>0). Stichtage mit Forward-EPS-Konsens_t ≤0 oder fehlendem Wert sind UNGÜLTIG und werden ausgeschlossen. `5J-Median-Fwd-P/E = np.median(Fwd-P/E_t über alle gültigen Stichtage)`.
+- **5J-Median-TTM-P/FCF:** Je Stichtag t gilt `TTM-P/FCF_t = Marktkap_t / TTM-FCF_t`. Marktkap_t aus defeatbeta `get_stock_market_capitalization` (Quartalsend); TTM-FCF_t aus defeatbeta `get_stock_quarterly_cash_flow` (rolling Summe der vier vorangehenden Quartale, Operating CF minus CapEx). Gültig sind nur Stichtage mit belastbarer Marktkap_t UND strikt positivem TTM-FCF_t (>0). Stichtage mit TTM-FCF_t ≤0 oder fehlendem Wert sind UNGÜLTIG und werden ausgeschlossen. `5J-Median-P/FCF = np.median(TTM-P/FCF_t über alle gültigen Stichtage)`.
+
+**Datenquellen-Pflicht (fail-closed):**
+- 52W-High: defeatbeta `get_stock_price` Max über letzte 252 Trading-Days.
+- Aktueller Kurs: Schlusskurs am Bewertungsstichtag (analog `close_of_score_datum`-Provenance-Regel).
+- 5J-Median: siehe Operationalisierung oben.
+
+Fehlt einer der Pflichtwerte (aktueller Schlusskurs, 52W-High, aktuelles Multiple, 5J-Median), DARF der Drawdown-Modulator NICHT aktiviert werden. Schritt 6c Pre-Flight-Klausel ist in diesem Fall mit „Modulator inactive due to data gap"-Vermerk im ScoreRecord-`notizen`-Feld zu dokumentieren. **Es existiert kein Ermessens-Trigger für „suspekte" Werte:** Nur fehlende Pflichtwerte führen zu Default-deny; primary-source-Werte sind bindend. Bei nachweislich inkonsistenten Werten (z.B. defeatbeta-Methodologie-Drift analog PIPELINE #21/#25) gilt separater Methodology-Watch-Pfad, kein stiller Modulator-Bypass.
+
+**Anti-Drift-Disziplin:** Modulator-Aktivierung ist im ScoreRecord-`notizen` explizit zu dokumentieren (Drawdown-%, 5J-Median-Wert, Subscore-Pre/Post). Schritt 6c Pre-Flight-Klausel erfasst dies via Provenance-Block automatisch.
+
+**Begründung:** V Q2 28.04. + MSFT Q3 30.04. — statische QT-Ranges bestrafen Wide-Moat-Drawdown-Premium identisch wie Wide-Moat-Bubble-Premium. Drawdown-Modulator differenziert Bewertungs-NIVEAU (absolut) von Bewertungs-BEWEGUNG (vs eigene Historie). Hard-Caps bleiben symbolische Anti-Bubble-Disziplin.
+
+**Methodentest (keine Retroaktivität):**
+- MSFT Q3 30.04.2026: Drawdown-Bedingung und Median-Bedingung für Fwd P/E wären bei Bewertungsstichtag 30.04.2026 erfüllt; P/FCF >35 bleibt hart 0 unverändert.
+- V Q2 28.04.2026: Drawdown-Bedingung nicht erfüllt; Modulator INAKTIV.
 
 **Fundamentals-Cap (v3.7):**
 Block-Summe wird hart auf **50** gedeckelt. Bonus-Metriken (GM-Trend, Pricing Power, EPS-Revision, etc.) können Max-Summe nicht über 50 treiben. Gewollt: Top-Namen verlieren Bonus-Headroom, dafür ist Score-Inflation ausgeschlossen.

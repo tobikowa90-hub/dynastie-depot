@@ -1299,3 +1299,31 @@ Netto: ~-9 Pkt = Score 50/D2.
 **Sync-Set §18 v2.3 (Score-Event Δ-9, kein FLAG-Wechsel, kein Sparraten-Effekt):** ScoreRecord `2026-04-29_MSFT_vollanalyse` (record 32, via backtest-ready-forward-verify-Skill) + PORTFOLIO.md + Faktortabelle.md + log.md (dieser Eintrag) + CORE-MEMORY.md §12.6 (Per-Ticker-Append) + 01_Skills/dynastie-depot/config.yaml (MSFT-Block) + Rebalancing_Tool_v3.4.xlsx + Satelliten_Monitor_v2.0.xlsx (Score-Felder, kein Sparraten-Effekt). + PIPELINE.md (4 neue Items im selben Commit für 00_Core-Konsistenz). KEIN flag_events.jsonl. **`!SyncBriefing` (§25)** vor Session-Ende Pflicht (4 von 7 Briefing-relevanten 00_Core-Files berührt: PORTFOLIO + CORE-MEMORY + Faktortabelle + PIPELINE).
 
 **MSFT-User-Reflektion (separat dokumentiert):** User stellte Methodology-Frage bei R1-Verdict 48/D1 ("eines der besten Unternehmen weltweit, soll aus dem Portfolio?"). Ehrliche Anerkennung: System-Stress-Test #2 nach V Q2; Quality-Trap-Mechanik-Review als PIPELINE-Item #4 promotet (System-Frage als System-Frage, nicht Score-Anpassung). 32-Jahre-Halten-Manifest dominiert über Score-getriebene Auswechslung; D1/D2-Differenz nominal-symbolisch + PIPELINE-Slot, nicht Liquidations-Pfad.
+
+## [2026-04-30] system | DEFCON v3.7 → Skill-Paket v3.7.6 — B6 Quality-Trap-Drawdown-Modulator (PIPELINE #28 DONE)
+
+**Trigger:** PIPELINE #28 Quality-Trap-Methodology-Review, User-Direktive 30.04. „nicht weiter deferred" nach 2 Live-Stress-Tests (V Q2 28.04. + MSFT Q3 30.04.). Frage: bestraft statische Quality-Trap (Wide × Fwd P/E 22–30 → max 1; Wide × P/FCF 22–35 → max 1) Wide-Moat-Drawdown-Premium identisch wie Wide-Moat-Bubble-Premium? Antwort: ja — chirurgischer Drawdown-Modulator als Lösung gewählt (Option 2 von 4 vorgelegten Optionen).
+
+**System-Change (forward-only):** Skill-Paket-Bump v3.7.5 → v3.7.6. DEFCON-System v3.7 unverändert (kein Bump, kein §28.3-Migration-Trigger). SKILL.md B6-Block §471–483 erweitert um „Drawdown-Modulator (v3.7.6)"-Sektion.
+
+**Mechanik:** `max 1`-Caps der Bewertungs-Subscores (Fwd P/E 22–30, P/FCF 22–35) per-Subscore deaktiviert wenn KUMULATIV erfüllt: (1) Schlusskurs am Bewertungsstichtag ≤ 80% des 52-Wochen-Highs (≥-20% Drawdown vs `kurs.referenz="close_of_score_datum"`), (2) aktuelles Multiple unter 5J-Median des Tickers. Bei Aktivierung greift Standard-Skala. Hard-Caps (Fwd P/E >30 / P/FCF >35 = hart 0) **unverändert** — Bubble-Schutz unverletzt.
+
+**5J-Median-Operationalisierung (literal prüfbar):** np.median über 20 Quartalsendstichtage (letzte 5 abgeschlossene GJ), Mindestabdeckung 12 belastbare Stichtage. `Fwd-P/E_t = Schlusskurs_t / Forward-EPS-Konsens_t` (defeatbeta `get_stock_price` × Faktortabelle/Shibui historisch); `TTM-P/FCF_t = Marktkap_t / TTM-FCF_t` (defeatbeta `get_stock_market_capitalization` × `get_stock_quarterly_cash_flow` rolling). **Strikt positive Nenner** (>0); ≤0 oder fehlend = UNGÜLTIG (Default-deny). Bei <12 gültigen Stichtagen → Modulator INAKTIV.
+
+**Anwendungsbereich (Default-deny-Disziplin):**
+- Modulator greift NICHT bei Screener-Exceptions (BRK.B P/B, COST Membership-Yield, RMS ROIC-Spread-Dominanz, TMO ROIC<WACC differenzierte QT)
+- Non-US/IFRS-Freeze-Regime (ASML Pfad B, SU): Modulator ausnahmslos INAKTIV bis separate Non-US-QT-Regel; US-Schwellen NICHT analog übertragbar; ScoreRecord-`notizen`-Pflicht-Vermerk `non-us-qt-modulator-default-deny`
+- Fail-closed bei fehlenden Pflichtwerten: Schritt 6c Pre-Flight-Klausel mit „Modulator inactive due to data gap"
+- Kein Ermessens-Trigger für „suspekte" Werte: primary-source-Werte bindend; Methodology-Drift → separater Methodology-Watch-Pfad (analog PIPELINE #21/#25), kein stiller Modulator-Bypass
+
+**Methodentest (keine Retroaktivität):**
+- MSFT Q3 30.04.2026: Drawdown- und Median-Bedingung für Fwd P/E erfüllt; P/FCF >35 bleibt hart 0.
+- V Q2 28.04.2026: Drawdown-Bedingung nicht erfüllt; Modulator INAKTIV. (V-Q2-Score-Driver war ROIC-Methodology-Drift PIPELINE #21, nicht QT.)
+
+**Codex-Sparring (R1→R4, 96% Joint-Confidence):**
+- R1: 46% — 3 HIGH (F1 Screener-Exception-Carryover, F2 Non-US-Default-deny, F3 5J-Median-Operationalisierung) + 3 MEDIUM (F4 Stress-Test methodisch, F5 Provenance fail-closed, F6 Forward-only kodifiziert)
+- R2: 89% — alle R1-HIGH/MEDIUM closed; N1/F3 Re-Open (HIGH 5J-Median nicht operational berechenbar) + N2 (MEDIUM para-1-4-Referenz) + N3 (MEDIUM RMS-Dopplung) + ASML-Drift-Risiko + Hidden-Risk-2 Re-Open
+- R3: 92% — alle R2-Findings closed; B1 (HIGH Nenner-Sign-Gate fehlt — ≤0/fehlende Nenner können Median verzerren)
+- R4: **96%** — B1 closed (strikt positive Nenner-Klausel literal eingebaut). Commit-Freigabe erteilt.
+
+**Sync-Set §18 (System-Event, kein Score-Move, forward-only):** SKILL.md (Header v3.7.5→v3.7.6 + Delta-Line + B6-Block-Erweiterung 471–483) + CORE-MEMORY.md §13 (System-Lifecycle-Eintrag) + log.md (dieser Eintrag) + PIPELINE.md (#28 Strikethrough → DONE). **KEIN** Score-Event-Sync (PORTFOLIO/Faktortabelle/config.yaml/xlsx-Tools/score_history.jsonl unverändert — Versionsregel forward-only, keine retroaktive Score-Re-Berechnung). **KEIN** flag_events.jsonl (kein FLAG-Trigger/Resolve). **KEIN** !SyncBriefing-Pflicht (00_Core-Files Briefing-relevant nur peripher: STATE Last-Audit-Block + CORE-MEMORY §13 — Briefing-Engine bleibt unbetroffen).
