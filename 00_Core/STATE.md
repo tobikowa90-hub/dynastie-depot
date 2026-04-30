@@ -9,6 +9,7 @@
 
 ## ⚠️ Critical-Alerts (≤ 10 Tage — handgepflegt)
 - **02.05. (Sa) BRK.B Q1 FY26 Earnings — Tag-0 earnings-recap-Skill + FLAG-Quick-Check (Klasse B Insurance-Exception); Tag-+1 Vollanalyse 03./04.05. (Score 75/D3, Insurance-Exception, kein FLAG). Drift detektiert via `earnings_calendar.py` 30.04. (Stufe-1-Erstlauf, BRK-B Smoke-Test PASS).**
+- **30.04.** AVGO Forward-Vollanalyse **DONE** — Score **84→53 (Δ-31), D4→D2**, FLAG aktiv unverändert (`AVGO_insider_selling_20m_2026-04-27`), Sparrate 0€ unverändert (FLAG-Override Score-unabhängig, **keine Kaskade**). Erste echte Forward-Vollanalyse seit Skill-Adoption — ersetzt PIPELINE #18 Backfill durch Schema-konformen Vollanalyse-Pivot. Codex R1+R2-Pass APPROVE Master-Reading 74% Confidence (R2 schwächster Hebel B Backfill-Inkonsistenz). Quality-Trap voll aktiv (Wide × Fwd P/E 22,98 max 1; Wide × P/FCF 74,4 hart 0); ROIC GAAP 3,98% < WACC 15,96% → §410-Goodwill-bereinigt 45,7% (M&A-Compounder VMware/CA/Symantec/Brocade GW 57,2%). Insider-Live-Pull (insider_intel.py 30.04.: Diskr. 90d $106,4M = 5× Schwelle), Skip-Window-Carryover NICHT angewandt (V-Q2-Asymmetrie + Backfill-Inkonsistenz). 5 neue PIPELINE-Methodology-Watches #30-34. ScoreRecord `2026-04-30_AVGO_vollanalyse` (record 33). Sync §18.1 v2.3 vollständig.
 - **30.04.** PIPELINE #24 Stufe 1 **DONE** — `03_Tools/earnings_calendar.py` v1.0 deployed. yfinance-Pull 11/11 PASS, BRK.B-Smoke ✅, 1 Drift detektiert (BRK.B 02.05. konkretisiert in PORTFOLIO/STATE/PIPELINE-10d). SYSTEM.md neue §Earnings-Calendar-Status, INSTRUKTIONEN §27.6 neu.
 - **30.04.** PIPELINE #20 Ruflo-Integration **Phase 1.2-1.7 §18-Sync-Welle DONE** — Google-Drive-Mirror für `Claude Stuff` entfernt (root_id=3 aus DriveFS-Roots, kein File-Lock mehr auf memory.db); WSL `ruflo memory init --force` + 19/20 path-scoped Dynastie-Memory-Import in `patterns`-Namespace (Mock-Embeddings, `import-all` strikt ausgeschlossen); Top-K=3 persistiert via `ruflo config set`; `.claude/settings.json` env-Tool-Mode + ruflo-Config-Block; `.gitignore` erweitert um `.swarm/` + `.claude/memory.db*`; CLAUDE.md Codex-Nits-Nachfix (Hard-Conflict-#5 Hintertür-Klausel verschärft + Compatible-Block `allProjects=false`); SYSTEM.md neu §Ruflo-Status. Welle 3 (1.8/1.9) bleibt 05.-12.05. post-BRK.B-Tag-+1.
 - **30.04.** PIPELINE #28 Quality-Trap-Methodology-Review **DONE** — Skill-Paket v3.7.5→v3.7.6 mit B6 Drawdown-Modulator (Option 2 chirurgisch). Codex-R1→R4 96% Confidence (4 HIGH + 4 MEDIUM closed inkl. B1 Nenner-Sign-Gate). Mechanik: `max 1`-Caps deaktiviert per-Subscore wenn Drawdown ≥-20% vs 52W-High UND Multiple unter 5J-Median (np.median 20 Stichtage, mind. 12 belastbar, strikt positive Nenner). Hard-Caps unverändert. Forward-only (keine MSFT-Q3-Backfill); Non-US-Freeze (ASML/SU INAKTIV); Screener-Exceptions (BRK.B/COST/RMS/TMO) ausgenommen.
@@ -34,11 +35,11 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-04-30T10:00:16Z
+**Timestamp (UTC):** 2026-04-30T15:08:02Z
 **Result:** 3/3 PASS
 **Run:** `python 03_Tools/system_audit.py --minimal-baseline`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->
 
-*🦅 STATE.md Hub v2.0 | Dynasty-Depot | Navigation + Critical-Alert + Last-Audit | Stand: 27.04.2026*
+*🦅 STATE.md Hub v2.0 | Dynasty-Depot | Navigation + Critical-Alert + Last-Audit | Stand: 30.04.2026 (AVGO Forward-Vollanalyse 84→53 D4→D2 FLAG aktiv unverändert)*

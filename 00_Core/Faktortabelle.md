@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 30.04.2026 (APH Q1 FY26 Tag-+1 Vollanalyse — Score 63→61, D2/FLAG aktiv unverändert, Codex-Review-Pass)
+**Stand:** 30.04.2026 (AVGO Forward-Vollanalyse — Score 84→53, D4→D2, FLAG aktiv unverändert, Codex R1+R2-Pass 74% Confidence; MSFT 59→50, APH 63→61)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -27,7 +27,7 @@
 <!-- DATA:ASML -->
 | ASML | 33,8% | 26,48% | 52,8% | 0,21x | Wide | 68 | 🟡 3 | ✅ Clean | 2026-04-17 | Q2 2026 Earnings — FY27 Fwd P/E Watch (30,30 → D4-Kandidat <30) |
 <!-- DATA:AVGO -->
-| AVGO | ~30% | >20% | ~65% | ~2.5x | Wide | 84 | 🟢 4 | 🔴 Insider-Selling 90d $106M+ (FLAG aktiv 27.04.2026 — Sparrate 0€) | 2026-04-17 | Q3 FY26 — !Analysiere Re-Eval |
+| AVGO | ~30% | **3,98% GAAP / 45,7% §410-Goodwill-bereinigt (M&A-Compounder VMware/CA/Symantec/Brocade GW 57,2% Assets) vs WACC defeatbeta 15,96%** | ~65% | 1,41x | Wide | **53** | **🟠 2** | 🔴 Insider-Selling 90d $106,4M (FLAG aktiv 27.04.2026 — Sparrate 0€, Resolve-Gate ≤$20M) | **2026-04-30** | **Q3 FY26 — !Analysiere Re-Eval; FLAG-Resolve-Check** |
 <!-- DEFCON-Label-Drift-Fix 18.04.: BRK.B/VEEV/SU/COST/RMS D4→D3, APH D3→D2 (Schema-Thresholds auf SKILL.md aligned). Sparraten unverändert bei D3/D4-Übergängen. -->
 <!-- V-Score-Update 18.04.: 86 (Backfill) → 63 (Forward-Vollanalyse + Rescoring nach Advisor-Review). D4→D2, Sparrate 33,53€→17,81€. -->
 <!-- Nenner 8.5→8.0, volle Rate 33,53€→35,63€. -->
@@ -90,7 +90,8 @@
 | Mai 2026 | CPRT/ZTS/PEGA | B | Earnings → Watchlist-Review |
 | Juni 2026 | — | — | Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung |
 | Q2 2026 | GOOGL | C | FLAG-Review nach Earnings |
-| Q3 FY26 | AVGO | C | !Analysiere — FLAG-Re-Eval (insider_selling_20m) + voller DEFCON-Refresh |
+| ~~2026-04-30~~ | ~~AVGO~~ | — | **DONE** Forward-Vollanalyse Score 84→53 (Δ-31), D4→D2, FLAG aktiv unverändert. Codex R1+R2-Pass 74% Confidence. Quality-Trap voll aktiv + §410-Goodwill-bereinigt ROIC 45,7%. Sparrate 0€ unverändert (keine Kaskade). 5 PIPELINE-Methodology-Watches #30-34. |
+| Q3 FY26 | AVGO | C | !Analysiere — FLAG-Re-Eval (insider_selling_20m) + voller DEFCON-Refresh + Methodology-Watches-Resolve |
 
 ---
 
@@ -103,7 +104,7 @@
 | Position | Score | DEFCON | Analyse-Datum | Nächster Trigger |
 |----------|-------|--------|--------------|-----------------|
 | ASML | 68 | 🟡 3 | 17.04.2026 | Q2 2026 Earnings + FY27 Fwd-P/E-Watch |
-| AVGO | 84 | 🟢 4 | 17.04.2026 | Q3 FY26 Earnings |
+| AVGO | **53** | **🟠 2** | **2026-04-30** | **Q3 FY26 Earnings** — !Analysiere Re-Eval + FLAG-Resolve-Check (Diskr. 90d ≤$20M) |
 | MSFT | **50** | 🟠 2 | **2026-04-30** | **Q4 FY26 ~Juli** — CapEx-Plateau-Recheck + WACC-Methodology-Verify (FLAG aktiv unverändert) |
 | TMO | **67** | 🟡 3 | **2026-04-23** | **Q2 FY26 ~Ende Juli** — Organic-Akzeleration + Clario-Integration-Check |
 | RMS | 68 | 🟡 3 | 17.04.2026 | H1 2026 Report Juli/Aug 2026 |
@@ -141,4 +142,4 @@ Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · 
 
 ---
 
-*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 30.04.2026 (MSFT Q3 FY26 Tag-+1 Vollanalyse Score 59→50 D2 unverändert FLAG aktiv unverändert; APH Tag-+1 morgens Score 63→61) | Nächste Vollaktualisierung: 17.07.2026*
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 30.04.2026 (AVGO Forward-Vollanalyse Score 84→53 D4→D2 FLAG aktiv unverändert; MSFT 59→50; APH 63→61) | Nächste Vollaktualisierung: 17.07.2026*

@@ -1518,3 +1518,45 @@ Netto: ~-9 Pkt = Score 50/D2.
 **Cross-Reference:**
 - PIPELINE-Numbering-Convention: header §13 + git-log-Verweis
 - HANDOVER-Slim-Pattern: 25.04. Tier-2-Finalize-Lehre (Policy-B-Migration)
+
+
+
+## [2026-04-30] score-event | AVGO Forward-Vollanalyse Tag — Score 84→53 (Δ-31), D4→D2, FLAG aktiv unverändert
+
+**Event-Typ:** Score-/DEFCON-Change (Klasse-C-Event via FLAG-Trigger 27.04. + PIPELINE #18-Pivot)
+
+**Was passiert ist:**
+1. **Pivot von PIPELINE #18 ScoreRecord-Backfill → echte Forward-Vollanalyse.** Backfill-Pfad (`analyse_typ="rescoring"`, Score 84 unverändert, leeres `skill_meta`) hätte Provenance-Gate P3.5 Check #4 fail-close getroffen ("rescoring verlangt skill_meta"). User-Pivot zu Vollanalyse ist Schema-vorgesehen und löst Backfill-Item komplett ab.
+2. **Erste echte Forward-Vollanalyse seit Skill-Adoption.** AVGO-Backfill 17.04. hatte `scores.insider.gesamt=8` mit allen Sub-Scores=0 (intern inkonsistent — Schicht-D-Block-Coverage greift nur bei `forward+vollanalyse`). Live-Pull primary-source: defeatbeta cash_flow/balance_sheet/income_statement/quarterly_roic/wacc + insider_intel.py Form-4 + OpenInsider + StockAnalysis-Ownership + Yahoo/Finviz Tech + GuruFocus/Morningstar Moat + AlphaSpread DCF.
+3. **Score-Drivers (Quality-Trap voll aktiv):** Wide × Fwd P/E 22,98 → max 1; Wide × P/FCF 74,4 → hart 0. ROIC GAAP 3,98% < WACC defeatbeta 15,96% → §410-Goodwill-bereinigt 45,7% (NOPAT TTM $22,2B / IC-GW $48,6B; M&A-Compounder VMware $61B + CA $19B + Symantec $10B + Brocade $5,5B; GW $97,8B = 57,2% Assets) → 7/8 (konservativ statt 8/8 wegen StockAnalysis ROIC 21,33% Methodology-Drift).
+4. **Sub-Scores final:** Fundamentals 23/50 (fwd_pe=1, p_fcf=0, bilanz=5 [NL/EBITDA 1,41x=2/3, CR 1,71=3/3, GW=0/3], capex_ocf=9 [Fabless 2,26%], roic=7 [§410], fcf_yield=1 [1,35%], opm=2 [41,9%], sbc_malus=-2 [11,85%]). Moat 18/20 (Wide 3 Quellen Switching-Costs/Intangibles/Efficient-Scale, GuruFocus 8/10 + Morningstar Wide carryover, GM-Trend 0, kein Pricing-Power-Bonus, -1 wegen M&A-GW-Risk). Tech 7/10 (ATH -1,5%=1/4, RelStr +30pp=3/3, rising 200MA=3/3, **kein DCF-Malus** — Codex-R1-REJECTED heuristic Bull+15%, AlphaSpread Base $256 only). Insider 3/10 (Net 6M -$640M=0, Ownership 1,13%=3/3, Diskr. 90d $106,4M=0). Sentiment 2/10 (SB 87% Crowd-Malus +1, Sell 0%=+1, PT-Upside +4,8%=+1, PT-Disp 81% -1).
+5. **Insider-Skip-Window-Carryover NICHT angewandt.** Codex-R2 APPROVE Master-Reading 74% Confidence: FLAG-Event 27.04. + 30.04.-Live-Pull = explizite neue primary-source-Datenerhebung; V-Q2-Asymmetrie erlaubt Down-Scoring 8 → 3 (Backfill-Sub-Scores intern inkonsistent gesamt=8 vs alle Sub=0).
+6. **Codex R1+R2-Sparring (Pre-Append-Code-Review):**
+   - **R1 (Single-Pass-Review):** 5 HIGH (1=APPROVE §410, 2=REJECT Forward P/E StockAnalysis-Source → Yahoo/Finviz 22,98, +1 Pkt zurück, 3=CHALLENGE Insider-Skip-Window-Reading, 4=APPROVE ATH-Bucket, 5=REJECT DCF-Malus heuristic Bull+15%, +1 Pkt zurück) + 4 MEDIUM + 3 LOW.
+   - **R2 (Round-2 zu HIGH-3):** APPROVE Master-Reading 53/D2 (3 Punkte A/B/C, A+C HIGH, B Backfill-Inkonsistenz schwächster Hebel, 74% Confidence, kein Mittelweg).
+   - **Final 53/D2 vs R1-Original 51** (+2 von HIGH-2 + HIGH-5 Methodology-Disziplin gewahrt).
+7. **FLAG-Status:** aktiv (`AVGO_insider_selling_20m_2026-04-27`), Resolve-Gate Diskr. 90d ≤$20M nicht erfüllt ($106,4M >> Schwelle). Sparrate 0€ unverändert (FLAG-Override Score-unabhängig, **keine Kaskade**). DEFCON D4→D2 ist nominell, FLAG dominiert.
+8. **5 PIPELINE-Methodology-Watches** als #30-34 in PIPELINE.md eröffnet:
+   - **#30** §410 IC-GW vs Regel-4 Cash-ROIC-add-back-Priorität bei M&A-Compoundern.
+   - **#31** Forward P/E Quellenhierarchie hard codification (StockAnalysis explizit ausgeschlossen, AlphaSpread-unavailable Fallback).
+   - **#32** Skip-Window <14d Eligibility bei Backfill-Records explizite Klausel (Backfill-Ausschluss).
+   - **#33** ATH-Distance 0-4 Bucket-Boundaries explizit in SKILL-Text.
+   - **#34** DCF-Malus persistiertes `bull_dcf_source`-Feld pflicht (kein heuristischer Bull-Uplift).
+9. **MSFT-WACC-Methodology-Watch (#25) cross-relevant** — defeatbeta-WACC 15,96% AVGO basiert auf gleichem `expected_market_return` 12,87% wie MSFT 13,64%; FRED-Baseline-Verify Q3 FY26.
+
+**Sync-Set §18.1 v2.3:** PORTFOLIO.md + Faktortabelle.md + CORE-MEMORY.md §12.1 + log.md (dieser Eintrag) + score_history.jsonl (via Skill `backtest-ready-forward-verify`) + 01_Skills/dynastie-depot/config.yaml + 03_Tools/Rebalancing_Tool_v3.4.xlsx + 03_Tools/Satelliten_Monitor_v2.0.xlsx + 05_Archiv/flag_events.jsonl (`related_score_record_id`-Backfill für Trigger 27.04.) + STATE.md Critical-Alert + PIPELINE.md (#18 DONE-archiviert + #30-34 neu).
+
+**Lehre:**
+- **Schema-Konflikt-Detection retroaktiv:** PIPELINE #18 (Codex-R2 98% Confidence vom 28.04.) hatte Provenance-Gate Check #4 (`rescoring`+leerem `skill_meta` = FAIL fail-close) übersehen. Vollanalyse-Pivot ist nicht nur Aufwand-höher sondern Schema-vorgesehen — Carryover-Pfad-Strategie für Sparraten-Change-only-Events bleibt offen (Item-Backlog).
+- **V-Q2-Asymmetrie-Disziplin bestätigt:** explizite neue primary-source-Datenerhebung (FLAG-Event + 30.04.-Live-Pull) erlaubt Down-Scoring 8→3 trotz `<14d`-Skip-Window-Klausel. Skip-Window ist Token-Efficiency-Klausel, kein Korrektheits-Mandat. Backfill-interne-Inkonsistenz (gesamt=8 vs alle Sub=0) ist explizites Override-Signal.
+- **Multi-Source-Forward-P/E-Drift** (GuruFocus 35,32 vs Yahoo/Finviz 22,98 vs StockAnalysis 30,11) → SKILL-Quellen-Hierarchie-Disziplin (AlphaSpread→Yahoo→Finviz; StockAnalysis explizit ausgeschlossen) ist kritisch für Score-Stabilität bei Quality-Trap-Tickern. Codification-Item #31.
+- **DCF-Malus heuristic Bull-Uplift** (AlphaSpread Base $256 only, kein dokumentierter Bull-Band) ist regelwidrig — SKILL verlangt actual Bull/Bear-Band aus capex-fcf-template. Persistiertes `bull_dcf_source`-Feld pflicht (#34).
+- **Quality-Trap-Drama 84→53** ist methodisch sauber: AVGO-Top-Score-Anker-Status (Beispiele.md) basierte auf v3.4-Kalibrierung VOR Quality-Trap-Interaktion. v3.7 Quality-Trap macht Wide-Moat-Compounder bei aggressiver Bewertung (Fwd P/E 23 + P/FCF 74 + GW 57%) systematisch teuer-deckelnd. Anker-Refactor-Item #17 muss diesen Mechanismus in Beispiele.md transparent machen.
+
+**Cross-Reference:**
+- ScoreRecord `2026-04-30_AVGO_vollanalyse` in `05_Archiv/score_history.jsonl` (record 33, via Skill-Pipeline)
+- §12.1 AVGO neuer Eintrag 30.04.
+- §13 Lifecycle (kein Eintrag — reine Score-Event, keine System-Lifecycle-Transition)
+- PIPELINE #18 DONE archiviert mit Vollanalyse-Verweis
+- PIPELINE #30-34 Methodology-Watches neu
+- Codex-Sparring-Threads in Session-Transcript (R1 + R2)
