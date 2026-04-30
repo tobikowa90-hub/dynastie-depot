@@ -1450,3 +1450,46 @@ Netto: ~-9 Pkt = Score 50/D2.
 - Resume-Anweisung neuer Session: [[SESSION-HANDOVER]] Resume-Trigger-Block
 - Item-Status: [[PIPELINE]] #20
 
+
+
+## [2026-04-30] system | PIPELINE #20 Ruflo-Integration Phase 1.2-1.7 §18-Sync-Welle DONE (atomar, post-Google-Drive-Mirror-Cleanup)
+
+**Event-Typ:** Pipeline-Item Status-Transition (Phase 1.2-1.7 Aktivierung in NEUER Session post-MCP-Switch — atomar mit Mirror-Cleanup-Voraussetzung)
+
+**Was passiert ist (chronologisch):**
+1. **Pre-Flight in neuer Session** — STATE/PORTFOLIO/RUFLO-INTEGRATION-PLAN gelesen; `mcp__ruflo__*`-Tools sichtbar (deferred); 5 Stub-Files (`05.05`, `2026-05-05\``, `CheckResult`, `Skill-deterministisch` — alle 0-Byte, nie committed, Heredoc-Mishaps aus Welle-0-Window 11:59-13:47) gelöscht; Welle-0-Backups in `05_Archiv/ruflo-phase1.2-backups/` verifiziert.
+2. **Memory-Bridge-OneDrive-Pitfall hit** — `ruflo memory init --force` ignorierte `--backend-path`/`--db-path`-Flags, DB landete cwd-relativ in `.swarm/memory.db` + `.claude/memory.db`. Initiale Pitfall-Lesung „OneDrive-Sync" verifiziert: **OneDrive-Process nicht laufend, kein Service, HKCU-Registry leer, kein ReparsePoint** → OneDrive ist nur Legacy-Ordnername, kein aktiver Sync.
+3. **Google-Drive-Mirror-Konflikt entdeckt** — User-Hinweis: Ordner ist mit Google Drive verbunden. PowerShell-Verifikation: 2× GoogleDriveFS-Process aktiv. WSL-sqlite3-Read der `root_preference_sqlite.db`: `roots`-Tabelle zeigt **`root_id=3` `Claude Stuff` is_my_drive=0 sync_type=1 state=2** = aktiver Mirror-Root für `Folder from your computer`. „Dateien spiegeln" (My-Drive-Modus-Switch) löst das **nicht** — separater Mechanismus.
+4. **Mirror-Cleanup-Entscheidung** — User klärte: Google Drive nur ursprünglich für Mobile-Zugriff aktiviert, mittlerweile durch Remote-Trigger-API abgelöst. Cloud-Backup-Verlust für Markdown akzeptabel (git ist Audit-SSoT). User entfernt `Claude Stuff` aus DriveFS-Roots in Google-Drive-Settings. **Verifikation post-Removal:** `roots`-Tabelle zeigt nur noch `Meine Ablage`; exklusiver RW-Open auf `memory.db` erfolgreich = **kein File-Lock**.
+5. **Welle 1 — Path-scoped Memory-Import** — 19/20 Dynastie-Auto-Memory-Files in `patterns`-Namespace (1 Dup `claude_MEMORY` aus First-Try-Run). **Bug entdeckt:** `ruflo memory store -v <yaml-content>` failt bei führendem `---` (argv-Parser deutet YAML-Frontmatter-Marker als Flag-Prefix). Workaround: `--value=<content>`-Equals-Syntax. Embeddings: Mock (`Xenova/all-MiniLM` Fallback — ONNX-Native nicht in WSL-ruflo geladen). Schema-konform, kein Phase-1-Blocker.
+6. **Welle 2 — Konfiguration:**
+   - **1.3** Top-K=3 persistiert via `ruflo config set --key intelligence.topK --value 3` (verify: `config get --key intelligence.topK = 3`).
+   - **1.4** Context Autopilot: Default-Schwellen (warn 70% / prune 85%) — kein File-Edit nötig.
+   - **1.5** Tool-Mode `dynastie`: `.claude/settings.json env.CLAUDE_FLOW_TOOL_GROUPS=memory,monitor`.
+   - **1.6** Statusline auto-aktiv. **Known-issue:** DDD-Bar nicht via CLI-Switch deaktivierbar; Plan-Soll-Reduktion auf ctx%/tokens/intel% nicht direkt umsetzbar — als cosmetic-only akzeptiert, in §Ruflo-Status dokumentiert.
+   - **1.7** 6/26 Hooks als Intent in `.claude/settings.json ruflo.hooks_intent` dokumentiert (session-start/end, pre-task/post-task, pattern-store/search). 21 deaktiviert. **Aktive PreToolUse/SessionStart-Verdrahtung deferred auf Welle 3** — vermeidet Briefing-Sync-Check-Hook-Konflikt.
+   - `.gitignore` erweitert um `.swarm/` + `.claude/memory.db*` (DB regenerierbar aus `~/.claude/projects/.../memory/*.md`).
+7. **Welle 3 — §18-Sync (dieser Commit):**
+   - **CLAUDE.md Codex-Nits-Nachfix:** Hard-Conflict-#5 Hintertür-Klausel verschärft (Positivliste leer, !BatchScan = Plan-Vorschlag, ad-hoc-User-Sätze aktivieren nichts) + Compatible-Block `memory_import_claude` mit `allProjects=false`-Pflicht + path-scoped-Pflicht + Pitfall-Cross-Reference.
+   - **§18-Sync-je-Phase-Block** in CLAUDE.md aktualisiert für Phase 1.2-1.7-Sync-Set.
+   - **PIPELINE #20** Status DONE + Body-Update mit Welle-2/3-Details.
+   - **STATE.md Critical-Alerts** Eintrag „PIPELINE #20 Phase 1.2-1.7 DONE".
+   - **SYSTEM.md** neue §Ruflo-Status (Phase-Status + Runtime + MCP + AgentDB + Tool-Mode + Hooks + Top-K + Statusline + Autopilot + Boundaries + CLI-Flag-Bug-Notiz + Rollback-Pfad).
+   - **CORE-MEMORY.md §13** System-Lifecycle-Eintrag für Phase 1.2-1.7 mit Mirror-Cleanup-Lehre.
+   - **log.md** (dieser Eintrag).
+   - **Auto-Memory-Doc** `feedback_ruflo_memory_bridge_onedrive_pitfall.md` aktualisiert: Cloud-Sync-Pitfall-Warnung jetzt generisch („verify first" gegen aktive Cloud-Clients) + ergänzt um CLI-Flag-Bug-Befunde (`--backend-path`/`--db-path` ignored, `--value=`-Workaround) + Google-Drive-Mirror-Lesson.
+
+**Sync-Set dieses Commits:** CLAUDE.md + .gitignore + .claude/settings.json + 00_Core/PIPELINE.md (#20 DONE) + 00_Core/STATE.md (Last-Audit + Critical-Alert) + 00_Core/SYSTEM.md (neue §Ruflo-Status) + 00_Core/CORE-MEMORY.md (§13 System-Lifecycle) + 07_Obsidian Vault/.../log.md (dieser Eintrag) + ~/.claude/projects/.../memory/feedback_ruflo_memory_bridge_onedrive_pitfall.md (Pitfall-Doc-Update) + Doctor-Baseline-Snapshot in `05_Archiv/ruflo-doctor-baseline-2026-04-30-post-1.2.txt`. **KEIN** Score/FLAG/Sparraten-Touch (keine PORTFOLIO/Faktortabelle/config.yaml/xlsx/score_history-Sync nötig). **KEIN** !SyncBriefing (Briefing-Engine unbetroffen).
+
+**Lehre:**
+- **Cloud-Sync-Verify ist Pre-Phase-Pflicht** für jede AgentDB-Init in einem potenziell gemirrorten Pfad. Memory-Pitfall-Doc generalisiert von „OneDrive" auf „aktive Cloud-Sync-Clients allgemein" (Google Drive, OneDrive, Dropbox, …). DriveFS-DB-Read via WSL-sqlite3 ist der Goldstandard-Verify.
+- **Ruflo-CLI-Flag-Bugs** (`--backend-path`/`--db-path` ignored; argv-YAML-Parsing-Bug bei `-v ---...`) sind Symptom für CLI-Reife — Plan-1.2-Befehle in `RUFLO-INTEGRATION-PLAN.md` waren nicht Edge-Case-tested. Workarounds dokumentiert (`--value=`-Equals + cwd-Trick). Upstream-Issue-Filing optional, nicht blocking.
+- **Hook-Aktivierung in lebender Session ist riskant** — Briefing-Sync-Check-Hook hat etablierten Trust-Status; Ruflo-Hook-Aktivierung als zusätzlicher Layer braucht eigene Verify-Welle (Welle 3) statt im selben atomaren Sync-Commit.
+- **Δ1-Hard-Cutoff-Disziplin** funktioniert als Mehrfach-Sicherung: Win32-Setup-Fault zog am 30.04. Vormittag, dann Mirror-Konflikt am Nachmittag — beide ohne File-Korruption oder Datenverlust abgefangen.
+
+**Cross-Reference:**
+- §Ruflo-Status in [[SYSTEM]]
+- CORE-MEMORY §13 System-Lifecycle (neuer Eintrag 30.04. spätnachmittags)
+- Override-Block in [[CLAUDE.md]] Codex-Nits-Nachfix
+- PIPELINE #20 Body-Update
+- Welle-3-Outlook: 05.-12.05. post-BRK.B-Tag-+1 für 1.8/1.9 Trajectory + Doctor-Periodic

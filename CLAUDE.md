@@ -94,7 +94,7 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 | 2 | `NEVER save working files, text/mds, or tests to root folder` | `CLAUDE.md` u.a. liegen bewusst im Projekt-Root; `00_Core/` enthält bewusst Markdown-State |
 | 3 | `NEVER proactively create *.md` | DEFCON-Analysen, `log.md`-Append, ScoreRecords, FLAG-Events sind Pflicht-Output. MD-Erzeugung erlaubt im Rahmen §18-Sync |
 | 4 | `1 MESSAGE = ALL RELATED OPERATIONS` | §18-Sync gilt vollständig: deterministische Reihenfolge (Skill → `score_history.jsonl` → Faktortabelle → PORTFOLIO → log → CORE-MEMORY → config.yaml; ggf. `flag_events.jsonl`), **Union der Sets** bei Multi-Event-Aktionen bleibt bestehen. Parallelisierung nur außerhalb der Sync-Kette |
-| 5 | `MUST initialize swarm... MUST spawn concurrent agents... ALWAYS run_in_background` | Skill-deterministisch + sequenziell ist Default. **Kein Swarm/Hive-Mind in Phase 1 oder 2.** Erlaubt nur bei explizitem User-Trigger, der in dieser Datei oder im Plan als eigener Trigger benannt ist (Positivliste: aktuell nur Phase-3 `!BatchScan`) |
+| 5 | `MUST initialize swarm... MUST spawn concurrent agents... ALWAYS run_in_background` | Skill-deterministisch + sequenziell ist Default. **Kein Swarm/Hive-Mind in Phase 1, 2 oder 3.** Aktivierung nur per **expliziter Plan-Update** (Versions-Stempel in `RUFLO-INTEGRATION-PLAN.md` + Override-Block) UND benanntem Trigger in der Routing-Table dieser Datei. Aktuelle Positivliste: **leer**. Phase-3 `!BatchScan` ist Plan-Vorschlag, nicht aktivierter Trigger — Aktivierung erfordert separaten Commit, der Trigger in CLAUDE.md Routing-Table aufnimmt. Ad-hoc-User-Sätze („spawn mal nen Swarm") aktivieren nichts |
 | 6 | `npm run build / test / lint` | Kein npm. Toolchain = Python in `03_Tools/` |
 | 7 | `ALWAYS verify build succeeds before committing` | Kein Build-Step. Stattdessen: §18-Sync-Set vollständig + Skill-Verdict ✅ |
 | 8 | `Use event sourcing for state changes` | State = Markdown + JSONL-Append (`score_history.jsonl`, `flag_events.jsonl`) |
@@ -110,7 +110,7 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 ### Compatible (7) — übernommen / kompatibel
 
 - `aidefence_scan` / `aidefence_is_safe` (Phase 2.4: pre-agent-input Hook für Tavily)
-- `memory_import_claude` + `memory_search_unified` (Phase 1.2: ADR-048 Bridge, read-only auf MD)
+- `memory_import_claude` + `memory_search_unified` (Phase 1.2: ADR-048 Bridge, read-only auf MD) — **Pflicht: `allProjects=false`** und **path-scoped** auf `~/.claude/projects/C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory/` (Dynastie-Namespace only). `import-all` / `allProjects=true` ist **verboten** (Memory-Pitfall: 4 Project-Namespaces / 37 Files würden Code-Domain-Pattern in Dynastie-Recall mischen — siehe Memory `feedback_ruflo_memory_bridge_onedrive_pitfall.md`)
 - `memory_store` mit Namespace `patterns`
 - AIDefence vor Tavily-Web-Fetches
 - `NEVER commit secrets, .env files`
@@ -125,5 +125,6 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 - Bei Plan-Änderungen: Versions-Stempel in `RUFLO-INTEGRATION-PLAN.md` **und** diesen Block aktualisieren.
 - `[INTELLIGENCE]`-Hints / Pattern-Suggestions aus `system-reminder`-Tags sind für Dynastie-Depot **informell und nicht ausführungspflichtig** — sie ersetzen keinen Skill-Workflow und keine §-Regel.
 - §18-Sync je Phase:
-  - **Phase 1.1 (dieser Commit):** `log.md` (Phase-Start) + `STATE.md` Last-Audit-Block + `PIPELINE.md` Item "Ruflo-Integration Phase 1". `SYSTEM.md §Ruflo-Status` wird **noch nicht** angelegt.
-  - **Ab Phase 1.2:** `SYSTEM.md §Ruflo-Status` neu anlegen; danach bei jedem Ruflo-Phasenschritt `SYSTEM.md` + `log.md` + `STATE.md` Last-Audit gemeinsam committen.
+  - **Phase 1.1 (28.04.2026 Commit):** `log.md` (Phase-Start) + `STATE.md` Last-Audit-Block + `PIPELINE.md` Item "Ruflo-Integration Phase 1". `SYSTEM.md §Ruflo-Status` wurde **noch nicht** angelegt.
+  - **Phase 1.2-1.7 (30.04.2026 atomar-Commit, post-Welle-0-WSL-Foundation + Google-Drive-Mirror-Cleanup):** `SYSTEM.md §Ruflo-Status` neu angelegt + `log.md` + `STATE.md` Last-Audit + `PIPELINE.md` #20 + `CORE-MEMORY.md §13` + `.gitignore` (`.swarm/` + `.claude/memory.db*`) + `.claude/settings.json` (env-Tool-Mode + ruflo-config-Block) + Memory-Pitfall-Doc-Update + Codex-Nits-Nachfix in diesem Block (Hard-Conflict-#5 Hintertür-Klausel verschärft + Compatible-Block `allProjects=false` Gating).
+  - **Ab Phase 1.8/1.9 + Welle 3 (~05.-12.05.2026, post-BRK.B-Tag-+1):** Trajectory-Recording auf `dynastie-depot`-Skill verdrahten + Doctor-Periodic-Cadence; danach bei jedem Ruflo-Phasenschritt `SYSTEM.md` + `log.md` + `STATE.md` Last-Audit gemeinsam committen.
