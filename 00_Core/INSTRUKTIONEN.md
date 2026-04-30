@@ -751,6 +751,19 @@ Validation (Check-1) + Pipeline-Plan-Existenz (Check-6) + log-Aktualität (Check
 sind die minimalen strukturellen Invarianten, die ein Migrations-Run nicht
 brechen darf.
 
+### 27.6 Earnings-Calendar-Drift-Check (30.04.2026, earnings_calendar.py v1.0)
+
+**Regel:** Bei Verdacht auf Earnings-Termin-Drift (z.B. FLAG-Ticker mit Mental-Off-Switch,
+Konsolidierungstag, Session-Start mit Critical-Alert-Lücke) `python 03_Tools/earnings_calendar.py --check --smoke-test` laufen lassen. Tool pullt yfinance-Future-Dates für die 11 Satelliten + differt gegen PORTFOLIO „Nächster Trigger"-Spalte.
+
+**Exit-Verhalten:** 0 = clean, 1 = Smoke-Test-FAIL (BRK.B-Anker bricht — Tool-Bug oder Yahoo-Datenstand-Problem), 2 = Drift im `--alert-window` (default 10d).
+
+**Scope Stufe 1:** Tool diffed **nur** gegen PORTFOLIO „Nächster Trigger"-Spalte. STATE-Critical-Alerts + PIPELINE-Kritische-Triggers-10d/30d sind **nicht** im Tool-Diff abgedeckt — Operator muss bei detektierter PORTFOLIO-Drift STATE + PIPELINE manuell mitziehen (Single-Sync-Welle). Stufe 2 (`system_audit.py`-Integration) und Stufe 3 (SessionStart-Hook) deferred.
+
+**Trigger:** Drift im 10-Tage-Fenster → manuell PORTFOLIO + STATE Critical-Alerts + PIPELINE-Kritische-Triggers-10d auf konkretes Datum konkretisieren. Kein automatischer Sync. Detail in `00_Core/SYSTEM.md §Earnings-Calendar-Status`.
+
+**Rationale:** APH Q1 FY26 Calendar-Drift 29.04.2026 (Q1 nicht im Trigger-Stand wegen FLAG-Mental-Off-Switch + 4-Files-Manuell-Pflege ohne Auto-Cross-Check) bewies, dass manuelle Trigger-Pflege Drift produziert. Tool ist die strukturelle Mitigation; `--alert-window`-Default 10d entspricht der Earnings-Call-Wait-Discipline-Vorlaufzeit (§19.1) für Tag-0/Tag-+1-Vorbereitung.
+
 ---
 
 ## 28. Scoring-Version-Migration-Workflow

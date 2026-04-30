@@ -36,4 +36,14 @@
 
 ---
 
-*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 29.04.2026 (Provenance-Gate aktiv P3.5+Schicht D + §18 v2.3 xlsx-Tools-Pflicht-Sync + §19.1 Earnings-Call-Wait-Discipline + dynastie-depot v3.7.5)*
+## §Earnings-Calendar-Status (NEU 30.04.2026, PIPELINE #24 Stufe 1)
+
+- **Tool:** `03_Tools/earnings_calendar.py` (yfinance, kein API-Key, MVP Stufe 1) — pulls next earnings für 11 Satelliten + Diff gegen **PORTFOLIO „Nächster Trigger"-Spalte (only)**. STATE-Critical-Alerts + PIPELINE-Kritische-Triggers-10d/30d sind **NICHT** im Tool-Diff abgedeckt (Stufe 1 MVP-Scope) — bei detektierter PORTFOLIO-Drift muss STATE/PIPELINE manuell konkretisiert werden (siehe Operator-Direktive HANDOVER 30.04.). Yahoo-Suffix-Map: BRK.B→BRK-B, ASML→ASML.AS, RMS→RMS.PA, SU→SU.PA. Future-Filter primär auf `Ticker.earnings_dates`, `calendar`-Fallback (Quirk: RMS.PA/SU.PA `calendar` zeigt letzten Termin Feb 26 statt next; deshalb future-Filter primär; Fallback wird auch bei `earnings_dates`-Exception durchlaufen, fail-soft).
+- **Aufruf:** `python 03_Tools/earnings_calendar.py --check --smoke-test` (Exit 0 = clean, 1 = Smoke-Test-FAIL, 2 = Drift im 10-Tage-Fenster). Smoke-Anker: BRK.B = 2026-05-02 (Sat) — gilt bis zum Ankerdatum; danach Skip-if-past (Hinweis im Output) und Anker muss manuell auf nächsten BRK.B-Q-Termin nachgezogen werden.
+- **Erstlauf 30.04.2026 nach Sync-Welle MSFT/APH:** 11/11 PASS, Smoke-Test ✅, **1 Drift detektiert** — BRK.B 02.05.2026 (2d) gegen PORTFOLIO-Trigger „Q-Earnings Mai" (generisch). Drift in PORTFOLIO + STATE + PIPELINE-10d konkretisiert (siehe Sync-Welle in log.md). Beweis-Lauf für APH-Calendar-Drift-Lehre 29.04. (Mental-Off-Switch bei FLAG-Tickern → Auto-Pull schließt Lücke).
+- **Stufenplan:** Stufe 1 (manuell on-demand) DONE; Stufe 2 (`system_audit.py`-Integration als 15. Check) deferred auf Konsolidierungs-Slot; Stufe 3 (SessionStart-Hook mit Drift-Warnung) erst bei Bedarf.
+- **Limits Stufe 1:** (a) Diff nur gegen PORTFOLIO; STATE/PIPELINE manuell mitführen. (b) Yahoo-Estimates ≠ confirmed — `--alert-window` defaultet 10d, ±1d-Toleranz im Auge behalten. (c) `calendar_stale`-Marker bei Tickern, deren Yahoo-Future-Dates noch nicht für nächstes Quartal eingepflegt sind (typisch ~T0/T+1 nach Earnings — keine Drift-Aktion). (d) Watchlist-Tickers (SNPS/SPGI/ZTS/PEGA/CPRT/MA/MKL etc.) noch NICHT abgedeckt — Tool liest nur `satelliten:` aus config.yaml. (e) `portfolio_trigger_cell()` regex baut auf 6-Spalten-Layout der PORTFOLIO-Tabelle — Spalten-Schema-Änderung würde silent „no_data" erzwingen (Follow-up Hardening: column-header-driven Lookup).
+
+---
+
+*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 30.04.2026 (PIPELINE #24 Stufe 1 DONE — earnings_calendar.py + §Earnings-Calendar-Status; BRK.B 02.05. Drift in STATE/PORTFOLIO/PIPELINE-10d konkretisiert)*

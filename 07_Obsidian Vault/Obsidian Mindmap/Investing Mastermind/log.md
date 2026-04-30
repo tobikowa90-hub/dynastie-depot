@@ -1347,3 +1347,36 @@ Netto: ~-9 Pkt = Score 50/D2.
 **Sync-Set §18 (System-Event, kein Score-Move):** INSTRUKTIONEN.md (Version v1.11→v1.12 + §0-Edits) + log.md (dieser Eintrag). **KEIN** PORTFOLIO/Faktortabelle/config.yaml/xlsx-Tools/score_history.jsonl/flag_events.jsonl (kein Score- oder FLAG-Event). **KEIN** SYSTEM.md-Eintrag (Regel-Refresh, kein System-Zustand-Wechsel). **KEIN** STATE-Last-Audit (kein Audit-Lauf, nur Regel-Patch). **KEIN** !SyncBriefing (Briefing-Engine unbetroffen).
 
 **Codex-Sparring:** entfällt (Single-Pass-Default; Patch ist additiv, drei Mikro-Edits, kein Methodology-Switch — siehe Memory `feedback_codex_sparring_heuristic.md`).
+
+## [2026-04-30] system | PIPELINE #24 Stufe 1 DONE — earnings_calendar.py v1.0 deployed
+
+**Trigger:** APH Q1 FY26 Calendar-Drift 29.04.2026 (FLAG-Mental-Off-Switch + 4-Files-Manuell-Pflege ohne Auto-Cross-Check). User-Direktive Session-Start 30.04. „Pipeline endlich abarbeiten — Earnings-Calendar Python-Tool". Handover-Slot: post-PIPELINE #28 QT-DONE Resume.
+
+**Tool:** `03_Tools/earnings_calendar.py` (~210 LOC, yfinance 1.3.0, kein API-Key, MIT-lizensiert). Liest 11 Satelliten aus `01_Skills/dynastie-depot/config.yaml`, mapped Yahoo-Suffix (BRK.B→BRK-B, ASML→ASML.AS, RMS→RMS.PA, SU→SU.PA), pullt `Ticker.earnings_dates` mit future-Filter primär + `calendar`-Fallback, differt gegen PORTFOLIO „Nächster Trigger"-Spalte via Regex-Extraction der Tabellen-Zelle, druckt Markdown-Report. CLI-Flags: `--check`, `--smoke-test` (BRK.B = 2026-05-02 hard-fail), `--alert-window N` (default 10d). Exit: 0 clean, 1 smoke-FAIL, 2 drift-detected. UTF-8-stdout-reconfig für Windows cp1252 Unicode-Marker (✅🔴🟢🟡⚠️).
+
+**Erstlauf 30.04.2026 nach MSFT/APH-Sync-Welle:**
+- 11/11 Satelliten geliefert
+- Smoke-Test BRK.B = 2026-05-02 (Sat) ✅ PASS
+- Drift detektiert (1): **BRK.B 2026-05-02 (2d) gegen PORTFOLIO-Trigger „Q-Earnings Mai"** (generisch)
+- 🟡 soon-Marker (informativ, kein Drift): VEEV 27.05. (27d), COST 28.05. (28d, Q3 FY26 Membership-Yield-Watch)
+- ⚠️ stale-Marker (informativ): MSFT 29.04. + APH 29.04. — yfinance `earnings_dates` hat Future-Q4 noch nicht eingepflegt (typisch ~T0/T+1 nach Earnings; keine Aktion)
+
+**Sync-Set §18 (System-Event — Drift-Konkretisierung in Trigger-Spalten, kein Score/FLAG/Sparraten-Event):**
+- `03_Tools/earnings_calendar.py` (neu, Tool selbst)
+- `00_Core/SYSTEM.md` neue §Earnings-Calendar-Status (Tool-Doku + Erstlauf-Befund + Stufenplan + Limits)
+- `00_Core/INSTRUKTIONEN.md` neue §27.6 Earnings-Calendar-Drift-Check (Regel + Scope + Trigger + Rationale)
+- `00_Core/PORTFOLIO.md` Trigger-Spalten konkretisiert (BRK.B → „**02.05.2026 (Sa)** Q1 FY26"; VEEV → „**27.05.2026** Q1 FY27"; COST → „**28.05.2026** Q3 FY26 + Q1 FY27 ~Dez") + Kritische-Triggers-30d-Tabelle ergänzt
+- `00_Core/STATE.md` Critical-Alerts: 02.05. BRK.B Q1 + 30.04. PIPELINE #24 Stufe 1 DONE
+- `00_Core/PIPELINE.md` Item #24 Strikethrough → DONE-Header mit Original-Beschreibung archiviert + Kritische-Triggers-10d 02.05. BRK.B
+- log.md (dieser Eintrag)
+- **KEIN Score/FLAG/Sparraten-Event** → KEIN Faktortabelle / config.yaml / xlsx-Tools / score_history.jsonl / flag_events.jsonl / CORE-MEMORY §12 (PORTFOLIO-Edits hier sind Trigger-Spalten-Drift-Konkretisierung, keine Score-Bewegung; §18.1-Score-Event-Sync-Set greift nicht)
+- **KEIN** !SyncBriefing (Briefing-Engine unbetroffen)
+- **Codex-Review (Single-Pass) durchgeführt** vor Commit auf User-Direktive 30.04.: 1 HIGH (Smoke-Test time-bombed → Skip-if-past-Logik) + 3 MEDIUM (STATE/PIPELINE-Diff descoped via Doku-Klarstellung; calendar als echter Fallback bei earnings_dates-Exception; log.md-Sync-Set-Widerspruch hier gefixt) + 2 LOW (PORTFOLIO Tabellenzeilen für VEEV/COST konkretisiert; trigger_mentions_date word-boundary-aware) — alle vor Commit gefixt. LOW (column-fragile portfolio_trigger_cell-regex) als Stufe-1-Hardening-Follow-up dokumentiert.
+
+**Stufenplan-Status:**
+- Stufe 1 (manuell on-demand) ✅ DONE
+- Stufe 2 (`system_audit.py`-Integration als 15. Check für Earnings-Termin-Drift) — deferred, Re-Activation bei weiterem Calendar-Drift trotz Stufe-1-Tool ODER Konsolidierungs-Slot
+- Stufe 3 (SessionStart-Hook mit Drift-Warnung im STATE-Banner) — deferred, erst bei wiederholtem Bedarf
+
+**Lehre:** APH-Calendar-Drift war strukturell — Mental-Off-Switch bei FLAG-Tickern + manuelle 4-Files-Pflege. Tool schließt die Lücke zero-token bei Konsolidierungs-Sessions / vor Session-Start. yfinance Free-Tier reicht für 11-30 Calls/Tag, keine Rate-Limit-Sorgen.
+
