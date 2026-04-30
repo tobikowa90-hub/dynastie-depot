@@ -1380,3 +1380,41 @@ Netto: ~-9 Pkt = Score 50/D2.
 
 **Lehre:** APH-Calendar-Drift war strukturell — Mental-Off-Switch bei FLAG-Tickern + manuelle 4-Files-Pflege. Tool schließt die Lücke zero-token bei Konsolidierungs-Sessions / vor Session-Start. yfinance Free-Tier reicht für 11-30 Calls/Tag, keine Rate-Limit-Sorgen.
 
+
+## [2026-04-30] system | CodeRabbit-Restbefund-Cleanup-Welle (post-PIPELINE #24 Commit `0253813`) + Earnings-Reports-Folder-Move
+
+**Trigger:** Nach PIPELINE #24 Stufe 1 Commit (`0253813`) User-Direktive: „restliche Findings noch besprechen und Cleanup". CodeRabbit-Review hatte 40+ Findings über die Tool-spezifischen 2 hinaus geliefert (Kategorien A-E in PIPELINE.md Item #29).
+
+**Action — Kategorie A (echte 00_Core-Drift):**
+- `Faktortabelle.md` Line 108 „Offene Scores"-Tabelle TMO-Zeile: `64 | 🟠 2 | 18.04.2026 | Q1 FY26 Earnings 23.04. (Resolve-Gate)` → `67 | 🟡 3 | 2026-04-23 | Q2 FY26 ~Ende Juli — Organic-Akzeleration + Clario-Integration-Check` (CodeRabbit-Finding adressiert; spiegelt CORE-MEMORY §12.9 + Haupttabelle Line 50). Verbleibende stale Zeilen derselben Tabelle (ASML/AVGO/BRK.B/VEEV/SU/COST/RMS noch 17.04.) als Pipeline #29 Kategorie-A für Konsolidierungs-Slot dokumentiert — Tabelle ist redundant zur Haupttabelle, Refactor-Entscheidung „synchronisieren ODER löschen" offen.
+
+**Action — Kategorie B (system_audit/-Code-Style):**
+- `cross_source_reverse.py:80` `context` → `# noqa: ARG001 — context kept for registry-contract uniformity (§4.3)` (analog `status_matrix.py`).
+- `cross_source_reverse.py:143-149` doubled-Pfad-Bug bei `location='satelliten'`: Conditional-Pfad-Konstruktion (Vault-Root statt `satelliten/satelliten`).
+- `markdown_header.py:112` `context`-Param mit gleichem `# noqa`-Comment dokumentiert.
+- AST-Validate beider Files PASS; `python 03_Tools/system_audit.py --minimal-baseline` 3/3 PASS (STATE.md Last-Audit-Block auto-injected: 2026-04-30T10:00:16Z).
+
+**Action — Kategorie D + E (deferred):**
+- 40+ Vault-Wiki-Findings (concepts/entities/sources/synthesis + 2 chapters.json + 1 transcript.md): Pipeline #29 Kategorie-D als Wiki-Konsolidierungs-Slot. ~2-3h Aufwand.
+- `_smoke_test.py:408-412` pytest.raises-Migration: Pipeline #29 Kategorie-E SKIP (Phase-1-Override deaktiviert TDD-London-Standard für 03_Tools/-Skills).
+
+**Action — Pre-existing Root-Cleanup:**
+- `tuple[str` (0-byte, Shell-Escape-Anomalie) + `15%` (0-byte, Shell-Escape-Anomalie) gelöscht. HANDOVER 30.04. markierte beide als „separat zu cleanen" — jetzt sauber.
+
+**Action — Earnings-Reports-Folder-Move (auf gleiche Sync-Welle):**
+- 4 Pre-existing Deletions in `02_Analysen/`-Root (Amphenol_2026_04_29-PR-1Q-2026-Results.pdf, MSFT_pre-earnings_2026-04-29.md, Q2-2026-Earnings-Release_vF.pdf, TMO_pre-earnings_2026-04-23.md, V_pre-earnings_2026-04-28.md) sind alle umgezogen nach `02_Analysen/Earnings Reports/<Company>/` (verifiziert: Amphenol/, ASML/, Berkshire Hataway/, Broadcom/, Costco Wholesale/, Hèrmes/, Microsoft/, Schneider Electric/, Termo Fisher Scientific/, Veeva Systems/, Visa/) + erweitert um Transcripts (z.B. MSFT TranscriptFY26Q3.docx/.txt + 10-Q.pdf, APH Earnings-Call-Transcript.md). HANDOVER 30.04. markierte als legit. Folder-Move + Deletions in diesem Commit consolidiert.
+
+**Sync-Set §18 (System-Event, kein Score/FLAG/Sparraten-Move):**
+- `00_Core/Faktortabelle.md` (TMO-Drift-Fix in Offene-Scores-Tabelle)
+- `03_Tools/system_audit/checks/cross_source_reverse.py` (3 Fixes: noqa + doubled-Path-Bug)
+- `03_Tools/system_audit/checks/markdown_header.py` (1 Fix: noqa)
+- `00_Core/PIPELINE.md` (Item #29 neu — Cleanup-Welle-Tracker)
+- `00_Core/STATE.md` (Last-Audit auto-injected via system_audit-Lauf)
+- log.md (dieser Eintrag)
+- **Pre-existing Cleanup:** `tuple[str` + `15%` gelöscht; 4 02_Analysen-Deletions + neuer `Earnings Reports/`-Folder mit-committed
+- **KEIN** PORTFOLIO/CORE-MEMORY/score_history.jsonl/flag_events.jsonl/config.yaml/xlsx-Tools (kein Score- oder FLAG-Event; Faktortabelle-Fix ist Drift-Konsistenz, kein Score-Move)
+- **KEIN** !SyncBriefing (Briefing-Engine unbetroffen)
+- **KEIN** Codex-Sparring (alle Edits sind kleinteilige Drift/Style-Fixes ohne Methodology-Switch — siehe Memory `feedback_codex_sparring_heuristic.md`; zudem Findings stammen bereits aus CodeRabbit-Pass des #24-Commits)
+
+**Lehre:** CodeRabbit deckt strukturelle Drift in Sekundär-Tabellen auf (Faktortabelle Offene-Scores), die manueller §18-Sync nicht erreicht (Sync-Set listet die Haupttabelle, nicht die redundante zweite Tabelle). Pipeline #29 Kategorie-A Refactor-Entscheidung „synchronisieren ODER löschen" muss am Konsolidierungstag fallen — Status-quo der dual-Tabellen-Pflege scheitert empirisch.
+

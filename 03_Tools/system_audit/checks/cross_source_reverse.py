@@ -77,7 +77,7 @@ def _vault_ticker_locations(vault_dir: Path) -> dict[str, str]:
     return out
 
 
-def run(repo_root: Path, context: AuditContext) -> CheckResult:
+def run(repo_root: Path, context: AuditContext) -> CheckResult:  # noqa: ARG001 — context kept for registry-contract uniformity (§4.3)
     start = time.monotonic()
     failures: list[FailureDetail] = []
     n_checked = 0
@@ -140,8 +140,11 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             else:
                 n_passed += 1
         else:
+            # location='satelliten' = Vault-Root (kein Sub-Dir); 'ersatzbank' = Sub-Dir.
+            # Pfad-Doppelung „satelliten/satelliten" vermeiden.
+            rel_path = f"{location}/{ticker}.md" if location == "ersatzbank" else f"{ticker}.md"
             failures.append(FailureDetail(
-                location=f"Vault entities/satelliten/{location}/{ticker}.md",
+                location=f"Vault entities/satelliten/{rel_path}",
                 expected=f"{ticker} in config.yaml (satelliten/watchlist/keine_zuteilung)",
                 actual=f"{ticker} not present in any config-list",
                 severity="warning",

@@ -109,7 +109,7 @@ PARSERS: dict[str, Callable[[str, datetime.date], datetime.date | None]] = {
 
 def run(
     repo_root: Path,
-    context: AuditContext,
+    context: AuditContext,  # noqa: ARG001 — context kept for registry-contract uniformity (§4.3)
     *,
     targets_override: list[tuple[Path, str]] | None = None,
     today: datetime.date | None = None,

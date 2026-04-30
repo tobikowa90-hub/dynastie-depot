@@ -105,7 +105,7 @@
 | ASML | 68 | 🟡 3 | 17.04.2026 | Q2 2026 Earnings + FY27 Fwd-P/E-Watch |
 | AVGO | 84 | 🟢 4 | 17.04.2026 | Q3 FY26 Earnings |
 | MSFT | **50** | 🟠 2 | **2026-04-30** | **Q4 FY26 ~Juli** — CapEx-Plateau-Recheck + WACC-Methodology-Verify (FLAG aktiv unverändert) |
-| TMO | **64** | 🟠 2 | **18.04.2026** | **Q1 FY26 Earnings 23.04.** (fcf_trend_neg Resolve-Gate) |
+| TMO | **67** | 🟡 3 | **2026-04-23** | **Q2 FY26 ~Ende Juli** — Organic-Akzeleration + Clario-Integration-Check |
 | RMS | 68 | 🟡 3 | 17.04.2026 | H1 2026 Report Juli/Aug 2026 |
 | VEEV | 74 | 🟡 3 | 17.04.2026 | Nächste Earnings |
 | SU | 69 | 🟡 3 | 17.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
