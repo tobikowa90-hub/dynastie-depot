@@ -1,7 +1,7 @@
 ---
 name: dynastie-depot
-version: "3.7.3"
-Stand: "2026-04-25"
+version: "3.7.6"
+Stand: "2026-04-30"
 zieljahr: 2058
 system: DEFCON v3.7
 description: >
@@ -40,7 +40,7 @@ trigger_words:
 - Lombardkredit
 - NV-Bescheinigung
 ---
-# 🦅 Dynastie-Depot – Skill v3.7.5
+# 🦅 Dynastie-Depot – Skill v3.7.6
 
 **Zieljahr:** 2058 | **System:** DEFCON v3.7 (unverändert) | **Skill-Paket:** v3.7.6 | **Stand:** 30.04.2026 | v3.7.6 Delta (2026-04-30): B6 Quality-Trap-Drawdown-Modulator — `max 1`-Caps der Bewertungs-Subscores (Fwd P/E 22–30, P/FCF 22–35) deaktiviert per-Subscore wenn KUMULATIV (Drawdown ≥-20% vs 52W-High UND aktuelles Multiple unter 5J-Median). Hard-Caps unverändert (Bubble-Schutz unverletzt). Forward-only, Default-deny bei <12 belastbaren Stichtagen oder ≤0-Nennern, Non-US/IFRS-Freeze (ASML/SU INAKTIV bis separate Regel), Screener-Exceptions (BRK.B/COST/RMS/TMO) ausgenommen. Codex-R1→R4-Sparring 96% Confidence. v3.7.5 Delta (2026-04-28 spätabends): Schritt 0 erweitert um Earnings-Call-Wait-Discipline (§19.1) — Klasse-B-Vollanalyse Tag +1 morgens post-Call, Tag 0 nur earnings-recap-Skill + FLAG-Quick-Check. v3.7.4 Delta: Schritt 6c Score-Konsistenz-Pre-Flight (Sub-Score!=0 mit Roh-Wert oder _carryover). v3.7.3 Delta (2026-04-25): 00_Core Struktur-Refactor — Tripwire auf PORTFOLIO.md, §1-Refs auf §12/§13 umgeleitet; Skill-Logik unverändert. v3.7.2 Delta: Schritt 7 delegiert an Skill `backtest-ready-forward-verify` (Pipeline-Kapsel: Draft → Freshness + Tripwire + §28.2 Δ-Gate → Dry-Run + Append + git add). §28.3 Nicht-Migration-Trigger, kein DEFCON-Bump. v3.7.1 Delta (17.04.): Schritt 6b (FLAG-Resolution) + Schritt 7 (Archiv-Write Pflicht). v3.7 System-Features: Quality-Trap-Interaktion + Operating-Margin-Scoring + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50
 

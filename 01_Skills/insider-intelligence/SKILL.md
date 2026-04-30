@@ -1,7 +1,7 @@
 ---
 name: insider-intelligence
 version: "1.0"
-Stand: "2026-04-25"
+Stand: "2026-04-30"
 description: >
   Dynastie-Depot Insider Intelligence Module v1.0.
   Automatisiertes Form-4-Scanning der 8 US-Satelliten via SEC EDGAR API.
@@ -11,7 +11,7 @@ description: >
 
 # Insider Intelligence Module — Dynastie-Depot v1.0
 
-**Stand:** 06.04.2026 (rev. 20.04.2026 — Snapshot-First-Workflow-Block) | **Zweck:** Automatisierter DEFCON-Insider-Block (10 Punkte)
+**Stand:** 30.04.2026 (rev. 20.04.2026 — Snapshot-First-Workflow-Block) | **Zweck:** Automatisierter DEFCON-Insider-Block (10 Punkte)
 **Ersetzt:** Generischer sec-edgar-skill (bleibt als Recherche-Fallback)
 
 > **Architektur-Entscheidung (§33 Skill-Self-Audit, 20.04.2026):** KG-basierte Alternative (FinReflectKG-Pattern via Knowledge-Graph-Extraction aus Form-4) wurde via [[Knowledge-Graph-Architektur-Roadmap]] Szenario 1 **REJECT** klassifiziert — Gate 1 negativ, weil Form-4 XML-strukturiert und Schema stabil. XML-Direkt-Parsing bleibt dauerhafte Primär-Architektur. Re-Review nur bei formaler §33-Re-Evaluation. Siehe Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix (B21 `future-arch`).
@@ -307,4 +307,4 @@ Bereits im Script hardcoded.
 
 ---
 
-*Insider Intelligence Module v1.0 | Dynastie-Depot | Stand: 06.04.2026*
+*Insider Intelligence Module v1.0 | Dynastie-Depot | Stand: 30.04.2026*
