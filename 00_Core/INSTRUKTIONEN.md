@@ -1,5 +1,5 @@
 # ⚙️ INSTRUKTIONEN.md — Handlungsanweisungen & Skill-Guidance
-**Version:** 1.11 (§28-30 Migration + Retrospective-Gate + Live-Monitoring)
+**Version:** 1.12 (§0 Karpathy-Refresh: Tradeoff-Disclaimer + Orphan-Cleanup + Goal-Transformation-Map)
 > Dieses Dokument beschreibt das WIE — User-Workflows, Befehle, Meta-Regeln.
 > Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 
@@ -20,6 +20,10 @@
 > Wiki-Operationen oder reine Lese-Vorgänge anzuwenden.
 >
 > Quelle: Adaptation der Karpathy-Beobachtungen zu LLM-Coding-Failure-Modes.
+> Beispiel-Diffs (Python): https://github.com/forrestchang/andrej-karpathy-skills/blob/main/EXAMPLES.md
+>
+> **Tradeoff:** Diese Regeln biasen zu Vorsicht über Geschwindigkeit. Bei
+> trivialen Edits (Tippfehler, ein-Zeilen-Konstanten) Urteil walten lassen.
 
 ### §0.1 Think Before Coding
 - Annahmen explizit machen, nicht still raten
@@ -39,9 +43,17 @@
 - Kein Drive-by-Refactoring benachbarter Code-/Kommentar-/Format-Bereiche
 - Bestehenden Stil matchen, auch wenn man es anders machen würde
 - Bei aufgefallenem Dead-Code: erwähnen, nicht selbst löschen
+- **Orphans:** Imports/Variablen/Funktionen, die *deine* Änderung verwaist hat → entfernen. Pre-existing Dead-Code → erwähnen, nicht löschen.
 - Test: Jede geänderte Zeile traceable zur User-Anfrage? Wenn nein → zurücknehmen
 
 ### §0.4 Goal-Driven Execution
+
+| Statt... | ... in verifizierbares Ziel transformieren |
+|---|---|
+| "Add validation" | Test für invalid inputs schreiben, dann grün machen |
+| "Fix bug" | Test schreiben, der Bug reproduziert, dann grün machen |
+| "Refactor X" | Tests vor und nach Refactor grün |
+
 - Erfolgs-Kriterien vor Implementierung definieren
 - Bei Bug-Fixes: erst Test schreiben, der Bug reproduziert
 - Bei Refactor: Tests vor und nach grün

@@ -1327,3 +1327,23 @@ Netto: ~-9 Pkt = Score 50/D2.
 - R4: **96%** — B1 closed (strikt positive Nenner-Klausel literal eingebaut). Commit-Freigabe erteilt.
 
 **Sync-Set §18 (System-Event, kein Score-Move, forward-only):** SKILL.md (Header v3.7.5→v3.7.6 + Delta-Line + B6-Block-Erweiterung 471–483) + CORE-MEMORY.md §13 (System-Lifecycle-Eintrag) + log.md (dieser Eintrag) + PIPELINE.md (#28 Strikethrough → DONE). **KEIN** Score-Event-Sync (PORTFOLIO/Faktortabelle/config.yaml/xlsx-Tools/score_history.jsonl unverändert — Versionsregel forward-only, keine retroaktive Score-Re-Berechnung). **KEIN** flag_events.jsonl (kein FLAG-Trigger/Resolve). **KEIN** !SyncBriefing-Pflicht (00_Core-Files Briefing-relevant nur peripher: STATE Last-Audit-Block + CORE-MEMORY §13 — Briefing-Engine bleibt unbetroffen).
+
+---
+
+## 2026-04-30 — INSTRUKTIONEN.md §0 v1.11→v1.12 (Karpathy-Refresh)
+
+**Trigger:** User-Audit gegen `forrestchang/andrej-karpathy-skills` Repo (READ-Only-Diff). Coverage 95% bestätigt; 3 kleine Lücken geschlossen.
+
+**Änderungen §0 Code-Verhaltens-Regeln:**
+1. **Header-Block:** Tradeoff-Disclaimer ergänzt ("biased zu Vorsicht über Geschwindigkeit; bei trivialen Edits Urteil walten lassen") + URL-Verweis auf EXAMPLES.md (Python-Diffs, kein Mirror).
+2. **§0.3 Surgical Changes:** Orphan-Cleanup-Sub-Case explizit — *deine* Änderung verwaiste Imports/Vars/Funktionen entfernen; pre-existing Dead-Code nur erwähnen, nicht löschen. Schließt operative Lücke (vgl. Memory `feedback_pre_commit_diff_inspection.md`).
+3. **§0.4 Goal-Driven:** 3-Zeilen-Goal-Transformation-Map vor Bullets ("Add validation"→Test-first; "Fix bug"→Reproduce-Test; "Refactor X"→Tests vor/nach grün).
+
+**NICHT übernommen (bewusst):**
+- EXAMPLES.md als eigene Datei (Code-Anteil im Projekt zu klein, nur `03_Tools/`-Helfer; URL-Verweis reicht)
+- Plugin/Skill-Form (Präambel ist token-effizienter; Phase-1-Override-Block deaktiviert Auto-Skill-Spawning)
+- "Key Insight"-Leitsatz (redundant zu §0.2)
+
+**Sync-Set §18 (System-Event, kein Score-Move):** INSTRUKTIONEN.md (Version v1.11→v1.12 + §0-Edits) + log.md (dieser Eintrag). **KEIN** PORTFOLIO/Faktortabelle/config.yaml/xlsx-Tools/score_history.jsonl/flag_events.jsonl (kein Score- oder FLAG-Event). **KEIN** SYSTEM.md-Eintrag (Regel-Refresh, kein System-Zustand-Wechsel). **KEIN** STATE-Last-Audit (kein Audit-Lauf, nur Regel-Patch). **KEIN** !SyncBriefing (Briefing-Engine unbetroffen).
+
+**Codex-Sparring:** entfällt (Single-Pass-Default; Patch ist additiv, drei Mikro-Edits, kein Methodology-Switch — siehe Memory `feedback_codex_sparring_heuristic.md`).
