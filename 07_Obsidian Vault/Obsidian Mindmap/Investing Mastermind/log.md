@@ -1493,3 +1493,28 @@ Netto: ~-9 Pkt = Score 50/D2.
 - Override-Block in [[CLAUDE.md]] Codex-Nits-Nachfix
 - PIPELINE #20 Body-Update
 - Welle-3-Outlook: 05.-12.05. post-BRK.B-Tag-+1 für 1.8/1.9 Trajectory + Doctor-Periodic
+
+
+## [2026-04-30] system | Cleanup-Welle post-Phase-1.2-1.7 (Pipeline-Removals + HANDOVER-Slim + §13-Resort)
+
+**Event-Typ:** Cleanup-/Pflege-Welle (kein Score/FLAG/Sparraten-Touch)
+
+**Was passiert ist:**
+1. **PIPELINE-Removals** gemäß Numbering-Convention (Items werden bei DONE-Entfernung NICHT renumbered, Gaps signalisieren entfernte Archive-Kandidaten):
+   - **#24** Earnings-Calendar-Auto-Pull-Tool (Stufe 1 DONE 30.04. morgens) — entfernt. Anker: SYSTEM.md §Earnings-Calendar-Status (live), STATE.md Critical-Alerts. Stufe 2/3 deferred mit Re-Activation-Triggers in SYSTEM.md festgehalten.
+   - **#28** DEFCON v3.7 Quality-Trap-Methodology-Review (DONE 30.04. morgens, Skill-Paket v3.7.5→v3.7.6) — entfernt. Anker: CORE-MEMORY §13 [Scoring]-Eintrag 30.04.
+   - **#20** Ruflo-Integration — Body verschlankt (von ~30 Zeilen auf ~5). DONE-Status für Phase 1.1+Welle 0+Phase 1.2-1.7 prominent + Welle-3-Outlook (1.8/1.9, 05.-12.05.) + SSoT-Pointer auf RUFLO-INTEGRATION-PLAN.md + SYSTEM.md §Ruflo-Status.
+2. **CORE-MEMORY §13 chronologische Sortierung** korrigiert: `27.04. [Briefing]` stand pre-existing falsch nach `30.04.`-Einträgen → vor 30.04. einsortiert (Header-Spec „Sortierung aufsteigend" eingehalten).
+3. **SESSION-HANDOVER.md komplett rewrite** auf Policy-B-Slim-Format: PRE-Phase-1.2-State (122 Zeilen) → POST-Phase-1.2 mit BRK.B 02.05. als Primary-Trigger (~75 Zeilen). Kein Backlog-Repeat (Pointer-only auf PIPELINE.md).
+4. **log.md** dieser Eintrag.
+
+**Sync-Set:** PIPELINE.md (Removals + #20-Slim) + CORE-MEMORY.md (§13-Resort + Duplikat-Removal) + SESSION-HANDOVER.md (Rewrite) + log.md (dieser Eintrag). **KEIN** Score/FLAG/Sparraten/Faktortabelle/PORTFOLIO/config.yaml/xlsx/score_history-Sync.
+
+**Lehre:**
+- Numbering-Gap-Strategy bewährt sich: keine Cascading-Updates auf Commit-Message-Referenzen wie „PIPELINE #24" / „#28" historisch.
+- §13-Sortierungs-Audit gehört in periodischen Konsolidierungs-Slot (system_audit.py-Check denkbar als Future-Item).
+- HANDOVER-Slim direkt nach jedem atomaren Phase-Commit hält Resume-Pfad scharf — Drift-Quelle eliminiert.
+
+**Cross-Reference:**
+- PIPELINE-Numbering-Convention: header §13 + git-log-Verweis
+- HANDOVER-Slim-Pattern: 25.04. Tier-2-Finalize-Lehre (Policy-B-Migration)
