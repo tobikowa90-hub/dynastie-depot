@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-04-30 (post PIPELINE #24 Stufe 1 DONE Commit `0253813` + Cleanup-Welle Commit `213b198`). Nächster primärer Resume-Trigger: **Slot +1 morgens 01.05. PIPELINE #20 Ruflo Phase 1.2 Memory-Bridge**. Earnings-Pflichtslot **02.05. (Sa) BRK.B Q1 FY26 Tag-0** earnings-recap-Skill + FLAG-Quick-Check; Tag-+1 03./04.05.
+**Aktualisiert:** 2026-04-30 (Welle 0 WSL-Setup DONE + Persistierungs-Commit). Nächster primärer Resume-Trigger: **Phase 1.2-1.7 §18-Sync-Welle in NEUER Session post-Claude-Restart** (heute fortgesetzt nach MCP-Switch). Earnings-Pflichtslot **02.05. (Sa) BRK.B Q1 FY26 Tag-0** earnings-recap-Skill + FLAG-Quick-Check; Tag-+1 03./04.05.
 
 ### 🟢 Resume-Stand
 
@@ -24,19 +24,42 @@
 
 ---
 
-### 🌅 Slot +1 (User-Schlafphase, morgens 01.05.) — PIPELINE #20 Ruflo Phase 1.2 [PRIORITÄT 1]
+### 🚀 Resume-Trigger NEUE SESSION (post-Claude-Restart heute) — Phase 1.2-1.7 §18-Sync-Welle [PRIORITÄT 1]
 
-**Trigger:** „Ruflo Phase 1.2 starten" oder „Memory-Bridge aktivieren".
+**Trigger-Phrase im neuen Chat:** „Ruflo Phase 1.2-1.7 Sync-Welle starten" oder „Phase 1.2 aktivieren". STATE+PORTFOLIO+dieses HANDOVER auto-load via Routing-Table (Resume-Fall).
 
-**Kontext:** User-OK explizit erteilt 30.04.; Earnings-Window 01.05. (Tag der Arbeit DE-Feiertag, keine US-Earnings) ist sauberer Slot vor BRK.B Sa 02.05. PIPELINE #24 Stufe 1 + Cleanup-Welle haben den Tag 30.04. abgeschlossen.
+**Kontext (was VOR Restart in dieser Session passiert ist):**
+- **Welle 0 WSL-Foundation DONE 30.04. ~13:55** — WSL Ubuntu-24.04 nodejs 20.20.2 + npm 10.8.2 + ruflo v3.6.11 als root installiert (`/usr/bin/ruflo`). ONNX-Native-Binding lädt unter Linux sauber. Doctor-Baseline 5 PASS / 9 WARN / 0 FAIL.
+- **Win32-`npx ruflo` gescheitert** — `ERR_DLOPEN_FAILED` auf `onnxruntime_binding.node`. VC++ Redist v14.50 IST installiert; Defender-Realtime-Block wahrscheinlichste Ursache (Win32-Reparatur deferred, WSL-Pfad ist die Lösung).
+- **Codex-Plan-Review (codex:codex-rescue) PASS WITH NITS** — 0 HIGH / 5 MEDIUM / 2 LOW; 5 Δ-Adjustments im Plan eingebaut.
+- **Backups in `05_Archiv/ruflo-phase1.2-backups/`** — CLAUDE.md + settings.json + settings.local.json + env (Rollback-Anker für gesamte Sync-Welle).
+- **MCP-Switch erfolgte VOR Restart:** `claude mcp remove claude-flow` + `claude mcp add ruflo -s user -- wsl -d Ubuntu-24.04 bash -c "/usr/bin/ruflo mcp start"` (siehe PIPELINE #20 Status-Update).
 
-**Memory-Pflicht-Reminder (KRITISCH):**
-1. **OneDrive-Pfad-Pitfall** (Memory `feedback_ruflo_memory_bridge_onedrive_pitfall.md`): vor `npx ruflo memory init` zwingend `npx ruflo memory configure --backend-path %LOCALAPPDATA%/...` — sonst landet AgentDB im OneDrive-Sync und sync-zerschneidet sich selbst.
-2. **NIEMALS `import-all`**: 4 Project-Namespaces, 37 Files würden Code-Domain-Pattern in Dynastie-Recall mischen. Nur **path-scoped Import** auf `C--Users-tobia-OneDrive-Desktop-Claude-Stuff` + Post-Verifikation per `memory list`.
-3. **Codex-Nits-Nachfix** aus Phase 1.1 Round-2 (offen): (a) Hintertür-Klausel #5 in CLAUDE.md streichen, (b) Memory-Bridge-Tools `memory_import_claude` / `memory_search_unified` als allowed-tools explizit gating'd in CLAUDE.md.
-4. **SYSTEM.md §Ruflo-Status** neu anlegen (Phase-1.2-Sync-Pflicht erstmals greifend).
+**Erste Schritte in der neuen Session:**
+1. **Verify Tools registriert:** `ToolSearch +ruflo` zeigt `mcp__ruflo__memory_*` etc. (kritisch: claude-flow MCP exportierte vor dem Switch keine Tools — neue Ruflo-MCP-Verbindung muss das ändern).
+2. **`claude mcp list`** sollte ruflo connected zeigen (claude-flow entfernt).
+3. **Falls Verify FAIL:** Rollback via `claude mcp remove ruflo` + `claude mcp add claude-flow -- cmd /c npx -y @claude-flow/cli@latest mcp start` und Phase 1.2 deferred bis Diagnose. Backups sind unangetastet.
 
-**Sync-Set bei Phase 1.2:** CLAUDE.md (Nits-Nachfix) + SYSTEM.md §Ruflo-Status (neu) + log.md + PIPELINE.md (#20 Phase-Status).
+**§18-Sync-Welle Phase 1.2-1.7 (atomar in einem Commit, ~40-50 min):**
+1. **CLAUDE.md Codex-Nits-Nachfix:**
+   - Hard-Conflict-#5 (Zeile 97): Hintertür-Klausel „Erlaubt nur bei explizitem User-Trigger... Positivliste: aktuell nur Phase-3 `!BatchScan`" streichen → ersetzen durch hartes „**Kein Swarm/Hive-Mind in Phase 1 oder 2** — keine Ausnahme, keine User-Trigger-Hintertür. Aktivierung erst durch expliziten Phase-3-Plan-Schritt mit Trigger-Definition (heute nicht aktiv)."
+   - Compatible-Liste Zeile 113: ergänzen Memory-Bridge-Tools-Gating: „**Gating:** `memory_import_claude` ausschließlich path-scoped (`allProjects=false`); niemals `allProjects=true` / `import-all` (würde 4 Project-Namespaces / 37 Files Code-Domain-Pattern in Dynastie-Recall mischen, siehe Memory `feedback_ruflo_memory_bridge_onedrive_pitfall.md`). Backend-Path muss vor `memory init` auf Linux-FS umkonfiguriert sein, nicht `/mnt/c/...`-Pfade."
+2. **Backend-Path konfigurieren in WSL:** `wsl -d Ubuntu-24.04 -u root -e bash -lc 'cd ~ && ruflo memory configure --backend-path /home/tobia/.local/share/ruflo/memory'` (Pitfall-Schutz, NICHT OneDrive-Pfad).
+3. **Memory init:** `wsl -d Ubuntu-24.04 -u root -e bash -lc 'cd ~ && ruflo memory init --force'`. **NICHT** `import-all`/`allProjects=true`.
+4. **Path-scoped Import** der Auto-Memory: `wsl ... bash -lc 'ruflo memory import --path "/mnt/c/Users/tobia/.claude/projects/C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory"'` (oder vergleichbarer ruflo-Subcommand) + `ruflo memory list` Verify.
+5. **settings.json Edits** (Win32-Seite, `.claude/settings.json` oder `.claude/settings.local.json` je nach Persistenz):
+   - Tool-Mode: `"toolGroups": ["memory", "monitor"]` oder env `CLAUDE_FLOW_TOOL_GROUPS=memory,monitor`
+   - Intelligence-Loop: `"intelligence": {"topK": 3}`
+   - Context-Autopilot: `"contextAutopilot": {"warnThreshold": 0.70, "pruneThreshold": 0.85}`
+   - Statusline: `"statusLine": {...ohne DDD-Component...}`
+   - Hooks-Subset: 6 enabled (session-start/end, pre/post-task, pattern-store/search), 21 explizit `enabled: false`
+6. **SYSTEM.md §Ruflo-Status anlegen:** neue Sub-Sektion mit Aktivierungs-Datum, Pfade, Tool-Mode, Hooks aktiv, Doctor-Baseline-Referenz, Bridge-Status.
+7. **log.md Append** (Vault `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md`): System-Event Phase 1.2-1.7 aktiviert.
+8. **PIPELINE.md Item #20** Status-Update auf „Phase 1.2-1.7 ACTIVATED 30.04. (Sync-Commit `<sha>`); Phase 1.8 Doctor-Snapshot post-Activation; Phase 1.9 Welle 3; Phase 2 Eval ab ~05.05. passiv".
+9. **Optional Codex-Review** der Sync-Welle (Single-Pass per Sparring-Heuristik) → Bei HIGH ≥2 zusätzliche Round.
+10. **Commit „feat(ruflo): Phase 1.2-1.7 atomare §18-Sync-Welle (post-MCP-Switch)"**.
+
+**Welle 1 redux Slot „AVGO 27.04. ScoreRecord-Backfill" (Task #8) wurde verschoben auf Welle 3** (post-BRK.B ≥05.05.) — Token-Bewusstsein 30.04. Codex-Round-2 98% Confidence bleibt gültig, Trigger jederzeit erfüllbar.
 
 ---
 
@@ -95,4 +118,4 @@
 
 ---
 
-*🦅 SESSION-HANDOVER.md | Dynasty-Depot | Stand: 30.04.2026 nach PIPELINE #24 Stufe 1 DONE (Commit `0253813`) + CodeRabbit-Restbefund-Cleanup-Welle (Commit `213b198`). Resume-Trigger: Slot +1 morgens 01.05. PIPELINE #20 Ruflo Phase 1.2; Earnings-Pflichtslot 02.05. (Sa) BRK.B Q1 FY26 Tag-0.*
+*🦅 SESSION-HANDOVER.md | Dynasty-Depot | Stand: 30.04.2026 nach Welle 0 WSL-Setup + Persistierungs-Commit + MCP-Switch. Resume-Trigger: NEUE SESSION post-Claude-Restart → Phase 1.2-1.7 §18-Sync-Welle atomar; Earnings-Pflichtslot 02.05. (Sa) BRK.B Q1 FY26 Tag-0.*

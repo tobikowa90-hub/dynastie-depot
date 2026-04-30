@@ -115,6 +115,33 @@ G. `Run tests after code changes` für 03_Tools/ Python
 
 **Ziel:** Größter Hebel mit minimalem Eingriff. Memory-Layer + Override-Schutz + Token-Save.
 
+## STATUS-UPDATE 30.04.2026 (post Codex-Plan-Review + Welle 0 WSL-Setup)
+
+**Codex-Plan-Review (codex:codex-rescue, Single-Pass):** PASS WITH NITS — 0 HIGH / 5 MEDIUM / 2 LOW. **5 Δ-Adjustments aktiv:**
+- **Δ1:** Hard-Cutoff Doctor-Baseline-PASS-Check vor BRK.B-Prep — Welle 0 hat das via WSL-Bypass erfüllt (Win32-`npx ruflo` ERR_DLOPEN_FAILED → WSL-Linux-Binding stable).
+- **Δ2:** Preflight-Checklist (Backups + Tavily-Connector-Resolution-Check) gemacht — Backups in `05_Archiv/ruflo-phase1.2-backups/`.
+- **Δ3:** #23 Insider-Carryover-Discipline-Note bleibt Welle 3 (BRK.B Tag-+1 läuft auf aktueller Regel — Frozen-State-Schutz).
+- **Δ4:** #17 Beispiele.md-Refactor-Trigger durch MSFT 30.04. NICHT erfüllt (Codex-R1+R2-Doppel-Review mit V-Q2-Mittelweg = kein „driftfrei") → BRK.B Tag-+1 / VEEV 27.05. als nächste Trigger-Kandidaten.
+- **Δ5:** Welle 3 strikt 05.-12.05. + VEEV/COST-Floating-Slots 27./28.05. + Phase-2-Eval ab ~05.05. nur passiv (aktive Komponenten erst post-Welle-3 ~13.05.).
+
+**Welle 0 — WSL-Foundation DONE 30.04. ~13:55** (Token-Sparen via WSL-Bypass): WSL Ubuntu-24.04 nodejs 20.20.2 + npm 10.8.2 + ruflo v3.6.11 als root installiert (`/usr/bin/ruflo`). ONNX-Native-Binding lädt unter Linux sauber. Doctor-Baseline 5 PASS / 9 WARN / 0 FAIL (alle WARN erwartbar: Daemon/Memory/MCP/agentic-flow not yet initialized).
+
+**Schritte-Status (Mapping gegen Original-Plan unten):**
+- 1.1 ✅ DONE 28.04. (Override-Block in CLAUDE.md, Codex-Round-2 PASS WITH NITS, 2 Nits offen für 1.2-Aktivierung)
+- 1.2 🟡 Foundation Welle 0 DONE → MCP-Switch erfolgt 30.04. → Aktivierung in NEUER Session post-Restart
+- 1.3-1.7 ⏸ atomar mit 1.2-Aktivierung in einem Commit (Token-effizient + konsistent)
+- 1.8 🟡 Doctor-Baseline lief 30.04. (5/9/0); Snapshot wird mit 1.2-Aktivierungs-Doctor-Lauf archiviert
+- 1.9 📅 Welle 3 (per Codex-Q3 LOW: Skill-Edit gehört nicht ins Earnings-Window-Vor-Sequenz)
+
+**Anpassung gegenüber Original-Schritten unten:**
+- Original 1.2 sagt `npx ruflo@latest memory init --force` — Win32-`npx` schlägt fehl. **Korrigiert:** `wsl -d Ubuntu-24.04 -u root -e bash -lc 'cd ~ && ruflo memory configure --backend-path /home/tobia/.local/share/ruflo/memory && ruflo memory init --force'` (Backend-Path NICHT `/mnt/c/...`).
+- Original 1.2 sagt `auto-memory-hook.mjs import-all` — **NICHT verwenden** (Memory-Pitfall: 4 Project-Namespaces / 37 Files würden Code-Domain-Pattern in Dynastie-Recall mischen). Stattdessen path-scoped `ruflo memory import --path "/mnt/c/Users/tobia/.claude/projects/C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory"`.
+- MCP-Setup erfolgt via `claude mcp add ruflo -s user -- wsl -d Ubuntu-24.04 bash -c "/usr/bin/ruflo mcp start"` (statt direkter npx-Aufruf).
+
+**Backups (Rollback-Anker):** `05_Archiv/ruflo-phase1.2-backups/` enthält CLAUDE.md + settings.json + settings.local.json + env-pre-ruflo-1.2 (alle vor jeglicher Phase-1.2-Modifikation gesichert).
+
+---
+
 ## Schritte
 
 ### 1.1 Override-Block in `Claude Stuff\CLAUDE.md`

@@ -1418,3 +1418,35 @@ Netto: ~-9 Pkt = Score 50/D2.
 
 **Lehre:** CodeRabbit deckt strukturelle Drift in Sekundär-Tabellen auf (Faktortabelle Offene-Scores), die manueller §18-Sync nicht erreicht (Sync-Set listet die Haupttabelle, nicht die redundante zweite Tabelle). Pipeline #29 Kategorie-A Refactor-Entscheidung „synchronisieren ODER löschen" muss am Konsolidierungstag fallen — Status-quo der dual-Tabellen-Pflege scheitert empirisch.
 
+## [2026-04-30] system | PIPELINE #20 Ruflo-Integration — Welle 0 WSL-Foundation DONE + Persistierungs-Commit + MCP-Switch
+
+**Event-Typ:** Pipeline-Item Status-Transition (Welle 0 → MCP-Switch → Phase-1.2-Aktivierung pending neuer Session)
+
+**Was passiert ist (chronologisch):**
+1. **Codex-Plan-Review** (codex:codex-rescue Single-Pass) auf 3-Wellen-Sequencing-Plan: PASS WITH NITS (0 HIGH / 5 MEDIUM / 2 LOW). 5 Δ-Adjustments übernommen (Hard-Cutoff Doctor-PASS, Preflight-Checklist, #23-Welle-3, #17-Trigger-nicht-erfüllt, Welle-3-Boundary).
+2. **Win32-`npx ruflo` Setup-Fault** — `ERR_DLOPEN_FAILED` auf `onnxruntime_binding.node`. VC++ Redist v14.50 IST installiert, Defender-Realtime-Block wahrscheinlichste Ursache (Win32-Reparatur deferred).
+3. **Δ1 Hard-Cutoff hat sauber gegriffen** — keine File-Writes, keine Sync-Welle, keine AgentDB-Op auf Win32.
+4. **Pivot auf WSL Ubuntu-Pfad** (User-Direktive): WSL Ubuntu-24.04 nodejs 20.20.2 + npm 10.8.2 + ruflo v3.6.11 als root installiert (`/usr/bin/ruflo`). ONNX-Native-Binding lädt unter Linux sauber.
+5. **Doctor-Baseline 5 PASS / 9 WARN / 0 FAIL** (alle WARN erwartbar: Daemon/Memory/MCP/agentic-flow not yet initialized).
+6. **Backups gesichert** in `05_Archiv/ruflo-phase1.2-backups/` (CLAUDE.md + settings.json + settings.local.json + env).
+7. **Token-bewusste Plan-Anpassung**: AVGO 27.04. ScoreRecord-Backfill (Task #8 = ursprünglicher Welle-1-redux-Slot) auf Welle 3 verschoben (Codex-Round-2 98% Confidence bleibt gültig); heute Hauptpfad Phase-1.2-Aktivierung priorisiert.
+8. **Persistierungs-Commit** (dieser Eintrag): RUFLO-INTEGRATION-PLAN.md Status-Update-Block + SESSION-HANDOVER.md Resume-Banner für post-Restart + PIPELINE.md Item #20 Update + Backups in Repo + log.md (dieser Eintrag).
+
+**Was im Anschluss passiert (Phase-A heute):**
+- MCP-Switch: `claude mcp remove claude-flow` + `claude mcp add ruflo -s user -- wsl -d Ubuntu-24.04 bash -c "/usr/bin/ruflo mcp start"`.
+- User-Restart Claude Code (= /clear + MCP-Reload kombiniert).
+- **Phase-B in NEUER Session** (heute fortgesetzt, ~40-50 min): Resume via STATE+PORTFOLIO+SESSION-HANDOVER → ToolSearch +ruflo Verify → atomare §18-Sync-Welle Phase 1.2-1.7 (CLAUDE.md Codex-Nits + memory configure/init in WSL + settings.json Tool-Mode/Intelligence-Loop/Context-Autopilot/Statusline/Hooks + SYSTEM.md §Ruflo-Status + log.md + PIPELINE-Update) → Codex-Review optional → Commit „feat(ruflo): Phase 1.2-1.7 atomare §18-Sync-Welle (post-MCP-Switch)".
+
+**Sync-Set dieses Persistierungs-Commits:** RUFLO-INTEGRATION-PLAN.md + SESSION-HANDOVER.md + PIPELINE.md + log.md (dieser Eintrag) + 05_Archiv/ruflo-phase1.2-backups/ (4 Files). **KEIN** Score/FLAG/Sparraten-Touch (keine PORTFOLIO/CORE-MEMORY/Faktortabelle/config.yaml/xlsx-Sync nötig).
+
+**Lehre:**
+- USERGUIDE Ruflo-Win32-Pfad nicht stabil; **WSL-Bypass ist der saubere Weg** für ONNX-abhängige Komponenten (analog zu defeatbeta-MCP-Setup-Pattern).
+- `claude mcp list` „connected" ≠ Tools registriert. ToolSearch-Verify ist der harte Test.
+- Δ1-Hard-Cutoff-Disziplin funktioniert: Voreilige Werkzeug-Initialisierung am Earnings-Window-Vorabend wurde sauber abgefangen, Backups als Rollback-Anker zogen.
+- Persistierungs-Welle vor Cut-Punkt (Restart) ist Pflicht — neue Session muss nahtlos resumen können nur mit STATE/PORTFOLIO/HANDOVER.
+
+**Cross-Reference:**
+- Codex-Plan-Review-Δ1-Δ5 sind in [[RUFLO-INTEGRATION-PLAN]] STATUS-UPDATE-Block 30.04. dokumentiert
+- Resume-Anweisung neuer Session: [[SESSION-HANDOVER]] Resume-Trigger-Block
+- Item-Status: [[PIPELINE]] #20
+
