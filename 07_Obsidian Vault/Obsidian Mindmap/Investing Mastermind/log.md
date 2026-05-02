@@ -1643,3 +1643,31 @@ Netto: ~-9 Pkt = Score 50/D2.
 - PIPELINE #29 nächster Schritt: Raw/-Subset User-Decision + finales DONE
 - Memory-Update Pflicht: `reference_coderabbit_via_wsl.md` um CRLF-Workaround + `--files`-Scope-Caveat erweitern
 - Tag-+1 BRK.B 03./04.05. nutzt korrigierten Pre-Brief inkl. Apple-%-Decomposition-Caveat + Treasury-Stock-Unit-Korrektur
+
+---
+
+## [2026-05-02] edit | #29 raw/-Subset User-Decision = D-primär (Akzeptanz) — Item FINALES DONE
+
+**Trigger:** PIPELINE #29 raw/-Subset (3 Files: 2× chapters.json + 1× transcript.md) blieb nach CodeRabbit-Welle als „User-Decision-pending". User-Direktive: meine Empfehlung ausführen.
+
+**Decision-Framework geprüft (4 Pfade):**
+- **A) WIKI-SCHEMA-Klausel-Erweiterung** („cosmetic-numeric-type-Exception mit sha256-Re-Pin") → **abgelehnt**: Schema-Erosion asymmetrisch teuer, Slippery-Slope-Präzedenz für „cosmetic" gefährlich, jeder zukünftige Edit-Druck argumentiert mit Präzedenz.
+- **B) Re-Ingest** (yt-dlp + whisper Re-Run) → **abgelehnt**: sha256-Audit-Trail-Diskontinuität, hoher Aufwand für Kosmetik, alle backlinks zu transcript-Lines könnten brechen, sinnvoll nur als Vault-weite Welle (z.B. Whisper-Major-Upgrade).
+- **C) Errata-Block in Source-Page** (`wiki/sources/videos/<kat>/<slug>.md`) → **on-demand-Reserve**: raw/ unangetastet, sha256-Anchor intact, Korrektur additiv. Aktiviert reaktiv bei späterem Search-/Lehr-Schmerz, kein proaktiver Audit.
+- **D) Akzeptanz** → **GEWÄHLT**.
+
+**Begründung D-primär:** WIKI-SCHEMA Z.11 „You never modify files under `raw/`" ist nicht Oversight, sondern **Design-Intent**: `transcript_sha256` + `chapters_sha256` im Source-Page-Frontmatter sind Audit-Anchor für Reproduzierbarkeit. Mutation von raw/ bricht den Anchor. Konkrete Findings im Detail:
+- `chapters.json` × 2: letzter Eintrag hat `615` / `1398` statt `615.0` / `1398.0` — pure JSON-numeric-type-Inkonsistenz (yt-dlp-Output-Artefakt), semantisch identisch, **kein Defekt**.
+- `transcript.md` × 1: Whisper-ASR-Artefakte sind **erwarteter** Output. Quality-Gate-Tabelle (WIKI-SCHEMA Z.181-189) hat `manual_review: true`-Frontmatter-Marker exakt dafür designed. Korrekturen gehören semantisch in **Source-Page**, nicht in raw/.
+
+**Sync-Set:** PIPELINE.md #29 finales-DONE-Update (D-primär + C-Reserve-Klausel) + log.md (dieser Eintrag). KEIN raw/-Touch (per Decision). KEIN Source-Page-Touch (C-Reserve passiv, nicht aktiviert ohne konkreten Schmerz).
+
+**Lehre:**
+- **Schema-Design-Intent unterscheidet sich von Schema-Wortlaut:** Z.11 „never modify" hätte als Oversight gelesen werden können. Tatsächlich ist es Audit-Anchor-Pflicht (sha256-Frontmatter-Pin). Pre-Schema-Edit immer Design-Intent rekonstruieren.
+- **„Findings"-Druck kann Schema-Erosion treiben** wenn man jeden CodeRabbit-Hint mechanisch fixt. Akzeptanz-Pfad ist legitime Antwort, sofern Schema-Design das adressiert (hier: `manual_review`-Marker für ASR-Artefakte).
+- **C-on-demand-Klausel als Sicherheitsnetz** statt proaktivem Audit: reaktiver Errata-Block bei echtem Schmerz ist günstig, proaktiver Audit ist teuer und meist nicht notwendig.
+
+**Cross-Reference:**
+- PIPELINE #29 = FINALES DONE; Komplett-Archivierung beim nächsten Konsolidierungs-Slot via CORE-MEMORY §13 + Numbering-Convention-Removal aus Aktiv-Liste.
+- WIKI-SCHEMA Z.11 + Z.181-189 (Quality-Gate-Tabelle) bleibt unverändert, kein Schema-Eingriff.
+- Memory-Update separater Slot: `reference_coderabbit_via_wsl.md` um CRLF-Workaround + `--files`-Scope-Caveat erweitern (PIPELINE #29 Lehre 3).

@@ -95,6 +95,14 @@
    - **CRLF-Workaround dokumentiert:** WSL-git default `core.autocrlf=false` zeigt 130 Vault-Files als „dirty" gegen Windows-Repo (`core.autocrlf=true`) — symmetrischer 18.721/18.721-Diff = pure EOL-Normalization-Artefakt. Per-Process-Override via `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.autocrlf GIT_CONFIG_VALUE_0=true` macht WSL-git mit Windows-View kompatibel. Memory-Update Pflicht: `reference_coderabbit_via_wsl.md` um CRLF-Workaround + `--files`-Scope-Caveat (auch uncommitted Files außerhalb der Liste werden mit-reviewed) erweitern.
    - **Item-Status:** MD-Subset (8 Files) komplett VERIFIZIERT clean via CodeRabbit + 2 Typos gefixt. Kat. D MD-Subset = DONE. **Item bleibt aktiv NUR für raw/-Subset User-Decision** (3 Files); nach User-Decision finales DONE.
 
+   **Update 02.05.2026 (spätabends, raw/-Subset User-Decision = D-primär „Akzeptanz") — Item #29 FINALES DONE:**
+   - **Decision-Framework geprüft:** A) WIKI-SCHEMA-Klausel-Erweiterung → abgelehnt (Schema-Erosion asymmetrisch teuer, Slippery-Slope-Präzedenz für „cosmetic"). B) Re-Ingest → abgelehnt (sha256-Audit-Trail-Diskontinuität, hoher Aufwand für Kosmetik). C) Errata-Block in Source-Page → on-demand-Reserve falls späterer Search-/Lehr-Schmerz. D) Akzeptanz → **GEWÄHLT**.
+   - **Begründung D-primär:** WIKI-SCHEMA Z.11 „You never modify files under `raw/`" ist nicht Oversight, sondern **Design-Intent**: `transcript_sha256` + `chapters_sha256` im Source-Page-Frontmatter sind Audit-Anchor für Reproduzierbarkeit. Mutation von raw/ bricht den Anchor. Findings im Detail:
+     - `chapters.json` × 2 (`2026-04-22-dubibubii-claude-code-powerful-settings/` + `2026-03-10-jake-van-clief-folder-system-ai-agents/`): letzter Eintrag hat `615` / `1398` statt `615.0` / `1398.0` — pure JSON-numeric-type-Inkonsistenz (yt-dlp-Output-Artefakt), semantisch identisch, **kein Defekt**.
+     - `transcript.md` × 1: Whisper-ASR-Artefakte sind **erwarteter** Output. Quality-Gate-Tabelle (WIKI-SCHEMA Z.181-189) hat `manual_review: true`-Frontmatter-Marker exakt dafür designed. Korrekturen gehören semantisch in **Source-Page**, nicht in raw/.
+   - **C-Reserve-Klausel aktiviert (passiv):** Wenn zukünftig ein konkreter Search-/Lehr-Schmerz an einer Whisper-Transkript-Stelle auftritt → additiver „## Errata"-Block in der korrespondierenden `wiki/sources/videos/<kat>/<slug>.md`-Source-Page (raw/ bleibt unangetastet, sha256-Anchor intact). Reaktiver Pfad, kein proaktiver Audit.
+   - **Item-Status:** **PIPELINE #29 FINALES DONE — Komplett-Archivierung beim nächsten Konsolidierungs-Slot via CORE-MEMORY §13 Lifecycle-Eintrag + Removal aus Aktiv-Liste per Numbering-Convention (Gap signalisiert Archive).**
+
 ### 🔵 Deferred / Explizit zurückgestellt
 
 8. **v3.1 Cache-Refactor** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md`. Trigger: „262s im Alltag stört" ODER „>400s-Alert wiederholt".
