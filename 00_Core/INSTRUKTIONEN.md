@@ -415,6 +415,8 @@ Basis: SSRN 2022. 80% DEFCON-Score >12 Monate Halbwertszeit.
 
 **Regel:** Klasse-B-Vollanalyse läuft strikt **Tag +1 morgens nach Earnings Call**, nicht am Press-Release-Tag selbst. Tag 0 ist FLAG-Quick-Check + Press-Release-Pre-Brief only — kein Score-Move, kein D-Stufen-Wechsel, kein Sparraten-Kaskaden-Sync.
 
+**Ausnahme — Issuer ohne Quarterly Earnings Call:** **BRK.B** hält keinen Q-Call ab. Trigger = 10-Q-/10-K-Filing auf SEC EDGAR; Tag 0 = Filing-Tag = Vollanalyse direkt möglich (kein Wait-State, kein earnings-recap-Skill, defeatbeta-Transcript-Leer-Return ist erwartet). Annual Letter (Feb/März) + Annual Meeting (Mai) sind separate Pflicht-Trigger unabhängig vom Quartals-Zyklus.
+
 **Tag-0-Workflow (Press-Release-Tag, ~15-30 Min):**
 
 | Schritt | Tool | Output |

@@ -1671,3 +1671,17 @@ Netto: ~-9 Pkt = Score 50/D2.
 - PIPELINE #29 = FINALES DONE; Komplett-Archivierung beim nächsten Konsolidierungs-Slot via CORE-MEMORY §13 + Numbering-Convention-Removal aus Aktiv-Liste.
 - WIKI-SCHEMA Z.11 + Z.181-189 (Quality-Gate-Tabelle) bleibt unverändert, kein Schema-Eingriff.
 - Memory-Update separater Slot: `reference_coderabbit_via_wsl.md` um CRLF-Workaround + `--files`-Scope-Caveat erweitern (PIPELINE #29 Lehre 3).
+
+## [2026-05-02] instruktion | §19.1 Ausnahme-Klausel: BRK.B = Issuer ohne Quarterly Earnings Call
+
+**Trigger:** User-Frage in Session — „Bei BRK.B müssen wir nicht auf Transcript warten, da kein Call?". Bestätigt + Klausel-Vorschlag erarbeitet.
+
+**Drift-Anlass:** Tag-+1-Vorbereitungs-Brief Q1 FY26 (Commit `39570ce`) wurde §19.1-mechanisch erstellt, obwohl BRK.B keinen Q-Call abhält. Framework-Mislabel; Zeit verschwendet. User-Korrektur als Präzedenz für Issuer-Typ-Vorprüfung.
+
+**Edit (Minimum-Viable-Variante, A+C nach User-Vote):**
+- `00_Core/INSTRUKTIONEN.md §19.1` — One-Liner „Ausnahme — Issuer ohne Quarterly Earnings Call" (BRK.B → 10-Q-Filing-Trigger, Tag 0 = Vollanalyse direkt, kein earnings-recap, defeatbeta-Transcript-Leer-Return erwartet, Annual Letter + Annual Meeting separate Trigger). Kein §-Bump, kein SKILL-Touch.
+- Memory `feedback_brk_no_earnings_call.md` (Auto-Memory-Tier-1) als Backup-Recall.
+
+**Sync-Set (reduziert):** INSTRUKTIONEN.md + log.md (dieser Eintrag) + Memory-File + MEMORY.md-Index. Kein xlsx-Touch, kein PIPELINE-Item, kein PORTFOLIO-Touch, kein SKILL-Bump (Score-neutral, Workflow-Klausel-Add only).
+
+**Aktuell einziger Non-Call-Issuer im Depot:** BRK.B. Bei künftigem Depot-Add eines weiteren Holding-/Non-Call-Tickers Klausel evaluieren.
