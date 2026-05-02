@@ -40,7 +40,7 @@ Alle Unternehmen im Universum (z.B. S&P 500) werden nach ihrer Forward-Rendite i
 Ein Rating gilt als korrekt, wenn das Quintil des tatsächlichen Returns mit der Rating-Stufe übereinstimmt.
 
 ### Schritt 4: MAE berechnen
-MAE = Mean Absolute Error zwischen prognositiziertem Rating und Ground-Truth-Quintil.
+MAE = Mean Absolute Error zwischen prognostiziertem Rating und Ground-Truth-Quintil.
 - Fehler von 0: perfekte Prognose
 - Fehler von 4: maximal falsch (Strong Buy bei tatsächlichem Strong Sell)
 - Typische Werte in Studien: 1.4–1.6

@@ -1601,3 +1601,45 @@ Netto: ~-9 Pkt = Score 50/D2.
 - PIPELINE BRK.B-Trigger update (Tag-0 DONE, Tag-+1 03./04.05. queued)
 - PIPELINE #29 Status (Kat. A DONE + Wiki-High-Value-Welle DONE; Kat. D Rest deferred)
 - Tag-+1-Vollanalyse 03./04.05. = erste reale §19.1-Anwendung (V Q2 lief vor §19.1-Spec, MSFT lief mit §19.1 PRE-Adoption)
+
+---
+
+## [2026-05-02] edit | #29 Cleanup-Welle Kat. D Rest — CodeRabbit-via-WSL Fresh-Run + 2 Typos gefixt + 6 Wiki-Files clean
+
+**Trigger:** PIPELINE #29 Update 02.05. listete „~30+ Mikro-Findings" als deferred. User-Direktive: tactical Token-Budget-Burn vor BRK.B-Tag-+1-Slot — Wiki-Cleanup-Welle als sicher-Frozen-State-konformer Output.
+
+**Pfad-Pivot:** Manuelle Re-Lektüre der listed Kat-D-Files yieldete nur 2 echte Typos. PIPELINE #29 „~30+ Findings"-Erwartung speculativ ohne Original-CodeRabbit-Report-Reproduktion. User-Direktive zu α) CodeRabbit-via-WSL Fresh-Run (Memory `reference_coderabbit_via_wsl.md`, Binary `/home/tobiatobia/.local/bin/coderabbit` v0.4.3, auth'd).
+
+**Run 1 (--type uncommitted):** 3 Findings auf BRK Pre-Brief `02_Analysen/Earnings Reports/Berkshire Hataway/BRK-B_tag-plus-1-prep_2026-05-02.md`:
+1. Nitpick: fehlende Leerzeile vor Banks/Insurance/Finance Trim-Tabelle (Markdown-Render-Risk)
+2. Potential Issue: Insurance UW „matches §12.4"-Framing irreführend bei +28,5% (Mrd-Basis) vs +31,5% (Mio-Basis); beide korrekt, Rundungs-Granularitäts-Diff
+3. Potential Issue (HIGH): „$4.568M acquisitions of treasury stock" Unit-Error — 10-Q-Cashflow ist in Millionen, also $4.568M = $4,568B (Faktor 1000× off). Discrepancy-Faktor zu PR-Buyback $235M ist 19,4× nicht „eine Größenordnung"
+
+**Run 2 (--type all --files <6 Kat-D-Files>):** 0 Findings auf Kat-D-Files. **+1 Finding** auf BRK Pre-Brief Line 46: Apple-%-Calc Cost-Basis vs FV-Verwechslung ($3,05B = 3,8% von $80B FV, nicht „10-12% der Apple-Position"). Fix: %-Bezug auf Sub-Cluster-Cost-Basis-Reduktion umformuliert (Consumer-Products Cost-Basis $11,899B → $8,847B = -25,6%); Apple-vs-Non-Apple-Decomposition als Tag-+1-Verfeinerung markiert mit Form-13F-Mid-Mai-Verify.
+
+**Wiki-Files Re-Reviewed (Kat. D MD-Subset, raw/-Files separater Slot):**
+- `wiki/concepts/analyst-stock-ratings.md` — clean (CodeRabbit-Judge bestätigt manuelle Re-Lektüre)
+- `wiki/concepts/financial-fundamentals-analysis.md` — clean
+- `wiki/concepts/news-sentiment-analysis.md` — Typo gefixt (`unternehmensspecifischen` → `unternehmensspezifischen`)
+- `wiki/concepts/forward-returns-evaluation.md` — Typo gefixt (`prognositiziertem` → `prognostiziertem`)
+- `wiki/concepts/chain-of-thought-prompting.md` — clean
+- `wiki/entities/sp-500.md` — clean
+- `wiki/entities/rodoumta-koina.md` — clean
+- `wiki/sources/papers/Arun-et-al-2025-FinReflectKG.md` — `subtype:` + `authors:`-String-Pattern ist established convention in 25+ paper sources, NICHT Schema-Drift gegen WIKI-SCHEMA.md `medium:`. Kein Fix.
+
+**Raw/-Subset deferred (User-Direktive):** 2× `chapters.json` + 1× `transcript.md` in `raw/videos/updating-system/` — per WIKI-SCHEMA Z.11 „You never modify files under `raw/`" formal verboten. User: „Über die Dateien in raw reden wir danach nochmal" — separater Entscheidungs-Slot.
+
+**Sync-Set:** log.md (dieser Eintrag) + PIPELINE.md #29 Status-Update (Kat. D MD-Subset DONE, raw/-Subset offen für User-Decision) + 2 Wiki-Concept-Files (Typo-Fixes). KEIN PORTFOLIO + Faktortabelle + score_history.jsonl + config.yaml + xlsx + flag_events.jsonl + CORE-MEMORY (kein Score/FLAG/System-Lifecycle-Event; reine Wiki-Wartung). BRK Pre-Brief inkl. CodeRabbit-Fixes wird in **separatem Commit** gehandhabt (analytisches Material, kein §18-Sync-Trigger).
+
+**CRLF-Workaround dokumentiert:** WSL-git default `core.autocrlf=false` zeigt 130 Vault-Files als „dirty" gegen Windows-Repo (`core.autocrlf=true`) — symmetrischer 18.721/18.721-Diff = pure EOL-Normalization-Artefakt, kein Content-Drift (Memory-Pattern `feedback_onedrive_edit_collision.md`-Verwandt). Per-Process-Override via `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.autocrlf GIT_CONFIG_VALUE_0=true` macht WSL-git mit Windows-View kompatibel. Workaround nicht persistent, kein Repo-Config-Edit nötig. Add zu `reference_coderabbit_via_wsl.md` als Pre-Flight-Check für künftige Cross-Plattform-CodeRabbit-Runs in OneDrive-Pfaden.
+
+**Lehre:**
+- **CodeRabbit-via-WSL ist tactical-Token-Burn-fähig:** ~50-70k Token Investment (2 Runs + Output-Reading) → 4 echte Findings (1 HIGH, 3 MEDIUM/Nitpick) auf BRK-Material + 6 Files clean-bestätigt. Validation-Wert hoch für Pre-Brief-Material vor Vollanalyse-Slot.
+- **„~30+ Mikro-Findings"-Erwartung aus historischer CodeRabbit-Run war stale:** Aktueller File-Stand ist tatsächlich clean (high-value-Cleanup 02.05. + manueller Tag-0-Refactor haben den Großteil bereits behoben). PIPELINE-Item-Erwartungswerte aus alten Reports sind Re-Verify-pflichtig vor Workflow-Aktivierung.
+- **`--files` mit `--type all` reviewed auch uncommitted Files außerhalb der Liste:** CodeRabbit ist nicht strikt files-scoped wenn uncommitted-Changes existieren. Für rein-files-scoped Reviews: erst alle uncommitted Changes committen oder stash, dann `--files` mit `--type committed` + `--base HEAD~1`.
+
+**Cross-Reference:**
+- BRK Pre-Brief separater Commit: 4 CodeRabbit-Fixes (3 Run-1 + 1 Run-2) appliziert
+- PIPELINE #29 nächster Schritt: Raw/-Subset User-Decision + finales DONE
+- Memory-Update Pflicht: `reference_coderabbit_via_wsl.md` um CRLF-Workaround + `--files`-Scope-Caveat erweitern
+- Tag-+1 BRK.B 03./04.05. nutzt korrigierten Pre-Brief inkl. Apple-%-Decomposition-Caveat + Treasury-Stock-Unit-Korrektur

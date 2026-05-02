@@ -28,7 +28,7 @@ Finanznachrichten enthalten Informationen, die kurzfristig die Aktienkurse beweg
 
 ### Ansatz 2: Sentiment-Score (numerisch)
 - GPT-4 bewertet die Zusammenfassungen auf einer Skala −5 bis +5
-- **Firmen-Score:** Sentiment der unternehmensspecifischen News
+- **Firmen-Score:** Sentiment der unternehmensspezifischen News
 - **Sektor-Score:** Sentiment der Branchenentwicklung
 - Kompakter: zwei Zahlen statt langer Texte
 
