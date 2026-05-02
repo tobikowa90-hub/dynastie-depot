@@ -1685,3 +1685,27 @@ Netto: ~-9 Pkt = Score 50/D2.
 **Sync-Set (reduziert):** INSTRUKTIONEN.md + log.md (dieser Eintrag) + Memory-File + MEMORY.md-Index. Kein xlsx-Touch, kein PIPELINE-Item, kein PORTFOLIO-Touch, kein SKILL-Bump (Score-neutral, Workflow-Klausel-Add only).
 
 **Aktuell einziger Non-Call-Issuer im Depot:** BRK.B. Bei künftigem Depot-Add eines weiteren Holding-/Non-Call-Tickers Klausel evaluieren.
+
+## [2026-05-02] setup | BRK.B Q1 FY26 Tag-0-Spätabends Setup-Komplettierung — Annual-Meeting-Q&A-File + Mo 04.05.-Slot fixiert
+
+**Trigger:** User-Question „würde uns das reichen" mit CNBC-Live-Feed-Sonnet-Auswertung des Annual Meetings 02.05. + anschließend „Bist du dir ganz sicher" Wartedisziplin-Check.
+
+**Setup-Komplettierung Tag-0:**
+- `02_Analysen/Earnings Reports/Berkshire Hataway/BRK-B_annual-meeting-q-a_2026-05-02.md` neu — strukturierte CNBC-Live-Feed-Auswertung mit Score-relevanter Synthese: Brief-Anker → Q&A-Coverage-Tabelle, 5 Bonus-Findings (Operating Profit +18% YoY broader, Abel $15M-Net-Gehalt-in-BRK-Stake = Insider-Anchor, BHE-Hyperscaler-Cost-Recovery 50%+ 5J, AI-Selectivity, Hormuz-Pricing-Power), Cash-Pile-Methodology-Lock durch Buffett+Abel-Doppel-Statement (Codex-HIGH-#4 closed), Q2-Carryover-Liste (KHC, Apple-Trim-Magnitude, BHE-ETR, OxyChem-Goodwill, Buyback-Cashflow-Discrepancy).
+- Quelle-URL: `https://www.cnbc.com/2026/05/02/warren-buffett-berkshire-hathaway-annual-meeting-2026-live-updates.html`
+
+**Wait-Discipline-Bewertung:**
+- Heute Sa-Abend nach 4-Stunden-Setup-Marathon = exaktes „heute Abend noch fertig"-Anti-Pattern (V-Q2-Lehre Codex-HIGH-1+2)
+- 3 Daten-Items kommen erst Mo+: Mo-Open-Marktreaktion (Tech-Sub) + Zacks-EPS-Revisions-Refresh (Sentiment-Sub) + Insider-Form-4-Window für Abel-$15M-Stake-SEC-Verifikation
+- Q&A-Material ist methodisch ausreichend für Score-Move-Hebel (Cash-Pile-Treatment gelöst, Insider-Anchor + Operating-Profit-+18% NEU)
+- Brief §11 hatte ohnehin **So 03.05. morgens** ODER **Mo 04.05. morgens** als Slot empfohlen
+
+**Slot-Fix Tag-+1:** **Mo 04.05. morgens** (statt 03./04.05.-Range) — Mo > So wegen Marktreaktion + EPS-Revisions + Insider-Form-4 + frischer Reviewer-Kopf.
+
+**Sync-Set (kein Score-Event, daher reduziert):** PORTFOLIO.md (Tabelle BRK + 30-Tage-Trigger) + STATE.md (Critical-Alert) + PIPELINE.md (#28 Detail-Update mit Q&A-Datei + Mo-Slot) + log.md (dieser Eintrag) + neue Q&A-Datei. **NICHT touched:** Faktortabelle/CORE-MEMORY/score_history/config.yaml/xlsx (kein Score/FLAG/Sparraten-Move bis Mo).
+
+**Lehre:**
+- §19.1 Wait-Discipline ist primär **Reviewer-Disziplin**, nicht Daten-Vollständigkeit. Sa-Abend-Run wäre methodisch korrekt im Datensinn, falsch im Disziplin-Sinn.
+- BRK-Ausnahme (Filing-Trigger statt Call-Trigger) ändert NICHT die Reviewer-Disziplin-Komponente von §19.1 — sie ändert nur das Trigger-Event. Wait-Discipline-Geist gilt weiter (Marathon-Tag → frischer Tag-+1).
+- Multi-Source-Setup (10-Q + Brief + Q&A) reduziert Tag-+1-Run-Token deutlich (Brief schätzt -40%) — Sa-Setup-Aufwand zahlt sich Tag-+1 aus.
+

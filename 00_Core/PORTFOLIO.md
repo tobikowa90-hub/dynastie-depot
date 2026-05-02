@@ -16,7 +16,7 @@
 | Ticker | Score | DEFCON | Rate | FLAG | Nächster Trigger |
 |--------|-------|--------|------|------|------------------|
 | AVGO | **53** | **🟠 2** | **0€** | 🔴 Insider-Selling 90d $106M+ (27.04.) | **30.04. Forward-Vollanalyse DONE — Score 84→53 (Δ-31), D4→D2, FLAG aktiv unverändert (Sparrate 0€ unverändert, keine Kaskade). Codex R1+R2-Pass 74% Confidence. Q3 FY26 Re-Eval.** |
-| BRK.B | 75 | 🟡 3 | **38,00€** | ✅ Insurance Exception | **02.05.2026 (Sa)** Q1 FY26 — Tag-0 earnings-recap-Skill, Tag-+1 03./04.05. |
+| BRK.B | 75 | 🟡 3 | **38,00€** | ✅ Insurance Exception | **02.05.2026 (Sa)** Q1 FY26 Tag-0 DONE (10-Q + earnings-recap + Annual-Meeting-Q&A 02.05.) — **Tag-+1 Mo 04.05. morgens fixiert** (§19.1 BRK-Ausnahme: Filing-Trigger; Mo-Slot wegen Mo-Open-Marktreaktion + Zacks-EPS-Revisions-Refresh + frischer Reviewer-Kopf) |
 | VEEV | 74 | 🟡 3 | **38,00€** | ✅ | **27.05.2026** Q1 FY27 Earnings (yfinance-Pull 30.04.) |
 | SU | 69 | 🟡 3 | **38,00€** | ✅ | H1 Juli/Aug |
 | COST | 69 | 🟡 3 | **38,00€** | ✅ Screener-Exception | **28.05.2026** Q3 FY26 Earnings (yfinance-Pull 30.04. — Membership-Yield-Watch); Q1 FY27 ~Dez |
@@ -67,7 +67,8 @@
 | ~~30.04.~~ | ~~MSFT~~ | — | **DONE Tag-+1** Vollanalyse — Score 59→50 (Δ-9), D2/FLAG aktiv unverändert. Bull-Case nicht vollumfänglich (Trigger A ✅ / B ❌ / C ✅✅ — UND nicht erfüllt). Codex-R1+R2-Doppel-Review (R1 strict 48 D1, R2 V-Q2-Mittelweg 50 D2 via Insider-Carryover). Sparrate 0€ unverändert (keine Kaskade). 4 PIPELINE-Items aktiv. |
 | **29.04.** | **APH** | **C** | **Q1 FY26 — DONE Tag-0-Recap (Earnings-Calendar-Drift detektiert), Vollanalyse 30.04. Tag +1** |
 | ~~30.04.~~ | ~~APH~~ | — | **DONE** Q1 FY26 Tag-+1 Vollanalyse — Score 63→61 (Δ -2), D2/FLAG aktiv unverändert. Codex-Review-Pass (1 HIGH Transmission-Artifact, 3 MEDIUM Annotations: M1 Bilanz-Mixed-Basis, M2 ROIC-Methodology-Watch, M3 Sentiment-7-halten). Score-Move-Driver: Multiple-Expansion (P/E 25→33,7) + CommScope-Net-Lev 1,6x — operativ massiv besser, bewertungsseitig QT-Trap §472-§478 deckelt 16 Pt. weg. |
-| **02.05. (Sa)** | **BRK.B** | **B** | **Q1 FY26 Earnings — Tag-0 earnings-recap + FLAG-Quick-Check, Vollanalyse Tag-+1 03./04.05.** (yfinance-Pull 30.04. via earnings_calendar.py) |
+| **02.05. (Sa)** | **BRK.B** | **B** | **Q1 FY26 Tag-0 DONE** — earnings-recap + 10-Q + Tag-+1-Vorbereitungs-Brief + Annual-Meeting-Q&A-File 02.05. spätabends (CNBC Live-Feed). **Tag-+1 Mo 04.05. morgens fixiert** (§19.1 BRK-Ausnahme; Mo-Slot wegen Marktreaktion + EPS-Revisions-Refresh). |
+| **04.05. (Mo)** | **BRK.B** | **B** | **Tag-+1 Vollanalyse-Slot fixiert** — Setup-Material vollständig (10-Q + Brief + Annual-Meeting-Q&A) |
 | Mai | ZTS/PEGA/CPRT | B | Q-Earnings + Slot-16 |
 | 27.05. | VEEV | B | yfinance: Q1 FY27 Earnings (yfinance-Pull 30.04.) |
 | 28.05. | COST | B | yfinance: Q3 FY26 Earnings (Membership-Yield-Watch) |
