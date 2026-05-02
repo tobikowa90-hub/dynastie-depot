@@ -1,10 +1,12 @@
 # Ruflo-Integration-Plan — Dynastie-Depot
 
-**Status:** Draft v1.0 — pending Phase-1-Start
+**Status:** **v1.1** — Phase 1.1 + Welle 0 + Phase 1.2-1.7 ✅ DONE (Commits `c9a3ed5` + `7b3c7d1` + `e983102`); Welle 3 (1.8 Doctor-Periodic + 1.9 Trajectory-Recording) deferred 05.-12.05.2026 post-BRK.B-Tag-+1
 **Erstellt:** 2026-04-28
+**Letztes Update:** 2026-05-02 (Bridge-Coherence-Welle, Meta-Review-Patches P1/P2/P6/P10 als „operational implementiert" verzeichnet, Plan-Doku-Drift gegen `e983102` geschlossen)
 **Basis-Quelle:** Ruflo USERGUIDE.md v3.5 (7557 Zeilen, vollständig durchgegangen)
 **Kontext:** User will Ruflo statt Superpowers nutzen, optimal in Dynastie-Depot einbinden
 **Vorgehensweise:** Inkrementell in 4 Phasen, jede mit Stop-Criterion + Rollback
+**Plan-Patches-Status (aus RUFLO-PLAN-META-REVIEW.md §7):** P1 ✅ (path-scoped Import operational), P2 ✅ (CLI-Flag-Bug umgangen via cwd-Default-Akzeptanz), P3 ✅ (IDE-Pre-Flight in Welle 0), P5 ✅ (Phase-1.9-Defer dokumentiert), P6 ✅ (SYSTEM.md §Ruflo-Status angelegt), P10 ✅ (Codex-Nits im 1.2-1.7-Commit nachgefixt). **Offen:** P4 (Phase 2.3 §28.1-Repositioning) · P7 (Pending-Insights-Pflege-Regel) · P8 (Kill-Criteria pro Phase) · P9 (Phase-2-Split 2a/2b). Alle 4 in Phase-2-Eval-Slot ab ~13.05.2026 zu adressieren.
 
 ---
 
@@ -483,5 +485,5 @@ Pipeline-Item ergänzen in `00_Core/PIPELINE.md` mit Eintrag:
 
 ---
 
-**Plan-Status:** Draft v1.0 — pending User-OK für Phase-1-Start
-**Nächster Schritt:** Override-Block in `Claude Stuff\CLAUDE.md` schreiben (1.1)
+**Plan-Status:** **v1.1** — Phase 1.1 + Welle 0 + Phase 1.2-1.7 operational DONE 30.04. (Commits `c9a3ed5`/`7b3c7d1`/`e983102`); Welle 3 (1.8/1.9) deferred 05.-12.05.2026 post-BRK.B-Tag-+1; Phase 2 Eval-Slot ab ~13.05.2026
+**Nächster Schritt:** Welle 3 (1.8 Doctor-Periodic-Cadence + 1.9 Trajectory-Recording auf `dynastie-depot`-Skill) — Trigger nach BRK.B-Tag-+1-Vollanalyse 04.05. **Vorgelagerte Pflicht-Welle 02.05.:** Memory-Namespace-Konsolidierung Code→Dynastie (siehe PIPELINE.md neues Item) als Bridge-Coherence-Pre-Phase-1.9-Block

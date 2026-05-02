@@ -1,13 +1,16 @@
 # Plan-Meta-Review — RUFLO-INTEGRATION-PLAN.md
 
-**Status:** Vorarbeit-Draft (working-tree, **uncommitted**)
-**Datum:** 2026-04-28
-**Plan-Version:** Draft v1.0 / Commit `c9a3ed5`
+**Status:** **v1.0-Final** (Apply-Sperre lifted post-Earnings-Window 29.04. + Phase-1.2-1.7-Welle 30.04.)
+**Datum:** 2026-04-28 (Erstellung) / Final-Stempel: 2026-05-02
+**Plan-Version-Referenz:** ursprünglich Draft v1.0 / Commit `c9a3ed5` — Plan ist seit 02.05.2026 auf **v1.1** gebumpt (siehe RUFLO-INTEGRATION-PLAN.md Header)
 **Phase 1.1 Status:** DONE (Override-Block Codex 2-Round PASS WITH NITS)
+**Phase 1.2-1.7 Status:** DONE 30.04.2026 (atomare §18-Sync-Welle, Commit `e983102`) — P1/P2/P3/P5/P6/P10 operational implementiert
 **Reviewer-Pair:** Codex (`codex:codex-rescue`) + Ruflo-Planner (`Agent` subagent_type=`planner`) — beide single-pass, in selber Session, ohne Cross-Kontamination
 **Empirische Spikes:** V1/V2/V3/V4/V5 read-only (siehe Abschnitt „Empirische Vorarbeit-Findings")
 
-> **Apply-Sperre:** Bis nach V Q2 (28.04. AMC) + MSFT Q3 (29.04. AMC) Earnings-Window-Schluss. Diese Datei = Pre-Read-Checkliste für Phase-1.2-Kickoff, kein Change-Set.
+> **Apply-Sperre AUFGEHOBEN seit 30.04.2026** — Earnings-Window (V Q2 28.04. + MSFT Q3 29.04.) abgeschlossen, Phase-1.2-1.7-Welle operational durch. Diese Datei = **historisches Pre-Read-Artefakt** für die ursprüngliche v1.0-Bewertung, kein offener Change-Set mehr.
+>
+> **Patch-Status (vollständig in RUFLO-INTEGRATION-PLAN.md v1.1 Header):** P1/P2/P3/P5/P6/P10 ✅ implementiert in Welle 1.2-1.7 + Welle 0. **Offen für Phase 2 (~13.05.+):** P4 (Phase 2.3 §28.1-Repositioning), P7 (Pending-Insights-Pflege-Regel — adressiert in APPLIED-LEARNING.md v2.6 Bridge-Coherence-Erweiterung 02.05.), P8 (Kill-Criteria pro Phase explizit), P9 (Phase-2-Split 2a/2b).
 
 ---
 
@@ -178,12 +181,15 @@ Env `CLAUDE_FLOW_TOOL_GROUPS=memory,monitor` setzen ist trivial reversibel via u
 
 **Risiko-Klasse Phase 1.2 (re-labeled):** ~~NIEDRIG~~ → **MITTEL** (Memory-Path-Disziplin + AgentDB-Backend-Pfad sind echte Operational-Risiken, nicht Plan-Theorie).
 
-## 11. Nächste Schritte
+## 11. Nächste Schritte (HISTORISCH — abgeschlossen 02.05.2026)
 
-1. Diese Doku **uncommitted** lassen — wartet auf Earnings-Window-Schluss + User-Review
-2. Bei Phase-1.2-Kickoff (post-Item #17): Plan-Patches P1–P10 einarbeiten, Plan auf v1.1 bumpen, dann diese Doku referenzieren als Pre-Read und auf v1.0-Final stempeln
-3. Alternativ: Diese Doku selbst committen als Vorarbeit-Artefakt (User-Entscheidung)
+1. ~~Diese Doku **uncommitted** lassen~~ — abgeschlossen, Doku committed mit Bridge-Coherence-Welle 02.05.
+2. ~~Bei Phase-1.2-Kickoff: Plan-Patches einarbeiten + Plan auf v1.1 bumpen~~ — DONE 02.05.: Plan-Header bumpe, P1/P2/P3/P5/P6/P10 als „operational implementiert" verzeichnet
+3. **Aktueller Status:** Diese Datei ist v1.0-Final (historisch); aktive Plan-SSoT ist RUFLO-INTEGRATION-PLAN.md v1.1
+4. **Verbleibende Patches** (P4/P7/P8/P9) wandern in Phase-2-Eval-Slot ab ~13.05.2026 — siehe Plan v1.1 Header für Verteilung
 
 ---
 
 *Synthese-Doku — beide Reviewer single-pass, kein Sparring-Loop. Differential-Wert > Bestätigungs-Wert. Empirische Spikes V1–V5 als Korrektiv. Kein Apply, keine Ruflo-Aktivierung, keine §18-Sync-Welle.*
+
+*Final-Stempel 2026-05-02 (Bridge-Coherence-Welle): P1/P2/P3/P5/P6/P10 operational implementiert in Welle 0 + Phase 1.2-1.7 (Commits `7b3c7d1` + `e983102`). Doku-Drift gegen Plan v1.0 geschlossen.*
