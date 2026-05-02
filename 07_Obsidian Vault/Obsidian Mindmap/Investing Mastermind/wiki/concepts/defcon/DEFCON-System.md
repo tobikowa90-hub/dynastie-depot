@@ -3,9 +3,9 @@ title: "DEFCON-System"
 type: concept
 tags: [konzept, defcon, scoring, kern]
 created: 2026-04-08
-updated: 2026-04-27
+updated: 2026-05-02
 version: v3.7
-stand: 2026-04-27
+stand: 2026-05-02
 sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha, llms-for-equity-stock-ratings, Wolff-Echterling-2023, Jadhav-Mirza-2025, Piotroski-F-Score, Novy-Marx-Gross-Profitability, Sloan-Accruals]
 wissenschaftlicher_anker: "B1–B28 (34 Quellen / 28 Befunde) — kanonische Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]]"
 konfidenzstufe: peer-reviewed
@@ -20,7 +20,7 @@ aliases:
 > Das Herzstück des Dynastie-Depot Analyse-Frameworks.
 > Jede Satellitenposition erhält einen Score von 0–100. Der Score bestimmt die Sparrate.
 >
-> **Aktuelle Version v3.7 (System-Gap-Release, 17.04.2026):** Vier strukturelle Fixes gegenüber v3.5 (Details unten). Skill-Paket-Version v3.7.2 (19.04.2026) delegiert Archiv-Write an Satelliten-Skill, Scoring-Semantik unverändert.
+> **Aktuelle Version v3.7 (System-Gap-Release, 17.04.2026):** Vier strukturelle Fixes gegenüber v3.5 (Details unten). Skill-Paket-Version **v3.7.6 (30.04.2026)** mit B6 Quality-Trap-Drawdown-Modulator (per-Subscore-Cap-Deaktivierung bei Drawdown ≥-20% UND Multiple <5J-Median, Hard-Caps unverändert). Vorgänger: v3.7.5 (Earnings-Call-Wait-Discipline §19.1, 28.04.) · v3.7.4 (Score-Konsistenz-Pre-Flight, 28.04.) · v3.7.3 (00_Core-Refactor, 25.04.) · v3.7.2 (Archiv-Write-Delegation, 19.04.). Scoring-Semantik DEFCON v3.7 selbst unverändert.
 
 ## Scoring-Blöcke (v3.7)
 
@@ -63,12 +63,14 @@ Gewichte: D4/D3 (kein 🔴) = 1.0 | D2 (kein 🔴) = 0.5 | D1 / 🔴 FLAG = 0.0
 Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 ```
 
-**Beispiel (Stand 19.04.2026: 7× D4/D3 + 2× D2 (V+TMO) + 2× 🔴 FLAG (MSFT, APH)):**
-- Nenner = (7 × 1.0) + (2 × 0.5) = **8.0**
-- D4/D3-Rate = 285 / 8.0 × 1.0 = **35,63€**
-- D2-Rate (V, TMO) = 285 / 8.0 × 0.5 = **17,81€**
-- 🔴/D1-Rate (MSFT, APH) = **0€**
-- Check: 7 × 35,63€ + 2 × 17,81€ = 249,41€ + 35,62€ = **285€** ✓
+**Beispiel (Stand 30.04.2026: 7× D3 + 1× D2 (V) + 3× 🔴 FLAG (AVGO, APH, MSFT)):**
+- Nenner = (7 × 1.0) + (1 × 0.5) + (3 × 0.0) = **7,5**
+- D3-Rate = 285 / 7,5 × 1.0 = **38,00€**
+- D2-Rate (V allein) = 285 / 7,5 × 0.5 = **19,00€**
+- 🔴-Rate (AVGO, APH, MSFT) = **0€**
+- Check: 7 × 38,00€ + 1 × 19,00€ + 3 × 0€ = 266€ + 19€ = **285€** ✓
+
+> Historische Stände: 19.04. (Nenner 8,0, V+TMO in D2) → 23.04. (TMO D2→D3 Q1-Beat, Nenner 8,5) → 27.04. (AVGO Insider-FLAG, Nenner 7,5 ⏶ erstmals) → 28.04. spätabends (V Rescoring-Revert D3→D2, Nenner 7,5 ⏵). Live-State immer in `00_Core/PORTFOLIO.md`.
 
 ## Verlinkungen
 

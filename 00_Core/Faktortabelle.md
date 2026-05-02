@@ -95,25 +95,9 @@
 
 ---
 
-## Offene Scores (0 von 11 — ALLE VOLLSTÄNDIG)
+## Offene Scores
 
-> ✅ **Alle 11 Satelliten auf DEFCON v3.7 umgestellt** (Stand: 18.04.2026 — V Forward-Verify, DEFCON-Threshold-Alignment).
-> Live-Verify v3.7: 4/11 bestätigt — **V (18.04. Forward)**, TMO (±1), ASML (±2 post-Q1), RMS (±2). Rest Algebra-Rechnung bis Earnings-Trigger.
-> Nächste Vollaktualisierung: bei Earnings-Trigger, Score-Verfall >180 Tage, oder Klasse-C-Event.
-
-| Position | Score | DEFCON | Analyse-Datum | Nächster Trigger |
-|----------|-------|--------|--------------|-----------------|
-| ASML | 68 | 🟡 3 | 17.04.2026 | Q2 2026 Earnings + FY27 Fwd-P/E-Watch |
-| AVGO | **53** | **🟠 2** | **2026-04-30** | **Q3 FY26 Earnings** — !Analysiere Re-Eval + FLAG-Resolve-Check (Diskr. 90d ≤$20M) |
-| MSFT | **50** | 🟠 2 | **2026-04-30** | **Q4 FY26 ~Juli** — CapEx-Plateau-Recheck + WACC-Methodology-Verify (FLAG aktiv unverändert) |
-| TMO | **67** | 🟡 3 | **2026-04-23** | **Q2 FY26 ~Ende Juli** — Organic-Akzeleration + Clario-Integration-Check |
-| RMS | 68 | 🟡 3 | 17.04.2026 | H1 2026 Report Juli/Aug 2026 |
-| VEEV | 74 | 🟡 3 | 17.04.2026 | Nächste Earnings |
-| SU | 69 | 🟡 3 | 17.04.2026 | H1 2026 Earnings Juli/Aug 2026 |
-| BRK.B | 75 | 🟡 3 | 17.04.2026 | Q-Earnings Mai 2026 |
-| **V** | **64** | **🟠 2** | **2026-04-28** | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity + ROIC-Methodology-Verify (PIPELINE #21)** |
-| APH | **61** | 🟠 2 | **2026-04-30** | **Q2 FY26 ~23.07.** — China-Tax-ETR + CommScope-Net-Lev + ROIC-GW-Full-Year-Verify (FLAG aktiv) |
-| COST | 69 | 🟡 3 | 17.04.2026 | Q1 FY27 Earnings ~Dez 2026 |
+> Status aller 11 Satelliten siehe Haupttabelle oben + [PORTFOLIO.md](PORTFOLIO.md) (Live-SSoT). Diese Sektion war historisch redundant (100% Subset der Haupttabelle, Drift-Surface) und wurde am 02.05.2026 entfernt (PIPELINE #29 Kat. A).
 
 ---
 

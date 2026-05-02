@@ -10,9 +10,8 @@ aliases:
 
 # Depot-State — April 2026
 
-> ⚠️ **Historischer Snapshot-Zeitstand: 10.04.2026 (pre-v3.7).** Live-Stand (Nenner **8.0**, Rate **35,63€/17,81€/0€**, 11 Satelliten, DEFCON v3.7, 6-Paper-Ingest SSoT aktiv) → `00_Core/PORTFOLIO.md` (seit Tier-2-Refactor 25.04.2026; vorher `STATE.md`). Dieser Snapshot bleibt als April-Monatsarchiv erhalten.
-> Monatlicher Snapshot. Nach jeder !Analysiere-Session aktualisieren.
-> Nächste Vollaktualisierung: Mai 2026 (nach TMO + MSFT Earnings)
+> ⚠️ **Historischer Snapshot-Zeitstand: 10.04.2026 (pre-v3.7).** Live-Stand → `00_Core/PORTFOLIO.md` (seit Tier-2-Refactor 25.04.2026; vorher `STATE.md`).
+> **Status 02.05.2026: ARCHIVED** — keine weiteren Updates an diesem Snapshot. April-Monatsarchiv schließt. Live-Sparraten-Nenner inzwischen 7,5 (38,00€/19,00€/0€) nach AVGO-FLAG (27.04.) + V-Rescoring-Revert (28.04.) + AVGO/MSFT/APH-Vollanalysen (30.04.). DEFCON v3.7 unverändert (Skill-Paket v3.7.6 mit B6 Drawdown-Modulator).
 
 ## Post-Snapshot-Events (11.-20.04.2026)
 

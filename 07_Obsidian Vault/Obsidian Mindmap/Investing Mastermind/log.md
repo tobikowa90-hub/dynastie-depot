@@ -1560,3 +1560,44 @@ Netto: ~-9 Pkt = Score 50/D2.
 - PIPELINE #18 DONE archiviert mit Vollanalyse-Verweis
 - PIPELINE #30-34 Methodology-Watches neu
 - Codex-Sparring-Threads in Session-Transcript (R1 + R2)
+
+
+## [2026-05-02] system | BRK.B Q1 FY26 Tag-0 Press-Release-Recap + 10-Q-Quick-Read + #29 Cleanup-Welle (Kat. A + Wiki-High-Value)
+
+**Event-Typ:** Tag-0 earnings-recap + System-Cleanup (kein Score/FLAG/Sparraten-Touch — §19.1 Wait-Discipline strikt eingehalten)
+
+**Was passiert ist:**
+
+1. **BRK.B Q1 FY26 Press-Release** (brk.com `news/may0226.pdf`, 02.05. ~14:00 Berlin parallel zu Annual Meeting Omaha) gelesen via earnings-recap-Skill + lokales 10-Q-PDF (`02_Analysen/Earnings Reports/Berkshire Hataway/1stqtr26.pdf`) für Watch-Item-Quantifizierung.
+2. **PR-Headlines (operative Stärke):** Operating Earnings $11.346M vs $9.641M (+17,7% YoY) → Operating-EPS Class B ~$5,26 vs Estimate $5,05 = **+4,2% Beat** ✅. GAAP-EPS $4,68 ist GAAP-noisy (-7,3% optisch durch Investment-Losses Q1 −$1,24B inkl. Unrealized −$7B + Realized GAINS +$5,8B). Insurance-Underwriting +28,5% (Cat-Loss-light). BNSF +13,4% (Rail-Recovery). MSR +4,5%. BHE +1,5% flat. Insurance-Investment-Income −7,4% (Treasury-Yield-Mix-Decline). Float $176,9B (+$500M = 0,3% Q-Wachstum, marginal). "Other"-Line $1,26B FX/T-Bill-driven (Non-Recurring-Quality).
+3. **10-Q 3 BIG-Surprises:**
+   - **Cash + T-Bills $397,4B All-Time-High** (+$24,1B QoQ; Konsens war ~$330B = +$67B Surprise) trotz OxyChem $9,5B + Buyback $235M; netto neue T-Bill-Käufe nur ~$0,6B nach Bereinigung um $17,2B unsettled-purchases, Brutto-Wachstum trotzdem rekordhoch; Buffett's „kein Deal-Pricing"-Stance hart bestätigt.
+   - **Equity-Trim-Welle weiter aktiv** — Net-Sale Q1 $8,15B (4. Net-Sale-Quartal in Folge); Banks/Insurance/Finance Sub-Block FV −$19,6B (BoA-Trim wahrscheinlich + Wert-Drop); Top-5-Konzentration **65→61% (−4pp)**; Top-5-Liste unverändert AmEx/Apple/BoA/KO/CVX, AmEx 22,2% Outstanding bestätigt.
+   - **OxyChem-Acquisition $9,5B** (02.01.2026, erste Major-M&A seit Alleghany 2022) — konsistent mit OXY-Common 26,9% + Preferred + Warrants; Manufacturing-PP&E-Sprung +$7B + Goodwill +$0,2B.
+4. **Buyback Q1 nur $235M** (~320 Class A equiv, Run-Rate 0,06% vs Cash $397B); Equity-Method: Occidental FV $17,2B vs Carrying $10,8B (+$6,3B Mark-up Q1); Kraft Heinz FV $7,3B < Carrying $8,7B = neuer Impairment-Risk.
+5. **OCF Q1 $10,4B** (vs $10,9B Q1-25, −4,3%, WC-driven, kein struktureller Trend).
+6. **FLAG-Quick-Check:** CapEx/OCF + FCF-Trend = N/A Insurance-Exception (Screener-Exception #1) · Insider-Tx in PR keine (Form-4-Pull Tag-+1) · Tariff indirekt via Apple-Position (Risk-Map-Notiz, kein FLAG-Trigger). **Kein neuer FLAG, kein `archive_flag.py trigger`. Score 75/D3 unverändert. Sparrate 38€ unverändert.**
+7. **Tag-+1-Vollanalyse 03./04.05. Watch-Items:** Annual Meeting Q&A · Insurance-Cycle-Reversion · KHC-Impairment-Trajectory · Investment-Income-Decline-Mechanik · Cash-Pile $397B + No-Deal Score-Reasoning (Insurance-Exception toleriert, Opportunity-Cost-notizen-Vermerk) · Apple-Position-Detail · Form-4-Insider-Pull · BNSF-Cycle.
+8. **Parallel: PIPELINE #29 Kategorie A (Faktortabelle.md `Offene Scores`-Cleanup) + Wiki-High-Value-Mini-Welle aus Kat. D**
+   - `00_Core/Faktortabelle.md` — `Offene Scores`-Sektion (20 Zeilen, redundant 100%-Subset zur Haupttabelle, Drift-Surface) gelöscht und durch 2-Zeiler-Pointer auf Haupttabelle + PORTFOLIO ersetzt.
+   - `wiki/synthesis/Depot-State-April-2026.md` — Header ARCHIVED-Marker + Live-Nenner-Update (8,0 → 7,5 nach AVGO-FLAG/V-Revert/AVGO-MSFT-APH-Vollanalysen) + obsolete „Nächste Vollaktualisierung Mai 2026" entfernt.
+   - `wiki/concepts/Gross-Profitability-Premium.md` — Frontmatter-Drift gefixt: `defcon_block` + `operative_regel` neutralisiert (Body Aghassi-2023-Section sagte „Session 2 verworfen", Frontmatter behauptete weiter „2-Pt.-Metrik integriert"); Hinweis-Box am Doc-Anfang mit `design-rejected`-Status (Befund B13, § 27.1 Double-Counting).
+   - `wiki/concepts/defcon/DEFCON-System.md` — Skill-Paket-Version v3.7.2 → v3.7.6 (mit kompakter Versions-Historie 7.2/7.3/7.4/7.5/7.6) + Sparplan-Beispiel auf Live-Stand 30.04. (Nenner 7,5, Rate 38€/19€/0€) + historische Stände-Note + Frontmatter-Date 27.04. → 02.05.
+   - `wiki/concepts/defcon/Score-Archiv.md` — Skip (kein materieller Drift, Schema/Pipeline unverändert seit v3.7.2).
+   - **Pipeline #29 Kat. D Rest deferred** auf separaten Wiki-Konsolidierungs-Slot (~30+ Mikro-Findings in Concepts/Entities/Sources/Synthesis/Video-Transcripts; Aufwand 2-3h, kein Earnings-Window-Risk).
+
+**Sync-Set:** CORE-MEMORY.md §12.4 (BRK.B-Eintrag) + log.md (dieser Eintrag) + PIPELINE.md (BRK.B-Trigger update + #29 Status) + 00_Core/Faktortabelle.md (Offene-Scores-Delete) + 3 Wiki-Files (Depot-State + GPP + DEFCON-System). **KEIN** PORTFOLIO + Faktortabelle-Haupttabelle + score_history.jsonl + config.yaml + xlsx + flag_events.jsonl (kein Score-Event, kein FLAG-Trigger/Resolve).
+
+**Lehre:**
+- **Wait-Discipline §19.1 sauber gehalten:** Tag-0 = earnings-recap + 10-Q-Watch-Item-Quantifizierung erlaubt; Score-Sub-Block-Erhebung strikt Tag-+1. Token-Budget Tag 0 ~30-40k vs V Q2 28.04. Reinfall ~100-130k.
+- **PR-vs-GAAP-EPS-Read-Disziplin:** BRK-typisch sell-side auf Operating-EPS kalibriert (~$5,26 Beat), GAAP-EPS $4,68 ist Investment-Losses-noisy. Headline-Read „Beat" statt „Miss".
+- **10-Q gibt 3 BIG-Surprises ohne Score-Move-Konflikt:** Cash-Pile-Rekord + Net-Sale-Welle + erste Major-M&A — alle Tag-+1-Score-relevant aber methodisch sauber als Snapshot-Watch-Items dokumentiert, nicht als Score-Hebel im Tag-0-Slot eingerechnet.
+- **Cleanup-Welle parallel im Earnings-Window funktioniert:** orthogonale Doku/Wiki-Edits (kein Skill-/Spec-/Schema-Touch) sind Frozen-State-kompatibel und nutzen die PR-Wartezeit produktiv. Drift-Surface 4 Files (Faktortabelle redundant + Wiki-Drift) eliminiert.
+- **GPP-Frontmatter-Body-Drift** (Frontmatter „2-Pt.-Metrik integriert" vs Body „Session 2 verworfen") = klassischer Wiki-Fail-Pattern bei Konzept-Refactor — Body-Sektion-Append ohne Frontmatter-Sync. Pre-Wiki-Konsolidierungs-Slot Audit-Item.
+
+**Cross-Reference:**
+- §12.4 BRK.B (neuer Tag-0-Snapshot)
+- §19.1 INSTRUKTIONEN (Wait-Discipline-Spec)
+- PIPELINE BRK.B-Trigger update (Tag-0 DONE, Tag-+1 03./04.05. queued)
+- PIPELINE #29 Status (Kat. A DONE + Wiki-High-Value-Welle DONE; Kat. D Rest deferred)
+- Tag-+1-Vollanalyse 03./04.05. = erste reale §19.1-Anwendung (V Q2 lief vor §19.1-Spec, MSFT lief mit §19.1 PRE-Adoption)

@@ -11,14 +11,16 @@ related:
   - "[[QMJ-Faktor]]"
   - "[[DEFCON-System]]"
   - "[[Wissenschaftliche-Fundierung-DEFCON]]"
-defcon_block: "Fundamentals (GP/TA als 2-Pt.-Metrik) + Moat (GM-Trend-Bonus bleibt)"
-operative_regel: "GP/TA > 0,33 = 2 Pt. | 0,20–0,33 = 1 Pt. | <0,20 = 0 Pt. Sonderregel COST: Membership-Yield-Proxy analog zu bestehender Screener-Exception."
+defcon_block: "NICHT integriert (B13 design-rejected, § 27.1 Double-Counting — abgedeckt via ROIC>WACC + Moat-Rating)"
+operative_regel: "Konzept dokumentarisch beschrieben, nicht in DEFCON v3.7 aktiv. Hypothetisches Scoring-Schema unten ist Diskussions-Artefakt, kein Workflow."
 aliases:
   - "Novy-Marx-Gross-Profitability"
 
 ---
 
 # Gross Profitability Premium
+
+> ⚠️ **Status: `design-rejected` (Befund B13, § 27.1 Double-Counting).** Konzept ist hier dokumentarisch beschrieben, **NICHT** in DEFCON v3.7 integriert. Profitabilitäts-Dimension wird stattdessen via ROIC>WACC (Fundamentals) + Moat-Rating + GM-Trend-Bonus (Moat-Block) abgedeckt. Eigenständige GP/TA-Metrik wurde in Session 2 verworfen — siehe [[Wissenschaftliche-Fundierung-DEFCON]] Status-Matrix B13.
 
 ## Definition
 Der **Gross Profitability Premium** beschreibt die empirische Beobachtung, dass Unternehmen mit hoher Gross-Profits-to-Total-Assets-Ratio (GP/TA) systematisch höhere Renditen erzielen als Unternehmen mit niedriger GP/TA — und zwar mit **ähnlicher Vorhersagekraft wie Book-to-Market** (Value-Faktor). Die Arbeit etablierte Gross Profitability als eigenständigen Renditefaktor, der später in Fama/French's Five-Factor-Modell (2015) als Profitability-Faktor aufgenommen wurde.
