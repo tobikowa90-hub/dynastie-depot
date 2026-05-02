@@ -59,50 +59,6 @@
 
 20. **Ruflo-Integration — Phase 1.1 + Welle 0 + Phase 1.2-1.7 ✅ DONE (Commits `7b3c7d1` + `e983102`, 30.04.2026); Welle 3 (1.8/1.9) offen, strikt 05.-12.05.2026 post-BRK.B-Tag-+1** — Welle 3 = 1.8 Doctor-Periodic-Cadence + 1.9 Trajectory-Recording auf `dynastie-depot`-Skill. Frozen-State-Schutz für Earnings-Window: Skill-Edits sind in 1.9 erforderlich, daher kein Pre-BRK.B-Slot (Codex-Q3-LOW-Direktive). **SSoT-Pointer:** Plan-Vollkontext in `00_Core/RUFLO-INTEGRATION-PLAN.md` + operativer Runtime-Status in `00_Core/SYSTEM.md §Ruflo-Status` (AgentDB-State, Tool-Mode, Hooks-Status, Doctor-Snapshot-Triage, CLI-Flag-Bug-Notiz, Rollback-Pfad). **Welle-3-Sync-Set bei Execution:** SKILL.md (Trajectory-Hooks `trajectory-start`/`trajectory-end`) + SYSTEM.md §Ruflo-Status + log.md + ggf. CORE-MEMORY §13. **Phase-2-Eval ab ~13.05.** (Worker-Manager warn-only zuerst, aktive Komponenten Codex-Algebra-Gate-Pilot / AIDefence-pre-agent-input / Stream-Chain-Pipeline-Refactor erst nach Welle-3-Stabilität).
 
-29. **CodeRabbit-Restbefund-Cleanup-Welle (NEU 30.04.2026, post-PIPELINE #24 Commit `0253813`)** — Trigger CodeRabbit-Review 30.04. auf uncommitted changes vor #24-Commit. Nach Tool-spezifischen Findings (2 gefixt im #24-Commit) blieben **40+ pre-existing Findings** in Vault-Wiki + 2 Backlog-Items mit unterschiedlicher Priorität:
-
-   **Kategorie A (echte Drift in 00_Core/) — TEILWEISE GEFIXT 30.04. post-#24:**
-   - ~~Faktortabelle.md `Offene Scores`-Tabelle Line 108: TMO 64/D2/18.04. statt 67/D3/23.04.~~ **GEFIXT 30.04.** (CodeRabbit-Finding-#) — aber: gleiche Tabelle hat **weitere stale Zeilen** (ASML/AVGO/BRK.B/VEEV/SU/COST/RMS noch alle auf 17.04.2026 mit alten Daten/Triggers). Tabellen-Header sagt „0 von 11 — ALLE VOLLSTÄNDIG" → Tabelle ist redundant zur Haupttabelle Lines 50-62 und sollte entweder vollständig synchronisiert oder gelöscht werden. **Trigger:** Konsolidierungs-Slot. **Sync-Set:** Faktortabelle.md + log.md.
-
-   **Kategorie B (Code-Style/Doku, sytem_audit/) — GEFIXT 30.04.:**
-   - ~~`cross_source_reverse.py` Line 144: doubled `satelliten`-Pfad bei `location='satelliten'`~~ **GEFIXT** (Conditional-Pfad-Konstruktion, Vault-Root vs Sub-Dir).
-   - ~~`cross_source_reverse.py` Line 80: unused `context`-Param~~ **GEFIXT** (`# noqa: ARG001 — registry-contract uniformity §4.3`, analog `status_matrix.py`).
-   - ~~`markdown_header.py` Line 112: unused `context`-Param ohne noqa-Doku~~ **GEFIXT** (gleicher noqa-Stil).
-
-   **Kategorie C (Tool-Code) — GEFIXT 30.04. im #24-Commit:**
-   - `earnings_calendar.py` FileNotFoundError-Handling für config.yaml + `contextlib.suppress` für stdout-reconfigure.
-
-   **Kategorie D (Vault-Wiki-Findings, ~40+) — DEFERRED:**
-   - Typos, Link-Issues, Doku-Inkonsistenzen in `07_Obsidian Vault/.../wiki/concepts/*` (Gross-Profitability-Premium, analyst-stock-ratings, financial-fundamentals-analysis, news-sentiment-analysis, forward-returns-evaluation, chain-of-thought-prompting, defcon/DEFCON-System, defcon/Score-Archiv, …) + `wiki/entities/sp-500.md` (mehrere Zeilen) + `wiki/entities/rodoumta-koina.md` + `wiki/sources/papers/Arun-et-al-2025-FinReflectKG.md` + `wiki/synthesis/Depot-State-April-2026.md` + 2 chapters.json (Video-Transcripts) + 1 transcript.md.
-   - **Trigger:** Wiki-Konsolidierungs-Slot (separater Wiki-Modus-Lauf via WIKI-SCHEMA.md-Workflows). **Aufwand-Schätzung:** ~2-3h für 40+ Mikro-Edits, davon viele typo/grammar/link-fixes; einige wenige potential_issues mit echtem Doku-Drift (z.B. „Gross-Profitability-Premium.md" mehrfach geflaggt).
-   - **Sync-Set bei Execution:** betroffene Vault-Files + log.md (System-Event). **KEIN** 00_Core-Sync (reine Wiki-Pflege).
-
-   **Kategorie E (Test-Modernisierung, _smoke_test.py) — SKIP:**
-   - `_smoke_test.py` Line 408-412 nitpick: try/except → `pytest.raises`. **Skip-Begründung:** Phase-1-Override-Block deaktiviert TDD-London-Standard für 03_Tools/-Skills, kein pytest-Migrations-Druck. Wenn pytest später adoptiert wird (Phase 2+), gemeinsam migrieren.
-
-   **Cleanup-Welle DONE-Status post-Sync 30.04.:** Kategorien A (TMO-Drift) + B (3 system_audit-Files) + C (Tool-Code) GEFIXT. Kategorien D + E offen. Item bleibt aktiv, bis Kategorie-D-Wiki-Cleanup gelaufen ist; danach Item DONE-archivieren mit Verweis auf Konsolidierungs-Lauf.
-
-   **Update 02.05.2026 (post-BRK.B-Tag-0-Slot):**
-   - **Kategorie A weiter-cleanup DONE:** `00_Core/Faktortabelle.md` `Offene Scores`-Sektion (20 Zeilen, redundant 100%-Subset zur Haupttabelle, Drift-Surface) gelöscht und durch 2-Zeiler-Pointer auf Haupttabelle + PORTFOLIO ersetzt. Eliminiert systematische Drift-Quelle (Drei-Tabellen-Sync vs Zwei-Tabellen-Sync).
-   - **Kategorie D Wiki-High-Value-Mini-Welle DONE (4 Files):** (a) `wiki/synthesis/Depot-State-April-2026.md` Header ARCHIVED-Marker + Live-Nenner-Update; (b) `wiki/concepts/Gross-Profitability-Premium.md` Frontmatter-Body-Drift gefixt (`design-rejected`-Hinweis + `defcon_block`/`operative_regel` neutralisiert); (c) `wiki/concepts/defcon/DEFCON-System.md` Skill-Paket-Version v3.7.2 → v3.7.6 + Sparplan-Beispiel auf Live-Stand 30.04. (Nenner 7,5); (d) `wiki/concepts/defcon/Score-Archiv.md` Skip (kein materieller Drift).
-   - **Kategorie D Rest deferred** auf separaten Wiki-Konsolidierungs-Slot (~30+ Mikro-Findings in concepts/entities/sources/synthesis/Video-Transcripts; Aufwand 2-3h, kein Earnings-Window-Risk).
-   - **Item-Status:** Kat. A + B + C komplett GEFIXT; Kat. D 4 High-Value-Files DONE, ~30+ Mikro-Rest deferred. Item bleibt aktiv für Kat.-D-Restwelle, dann finales DONE.
-
-   **Update 02.05.2026 (spätnachmittag, CodeRabbit-via-WSL Fresh-Run-Welle, post-BRK-Pre-Brief):**
-   - **Kat. D MD-Subset (8 Files) DONE:** CodeRabbit-via-WSL Fresh-Run auf 6 Files (`analyst-stock-ratings`, `financial-fundamentals-analysis`, `news-sentiment-analysis`, `forward-returns-evaluation`, `chain-of-thought-prompting`, `sp-500`, `rodoumta-koina`, `Arun-et-al-2025-FinReflectKG`) → **0 Findings** auf Kat-D-Files (CodeRabbit-AI-Judge bestätigt manuelle Re-Lektüre). 2 echte Typos manuell gefixt vor Run (`unternehmensspecifischen` → `unternehmensspezifischen` in news-sentiment + `prognositiziertem` → `prognostiziertem` in forward-returns). Arun-FinReflectKG `subtype:`-Schema ist established convention in 25+ paper sources, kein Fix.
-   - **Bonus-Findings auf BRK Pre-Brief:** CodeRabbit-Run-1 (uncommitted) + Run-2 (--files Kat-D) zusammen 4 Findings auf BRK-Pre-Brief gefunden — 1 HIGH (Treasury-Stock-Unit-Error $4.568M → $4,568B = 1000× off), 2 MEDIUM (Insurance-UW „matches §12.4" Framing + Apple-%-Calc Cost-Basis-vs-FV-Verwechslung), 1 Nitpick (Markdown-Tabellen-Leerzeile). Alle 4 Fixes appliziert. Validation-Wert für Pre-Brief-Material vor Vollanalyse-Slot extrem hoch.
-   - **Raw/-Subset deferred (User-Decision):** 2× `chapters.json` + 1× `transcript.md` in `raw/videos/updating-system/` per WIKI-SCHEMA Z.11 „You never modify files under `raw/`" formal verboten — User-Direktive: „Über die Dateien in raw reden wir danach nochmal" → separater Entscheidungs-Slot.
-   - **CRLF-Workaround dokumentiert:** WSL-git default `core.autocrlf=false` zeigt 130 Vault-Files als „dirty" gegen Windows-Repo (`core.autocrlf=true`) — symmetrischer 18.721/18.721-Diff = pure EOL-Normalization-Artefakt. Per-Process-Override via `GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.autocrlf GIT_CONFIG_VALUE_0=true` macht WSL-git mit Windows-View kompatibel. Memory-Update Pflicht: `reference_coderabbit_via_wsl.md` um CRLF-Workaround + `--files`-Scope-Caveat (auch uncommitted Files außerhalb der Liste werden mit-reviewed) erweitern.
-   - **Item-Status:** MD-Subset (8 Files) komplett VERIFIZIERT clean via CodeRabbit + 2 Typos gefixt. Kat. D MD-Subset = DONE. **Item bleibt aktiv NUR für raw/-Subset User-Decision** (3 Files); nach User-Decision finales DONE.
-
-   **Update 02.05.2026 (spätabends, raw/-Subset User-Decision = D-primär „Akzeptanz") — Item #29 FINALES DONE:**
-   - **Decision-Framework geprüft:** A) WIKI-SCHEMA-Klausel-Erweiterung → abgelehnt (Schema-Erosion asymmetrisch teuer, Slippery-Slope-Präzedenz für „cosmetic"). B) Re-Ingest → abgelehnt (sha256-Audit-Trail-Diskontinuität, hoher Aufwand für Kosmetik). C) Errata-Block in Source-Page → on-demand-Reserve falls späterer Search-/Lehr-Schmerz. D) Akzeptanz → **GEWÄHLT**.
-   - **Begründung D-primär:** WIKI-SCHEMA Z.11 „You never modify files under `raw/`" ist nicht Oversight, sondern **Design-Intent**: `transcript_sha256` + `chapters_sha256` im Source-Page-Frontmatter sind Audit-Anchor für Reproduzierbarkeit. Mutation von raw/ bricht den Anchor. Findings im Detail:
-     - `chapters.json` × 2 (`2026-04-22-dubibubii-claude-code-powerful-settings/` + `2026-03-10-jake-van-clief-folder-system-ai-agents/`): letzter Eintrag hat `615` / `1398` statt `615.0` / `1398.0` — pure JSON-numeric-type-Inkonsistenz (yt-dlp-Output-Artefakt), semantisch identisch, **kein Defekt**.
-     - `transcript.md` × 1: Whisper-ASR-Artefakte sind **erwarteter** Output. Quality-Gate-Tabelle (WIKI-SCHEMA Z.181-189) hat `manual_review: true`-Frontmatter-Marker exakt dafür designed. Korrekturen gehören semantisch in **Source-Page**, nicht in raw/.
-   - **C-Reserve-Klausel aktiviert (passiv):** Wenn zukünftig ein konkreter Search-/Lehr-Schmerz an einer Whisper-Transkript-Stelle auftritt → additiver „## Errata"-Block in der korrespondierenden `wiki/sources/videos/<kat>/<slug>.md`-Source-Page (raw/ bleibt unangetastet, sha256-Anchor intact). Reaktiver Pfad, kein proaktiver Audit.
-   - **Item-Status:** **PIPELINE #29 FINALES DONE — Komplett-Archivierung beim nächsten Konsolidierungs-Slot via CORE-MEMORY §13 Lifecycle-Eintrag + Removal aus Aktiv-Liste per Numbering-Convention (Gap signalisiert Archive).**
-
 ### 🔵 Deferred / Explizit zurückgestellt
 
 8. **v3.1 Cache-Refactor** — Plan `docs/superpowers/plans/2026-04-20-briefing-v3.1-cache-refactor.md`. Trigger: „262s im Alltag stört" ODER „>400s-Alert wiederholt".
