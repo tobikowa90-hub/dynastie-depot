@@ -1742,3 +1742,29 @@ Netto: ~-9 Pkt = Score 50/D2.
 - APPLIED-LEARNING.md v2.6 Bridge-Coherence-Erweiterung adressiert Meta-Review-Patch P7 (Pending-Insights-Pflege-Regel)
 - BRK.B Tag-+1 04.05. morgens bleibt Earnings-Slot — Bridge-Coherence Layer 1+2 jetzt coherent, Tag-+1-Vollanalyse hat Memory-State im Filesystem korrekt
 - Neue Memory `feedback_cwd_namespace_discipline.md` als Disziplin-Layer (User-Verhalten) komplementär zu `feedback_ruflo_memory_bridge_onedrive_pitfall.md` (infra/init-Layer) und `feedback_onedrive_edit_collision.md` (file-handle-Layer)
+
+
+## [2026-05-03] meta | PIPELINE #35 per Numbering-Convention removed — Layer-3-Rest in #20 Welle 3 folded-in
+
+**Trigger:** Sonntag-Abend-Check „Was geht heute am System ohne BRK.B-Frozen-State zu verletzen?". User wählte Item #35 (Memory-Namespace-Konsolidierung, Trigger laut PIPELINE „vor BRK.B Tag-+1 Vollanalyse 04.05. morgens").
+
+**Befund:** Item #35 ist faktisch durch — Bridge-Coherence-Welle Paket 2 vom 02.05. (commit `7733094`) hat Layer 1 (Filesystem: 15 Files Code→Dynastie-Namespace kopiert) + Layer 2 (Dynastie-`MEMORY.md`-Index 19→35) bereits umgesetzt. Layer 3 (AgentDB-Re-Import) ist explizit zur Welle 3 (Phase 1.9, 05.-12.05.) deferred — `mcp__ruflo__memory_import_claude` returned `imported=0` wegen WSL-Pfad-Isolation Linux-`~/.claude` vs Windows. Für heute (Sonntag) ist Layer 3 technisch nicht machbar.
+
+**Verifikation:** Glob auf beide Namespaces: Code-Namespace 16 Topic-Files, Dynastie-Namespace 36 Topic-Files; alle 16 Code-Files inhaltlich im Dynastie-Namespace vorhanden (15 unter selbem Namen, 1 als verbesserte Variante `coderabbit_cli_via_wsl.md`). Dynastie-`MEMORY.md` Header bestätigt: „Last consolidated: 2026-05-02 (Bridge-Coherence-Welle Paket 2 — 15 Files Code→Dynastie migriert/dupliziert + 1 neue Disziplin-Memory) | 35 topic files".
+
+**Aktion (Pipeline-Hygiene, scoring-neutral):**
+- PIPELINE.md Item #35-Block ganz entfernt (Numbering-Convention DONE-Removal, kein Strikethrough — analog #18, #29).
+- PIPELINE.md Item #20 (Ruflo-Integration) ergänzt um Layer-3-Pointer: „+ Layer 3 AgentDB-Re-Import (folded-in ex-#35 03.05.; Bridge-Coherence Layer 1+2 DONE 02.05. via commit `7733094`; Layer 3 wartet auf WSL-Pfad-Resolution)".
+- PIPELINE.md Footer Stand 30.04.→03.05. mit Removal-Notiz aktualisiert.
+
+**Sync-Set (Pipeline-Item-Removal, kein Score-Event):** PIPELINE.md (Removal + #20-Ergänzung + Footer-Bumpe) + log.md (dieser Eintrag). **NICHT touched:** PORTFOLIO/Faktortabelle/CORE-MEMORY/STATE.md/score_history/config.yaml/xlsx — kein Score/FLAG/Sparraten-Move, kein System-Lifecycle-Event (Layer 3 bleibt offen, reine Re-Verortung).
+
+**Lehren:**
+- Item-Rohr-Disziplin: Wenn ein Item innerhalb derselben Session eröffnet UND zu großen Teilen abgearbeitet wird (#35 NEU 02.05. + Paket 2 DONE 02.05.), aber Restanteil klar in ein bestehendes Welle-Item gehört, sofort fold-in statt frisches Item stehen lassen. Spart eine Removal-Welle später und vermeidet „Welche Pflicht ist heute noch offen?"-Re-Reads.
+- Bridge-Coherence Layer-Modell ist robust: Layer 1+2 können auch ohne Layer 3 produktiv sein (Filesystem + Index sind das, was menschlicher Reviewer + Auto-Memory-Bridge `allProjects=false` brauchen). Layer 3 (AgentDB) ist Performance-Add-On für Vector-Recall, nicht Korrektheits-Pflicht — Trajectory-Recording (Welle 3) ist erste Konsumenten-Schicht, die Layer 3 braucht.
+- Pipeline-Stand-Footer-Hygiene: Footer-Datum darf nicht auf 30.04. eingefroren bleiben, wenn am 02.05. ein Item ergänzt wurde. Lehre für nächste Pipeline-Edit-Welle: Footer-Bumpe immer mit-syncen.
+
+**Cross-Reference:**
+- PIPELINE #20 Ruflo-Integration (Welle 3 jetzt Layer-3-Verantwortlich)
+- BRK.B Tag-+1 04.05. morgens — Memory-State Filesystem+Index coherent für Vollanalyse
+- Bridge-Coherence-Welle 02.05. Paket 2 (commit `7733094` Detail-Eintrag oben)
