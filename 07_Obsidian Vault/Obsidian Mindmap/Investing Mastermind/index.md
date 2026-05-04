@@ -160,7 +160,7 @@ _(noch leer)_
 - [[RMS]] — Hermès International | DEFCON 🟢 4 | Score 68 | Non-US | Screener-Exception (ROIC 24% >> WACC)
 - [[VEEV]] — Veeva Systems | DEFCON 🟢 4 | Score 74
 - [[SU]] — Schneider Electric | DEFCON 🟢 4 | Score 69 | Non-US
-- [[BRKB]] — Berkshire Hathaway B | DEFCON 🟢 4 | Score 75
+- [[BRKB]] — Berkshire Hathaway B | DEFCON 🟡 3 | Score 71 (Q1 FY26 Tag-+1 04.05.: 75→71 Codex-R1-Korrektur, FLAG ✅ Clean Insurance-Exception, Sparrate 38€)
 - [[V]] — Visa Inc. | DEFCON 🟢 4 | Score 86
 - [[APH]] — Amphenol Corp. | DEFCON 🟡 3 | Score 63 | 🔴 FLAG (Score-basiert)
 - [[ASML]] — ASML Holding | DEFCON 🟡 3 | Score 68 | Non-US
