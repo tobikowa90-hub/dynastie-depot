@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 04.05.2026 (BRK.B Q1 FY26 Tag-+1 Vollanalyse + Codex-R1-REJECT-Korrektur — Score **75→71 (Δ-4)** post-R1-Sparring; D3/Sparrate 38€/FLAG ✅ Clean Insurance-Exception unverändert, keine Kaskade; korrigierte Sub-Karte F=35/M=19/T=1/I=10/S=6 — T-Block 200MA-Skala SKILL Z.603 strict 0/3, Sentiment +2 Annual-Meeting-Color V-Q2-Methodology-Drift entfernt, F-Block Forbes=Secondary kein +1-Lift; 15/15 Codex-HIGH-Antis pre-empted; 6 Q2-Methodology-Watches PIPELINE #36-#41)
+**Stand:** 04.05.2026 abends post-US-Close (BRK.B Q1 FY26 Tag-+1 Vollanalyse + Codex-R1-REJECT-Korrektur — Score **75→71 (Δ-4)** post-R1-Sparring; Schritt 7 backtest-ready ScoreRecord-Append `2026-05-04_BRK.B_vollanalyse` DONE mit kurs.referenz=close_of_score_datum yfinance-Close $468,52 USD; D3/Sparrate 38€/FLAG ✅ Clean Insurance-Exception unverändert, keine Kaskade; korrigierte Sub-Karte F=35/M=19/T=1/I=10/S=6 — T-Block 200MA-Skala SKILL Z.603 strict 0/3, Sentiment +2 Annual-Meeting-Color V-Q2-Methodology-Drift entfernt, F-Block Forbes=Secondary kein +1-Lift; 15/15 Codex-HIGH-Antis pre-empted; 6 Q2-Methodology-Watches PIPELINE #36-#41)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1

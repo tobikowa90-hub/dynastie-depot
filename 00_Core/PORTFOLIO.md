@@ -1,6 +1,8 @@
 # PORTFOLIO.md — Depot-Live-State
 
-**Stand:** 30.04.2026 (AVGO Forward-Vollanalyse Tag — Score 84→53, D4→D2, FLAG aktiv unverändert, Sparrate 0€ unverändert; Codex-R1+R2-Doppel-Review APPROVE Master-Reading 74% Confidence; ersetzt PIPELINE #18 ScoreRecord-Backfill durch echte Forward-Vollanalyse. MSFT Q3 FY26 Tag-+1 Vollanalyse 59→50, APH Q1 FY26 Tag-+1 63→61.)
+**Stand:** 04.05.2026 abends post-US-Close (BRK.B Q1 FY26 Tag-+1 Vollanalyse + Codex-R1-REJECT-Korrektur Score 75→71 Δ-4, D3/Sparrate 38€/FLAG ✅ Clean Insurance-Exception unverändert, keine Kaskade; Schritt 7 backtest-ready ScoreRecord-Append `2026-05-04_BRK.B_vollanalyse` DONE; Sub-Karte F=35/M=19/T=1/I=10/S=6 wortgenau persistiert; kurs.referenz=close_of_score_datum mit yfinance-Close $468,52 USD).
+
+> **Vorgeschichte (30.04.2026):** AVGO Forward-Vollanalyse 84→53, D4→D2, FLAG aktiv unverändert (Codex-R1+R2-Doppel-Review APPROVE Master-Reading 74% Confidence; ersetzt PIPELINE #18 ScoreRecord-Backfill). MSFT Q3 FY26 Tag-+1 Vollanalyse 59→50, APH Q1 FY26 Tag-+1 63→61.
 
 ## Verweise
 - [INSTRUKTIONEN.md §22](INSTRUKTIONEN.md#22-sparplan-formel-aktuell-18042026-v37) — Sparplan-Formel (Nenner-Berechnung)
