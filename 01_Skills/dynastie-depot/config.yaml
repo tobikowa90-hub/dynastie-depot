@@ -224,13 +224,13 @@ satelliten:
     name: "Berkshire Hathaway"
     typ: "Substanz / Holding / Float-Modell"
     defcon: 3
-    score: 75
-    score_datum: "2026-04-17"
-    score_valid_until: "2026-10-14"
+    score: 71
+    score_datum: "2026-05-04"
+    score_valid_until: "2026-10-31"
     flag: false
-    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 75 in 65-79-Range). Screener-Exception: Insurance/Float-Modell."
-    naechste_pruefung: "Q-Earnings Mai 2026"
-    scoring_notiz: "Score 75: P/B 1.44x (Screener-Exception). Moat 19/20 (Float $686B, BNSF, 60J Track-Record). Insider 9/10: Greg Abel $15.3M Open-Market. CapEx/OCF 45.6% (BNSF+BHE, kein FLAG). Schwächen: ROIC 5.6-7.8% GAAP, Technicals 4/10."
+    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 71 in 65-79-Range). Screener-Exception: Insurance/Float-Modell."
+    naechste_pruefung: "Q2 FY26 Earnings ~02./03.08.2026 — KHC-OTTI-Resolve + GEICO-UW-Decel-Trend-Re-Read + Form-13F-Apple-Trim-Magnitude (mid-Mai 14.05.) + Buyback-Cashflow-Discrepancy-Reconciliation + BHE-ETR-Wildfire-Settlement + OxyChem-Goodwill-Allocation-Refinement (#36-#41)"
+    scoring_notiz: "04.05.2026 Q1 FY26 Tag-+1 Vollanalyse + Codex-R1-REJECT-Korrektur (§19.1 BRK-Ausnahme: Filing-Trigger 02.05. Sa, kein Q-Call): Score **75→71 (Δ-4)** post-R1-Sparring; D3 unverändert (65-79-Band 6pt-Puffer), FLAG ✅ Clean Insurance Exception unverändert, Sparrate 38€ unverändert, keine Kaskade. **Korrigierte Sub-Score-Karte:** F=35 (Forbes-Cash-Reconciliation ist Secondary, 10-Q p.2-3 ist Primary; Pre-Brief §7 NEUTRAL-mit-Caveat-Empfehlung gilt → kein +1-Lift) | M=19 (Wide-Konsens 3 Quellen carryover) | T=1 (SKILL.md Z.603 strict 'Kurs unter 200MA → 0/3'; ATH-Buffer-1 1/4 + RelStr 0/3 + 200MA 0/3) | I=10 (FRESH insider_intel.py 04.05.: 7 Form-4, Net Buy 6M $+15,3M Abel Open-Market, Diskr-90d $0 als legitimer Verify carryover-konsistent) | S=6 (Standard-Sentiment carryover; Annual-Meeting-Color +2 entfernt = V-Q2-Methodology-Drift-Lehre direkt, gehört in notizen-Feld nicht in Score). Codex-HIGH-Antis 15/15 pre-empted (#11 Insider-Form-4-Pull DONE LIVE, #15 Cash-Reconciliation RESOLVED via 10-Q-Primary). 6 PIPELINE-Methodology-Watches Q2-Carryover #36-#41 unverändert. P/B 1.44x Screener-Exception unverändert. Schritt 7 backtest-ready ScoreRecord-Append DEFER auf Tag-+1-Abend (close-of-04.05. nach US-Marktschluss; Provenance-Gate Check #3 kurs.referenz=close_of_score_datum sonst FAIL); ScoreRecord persistiert korrigierten Score 71 + Sub-Karte."
     ersatz: "MKL / FFH.TO"
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: USA

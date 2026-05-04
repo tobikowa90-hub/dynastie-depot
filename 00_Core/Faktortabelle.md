@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 30.04.2026 (AVGO Forward-Vollanalyse — Score 84→53, D4→D2, FLAG aktiv unverändert, Codex R1+R2-Pass 74% Confidence; MSFT 59→50, APH 63→61)
+**Stand:** 04.05.2026 (BRK.B Q1 FY26 Tag-+1 Vollanalyse + Codex-R1-REJECT-Korrektur — Score **75→71 (Δ-4)** post-R1-Sparring; D3/Sparrate 38€/FLAG ✅ Clean Insurance-Exception unverändert, keine Kaskade; korrigierte Sub-Karte F=35/M=19/T=1/I=10/S=6 — T-Block 200MA-Skala SKILL Z.603 strict 0/3, Sentiment +2 Annual-Meeting-Color V-Q2-Methodology-Drift entfernt, F-Block Forbes=Secondary kein +1-Lift; 15/15 Codex-HIGH-Antis pre-empted; 6 Q2-Methodology-Watches PIPELINE #36-#41)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -55,7 +55,7 @@
 <!-- DATA:SU -->
 | SU | ~10% 5J | 10.48% TTM | ~42% | 2.51x | Narrow/Wide | 69 | 🟡 3 | ✅ Clean | 2026-04-17 | H1 2026 Earnings Juli/Aug 2026 |
 <!-- DATA:BRK.B -->
-| BRK.B | N/A (Float-Modell) | 5.6–7.8% GAAP | N/A (Holdings) | Netto-Cash | Wide | 75 | 🟡 3 | ✅ Clean (Insurance Exception) | 2026-04-17 | Q-Earnings Mai 2026 |
+| BRK.B | N/A (Float-Modell) | 5.6–7.8% GAAP (Insurance-Cycle, Float-Spread > Standard-ROIC) | N/A (Holdings) | Netto-Cash $380B effektiv (T-Bill-Settlement-bereinigt; nominal $397,4B − $17,2B Payable, 10-Q p.2-3 Primary; Forbes/Bill-Stone Secondary-Confirm) | Wide | **71** (Codex-R1-REJECT-Korrektur 75→71 Δ-4) | 🟡 3 | ✅ Clean (Insurance Exception) | **2026-05-04** | **Q2 FY26 ~02./03.08.** — KHC-OTTI-Resolve + GEICO-UW-Decel-Trend + Form-13F Apple-Trim-Magnitude + Buyback-Cashflow-Reconciliation |
 <!-- DATA:APH -->
 | APH | 19,0% FY25 | 28% bereinigt §410 (CommScope-GW) vs WACC 14,30% | 36,9% FY25 | 1,6x Q1 FY26 (post-CommScope) | Wide | **61** | 🟠 2 | 🔴 FLAG (Score-basiert <65 D3) | **2026-04-30** | **Q2 FY26 ~23.07.** — China-Tax-ETR-27%-Verify + CommScope-Net-Lev-Verlauf + ROIC-GW-Bereinigung-Full-Year-Check |
 <!-- DATA:COST -->
