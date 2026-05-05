@@ -1854,3 +1854,22 @@ Netto: ~-9 Pkt = Score 50/D2.
 - **Memory-Persistenz-Pattern bestätigt:** bei Implementation-Plans >1000 Zeilen findet R1 systematisch 3-4 HIGH (Sync-Set-Disziplin + Pre-Logging-Trap + Closure-Test-Automatisierbarkeit), R2-Diff-Re-Review schließt 95% mit 4-5 reinen Text-Konsistenz-NITs. Cross-File-Spike war bei diesem Plan nicht erforderlich, weil HIGH-1/2/3 alle Plan-intern fixbar waren.
 - Lehre: Plan-v1.2 ist execution-ready, aber bewusst getrennte Session für Execution — frischer Kontext-Window verhindert Drift bei 31-Task-Sequenz mit ~700-Zeilen v1.2-Roadmap + 6-Files atomarem Commit + Folge-Commit + Backfill-Sequenzen. User-Direktive: „Execution auf jeden Fall mit Subagents. Aber in neuer Session! Wir brauchen ein frisches Kontextwindow".
 
+
+## [2026-05-05] commit | Plan-v1.2 USER-APPROVED + COMMITTED — atomarem Plan-v1.2-Commit + Folge-Commit META-REVIEW-Move
+
+- **Plan-v1.2 USER-APPROVED + COMMITTED** — `00_Core/RUFLO-INTEGRATION-PLAN.md` v1.1 → v1.2 (in-place Versions-Bump). Spec-Quelle `docs/superpowers/specs/2026-05-05-ruflo-superpowers-coexistence-design.md` (USER-APPROVED 05.05.). Architektur-Modell: Variante D — Capability-Layered Hybrid With Explicit Adoption Gates.
+- **PIPELINE-#42 (a)-(h) Closure-Bilanz:**
+  - (a) Welle-3 (1.8 Doctor-Periodic-Cadence + 1.9-Replace audit-trace-lite Pilot 2-3 Vollanalysen) — verankert in §Phase-1.8 + §Phase-1.9-Replace
+  - (b) C5 R2-1 + R2-2 Cross-File-Reststeller — closed (PIPELINE-#42-Sync-Set-Patch + CLAUDE.md Z.124-Harmonisierung)
+  - (c) Final-R1 MED-1 / MED-3 / Gap 1 / Gap-Hypothese — closed
+  - (d) Meta-Review-Patches P4 (§28.2→§28.1) / P7 (Pending-Insights-Pflege monatlich) / P8 (Kill-Criteria pro Phase, vollständige Tabelle) / P9 (Phase-2-Split 2a/2b) — alle in v1.2 verankert
+  - (e) ONNX-ROI-Gate als Phase-2-Eval-Slot (5 Schwellen, Aggregations-Regel 3/5 mit ≥2 objektiv, frühester Review ~01.07.) — verankert in §ONNX-ROI-Gate
+  - (f) Cleanup-Track 131 broken Refs (Re-Audit nach Plan-Commit, Live/Tot-Klassifizierung, separates PIPELINE-Item) — verankert in §Cleanup-Track
+  - (g) Adoption-Gates Stream-Chain + Hive-Mind (G1-G5, Phase-Review-Kadenz) — verankert in §Adoption-Gates
+  - (h) 00_Core-Cleanup-Disziplin (META-REVIEW.md → `05_Archiv/`) — verankert in §00_Core-Cleanup-Disziplin
+- **Atomarer Plan-v1.2-Commit Sync-Set (gem. Spec C2.1 + PIPELINE-#42 R2-1):** `00_Core/RUFLO-INTEGRATION-PLAN.md` (v1.2) + `CLAUDE.md` Override-Block (Z.124-Harmonisierung + M1-Registry + M2-Owner-Regel + M3-control-plane-Annotation + G3 3-Felder-Konsistenz-Regel + Authority-Tabelle 14 Superpowers + 6 Ruflo-Substrate + 2 BLOCKED-Workflow) + `00_Core/SYSTEM.md §Ruflo-Status` (Plan-v1.2-Sub-Block) + `00_Core/STATE.md` Last-Audit + `00_Core/log.md` (dieser Eintrag) + `00_Core/PIPELINE.md` (#42 → DONE + (h)-Folge-Sub-Item NEU)
+- **Folge-Commit geplant (00_Core-Cleanup-Disziplin, NACH diesem Commit):** `git mv 00_Core/RUFLO-PLAN-META-REVIEW.md 05_Archiv/RUFLO-PLAN-META-REVIEW.md` + log.md-Eintrag (separat) + PIPELINE.md-(h)-Folge-Sub-Item-DONE-Markierung (PIPELINE-Item 42.1) — wird als eigener Folge-Commit geführt; in diesem Plan-v1.2-Commit bleibt 42.1 als PENDING markiert.
+- **M1-Registry Stand 05.05.:** `default-workflow-layer = superpowers` / `ruflo-workflow-exceptions: []` (leer)
+- **Welle 3 PENDING 05.-12.05.2026** post-BRK.B-Tag-+1: 1.8 wöchentlich Doctor-Snapshot + 1.9-Replace audit-trace-lite Pilot (Pilot-Kandidaten: VEEV 27.05. → COST 28.05. → TMO Q2 ~Ende Juli optional)
+- **Cleanup-Track 131 broken Refs:** PIPELINE-Item separates (NICHT #42), Re-Audit-Snapshot in `05_Archiv/system-audit-snapshots/`
+

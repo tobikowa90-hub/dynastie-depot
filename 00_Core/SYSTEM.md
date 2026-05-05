@@ -54,6 +54,27 @@
 - **Doctor-Snapshot 30.04. post-1.2 (in `05_Archiv/ruflo-doctor-baseline-2026-04-30-post-1.2.txt`):** 7 PASS / 7 WARN / 0 FAIL. WARN-Triage: (a) 3× False-WARN durch WSL-Sicht-Limitation auf Win32-Setup (Claude-Code-CLI, Git-Repo, MCP-Config — alle existieren, Doctor sieht sie aus WSL nicht); (b) 3× Defer auf Phase 2+ (Daemon, API-Keys, TypeScript — irrelevant für Phase 1); (c) 1× echte Optimierung deferred (`agentic-flow npm-Modul` würde ONNX-Native-Embeddings statt Mock liefern, kein Phase-1-Blocker, eigene Mini-Welle bei Bedarf via `npx agentdb install-embeddings`).
 - **Coexistence-Spec v1.0 USER-APPROVED 2026-05-05 (Final-R2 closed):** `docs/superpowers/specs/2026-05-05-ruflo-superpowers-coexistence-design.md` (lokal, gitignore-konform). 7 Sektionen, **Variante D — Capability-Layered Hybrid With Explicit Adoption Gates**. Superpowers = Default-Workflow-Layer; Ruflo = Substrat-Layer; Workflow-Layer-Erweiterungen Ruflos per Default BLOCKED, Promotion nur via fail-closed Adoption-Gate. **Sparring-Vollkette:** R1-R7 inkrementell (~75k Tokens) + **Final-R1 Konsolidierungs-Review** (HIGH=2/MED=3/LOW=3 + Gaps) + **Final-R2 Diff-Re-Review** (HIGH-1+HIGH-2 spec-intern closed via M1 Named-Trigger-Pflicht + G3 3-Felder-Konsistenz + C2.1 `CLAUDE.md`-Sync-Set; MED-2 closed via W3 Feld-Typen-Tabelle). **Spec-Status:** approve-ready unter Bedingung C5 → User-Approval 05.05. abends vorgezogen vom 06.05.-Slot. **2 Cross-File-Reststeller** in C5 als nicht-optionaler Plan-v1.2-Pflicht-Carry-Forward verankert (R2-1 PIPELINE-#42-Sync-Set-Patch · R2-2 `CLAUDE.md` Z.124-Wortlaut-Harmonisierung) — beide blocking für Workflow-Promotion-Phase. **Welle-3-Empfehlung:** 1.8 Doctor-Periodic push, 1.9 Trajectory ersetzt durch audit-trace-lite (semi-manueller 2-3-Vollanalysen-Pilot, `05_Archiv/audit_trace_lite.jsonl`, 10-Feld-Schema mit ISO-8601-Pflicht für `timestamp` + Item-Form-Spec für `source_bundle`/`critical_evidence_refs` + Enum für `analysis_type`/`trace_quality`). ONNX-Aktivierung als bounded retrieval-quality experiment mit 5 ROI-Schwellen (mind. 3/5, davon 2 objektive). **Nächste Aktion:** `superpowers:writing-plans` für Plan-v1.2 (PIPELINE #42) inkl. C5-Closure + Final-R1-MED/Gaps + META-REVIEW-Archivierung post-Plan-v1.2-Commit.
 
+### Plan v1.2 (USER-APPROVED 2026-05-05) — Stand-Snapshot
+
+- **Plan-Version:** v1.2 (in `00_Core/RUFLO-INTEGRATION-PLAN.md`, Versions-Bump in-place)
+- **Spec-Quelle:** `docs/superpowers/specs/2026-05-05-ruflo-superpowers-coexistence-design.md` (USER-APPROVED 05.05.)
+- **Architektur-Modell:** Variante D — Capability-Layered Hybrid With Explicit Adoption Gates
+- **M1-Registry-Stand:** `default-workflow-layer = superpowers` / `ruflo-workflow-exceptions: []` (leer, Stand 05.05.2026)
+- **M2 Lifecycle-Hook-Owner:** SessionStart/SessionEnd Owner = `briefing-sync-check.ps1`; Ruflo-Hooks in `settings.json` = passive Intent
+- **Welle 3 split (Codex-R1 MED-1 Fix):**
+  - **Welle 3a (1.8 Doctor-Periodic-Cadence) PENDING 05.-12.05.2026** post-BRK.B-Tag-+1; wöchentlich; Snapshot-Pfad `05_Archiv/ruflo-doctor-history/`
+  - **Welle 3b (1.9-Replace audit-trace-lite Pilot) PENDING ab 27.05.2026**: 2-3 Vollanalysen — Pilot-Kandidaten chronologisch VEEV Q1 FY27 (27.05.) / COST Q3 FY26 (28.05.) / TMO Q2 ~Ende Juli optional; Schema in `05_Archiv/audit_trace_lite.jsonl` (NEU bei Schema-Erstellung ODER 1. Pilot-Append, je separater §18-Sync gem. Spec W6)
+- **Phase 2 deferred ab ~13.05.2026** — Sub-Split 2a (Memory-Controllers + Worker-Manager + AIDefence + §28.1 Codex-Dual-Mode + Drift-Detection) / 2b Stream-Chain ASTRONAUT-ARCH-Adoption-Gate-pflichtig
+- **Adoption-Gates BLOCKED:** Stream-Chain (Phase 2b), Hive-Mind `!BatchScan` (Phase 3.1)
+- **ONNX-ROI-Gate:** Phase-2-Eval-Slot ab ~13.05.2026; frühester Owner-Review ~01.07.2026; 5 Schwellen (3/5 mit ≥2 objektiv erforderlich)
+- **Cleanup-Track 131 broken Refs:** Re-Audit nach Plan-v1.2-Commit; PIPELINE-Item separates (NICHT #42)
+- **00_Core-Cleanup-Disziplin:** META-REVIEW.md → `05_Archiv/` als Folge-Commit nach Plan-v1.2-Commit
+- **Last Doctor-Baseline (Snapshot vor Plan-v1.2-Commit):** 30.04.2026 in `05_Archiv/ruflo-doctor-baseline-2026-04-30-post-1.2.txt` (7 PASS / 7 WARN / 0 FAIL); Welle 3a 05.-12.05. liefert wöchentliche Folgeschnappschüsse in `05_Archiv/ruflo-doctor-history/`
+- **Pre-Flight system_audit-Baseline (Plan-v1.2-Commit-Vorlauf):** 2026-05-05T11:41:49Z 3/3 PASS via `python 03_Tools/system_audit.py --minimal-baseline` (Bündel-1-Pre-Flight, in STATE.md Last-Audit-Block backed)
+- **AgentDB-Path:** WSL `/home/tobia/.local/share/ruflo/memory` (lokal, NICHT OneDrive)
+- **Tool-Mode aktiv:** `dynastie` (env `CLAUDE_FLOW_TOOL_GROUPS=memory,monitor`)
+- **Hooks:** 6 aktiv, 21 explizit `enabled: false` (M2-Owner-Regel-konform)
+
 ---
 
 ## §Earnings-Calendar-Status (NEU 30.04.2026, PIPELINE #24 Stufe 1)
