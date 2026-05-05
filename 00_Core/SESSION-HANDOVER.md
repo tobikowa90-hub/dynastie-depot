@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-04 abends post-Schritt-7-Vault-Push. **Primärer Resume-Trigger:** **Mai (mid 14.05.) Form-13F Apple-Trim-Magnitude-Verify** + **MSFT Insider-Block-Re-Score post-14.05.-Skip-Window** (PIPELINE #26).
+**Aktualisiert:** 2026-05-05 abends post-Coexistence-Spec-Draft. **Primärer Resume-Trigger:** **06.05. morgens — User-Review-Gate auf Coexistence-Spec** (`docs/superpowers/specs/2026-05-05-ruflo-superpowers-coexistence-design.md`, lokal/gitignore) → bei Approval Übergang zu `superpowers:writing-plans` für Plan-v1.2 (PIPELINE #42). **Sekundär:** 14.05. Form-13F Apple-Trim-Magnitude + MSFT Insider-Block-Re-Score (PIPELINE #26 + #37).
 
 ---
 
@@ -103,4 +103,4 @@
 
 ---
 
-*🦅 SESSION-HANDOVER.md | Dynasty-Depot | Stand: 04.05.2026 abends post-Schritt-7-Vault-Push. Resume-Trigger: 14.05. Form-13F + MSFT-Insider-Re-Score (PIPELINE #26 + #37).*
+*🦅 SESSION-HANDOVER.md | Dynasty-Depot | Stand: 05.05.2026 abends post-Coexistence-Spec-Draft (lokal, User-Review pending). Resume-Trigger: 06.05. Spec-Review-Gate (PIPELINE #42) → Plan-v1.2 via writing-plans. Sekundär: 14.05. Form-13F + MSFT-Insider-Re-Score (#26 + #37).*
