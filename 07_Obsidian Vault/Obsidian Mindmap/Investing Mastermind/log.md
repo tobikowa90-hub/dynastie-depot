@@ -1873,3 +1873,11 @@ Netto: ~-9 Pkt = Score 50/D2.
 - **Welle 3 PENDING 05.-12.05.2026** post-BRK.B-Tag-+1: 1.8 wöchentlich Doctor-Snapshot + 1.9-Replace audit-trace-lite Pilot (Pilot-Kandidaten: VEEV 27.05. → COST 28.05. → TMO Q2 ~Ende Juli optional)
 - **Cleanup-Track 131 broken Refs:** PIPELINE-Item separates (NICHT #42), Re-Audit-Snapshot in `05_Archiv/system-audit-snapshots/`
 
+
+## [2026-05-05] commit | Folge-Commit — META-REVIEW-Move (00_Core-Lean-Disziplin)
+
+- `git mv 00_Core/RUFLO-PLAN-META-REVIEW.md 05_Archiv/RUFLO-PLAN-META-REVIEW.md` (00_Core-Lean-Disziplin gem. RUFLO-INTEGRATION-PLAN v1.2 §00_Core-Cleanup-Disziplin)
+- Berechtigung: Datei ist selbst-deklariert „historisches Pre-Read-Artefakt" (Z. 11), alle Patches P4/P7/P8/P9 + offene Findings sind in v1.2-Roadmap verankert (§Meta-Review-Patches + §Kill-Criteria)
+- Refs in `00_Core/` post-Move (Pfad-Verweis `00_Core/RUFLO-PLAN-META-REVIEW.md`): 4 Treffer (PIPELINE.md 42.1 DONE-Bullet historische Aktionsbeschreibung / SESSION-HANDOVER.md Resume-Banner-Diff aus Pre-Cut-Stand / RUFLO-INTEGRATION-PLAN.md Z.523+536+537 Plan-eigene Move-Beschreibungen Pre-State/Aktion historisch korrekt / RUFLO-INTEGRATION-PLAN.md Z.301 Quellen-Verweis auf `00_Core/`-Pfad ist Pre-Move-Wortlaut). **Plan-Z.301 Update auf `05_Archiv/`-Pfad ist separates kleines Cleanup-Item für nächste Plan-Edition** (separates PIPELINE-Item, NICHT #42); SESSION-HANDOVER.md-Banner wird im nachgelagerten Resume-Refresh-Cleanup verarbeitet. Keine echten broken Refs (Filesystem-Links auf nicht mehr existente Pfade) — alle 4 Treffer sind historisch konsistente Text-Mentions oder Pre-Move-Quellenverweise.
+- PIPELINE-Item 42.1 ✅ DONE (Folge-Commit-SHA wird in Task 30 backfilled)
+
