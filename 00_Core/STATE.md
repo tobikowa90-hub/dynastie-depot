@@ -37,9 +37,9 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-05-05T13:16:43Z
-**Result:** 3/3 PASS
-**Run:** `python 03_Tools/system_audit.py --minimal-baseline` (Pre-Plan-v1.2-Commit-Baseline)
+**Timestamp (UTC):** 2026-05-05T13:26:36Z
+**Result:** 12/16 PASS (3 FAIL, 1 WARN)
+**Run:** `python 03_Tools/system_audit.py --full --json`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->

@@ -1879,5 +1879,11 @@ Netto: ~-9 Pkt = Score 50/D2.
 - `git mv 00_Core/RUFLO-PLAN-META-REVIEW.md 05_Archiv/RUFLO-PLAN-META-REVIEW.md` (00_Core-Lean-Disziplin gem. RUFLO-INTEGRATION-PLAN v1.2 §00_Core-Cleanup-Disziplin)
 - Berechtigung: Datei ist selbst-deklariert „historisches Pre-Read-Artefakt" (Z. 11), alle Patches P4/P7/P8/P9 + offene Findings sind in v1.2-Roadmap verankert (§Meta-Review-Patches + §Kill-Criteria)
 - Refs in `00_Core/` post-Move (Pfad-Verweis `00_Core/RUFLO-PLAN-META-REVIEW.md`): 4 Treffer (PIPELINE.md 42.1 DONE-Bullet historische Aktionsbeschreibung / SESSION-HANDOVER.md Resume-Banner-Diff aus Pre-Cut-Stand / RUFLO-INTEGRATION-PLAN.md Z.523+536+537 Plan-eigene Move-Beschreibungen Pre-State/Aktion historisch korrekt / RUFLO-INTEGRATION-PLAN.md Z.301 Quellen-Verweis auf `00_Core/`-Pfad ist Pre-Move-Wortlaut). **Plan-Z.301 Update auf `05_Archiv/`-Pfad ist separates kleines Cleanup-Item für nächste Plan-Edition** (separates PIPELINE-Item, NICHT #42); SESSION-HANDOVER.md-Banner wird im nachgelagerten Resume-Refresh-Cleanup verarbeitet. Keine echten broken Refs (Filesystem-Links auf nicht mehr existente Pfade) — alle 4 Treffer sind historisch konsistente Text-Mentions oder Pre-Move-Quellenverweise.
-- PIPELINE-Item 42.1 ✅ DONE (Folge-Commit-SHA wird in Task 30 backfilled)
+- PIPELINE-Item 42.1 ✅ DONE (Folge-Commit `d4817c4`)
+- **Final-Audit Post-Plan-v1.2** (`05_Archiv/system-audit-snapshots/2026-05-05-post-plan-v1.2-final.json`): 12/16 PASS, 1 WARN + 3 FAIL — alle pre-existing oder Plan-v1.2-induziert (nicht Commit-Bug):
+  - WARN `store_freshness`: portfolio_returns.jsonl Track-4-Lag 8 business days (pre-existing, SESSION-HANDOVER #Konsolidierungs-Slot)
+  - FAIL `markdown_header`: SYSTEM.md Stand-Header 30.04. Lag (pre-existing) + CORE-MEMORY.md Lag (pre-existing)
+  - FAIL `existence`: 138/288 broken Pfad-Refs (vs. 04.05.-Baseline 131 = Delta +19; Plan-v1.2-Commit fügte neue §-Anker zu RUFLO-INTEGRATION-PLAN.md hinzu, die als Refs detektiert werden); Cleanup-Track via PIPELINE 42.2 verfolgt Reduktion auf ≤20 in 4 Wochen
+  - FAIL `vault_backlinks`: 2191/2583 = 392 broken Vault-Backlinks (pre-existing, optional-category, separates Konsolidierungs-Slot-Item via PIPELINE #29 CodeRabbit-Restbefund)
+- **3-Felder-Konsistenz-Check Authority-Tabelle CLAUDE.md (Plan-Task 31 Step 3):** PASS — `ruflo-workflow-exceptions: []` leer (Z.155), Stream-Chain + Hive-Mind beide ASTRONAUT-ARCH-BLOCKED mit Named-Trigger-Klausel `NICHT aktiviert` (Z.216-217)
 
