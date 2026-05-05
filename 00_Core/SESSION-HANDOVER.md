@@ -1,6 +1,30 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-05 spätabends post-Plan-v1.2-Drafting + Codex-Sparring-R1-R2-Closure. **Primärer Resume-Trigger:** **Plan-v1.2-Execution via `superpowers:subagent-driven-development`** — Implementation-Plan ist **fertig geschrieben + 95%-Confidence-approved** unter `docs/superpowers/plans/2026-05-05-ruflo-superpowers-coexistence-plan-v1.2.md` (31 Tasks). Codex-R1 Verdict FIXES-NEEDED (3 HIGH + 4 MED + 1 LOW + Coverage-Gap-G3) → 9 Fixes appliziert → Codex-R2 Verdict APPROVE-WITH-NITS 95% → 4 NITs gefixt. Plan ist execution-ready. **Aktuelle Session beendet bewusst hier**, neue Session startet Subagent-Driven Execution mit frischem Kontext-Window. **Erster Schritt der neuen Session:** Plan komplett lesen (besonders Task 1 Pre-Flight + Self-Review §5 Subagent-Bündel-Empfehlung), dann sequenziell Subagent-Bündel 1 → 7 dispatchen (Bündel 1 Tasks 1-2 / Bündel 2 Tasks 3-9 / Bündel 3 Tasks 10-17 / Bündel 4 Tasks 18-21 CLAUDE.md / Bündel 5 Tasks 22-25 Sync-Files / Bündel 6 Tasks 26-27 atomar Plan-v1.2-Commit / Bündel 7 Tasks 28-31 META-REVIEW-Move + Final-Audit).
+**Aktualisiert:** 2026-05-05 abends post-Plan-v1.2-Execution-ALL-DONE. **Primärer Resume-Trigger:** **kein kritischer** — Plan-v1.2 vollständig committed + gepusht (5 Commits `1ede00f` → `ec3045f`), PIPELINE-#42 (a)-(h) closed, Welle 3 PENDING-Standard-Schedule. **Sekundär:** 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26.
+
+### ✅ Plan-v1.2-Execution ALL-DONE (2026-05-05)
+
+5 Commits auf `main` (post `3afe9ff` Backup-Pre-Commit):
+- `1ede00f` — atomarer Plan-v1.2-Commit (6 Files +808/-409: RUFLO-INTEGRATION-PLAN v1.2 + CLAUDE.md M1/M2/M3/G3 + SYSTEM.md §Ruflo-Status Plan-v1.2-Sub-Block + STATE.md Last-Audit + log.md + PIPELINE.md #42 DONE)
+- `1c89f07` — SHA-Backfill Plan-Commit-SHA in STATE.md + PIPELINE.md
+- `d4817c4` — Folge-Commit `git mv 00_Core/RUFLO-PLAN-META-REVIEW.md 05_Archiv/` + log.md + PIPELINE.md 42.1 DONE
+- `4ba5d33` — SHA-Backfill Folge-Commit-SHA `d4817c4`
+- `ec3045f` — Final-Audit-Delta-Doc + STATE.md Last-Audit-Refresh
+
+**Codex-Review B5 Mid-Session:** APPROVE-WITH-NITS **96%** (≥95%-Threshold; 0 HIGH / 0 MED / 1 LOW gefixt). **5/5 rg-F Closure-Tests:** R2-1 + R2-2 alle PASS. **3-Felder-Konsistenz Authority-Tabelle CLAUDE.md:** PASS (M1-Registry leer, Stream-Chain + Hive-Mind ASTRONAUT-ARCH-BLOCKED).
+
+**Final-Audit (`05_Archiv/system-audit-snapshots/2026-05-05-post-plan-v1.2-final.json`):** 12/16 PASS / 1 WARN / 3 FAIL — alle pre-existing oder Plan-v1.2-Doku-Drift, kein Commit-Bug. Broken-Refs-Delta vs 04.05.-Baseline: 131 → 150 (+19 durch neue v1.2-§-Anker). Cleanup-Track via PIPELINE 42.2.
+
+**Reset-Inkonsistenz-Lehre:** Resume-Direktive sagte wörtlich `git reset --soft HEAD~1 auf 28587c6`, aber HEAD war `d55d1eb` (zwischengelagerter Banner-Commit). Korrekte Lösung war `HEAD~2` zu `3afe9ff` (Backup-Anker), dann SESSION-HANDOVER.md unstage. Bei multi-commit-WIP-Resume: Direktive vs git-Tatsache prüfen, semantischer Intent zählt mehr als wörtliche Hop-Zahl. Memory `feedback_multi_commit_wip_resume.md` persistiert.
+
+### 🟢 Welle 3 — PENDING-Standard-Schedule
+
+- **3a (1.8 Doctor-Periodic-Cadence)** PENDING 05.-12.05.2026 post-BRK.B-Tag-+1: wöchentlich Snapshot in `05_Archiv/ruflo-doctor-history/` (manueller Trigger oder Konsolidierungstag-Slot)
+- **3b (1.9-Replace audit-trace-lite Pilot)** PENDING ab 27.05.2026: 2-3 Vollanalysen (VEEV 27.05. → COST 28.05. → TMO Q2 ~Ende Juli optional). Schema in `05_Archiv/audit_trace_lite.jsonl` (NEU bei Schema-Erstellung ODER 1. Pilot-Append, je separater §18-Sync gem. Spec W6).
+
+---
+
+### 📌 Vor-Cut-Stand (Plan-v1.2-Drafting + Sparring) — historisch, nicht mehr Resume-relevant
 
 **Path-Shorthand-Hint (Executor):** `00_Core/log.md` in Spec/PIPELINE/Plan ist Shorthand-Alias für die tatsächliche Vault-Datei `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md` (wie schon im Spec-Commit `3598fba` gehandhabt). Bei jedem Plan-Task, der „00_Core/log.md" sagt, wird in Wirklichkeit die Vault-log.md editiert. Plan- und Spec-Wortlaut bleiben aus Konsistenz-Gründen unverändert auf Shorthand. **Ebenfalls Plan-Datei `docs/superpowers/plans/2026-05-05-...-plan-v1.2.md` ist gitignored** (gitignore-Convention für `docs/superpowers/`) — durch frühere Sessions wurden ähnliche Spec/Plan-Dateien NICHT mit-committed. Plan ist trotzdem durabel im Filesystem präsent; Risiko nur bei OneDrive-Sync-Lock (Memory `feedback_onedrive_edit_collision.md`). **Sekundär:** 14.05. Form-13F Apple-Trim-Magnitude + MSFT Insider-Block-Re-Score (PIPELINE #26 + #37).
 
@@ -105,4 +129,4 @@
 
 ---
 
-*🦅 SESSION-HANDOVER.md | Dynasty-Depot | Stand: 05.05.2026 abends post-Coexistence-Spec-Draft (lokal, User-Review pending). Resume-Trigger: 06.05. Spec-Review-Gate (PIPELINE #42) → Plan-v1.2 via writing-plans. Sekundär: 14.05. Form-13F + MSFT-Insider-Re-Score (#26 + #37).*
+*🦅 SESSION-HANDOVER.md | Dynasty-Depot | Stand: 05.05.2026 abends post-Plan-v1.2-Execution-ALL-DONE (5 Commits 1ede00f → ec3045f committed + push). Resume-Trigger: kein kritischer — Welle 3a/3b Standard-Schedule. Sekundär: 14.05. Form-13F + MSFT-Insider-Re-Score (#26 + #37) · 27.05. VEEV · 28.05. COST.*
