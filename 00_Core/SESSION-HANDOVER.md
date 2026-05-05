@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-05 abends post-Plan-v1.2-Execution-ALL-DONE. **Primärer Resume-Trigger:** **kein kritischer** — Plan-v1.2 vollständig committed + gepusht (5 Commits `1ede00f` → `ec3045f`), PIPELINE-#42 (a)-(h) closed, Welle 3 PENDING-Standard-Schedule. **Sekundär:** 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26.
+**Aktualisiert:** 2026-05-05 spätabends post-Welle-3a-Kickoff. **Primärer Resume-Trigger:** **kein kritischer** — Plan-v1.2 vollständig committed + gepusht (5 Commits `1ede00f` → `ec3045f`), Welle 3a 1.8 Doctor-Periodic-Cadence ✅ ACTIVE seit heute abend (Off-Schedule-Kickoff Di, Snapshot-1 6 PASS / 8 WARN / 0 FAIL in `05_Archiv/ruflo-doctor-history/2026-05-05.txt`, Cadence-Anker Mo morgens fortan). **Sekundär:** 11.05. Mo nächster regulärer Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26.
 
 ### ✅ Plan-v1.2-Execution ALL-DONE (2026-05-05)
 
@@ -17,10 +17,10 @@
 
 **Reset-Inkonsistenz-Lehre:** Resume-Direktive sagte wörtlich `git reset --soft HEAD~1 auf 28587c6`, aber HEAD war `d55d1eb` (zwischengelagerter Banner-Commit). Korrekte Lösung war `HEAD~2` zu `3afe9ff` (Backup-Anker), dann SESSION-HANDOVER.md unstage. Bei multi-commit-WIP-Resume: Direktive vs git-Tatsache prüfen, semantischer Intent zählt mehr als wörtliche Hop-Zahl. Memory `feedback_multi_commit_wip_resume.md` persistiert.
 
-### 🟢 Welle 3 — PENDING-Standard-Schedule
+### 🟢 Welle 3 — Status
 
-- **3a (1.8 Doctor-Periodic-Cadence)** PENDING 05.-12.05.2026 post-BRK.B-Tag-+1: wöchentlich Snapshot in `05_Archiv/ruflo-doctor-history/` (manueller Trigger oder Konsolidierungstag-Slot)
-- **3b (1.9-Replace audit-trace-lite Pilot)** PENDING ab 27.05.2026: 2-3 Vollanalysen (VEEV 27.05. → COST 28.05. → TMO Q2 ~Ende Juli optional). Schema in `05_Archiv/audit_trace_lite.jsonl` (NEU bei Schema-Erstellung ODER 1. Pilot-Append, je separater §18-Sync gem. Spec W6).
+- **3a (1.8 Doctor-Periodic-Cadence) ✅ ACTIVE seit 05.05.2026** — Off-Schedule-Kickoff Di abends (Cadence-Anker Mo morgens fortan, nächster regulärer Lauf Mo 11.05.). Snapshot-1 in `05_Archiv/ruflo-doctor-history/2026-05-05.txt` (33 Zeilen, git-tracked via `.gitignore`-Negation): **6 PASS / 8 WARN / 0 FAIL**, Runtime 1226ms internal / 2s wall (weit unter 120s-Kill-Schwelle). WARN-Cluster stabil ggü. Baseline 30.04. + 1 Δ-WARN (Version-Freshness v3.6.11 → v3.6.30, bewusster Pin). Erfolgskriterium ≥4 Wochen ohne unerklärten FAIL-Drift läuft.
+- **3b (1.9-Replace audit-trace-lite Pilot) PENDING ab 27.05.2026:** 2-3 Vollanalysen (VEEV 27.05. → COST 28.05. → TMO Q2 ~Ende Juli optional). Schema in `05_Archiv/audit_trace_lite.jsonl` (NEU bei Schema-Erstellung ODER 1. Pilot-Append, je separater §18-Sync gem. Spec W6).
 
 ---
 

@@ -38,7 +38,7 @@
 
 ## §Ruflo-Status (NEU 30.04.2026, PIPELINE #20 Phase 1.2-1.7)
 
-- **Phase-Status:** 1.1 ✅ (28.04.) · Welle 0 WSL-Foundation ✅ (30.04. ~13:55) · **1.2-1.7 ✅ atomar (30.04. spätnachmittags)** · 1.8 Doctor-Periodic-Cadence + 1.9 Trajectory-Recording auf `dynastie-depot`-Skill **deferred → Welle 3 (05.-12.05.)** post-BRK.B-Tag-+1.
+- **Phase-Status:** 1.1 ✅ (28.04.) · Welle 0 WSL-Foundation ✅ (30.04. ~13:55) · **1.2-1.7 ✅ atomar (30.04. spätnachmittags)** · **1.8 Doctor-Periodic-Cadence ACTIVE seit 05.05.2026 (Welle 3a Off-Schedule-Kickoff Di — Cadence-Anker fortan Mo morgens, nächster regulärer Lauf Mo 11.05.)** · 1.9-Replace audit-trace-lite Pilot **PENDING Welle 3b ab 27.05.** (frühestens VEEV Q1 FY27).
 - **Runtime:** WSL Ubuntu-24.04 `/usr/bin/ruflo` v3.6.11 (Win32-`npx ruflo` ist `ERR_DLOPEN_FAILED` für `onnxruntime_binding.node` — Defender-Realtime-Block wahrscheinlichste Ursache; WSL-Bypass ist sauberer Pfad analog defeatbeta-MCP-Setup).
 - **MCP-Server:** `ruflo` registriert als `wsl -d Ubuntu-24.04 bash -c "/usr/bin/ruflo mcp start"` (siehe `claude mcp list`). Tools im `mcp__ruflo__*`-Namespace verfügbar (deferred per ToolSearch).
 - **AgentDB-Memory:** `.swarm/memory.db` (sql.js + HNSW, Schema 3.0.0, hybrid Backend). 20 Entries im `patterns`-Namespace (19 path-scoped Dynastie-Auto-Memory + 1 MEMORY.md-Index). Embeddings: **Mock** (Fallback) — ONNX-Native nicht in WSL-ruflo geladen, schema-konform aber semantisch schwach. Optimierung via `npx agentdb install-embeddings` deferred (kein Phase-1-Blocker).
@@ -62,14 +62,14 @@
 - **M1-Registry-Stand:** `default-workflow-layer = superpowers` / `ruflo-workflow-exceptions: []` (leer, Stand 05.05.2026)
 - **M2 Lifecycle-Hook-Owner:** SessionStart/SessionEnd Owner = `briefing-sync-check.ps1`; Ruflo-Hooks in `settings.json` = passive Intent
 - **Welle 3 split (Codex-R1 MED-1 Fix):**
-  - **Welle 3a (1.8 Doctor-Periodic-Cadence) PENDING 05.-12.05.2026** post-BRK.B-Tag-+1; wöchentlich; Snapshot-Pfad `05_Archiv/ruflo-doctor-history/`
+  - **Welle 3a (1.8 Doctor-Periodic-Cadence) ✅ ACTIVE seit 05.05.2026** (Off-Schedule-Kickoff Di, Cadence-Anker Mo morgens; Snapshot-Pfad `05_Archiv/ruflo-doctor-history/`). **Snapshot-1 (05.05.):** 6 PASS / 8 WARN / 0 FAIL, Runtime 1226ms internal / 2s wall (weit unter 120s-Kill-Schwelle). WARN-Triage unverändert ggü. Baseline 30.04. (3× WSL-Sicht-Limitation auf Win32 Claude-Code-CLI/Git-Repo/MCP-Config; 3× Defer auf Phase 2+ Daemon/API-Keys/TypeScript; 1× echte Optimierung deferred `agentic-flow`-NPM-Modul für ONNX-Native-Embeddings; 1× Version-Drift v3.6.11 → v3.6.30 — bewusster Pin). Erfolgskriterium ≥4 Wochen ohne unerklärten FAIL-Drift läuft.
   - **Welle 3b (1.9-Replace audit-trace-lite Pilot) PENDING ab 27.05.2026**: 2-3 Vollanalysen — Pilot-Kandidaten chronologisch VEEV Q1 FY27 (27.05.) / COST Q3 FY26 (28.05.) / TMO Q2 ~Ende Juli optional; Schema in `05_Archiv/audit_trace_lite.jsonl` (NEU bei Schema-Erstellung ODER 1. Pilot-Append, je separater §18-Sync gem. Spec W6)
 - **Phase 2 deferred ab ~13.05.2026** — Sub-Split 2a (Memory-Controllers + Worker-Manager + AIDefence + §28.1 Codex-Dual-Mode + Drift-Detection) / 2b Stream-Chain ASTRONAUT-ARCH-Adoption-Gate-pflichtig
 - **Adoption-Gates BLOCKED:** Stream-Chain (Phase 2b), Hive-Mind `!BatchScan` (Phase 3.1)
 - **ONNX-ROI-Gate:** Phase-2-Eval-Slot ab ~13.05.2026; frühester Owner-Review ~01.07.2026; 5 Schwellen (3/5 mit ≥2 objektiv erforderlich)
 - **Cleanup-Track 131 broken Refs:** Re-Audit nach Plan-v1.2-Commit; PIPELINE-Item separates (NICHT #42)
 - **00_Core-Cleanup-Disziplin:** META-REVIEW.md → `05_Archiv/` als Folge-Commit nach Plan-v1.2-Commit
-- **Last Doctor-Baseline (Snapshot vor Plan-v1.2-Commit):** 30.04.2026 in `05_Archiv/ruflo-doctor-baseline-2026-04-30-post-1.2.txt` (7 PASS / 7 WARN / 0 FAIL); Welle 3a 05.-12.05. liefert wöchentliche Folgeschnappschüsse in `05_Archiv/ruflo-doctor-history/`
+- **Last Doctor-Baseline (Snapshot vor Plan-v1.2-Commit):** 30.04.2026 in `05_Archiv/ruflo-doctor-baseline-2026-04-30-post-1.2.txt` (7 PASS / 7 WARN / 0 FAIL). **Welle-3a-Cadence ACTIVE seit 05.05.:** Snapshot-1 in `05_Archiv/ruflo-doctor-history/2026-05-05.txt` (6 PASS / 8 WARN / 0 FAIL, 1226ms internal). Δ ggü. Baseline: ein zusätzlicher WARN-Eintrag (Version-Freshness v3.6.11 → v3.6.30) — neu auftretender CLI-Drift-Hinweis, aber bewusster Pin (kein Action-Trigger). WARN-Cluster sonst stabil.
 - **Pre-Flight system_audit-Baseline (Plan-v1.2-Commit-Vorlauf):** 2026-05-05T11:41:49Z 3/3 PASS via `python 03_Tools/system_audit.py --minimal-baseline` (Bündel-1-Pre-Flight, in STATE.md Last-Audit-Block backed)
 - **AgentDB-Path:** WSL `/home/tobia/.local/share/ruflo/memory` (lokal, NICHT OneDrive)
 - **Tool-Mode aktiv:** `dynastie` (env `CLAUDE_FLOW_TOOL_GROUPS=memory,monitor`)
@@ -87,4 +87,4 @@
 
 ---
 
-*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 30.04.2026 (PIPELINE #24 Stufe 1 DONE — earnings_calendar.py + §Earnings-Calendar-Status; BRK.B 02.05. Drift in STATE/PORTFOLIO/PIPELINE-10d konkretisiert)*
+*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 05.05.2026 abends (Welle-3a Doctor-Periodic-Cadence ACTIVE — Snapshot-1 in `05_Archiv/ruflo-doctor-history/2026-05-05.txt`, 6 PASS / 8 WARN / 0 FAIL, 1226ms internal; Cadence-Anker Mo morgens fortan)*

@@ -14,6 +14,9 @@
 !05_Archiv/portfolio_returns.jsonl
 !05_Archiv/benchmark-series.jsonl
 !05_Archiv/schema-portfolio-returns.md
+# Exception: Ruflo Doctor-Periodic-Cadence Snapshots (Plan-v1.2 §Phase-1.8, Welle 3a; git-tracked für Verlaufs-Audit)
+!05_Archiv/ruflo-doctor-history/
+!05_Archiv/ruflo-doctor-history/*.txt
 
 # Skill-Pakete (ZIPs, nicht fuer Remote Agent)
 06_Skills-Pakete/
