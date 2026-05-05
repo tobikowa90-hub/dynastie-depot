@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-05 abends post-Coexistence-Spec-Draft. **Primärer Resume-Trigger:** **06.05. morgens — User-Review-Gate auf Coexistence-Spec** (`docs/superpowers/specs/2026-05-05-ruflo-superpowers-coexistence-design.md`, lokal/gitignore) → bei Approval Übergang zu `superpowers:writing-plans` für Plan-v1.2 (PIPELINE #42). **Sekundär:** 14.05. Form-13F Apple-Trim-Magnitude + MSFT Insider-Block-Re-Score (PIPELINE #26 + #37).
+**Aktualisiert:** 2026-05-05 abends post-Spec-User-Approval (Final-R2 closed). **Primärer Resume-Trigger:** **Plan-v1.2-Drafting via `superpowers:writing-plans`** — Coexistence-Spec USER-APPROVED 05.05. abends (vorgezogen vom 06.05.), Final-R1 + Final-R2 Codex-Reviews abgeschlossen (HIGH-1 + HIGH-2 spec-intern closed, MED-2 closed, 2 Cross-File-Reststeller in Spec-C5 als Plan-v1.2-Pflicht-Carry-Forward verankert). Plan-v1.2 muss tragen: Welle-3 Ausführung + C5 R2-1 (PIPELINE-#42-Sync-Set-Patch mit `CLAUDE.md` als Authority) + C5 R2-2 (`CLAUDE.md` Z.124 Wortlaut-Harmonisierung) + Final-R1-MED/Gaps + Meta-Review-Patches P4/P7/P8/P9 + ONNX-ROI-Gate + 131-Refs-Cleanup-Track + Adoption-Gate-Definitionen + 00_Core-Cleanup-Disziplin (META-REVIEW.md → 05_Archiv post-Plan-v1.2-Commit). Detail PIPELINE #42. **Sekundär:** 14.05. Form-13F Apple-Trim-Magnitude + MSFT Insider-Block-Re-Score (PIPELINE #26 + #37).
 
 ---
 
