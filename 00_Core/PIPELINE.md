@@ -86,7 +86,7 @@
    - (h) 00_Core-Cleanup-Disziplin verankert (META-REVIEW-Move-Reihenfolge)
 
    **Folge-Sub-Items:**
-   - 42.1 ✅ **META-REVIEW-Move DONE** — `git mv 00_Core/RUFLO-PLAN-META-REVIEW.md 05_Archiv/RUFLO-PLAN-META-REVIEW.md` (Folge-Commit `<follow-up-sha>`, 05.05.2026 abends)
+   - 42.1 ✅ **META-REVIEW-Move DONE** — `git mv 00_Core/RUFLO-PLAN-META-REVIEW.md 05_Archiv/RUFLO-PLAN-META-REVIEW.md` (Folge-Commit `d4817c4`, 05.05.2026 abends)
    - 42.2 📅 **Cleanup-Track 131 broken Refs** — Re-Audit nach Plan-v1.2-Commit, Klassifizierung Live/Tot-Refs, sub-welle-Commits bis broken-Refs-Count ≤ 20 in 4 Wochen (Trigger: nächste Konsolidierungstag-Slot ~Mitte Mai 2026, **separates PIPELINE-Item** `[NEU bei Re-Audit]`, NICHT #42).
    - 42.3 📅 **G3 3-Felder-Konsistenz-Check als Tooling** (Coverage-Gap-G3-Closure) — `03_Tools/system_audit.py` um 3-Felder-Audit erweitern (Spec G3 normativ: Audit-Lauf MUSS den 3-Felder-Check als Failure-Mode listen). Phase-2a-Slot ab ~13.05.2026; bis dahin manuelle Verifikation per Pre-Commit-Step (siehe Plan-Closure-Tests R2-1+R2-2 Task 26 Step 4 + Task 31 Step 3). **Separates PIPELINE-Item bei Implementierung**, NICHT #42.
 

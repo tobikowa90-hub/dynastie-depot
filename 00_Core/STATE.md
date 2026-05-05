@@ -44,6 +44,6 @@
 
 <!-- system-audit:last-audit:end -->
 
-**Plan-v1.2-Status:** committed `1ede00f` (atomarem Plan-v1.2-Commit + Folge-Commit META-REVIEW-Move `<follow-up-sha>`). Re-Audit-Trigger: post-Commit + Cleanup-Welle, broken-Refs-Delta in Cleanup-Track-Item-Eintrag dokumentiert.
+**Plan-v1.2-Status:** committed `1ede00f` (atomarem Plan-v1.2-Commit + Folge-Commit META-REVIEW-Move `d4817c4`). Re-Audit-Trigger: post-Commit + Cleanup-Welle, broken-Refs-Delta in Cleanup-Track-Item-Eintrag dokumentiert.
 
 *🦅 STATE.md Hub v2.0 | Dynasty-Depot | Navigation + Critical-Alert + Last-Audit | Stand: 05.05.2026 (Plan-v1.2 USER-APPROVED + COMMITTED — Coexistence Variante D normativ verankert, Welle 3 PENDING 05.-12.05.)*
