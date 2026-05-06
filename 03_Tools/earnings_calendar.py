@@ -275,18 +275,9 @@ def render_report(results: list[EarningsResult], today: date, alert_window: int,
 
 TOOL_VERSION = "2.0"
 
-DRIFT_STATUS_MAP = {
-    "DRIFT": "DRIFT",
-    "IN_TRIGGER": "IN_TRIGGER",
-    "SOON": "SOON",
-    "PAST": "PAST",
-    "STALE": "STALE",
-    "NO_DATA": "NO_DATA",
-}
-
 
 def _classify_drift(r: EarningsResult, today: date, alert_window: int,
-                    in_trigger: bool, is_drift: bool = False) -> str:
+                    is_drift: bool = False) -> str:
     """Map render_report markers -> JSON drift_status enum.
 
     `is_drift` = ticker is in the drifts set produced by render_report.
@@ -322,7 +313,6 @@ def build_json_payload(
     for r in results:
         cell = portfolio_trigger_cell(r.ticker, portfolio_text)
         cell_excerpt = cell[:120].replace("\n", " ")
-        in_trigger = bool(r.earnings_date) and trigger_mentions_date(cell, r.earnings_date)
         is_drift = r.ticker in drifts
         days_until = (r.earnings_date - today).days if r.earnings_date else None
         items.append({
@@ -332,7 +322,7 @@ def build_json_payload(
             "days_until": days_until,
             "source": r.source,
             "event_type": r.event_type,
-            "drift_status": _classify_drift(r, today, alert_window, in_trigger, is_drift=is_drift),
+            "drift_status": _classify_drift(r, today, alert_window, is_drift=is_drift),
             "portfolio_trigger_excerpt": cell_excerpt,
         })
 

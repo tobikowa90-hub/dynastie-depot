@@ -1979,3 +1979,19 @@ Netto: ~-9 Pkt = Score 50/D2.
   - User-Direktive „Das darf nicht mehr vorkommen" (06.05.) strukturell adressiert: SessionStart-Hook fängt Drift auch bei Mental-Off-Switch automatisch.
   - Trigger-Mapping zur Vollanalyse-Disziplin: SU/RMS Q1+Q3 Trading-Updates → Tag 0 direkt (kein Earnings-Call, analog BRK.B); H1/Annual Results → Tag +1 mit Transcript (§19.1).
 
+
+
+## [2026-05-06] cleanup | Earnings-Calendar v2.0 — Codex-R10-Review + Cleanup
+
+- **Codex-R10 Diff-Review post-Implementation** (Single-Pass via `codex:codex-rescue`, Session-ID `019dfe57-3a2b-7d50-bed3-9d6e8b7810c2`)
+  - Verdict CONCERNS / Confidence 82% / HIGH=1 / MED=2 / LOW=4
+  - HIGH-1 (AC1 nur 1 synthetic SU-Case statt 11-Satelliten-Integration) + MED-1 (AC2 Roundtrip statt jsonschema-validate) als **Lens-Disagreement** akzeptiert — Plan-v1.2-Wortlaut hat AC1/AC2 1:1 spezifiziert, Implementation matched Plan literal. Plan-Reviews R5-R9 (98% Go) haben die strenge Reading nicht angemahnt → keine Korrektur-Pflicht.
+  - MED-2 (Smoke-Anchor + Boundary-Test-Coverage-Gap) + LOW-3 (AC3a/b/c PASS-Evidence nicht im Diff) → Follow-Up PIPELINE #44.
+  - LOW-1 (`_classify_drift` unused `in_trigger`-Param) + LOW-2 (`DRIFT_STATUS_MAP` unused) → cleanup-fixed in diesem Commit.
+- **Cleanup-Patches** (`03_Tools/earnings_calendar.py`)
+  - `DRIFT_STATUS_MAP` (8 LOC) entfernt — definiert aber nirgends verwendet (Codex-LOW-2)
+  - `_classify_drift()`-Signature: `in_trigger`-Param entfernt (3 Stellen: signature + computation + call-site) — Param war im AC2-Test-Adaptation-Pass dead-API geworden, da `is_drift` aus `drifts`-Set die Klassifikation übernimmt (Codex-LOW-1).
+  - 11/11 Unit-Tests bleiben grün post-Cleanup.
+- **§18-Sync (System-Zustand-Change, kein Score-Event):** earnings_calendar.py (Cleanup) + PIPELINE.md (Item #43 Codex-Trail-Append + Item #44 NEU) + log.md.
+- **Sparring-Loop-Entscheidung:** Per Memory `feedback_codex_sparring_heuristic` (HIGH≥2 → Sparring-Loop) bleibt Single-Pass — HIGH=1 + Lens-Disagreement-Anteil. 2. Pass würde nichts bringen, was ohne Plan-Lens-Reframing nicht selbst-evident ist.
+- **Lehren:** (a) Codex-Diff-Review post-Implementation findet Lens-Drift zwischen Implementation und Plan-Reader-Erwartung, auch wenn Plan-Wortlaut 1:1 implementiert ist — wertvolle Re-Calibrierung der AC-Formulierungen für künftige Plans. (b) Subagent-Driven-Execution mit per-Task-fresh-Subagents hat 8 Tasks deterministisch durchgezogen ohne Context-Pollution — TDD-red→green-Pattern + Self-Review hat 1 spec-deviation (`is_drift`-Param) sauber dokumentiert und durchgereicht. (c) `superpowers:subagent-driven-development` ist CONDITIONAL-ALLOW für 03_Tools/-Engineering und hat sich hier bewährt; nicht für Investing-Workflows replizierbar (Authority-Tabelle unverändert).
