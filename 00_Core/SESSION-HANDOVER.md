@@ -1,6 +1,38 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-05 spätabends post-Welle-3a-Kickoff. **Primärer Resume-Trigger:** **kein kritischer** — Plan-v1.2 vollständig committed + gepusht (5 Commits `1ede00f` → `ec3045f`), Welle 3a 1.8 Doctor-Periodic-Cadence ✅ ACTIVE seit heute abend (Off-Schedule-Kickoff Di, Snapshot-1 6 PASS / 8 WARN / 0 FAIL in `05_Archiv/ruflo-doctor-history/2026-05-05.txt`, Cadence-Anker Mo morgens fortan). **Sekundär:** 11.05. Mo nächster regulärer Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26.
+**Aktualisiert:** 2026-05-06 spätnachmittags post-Earnings-Calendar-Stufe-2-Spec-Commit. **Primärer Resume-Trigger:** **Implementation-Plan-Phase für Earnings-Calendar Stufe 2** via `superpowers:writing-plans`-Skill. Spec: `docs/superpowers/specs/2026-05-06-earnings-calendar-stufe2-coverage-trigger-design.md` (Codex 4-Runden-Sparring 99% Confidence, alle 9 Findings ADDRESSED). PIPELINE #43. **Sekundär:** 11.05. Mo nächster regulärer Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26.
+
+### 📅 Earnings-Calendar Stufe 2 — Spec ✅ DONE (06.05.2026), Plan-Phase PENDING
+
+**Schmerz-Trigger:** SU Q1 FY26 Trading-Update 30.04. verpasst — Schneider/Hermès melden Q1+Q3 als „Trading Updates" (Revenue-only, kein Earnings-Call), yfinance markiert nur Q2/Q4 als formelles Earnings → Q1+Q3 fallen durch das Raster. ASML Mid-Quarter-Guidance-Update 30.04. (Tariff-Reaktion) ist out-of-scope für dieses Spec (separater Track via PIPELINE #6 SEC-EDGAR-Skill). User-Direktive: „Das darf nicht mehr vorkommen."
+
+**Codex-Sparring-Trail (vier Runden, 99% Final-Confidence):**
+- R1 (93%): 3 Architektur-Empfehlungen (A1 Override-Union / YAML-Schema / C1 Drift-Recovery-Scope) + 5 Blind-Spots — Lücke `system_audit.py`/`briefing-sync-check.ps1` ungesehen
+- R2 (97%): Files-Einsicht — `system_audit/types.py::CheckResult`-Schema-Adoption empfohlen ohne Hard-Import; `system_audit/checks/`-Plugin-Pattern bestätigt aber Calendar bleibt standalone (forward vs. backward-looking sauber)
+- R3 (96%): Spec-Review — 1 HIGH (AC1 nicht-deterministisch) + 5 MEDIUM + 4 LOW
+- R4 (99%): Diff-Review nach Fixes — alle 9 Findings ADDRESSED, keine Regressions
+
+**Architektur (committed im Spec):**
+- Override-Aggregation A1: yfinance.earnings_dates ∪ Override-YAML, earliest-wins, source-tagged
+- YAML-Schema mit `type` + `ir_calendar_url` pro Ticker, multi-year-tolerant; `yahoo_symbol` bleibt im Code (SSoT-Disziplin)
+- Drift-Recovery-Scope C1: Spec deckt nur Tooling, nicht Workflow-Orchestrierung
+- Trigger: Erweiterung `briefing-sync-check.ps1` (M2-Single-Owner-Hook-Regel respektiert; kein neuer Hook), guarded call + fail-soft + exit 0
+- Result-Schema-Shape orientiert an `system_audit/types.py::CheckResult` ohne Hard-Import (Loose-Coupling)
+- Tool bleibt standalone, NICHT als system_audit-Check (Boundary-Disziplin)
+- Test-Mockability: `data_source: Callable`-Parameter für Unit-Tests
+
+**Out-of-Scope (separate PIPELINE-Items, nicht im Spec):**
+- AVGO 2026-06-03 PORTFOLIO-Trigger-Update (echter neuer Drift, Live-Run 06.05. detektiert, 28d)
+- SU Q1 30.04. post-hoc Recovery (Tag-+1-Vollanalyse Late-Recovery — §19.1-Klausel-Erweiterung, gehört in dynastie-depot-Skill)
+- ASML Mid-Quarter-Guidance-Update Watch (Kandidat für Integration mit SEC-EDGAR-Skill PIPELINE #6)
+- File-Cache mit TTL (deferred bis Hook-Latenz in Praxis stört)
+- Cron-Versicherung (Workload-Datapunkt: Urlaub 1-2x/Jahr → ROI zu klein)
+
+**Sequenzierung-Hint im Spec §7 (für writing-plans):** Step 1-5 mit TBD-haltiger YAML + Mock/Fixture-Tests; Step 6 IR-Calendar-Pull = explizit DEPLOYMENT-GATE (vor §18-Sync-Commit muss `grep -c "TBD" earnings_schedule_overrides.yaml` = 0).
+
+**Sync-Set bei Implementation-DONE (kein Score-Event):** earnings_calendar.py + earnings_schedule_overrides.yaml + _test_earnings_calendar.py + briefing-sync-check.ps1 + INSTRUKTIONEN §27.6 + SYSTEM §Earnings-Calendar-Status + PIPELINE #43 + log.md.
+
+**Resume-Direktive:** `superpowers:writing-plans`-Skill aktivieren mit Spec-Pfad als Input. Plan-Datei wird typisch unter `docs/superpowers/plans/2026-05-06-earnings-calendar-stufe2-coverage-trigger-plan.md` (gitignored per Convention) abgelegt. Step 6 IR-Calendar-Pull braucht Live-Web-Access (se.com/finance.hermes.com/asml.com IR-Calendar-Pages) — kann vor Plan-Schreiben oder im Plan-Workflow als Pre-Implementation-Task laufen.
 
 ### ✅ Plan-v1.2-Execution ALL-DONE (2026-05-05)
 

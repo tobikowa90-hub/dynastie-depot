@@ -1939,3 +1939,30 @@ Netto: ~-9 Pkt = Score 50/D2.
 - **§18-Sync-Set (System-Zustand-Change Welle 2):** index.md + 5 Ticker-Pages + Quality-Trap.md (NEU) + ~80 Vault-Files Wikilink-Bulk-Fix + `03_Tools/system_audit/checks/vault_backlinks.py` + `00_Core/STATE.md` (Last-Audit + Critical-Alert + Footer) + `00_Core/PIPELINE.md` (42.4 ✅ DONE + Footer) + `00_Core/SYSTEM.md` + dieser log.md-Eintrag. **Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml — kein Score/FLAG/Sparraten-Event.
 - **Lehren:** (a) Bulk-Wikilink-Cleanup gut für SPACE-MISMATCH (257 Fixes ohne manuelle Edits). (b) Orphans-Detection deckte zwei nicht-trivial-fixbare Cases auf — explizite Mapping-Liste essentiell. (c) Markdown-Table-Pipe-Escape ist Audit-Edge-Case. (d) Author-Entity-Stubs sollten beim Paper-Ingest-Workflow Pre-Phase-Check sein.
 
+
+## [2026-05-06] spec | Earnings-Calendar Stufe 2 — Coverage + Auto-Trigger Spec ✅ DONE (PIPELINE #43, Codex-R1+R2+R3+R4 99% Confidence)
+
+- **Trigger:** SU Q1 FY26 Trading-Update am 30.04.2026 verpasst — Schneider/Hermès melden Q1+Q3 als „Trading Updates" (Revenue-only, kein Earnings-Call), yfinance.earnings_dates markiert nur Q2/Q4 als Earnings → Q1+Q3 fallen durch das Raster. ASML Mid-Quarter-Guidance-Update 30.04. (Tariff-Reaktion) ist out-of-scope für dieses Spec (separater Track via PIPELINE #6 SEC-EDGAR-Skill). User-Direktive 06.05.: „Wir haben Schneider Electric am 30.04. verpasst und das ASML Guidance Update als Reaktion! [...] Das darf nicht mehr vorkommen."
+- **Brainstorming-Session via `superpowers:brainstorming`-Skill** (Step-by-Step User-Approval-Gate-Disziplin):
+  - Q1 (Scope): Stufenmodell C — Earnings-Calendar fokussiert auf Coverage + Auto-Trigger; Mid-Quarter-Watch separater Track.
+  - Q2 (Coverage-Strategie): A — Hardcoded IR-Schedule-Override-Liste via externes YAML; alle 3 Non-US-Aktien (SU/RMS/ASML) mit, erweiterbar für Portfolio-Adds.
+  - Q3 (Trigger-Mechanik): B1 — Erweiterung `briefing-sync-check.ps1` (M2-Single-Owner-Hook-Regel); kein neuer Hook, kein Cron (Workload-Datapunkt: Urlaub 1-2x/Jahr → ROI-Schwelle nicht erreicht).
+- **Codex-Sparring 4 Runden, 99% Final-Confidence:**
+  - R1 (93%): 3 Architektur-Empfehlungen Q1=A1 / Q2-YAML / Q3=C1 + 5 Blind-Spots — Lücke `system_audit.py`/`briefing-sync-check.ps1` ungesehen
+  - R2 (97%): Files-Einsicht — `system_audit/types.py::CheckResult`-Schema-Adoption empfohlen ohne Hard-Import; Plugin-Pattern bestätigt aber Calendar bleibt standalone (forward vs. backward-looking)
+  - R3 (96%): Spec-Review — 1 HIGH AC1 nicht-deterministisch + 5 MEDIUM (TBD-Konsistenz, Scope-Drift IR-Verify, AC4 vague, YAML missing `ir_calendar_url`, Hook-Failure-Modes) + 4 LOW
+  - R4 (99%): Diff-Review nach Inline-Fixes — alle 9 Findings ADDRESSED, keine Regressions
+- **Architektur-Entscheidungen (committed im Spec):**
+  - Override-Aggregation A1: yfinance.earnings_dates ∪ Override-YAML, earliest-wins, source-tagged
+  - YAML-Schema mit `type` (trading_update_q1/q3, half_year_h1/h2, annual_results, capital_markets_day) + `ir_calendar_url` pro Ticker, multi-year-tolerant; `yahoo_symbol` bleibt im Code (SSoT-Disziplin)
+  - Drift-Recovery-Scope C1: Spec deckt nur Tooling
+  - Trigger via `briefing-sync-check.ps1`-Erweiterung (guarded call + fail-soft + exit 0 + JSON-only-Hook-Surface erhalten)
+  - Result-Schema-Shape orientiert an `CheckResult` ohne Hard-Import (Loose-Coupling)
+  - Tool bleibt standalone, NICHT als system_audit-Check (Boundary-Disziplin)
+  - Test-Mockability: `data_source: Callable`-Parameter für deterministische Unit-Tests
+- **Out-of-Scope (separate PIPELINE-Items):** AVGO 2026-06-03 PORTFOLIO-Trigger-Update (Live-Run-Befund 06.05., 28d) · SU Q1 30.04. post-hoc Recovery (§19.1-Late-Recovery) · ASML Mid-Quarter-Watch · File-Cache mit TTL · Cron-Versicherung.
+- **Spec-Doc:** `docs/superpowers/specs/2026-05-06-earnings-calendar-stufe2-coverage-trigger-design.md` (~330 LOC).
+- **§18-Sync-Set (System-Zustand-Change, kein Score-Event):** Spec-File (NEU) + `00_Core/PIPELINE.md` (Item #43 NEU + Footer) + `00_Core/STATE.md` (Critical-Alert + Footer) + `00_Core/SESSION-HANDOVER.md` (Banner-Refresh + neuer Resume-Direktive-Block) + dieser log.md-Eintrag. **Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / flag_events.jsonl / config.yaml / CORE-MEMORY.md — kein Score/FLAG/Sparraten-Event.
+- **Implementation-Plan-Phase PENDING in NEUER Session** (User-Direktive 06.05.: „Plan in neuer Session") via `superpowers:writing-plans`-Skill.
+- **Lehren:** (a) Brainstorming-Skill mit One-Question-at-a-Time + per-Sektion-Approval-Gate ist effektiv für Architektur-Entscheidungen; verhindert Premature-Implementation. (b) Codex-Diff-Review nach Spec-Fixes (R4) ist billiger Sparring-Schritt (~5-10k Token) und liefert High-Confidence-Final-Bestätigung — passt zur Memory-Heuristik `feedback_codex_sparring_heuristic`. (c) M2-Single-Owner-Hook-Regel im CLAUDE.md-Override-Block hat unmittelbar Architektur-Output gesteuert: kein neuer SessionStart-Hook, sondern Erweiterung des existierenden Owners — Override-Block-Disziplin zahlt sich bei Code-/Tooling-Entscheidungen aus.
+
