@@ -1,8 +1,12 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-06 spätnachmittags post-Earnings-Calendar-Stufe-2-Spec-Commit. **Primärer Resume-Trigger:** **Implementation-Plan-Phase für Earnings-Calendar Stufe 2** via `superpowers:writing-plans`-Skill. Spec: `docs/superpowers/specs/2026-05-06-earnings-calendar-stufe2-coverage-trigger-design.md` (Codex 4-Runden-Sparring 99% Confidence, alle 9 Findings ADDRESSED). PIPELINE #43. **Sekundär:** 11.05. Mo nächster regulärer Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26.
+**Aktualisiert:** 2026-05-06 spätabends post-Earnings-Calendar-Stufe-2-Implementation-DEPLOY (`09bf555`) + Codex-R10-Cleanup (`af34ae0`), beide gepusht auf `origin/main`. **Primärer Resume-Trigger:** **Morning-Briefing v3.0.6 Phase 4-6 — Brainstorming-Phase** via `superpowers:brainstorming`-Skill. **WICHTIG: Plan-Refresh statt Plan-Resume** — der existierende Plan `docs/superpowers/plans/2026-04-27-briefing-v3.0.5-implementation.md` ist seit 27.04. stale; System-Drift seit dem Plan-Schreiben ist substantiell (Ruflo Welle 3a aktiv, Earnings-Calendar Stufe 2 deployed mit ps1-Hook-Erweiterung als zweiter Trigger-Channel, Audit-Refactor 198→6 FAIL, Vault-Cleanup Backlinks 378→42, METAUDIT-Architecture, Briefing-Body v3.0.6 deployed seit 27.04. 17:38:50Z aber Prod-Trigger noch v2.1). Brainstorming muss neuen Plan ableiten der gegen aktuellen System-State arbeitet, nicht gegen 27.04.-Snapshot. **Sekundär:** 11.05. Mo nächster regulärer Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26.
 
-### 📅 Earnings-Calendar Stufe 2 — Spec ✅ DONE (06.05.2026), Plan-Phase PENDING
+### 📅 Earnings-Calendar Stufe 2 — Spec + Implementation ✅ ALL-DONE (06.05.2026)
+
+**Status:** Spec → Plan-v1.2 → 8-Task-Subagent-Driven-Execution → Codex-R10-Review-Cleanup. Alles committed + gepusht. Tool earnings_calendar.py v2.0 in Production (11 Unit-Tests grün, AC3a/b/c PASS, BRK.B-Smoke `2026-08-01` PASS, ps1-Hook-Erweiterung M2-konform fail-soft). Codex-Verdict CONCERNS / 82% — HIGH-1 + MED-1 als Lens-Disagreement akzeptiert (Plan-v1.2 hat AC1/AC2 1:1 spezifiziert), MED-2 (Smoke-Anchor + Boundary-Test-Coverage-Gap) als PIPELINE #44 Follow-Up. Live-Trigger der neuen Override-Mechanik: SU H1 30.07.2026 (erster Override-Earnings-Event).
+
+### 📅 Earnings-Calendar Stufe 2 — Spec-Phase Historie
 
 **Schmerz-Trigger:** SU Q1 FY26 Trading-Update 30.04. verpasst — Schneider/Hermès melden Q1+Q3 als „Trading Updates" (Revenue-only, kein Earnings-Call), yfinance markiert nur Q2/Q4 als formelles Earnings → Q1+Q3 fallen durch das Raster. ASML Mid-Quarter-Guidance-Update 30.04. (Tariff-Reaktion) ist out-of-scope für dieses Spec (separater Track via PIPELINE #6 SEC-EDGAR-Skill). User-Direktive: „Das darf nicht mehr vorkommen."
 
