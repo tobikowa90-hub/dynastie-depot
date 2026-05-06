@@ -297,17 +297,66 @@ def test_flag_mismatch_matrix() -> None:
 
 
 def test_existence_pass_on_existing_paths() -> None:
+    """Existing slashed-path → PASS; missing slashed-path → FAIL."""
     import tempfile
     from system_audit.checks.existence import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
-        (tdp / "target.py").write_text("", encoding="utf-8")
-        (tdp / "doc.md").write_text("Siehe `target.py` und `absent.py`.", encoding="utf-8")
+        (tdp / "sub").mkdir()
+        (tdp / "sub" / "target.py").write_text("", encoding="utf-8")
+        (tdp / "doc.md").write_text("Siehe `sub/target.py` und `sub/absent.py`.", encoding="utf-8")
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx, scan_files_override=[tdp / "doc.md"])
     assert result.status == "FAIL"
-    assert any("absent.py" in f.actual for f in result.failures)
+    assert any("sub/absent.py" in f.actual for f in result.failures)
     assert not any("target.py" in f.actual for f in result.failures)
+
+
+def test_existence_skips_bare_filenames() -> None:
+    """2026-05-06: Bare-Filename ohne Slash = Prosa-Mention, nicht Path-Ref."""
+    import tempfile
+    from system_audit.checks.existence import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "doc.md").write_text(
+            "Bare prose-mention: `archive_flag.py` und `STATE.md`.", encoding="utf-8"
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, scan_files_override=[tdp / "doc.md"])
+    # Bare-Filename ohne Slash wird übersprungen (Prosa-Mention).
+    assert result.status == "PASS"
+    assert result.failures == []
+
+
+def test_existence_skips_memory_files() -> None:
+    """2026-05-06: Memory-File-Pattern (feedback_*.md etc.) lebt außerhalb Repo."""
+    import tempfile
+    from system_audit.checks.existence import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        (tdp / "doc.md").write_text(
+            "Memory-Mention: `feedback_xyz.md` und `reference_foo.md`.", encoding="utf-8"
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, scan_files_override=[tdp / "doc.md"])
+    assert result.status == "PASS"
+    assert result.failures == []
+
+
+def test_existence_demotes_plan_findings_to_warning() -> None:
+    """2026-05-06: docs/superpowers/plans/* findings sind WARN, nicht FAIL."""
+    import tempfile
+    from system_audit.checks.existence import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        plan_dir = tdp / "docs" / "superpowers" / "plans"
+        plan_dir.mkdir(parents=True)
+        plan = plan_dir / "demo-plan.md"
+        plan.write_text("Future tool: `03_Tools/missing.py`.", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, scan_files_override=[plan])
+    assert result.status == "WARN"
+    assert all(f.severity == "warning" for f in result.failures)
 
 
 def test_existence_ignores_paths_with_spaces() -> None:
@@ -317,16 +366,16 @@ def test_existence_ignores_paths_with_spaces() -> None:
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "doc.md").write_text(
-            "Backtick ref without spaces: `foo.py`\n"
+            "Slashed missing path: `sub/foo.py`\n"
             "Backtick ref WITH spaces: `07_Obsidian Vault/log.md`\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx, scan_files_override=[tdp / "doc.md"])
-    # foo.py is missing → 1 error; space-ref is not detected at all → no second error
+    # sub/foo.py is missing → 1 error; space-ref is not detected at all → no second error
     assert result.status == "FAIL"
     assert len([f for f in result.failures if f.severity == "error"]) == 1
-    assert any("foo.py" in f.actual for f in result.failures)
+    assert any("sub/foo.py" in f.actual for f in result.failures)
     assert not any("Obsidian" in f.actual for f in result.failures)
 
 
@@ -1888,6 +1937,9 @@ if __name__ == "__main__":
     test_flag_mismatch_matrix()
     print("[OK] cross_source smoke tests passed")
     test_existence_pass_on_existing_paths()
+    test_existence_skips_bare_filenames()
+    test_existence_skips_memory_files()
+    test_existence_demotes_plan_findings_to_warning()
     test_existence_ignores_paths_with_spaces()
     print("[OK] existence smoke tests passed")
     test_skill_version_pass_fixture()

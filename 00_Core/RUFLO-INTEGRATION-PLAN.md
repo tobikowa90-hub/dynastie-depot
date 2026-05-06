@@ -520,7 +520,7 @@ Bei jedem Plan-/Spec-Commit, der ein File in `00_Core/` als historisch/abgelöst
 
 ### META-REVIEW-Move (konkret im Folge-Commit nach Plan-v1.2)
 
-**Pre-State:** `00_Core/RUFLO-PLAN-META-REVIEW.md` ist **selbst-deklariert „historisches Pre-Read-Artefakt"** (Z. 11 der Datei). Alle relevanten Patches P4/P7/P8/P9 sind in dieser v1.2-Roadmap verankert (`§Meta-Review-Patches`).
+**Pre-State:** `05_Archiv/RUFLO-PLAN-META-REVIEW.md` (vormals `00_Core/`, Move-Commit `d4817c4`) ist **selbst-deklariert „historisches Pre-Read-Artefakt"** (Z. 11 der Datei). Alle relevanten Patches P4/P7/P8/P9 sind in dieser v1.2-Roadmap verankert (`§Meta-Review-Patches`).
 
 **Move-Trigger (jetzt erfüllt mit Plan-v1.2):**
 

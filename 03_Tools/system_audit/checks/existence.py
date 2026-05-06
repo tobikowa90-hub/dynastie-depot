@@ -4,6 +4,15 @@ Spec §5.1 Check-4 + Codex-Patch P3. Scope: CLAUDE.md + STATE.md + PORTFOLIO.md 
 PIPELINE.md + SYSTEM.md + SESSION-HANDOVER.md + Pipeline-SSoT-referenzierte Plans
 (NOT glob all plans). Ignoriert URLs, Wikilinks `[[...]]`, Code-Fences,
 Whitelist-Pfade.
+
+False-Positive-Filter (2026-05-06):
+- Memory-File-Pattern (`feedback_*.md`, `reference_*.md`, `user_*.md`,
+  `project_*.md` ohne Slash) → skip (lebt in `~/.claude/.../memory/`).
+- Bare-Filename ohne Slash (Prosa-Mention wie `archive_flag.py`,
+  `STATE.md`) → skip wenn weder repo-relativ existent noch bekannte Memory-Klasse.
+- Alias `00_Core/log.md` → resolve auf
+  `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md`
+  (Shorthand-Konvention, dokumentiert in SESSION-HANDOVER.md).
 """
 from __future__ import annotations
 
@@ -22,7 +31,24 @@ WIKILINK_RE = re.compile(r"\[\[[^\]]+\]\]")
 WHITELIST_PREFIXES = (
     "_drafts/", "node_modules/", ".git/", "venv/", "__pycache__/",
     "http://", "https://",
+    "~/",  # User-Home-Refs (z.B. `~/.claude/CLAUDE.md`) liegen außerhalb Repo.
 )
+
+# Auto-Memory-Files leben außerhalb des Repos in `~/.claude/.../memory/`. Bare-Mentions
+# in Prosa wie `feedback_xyz.md` sind dokumentarische Pointer, keine Repo-Refs.
+MEMORY_FILE_RE = re.compile(r"^(feedback|reference|user|project)_[\w-]+\.md$")
+
+# Shorthand-Alias-Resolution: `00_Core/log.md` ist Convention für die Vault-log.md.
+# Dokumentiert in SESSION-HANDOVER.md (Path-Shorthand-Hint).
+ALIAS_RESOLUTIONS = {
+    "00_Core/log.md": "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md",
+}
+
+# Plan-Files unter `docs/superpowers/plans/` beschreiben Target-Architektur und
+# enthalten häufig forward-declared Refs (Tools, die der Plan erst bauen wird) —
+# Findings dort als WARN markieren statt FAIL. Active-Core-Refs bleiben unverändert
+# error-severity.
+PLAN_PATH_PREFIX = "docs/superpowers/plans/"
 
 
 def _iter_text_without_fences(text: str):
@@ -85,6 +111,13 @@ def run(
                 raw = m.group(1)
                 if any(raw.startswith(p) for p in WHITELIST_PREFIXES):
                     continue
+                # Memory-File-Pattern: lebt außerhalb Repo, Mention nicht Ref.
+                if MEMORY_FILE_RE.match(raw):
+                    continue
+                # Bare-Filename ohne Slash: Prosa-Mention, kein Path-Ref.
+                # (Echte Pfade in diesem Repo haben mindestens einen Folder-Prefix.)
+                if "/" not in raw:
+                    continue
                 if raw.endswith("SESSION-HANDOVER.md") and "00_Core" not in raw and legacy_handover.exists():
                     n_checked += 1
                     failures.append(FailureDetail(
@@ -95,21 +128,31 @@ def run(
                         hint="Kanonischer Pfad 00_Core/SESSION-HANDOVER.md verwenden",
                     ))
                     continue
+                # Alias-Resolution (Shorthand-Konvention).
+                resolved = ALIAS_RESOLUTIONS.get(raw, raw)
                 n_checked += 1
-                target = repo_root / raw if not raw.startswith("/") else Path(raw)
+                target = repo_root / resolved if not resolved.startswith("/") else Path(resolved)
                 if target.exists():
                     n_passed += 1
                 else:
+                    src_rel = str(src.relative_to(repo_root) if src.is_relative_to(repo_root) else src).replace("\\", "/")
+                    severity = "warning" if src_rel.startswith(PLAN_PATH_PREFIX) else "error"
                     failures.append(FailureDetail(
                         location=f"{src.relative_to(repo_root) if src.is_relative_to(repo_root) else src}:{lineno}",
                         expected="referenced path exists",
                         actual=raw,
-                        severity="error",
+                        severity=severity,
                         hint="Pfad umbenannt/geloescht? Referenz aktualisieren",
                     ))
 
     has_error = any(f.severity == "error" for f in failures)
-    status = "FAIL" if has_error else "PASS"
+    has_warning = any(f.severity == "warning" for f in failures)
+    if has_error:
+        status = "FAIL"
+    elif has_warning:
+        status = "WARN"
+    else:
+        status = "PASS"
 
     return CheckResult(
         name="existence", status=status,  # type: ignore[arg-type]
