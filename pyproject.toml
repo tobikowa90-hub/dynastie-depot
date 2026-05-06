@@ -1,0 +1,54 @@
+[project]
+# Tooling-Baseline für Ruff/typing/etc. — Dynastie-Depot ist kein installierbares Package,
+# diese Sektion existiert nur damit Lint-Tools eine konsistente Python-Version-Annahme haben.
+name = "dynastie-depot-tools"
+version = "0.0.0"
+requires-python = ">=3.14"
+
+[tool.ruff]
+target-version = "py314"
+required-version = ">=0.15.12"
+line-length = 100
+src = ["03_Tools"]
+force-exclude = true
+extend-exclude = [
+    "05_Archiv",
+    "07_Obsidian Vault",
+    ".claude",
+    "_extern",
+]
+
+[tool.ruff.lint]
+select = [
+    "E4",   # import errors
+    "E7",   # statement-level style errors
+    "E9",   # runtime errors
+    "F",    # pyflakes (unused, undefined, shadowing)
+    "I",    # isort (import sorting)
+    "UP",   # pyupgrade (modernize syntax for target version)
+    "B",    # flake8-bugbear (likely bugs)
+    "SIM",  # flake8-simplify (refactor hints)
+    "PTH",  # use pathlib over os.path
+    "RUF",  # ruff-specific rules
+]
+ignore = [
+    "E501",  # line too long — soft limit, formatter handles wrapping
+    "SIM108",  # ternary if/else — sometimes if/else is clearer
+    "RUF012",  # mutable class attributes — Pydantic uses these
+    "RUF001",  # ambiguous unicode in string — German umlauts (ä/ö/ü/ß)
+    "RUF002",  # ambiguous unicode in docstring — German umlauts
+    "RUF003",  # ambiguous unicode in comment — German umlauts
+]
+
+[tool.ruff.lint.per-file-ignores]
+"03_Tools/tests/**" = ["B", "SIM", "F841"]
+"03_Tools/system_audit/_smoke_*.py" = ["F401", "E402"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["schemas", "versions", "system_audit"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"

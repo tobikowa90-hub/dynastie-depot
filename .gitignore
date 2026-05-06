@@ -58,6 +58,9 @@ claude-flow.config.json
 __pycache__/
 *.pyc
 
+# Ruff cache (regenerable, per-machine)
+.ruff_cache/
+
 # Backtest-Ready ephemere Draft-Handoffs (Skill backtest-ready-forward-verify)
 03_Tools/backtest-ready/_drafts/*.json
 
