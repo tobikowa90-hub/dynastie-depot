@@ -753,18 +753,25 @@ Validation (Check-1) + Pipeline-Plan-Existenz (Check-6) + log-Aktualität (Check
 sind die minimalen strukturellen Invarianten, die ein Migrations-Run nicht
 brechen darf.
 
-### 27.6 Earnings-Calendar-Drift-Check (30.04.2026, earnings_calendar.py v1.0)
+### 27.6 Earnings-Calendar-Drift-Check (Stufe 2 — earnings_calendar.py v2.0, 06.05.2026)
 
-**Regel:** Bei Verdacht auf Earnings-Termin-Drift (z.B. FLAG-Ticker mit Mental-Off-Switch,
-Konsolidierungstag, Session-Start mit Critical-Alert-Lücke) `python 03_Tools/earnings_calendar.py --check --smoke-test` laufen lassen. Tool pullt yfinance-Future-Dates für die 11 Satelliten + differt gegen PORTFOLIO „Nächster Trigger"-Spalte.
+**Regel:** Earnings-Termin-Drift-Check läuft (a) automatisch im SessionStart-Hook (`briefing-sync-check.ps1`) als additive fail-soft-Sektion, (b) manuell on-demand via `python 03_Tools/earnings_calendar.py --check [--smoke-test] [--json]`. Tool pullt yfinance-Future-Dates UND mergt Override-YAML (`03_Tools/earnings_schedule_overrides.yaml`, earliest-wins-Union) für die 11 Satelliten + diff gegen PORTFOLIO „Nächster Trigger"-Spalte.
 
-**Exit-Verhalten:** 0 = clean, 1 = Smoke-Test-FAIL (BRK.B-Anker bricht — Tool-Bug oder Yahoo-Datenstand-Problem), 2 = Drift im `--alert-window` (default 10d).
+**Override-YAML:** SSoT für Earnings-Termine, die yfinance nicht oder unzuverlässig liefert (insbesondere Schneider/Hermès Q1+Q3 Trading-Updates und ASML-Sondertermine). Pflege 1×/Jahr nach IR-Calendar-Release der Non-US-Issuer (typisch November/Dezember für Folgejahr). `type`-Field treibt §19.1-Tag-0/Tag-+1-Decision: `trading_update_q*` = Tag 0 direkt (analog BRK.B), `half_year_*` / `annual_results` = Tag +1 mit Earnings-Call, `capital_markets_day` = Strategy-Update kein Score-Move.
 
-**Scope Stufe 1:** Tool diffed **nur** gegen PORTFOLIO „Nächster Trigger"-Spalte. STATE-Critical-Alerts + PIPELINE-Kritische-Triggers-10d/30d sind **nicht** im Tool-Diff abgedeckt — Operator muss bei detektierter PORTFOLIO-Drift STATE + PIPELINE manuell mitziehen (Single-Sync-Welle). Stufe 2 (`system_audit.py`-Integration) und Stufe 3 (SessionStart-Hook) deferred.
+**Output-Modi:**
+- Markdown (default): menschen-lesbarer CLI-Report mit Drift-Tabelle + Smoke-Test + Drift-Liste
+- `--json`: maschinen-lesbares Schema (orientiert an `system_audit/types.py::CheckResult`-Shape ohne Hard-Import). Konsumiert von `briefing-sync-check.ps1`.
 
-**Trigger:** Drift im 10-Tage-Fenster → manuell PORTFOLIO + STATE Critical-Alerts + PIPELINE-Kritische-Triggers-10d auf konkretes Datum konkretisieren. Kein automatischer Sync. Detail in `00_Core/SYSTEM.md §Earnings-Calendar-Status`.
+**Exit-Verhalten:** 0 = clean, 1 = Smoke-Test-FAIL nur mit `--smoke-test`-Flag (BRK.B-Anker bricht — Tool-Bug oder Yahoo-Datenstand-Problem), 2 = Drift im `--alert-window` (default 10d).
 
-**Rationale:** APH Q1 FY26 Calendar-Drift 29.04.2026 (Q1 nicht im Trigger-Stand wegen FLAG-Mental-Off-Switch + 4-Files-Manuell-Pflege ohne Auto-Cross-Check) bewies, dass manuelle Trigger-Pflege Drift produziert. Tool ist die strukturelle Mitigation; `--alert-window`-Default 10d entspricht der Earnings-Call-Wait-Discipline-Vorlaufzeit (§19.1) für Tag-0/Tag-+1-Vorbereitung.
+**Hook-Integration (M2-konform):** SessionStart-Owner bleibt `briefing-sync-check.ps1` (single-owner-rule). Drift-Block ist additive im selben Process, fail-soft (Tool-Crash, broken YAML, missing Python alle abgefangen — Hook bleibt Exit 0).
+
+**Scope Stufe 2:** Tool diffed weiterhin **nur** gegen PORTFOLIO „Nächster Trigger"-Spalte. STATE-Critical-Alerts + PIPELINE-Kritische-Triggers-10d/30d sind nicht im Tool-Diff abgedeckt — Operator muss bei detektierter PORTFOLIO-Drift STATE + PIPELINE manuell mitziehen (Single-Sync-Welle). Auto-PIPELINE-Stub-Erzeugung + Late-Recovery-Workflow sind separater Track (Skill-Layer, nicht Calendar-Tool — Spec §5 Out-of-Scope).
+
+**Trigger:** Drift im `--alert-window` → manuell PORTFOLIO + STATE Critical-Alerts + PIPELINE-Kritische-Triggers-10d/30d auf konkretes Datum konkretisieren. Detail in `00_Core/SYSTEM.md §Earnings-Calendar-Status` Stufe-2-Sub-Block.
+
+**Rationale:** Erweitert v1.0 (PIPELINE #24 deployed 30.04.) um (a) Coverage-Lücke bei Non-US-Quartalen ohne Earnings-Call (SU Q1 30.04. verpasst) und (b) Trigger-Lücke (manueller On-demand-Aufruf). Hook-Integration adressiert Mental-Off-Switch-Risiko strukturell statt prozedural. Codex-Sparring-Trail in Spec `docs/superpowers/specs/2026-05-06-earnings-calendar-stufe2-coverage-trigger-design.md`.
 
 ---
 

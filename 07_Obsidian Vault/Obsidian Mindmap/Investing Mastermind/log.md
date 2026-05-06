@@ -1966,3 +1966,16 @@ Netto: ~-9 Pkt = Score 50/D2.
 - **Implementation-Plan-Phase PENDING in NEUER Session** (User-Direktive 06.05.: „Plan in neuer Session") via `superpowers:writing-plans`-Skill.
 - **Lehren:** (a) Brainstorming-Skill mit One-Question-at-a-Time + per-Sektion-Approval-Gate ist effektiv für Architektur-Entscheidungen; verhindert Premature-Implementation. (b) Codex-Diff-Review nach Spec-Fixes (R4) ist billiger Sparring-Schritt (~5-10k Token) und liefert High-Confidence-Final-Bestätigung — passt zur Memory-Heuristik `feedback_codex_sparring_heuristic`. (c) M2-Single-Owner-Hook-Regel im CLAUDE.md-Override-Block hat unmittelbar Architektur-Output gesteuert: kein neuer SessionStart-Hook, sondern Erweiterung des existierenden Owners — Override-Block-Disziplin zahlt sich bei Code-/Tooling-Entscheidungen aus.
 
+
+## [2026-05-06] feat | Earnings-Calendar Stufe 2 ✅ DONE — Coverage + Auto-Trigger deployed
+
+- **Earnings-Calendar Stufe 2 ✅ DONE — Coverage + Auto-Trigger deployed**
+  - Tool `03_Tools/earnings_calendar.py` v1.0 → v2.0: Override-Aggregation (yfinance ∪ override, earliest-wins) + `--json`-Flag (Schema-Shape an `system_audit/types.py::CheckResult` orientiert ohne Hard-Import).
+  - YAML-SSoT `03_Tools/earnings_schedule_overrides.yaml` schließt Schneider/Hermès Q1+Q3-Lücke + ASML-Sondertermine. `ir_calendar_url`-Field für jährlichen Pflege-Lookup; `type`-Field treibt §19.1-Tag-0/Tag-+1-Decision.
+  - Hook-Integration: `03_Tools/briefing-sync-check.ps1` erweitert um additive fail-soft Drift-Sektion (M2-Single-Owner-Hook respektiert; SessionStart-Crash-Risiko durch try/catch + Exit-Code-Filter abgefangen).
+  - Tests: 11 Unit-Tests grün (`03_Tools/_test_earnings_calendar.py`, AC1+AC2+AC4a-d), Manual-Integration-Tests 3a/3b/3c PASS, BRK.B-Smoke-Anker nachgezogen (AC5), IR-Calendar-Pull SU/RMS/ASML verifiziert TBD-frei (AC6).
+  - §18-Sync (kein Score-Event): earnings_calendar.py + earnings_schedule_overrides.yaml + _test_earnings_calendar.py + briefing-sync-check.ps1 + INSTRUKTIONEN §27.6 + SYSTEM §Earnings-Calendar-Status + PIPELINE #43 DONE-Closure + log.md.
+  - Spec: `docs/superpowers/specs/2026-05-06-earnings-calendar-stufe2-coverage-trigger-design.md` (Codex R1+R2+R3+R4 99% Confidence). Plan: `docs/superpowers/plans/2026-05-06-earnings-calendar-stufe2-coverage-trigger-plan.md` (8 Tasks).
+  - User-Direktive „Das darf nicht mehr vorkommen" (06.05.) strukturell adressiert: SessionStart-Hook fängt Drift auch bei Mental-Off-Switch automatisch.
+  - Trigger-Mapping zur Vollanalyse-Disziplin: SU/RMS Q1+Q3 Trading-Updates → Tag 0 direkt (kein Earnings-Call, analog BRK.B); H1/Annual Results → Tag +1 mit Transcript (§19.1).
+

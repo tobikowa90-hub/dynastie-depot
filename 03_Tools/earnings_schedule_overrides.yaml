@@ -1,0 +1,43 @@
+# earnings_schedule_overrides.yaml — SSoT für IR-Termine, die yfinance nicht
+# zuverlässig liefert (Schneider/Hermes Q1+Q3 Trading-Updates, ASML H1-Backup).
+#
+# Pflege 1x/Jahr nach IR-Calendar-Release der Non-US-Issuer
+# (typisch November/Dezember für Folgejahr). Past-Filter im Tool eliminiert
+# obsolete Events automatisch.
+#
+# Ticker-Konvention: Dynastie-internal symbols (siehe
+# 01_Skills/dynastie-depot/config.yaml satelliten[]). Yahoo-Suffix-Mapping
+# happens in earnings_calendar.py YAHOO_MAP (SSoT) — NICHT hier doppelt pflegen.
+#
+# Confusion-Guard: SU = Schneider Electric (Yahoo: SU.PA, Euronext Paris),
+# NICHT Suncor Energy (Yahoo: SU bare, NYSE/TSX). YAHOO_MAP regelt das,
+# aber dieser Comment fängt den Lapsus früh ab.
+
+schema_version: "1.0"
+
+# Event-Type-Werte (relevant fuer Paragraph 19.1 Tag-0/Tag-+1-Decision; Sub-Workflow out-of-scope fuer Stufe 2):
+#   trading_update_q1, trading_update_q3 -> revenue-only, KEIN Earnings-Call -> Tag 0 direkt (analog BRK.B)
+#   half_year_h1, half_year_h2           -> mit Earnings-Call -> Tag +1 Vollanalyse
+#   annual_results                        -> mit Earnings-Call -> Tag +1 Vollanalyse
+#   capital_markets_day                   -> Strategy-Update -> KEIN Score-Move automatisch
+
+schedules:
+  SU:
+    ir_calendar_url: "https://www.se.com/ww/en/about-us/investor-relations/financial-results/"
+    events:
+      - {date: 2026-07-30, type: half_year_h1}
+      - {date: 2026-10-29, type: trading_update_q3}
+      # 2027-Annual: noch nicht von SE IR angekuendigt; Pflege-Workflow Nov/Dez 2026 nachziehen.
+  RMS:
+    ir_calendar_url: "https://finance.hermes.com/en/calendar"
+    events:
+      - {date: 2026-07-29, type: half_year_h1, note: "08:00 CEST"}
+      - {date: 2026-10-22, type: trading_update_q3, note: "08:00 CEST"}
+      # 2027-Annual: noch nicht von Hermes IR angekuendigt; Pflege-Workflow Nov/Dez 2026 nachziehen.
+  ASML:
+    ir_calendar_url: "https://www.asml.com/investors/financial-calendar"
+    events:
+      - {date: 2026-07-15, type: half_year_h1, note: "Q2 H1-cumulative; auch in yfinance, Override als Backup"}
+      # ASML hat Q3 als richtige Earnings-Call (yfinance covered) - kein Override noetig.
+      # Capital Markets Day 2026 nicht angekuendigt; ASML hatte 2024 Investor Day.
+      # 2027-Q4/Annual: ~Ende Jan 2027 erwartet, noch nicht angekuendigt.

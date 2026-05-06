@@ -68,34 +68,66 @@ try {
 # Unpushed commits only matter in bulk — <3 is just normal session churn.
 $unpushedThreshold = 5
 
-if ($dirtyCount -eq 0 -and $unpushedCount -lt $unpushedThreshold) {
+# Earnings-Calendar Drift-Check (additive, fail-soft)
+# Ruft earnings_calendar.py --json auf, parst Drift-Liste; 11 Tickers x ~500B JSON ~5KB total.
+$earningsBlock = $null
+$earningsDriftMsg = ""
+try {
+    $earningsRaw = & python "$projectRoot\03_Tools\earnings_calendar.py" --check --json 2>$null
+    if ($LASTEXITCODE -in 0,2 -and $earningsRaw) {
+        $earningsBlock = ($earningsRaw -join "`n") | ConvertFrom-Json
+    }
+} catch {
+    # Silent - Tool-Crash darf den Owner-Hook nicht brechen.
+    $earningsBlock = $null
+}
+
+if ($earningsBlock -and $earningsBlock.summary.drifts -gt 0) {
+    $driftItems = $earningsBlock.items | Where-Object { $_.drift_status -eq "DRIFT" }
+    $driftLines = $driftItems | ForEach-Object {
+        "  - $($_.ticker) $($_.earnings_date) ($($_.days_until)d, $($_.source))"
+    }
+    $earningsDriftMsg = "Earnings-Calendar Drift ($($earningsBlock.summary.drifts)):`n" + ($driftLines -join "`n")
+}
+
+if ($dirtyCount -eq 0 -and $unpushedCount -lt $unpushedThreshold -and -not $earningsDriftMsg) {
     Write-Output '{}'
     exit 0
 }
 
-# Dirty state → build message
+# Dirty state -> build combined message
 $parts = @()
 if ($dirtyCount -gt 0)   { $parts += "$dirtyCount uncommitted" }
 if ($unpushedCount -gt 0) { $parts += "$unpushedCount unpushed" }
-$detail = $parts -join ', '
-$msg = "BRIEFING-SYNC ausstehend: $detail in 00_Core/ + dynastie-depot config.yaml. Das Morning-Briefing 10:00 liest sonst veraltete Daten aus GitHub. Fuehre !SyncBriefing aus."
 
-# Fire Windows Toast (native WinRT, no dependencies)
-try {
-    [void][Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
-    [void][Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime]
+$msgSegments = @()
+if ($parts.Count -gt 0) {
+    $detail = $parts -join ', '
+    $msgSegments += "BRIEFING-SYNC ausstehend: $detail in 00_Core/ + dynastie-depot config.yaml. Das Morning-Briefing 10:00 liest sonst veraltete Daten aus GitHub. Fuehre !SyncBriefing aus."
+}
+if ($earningsDriftMsg) {
+    $msgSegments += $earningsDriftMsg
+}
+$msg = $msgSegments -join "`n`n"
 
-    $template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent(
-        [Windows.UI.Notifications.ToastTemplateType]::ToastText02
-    )
-    $textNodes = $template.GetElementsByTagName('text')
-    [void]$textNodes.Item(0).AppendChild($template.CreateTextNode('Dynasty-Depot: Briefing-Sync ausstehend'))
-    [void]$textNodes.Item(1).AppendChild($template.CreateTextNode("$detail in 00_Core/+config.yaml - !SyncBriefing vor naechster Session"))
+# Fire Windows Toast (native WinRT, no dependencies) - only when briefing-sync triggers
+if ($parts.Count -gt 0) {
+    try {
+        [void][Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime]
+        [void][Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime]
 
-    $toast = [Windows.UI.Notifications.ToastNotification]::new($template)
-    [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('DynastyDepot').Show($toast)
-} catch {
-    # Toast failed (non-Windows, missing WinRT, etc.) — terminal warning still fires via JSON
+        $template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent(
+            [Windows.UI.Notifications.ToastTemplateType]::ToastText02
+        )
+        $textNodes = $template.GetElementsByTagName('text')
+        [void]$textNodes.Item(0).AppendChild($template.CreateTextNode('Dynasty-Depot: Briefing-Sync ausstehend'))
+        [void]$textNodes.Item(1).AppendChild($template.CreateTextNode("$detail in 00_Core/+config.yaml - !SyncBriefing vor naechster Session"))
+
+        $toast = [Windows.UI.Notifications.ToastNotification]::new($template)
+        [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('DynastyDepot').Show($toast)
+    } catch {
+        # Toast failed (non-Windows, missing WinRT, etc.) - terminal warning still fires via JSON
+    }
 }
 
 # Emit JSON systemMessage to stdout for Claude Code hook consumption
