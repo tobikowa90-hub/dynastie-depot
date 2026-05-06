@@ -16,7 +16,7 @@ related:
   - "[[LLM-Investing-Bias-Audit]]"
   - "[[Li-Kim-Cucuringu-Ma-2026-FINSABER]]"
   - "[[news-sentiment-analysis|News Sentiment Analysis]]"
-raw: "[[FinDPO: Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs]]"
+raw: "[[FinDPO_ Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs]]"
 aliases:
   - "FinDPO: Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs"
 

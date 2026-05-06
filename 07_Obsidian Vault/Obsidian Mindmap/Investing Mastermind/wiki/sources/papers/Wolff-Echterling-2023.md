@@ -28,7 +28,7 @@ aliases:
 **Autoren:** [[dominik-wolff|Dominik Wolff]] · [[fabian-echterling|Fabian Echterling]]  
 **Journal:** Journal of Forecasting (Wiley) | DOI: 10.1002/for.3021  
 **Datenzeitraum:** Januar 1999 – März 2021 | S&P 500 (1164 historische Konstituenten) + STOXX Europe 600 (Robustheitscheck)  
-**Originaldokument:** [[Wolff-Echterling-2023|Stock picking with machine learning]] (raw/)
+**Originaldokument:** [[Stock picking with machine learning]] (raw/)
 
 ---
 

@@ -15,7 +15,7 @@ related:
   - "[[Knowledge-Graph-Finance-Architecture]]"
   - "[[Agentic-Reflection-Pattern]]"
   - "[[Knowledge-Graph-Architektur-Roadmap]]"
-raw: "[[A Look at FinReflectKG: AI-Driven Knowledge Graph in Finance]]"
+raw: "[[A Look at FinReflectKG_ AI-Driven Knowledge Graph in Finance]]"
 aliases:
   - "A Look at FinReflectKG: AI-Driven Knowledge Graph in Finance"
 

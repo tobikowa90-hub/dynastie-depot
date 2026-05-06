@@ -18,7 +18,7 @@ related:
   - "[[LLM-as-a-Judge-Evaluation]]"
   - "[[Knowledge-Graph-Architektur-Roadmap]]"
   - "[[insider-intelligence]]"
-raw: "[[FinReflectKG: Agentic Construction and Evaluation of Financial Knowledge Graphs]]"
+raw: "[[FinReflectKG_ Agentic Construction and Evaluation of Financial Knowledge Graphs]]"
 aliases:
   - "FinReflectKG: Agentic Construction and Evaluation of Financial Knowledge Graphs"
 

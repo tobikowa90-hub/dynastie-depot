@@ -22,7 +22,10 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         return CheckResult(name="vault_backlinks", status="SKIP", n_checked=0, n_passed=0,
                            failures=[], duration_ms=0, category="optional")
 
-    notes = {p.stem for p in vault.rglob("*.md") if "/raw/" not in str(p).replace("\\", "/")}
+    # Notes-Set inkludiert raw/-Files als valide Wikilink-Targets (Obsidian sieht
+    # sie als Vault-Notes), aber wir scannen sie nicht für outgoing wikilinks
+    # (raw-Imports sind unkurriert, ihre internen Links sind irrelevant).
+    notes = {p.stem for p in vault.rglob("*.md")}
 
     failures: list[FailureDetail] = []
     n_checked = 0

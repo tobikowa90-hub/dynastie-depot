@@ -27,7 +27,7 @@ aliases:
 **Autoren:** [[aakanksha-jadhav|Aakanksha Jadhav]] · [[vishal-mirza|Vishal Mirza]]  
 **Journal:** Frontiers in Artificial Intelligence (PMC, Open Access)  
 **Umfang:** Review von 84 Studien (2022 – Frühjahr 2025)  
-**Originaldokument:** [[llms-for-equity-stock-ratings|Large Language Models in equity markets applications, techniques, and insights]] (raw/)
+**Originaldokument:** [[Large Language Models in equity markets applications, techniques, and insights]] (raw/) — siehe auch [[llms-for-equity-stock-ratings|Concept-Page]]
 
 ---
 

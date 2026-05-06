@@ -65,4 +65,4 @@ Methodisch interessant: Pillar-Definition divergiert zu QMJ (Asness/Frazzini/Ped
 - [[Non-US-Scoring]] — Eurozone-Sector-Neutral-Hinweis relevant für ASML/SU/RMS
 - [[DEFCON-System]] — Fundamentals-Block validiert
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Source-only-Quelle
-- [[Frédéric Lepetit]], [[amina-cherief|Amina Cherief]], [[yannick-ly|Yannick Ly]], [[takaya-sekine|Takaya Sekine]] — Author-Entities
+- [[frederic-lepetit|Frédéric Lepetit]], [[amina-cherief|Amina Cherief]], [[yannick-ly|Yannick Ly]], [[takaya-sekine|Takaya Sekine]] — Author-Entities

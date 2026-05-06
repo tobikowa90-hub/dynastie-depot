@@ -18,7 +18,7 @@ related:
   - "[[Insider-Trading-Primary-Signal]]"
   - "[[DEFCON-System]]"
   - "[[Wissenschaftliche-Fundierung-DEFCON]]"
-raw_path: "../../../raw/papers/Profiting From Insider Transactions_ A Review Of The Academic Research.md"
+raw: "[[Profiting From Insider Transactions_ A Review Of The Academic Research]]"
 aliases:
   - "2iQ Insider Meta Review"
   - "2iQ-Insider-Meta-Review"
