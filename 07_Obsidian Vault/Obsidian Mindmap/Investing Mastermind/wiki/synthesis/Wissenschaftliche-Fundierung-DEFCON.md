@@ -43,7 +43,7 @@ concepts:
   - "[[Moat-Taxonomie-Morningstar]]"
   - "[[Buffett-Faktorlogik]]"
   - "[[QMJ-Faktor]]"
-  - "[[Chain-of-Thought Prompting]]"
+  - "[[chain-of-thought-prompting|Chain-of-Thought Prompting]]"
   - "[[F-Score-Quality-Signal]]"
   - "[[Gross-Profitability-Premium]]"
   - "[[Accruals-Anomalie-Sloan]]"

@@ -15,14 +15,14 @@ aliases:
 
 **Rolle:** Forscherin im Bereich LLM-Anwendungen in Finanzmärkten
 
-Co-Autorin von *[[Large Language Models in equity markets applications, techniques, and insights]]* — einem umfassenden Survey über 84 Studien (2022–2025) zu LLM-Anwendungen im Aktienmarkt: Kursprognose, Sentiment-Analyse, Portfolio-Management und algorithmischer Handel.
+Co-Autorin von *[[llms-for-equity-stock-ratings|Large Language Models in equity markets applications, techniques, and insights]]* — einem umfassenden Survey über 84 Studien (2022–2025) zu LLM-Anwendungen im Aktienmarkt: Kursprognose, Sentiment-Analyse, Portfolio-Management und algorithmischer Handel.
 
 ---
 
 ## Verbundene Seiten
 
-- [[Vishal Mirza]] — Co-Autor
+- [[vishal-mirza|Vishal Mirza]] — Co-Autor
 - [[Jadhav-Mirza-2025]] — Wiki Source-Seite (B11)
-- [[Large Language Models in equity markets applications, techniques, and insights]] — Originalpaper (raw)
-- [[AI in Investment Analysis]] — Synthese-Seite zum Thema
+- [[llms-for-equity-stock-ratings|Large Language Models in equity markets applications, techniques, and insights]] — Originalpaper (raw)
+- [[ai-in-investment-analysis|AI in Investment Analysis]] — Synthese-Seite zum Thema
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B11 (News-Positivity-Bias Meta-Bestätigung)

@@ -94,4 +94,4 @@ Stock Price = Steady-State Value (~2/3) + Anticipated Value Creation (~1/3)
 - [[Buffett-Faktorlogik]] — Buffett's Moat-Konzept als historischer Antezedent
 - [[DEFCON-System]] — Moat-Block (20 Pt.), 8-Quellen-Pflichtcheck (B4)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Source-only-Quelle (anchors B4 + erweitert es konzeptionell)
-- [[Michael J. Mauboussin]], [[Dan Callahan]] — Author-Entities
+- [[Michael J. Mauboussin]], [[dan-callahan|Dan Callahan]] — Author-Entities

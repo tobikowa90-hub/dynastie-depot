@@ -19,7 +19,7 @@ Co-Autor von *FinDPO* ([[Iacovides-Zhou-Mandic-2025-FinDPO]]). Imperial-Team unt
 
 ## Verbundene Seiten
 
-- [[Giorgos Iacovides]] — Erstautor
-- [[Danilo Mandic]] — Supervisor (Senior-Author)
+- [[giorgos-iacovides|Giorgos Iacovides]] — Erstautor
+- [[danilo-mandic|Danilo Mandic]] — Supervisor (Senior-Author)
 - [[Iacovides-Zhou-Mandic-2025-FinDPO]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B24

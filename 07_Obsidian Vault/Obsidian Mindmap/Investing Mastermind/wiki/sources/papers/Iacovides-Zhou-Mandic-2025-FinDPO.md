@@ -15,7 +15,7 @@ related:
   - "[[Sentiment-Strength-Logit-Extraction]]"
   - "[[LLM-Investing-Bias-Audit]]"
   - "[[Li-Kim-Cucuringu-Ma-2026-FINSABER]]"
-  - "[[News Sentiment Analysis]]"
+  - "[[news-sentiment-analysis|News Sentiment Analysis]]"
 raw: "[[FinDPO: Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs]]"
 aliases:
   - "FinDPO: Financial Sentiment Analysis for Algorithmic Trading through Preference Optimization of LLMs"
@@ -106,6 +106,6 @@ FinDPO-Portfolio-Evaluation: **Februar 2015 bis Juni 2021** (~6,4 Jahre), S&P-50
 - [[Sentiment-Strength-Logit-Extraction]] — Konzeptseite (logit-to-score-Konverter)
 - [[LLM-Investing-Bias-Audit]] — Validation-Pflicht vor Adoption (FINSABER-Pattern)
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — komplementäres Paper (empirische Bias-Evaluation)
-- [[News Sentiment Analysis]] — bestehendes Konzept, wird durch DPO-Kontext erweitert
+- [[news-sentiment-analysis|News Sentiment Analysis]] — bestehendes Konzept, wird durch DPO-Kontext erweitert
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B24
-- [[Giorgos Iacovides]], [[Wuyang Zhou]], [[Danilo Mandic]] — Author-Entities
+- [[giorgos-iacovides|Giorgos Iacovides]], [[wuyang-zhou|Wuyang Zhou]], [[danilo-mandic|Danilo Mandic]] — Author-Entities

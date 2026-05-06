@@ -23,8 +23,8 @@ Cucuringus weitere Forschungsfelder umfassen Spectral-Clustering, Random-Matrix-
 
 ## Verbundene Seiten
 
-- [[Weixian Waylon Li]] — Erstautor
-- [[Hyeonjun Kim]] — Co-Autor
-- [[Tiejun Ma]] — Co-Autor
+- [[waylon-li|Weixian Waylon Li]] — Erstautor
+- [[hyeonjun-kim|Hyeonjun Kim]] — Co-Autor
+- [[tiejun-ma|Tiejun Ma]] — Co-Autor
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B19

@@ -55,6 +55,6 @@ Wenn Verkauf thematisiert wird:
 ## Verlinkungen
 
 - [[DEFCON-System]] — Sparplan-Formel, Rebalancing ohne Verkauf
-- [[ETF-Core]] — Thesaurierende ETFs, Vorabpauschale, FIFO-Klon
+- [[etf-core|ETF-Core]] — Thesaurierende ETFs, Vorabpauschale, FIFO-Klon
 - [[Depot-State-April-2026]] — Aktueller Broker-State und Freibetrags-Nutzung
 - [[dynastie-depot-skill]] — Verhaltensregel 7: Steuer-Bewusstsein

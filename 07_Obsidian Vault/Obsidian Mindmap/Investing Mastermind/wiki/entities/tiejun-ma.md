@@ -13,7 +13,7 @@ aliases:
 
 # Tiejun Ma
 
-**Rolle:** Forscher AIAI (Artificial Intelligence Applications Institute), School of Informatics, University of Edinburgh — vermutlich Supervisor von [[Weixian Waylon Li]].
+**Rolle:** Forscher AIAI (Artificial Intelligence Applications Institute), School of Informatics, University of Edinburgh — vermutlich Supervisor von [[waylon-li|Weixian Waylon Li]].
 
 Co-Autor von *FINSABER* ([[Li-Kim-Cucuringu-Ma-2026-FINSABER]]). Beitrag: Senior-Author-Rolle, Framework-Design, Forschungsleitung im AIAI.
 
@@ -21,8 +21,8 @@ Co-Autor von *FINSABER* ([[Li-Kim-Cucuringu-Ma-2026-FINSABER]]). Beitrag: Senior
 
 ## Verbundene Seiten
 
-- [[Weixian Waylon Li]] — Erstautor (Doktorand)
-- [[Hyeonjun Kim]] — Co-Autor
-- [[Mihai Cucuringu]] — Co-Autor
+- [[waylon-li|Weixian Waylon Li]] — Erstautor (Doktorand)
+- [[hyeonjun-kim|Hyeonjun Kim]] — Co-Autor
+- [[mihai-cucuringu|Mihai Cucuringu]] — Co-Autor
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B19

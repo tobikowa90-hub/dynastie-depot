@@ -4,36 +4,44 @@ ticker: APH
 name: Amphenol Corporation
 sektor: Verbindungstechnologie / Elektro
 ersatz: ""
-score_aktuell: 63
+score_aktuell: 61
 defcon: 2
-flag: "FLAG aktiv (seit 09.04.2026) — Score-basiert"
+flag: "FLAG aktiv (seit 09.04.2026) — Score-basiert <65 D3-Threshold"
 sparrate: "0€"
-letzteAnalyse: 2026-04-17
-score_valid_until: 2026-10-14
-scoring_notiz_v37: "v3.7 Algebra: 61→63 (+2 Pt. Fix-1 Interaktionsterm milder wirkend, GM >30% rettet Fundamentals). FLAG bleibt Score-basiert. Label D3→D2 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment (Score 63 in 50-64-Range). FLAG überschreibt Sparrate = 0€ weiterhin."
-naechsterTrigger: "FLAG-Resolution / Q2 Earnings"
-related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[CapEx-FLAG]]"
-updated: 2026-04-18
+letzteAnalyse: 2026-04-30
+score_valid_until: 2026-10-30
+scoring_notiz_v37: "30.04.2026 Q1 FY26 Tag-+1 Vollanalyse: Score **63→61 (Δ-2)**, D2/FLAG aktiv unverändert. Codex-Review-Pass (1 HIGH Transmission-Artifact, 3 MEDIUM: M1 Bilanz-Mixed-Basis, M2 ROIC-Methodology-Watch, M3 Sentiment-7-halten). Score-Move-Driver: Multiple-Expansion (P/E 25→33,7) + CommScope-Net-Lev 1,6x — operativ massiv besser, bewertungsseitig QT-Trap §472-§478 deckelt 16 Pt. weg. Methodology-Watches Q2: China-Tax-ETR 27% strukturell + CommScope-Net-Lev 1,6x → <1,5x bis Q4 + ROIC-GW-Bereinigung Full-Year-Confirm."
+naechsterTrigger: "Q2 FY26 ~23.07.2026 — China-Tax-ETR-Resolve + CommScope-Net-Lev-Pfad + ROIC-GW-Bereinigung-Full-Year"
+related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[CapEx-FLAG]], [[Quality-Trap]]"
+updated: 2026-05-06
 ---
 
 # APH — Amphenol Corporation
 
-> **DEFCON 🟠 2 | Score 63/100 (v3.7) | FLAG aktiv (seit 09.04.2026)**
+> **DEFCON 🟠 2 | Score 61/100 (v3.7.6) | FLAG 🔴 aktiv (Score-basiert <65, seit 09.04.2026)**
 > Sparrate: 0€ | FLAG pausiert Sparrate (überschreibt DEFCON-Gewicht)
-> *(Label D3→D2 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment — Score unverändert, Sparrate durch FLAG weiterhin 0€)*
 
-## DEFCON v3.4 Analyse (15.04.2026)
+## Aktuelle Lage (Stand: 30.04.2026 — Q1 FY26 Tag-+1 Vollanalyse v3.7.6)
+
+Score **63→61 (Δ-2)**, D2/FLAG aktiv unverändert. Operativ massiver Beat, aber bewertungsseitig durch Quality-Trap-Cap (P/E 25→33,7 Multiple-Expansion + CommScope-Akquisitions-Verschuldung) gedeckelt. Codex-Review-Pass mit 1 HIGH (Transmission-Artifact) + 3 MEDIUM-Annotations.
+
+**Score-Move-Driver:** Multiple-Expansion deckelt 16 Pt. weg trotz Q1-Beat. CommScope-Integration-Phase = Net-Lev 1,6x, Pfad <1,5x bis Q4. China-Tax-ETR strukturell 27% (vs. 23% Pre-Q1-Niveau).
+
+## DEFCON v3.7.6 Analyse (30.04.2026)
 
 | Block | Score | Details |
 |-------|-------|---------|
-| Tariff CN Revenue | -- | 14.7% CN-Exposure (kein Revenue-FLAG, Schwelle 20%) |
-| Supply-Chain | -- | CN/MY Risk-Map aktiv — Produktionsverlagerungsrisiko |
+| Fundamentals | ~22/50 | QT-Trap §472-§478 Multiple-Expansion-Cap; Bilanz Mixed-Basis (CommScope Net-Lev 1,6x); ROIC-Goodwill-Bereinigung pending Full-Year-Confirm |
+| Moat | ~17/20 | Narrow-Wide (Connector-Spezialisierung), diversifizierte End-Märkte |
+| Technicals | ~6/10 | Konsolidierung post-Beat |
+| Insider | ~8/10 | Stabil |
+| Sentiment | ~7/10 | M3 halten (Codex-MED-3) |
 
-**Score-Verlauf:** 80 (Mrz 2026) → 61 (Apr 2026 v3.5) → 63 (17.04. v3.7 Algebra, Fix-1 milder).
+**Score-Verlauf:** 80 (Mrz 2026) → 61 (Apr 2026 v3.5) → 63 (17.04. v3.7) → **61 (30.04. v3.7.6 Forward)**
 
-**FLAG:** Aktiv seit 09.04.2026. Sparrate auf 0€ gesetzt bis FLAG-Resolution.
+**FLAG:** Aktiv seit 09.04.2026 (Score-basiert <65 D3-Threshold). Sparrate 0€ bis Score ≥65.
 
-**Nächste Aktion:** FLAG-Resolution / Q2 Earnings
+**Nächste Aktion:** Q2 FY26 ~23.07.2026 — Methodology-Watches: China-Tax + CommScope-Net-Lev + ROIC-GW-Full-Year.
 
 ## Tariff-Risiko-Hinweis
 

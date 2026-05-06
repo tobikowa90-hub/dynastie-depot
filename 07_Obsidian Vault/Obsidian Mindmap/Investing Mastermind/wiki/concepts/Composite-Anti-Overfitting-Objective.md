@@ -112,4 +112,4 @@ Track 5b FRED Regime-Filter optimiert über **1620 Combos** (hy_oas × curve × 
 - [[Backtest-Methodik-Roadmap]] — v2.1 Validation-Framework
 - [[Seven-Sins-Backtesting]] — Sin #4 (Overfitting) inhaltlich verwandt
 - [[DEFCON-System]] — Zielsystem für GT-Score-Audit-Lens
-- [[Alexander Pearson Sheppert]] — Author-Entity
+- [[alexander-pearson-sheppert|Alexander Pearson Sheppert]] — Author-Entity

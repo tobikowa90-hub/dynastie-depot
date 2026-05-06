@@ -1,29 +1,33 @@
 ---
-tags: [satellit, aktiv, defcon-2]
+tags: [satellit, aktiv, defcon-3]
 ticker: TMO
 name: Thermo Fisher Scientific
 sektor: Life-Science / Instrumente
 ersatz: ZTS
-score_aktuell: 64
-defcon: 2
-flag: "keins (fcf_trend_neg schema-getriggert → struktureller Disclosure, nicht aktiviert)"
-sparrate: "Halbe Rate 17,81€ (D2, Gewicht 0.5)"
-letzteAnalyse: 2026-04-18
-score_valid_until: 2026-10-15
-naechsterTrigger: "2026-04-23 — Q1 FY26 Earnings (D2-Entscheidung + fcf_trend_neg Resolve-Gate)"
-scoring_notiz_v37: "v3.7 Forward-Vollanalyse 18.04.: Algebra-Projektion 63 empirisch bestätigt (±1, Score 64). ROIC bereinigt 17,18% vs WACC 10,44% = +6,74pp (Regel-4-Gating: GW/Assets 44,74% ≥30% → Goodwill-Ausnahme gerechtfertigt, Invested Capital bereinigt = 43,430M). fcf_trend_neg strukturell ausgesetzt per Advisor-Review (Option B): WC-Noise + 4J-Plateau + OpInc +5,1%."
+score_aktuell: 67
+defcon: 3
+flag: "✅ Clean (fcf_trend_neg Resolve-Gate CLEAR 23.04.2026 — Q1-Beat + Guidance-Raise + WC-Unwind bestätigt)"
+sparrate: "Volle Rate 38,00€ (D3, Gewicht 1.0)"
+letzteAnalyse: 2026-04-23
+score_valid_until: 2026-10-23
+naechsterTrigger: "Q2 FY26 ~Ende Juli 2026 — Organic-Akzeleration (Q1 +1% → H2 3-4%-Guide) + Clario-Integration-Execution"
+scoring_notiz_v37: "23.04.2026 Q1 FY26 Forward-Vollanalyse: Score **64→67 (Δ+3)**, **D2→D3**, fcf_trend_neg Resolve-Gate **CLEAR**, Sparrate **17,81€→33,53€** (post-AVGO-FLAG-Kaskade 27.04. dann 38,00€). Q1-Beat + Guidance-Raise: FCF $825M +121% YoY, WC-Unwind-These bestätigt (ΔWC −$1.112M vs −$1.425M = +$313M besser), Management FY26-FCF-Guide $6,9-7,4B. Schema-Watch deaktiviert. Neue Watches: Organic-Akzeleration Q1 +1% → H2 3-4%-Guide + Clario-Integration-Execution. ZTS-Ersatz-Vorbereitung pausiert."
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[DEFCON-System]]"
-updated: 2026-04-18
+updated: 2026-05-06
 ---
 
 # TMO — Thermo Fisher Scientific
 
-> **DEFCON 🟠 2 | Score 64/100 (v3.7 Forward) | struktureller fcf_trend_neg Disclosure (kein FLAG aktiv)**
-> Sparrate: 17,81€ (D2, Gewicht 0.5)
+> **DEFCON 🟡 3 | Score 67/100 (v3.7 Forward 23.04.) | FLAG ✅ Clean** (fcf_trend_neg Resolve-Gate CLEAR)
+> Sparrate: 38,00€ (D3, Gewicht 1.0; post-AVGO-FLAG-Kaskade 27.04.)
 
-## Aktuelle Lage (Stand: 18.04.2026 — v3.7 Forward-Vollanalyse)
+## Aktuelle Lage (Stand: 23.04.2026 — Q1 FY26 Forward-Vollanalyse v3.7)
 
-Score 64 (Algebra-Projektion 63 ±1 empirisch bestätigt). Kern-Neuigkeit: **ROIC-Regel-4-Gating greift** — GW/Assets 44,74% ≥30% rechtfertigt die Goodwill-Ausnahme (Invested Capital bereinigt = 92,792M − 49,362M = 43,430M → ROIC bereinigt **17,18% vs WACC 10,44% = +6,74pp Spread**). Die historisch zitierte "2,6% ROIC" war die unbereinigte Quartalsversion.
+Score **64→67 (Δ+3)**, **D2→D3**, fcf_trend_neg Resolve-Gate **CLEAR**, Sparrate 17,81€→33,53€ (post-AVGO-FLAG-Kaskade 27.04. dann 38,00€). Q1 FY26 Beat + Guidance-Raise: FCF Q1 $825M = **+121% YoY**, WC-Unwind-These bestätigt (ΔWC -$1,112M vs -$1,425M = +$313M besser), Management FY26-FCF-Guide $6,9-7,4B (Mittelpunkt deutlich über FY25 $6,293M). Operating Income Q1 weiter +5%-Pfad.
+
+**Kern-Bestätigung 18.04.→23.04.:** ROIC-Regel-4-Gating greift weiterhin — GW/Assets 44,74% ≥30% rechtfertigt Goodwill-Ausnahme (ROIC bereinigt **17,18% vs WACC 10,44% = +6,74pp Spread**). Die historisch zitierte „2,6% ROIC" war die unbereinigte Quartalsversion.
+
+**fcf_trend_neg Resolve-Gate CLEAR:** Schema-Watch deaktiviert. WC-Reversibilität nachgewiesen. Neue Watches: Organic-Akzeleration Q1 +1% → H2 3-4%-Guide + Clario-Integration-Execution (Q2 Ende Juli Re-Check). ZTS-Ersatz-Vorbereitung pausiert.
 
 **fcf_trend_neg FLAG-Entscheidung (18.04., via Advisor — Option B struktureller Disclosure):**
 
@@ -61,12 +65,9 @@ Schema-Signal war getriggert: FCF FY25 $6,293M vs FY24 $7,267M = **−13,4% YoY*
 - Fwd P/E 19,4 nach −18% vom ATH = technischer Abwärtstrend setzt sich fort
 - PT-Dispersion 35,5% = erhöhte Analysten-Unsicherheit
 
-## Entscheidungsbaum nach Q1 FY26 Earnings (23.04.2026)
+## Entscheidungsbaum nach Q1 FY26 Earnings (23.04.2026) — RESOLVED
 
-- FCF-Recovery + WC-Unwind + ROIC-Aufwärtstrend → **DEFCON 3** möglich, Disclosure bleibt Notiz
-- FCF weiter rückläufig + WC-Delta persistent → **DEFCON 2 bleibt**
-- fcf_trend_neg strukturell bestätigt (fehlende WC-Reversibilität) → **FLAG nachzutragen**
-- Score <50 → DEFCON 1 → ZTS-Aktivierung (muss Score ≥80 ohne FLAG haben)
+✅ **Pfad A eingetreten:** FCF-Recovery + WC-Unwind + Guidance-Raise → **DEFCON 3, Score 67, Resolve-Gate CLEAR.** fcf_trend_neg-Disclosure deaktiviert. ZTS-Ersatz-Vorbereitung pausiert.
 
 ## Verlinkungen
 
@@ -81,7 +82,8 @@ Schema-Signal war getriggert: FCF FY25 $6,293M vs FY24 $7,267M = **−13,4% YoY*
 | 02.04.2026 | 65 | 🟡 3 | Erst-Analyse v3.4 — Clario-Watch gesetzt |
 | 07.04.2026 | 67 | 🟡 3 | Re-Analyse — Verbesserungen bestätigt |
 | 17.04.2026 | 63 | 🟠 2 | v3.7 Algebra-Projektion (Fix-2 OpM + Fix-3 Sell-Ratio, -4 Pt.) — D3→D2 |
-| 18.04.2026 | **64** | 🟠 2 | **v3.7 Forward-Vollanalyse** — ROIC-Regel-4-Gating korrekt angewendet (+6,74pp Spread). fcf_trend_neg schema-getriggert, struktureller Disclosure (Advisor Option B). Record `2026-04-18_TMO_vollanalyse`. |
+| 18.04.2026 | 64 | 🟠 2 | v3.7 Forward-Vollanalyse — ROIC-Regel-4-Gating korrekt angewendet (+6,74pp Spread). fcf_trend_neg schema-getriggert, struktureller Disclosure (Advisor Option B). Record `2026-04-18_TMO_vollanalyse`. |
+| **23.04.2026** | **67** | **🟡 3** | **Q1 FY26 Forward-Vollanalyse** — Beat + Guidance-Raise (FCF Q1 $825M +121% YoY, FY26-FCF-Guide $6,9-7,4B), WC-Unwind bestätigt. fcf_trend_neg Resolve-Gate **CLEAR**. D2→D3, Sparrate 17,81€→33,53€ (Kaskade: Nenner 8,0→8,5; post 27.04. AVGO-FLAG-Kaskade weitere 38,00€). Record `2026-04-23_TMO_vollanalyse`. |
 
 ## Wissenschaftliche Basis
 

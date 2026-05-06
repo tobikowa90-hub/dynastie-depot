@@ -19,9 +19,9 @@ Co-Autor von *FinReflectKG* ([[Arun-et-al-2025-FinReflectKG]]). Präsentierender
 
 ## Verbundene Seiten
 
-- [[Abhinav Arun]] — Co-Autor (Erstautor im Listing)
-- [[Tejas Prakash Agarwal]], [[Bhaskarjit Sarmah]], [[Stefano Pasquali]] — Co-Autoren
-- [[Marcelo Labre]] — Praktiker, der Dimino's Präsentation kommentiert hat
+- [[abhinav-arun|Abhinav Arun]] — Co-Autor (Erstautor im Listing)
+- [[tejas-prakash-agarwal|Tejas Prakash Agarwal]], [[bhaskarjit-sarmah|Bhaskarjit Sarmah]], [[stefano-pasquali|Stefano Pasquali]] — Co-Autoren
+- [[marcelo-labre|Marcelo Labre]] — Praktiker, der Dimino's Präsentation kommentiert hat
 - [[Arun-et-al-2025-FinReflectKG]] — primäre Source
 - [[Labre-2025-FinReflectKG-Companion]] — sekundäre Source (Labre zitiert Dimino)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B21+B22

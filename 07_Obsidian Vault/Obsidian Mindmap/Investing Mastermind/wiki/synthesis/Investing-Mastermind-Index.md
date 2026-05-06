@@ -79,8 +79,8 @@ tags: [index, home, navigation]
 
 ## 💰 Kapitalstruktur
 
-- [[ETF-Core]] — 65% (617,50€/Monat bei ING: IWDA, EIMI, EXUSA, AVGC, EWG2)
-- [[Steuer-Architektur]] — Lombardkredit, FIFO-Klon, 10-Jahres-Kaskade, PKV-Wäsche
+- [[etf-core|ETF-Core]] — 65% (617,50€/Monat bei ING: IWDA, EIMI, EXUSA, AVGC, EWG2)
+- [[steuer-architektur|Steuer-Architektur]] — Lombardkredit, FIFO-Klon, 10-Jahres-Kaskade, PKV-Wäsche
 
 ---
 

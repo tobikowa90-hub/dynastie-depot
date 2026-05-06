@@ -34,7 +34,7 @@ On-demand bei System-Audit (`SystemAudit`-Skill), Versions-Lookup, Briefing-Sync
 
 ## Sync-Pflicht
 
-System-Zustand-Changes triggern §18-v2.1-System-Event-Set: SYSTEM.md + log.md. Versions-Bumps zusätzlich [[CORE-MEMORY]] §6 (Versionsverlauf) + §13 (System-Lifecycle-History).
+System-Zustand-Changes triggern §18-v2.1-System-Event-Set: SYSTEM.md + log.md. Versions-Bumps zusätzlich `CORE-MEMORY.md` §6 (Versionsverlauf) + §13 (System-Lifecycle-History).
 
 ## Pfad
 

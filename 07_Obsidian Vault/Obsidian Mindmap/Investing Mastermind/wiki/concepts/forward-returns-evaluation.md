@@ -53,7 +53,7 @@ MAE = Mean Absolute Error zwischen prognostiziertem Rating und Ground-Truth-Quin
 
 ## Composite Score
 
-In [[LLMs for Equity Stock Ratings]] wird der MAE über **3-, 6- und 12-Monats-Horizonte gemittelt** als Composite Score für Methodenvergleich:
+In [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] wird der MAE über **3-, 6- und 12-Monats-Horizonte gemittelt** als Composite Score für Methodenvergleich:
 - 1 Monat: zu kurzfristig, zu viel Rauschen
 - 18 Monate: außerhalb normaler Analysten-Planungshorizonte
 - 3/6/12 Monate: der praktisch relevante Bereich
@@ -76,5 +76,5 @@ Sektor-relative Bewertung ist relevanter für **Sektor-Rotation-Strategien** und
 
 ## Verbundene Seiten
 
-- [[LLMs for Equity Stock Ratings]] · [[LLM-Based Stock Rating]] · [[Analyst Stock Ratings]]
-- [[S&P 500]] · [[AI in Investment Analysis]]
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] · [[llm-stock-rating|LLM-Based Stock Rating]] · [[analyst-stock-ratings|Analyst Stock Ratings]]
+- [[sp-500|S&P 500]] · [[ai-in-investment-analysis|AI in Investment Analysis]]

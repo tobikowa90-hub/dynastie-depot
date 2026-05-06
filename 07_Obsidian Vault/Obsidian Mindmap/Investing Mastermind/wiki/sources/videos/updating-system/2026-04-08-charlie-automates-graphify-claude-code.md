@@ -41,7 +41,7 @@ manual_review_reasons: []
 # Everything You Need To Know About Graphify For Claude Code
 
 **Source:** [Charlie Automates — 2026-04-08](https://www.youtube.com/shorts/A6lwT0Vd0fE)
-**Raw transcript:** [[transcript]] (in `raw/videos/updating-system/2026-04-08-charlie-automates-graphify-claude-code/`)
+**Raw transcript:** `transcript` (in `raw/videos/updating-system/2026-04-08-charlie-automates-graphify-claude-code/`)
 
 ## Key Takeaways
 

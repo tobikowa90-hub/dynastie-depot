@@ -38,4 +38,4 @@ Persistence-Pipeline-Satellit für jede `!Analysiere`-Forward-Vollanalyse. Wird 
 
 - [[dynastie-depot-skill]] — Aufrufer
 - [[Backtest-Ready-Infrastructure]] — Konzept
-- [[defcon-system]] — Scoring-System dahinter
+- [[DEFCON-System]] — Scoring-System dahinter

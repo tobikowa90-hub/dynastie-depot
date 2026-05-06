@@ -19,6 +19,6 @@ Co-Autor von *FinReflectKG* ([[Arun-et-al-2025-FinReflectKG]]). Domyn-Team; verm
 
 ## Verbundene Seiten
 
-- [[Abhinav Arun]], [[Fabrizio Dimino]], [[Bhaskarjit Sarmah]], [[Stefano Pasquali]] — Co-Autoren
+- [[abhinav-arun|Abhinav Arun]], [[fabrizio-dimino|Fabrizio Dimino]], [[bhaskarjit-sarmah|Bhaskarjit Sarmah]], [[stefano-pasquali|Stefano Pasquali]] — Co-Autoren
 - [[Arun-et-al-2025-FinReflectKG]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B21

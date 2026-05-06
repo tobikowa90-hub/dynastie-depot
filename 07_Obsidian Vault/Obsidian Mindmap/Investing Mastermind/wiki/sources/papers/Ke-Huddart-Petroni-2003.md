@@ -96,4 +96,4 @@ Ke/Huddart/Petroni zitiert Beneish (1999): Insider verkaufen nach Earnings-Annou
 - [[Accruals-Anomalie-Sloan]] — Earnings-Quality-Komplement (Beneish-Bridge)
 - [[DEFCON-System]] — Insider-Block (5 Pt.)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B27
-- [[Bin Ke]], [[Steven Huddart]], [[Kathy Petroni]] — Author-Entities
+- [[bin-ke|Bin Ke]], [[steven-huddart|Steven Huddart]], [[kathy-petroni|Kathy Petroni]] — Author-Entities

@@ -21,7 +21,7 @@ Weitere Forschungsbereiche (öffentlich): Statistical Distributions, Applied Pro
 
 ## Verbundene Seiten
 
-- [[Lebede Ngartera]] — Co-Autor (TeraSystemsAI + Independent Research Philadelphia)
-- [[Rodoumta Koina]] — Co-Autor (U N'Djamena Chad)
+- [[lebede-ngartera|Lebede Ngartera]] — Co-Autor (TeraSystemsAI + Independent Research Philadelphia)
+- [[rodoumta-koina|Rodoumta Koina]] — Co-Autor (U N'Djamena Chad)
 - [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B23

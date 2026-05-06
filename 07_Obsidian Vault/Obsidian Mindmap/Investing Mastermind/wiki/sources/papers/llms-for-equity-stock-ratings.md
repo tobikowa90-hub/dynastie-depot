@@ -14,11 +14,11 @@ aliases:
 # LLMs for Equity Stock Ratings
 
 **Originaltitel:** AI in Investment Analysis: LLMs for Equity Stock Ratings  
-**Autoren:** Kassiani Papasotiriou, Srijan Sood, Shayleen Reynolds ([[J.P. Morgan AI Research]]) · Tucker Balch (Emory University)  
+**Autoren:** Kassiani Papasotiriou, Srijan Sood, Shayleen Reynolds ([[jp-morgan-ai-research|J.P. Morgan AI Research]]) · Tucker Balch (Emory University)  
 **Konferenz:** ICAIF '24, 14.–17. November 2024, Brooklyn, NY, USA  
 **arXiv:** 2411.00856  
-**Modell:** [[GPT-4]]-32k (v0613), Training-Cutoff September 2021  
-**Datenzeitraum:** Januar 2022 – Juni 2024 · Universum: [[S&P 500]] (500 Aktien)
+**Modell:** [[gpt-4|GPT-4]]-32k (v0613), Training-Cutoff September 2021  
+**Datenzeitraum:** Januar 2022 – Juni 2024 · Universum: [[sp-500|S&P 500]] (500 Aktien)
 
 ---
 
@@ -31,14 +31,14 @@ LLMs können ohne Fine-Tuning allein durch gezieltes Prompting Stock-Ratings gen
 ## Methodik
 
 ### Modell & Setup
-- **Modell:** [[GPT-4]]-32k (v0613), gehostet auf Azure
+- **Modell:** [[gpt-4|GPT-4]]-32k (v0613), gehostet auf Azure
 - **Kontextfenster:** 32.000 Token
 - **Training-Cutoff:** September 2021 — bewusst gewählt, um Information Leakage zu verhindern
 - **Kein Fine-Tuning** — rein Prompting-basiert, kostengünstig und reproduzierbar
 
 ### Prompt-Design
 - **System-Prompt:** LLM übernimmt Rolle eines Financial Analysts; Rating-Skala und Definitionen werden explizit vorgegeben inkl. Synonyme für unterschiedliche Terminologien
-- **User-Prompt:** [[Chain-of-Thought Prompting]] — LLM begründet zuerst, nennt Preis-Targets, dann gibt es das Rating aus
+- **User-Prompt:** [[chain-of-thought-prompting|Chain-of-Thought Prompting]] — LLM begründet zuerst, nennt Preis-Targets, dann gibt es das Rating aus
 - **Few-Shot Learning:** Ein vollständiges Beispiel (Input + Output) im Kontext
 - **Chain of Verification (CoVE):** Datumsprüfung als Halluzinations-Check
 - **Datenformat:** HTML-Tabellen für Fundamentaldaten (übertrifft JSON/CSV laut Literatur)
@@ -114,10 +114,10 @@ Das Vanilla-Modell (nur 13 Kennzahlen) erreicht MAE 1.447 vs. 1.570 bei echten A
 **Einschränkung:** Analysten-Ratings fehlt das exakte Target-Date, daher wurde mit mehreren Zeithorizonten verglichen — kein perfekter 1:1-Vergleich.
 
 ### 2. Fundamentaldaten = stärkste Daten-Modalität
-[[Financial Fundamentals Analysis]] (Bilanz, GuV, Cashflow) verbessert die Prognosegenauigkeit am stärksten und konsistentsten über alle Zeithorizonte (3, 6, 12 Monate). Fundamentals + Sentiment erreicht den besten Composite-MAE (1.417).
+[[financial-fundamentals-analysis|Financial Fundamentals Analysis]] (Bilanz, GuV, Cashflow) verbessert die Prognosegenauigkeit am stärksten und konsistentsten über alle Zeithorizonte (3, 6, 12 Monate). Fundamentals + Sentiment erreicht den besten Composite-MAE (1.417).
 
 ### 3. News: kurzfristig hilfreich, mittelfristig schädlich
-[[News Sentiment Analysis]] verbessert 1-Monats-Prognosen (beste Kurzzeit-Performance aller Methoden), verschlechtert aber mittelfristige Prognosen gegenüber Vanilla. Ursache: **Positivity Bias** — News-Daten veranlassen das LLM zu übermäßig positiven Ratings.
+[[news-sentiment-analysis|News Sentiment Analysis]] verbessert 1-Monats-Prognosen (beste Kurzzeit-Performance aller Methoden), verschlechtert aber mittelfristige Prognosen gegenüber Vanilla. Ursache: **Positivity Bias** — News-Daten veranlassen das LLM zu übermäßig positiven Ratings.
 
 Evidenz: Spearman-Korrelation zwischen News-Sentiment und LLM-Rating: ~0.44 (Firmennews, 1-Monats-Horizont) — News dominiert Urteil des Modells stärker als Fundamentaldaten.
 
@@ -170,10 +170,10 @@ Heatmap-Analyse zeigt: LLM-Ratings korrelieren stark mit eigenen Sentiment-Einsc
 
 ## Verbundene Seiten
 
-- [[LLM-Based Stock Rating]] · [[Financial Fundamentals Analysis]] · [[Chain-of-Thought Prompting]]
-- [[News Sentiment Analysis]] · [[Forward Returns Evaluation]] · [[Analyst Stock Ratings]]
-- [[J.P. Morgan AI Research]] · [[GPT-4]] · [[S&P 500]]
-- [[AI in Investment Analysis]] (Synthesis)
+- [[llm-stock-rating|LLM-Based Stock Rating]] · [[financial-fundamentals-analysis|Financial Fundamentals Analysis]] · [[chain-of-thought-prompting|Chain-of-Thought Prompting]]
+- [[news-sentiment-analysis|News Sentiment Analysis]] · [[forward-returns-evaluation|Forward Returns Evaluation]] · [[analyst-stock-ratings|Analyst Stock Ratings]]
+- [[jp-morgan-ai-research|J.P. Morgan AI Research]] · [[gpt-4|GPT-4]] · [[sp-500|S&P 500]]
+- [[ai-in-investment-analysis|AI in Investment Analysis]] (Synthesis)
 
 ## Originaldokument
 

@@ -21,6 +21,6 @@ Labres Content auf Towards AI fokussiert sich auf symbolic reasoning in Finance 
 
 ## Verbundene Seiten
 
-- [[Fabrizio Dimino]] — FinReflectKG-Autor, den Labre bei Quant x AI Event gehört hat
+- [[fabrizio-dimino|Fabrizio Dimino]] — FinReflectKG-Autor, den Labre bei Quant x AI Event gehört hat
 - [[Labre-2025-FinReflectKG-Companion]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B22

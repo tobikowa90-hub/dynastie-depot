@@ -67,4 +67,4 @@ Asness, Frazzini und Pedersen definieren Quality als Eigenschaften, für die ein
 - [[Wolff-Echterling-2023]] — STOXX-600-Validation Quality+ROIC+FCF
 - [[F-Score-Quality-Signal]] — operative Konzept-Page
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Source-only-Quelle (anchors B5)
-- [[Clifford S. Asness]], [[Andrea Frazzini]], [[Lasse Heje Pedersen]] — Author-Entities
+- [[Clifford S. Asness]], [[andrea-frazzini|Andrea Frazzini]], [[Lasse Heje Pedersen]] — Author-Entities

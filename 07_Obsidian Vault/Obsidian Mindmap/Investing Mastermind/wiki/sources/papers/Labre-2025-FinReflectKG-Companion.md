@@ -77,5 +77,5 @@ Labre schlägt vor, in der Reflection-Loop **vor jeder Correction-LLM-Runde** ei
 - [[Agentic-Reflection-Pattern]] — Konzeptseite (mit Labre-Entropy-Caveat)
 - [[Knowledge-Graph-Architektur-Roadmap]] — neue Synthesis v0.1 (Labres Entropy-Monitor als Qualitäts-Gate)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B22
-- [[Marcelo Labre]] — Author-Entity
-- [[Fabrizio Dimino]] — Autor-Entity (von Labre persönlich bei Quant x AI Event gehört)
+- [[marcelo-labre|Marcelo Labre]] — Author-Entity
+- [[fabrizio-dimino|Fabrizio Dimino]] — Autor-Entity (von Labre persönlich bei Quant x AI Event gehört)

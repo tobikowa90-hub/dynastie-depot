@@ -77,14 +77,14 @@ Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 - [[CapEx-FLAG]] — Automatische FLAGs (score-unabhängig)
 - [[ROIC-vs-WACC]] — Warum ROIC-Malus so hart ist
 - [[Analyse-Pipeline]] — Stufe 0 → 1 → 2 → Entscheidung
-- [[Steuer-Architektur]] — Rebalancing ohne Verkauf (Steuer-Bremse)
-- [[ETF-Core]] — Parallele 65%-Struktur (separate Logik)
+- [[steuer-architektur|Steuer-Architektur]] — Rebalancing ohne Verkauf (Steuer-Bremse)
+- [[etf-core|ETF-Core]] — Parallele 65%-Struktur (separate Logik)
 - [[dynastie-depot-skill]] — Skill mit allen Befehlen und Kalibrierungsankern
 - [[defeatbeta]] — US-Fundamentals API (Primär für Scoring)
 - [[Shibui-SQL]] — Technicals API (Primär für Scoring)
-- [[Chain-of-Thought Prompting]] — Methodik hinter dem strukturierten !Analysiere-Workflow (erst begründen, dann scoren)
-- [[LLM-Based Stock Rating]] — Forschungsgrundlage: Fundamentals-Block 50 Pt. basiert auf JPM-Evidenz
-- [[AI in Investment Analysis]] — Zentrale Synthese: JPM-Forschung → DEFCON-Implementierung
+- [[chain-of-thought-prompting|Chain-of-Thought Prompting]] — Methodik hinter dem strukturierten !Analysiere-Workflow (erst begründen, dann scoren)
+- [[llm-stock-rating|LLM-Based Stock Rating]] — Forschungsgrundlage: Fundamentals-Block 50 Pt. basiert auf JPM-Evidenz
+- [[ai-in-investment-analysis|AI in Investment Analysis]] — Zentrale Synthese: JPM-Forschung → DEFCON-Implementierung
 - [[Score-Archiv]] — Append-only Score-Historie (History-Layer)
 - [[FLAG-Event-Log]] — Append-only FLAG-Events (History-Layer)
 - [[Backtest-Ready-Infrastructure]] — 5-Layer-Architektur (seit 17.04.2026, Hub+Live-State-Split via Tier-2-Refactor 25.04.2026; Skill-Orchestrator seit 19.04.2026)

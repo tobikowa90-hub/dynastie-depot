@@ -15,7 +15,7 @@ related:
   - "[[5J-Fundamental-Fenster]]"
   - "[[Novy-Marx-2013]]"
   - "[[Fama-French-2015-Five-Factor]]"
-  - "[[Hou-Xue-Zhang-q-Factor]]"
+  - "[[Hou-Xue-Zhang-2015-q-Factor]]"
   - "[[Sloan-1996]]"
   - "[[Accruals-Anomalie-Sloan]]"
   - "[[DEFCON-System]]"
@@ -75,7 +75,7 @@ Da die FJE-2006-Publikation die finale, peer-reviewed Version ist und keine subs
 - [[5J-Fundamental-Fenster]] — expected-Earnings-Trendperspektive
 - [[Novy-Marx-2013]] — Profitability-Pillar-Detail
 - [[Fama-French-2015-Five-Factor]] — finaler 5-Faktor-Modell-Erbe
-- [[Hou-Xue-Zhang-q-Factor]] — paralleles q-Factor-Modell, konvergent
+- [[Hou-Xue-Zhang-2015-q-Factor]] — paralleles q-Factor-Modell, konvergent
 - [[Sloan-1996]] — Accruals-Quelle, hier kritisch eingeordnet
 - [[Accruals-Anomalie-Sloan]] — Concept-Page (Watch-Verweis)
 - [[DEFCON-System]] — Fundamentals-Block + CapEx-FLAG validated

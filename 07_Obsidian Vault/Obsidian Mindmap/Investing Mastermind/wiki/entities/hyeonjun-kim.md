@@ -21,8 +21,8 @@ Co-Autor von *FINSABER* ([[Li-Kim-Cucuringu-Ma-2026-FINSABER]]). Beitrag: vermut
 
 ## Verbundene Seiten
 
-- [[Weixian Waylon Li]] — Erstautor
-- [[Mihai Cucuringu]] — Co-Autor
-- [[Tiejun Ma]] — Co-Autor
+- [[waylon-li|Weixian Waylon Li]] — Erstautor
+- [[mihai-cucuringu|Mihai Cucuringu]] — Co-Autor
+- [[tiejun-ma|Tiejun Ma]] — Co-Autor
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B19

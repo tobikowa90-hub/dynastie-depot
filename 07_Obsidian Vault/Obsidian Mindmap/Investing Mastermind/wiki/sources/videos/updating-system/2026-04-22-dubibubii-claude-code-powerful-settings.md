@@ -48,7 +48,7 @@ adoption_decision:
 # Claude Code's Creator Reveals His Most POWERFUL Settings
 
 **Source:** [Dubibubii — 2026-04-22](https://www.youtube.com/watch?v=VIbew55IpE4)
-**Raw transcript:** [[transcript]] (in `raw/videos/updating-system/2026-04-22-dubibubii-claude-code-powerful-settings/`)
+**Raw transcript:** `transcript` (in `raw/videos/updating-system/2026-04-22-dubibubii-claude-code-powerful-settings/`)
 
 ## Source-Credibility
 

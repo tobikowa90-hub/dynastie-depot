@@ -119,4 +119,4 @@ Damit wird die 1620-Combo-Suche robuster gegen Single-Metric-Overfitting.
 - [[Backtest-Methodik-Roadmap]] — v2.1 Update durch FINSABER + GT-Score
 - [[Bailey-2015-PBO]] — methodischer Vorläufer
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B20
-- [[Alexander Pearson Sheppert]] — Author-Entity
+- [[alexander-pearson-sheppert|Alexander Pearson Sheppert]] — Author-Entity

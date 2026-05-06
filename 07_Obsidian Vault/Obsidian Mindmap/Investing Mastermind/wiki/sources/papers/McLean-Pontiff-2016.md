@@ -102,4 +102,4 @@ Das Paper ist **kein** Live-Scoring-Trigger, sondern ein **strukturelles Methode
 - [[Backtest-Methodik-Roadmap]] — 2028-Review-Strategie, B25-Erweiterung dort dokumentiert
 - [[DEFCON-System]] — Block-Gewichtung 50/20/10/10/10 strukturell robust gegen M&P-Decay-Pattern
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B25
-- [[R. David McLean]], [[Jeffrey Pontiff]] — Author-Entities
+- [[r-david-mclean|R. David McLean]], [[jeffrey-pontiff|Jeffrey Pontiff]] — Author-Entities

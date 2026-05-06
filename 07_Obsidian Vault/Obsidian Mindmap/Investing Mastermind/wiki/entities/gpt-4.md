@@ -22,7 +22,7 @@ Großes Sprachmodell (LLM) von OpenAI. In der Finanzforschung weit verbreitet f�
 - **Warum diese Version gewählt:** Training-Cutoff vor dem Datenzeitraum der Studie (Jan 2022 – Jun 2024) → kein Information Leakage möglich
 
 ## Einsatz in Finanzforschung
-- Stock-Rating-Prognosen (J.P. Morgan, [[LLMs for Equity Stock Ratings]])
+- Stock-Rating-Prognosen (J.P. Morgan, [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]])
 - News-Zusammenfassungen auf Firmen- und Sektor-Ebene
 - Sentiment-Scoring (Skala −5 bis +5)
 - Chain-of-Thought Reasoning für Investmententscheidungen
@@ -39,4 +39,4 @@ Großes Sprachmodell (LLM) von OpenAI. In der Finanzforschung weit verbreitet f�
 - Neigt bei News-Daten zu Positivitäts-Bias
 
 ## Verbundene Seiten
-- [[LLMs for Equity Stock Ratings]] · [[Chain-of-Thought Prompting]] · [[LLM-Based Stock Rating]] · [[J.P. Morgan AI Research]]
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] · [[chain-of-thought-prompting|Chain-of-Thought Prompting]] · [[llm-stock-rating|LLM-Based Stock Rating]] · [[jp-morgan-ai-research|J.P. Morgan AI Research]]

@@ -19,7 +19,7 @@ Erstautor von *FinDPO* ([[Iacovides-Zhou-Mandic-2025-FinDPO]]). Bereits 2024 Ers
 
 ## Verbundene Seiten
 
-- [[Wuyang Zhou]] — Co-Autor (Imperial)
-- [[Danilo Mandic]] — Supervisor (Imperial, Senior-Author)
+- [[wuyang-zhou|Wuyang Zhou]] — Co-Autor (Imperial)
+- [[danilo-mandic|Danilo Mandic]] — Supervisor (Imperial, Senior-Author)
 - [[Iacovides-Zhou-Mandic-2025-FinDPO]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B24

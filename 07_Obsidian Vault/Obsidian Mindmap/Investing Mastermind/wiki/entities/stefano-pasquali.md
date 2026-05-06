@@ -19,6 +19,6 @@ Co-Autor von *FinReflectKG* ([[Arun-et-al-2025-FinReflectKG]]); im Author-Listin
 
 ## Verbundene Seiten
 
-- [[Abhinav Arun]], [[Fabrizio Dimino]], [[Tejas Prakash Agarwal]], [[Bhaskarjit Sarmah]] — Co-Autoren
+- [[abhinav-arun|Abhinav Arun]], [[fabrizio-dimino|Fabrizio Dimino]], [[tejas-prakash-agarwal|Tejas Prakash Agarwal]], [[bhaskarjit-sarmah|Bhaskarjit Sarmah]] — Co-Autoren
 - [[Arun-et-al-2025-FinReflectKG]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B21

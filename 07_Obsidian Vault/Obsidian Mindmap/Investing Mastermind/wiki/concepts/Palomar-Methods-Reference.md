@@ -103,5 +103,5 @@ Unterschiedliche operative Funktion → daher zwei getrennte Konzept-Seiten.
 - [[Seven-Sins-Backtesting]] — Pre-Flight-Sünden-Gate (Ch 8.2)
 - [[PBO-Backtest-Overfitting]] — CSCV-Primärmethode, hier erweitert um walk-forward + synthetic
 - [[Backtest-Methodik-Roadmap]] — 2028-Review-Entscheidungsmatrix
-- [[ETF-Core]] — 65/30/5-Allokation, Ch. 11 Kontext
+- [[etf-core|ETF-Core]] — 65/30/5-Allokation, Ch. 11 Kontext
 - [[DEFCON-System]] — Zielsystem, dessen Return-Serie spätere Metrik-Anwendung erhält

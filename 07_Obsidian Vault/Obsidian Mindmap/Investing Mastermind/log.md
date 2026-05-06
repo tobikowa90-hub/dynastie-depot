@@ -14,15 +14,15 @@
 ## [2026-04-10] setup | Claude Stuff Integration — Skills, Konzepte, Verlinkungen
 - Integrationsquelle: `C:\Users\tobia\OneDrive\Desktop\Claude Stuff\` (00_Core, 01_Skills)
 - Neue Source-Seiten: [[quick-screener]], [[insider-intelligence]], [[non-us-fundamentals]], [[dynastie-depot-skill]]
-- Neue Concept-Seiten: [[ETF-Core]], [[Steuer-Architektur]]
-- Aktualisierte Seiten: [[Analyse-Pipeline]], [[DEFCON-System]], [[AI in Investment Analysis]], [[Investing-Mastermind-Index]], [[index.md]]
+- Neue Concept-Seiten: [[etf-core|ETF-Core]], [[steuer-architektur|Steuer-Architektur]]
+- Aktualisierte Seiten: [[Analyse-Pipeline]], [[DEFCON-System]], [[ai-in-investment-analysis|AI in Investment Analysis]], [[Investing-Mastermind-Index]], [[index|index.md]]
 - Gesamt: 6 neue Seiten, 5 aktualisierte Seiten — alle Skill/Tool-Seiten mit DEFCON-Konzepten verknüpft
 
 ## [2026-04-10] ingest | LLMs for Equity Stock Ratings (J.P. Morgan, ICAIF 2024)
 - Quelle: arXiv 2411.00856 — PDF in raw/ abgelegt
 - Kernthese: GPT-4 ohne Fine-Tuning schlägt Wall-Street-Analysten bei 3–12-Monats-Aktien-Ratings; Fundamentaldaten sind stärkste Daten-Modalität (MAE 1.417 mit Fundamentals+Sentiment vs. 1.570 Analysten)
-- Pages created: [[LLMs for Equity Stock Ratings]], [[J.P. Morgan AI Research]], [[GPT-4]], [[S&P 500]], [[LLM-Based Stock Rating]], [[Financial Fundamentals Analysis]], [[Chain-of-Thought Prompting]], [[News Sentiment Analysis]], [[Forward Returns Evaluation]], [[Analyst Stock Ratings]], [[AI in Investment Analysis]]
-- Pages updated: [[index.md]], [[log.md]]
+- Pages created: [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]], [[jp-morgan-ai-research|J.P. Morgan AI Research]], [[gpt-4|GPT-4]], [[sp-500|S&P 500]], [[llm-stock-rating|LLM-Based Stock Rating]], [[financial-fundamentals-analysis|Financial Fundamentals Analysis]], [[chain-of-thought-prompting|Chain-of-Thought Prompting]], [[news-sentiment-analysis|News Sentiment Analysis]], [[forward-returns-evaluation|Forward Returns Evaluation]], [[analyst-stock-ratings|Analyst Stock Ratings]], [[ai-in-investment-analysis|AI in Investment Analysis]]
+- Pages updated: [[index|index.md]], [[log|log.md]]
 - Gesamt: 11 neue Seiten
 
 ## [2026-04-10] earnings-preview | ASML Q1 2026
@@ -33,13 +33,13 @@
 - Pages updated: [[ASML]] — Earnings Preview Block + Analyse-Historie-Eintrag 10.04.2026
 
 ## [2026-04-10] link | Querverbindungen JPM-Research ↔ DEFCON-Konzepte gezogen
-- Lücke geschlossen: [[Chain-of-Thought Prompting]] und [[LLM-Based Stock Rating]] waren nicht mit [[DEFCON-System]] / [[Analyse-Pipeline]] / [[dynastie-depot-skill]] verbunden
+- Lücke geschlossen: [[chain-of-thought-prompting|Chain-of-Thought Prompting]] und [[llm-stock-rating|LLM-Based Stock Rating]] waren nicht mit [[DEFCON-System]] / [[Analyse-Pipeline]] / [[dynastie-depot-skill]] verbunden
 - Pages updated (Frontmatter `related:` + neue Body-Sections):
-  - [[Chain-of-Thought Prompting]] — Abschnitt "Umsetzung im Dynastie-Depot" + Links zu DEFCON-System, Analyse-Pipeline, dynasty-depot-skill
-  - [[LLM-Based Stock Rating]] — Abschnitt "Umsetzung im Dynastie-Depot" mit Mapping-Tabelle + selbe Links
+  - [[chain-of-thought-prompting|Chain-of-Thought Prompting]] — Abschnitt "Umsetzung im Dynastie-Depot" + Links zu DEFCON-System, Analyse-Pipeline, dynasty-depot-skill
+  - [[llm-stock-rating|LLM-Based Stock Rating]] — Abschnitt "Umsetzung im Dynastie-Depot" mit Mapping-Tabelle + selbe Links
   - [[DEFCON-System]] — Verlinkungen ergänzt: CoT, LLM-Stock-Rating, AI in Investment Analysis
   - [[Analyse-Pipeline]] — Verlinkungen ergänzt: CoT, LLM-Stock-Rating
-  - [[AI in Investment Analysis]] — Frontmatter `related:` um DEFCON-System, Analyse-Pipeline, dynasty-depot-skill erweitert
+  - [[ai-in-investment-analysis|AI in Investment Analysis]] — Frontmatter `related:` um DEFCON-System, Analyse-Pipeline, dynasty-depot-skill erweitert
 - Gesamt: 0 neue Seiten, 5 aktualisierte Seiten
 
 ## [2026-04-14] ingest | Wissenschaftliche Fundierung + Token-Effizienz
@@ -92,8 +92,8 @@ Vollständig bidirektional:
 
 ### Runde 1: Orphan-Fix
 - **Problem:** 7 isolierte Knoten im Obsidian-Graph (3 Raw-Dateien, 4 Autoren-Namen, WIKI-SCHEMA)
-- Pages created: [[Dominik Wolff]], [[Fabian Echterling]], [[Aakanksha Jadhav]], [[Vishal Mirza]]
-- Pages updated: [[LLMs for Equity Stock Ratings]], [[AI in Investment Analysis]], [[index.md]]
+- Pages created: [[dominik-wolff|Dominik Wolff]], [[fabian-echterling|Fabian Echterling]], [[aakanksha-jadhav|Aakanksha Jadhav]], [[vishal-mirza|Vishal Mirza]]
+- Pages updated: [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]], [[ai-in-investment-analysis|AI in Investment Analysis]], [[index|index.md]]
 
 ### Runde 2: Vollständiges Audit
 - **Backslash-Typos gefixt:** `[[BRKB\|BRK.B]]` → `[[BRKB|BRK.B]]` in [[Investing-Mastermind-Index]], [[Depot-State-April-2026]]
@@ -177,7 +177,7 @@ Vollständig bidirektional:
 - **Anlass:** V, COST, BRK.B, SU hatten noch Platzhalter-Scores (~80) und altes Analyse-Datum (2026-03-01) trotz abgeschlossener DEFCON v3.4 Vollanalysen
 - Pages updated: [[V]] (80→86), [[COST]] (80→69), [[BRKB]] (80→75), [[SU]] (80→71)
 - Alle 4 Seiten: Frontmatter (score, datum, trigger) + neuer Analyse-Ergebnis-Block mit Score-Tabelle
-- [[index.md]] — Score-Angaben bei allen 4 Satelliten korrigiert
+- [[index|index.md]] — Score-Angaben bei allen 4 Satelliten korrigiert
 - Gesamt: 0 neue Seiten, 5 aktualisierte Seiten
 
 ## [2026-04-15] earnings-recap | RMS (Hermès) Q1 2026
@@ -276,14 +276,14 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 
 ### Gesamt
 - Pages created: 2 ([[Wolff-Echterling-2023]], [[Jadhav-Mirza-2025]])
-- Pages updated: 9 ([[DEFCON-System]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Analyse-Pipeline]], [[Non-US-Scoring]], [[Tariff-Exposure-Regel]], [[Wissenschaftliche-Fundierung-DEFCON]], [[index.md]], 00_Core/INSTRUKTIONEN.md)
+- Pages updated: 9 ([[DEFCON-System]], [[CapEx-FLAG]], [[ROIC-vs-WACC]], [[Analyse-Pipeline]], [[Non-US-Scoring]], [[Tariff-Exposure-Regel]], [[Wissenschaftliche-Fundierung-DEFCON]], [[index|index.md]], 00_Core/INSTRUKTIONEN.md)
 - Neue Befunde: B8, B9, B10, B11 operationalisiert
 
 ## [2026-04-17] ingest | 3 Foundation-Papers: Piotroski, Novy-Marx, Sloan
 - Quellen: Piotroski (2000) F-Score, Novy-Marx (2013) Gross Profitability, Sloan (1996) Accruals-Anomalie
 - Kernthese: Drei Gründungstexte für Quality-Faktor-Investing. Piotroski = 9-Kriterien-Score; Novy-Marx = GP/TA als 2. Value-Seite; Sloan = Accruals-Anomalie +10,4% p.a.
 - Pages created: [[Piotroski-2000]], [[Novy-Marx-2013]], [[Sloan-1996]] (sources); [[F-Score-Quality-Signal]], [[Gross-Profitability-Premium]], [[Accruals-Anomalie-Sloan]] (concepts)
-- Pages updated: [[Wissenschaftliche-Fundierung-DEFCON]] (B12/B13/B14 + Quellen 7→10 + Konzept-Karte + Änderungsprotokoll), [[index.md]] (Notes 70→76, 3 neue Sources + 3 neue Konzepte)
+- Pages updated: [[Wissenschaftliche-Fundierung-DEFCON]] (B12/B13/B14 + Quellen 7→10 + Konzept-Karte + Änderungsprotokoll), [[index|index.md]] (Notes 70→76, 3 neue Sources + 3 neue Konzepte)
 - Befunde: B12 (F-Score Quality-Signal), B13 (Gross Profitability Premium), B14 (Accruals-Anomalie)
 - Vorbereitung: v3.6-Release — Quality-Bonus (+2 Pt.) + GP/TA-Metrik (2 Pt.) + Accrual-Bonus <3%. System-Reife-Ceiling 85% → 92-95%.
 - Gesamt: 6 neue Seiten, 2 aktualisierte Seiten, 1 Synthese erweitert
@@ -314,7 +314,7 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **CLAUDE.md** Session-Initialisierung-Block + Verhalten-Block (Sync-Pflicht jetzt 4 Dateien inkl. STATE.md) umgeschrieben.
 - **CORE-MEMORY §1** gekürzt: 60+ Einträge → 16 aktuelle (ab 15.04.2026), Verweis auf Archiv vorangestellt.
 - Pages created: [[Session-Start-Protokoll]] (concept)
-- Pages updated: [[CLAUDE-md-Konstitution]] (Session-Init-Section + frontmatter `related`), [[Faktortabelle-Architektur]] (frontmatter `related`), [[index.md]] (77 wiki-Notes, Header)
+- Pages updated: [[CLAUDE-md-Konstitution]] (Session-Init-Section + frontmatter `related`), [[Faktortabelle-Architektur]] (frontmatter `related`), [[index|index.md]] (77 wiki-Notes, Header)
 - **Kein Commit-/Briefing-Sync in dieser Session** — User entscheidet über `!SyncBriefing` (00_Core/ geändert).
 - Token-Einsparung Session-Start: ~1.200 → ~80 Zeilen Auto-Read (≈-93%)
 
@@ -325,7 +325,7 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Phase 3 vorbereitet (Modell-Strategie):** `/model sonnet` Default, `/model opus` manuell für !Analysiere, Multi-Step-Refactors, strategische Entscheidungen. Kein Auto-Routing — null Risiko.
 - **ZIP-Rebuild:** `06_Skills-Pakete/dynastie-depot_v3.7.zip` neu gepackt (SKILL.md 38497 bytes inkl. Cashless-Exercise-Ergänzung).
 - Pages created: [[INSTRUKTIONEN-SKILL-Trennung]] (concept)
-- Pages updated: [[index.md]] (78 wiki-Notes), [[dynastie-depot-skill]] (SKILL.md-Ref), [[Wissenschaftliche-Fundierung-DEFCON]] (SKILL.md-Ref)
+- Pages updated: [[index|index.md]] (78 wiki-Notes), [[dynastie-depot-skill]] (SKILL.md-Ref), [[Wissenschaftliche-Fundierung-DEFCON]] (SKILL.md-Ref)
 - Motivation: Token-Effizienz (kein Doppel-Load) + Drift-Vermeidung (eine Quelle pro Regel) + ZIP-Install ohne Copy-Rename-Schritt.
 
 ## [2026-04-17] analyse | ASML Q1 2026 Post-Earnings Vollanalyse (Pfad B, Non-US/IFRS-Anker)
@@ -337,7 +337,7 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Q1-Actuals (15.04.):** Rev €8,8B / EPS €7,15 / GM 53,0% ✅ Beat. FY26-Guidance €36-40B (raised). **China 19%** (von 36% Q4) = struktureller Shift. Kurs -6% post-Earnings (Export-Control-Sorge).
 - **FY27-Watch:** Fwd P/E 30,30 — bei <30 deaktiviert QT-P/E-Zweig → Score +6-8 möglich (D3→D4-Pfad dokumentiert).
 - **Subscore-Breakdown:** Fund 28/50 · Moat 20/20 · Tech 7/10 · Insider 7/10 (Carry-Forward — AFM-H1-2026 pending) · Sent 6/10.
-- Pages updated: [[ASML]] (frontmatter score 66→68, Analyse-Historie, Q1-Recap-Section), [[Beispiele.md]] (ASML-Anker in AVGO-Post-Fix-Form eingefügt, Rebuild-Status ASML ⏳→✅)
+- Pages updated: [[ASML]] (frontmatter score 66→68, Analyse-Historie, Q1-Recap-Section), `Beispiele.md` (ASML-Anker in AVGO-Post-Fix-Form eingefügt, Rebuild-Status ASML ⏳→✅)
 - Sync: STATE.md (66→68) + Faktortabelle.md (ROIC/FCF-Marge/Debt-EBITDA live) + CORE-MEMORY §1 (Meilenstein-Eintrag)
 - **Briefing-Sync erforderlich** (00_Core/ geändert).
 
@@ -537,11 +537,11 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Pages created (10):**
   - 2 Sources: [[Li-Kim-Cucuringu-Ma-2026-FINSABER]], [[Sheppert-2026-GT-Score]]
   - 3 Concepts: [[LLM-Investing-Bias-Audit]], [[Regime-Aware-LLM-Failure-Modes]], [[Composite-Anti-Overfitting-Objective]]
-  - 5 Author-Entities: [[Weixian Waylon Li]], [[Hyeonjun Kim]], [[Mihai Cucuringu]], [[Tiejun Ma]], [[Alexander Pearson Sheppert]]
+  - 5 Author-Entities: [[waylon-li|Weixian Waylon Li]], [[hyeonjun-kim|Hyeonjun Kim]], [[mihai-cucuringu|Mihai Cucuringu]], [[tiejun-ma|Tiejun Ma]], [[alexander-pearson-sheppert|Alexander Pearson Sheppert]]
 - **Pages updated (3):**
   - [[Wissenschaftliche-Fundierung-DEFCON]] — B19+B20 in 18-Befunde-Matrix (jetzt 20), Quellen-Übersicht erweitert (14→16), 4-Dimensionen-Validation-Gate erweitert um GT-Score-In-the-Loop und FINSABER-Selection-Strategy-Audit, Änderungsprotokoll Eintrag 2026-04-20
   - [[Backtest-Methodik-Roadmap]] — v2.0 → v2.1, neue Sektion "v2.1-Erweiterung" mit FINSABER+GT-Score-Validation-Dimensionen + Track-5b-Spezifischer-Anwendungs-Pfad-Tabelle
-  - [[index.md]] — 10 neue Wiki-Pages indiziert + Header-Counter aktualisiert (97→107 Notes)
+  - [[index|index.md]] — 10 neue Wiki-Pages indiziert + Header-Counter aktualisiert (97→107 Notes)
 - **Kernaussagen aus 2 Papers konsolidiert:**
   - **B19 FINSABER (KDD '26):** LLM-Investing-Vorteile aus Vorpapern (FinMem/FinAgent/FinRobot/TradExpert/FinCon/TradingAgents/MarketSenseAI 2.0) verschwinden unter 20-J/100+-Symbol-Eval mit expliziter Bias-Mitigation (Survivorship/Look-Ahead/Data-Snooping). Bull/Bear-Asymmetrie systematisch dokumentiert: zu konservativ in Bull (underperform passive), zu aggressiv in Bear (heavy losses). Empfehlung: Trend-Detection + regime-aware Risk-Controls > Framework-Komplexität.
   - **B20 GT-Score (JRFM 2026):** Composite Anti-Overfitting Objective (Performance × Significance × Consistency × Downside-Risk) integriert Anti-Overfitting in den Optimization-Loop, statt nur post-hoc via Deflated Sharpe. Walk-Forward (9 Splits) + Monte-Carlo (15 Seeds) auf 50 S&P-500 / 2010-2024. +98% Generalization-Ratio vs Sortino/Simple. p<0,01 — Effect-Size klein. Komplementär zu Bailey PBO/CSCV.
@@ -572,11 +572,11 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Pages created (23):**
   - 4 Sources: [[Arun-et-al-2025-FinReflectKG]], [[Labre-2025-FinReflectKG-Companion]], [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]], [[Iacovides-Zhou-Mandic-2025-FinDPO]]
   - 6 Concepts: [[Knowledge-Graph-Finance-Architecture]], [[Agentic-Reflection-Pattern]], [[LLM-as-a-Judge-Evaluation]], [[RAG-Uncertainty-Quantification]], [[LLM-Preference-Optimization-Finance]], [[Sentiment-Strength-Logit-Extraction]]
-  - 12 Author-Entities: [[Abhinav Arun]], [[Fabrizio Dimino]], [[Tejas Prakash Agarwal]], [[Bhaskarjit Sarmah]], [[Stefano Pasquali]], [[Marcelo Labre]], [[Lebede Ngartera]], [[Saralees Nadarajah]], [[Rodoumta Koina]], [[Giorgos Iacovides]], [[Wuyang Zhou]], [[Danilo Mandic]]
+  - 12 Author-Entities: [[abhinav-arun|Abhinav Arun]], [[fabrizio-dimino|Fabrizio Dimino]], [[tejas-prakash-agarwal|Tejas Prakash Agarwal]], [[bhaskarjit-sarmah|Bhaskarjit Sarmah]], [[stefano-pasquali|Stefano Pasquali]], [[marcelo-labre|Marcelo Labre]], [[lebede-ngartera|Lebede Ngartera]], [[saralees-nadarajah|Saralees Nadarajah]], [[rodoumta-koina|Rodoumta Koina]], [[giorgos-iacovides|Giorgos Iacovides]], [[wuyang-zhou|Wuyang Zhou]], [[danilo-mandic|Danilo Mandic]]
   - 1 neue Synthesis: [[Knowledge-Graph-Architektur-Roadmap]] v0.1 (Entscheidungsvorlage KG vs. XML-Direkt-Parsing vs. Bayesian RAG; 3 Qualitäts-Gates; 3 konkrete Szenarien)
 - **Pages updated (2):**
   - [[Wissenschaftliche-Fundierung-DEFCON]] — B21-B24 in 20-Befunde-Matrix (jetzt 24), Quellen-Übersicht erweitert (16→20), Änderungsprotokoll-Eintrag 2026-04-20 Abend
-  - [[index.md]] — 23 neue Wiki-Pages + neue Gruppe "KG-/RAG-/LLM-Architektur (Phase 1b)" + Synthesis-Sektion erweitert + Header-Counter (107→130 Notes)
+  - [[index|index.md]] — 23 neue Wiki-Pages + neue Gruppe "KG-/RAG-/LLM-Architektur (Phase 1b)" + Synthesis-Sektion erweitert + Header-Counter (107→130 Notes)
 - **Kernaussagen aus 4 Papers konsolidiert:**
   - **B21 FinReflectKG (Domyn 2025):** Agentic-Reflection-Pattern (Extraction → Critic → Correction Loop) erreicht 64,8% All-Rules-Compliance (+22,5pp vs. Single-Pass 42,3%), 15,8 Triples/Chunk, ECR 0,53. 5-Tuple-Schema (Head Entity, Type, Relation, Tail Entity, Type). Qwen2.5-72B-Instruct + 3-Vote LLM-as-a-Judge-Evaluation.
   - **B22 Labre-Companion (Towards AI 2025):** Praktiker-Lens zum FinReflectKG-Paper. Hauptbeitrag: **Reflection-Entropy-Paradox** (Coverage gewinnt, Shannon-Rel-Entropy verliert -22%) + Vorschlag Diversity-Monitor als Qualitäts-Gate vor Correction-LLM-Runde.
@@ -792,8 +792,8 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 **Wiki-Graph-100%-Closure:**
 - 322 broken `[[wiki-link]]` + 20 broken Frontmatter-Refs → **0 broken refs**.
 - 46 Aliases auf bestehende Pages (Title-Case ↔ kebab-case Resolution).
-- 5 neue Stub-Pages: [[MA]] (Mastercard), [[STATE]], [[Faktortabelle]], [[CORE-MEMORY]] (Vault-extern-Anker), [[backtest-ready-forward-verify]] (Skill-Source).
-- 1 Source-Edit: ASML.md `[[Beispiele.md]]`-Phantomlink entfernt.
+- 5 neue Stub-Pages: [[MA]] (Mastercard), [[STATE]], [[Faktortabelle]], `CORE-MEMORY.md` (Vault-extern-Anker), [[backtest-ready-forward-verify]] (Skill-Source).
+- 1 Source-Edit: ASML.md ``Beispiele.md``-Phantomlink entfernt.
 
 **Video-Pipeline:**
 - `03_Tools/video_ingest_lib.py` (build_slug, sha256_file, quality_gate) + 18 pytest-Tests.
@@ -918,7 +918,7 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Anlass:** PIPELINE.md Item #13 (Follow-up zu 00_Core Tier-2-Refactor 25.04.2026, AC #17). 14 Vault-Files referenzierten noch alte STATE/CORE-MEMORY-Struktur (pre-Hub-Split / pre-§12-§13-Auflösung / pre-§18-v2.1-Trigger-Mapping / pre-Tripwire-Migration). Doku-Drift-Sanierung, Live-System unverändert.
 - **Tripwire-Source-Verify:** `03_Tools/backtest-ready/_forward_verify_helpers.py:25` `REQUIRED_TOUCH_FILES = ("PORTFOLIO.md", "Faktortabelle.md", "log.md")` — Tripwire liest seit Tier-2 PORTFOLIO.md, nicht STATE.md. Stale Refs in 3 Wiki-Pages (Score-Archiv / Analyse-Pipeline / backtest-ready-forward-verify-source) auf PORTFOLIO.md migriert.
 - **Pages updated (14):**
-  - Tier 1 (Frame-Wechsel): [[STATE]], [[CORE-MEMORY]], [[Session-Start-Protokoll]], [[Context-Hygiene]], [[Token-Mechanik]]
+  - Tier 1 (Frame-Wechsel): [[STATE]], `CORE-MEMORY.md`, [[Session-Start-Protokoll]], [[Context-Hygiene]], [[Token-Mechanik]]
   - Tier 2 (substantielle Refs): [[CLAUDE-md-Konstitution]] (+ Änderungsprotokoll-Eintrag 25.04.), [[DEFCON-System]] (4-Layer→5-Layer + Hub-Split), [[Backtest-Ready-Infrastructure]] (Projection-Layer-Split + §18-v2.1), [[Analyse-Pipeline]] (Tripwire + Sync-File-Set), [[Score-Archiv]] (Tripwire), [[backtest-ready-forward-verify]]-source (Tripwire + v1.0.1)
   - Tier 3 (single-line): [[Faktortabelle]] (frontmatter related), [[Depot-State-April-2026]] (Live-Stand-Pointer), [[Wissenschaftliche-Fundierung-DEFCON]] (Live-Score-Pointer), [[Investing-Mastermind-Index]] (Quelle-Pointer)
 - **Pages updated (operative):** `index.md` (header-timestamp + 4 page-descriptions auf neue Struktur), `log.md` (dieser Eintrag).
@@ -953,10 +953,10 @@ Alle 6 Seiten erhielten `wissenschaftlicher_anker:` + `konfidenzstufe:` + `sourc
 - **Phase B3** (commit `7e4712e`): 30 Entity-Pages (kebab-case kompakt) — McLean, Pontiff, Lakonishok, Lee, Ke, Huddart, Petroni, Tetlock, Mauboussin, Callahan, Asness, Frazzini, Pedersen, Lepetit, Cherief, Ly, Sekine, Fama, French, Harvey, Yan Liu, Heqing Zhu, Hou, Xue, Lu Zhang, Yang, Xiao-Yang Liu, Wang, Hable, Moskowitz.
 - **Pre-Phase-C** (commit `cde7fa9` + `c847dba`): Codex-Round-2 (Cluster-2-4-Run gegen `7e4712e^..HEAD`) → BLOCK-Verdikt mit 4 Must-Fix + 1 Should-Fix. Fixes: Synthesis Status-Matrix-Konsistenz (B25-B28 in Befunde-Matrix-Block-Spalte mit kanonischen Status-Labels statt Prosa), §29.7-State-Drift "geplant"/"anlegen" → "angelegt 26.04.2026" (5 Loci), SKILL.md Schritt 2.5 + Synthesis-SSoT (Legende + Aktivierungs-Regel #3) `design-context`-Regel präzisiert (zulässig in Klammer-Notation mit `design-context`-Suffix als nicht-scorender Anker). McLean-Pontiff Wording-Fix line 83: "32%+ Post-Publication-Decay" → "58% Post-Publication-Decay (operativer Total-Decline; davon ≈32pp publication-effect lower bound)" — verhindert Verschmelzung. CORE-MEMORY.md:210 4-Label → 6-Label Update + Range B1-B24 → B1-B28.
 - **Phase C-1** (this session): Quellen-Übersicht-Tabelle in [[Wissenschaftliche-Fundierung-DEFCON]] 20 → 34 Zeilen erweitert. 4 Befund-Anker (B25-B28) + 10 SOURCE-ONLY (anchors B2/B5/B7/B8/B16/B26/B27) integriert. Header-Counter 20→34 Quellen aktualisiert; Befund-Counter 28 unverändert (SOURCE-ONLY-Pages erzeugen keine neuen B-IDs). Frontmatter-`sources:`-Array um 10 Einträge erweitert. McLean-Pontiff-Eintrag verwendet konsistent **58% operativer Total-Decline** statt 32pp publication-effect lower bound (Phase-C-Hauptrisiko vermieden).
-- **Phase C-2** (this session): index.md erweitert um 14 source-pages, 6 concept-pages, 30 entity-pages. Pages updated: [[index.md]], [[Wissenschaftliche-Fundierung-DEFCON]] (Synthesis-Description aktualisiert von "14-Befunde-Matrix: 10 Paper" auf "28-Befunde-Matrix: 34 Paper").
+- **Phase C-2** (this session): index.md erweitert um 14 source-pages, 6 concept-pages, 30 entity-pages. Pages updated: [[index|index.md]], [[Wissenschaftliche-Fundierung-DEFCON]] (Synthesis-Description aktualisiert von "14-Befunde-Matrix: 10 Paper" auf "28-Befunde-Matrix: 34 Paper").
 - **C-2-Errata** (this session): Phase-B Author-Name-Korrektur. 3 Entity-Files mit halluzinierten Vornamen umbenannt + Inhalte korrigiert: `jean-baptiste-lepetit.md` → `frederic-lepetit.md` (Frédéric Lepetit), `nazim-cherief.md` → `amina-cherief.md` (Amina Cherief), `thy-ly.md` → `yannick-ly.md` (Yannick Ly). Quellen: Amundi WP 113-2021 PDF Cover. Broken `sources: [Amundi-2024-Quality-Pillars]` → `[Amundi-Quality-2021]` in 4 Amundi-Entity-Pages korrigiert (Lepetit/Cherief/Ly/Sekine). Body-Backlinks `[[Amundi-2024-Quality-Pillars]]` ebenfalls korrigiert. Auch QMJ-Quality-Pillars-Aufzählung im Lepetit-Body korrigiert: "Profitability + Growth + Safety + Payout" (QMJ-Definition) → "Profitability + Earnings Quality + Safety + Investment" (Amundi-Definition).
 - **Vault-only-Phase**: DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert. Score-Archiv unangetastet, kein FLAG-Event.
-- Pages created (14 source — bereits Phase A): siehe oben. Pages created Phase B (36): 6 concept + 30 entity (siehe oben). Pages updated: [[Wissenschaftliche-Fundierung-DEFCON]] (Phase B1 + C-1 + C-2-Errata-Sync), [[index.md]], [[INSTRUKTIONEN]] (§29.7 Phase B1), [[CORE-MEMORY]] (Phase Pre-C), [[Moat-Taxonomie-Morningstar]] (Phase B2 CAP-Verweis), [[ROIC-vs-WACC]] (Phase B2 CAP-Verweis), [[McLean-Pontiff-2016]] (Phase Pre-C 58% Wording), Codex-Quick-Win-Pages (2iQ, Hou-Xue-Zhang, Lakonishok-Lee, Tetlock, FinGPT).
+- Pages created (14 source — bereits Phase A): siehe oben. Pages created Phase B (36): 6 concept + 30 entity (siehe oben). Pages updated: [[Wissenschaftliche-Fundierung-DEFCON]] (Phase B1 + C-1 + C-2-Errata-Sync), [[index|index.md]], `INSTRUKTIONEN.md` (§29.7 Phase B1), `CORE-MEMORY.md` (Phase Pre-C), [[Moat-Taxonomie-Morningstar]] (Phase B2 CAP-Verweis), [[ROIC-vs-WACC]] (Phase B2 CAP-Verweis), [[McLean-Pontiff-2016]] (Phase Pre-C 58% Wording), Codex-Quick-Win-Pages (2iQ, Hou-Xue-Zhang, Lakonishok-Lee, Tetlock, FinGPT).
 - **Commits**: `b8306df` (Phase A), `7e4712e` (Phase B), `cde7fa9` (McLean-Pontiff defcon_relevanz Fix), `c847dba` (Pre-Phase-C Codex-Cluster-2-4 Fixes), Phase-C-Final-Commit folgt nach Auto-Lint.
 
 ## [2026-04-27] edit | Schema-Drift-Cleanup Phase 1 — Frontmatter sources/related auf YAML-Array
@@ -1446,8 +1446,8 @@ Netto: ~-9 Pkt = Score 50/D2.
 - Persistierungs-Welle vor Cut-Punkt (Restart) ist Pflicht — neue Session muss nahtlos resumen können nur mit STATE/PORTFOLIO/HANDOVER.
 
 **Cross-Reference:**
-- Codex-Plan-Review-Δ1-Δ5 sind in [[RUFLO-INTEGRATION-PLAN]] STATUS-UPDATE-Block 30.04. dokumentiert
-- Resume-Anweisung neuer Session: [[SESSION-HANDOVER]] Resume-Trigger-Block
+- Codex-Plan-Review-Δ1-Δ5 sind in `RUFLO-INTEGRATION-PLAN.md` STATUS-UPDATE-Block 30.04. dokumentiert
+- Resume-Anweisung neuer Session: `SESSION-HANDOVER.md` Resume-Trigger-Block
 - Item-Status: [[PIPELINE]] #20
 
 
@@ -1490,7 +1490,7 @@ Netto: ~-9 Pkt = Score 50/D2.
 **Cross-Reference:**
 - §Ruflo-Status in [[SYSTEM]]
 - CORE-MEMORY §13 System-Lifecycle (neuer Eintrag 30.04. spätnachmittags)
-- Override-Block in [[CLAUDE.md]] Codex-Nits-Nachfix
+- Override-Block in `CLAUDE.md` Codex-Nits-Nachfix
 - PIPELINE #20 Body-Update
 - Welle-3-Outlook: 05.-12.05. post-BRK.B-Tag-+1 für 1.8/1.9 Trajectory + Doctor-Periodic
 
@@ -1919,4 +1919,23 @@ Netto: ~-9 Pkt = Score 50/D2.
 - **6 verbleibende FAILs sind alle forward-declared (User-Entscheidung A: als Signal behalten):** 3× `05_Archiv/audit_trace_lite.jsonl` (Welle-3b Pilot ab 27.05.), 3× Item-#16-Slim-Refactor DEFERRED (`00_Core/RETROSPECTIVE-GATE.md`, `03_Tools/morning-briefing-spec.md`, `00_Core/INSTRUKTIONEN.md`). Defensive: vergessen-werden wäre stiller Drift.
 - **§18-Sync-Set (System-Zustand-Change):** `03_Tools/system_audit/checks/existence.py` (Refactor) + `03_Tools/system_audit/_smoke_test.py` (3 neue Tests + 2 angepasste) + `00_Core/RUFLO-INTEGRATION-PLAN.md` (Pfad-Fix Z.523) + `00_Core/SESSION-HANDOVER.md` (Wildcard-Fix Z.29) + `00_Core/STATE.md` (Last-Audit-Block auto-refresh + Critical-Alert + Footer) + `00_Core/PIPELINE.md` (42.2 ✅ DONE + Footer) + `00_Core/SYSTEM.md` (Existence-Check-Refactor-Notiz) + dieser log.md-Eintrag. **Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / flag_events.jsonl / config.yaml — kein Score/FLAG/Sparraten-Event.
 - **Folge-Schritt (Welle 2, separater Commit):** Vault/Wiki State-Drift-Cleanup (`07_Obsidian Vault/.../wiki/concepts/index.md` Satelliten-Zeilen-Refresh + ggf. CodeRabbit-Restbefund Kategorie-D PIPELINE #29 + 392 broken Vault-Backlinks).
+
+
+## [2026-05-06] system | PIPELINE 42.4 ✅ Vault/Wiki State-Drift-Cleanup Welle 2 DONE — Backlinks 378→42 (-89%), Orphans 0/190
+
+- **Trigger:** User-Direktive „alles auf den neuesten Stand bringen. Keine veralteten Daten mehr! Auch checken, ob es nach der arbeit der vergangenen Tage noch Broken refs, fehlende Backlinks und orphans gibt." (06.05. mittags, post Welle 1 Audit-Refactor `ae1c33d`).
+- **Pre-State (post-BRK.B-Sync 04.05.):** index.md Satelliten-Zeilen 8/11 Drift; 5 Ticker-Wiki-Pages mit veraltetem Frontmatter (AVGO/V/MSFT/APH/TMO seit 17.-18.04. nicht synced trotz Forward-Vollanalysen 23./28./30.04.); BRK.B war im 04.05.-Commit explizit als „andere als Konsolidierungs-Slot deferred" markiert; Vault-Backlinks-Audit 378 broken.
+- **Phase 1 — Index.md Satelliten-Refresh:** alle 11 Zeilen auf aktuellen DEFCON/Score/Sparraten/FLAG-State; Header-Footer Stand `2026-05-06`.
+- **Phase 2 — 5 Ticker-Wiki-Pages Frontmatter+Body Komplett-Update (AVGO/V/MSFT/APH/TMO):** alle Score/DEFCON/FLAG/Sparrate/letzteAnalyse/scoring_notiz_v37 auf aktuellen Stand. AVGO 84→53 D2/FLAG, V 63→64 D2 Rescoring, MSFT 59→50, APH 63→61, TMO 64/D2→67/D3 Resolve-Gate CLEAR.
+- **Phase 3 — Quality-Trap Concept-Stub neu** (`wiki/concepts/Quality-Trap.md` mit §472-§478 + B6 Drawdown-Modulator + §410 Goodwill-Bereinigung + 3 Live-Run-Beispiele).
+- **Phase 4 — Vault-Backlinks Bulk-Cleanup (4 Pässe via temp Python-Scripts):**
+  - **Pass-1 Space→Kebab-Alias** (`[[Title With Spaces]]` → `[[title-with-spaces|Title With Spaces]]`): 257 Fixes in 59 Files.
+  - **Pass-2 Special-Char-Strict** (`&`/`.`/`,`/`'` drop): 18 Fixes in 11 Files.
+  - **Pass-3 Explicit-Orphan-Mappings**: 35 Fixes in 22 Files. Resolved 2 Orphans: `LLM-Based Stock Rating` → `llm-stock-rating` (16 Refs); `Weixian Waylon Li` → `waylon-li` (7 Refs).
+  - **Pass-4 Cross-Project-Refs** + vault-internal: 11 Fixes in 3 Files.
+  - **Punkt-Fixes:** Hou-Xue-Zhang-q-Factor → Hou-Xue-Zhang-2015-q-Factor (5); 2iQ-Insider-Meta-Review → 2iQ-Insider-Meta-Review-2021 (2); wolff-echterling-2023 case-fix → Wolff-Echterling-2023 (6).
+- **Phase 5 — vault_backlinks.py Markdown-Table-Pipe-Escape-Fix:** `rstrip('\\')` für `[[BRKB\|BRK.B]]`-Pattern in Tabellen-Zellen.
+- **Endstand:** **Vault-Backlinks 378→42 (-89%). Orphans 0/190**. Audit `--full --no-write`: 12/16 PASS, 3 FAIL, 1 WARN. Restmenge 42 = WIKI-SCHEMA.md Examples + log.md historische Garbage + Author-Stubs (~8 Refs Konsolidierungs-Slot).
+- **§18-Sync-Set (System-Zustand-Change Welle 2):** index.md + 5 Ticker-Pages + Quality-Trap.md (NEU) + ~80 Vault-Files Wikilink-Bulk-Fix + `03_Tools/system_audit/checks/vault_backlinks.py` + `00_Core/STATE.md` (Last-Audit + Critical-Alert + Footer) + `00_Core/PIPELINE.md` (42.4 ✅ DONE + Footer) + `00_Core/SYSTEM.md` + dieser log.md-Eintrag. **Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml — kein Score/FLAG/Sparraten-Event.
+- **Lehren:** (a) Bulk-Wikilink-Cleanup gut für SPACE-MISMATCH (257 Fixes ohne manuelle Edits). (b) Orphans-Detection deckte zwei nicht-trivial-fixbare Cases auf — explizite Mapping-Liste essentiell. (c) Markdown-Table-Pipe-Escape ist Audit-Edge-Case. (d) Author-Entity-Stubs sollten beim Paper-Ingest-Workflow Pre-Phase-Check sein.
 

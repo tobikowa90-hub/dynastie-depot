@@ -19,6 +19,6 @@ Co-Autor von *FinReflectKG* ([[Arun-et-al-2025-FinReflectKG]]). Domyn-India-Offi
 
 ## Verbundene Seiten
 
-- [[Abhinav Arun]], [[Fabrizio Dimino]], [[Tejas Prakash Agarwal]], [[Stefano Pasquali]] — Co-Autoren
+- [[abhinav-arun|Abhinav Arun]], [[fabrizio-dimino|Fabrizio Dimino]], [[tejas-prakash-agarwal|Tejas Prakash Agarwal]], [[stefano-pasquali|Stefano Pasquali]] — Co-Autoren
 - [[Arun-et-al-2025-FinReflectKG]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B21

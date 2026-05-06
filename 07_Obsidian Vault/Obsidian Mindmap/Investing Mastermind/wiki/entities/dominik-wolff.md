@@ -15,14 +15,14 @@ aliases:
 
 **Rolle:** Forscher im Bereich Machine Learning & Aktienauswahl
 
-Co-Autor von *[[Stock picking with machine learning]]* — einer Studie, die ML-Algorithmen (Lasso, Random Forest, Neural Nets) für die wöchentliche Aktienauswahl im [[S&P 500]] analysiert. Zentrale Erkenntnis: Selbst einfache regularisierte Logistic-Regression-Modelle erzielen vergleichbare Ergebnisse wie komplexere ML-Ansätze.
+Co-Autor von *[[Wolff-Echterling-2023|Stock picking with machine learning]]* — einer Studie, die ML-Algorithmen (Lasso, Random Forest, Neural Nets) für die wöchentliche Aktienauswahl im [[sp-500|S&P 500]] analysiert. Zentrale Erkenntnis: Selbst einfache regularisierte Logistic-Regression-Modelle erzielen vergleichbare Ergebnisse wie komplexere ML-Ansätze.
 
 ---
 
 ## Verbundene Seiten
 
-- [[Fabian Echterling]] — Co-Autor
+- [[fabian-echterling|Fabian Echterling]] — Co-Autor
 - [[Wolff-Echterling-2023]] — Wiki Source-Seite (B8, B9)
-- [[Stock picking with machine learning]] — Originalpaper (raw)
-- [[S&P 500]] — Untersuchungsuniversum
+- [[Wolff-Echterling-2023|Stock picking with machine learning]] — Originalpaper (raw)
+- [[sp-500|S&P 500]] — Untersuchungsuniversum
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befunde B8 + B9 in 11-Befunde-Matrix

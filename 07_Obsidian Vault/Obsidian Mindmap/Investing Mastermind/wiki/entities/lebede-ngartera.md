@@ -19,7 +19,7 @@ Erstautor von *Bayesian RAG* ([[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]]). T
 
 ## Verbundene Seiten
 
-- [[Saralees Nadarajah]] — Co-Autor, Mathematics (U Manchester)
-- [[Rodoumta Koina]] — Co-Autor, Computer Science (U N'Djamena Chad)
+- [[saralees-nadarajah|Saralees Nadarajah]] — Co-Autor, Mathematics (U Manchester)
+- [[rodoumta-koina|Rodoumta Koina]] — Co-Autor, Computer Science (U N'Djamena Chad)
 - [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B23

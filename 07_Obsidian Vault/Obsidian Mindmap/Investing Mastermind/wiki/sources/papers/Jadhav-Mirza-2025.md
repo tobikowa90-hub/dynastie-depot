@@ -5,7 +5,7 @@ type: source
 subtype: academic-paper
 tags: [llm, equity, survey, multi-agent, reinforcement-learning, sentiment, fundamentals]
 url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12421730/
-authors: "[[Aakanksha Jadhav]], [[Vishal Mirza]]"
+authors: "[[aakanksha-jadhav|Aakanksha Jadhav]], [[vishal-mirza|Vishal Mirza]]"
 journal: "Frontiers in Artificial Intelligence (PMC)"
 status: processed
 defcon_relevanz: "Sentiment-Block (10 Pt.) — News-Positivity-Bias begrenzt Sentiment-Gewichtung | Multi-Modal-Hierarchie bestätigt B7 | Reinforcement Learning + Memory = zukünftige Analysearchitektur"
@@ -13,9 +13,9 @@ sources: []
 related:
   - "[[DEFCON-System]]"
   - "[[Analyse-Pipeline]]"
-  - "[[LLM-Based Stock Rating]]"
-  - "[[AI in Investment Analysis]]"
-  - "[[Chain-of-Thought Prompting]]"
+  - "[[llm-stock-rating|LLM-Based Stock Rating]]"
+  - "[[ai-in-investment-analysis|AI in Investment Analysis]]"
+  - "[[chain-of-thought-prompting|Chain-of-Thought Prompting]]"
 aliases:
   - "large-language-models-equity-markets"
 
@@ -24,10 +24,10 @@ aliases:
 # Large Language Models in Equity Markets: Applications, Techniques, and Insights
 
 **Originaltitel:** Large Language Models in equity markets: applications, techniques, and insights  
-**Autoren:** [[Aakanksha Jadhav]] · [[Vishal Mirza]]  
+**Autoren:** [[aakanksha-jadhav|Aakanksha Jadhav]] · [[vishal-mirza|Vishal Mirza]]  
 **Journal:** Frontiers in Artificial Intelligence (PMC, Open Access)  
 **Umfang:** Review von 84 Studien (2022 – Frühjahr 2025)  
-**Originaldokument:** [[Large Language Models in equity markets applications, techniques, and insights]] (raw/)
+**Originaldokument:** [[llms-for-equity-stock-ratings|Large Language Models in equity markets applications, techniques, and insights]] (raw/)
 
 ---
 
@@ -90,9 +90,9 @@ Umfassendster aktueller Survey (84 Paper) über LLM-Anwendungen in Aktienmärkte
 
 ## Backlinks
 
-- [[AI in Investment Analysis]] — Übergeordnete Synthese
-- [[LLM-Based Stock Rating]] — Verwandtes Konzept
-- [[Chain-of-Thought Prompting]] — Methodik-Validierung
+- [[ai-in-investment-analysis|AI in Investment Analysis]] — Übergeordnete Synthese
+- [[llm-stock-rating|LLM-Based Stock Rating]] — Verwandtes Konzept
+- [[chain-of-thought-prompting|Chain-of-Thought Prompting]] — Methodik-Validierung
 - [[Analyse-Pipeline]] — Multi-Modal-Datenrouting
 - [[DEFCON-System]] — Gewichtungs-Validierung
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Ergänzender Kontext zu B7 + B10

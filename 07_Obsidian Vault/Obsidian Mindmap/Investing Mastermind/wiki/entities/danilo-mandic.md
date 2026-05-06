@@ -21,7 +21,7 @@ Als Senior-Author trägt Mandic die methodische Verantwortung für die Abgrenzun
 
 ## Verbundene Seiten
 
-- [[Giorgos Iacovides]] — Erstautor, PhD-Kandidat in Mandic's Gruppe
-- [[Wuyang Zhou]] — Co-Autor
+- [[giorgos-iacovides|Giorgos Iacovides]] — Erstautor, PhD-Kandidat in Mandic's Gruppe
+- [[wuyang-zhou|Wuyang Zhou]] — Co-Autor
 - [[Iacovides-Zhou-Mandic-2025-FinDPO]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B24

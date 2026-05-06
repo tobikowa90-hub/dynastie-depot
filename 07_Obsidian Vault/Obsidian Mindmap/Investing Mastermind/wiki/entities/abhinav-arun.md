@@ -21,9 +21,9 @@ Domyn ist ein Industrie-Forschungsunternehmen mit Fokus auf Finance-AI-Infrastru
 
 ## Verbundene Seiten
 
-- [[Fabrizio Dimino]] — Co-Autor (wurde von Labre bei Quant x AI Event 2025 präsentierend beobachtet)
-- [[Tejas Prakash Agarwal]] — Co-Autor
-- [[Bhaskarjit Sarmah]] — Co-Autor (Domyn Gurgaon India)
-- [[Stefano Pasquali]] — Co-Autor
+- [[fabrizio-dimino|Fabrizio Dimino]] — Co-Autor (wurde von Labre bei Quant x AI Event 2025 präsentierend beobachtet)
+- [[tejas-prakash-agarwal|Tejas Prakash Agarwal]] — Co-Autor
+- [[bhaskarjit-sarmah|Bhaskarjit Sarmah]] — Co-Autor (Domyn Gurgaon India)
+- [[stefano-pasquali|Stefano Pasquali]] — Co-Autor
 - [[Arun-et-al-2025-FinReflectKG]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B21

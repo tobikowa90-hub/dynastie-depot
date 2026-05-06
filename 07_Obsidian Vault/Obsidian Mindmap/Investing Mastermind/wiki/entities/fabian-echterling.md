@@ -15,14 +15,14 @@ aliases:
 
 **Rolle:** Forscher im Bereich Machine Learning & Aktienauswahl
 
-Co-Autor von *[[Stock picking with machine learning]]* — einer Studie zur ML-basierten wöchentlichen Aktienauswahl im [[S&P 500]]. Die Arbeit zeigt, dass ML-Modelle signifikante Outperformance gegenüber gleichgewichteten Benchmarks erzielen.
+Co-Autor von *[[Wolff-Echterling-2023|Stock picking with machine learning]]* — einer Studie zur ML-basierten wöchentlichen Aktienauswahl im [[sp-500|S&P 500]]. Die Arbeit zeigt, dass ML-Modelle signifikante Outperformance gegenüber gleichgewichteten Benchmarks erzielen.
 
 ---
 
 ## Verbundene Seiten
 
-- [[Dominik Wolff]] — Co-Autor
+- [[dominik-wolff|Dominik Wolff]] — Co-Autor
 - [[Wolff-Echterling-2023]] — Wiki Source-Seite (B8, B9)
-- [[Stock picking with machine learning]] — Originalpaper (raw)
-- [[S&P 500]] — Untersuchungsuniversum
+- [[Wolff-Echterling-2023|Stock picking with machine learning]] — Originalpaper (raw)
+- [[sp-500|S&P 500]] — Untersuchungsuniversum
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befunde B8 + B9 in 11-Befunde-Matrix

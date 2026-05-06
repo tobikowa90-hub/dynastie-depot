@@ -80,4 +80,4 @@ AMP zeigen: in Funding-Stress-Phasen (1998 LTCM, 2008 GFC) brechen Value-Long-Mo
 - [[Aghassi-2023-Fact-Fiction]] — neuere AQR-Praxis-Anwendung
 - [[DEFCON-System]] — Block-Gewichtung 50/20/10/10/10
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Source-only-Quelle (anchors B7)
-- [[Clifford S. Asness]], [[Tobias Moskowitz]], [[Lasse Heje Pedersen]] — Author-Entities
+- [[Clifford S. Asness]], [[tobias-moskowitz|Tobias Moskowitz]], [[Lasse Heje Pedersen]] — Author-Entities

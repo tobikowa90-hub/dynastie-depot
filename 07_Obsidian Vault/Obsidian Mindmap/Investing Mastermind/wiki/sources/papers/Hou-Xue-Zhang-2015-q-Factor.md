@@ -94,4 +94,4 @@ I/A = Low-Asset-Growth minus High-Asset-Growth → niedrige Investment-Aktivitä
 - [[FCF-Primacy]] — Forward-Bewertung
 - [[DEFCON-System]] — Block-Gewichtung validated
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Source-only-Quelle
-- [[Kewei Hou]], [[Chen Xue]], [[Lu Zhang]] — Author-Entities
+- [[kewei-hou|Kewei Hou]], [[chen-xue|Chen Xue]], [[lu-zhang|Lu Zhang]] — Author-Entities

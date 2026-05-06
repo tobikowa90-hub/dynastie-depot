@@ -29,11 +29,11 @@ KI — insbesondere Large Language Models — ist heute in der Lage, mehrere kla
 
 | Aufgabe | Qualität | Quellen |
 |---|---|---|
-| Aktien-Ratings (3–6 Monate) | Besser als Wall-Street-Analysten | [[LLMs for Equity Stock Ratings]] |
-| Sentiment-Analyse von News | Zuverlässig, effizient | [[LLMs for Equity Stock Ratings]] |
-| Fundamentaldaten-Analyse | Sehr stark, stärkste Modalität | [[LLMs for Equity Stock Ratings]] |
-| News-Zusammenfassung | Gut, effektiv für Kurzfrist | [[LLMs for Equity Stock Ratings]] |
-| Chain-of-Thought Reasoning | Transparent, nachvollziehbar | [[LLMs for Equity Stock Ratings]] |
+| Aktien-Ratings (3–6 Monate) | Besser als Wall-Street-Analysten | [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] |
+| Sentiment-Analyse von News | Zuverlässig, effizient | [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] |
+| Fundamentaldaten-Analyse | Sehr stark, stärkste Modalität | [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] |
+| News-Zusammenfassung | Gut, effektiv für Kurzfrist | [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] |
+| Chain-of-Thought Reasoning | Transparent, nachvollziehbar | [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] |
 
 ### Wo menschliche Analysten noch besser sind
 - **Langfristige Prognosen (>12 Monate)**
@@ -45,7 +45,7 @@ KI — insbesondere Large Language Models — ist heute in der Lage, mehrere kla
 
 ## Aktuelle Erkenntnisse (nach Quellen)
 
-### Quelle 1: [[LLMs for Equity Stock Ratings]] (J.P. Morgan, 2024)
+### Quelle 1: [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] (J.P. Morgan, 2024)
 
 **Kernbotschaft:** GPT-4 schlägt ohne Fine-Tuning professionelle Analysten bei 3–12-Monats-Ratings.
 
@@ -118,11 +118,11 @@ KI — insbesondere Large Language Models — ist heute in der Lage, mehrere kla
 
 ## Wichtige Konzepte (Quick-Links)
 
-**Methodik:** [[LLM-Based Stock Rating]] · [[Chain-of-Thought Prompting]] · [[Forward Returns Evaluation]]  
-**Daten:** [[Financial Fundamentals Analysis]] · [[News Sentiment Analysis]]  
-**Vergleich:** [[Analyst Stock Ratings]]  
-**Tools/Modelle:** [[GPT-4]]  
-**Universum:** [[S&P 500]]
+**Methodik:** [[llm-stock-rating|LLM-Based Stock Rating]] · [[chain-of-thought-prompting|Chain-of-Thought Prompting]] · [[forward-returns-evaluation|Forward Returns Evaluation]]  
+**Daten:** [[financial-fundamentals-analysis|Financial Fundamentals Analysis]] · [[news-sentiment-analysis|News Sentiment Analysis]]  
+**Vergleich:** [[analyst-stock-ratings|Analyst Stock Ratings]]  
+**Tools/Modelle:** [[gpt-4|GPT-4]]  
+**Universum:** [[sp-500|S&P 500]]
 
 ---
 
@@ -148,8 +148,8 @@ Die Erkenntnisse aus der JP-Morgan-Forschung fließen direkt ins **[[DEFCON-Syst
 ## Originaldokumente (raw/)
 
 - [[AI in Investment Analysis LLMs for Equity Stock Ratings]] — J.P. Morgan, ICAIF 2024
-- [[Stock picking with machine learning]] — [[Dominik Wolff]], [[Fabian Echterling]] (Wiley, 2024): ML-basierte wöchentliche Aktienauswahl im S&P 500; regularisierte Logistic Regression ~ komplexere ML-Modelle
-- [[Large Language Models in equity markets applications, techniques, and insights]] — [[Aakanksha Jadhav]], [[Vishal Mirza]] (PMC, 2025): Survey über 84 Studien zu LLMs in Equity Markets
+- [[Wolff-Echterling-2023|Stock picking with machine learning]] — [[dominik-wolff|Dominik Wolff]], [[fabian-echterling|Fabian Echterling]] (Wiley, 2024): ML-basierte wöchentliche Aktienauswahl im S&P 500; regularisierte Logistic Regression ~ komplexere ML-Modelle
+- [[llms-for-equity-stock-ratings|Large Language Models in equity markets applications, techniques, and insights]] — [[aakanksha-jadhav|Aakanksha Jadhav]], [[vishal-mirza|Vishal Mirza]] (PMC, 2025): Survey über 84 Studien zu LLMs in Equity Markets
 
 ---
 

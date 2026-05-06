@@ -5,7 +5,7 @@ type: source
 subtype: academic-paper
 tags: [defcon, ml-faktoren, profitability, quality, stoxx-europe, s&p500]
 url: https://onlinelibrary.wiley.com/doi/full/10.1002/for.3021
-authors: "[[Dominik Wolff]], [[Fabian Echterling]]"
+authors: "[[dominik-wolff|Dominik Wolff]], [[fabian-echterling|Fabian Echterling]]"
 journal: "Journal of Forecasting (Wiley)"
 status: processed
 defcon_relevanz: "Fundamentals-Block (50 Pt.) — ROIC + FCF + Operating Margin als top-ranked Profitability-Faktoren | Bilanz-Block — EPS-Growth + Leverage als Quality-Faktoren | Non-US validiert: Ergebnisse robust auf STOXX Europe 600"
@@ -25,10 +25,10 @@ aliases:
 # Stock Picking with Machine Learning
 
 **Originaltitel:** Stock picking with machine learning  
-**Autoren:** [[Dominik Wolff]] · [[Fabian Echterling]]  
+**Autoren:** [[dominik-wolff|Dominik Wolff]] · [[fabian-echterling|Fabian Echterling]]  
 **Journal:** Journal of Forecasting (Wiley) | DOI: 10.1002/for.3021  
 **Datenzeitraum:** Januar 1999 – März 2021 | S&P 500 (1164 historische Konstituenten) + STOXX Europe 600 (Robustheitscheck)  
-**Originaldokument:** [[Stock picking with machine learning]] (raw/)
+**Originaldokument:** [[Wolff-Echterling-2023|Stock picking with machine learning]] (raw/)
 
 ---
 

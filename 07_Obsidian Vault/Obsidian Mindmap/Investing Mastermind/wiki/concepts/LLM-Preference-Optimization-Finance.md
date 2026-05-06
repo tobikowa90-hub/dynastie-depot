@@ -104,4 +104,4 @@ Das ermöglicht erst den Logit-to-Score-Konverter — siehe [[Sentiment-Strength
 - [[Sentiment-Strength-Logit-Extraction]] — komplementäres Konzept (Output-Nutzung)
 - [[LLM-Investing-Bias-Audit]] — Validation-Pflicht vor Adoption (FINSABER-Pattern)
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — Benchmark-Framework für LLM-Trading-Claims
-- [[News Sentiment Analysis]] — bestehendes Konzept, wird durch DPO-Kontext erweitert
+- [[news-sentiment-analysis|News Sentiment Analysis]] — bestehendes Konzept, wird durch DPO-Kontext erweitert

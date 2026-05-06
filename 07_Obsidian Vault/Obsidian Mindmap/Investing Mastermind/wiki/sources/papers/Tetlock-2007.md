@@ -13,7 +13,7 @@ sources: []
 related:
   - "[[Media-Pessimism-Sentiment]]"
   - "[[Noise-Trader-Model]]"
-  - "[[News Sentiment Analysis]]"
+  - "[[news-sentiment-analysis|News Sentiment Analysis]]"
   - "[[Iacovides-Zhou-Mandic-2025-FinDPO]]"
   - "[[Jadhav-Mirza-2025]]"
   - "[[DEFCON-System]]"
@@ -98,10 +98,10 @@ Das Paper ist die **kanonische Erstevidenz** für quantifizierbares Media-Sentim
 
 - [[Media-Pessimism-Sentiment]] — neue Concept-Page (B28-Anker)
 - [[Noise-Trader-Model]] — neue Concept-Page (DeLong/Shleifer/Summers/Waldmann 1990)
-- [[News Sentiment Analysis]] — bestehendes Konzept, B28 als kanonische Primärquelle
+- [[news-sentiment-analysis|News Sentiment Analysis]] — bestehendes Konzept, B28 als kanonische Primärquelle
 - [[Iacovides-Zhou-Mandic-2025-FinDPO]] — moderner ML-Counterpart
 - [[Jadhav-Mirza-2025]] — komplementärer Sentiment-Bias-Befund (B11)
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — Bias-Audit-Pattern (B19)
 - [[DEFCON-System]] — Sentiment-Block 10 Pt.
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B28
-- [[Paul Tetlock]] — Author-Entity
+- [[paul-tetlock|Paul Tetlock]] — Author-Entity

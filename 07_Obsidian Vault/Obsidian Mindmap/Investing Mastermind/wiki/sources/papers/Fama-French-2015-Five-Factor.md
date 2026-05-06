@@ -13,7 +13,7 @@ sources: []
 related:
   - "[[5J-Fundamental-Fenster]]"
   - "[[FCF-Primacy]]"
-  - "[[Hou-Xue-Zhang-q-Factor]]"
+  - "[[Hou-Xue-Zhang-2015-q-Factor]]"
   - "[[Novy-Marx-2013]]"
   - "[[Fama-French-2006-Profitability]]"
   - "[[arXiv-1711.04837]]"
@@ -61,13 +61,13 @@ Mt/Bt = Σ E(Yt+τ − dBt+τ) / (1+r)^τ / Bt
 
 ## Komplementarität zu Hou/Xue/Zhang q-Factor
 
-Hou/Xue/Zhang (2015, [[Hou-Xue-Zhang-q-Factor]]) propose ein **paralleles 4-Faktor-Modell** (Market, ME, I/A, ROE), motiviert aus q-Theory of Investment statt Dividend-Discount. Die Faktoren überschneiden sich stark mit FF-5 (RMW≈ROE, CMA≈I/A) — **konvergente Evidenz**, dass Profitability + Investment die fundamentalen Cross-Section-Treiber sind, unabhängig vom Theorierahmen.
+Hou/Xue/Zhang (2015, [[Hou-Xue-Zhang-2015-q-Factor]]) propose ein **paralleles 4-Faktor-Modell** (Market, ME, I/A, ROE), motiviert aus q-Theory of Investment statt Dividend-Discount. Die Faktoren überschneiden sich stark mit FF-5 (RMW≈ROE, CMA≈I/A) — **konvergente Evidenz**, dass Profitability + Investment die fundamentalen Cross-Section-Treiber sind, unabhängig vom Theorierahmen.
 
 ## Backlinks
 
 - [[5J-Fundamental-Fenster]] — Fundamental-Trendperspektive
 - [[FCF-Primacy]] — Fwd-P/E + FCF-Yield-Logik
-- [[Hou-Xue-Zhang-q-Factor]] — paralleles 4-Faktor-Modell, konvergente Evidenz
+- [[Hou-Xue-Zhang-2015-q-Factor]] — paralleles 4-Faktor-Modell, konvergente Evidenz
 - [[Novy-Marx-2013]] — Profitability-Pillar Primärquelle (RMW-Fundament)
 - [[Fama-French-2006-Profitability]] — Working-Paper-Vorgänger (mit gefoldeter F/F 2004 "Profitability, Growth, Average Returns" Draft-Variante)
 - [[arXiv-1711.04837]] — Gu/Kelly/Xiu ML-Validation der Dimension-Hierarchie

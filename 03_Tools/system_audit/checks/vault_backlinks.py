@@ -44,7 +44,11 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         for lineno, line in enumerate(md.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
             for m in WIKILINK_RE.finditer(line):
                 n_checked += 1
-                target = m.group(1).strip()
+                # Markdown-Table-Pipe-Escape: `[[BRKB\|BRK.B]]` in Tabellen-Zellen
+                # ist die korrekte Schreibweise (Pipe muss escaped werden, sonst
+                # parst Markdown ihn als Cell-Separator). Regex captured trailing
+                # backslash → strip vor Resolution.
+                target = m.group(1).strip().rstrip("\\")
                 if target in notes:
                     n_passed += 1
                 else:

@@ -114,5 +114,5 @@ Realistische Einschätzung: Diese Technik bleibt Wissenschaftskontext, nicht Roa
 
 - [[Iacovides-Zhou-Mandic-2025-FinDPO]] — primäre Source (Remark 2)
 - [[LLM-Preference-Optimization-Finance]] — Schwester-Konzept (DPO-Training-Seite)
-- [[News Sentiment Analysis]] — potenzielle Ziel-Domäne
+- [[news-sentiment-analysis|News Sentiment Analysis]] — potenzielle Ziel-Domäne
 - [[LLM-Investing-Bias-Audit]] — Pflicht-Validation vor Portfolio-Use

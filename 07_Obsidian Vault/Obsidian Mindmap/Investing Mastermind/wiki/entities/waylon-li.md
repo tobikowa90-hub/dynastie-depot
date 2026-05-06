@@ -23,8 +23,8 @@ GitHub: https://github.com/waylonli/FINSABER (Code + Daten öffentlich).
 
 ## Verbundene Seiten
 
-- [[Hyeonjun Kim]] — Co-Autor (Sungkyunkwan)
-- [[Mihai Cucuringu]] — Co-Autor (UCLA / Oxford)
-- [[Tiejun Ma]] — Co-Autor & vermutlich Supervisor (Edinburgh)
+- [[hyeonjun-kim|Hyeonjun Kim]] — Co-Autor (Sungkyunkwan)
+- [[mihai-cucuringu|Mihai Cucuringu]] — Co-Autor (UCLA / Oxford)
+- [[tiejun-ma|Tiejun Ma]] — Co-Autor & vermutlich Supervisor (Edinburgh)
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — Wiki Source-Seite (B19)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B19 in Befunde-Matrix

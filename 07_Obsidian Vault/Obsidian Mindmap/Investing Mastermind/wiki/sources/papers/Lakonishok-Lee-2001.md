@@ -26,7 +26,7 @@ aliases:
 
 # Lakonishok & Lee (2001) — Are Insiders' Trades Informative?
 
-> ⚠️ **CONFIDENCE-WARNUNG (sekundärer Beleg):** Raw-PDF ist image-only (kein Text-Layer extrahierbar). Diese Source-Page synthesisiert **NICHT aus der Primärquelle**, sondern aus (1) [[2iQ-Insider-Meta-Review]] (industry-meta-review, kein peer review), (2) etablierter Sekundärliteratur und (3) der weithin zitierten Befund-Architektur (Buy>Sell, Aggregate-Predictability, Small-Cap-Concentration, Contrarian-Timing). **Spezifische Magnituden** (z.B. „50-68 bps/Monat" aus 2iQ-Tabelle 33) sind sekundär-zitiert und sollten bei jeder !Analysiere-Insider-Block-Diskussion **NICHT als Primär-Zitat** verwendet werden. **Pflicht bei Bedarf an Primärzitaten:** NBER WP 6656 (1998 Draft) oder RFS 14(1) S. 79-111 konsultieren — Original-Tabellen-Werte verifizieren bevor sie in Briefings/Skill-Roadmap-Dokumente einfließen. Confidence-Level: **Inhaltliche Befunde HOCH** (kanonische Primärreferenz weithin repliziert), **numerische Magnituden MITTEL** (sekundär-zitiert, image-only-Trap).
+> ⚠️ **CONFIDENCE-WARNUNG (sekundärer Beleg):** Raw-PDF ist image-only (kein Text-Layer extrahierbar). Diese Source-Page synthesisiert **NICHT aus der Primärquelle**, sondern aus (1) [[2iQ-Insider-Meta-Review-2021]] (industry-meta-review, kein peer review), (2) etablierter Sekundärliteratur und (3) der weithin zitierten Befund-Architektur (Buy>Sell, Aggregate-Predictability, Small-Cap-Concentration, Contrarian-Timing). **Spezifische Magnituden** (z.B. „50-68 bps/Monat" aus 2iQ-Tabelle 33) sind sekundär-zitiert und sollten bei jeder !Analysiere-Insider-Block-Diskussion **NICHT als Primär-Zitat** verwendet werden. **Pflicht bei Bedarf an Primärzitaten:** NBER WP 6656 (1998 Draft) oder RFS 14(1) S. 79-111 konsultieren — Original-Tabellen-Werte verifizieren bevor sie in Briefings/Skill-Roadmap-Dokumente einfließen. Confidence-Level: **Inhaltliche Befunde HOCH** (kanonische Primärreferenz weithin repliziert), **numerische Magnituden MITTEL** (sekundär-zitiert, image-only-Trap).
 
 ## Abstract (eigene Worte)
 
@@ -70,6 +70,6 @@ L&L sagt: "Insider-Käufe sind informativer als -Verkäufe." Ke/Huddart/Petroni 
 - [[Ke-Huddart-Petroni-2003]] — komplementärer Befund (B27): Time-Window-Erweiterung
 - [[insider-intelligence]] — operativer Skill, nutzt L&L-Heuristiken
 - [[OpenInsider]] — Daten-Pflichtquelle (Form-4-Filter X/M)
-- [[2iQ-Insider-Meta-Review]] — Sekundärquelle, bündelt L&L mit Seyhun + Jeng/Metrick/Zeckhauser + Cluster-Buying-Studien
+- [[2iQ-Insider-Meta-Review-2021]] — Sekundärquelle, bündelt L&L mit Seyhun + Jeng/Metrick/Zeckhauser + Cluster-Buying-Studien
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B26
-- [[Josef Lakonishok]], [[Inmoo Lee]] — Author-Entities
+- [[josef-lakonishok|Josef Lakonishok]], [[inmoo-lee|Inmoo Lee]] — Author-Entities

@@ -1,7 +1,8 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-04-27 (Paper-Ingest Phase A+B+C: 14 source-pages B25-B28 + 10 SOURCE-ONLY, 6 neue concept-pages, 30 entity-pages. Phase-B-Errata gefixt: 3 entity-files mit halluzinierten Vornamen umbenannt + broken sources-link `Amundi-2024-Quality-Pillars` → `Amundi-Quality-2021` korrigiert in 4 entity-pages.)
+> Last updated: 2026-05-06 (Satelliten-State-Drift-Cleanup: 8 von 11 Zeilen auf aktuellen DEFCON/Score/Sparraten/FLAG-State gebracht — AVGO 84→53/D4→D2/FLAG, COST/RMS/VEEV/SU 🟢4→🟡3 Schema-Fix, V 86→64/D4→D2 Rescoring 28.04., APH 63→61/D3→D2 Q1 30.04., TMO 63/D2→67/D3 Resolve 23.04., MSFT 59→50 Q3 30.04. Sparraten als Tertiär-Info ergänzt.)
+> Last updated (zuvor): 2026-04-27 (Paper-Ingest Phase A+B+C: 14 source-pages B25-B28 + 10 SOURCE-ONLY, 6 neue concept-pages, 30 entity-pages. Phase-B-Errata gefixt: 3 entity-files mit halluzinierten Vornamen umbenannt + broken sources-link `Amundi-2024-Quality-Pillars` → `Amundi-Quality-2021` korrigiert in 4 entity-pages.)
 > Last updated (zuvor): 2026-04-26 (Hub-Split-Lückenschluss: 3 neue Vault-Stubs PORTFOLIO/PIPELINE/SYSTEM als Backlink-Anker + DEFCON-System 4-Layer→5-Layer Inkonsistenz gefixt; Lint-Follow-up zur Vault-Sanitation 25.04.)
 > Last updated (zuvor): 2026-04-25 (Vault-Concept-Seiten-Sanierung Tier-2-00_Core-Refactor — 14 Files: Hub-Split STATE→Hub+PORTFOLIO/PIPELINE/SYSTEM, CORE-MEMORY §1→§12/§13, §18 v2.1 Trigger-Mapping, Tripwire-Migration STATE→PORTFOLIO. Keine neuen Pages, nur Drift-Sanierung)
 > Schema: [[WIKI-SCHEMA]]
@@ -13,7 +14,7 @@
 *Sub-Ordner-Layout (seit 2026-04-23): `wiki/sources/{papers,tools,references,videos}/`*
 
 ### Externe Quellen & Forschung (`wiki/sources/papers/`)
-- [[LLMs for Equity Stock Ratings]] — J.P. Morgan AI Research (2024): GPT-4 übertrifft Wall-Street-Analysten bei 3–12-Monats-Aktien-Ratings; Fundamentaldaten sind stärkste Daten-Modalität (1 Quelle)
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] — J.P. Morgan AI Research (2024): GPT-4 übertrifft Wall-Street-Analysten bei 3–12-Monats-Aktien-Ratings; Fundamentaldaten sind stärkste Daten-Modalität (1 Quelle)
 
 ### Akademische Paper (Wissenschaftliche Fundierung DEFCON) — `wiki/sources/papers/`
 - [[arXiv-1711.04837]] — Gu, Kelly, Xiu (2019): ML + 5J-Fundamental-Fenster → +2,7% CAGR; Datenhierarchie Fundamentals>Sentiment>Technicals (B1, B7)
@@ -97,32 +98,32 @@ _(noch leer)_
 *People, organizations, places, products, projects.*
 
 ### Forschung & KI
-- [[J.P. Morgan AI Research]] — KI-Forschungsgruppe von JPMorgan Chase; Autoren: Papasotiriou, Sood, Reynolds
-- [[GPT-4]] — OpenAI Large Language Model; in Finanzforschung eingesetzt für Ratings, Sentiment, Zusammenfassungen
-- [[S&P 500]] — US-Leitindex (500 Unternehmen); Standarduniversum für quantitative Aktienanalyse
+- [[jp-morgan-ai-research|J.P. Morgan AI Research]] — KI-Forschungsgruppe von JPMorgan Chase; Autoren: Papasotiriou, Sood, Reynolds
+- [[gpt-4|GPT-4]] — OpenAI Large Language Model; in Finanzforschung eingesetzt für Ratings, Sentiment, Zusammenfassungen
+- [[sp-500|S&P 500]] — US-Leitindex (500 Unternehmen); Standarduniversum für quantitative Aktienanalyse
 
 ### Autoren (akademische Quellen)
-- [[Dominik Wolff]] — Co-Autor "Stock picking with machine learning" (Wiley)
-- [[Fabian Echterling]] — Co-Autor "Stock picking with machine learning" (Wiley)
-- [[Aakanksha Jadhav]] — Co-Autorin "Large Language Models in equity markets" (PMC Survey, 84 Studien)
-- [[Vishal Mirza]] — Co-Autor "Large Language Models in equity markets" (PMC Survey, 84 Studien)
-- [[Weixian Waylon Li]] — Erstautor FINSABER (Edinburgh AIAI) ← NEU 2026-04-20
-- [[Hyeonjun Kim]] — Co-Autor FINSABER (Sungkyunkwan) ← NEU 2026-04-20
-- [[Mihai Cucuringu]] — Co-Autor FINSABER (UCLA Math/Stats + Oxford OMI) ← NEU 2026-04-20
-- [[Tiejun Ma]] — Co-Autor FINSABER (Edinburgh AIAI, vermutlich Supervisor) ← NEU 2026-04-20
-- [[Alexander Pearson Sheppert]] — Alleinautor GT-Score (Capitol Tech U) ← NEU 2026-04-20
-- [[Abhinav Arun]] — Erstautor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
-- [[Fabrizio Dimino]] — Co-Autor FinReflectKG + Präsentator Quant x AI NY 2025 (Domyn NY) ← NEU 2026-04-20 Phase 1b
-- [[Tejas Prakash Agarwal]] — Co-Autor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
-- [[Bhaskarjit Sarmah]] — Co-Autor FinReflectKG (Domyn Gurgaon India) ← NEU 2026-04-20 Phase 1b
-- [[Stefano Pasquali]] — Senior Co-Autor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
-- [[Marcelo Labre]] — Praktiker/Blogger Towards AI, Quant x AI Event NY 2025 ← NEU 2026-04-20 Phase 1b
-- [[Lebede Ngartera]] — Erstautor Bayesian RAG (TeraSystemsAI Philadelphia) ← NEU 2026-04-20 Phase 1b
-- [[Saralees Nadarajah]] — Co-Autor Bayesian RAG (U Manchester Mathematics) ← NEU 2026-04-20 Phase 1b
-- [[Rodoumta Koina]] — Co-Autor Bayesian RAG (U N'Djamena Chad) ← NEU 2026-04-20 Phase 1b
-- [[Giorgos Iacovides]] — Erstautor FinDPO + FinLlama (Imperial College London) ← NEU 2026-04-20 Phase 1b
-- [[Wuyang Zhou]] — Co-Autor FinDPO (Imperial College London) ← NEU 2026-04-20 Phase 1b
-- [[Danilo Mandic]] — Senior-Author FinDPO, Professor Imperial College London ← NEU 2026-04-20 Phase 1b
+- [[dominik-wolff|Dominik Wolff]] — Co-Autor "Stock picking with machine learning" (Wiley)
+- [[fabian-echterling|Fabian Echterling]] — Co-Autor "Stock picking with machine learning" (Wiley)
+- [[aakanksha-jadhav|Aakanksha Jadhav]] — Co-Autorin "Large Language Models in equity markets" (PMC Survey, 84 Studien)
+- [[vishal-mirza|Vishal Mirza]] — Co-Autor "Large Language Models in equity markets" (PMC Survey, 84 Studien)
+- [[waylon-li|Weixian Waylon Li]] — Erstautor FINSABER (Edinburgh AIAI) ← NEU 2026-04-20
+- [[hyeonjun-kim|Hyeonjun Kim]] — Co-Autor FINSABER (Sungkyunkwan) ← NEU 2026-04-20
+- [[mihai-cucuringu|Mihai Cucuringu]] — Co-Autor FINSABER (UCLA Math/Stats + Oxford OMI) ← NEU 2026-04-20
+- [[tiejun-ma|Tiejun Ma]] — Co-Autor FINSABER (Edinburgh AIAI, vermutlich Supervisor) ← NEU 2026-04-20
+- [[alexander-pearson-sheppert|Alexander Pearson Sheppert]] — Alleinautor GT-Score (Capitol Tech U) ← NEU 2026-04-20
+- [[abhinav-arun|Abhinav Arun]] — Erstautor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
+- [[fabrizio-dimino|Fabrizio Dimino]] — Co-Autor FinReflectKG + Präsentator Quant x AI NY 2025 (Domyn NY) ← NEU 2026-04-20 Phase 1b
+- [[tejas-prakash-agarwal|Tejas Prakash Agarwal]] — Co-Autor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
+- [[bhaskarjit-sarmah|Bhaskarjit Sarmah]] — Co-Autor FinReflectKG (Domyn Gurgaon India) ← NEU 2026-04-20 Phase 1b
+- [[stefano-pasquali|Stefano Pasquali]] — Senior Co-Autor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
+- [[marcelo-labre|Marcelo Labre]] — Praktiker/Blogger Towards AI, Quant x AI Event NY 2025 ← NEU 2026-04-20 Phase 1b
+- [[lebede-ngartera|Lebede Ngartera]] — Erstautor Bayesian RAG (TeraSystemsAI Philadelphia) ← NEU 2026-04-20 Phase 1b
+- [[saralees-nadarajah|Saralees Nadarajah]] — Co-Autor Bayesian RAG (U Manchester Mathematics) ← NEU 2026-04-20 Phase 1b
+- [[rodoumta-koina|Rodoumta Koina]] — Co-Autor Bayesian RAG (U N'Djamena Chad) ← NEU 2026-04-20 Phase 1b
+- [[giorgos-iacovides|Giorgos Iacovides]] — Erstautor FinDPO + FinLlama (Imperial College London) ← NEU 2026-04-20 Phase 1b
+- [[wuyang-zhou|Wuyang Zhou]] — Co-Autor FinDPO (Imperial College London) ← NEU 2026-04-20 Phase 1b
+- [[danilo-mandic|Danilo Mandic]] — Senior-Author FinDPO, Professor Imperial College London ← NEU 2026-04-20 Phase 1b
 - [[r-david-mclean]] — Erstautor McLean/Pontiff (B25) — Georgetown McDonough; Cross-Section-Predictability + Post-Publication-Decay ← NEU 2026-04-26 Phase A
 - [[jeffrey-pontiff]] — Co-Autor McLean/Pontiff (B25) — Boston College Carroll ← NEU 2026-04-26 Phase A
 - [[josef-lakonishok]] — Erstautor Lakonishok/Lee (B26) — UIUC; Insider-Trading-Akademiker ← NEU 2026-04-26 Phase A
@@ -155,17 +156,17 @@ _(noch leer)_
 - [[robert-hable]] — Alleinautor 2iQ-Insider-Meta-Review 2021 (SOURCE-ONLY industry-meta) — 2iQ Research ← NEU 2026-04-26 Phase A
 
 ### Satelliten (aktive Positionen)
-- [[AVGO]] — Broadcom Inc. | DEFCON 🟢 4 | Score 84 | Kalibrierungsanker #1 (v3.7)
-- [[COST]] — Costco Wholesale | DEFCON 🟢 4 | Score 69
-- [[RMS]] — Hermès International | DEFCON 🟢 4 | Score 68 | Non-US | Screener-Exception (ROIC 24% >> WACC)
-- [[VEEV]] — Veeva Systems | DEFCON 🟢 4 | Score 74
-- [[SU]] — Schneider Electric | DEFCON 🟢 4 | Score 69 | Non-US
-- [[BRKB]] — Berkshire Hathaway B | DEFCON 🟡 3 | Score 71 (Q1 FY26 Tag-+1 04.05.: 75→71 Codex-R1-Korrektur, FLAG ✅ Clean Insurance-Exception, Sparrate 38€)
-- [[V]] — Visa Inc. | DEFCON 🟢 4 | Score 86
-- [[APH]] — Amphenol Corp. | DEFCON 🟡 3 | Score 63 | 🔴 FLAG (Score-basiert)
-- [[ASML]] — ASML Holding | DEFCON 🟡 3 | Score 68 | Non-US
-- [[TMO]] — Thermo Fisher Scientific | DEFCON 🟠 2 | Score 63 | Q1 Earnings 23.04. (D3→D2 v3.7)
-- [[MSFT]] — Microsoft | DEFCON 🟠 2 | Score 59 | 🔴 CapEx-FLAG | Q3 Earnings 29.04.
+- [[AVGO]] — Broadcom Inc. | DEFCON 🟠 2 | Score 53 | 🔴 FLAG (insider_selling_20m, $106M+ diskretionär 90d) | Sparrate 0€ | Q1 FY26 Forward-Vollanalyse 30.04. (84→53, Δ-31, Codex R1+R2 74% Confidence)
+- [[COST]] — Costco Wholesale | DEFCON 🟡 3 | Score 69 | Sparrate 38€ | Screener-Exception
+- [[RMS]] — Hermès International | DEFCON 🟡 3 | Score 68 | Sparrate 38€ | Non-US | Screener-Exception (ROIC 24% >> WACC)
+- [[VEEV]] — Veeva Systems | DEFCON 🟡 3 | Score 74 | Sparrate 38€
+- [[SU]] — Schneider Electric | DEFCON 🟡 3 | Score 69 | Sparrate 38€ | Non-US
+- [[BRKB]] — Berkshire Hathaway B | DEFCON 🟡 3 | Score 71 | Sparrate 38€ | FLAG ✅ Clean (Insurance Exception) | Q1 FY26 Tag-+1 04.05. (75→71 Codex-R1-Korrektur)
+- [[V]] — Visa Inc. | DEFCON 🟠 2 | Score 64 | Sparrate 19€ | FLAG ✅ Clean | Q2 FY26 Beat 28.04. + Codex-Rescoring-Revert (68→64, ROIC-Methodology-Watch Q3)
+- [[APH]] — Amphenol Corp. | DEFCON 🟠 2 | Score 61 | 🔴 FLAG (Score-basiert <65) | Sparrate 0€ | Q1 FY26 Tag-+1 30.04. (63→61)
+- [[ASML]] — ASML Holding | DEFCON 🟡 3 | Score 68 | Sparrate 38€ | Non-US
+- [[TMO]] — Thermo Fisher Scientific | DEFCON 🟡 3 | Score 67 | Sparrate 38€ | Q1 FY26 Forward-Vollanalyse 23.04. (D2→D3, fcf_trend_neg Resolve-Gate CLEAR)
+- [[MSFT]] — Microsoft | DEFCON 🟠 2 | Score 50 | 🔴 CapEx/OCF-FLAG aktiv | Sparrate 0€ | Q3 FY26 Tag-+1 30.04. (59→50, Bull-Case Trigger A✅/B❌/C✅✅ — UND nicht erfüllt)
 
 ### Ersatzbank
 - [[GOOGL]] — MSFT-Ersatz | Score 72, DEFCON 3 | 🔴 FLAG: CapEx ~75% OCF — kein Einstieg
@@ -184,12 +185,12 @@ _(noch leer)_
 *Ideas, topics, themes, frameworks, methods.*
 
 ### KI & Finanzforschung
-- [[LLM-Based Stock Rating]] — Automatisierte Aktien-Ratings via LLM; schlägt Analysten bei 3–6 Monaten (1 Quelle)
-- [[Financial Fundamentals Analysis]] — Bilanz, GuV, Cashflow-Analyse aus SEC-Filings; stärkste Daten-Modalität für KI-Ratings (1 Quelle)
-- [[Chain-of-Thought Prompting]] — Prompting-Technik: LLM denkt Schritt für Schritt; erhöht Qualität und Interpretierbarkeit (1 Quelle)
-- [[News Sentiment Analysis]] — Sentiment-Scoring von Finanznachrichten; kurzfristig nützlich, mittelfristig Positivitäts-Bias (1 Quelle)
-- [[Forward Returns Evaluation]] — Quintil-basierte Methode zur Bewertung von Rating-Genauigkeit über verschiedene Zeithorizonte (1 Quelle)
-- [[Analyst Stock Ratings]] — Traditionelle Wall-Street-Ratings; struktureller 43%-Strong-Buy-Bias; langfristig besser als LLMs (1 Quelle)
+- [[llm-stock-rating|LLM-Based Stock Rating]] — Automatisierte Aktien-Ratings via LLM; schlägt Analysten bei 3–6 Monaten (1 Quelle)
+- [[financial-fundamentals-analysis|Financial Fundamentals Analysis]] — Bilanz, GuV, Cashflow-Analyse aus SEC-Filings; stärkste Daten-Modalität für KI-Ratings (1 Quelle)
+- [[chain-of-thought-prompting|Chain-of-Thought Prompting]] — Prompting-Technik: LLM denkt Schritt für Schritt; erhöht Qualität und Interpretierbarkeit (1 Quelle)
+- [[news-sentiment-analysis|News Sentiment Analysis]] — Sentiment-Scoring von Finanznachrichten; kurzfristig nützlich, mittelfristig Positivitäts-Bias (1 Quelle)
+- [[forward-returns-evaluation|Forward Returns Evaluation]] — Quintil-basierte Methode zur Bewertung von Rating-Genauigkeit über verschiedene Zeithorizonte (1 Quelle)
+- [[analyst-stock-ratings|Analyst Stock Ratings]] — Traditionelle Wall-Street-Ratings; struktureller 43%-Strong-Buy-Bias; langfristig besser als LLMs (1 Quelle)
 
 ### DEFCON-System (Kern-Framework)
 - [[DEFCON-System]] — 100-Punkte-Scoring-Matrix; 5 Blöcke; Sparplan-Formel; v3.7 (System-Gap-Release; Skill-Paket v3.7.2 seit 19.04.2026)
@@ -241,6 +242,8 @@ _(noch leer)_
 - [[PORTFOLIO]] — Live-State: 11 Satelliten Scores/DEFCON/FLAGs/Sparraten + 30-Tage-Trigger (Vault-Stub für `00_Core/PORTFOLIO.md`, default-load bei Session-Start)
 - [[PIPELINE]] — Pipeline-SSoT + Long-Term-Gates (Vault-Stub für `00_Core/PIPELINE.md`)
 - [[SYSTEM]] — System-Zustand + Infrastruktur: DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog (Vault-Stub für `00_Core/SYSTEM.md`)
+- [[CORE-MEMORY]] — Live-Gedächtnis: Lektionen + Per-Ticker-Chronik (§12) + System-Lifecycle (§13) (Vault-Stub für `00_Core/CORE-MEMORY.md`)
+- [[Faktortabelle]] — Score-Detail pro Ticker (Vault-Stub für `00_Core/Faktortabelle.md`)
 - [[Token-Mechanik]] — Strukturiertes Token-Management; Snapshot-First, MCP-Minimalset
 - [[Context-Hygiene]] — On-demand Loading; Compact-Regeln; MCP-Session-Typen
 - [[CLAUDE-md-Konstitution]] — CLAUDE.md als Wahrheitsquelle; Hub+PORTFOLIO Default-Load; Routing-Table-Trigger (Tier-1 24.04. + Tier-2 25.04.2026)
@@ -251,15 +254,15 @@ _(noch leer)_
 - [[INSTRUKTIONEN-SKILL-Trennung]] — Post-Dedup Arbeitsteilung: User-Workflow (INSTRUKTIONEN) vs. Scoring-Technik (SKILL); 587→452 Zeilen, 10 Cross-Refs, seit 17.04.2026
 
 ### Depot-Struktur & Planung
-- [[ETF-Core]] — 65% des Sparplans (617,50€/Monat); IWDA, EIMI, EXUSA, AVGC, EWG2
-- [[Steuer-Architektur]] — Lombardkredit, FIFO-Klon, 10-Jahres-Kaskade, PKV-Wäsche; Zeithorizont 2058
+- [[etf-core|ETF-Core]] — 65% des Sparplans (617,50€/Monat); IWDA, EIMI, EXUSA, AVGC, EWG2
+- [[steuer-architektur|Steuer-Architektur]] — Lombardkredit, FIFO-Klon, 10-Jahres-Kaskade, PKV-Wäsche; Zeithorizont 2058
 
 ---
 
 ## Synthesis
 *Cross-source analyses and evolving theses.*
 
-- [[AI in Investment Analysis]] — Zentrale Synthese: KI in Aktienanalyse, Depot-Strategie, Trading; wächst mit jeder neuen Quelle
+- [[ai-in-investment-analysis|AI in Investment Analysis]] — Zentrale Synthese: KI in Aktienanalyse, Depot-Strategie, Trading; wächst mit jeder neuen Quelle
 - [[Investing-Mastermind-Index]] — Zentraler Navigationsindex: Depot-State, Satelliten, Konzepte, Skills
 - [[Depot-State-April-2026]] — Monatlicher Snapshot; Sparplan-Verteilung; offene Entscheidungen
 - [[Wissenschaftliche-Fundierung-DEFCON]] — 28-Befunde-Matrix: 34 Paper → operative Konsequenzen für DEFCON v3.7; Status-Matrix mit 6 Labels (active-scoring, active-scoring-validation, design-context, meta-gate, design-rejected, future-arch); §29-Validation-Gate-Framework inkl. §29.7 M&P-Discount (Phase A+B+C 26-27.04.2026)

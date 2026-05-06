@@ -74,4 +74,4 @@ Strukturierter Inhalt:
 - [[Insider-Trading-Primary-Signal]] — Concept-Page (Phase B2)
 - [[DEFCON-System]] — Insider-Block (5 Pt.)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Source-only-Quelle, anchors B26+B27 indirekt
-- [[Robert Hable]] — Author-Entity
+- [[robert-hable|Robert Hable]] — Author-Entity

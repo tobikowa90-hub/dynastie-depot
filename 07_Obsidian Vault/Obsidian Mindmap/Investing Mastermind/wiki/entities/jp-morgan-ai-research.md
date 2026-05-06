@@ -24,7 +24,7 @@ Die KI-Forschungsgruppe von JPMorgan Chase & Co., eine der größten und einflus
 J.P. Morgan betont explizit, dass ihre Research-Papiere **keine Anlageberatung** darstellen und von der Research-Abteilung getrennt zu sehen sind.
 
 ## Relevante Arbeiten
-- [[LLMs for Equity Stock Ratings]] (ICAIF 2024) — LLMs übertreffen menschliche Analysten bei Aktien-Rating-Prognosen
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] (ICAIF 2024) — LLMs übertreffen menschliche Analysten bei Aktien-Rating-Prognosen
 
 ## Verbundene Seiten
-- [[LLMs for Equity Stock Ratings]] · [[GPT-4]] · [[AI in Investment Analysis]]
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] · [[gpt-4|GPT-4]] · [[ai-in-investment-analysis|AI in Investment Analysis]]

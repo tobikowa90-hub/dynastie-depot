@@ -32,11 +32,11 @@ LLM denkt laut nach und gibt dann die Antwort.
 Dem LLM wird ein vollständiges Beispiel (Input + Reasoning + Output) im Kontext gezeigt. Besonders effektiv bei strukturierten Aufgaben wie Aktienrating.
 
 ### Chain of Verification (CoVE)
-Erweiterung: LLM prüft nach der Antwort spezifische Fakten. In [[LLMs for Equity Stock Ratings]] als Datumsprüfung implementiert — stellt sicher, dass das Modell die richtigen Zeithorizonte berechnet hat (Halluzinations-Check).
+Erweiterung: LLM prüft nach der Antwort spezifische Fakten. In [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] als Datumsprüfung implementiert — stellt sicher, dass das Modell die richtigen Zeithorizonte berechnet hat (Halluzinations-Check).
 
 ## Einsatz in Finanz-Analyse
 
-Aus [[LLMs for Equity Stock Ratings]] (J.P. Morgan):
+Aus [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] (J.P. Morgan):
 - LLM erklärt zuerst sein Reasoning zur Datenlage
 - Nennt Preis-Targets für jeden Zeithorizont
 - Gibt dann das 5-stufige Rating aus
@@ -73,5 +73,5 @@ Die [[Analyse-Pipeline]] (Stufe 0 → 2 → Entscheidung) folgt demselben Prinzi
 
 ## Verbundene Seiten
 
-- [[LLMs for Equity Stock Ratings]] · [[LLM-Based Stock Rating]] · [[GPT-4]] · [[AI in Investment Analysis]]
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] · [[llm-stock-rating|LLM-Based Stock Rating]] · [[gpt-4|GPT-4]] · [[ai-in-investment-analysis|AI in Investment Analysis]]
 - [[DEFCON-System]] · [[Analyse-Pipeline]] · [[dynastie-depot-skill]]

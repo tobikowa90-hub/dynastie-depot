@@ -132,7 +132,7 @@ manual_review_reasons: []        # z.B. ["word_density_low"]
 - Source pages link to entity and concept pages they mention; entity/concept pages link back to source pages via frontmatter `sources:` field
 - **Sibling-Linking:** Konzeptseiten im gleichen Themencluster (z.B. alle DEFCON-Konzepte) verlinken sich gegenseitig — nicht nur zum Hub
 - **Sub-Ordner-Transparenz:** Backlinks `[[Page Title]]` resolven über Basename, pfad-unabhängig. Wiki-Pages in `wiki/sources/papers/`, `wiki/sources/videos/<kat>/` usw. werden identisch zu Top-Level-Pages verlinkt — die Sub-Ordner-Struktur ist ein Organisations-Layer, kein Schema-Diskriminator. Der wahre Source-Typ steht im Frontmatter `medium:`-Feld.
-- **Alias-Pflicht für Title-Case-Refs:** Wenn ein Page-Filename kebab-case ist (`gpt-4.md`), aber im Vault als `[[GPT-4]]` referenziert wird, MUSS die Page einen `aliases:`-Block im Frontmatter haben. Ohne Alias bricht der Backlink. Bei Bulk-Ingest aller neuen Pages auf Title-Case-Aliases prüfen.
+- **Alias-Pflicht für Title-Case-Refs:** Wenn ein Page-Filename kebab-case ist (`gpt-4.md`), aber im Vault als `[[gpt-4|GPT-4]]` referenziert wird, MUSS die Page einen `aliases:`-Block im Frontmatter haben. Ohne Alias bricht der Backlink. Bei Bulk-Ingest aller neuen Pages auf Title-Case-Aliases prüfen.
 
 ---
 

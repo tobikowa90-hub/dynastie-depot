@@ -35,7 +35,7 @@ Statt heute zu validieren → Infrastruktur bauen, die es **2028+ ermöglicht, �
 Siehe KONTEXT.md §11 + [[DEFCON-System]] für Details:
 
 1. **State-Layer** — [[Faktortabelle]] (überschrieben)
-2. **Narrative-Layer** — log.md, [[CORE-MEMORY]] (menschenlesbar, evolvierend)
+2. **Narrative-Layer** — log.md, `CORE-MEMORY.md` (menschenlesbar, evolvierend)
 3. **History-Layer** — [[Score-Archiv]] + [[FLAG-Event-Log]] (append-only, unveränderlich)
 4. **Projection-Layer (Live-State)** — [[PORTFOLIO]] (Live-Portfolio-Snapshot, default-load bei Session-Start)
 5. **Hub-Layer** — [[STATE]] (Navigation + Critical-Alerts + Last-Audit, ~40 Z., keine eigenständige Wahrheitsquelle), plus [[PIPELINE]] + [[SYSTEM]] als ko-projizierte Hub-Files

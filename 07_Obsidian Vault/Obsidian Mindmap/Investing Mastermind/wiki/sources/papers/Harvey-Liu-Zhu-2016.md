@@ -77,4 +77,4 @@ Total:   Plausibilitäts-Discount = (1/HLZ-Bias-Faktor) × 0.42 (M&P-Discount)
 - [[Backtest-Methodik-Roadmap]] — 2028-Review-Strategie
 - [[DEFCON-System]] — §29-Backtest-Validation-Framework
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Source-only-Quelle (anchors B16 §29.4)
-- [[Campbell R. Harvey]], [[Yan Liu]], [[Heqing Zhu]] — Author-Entities
+- [[Campbell R. Harvey]], [[yan-liu|Yan Liu]], [[heqing-zhu|Heqing Zhu]] — Author-Entities

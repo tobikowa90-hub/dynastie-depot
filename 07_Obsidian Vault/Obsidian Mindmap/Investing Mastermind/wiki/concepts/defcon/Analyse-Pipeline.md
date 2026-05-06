@@ -53,8 +53,8 @@ Impuls / Idee
 - [[insider-intelligence]] — Form-4-Automatisierung (!InsiderScan)
 - [[non-us-fundamentals]] — yfinance für ASML/RMS/SU (!NonUSScan)
 - [[dynastie-depot-skill]] — Übergeordneter Monolith mit allen Befehlen
-- [[Chain-of-Thought Prompting]] — Strukturprinzip hinter !Analysiere: erst Reasoning, dann Score
-- [[LLM-Based Stock Rating]] — Forschungsgrundlage für den Analyse-Workflow (JPM 2024)
+- [[chain-of-thought-prompting|Chain-of-Thought Prompting]] — Strukturprinzip hinter !Analysiere: erst Reasoning, dann Score
+- [[llm-stock-rating|LLM-Based Stock Rating]] — Forschungsgrundlage für den Analyse-Workflow (JPM 2024)
 - [[Score-Archiv]] — Pipeline-Ausgabe landet im History-Layer
 - [[Backtest-Ready-Infrastructure]] — Dachkonzept für persistente Analyse-Historie
 

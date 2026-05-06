@@ -52,6 +52,6 @@ Wenn US-Anteil > 60% (Warnschwelle):
 ## Verlinkungen
 
 - [[Depot-State-April-2026]] — Aktueller Snapshot (US-Ist vs. US-Ziel)
-- [[Steuer-Architektur]] — Vorabpauschale, FIFO-Klon, Freibeträge
+- [[steuer-architektur|Steuer-Architektur]] — Vorabpauschale, FIFO-Klon, Freibeträge
 - [[DEFCON-System]] — Satelliten-Block (285€/Monat, separate Logik)
 - [[Investing-Mastermind-Index]] — Zentralindex

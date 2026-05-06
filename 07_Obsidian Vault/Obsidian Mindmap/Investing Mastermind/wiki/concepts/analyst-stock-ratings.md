@@ -39,7 +39,7 @@ Empfehlungen von professionellen Wertpapieranalysten (meist bei Investmentbanken
 ## Bewiesene Schwächen (aus Forschung)
 
 ### 1. Massiver Positivitäts-Bias
-Aus [[LLMs for Equity Stock Ratings]]:
+Aus [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]]:
 - **43% Strong Buy**, 34% Moderate Buy, 16% Hold, 4% Moderate Sell, 1% Strong Sell
 - Weniger als 5% aller Ratings sind Verkaufsempfehlungen
 - Grund: kommerzielle Abhängigkeiten (Investmentbanking-Gebühren, Unternehmensbeziehungen)
@@ -100,5 +100,5 @@ Forschung zeigt:
 
 ## Verbundene Seiten
 
-- [[LLMs for Equity Stock Ratings]] · [[LLM-Based Stock Rating]] · [[Forward Returns Evaluation]]
-- [[Financial Fundamentals Analysis]] · [[S&P 500]] · [[AI in Investment Analysis]]
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] · [[llm-stock-rating|LLM-Based Stock Rating]] · [[forward-returns-evaluation|Forward Returns Evaluation]]
+- [[financial-fundamentals-analysis|Financial Fundamentals Analysis]] · [[sp-500|S&P 500]] · [[ai-in-investment-analysis|AI in Investment Analysis]]

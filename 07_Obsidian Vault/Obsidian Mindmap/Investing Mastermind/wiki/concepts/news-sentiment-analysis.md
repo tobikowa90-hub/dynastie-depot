@@ -32,7 +32,7 @@ Finanznachrichten enthalten Informationen, die kurzfristig die Aktienkurse beweg
 - **Sektor-Score:** Sentiment der Branchenentwicklung
 - Kompakter: zwei Zahlen statt langer Texte
 
-## Ergebnis aus [[LLMs for Equity Stock Ratings]]
+## Ergebnis aus [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]]
 
 **Kein signifikanter Unterschied** zwischen Volltext und Score-Methode bei mittleren und langen Horizonten. Für die Praxis: **Sentiment-Scores sind gleichwertig und deutlich effizienter.**
 
@@ -70,7 +70,7 @@ Bevor Sentiment berechnet wird, müssen irrelevante Artikel gefiltert werden. NE
 
 ## Verbundene Seiten
 
-- [[LLMs for Equity Stock Ratings]] · [[LLM-Based Stock Rating]] · [[Financial Fundamentals Analysis]]
-- [[Chain-of-Thought Prompting]] · [[AI in Investment Analysis]]
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] · [[llm-stock-rating|LLM-Based Stock Rating]] · [[financial-fundamentals-analysis|Financial Fundamentals Analysis]]
+- [[chain-of-thought-prompting|Chain-of-Thought Prompting]] · [[ai-in-investment-analysis|AI in Investment Analysis]]
 - [[Jadhav-Mirza-2025]] — 84-Paper Meta-Survey bestätigt Positivity-Bias (B11)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — B11: Sentiment-Cap 10 Pt. wissenschaftlich begründet

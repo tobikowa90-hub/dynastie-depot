@@ -111,4 +111,4 @@ Frühere Ansätze (Soudani et al. 2025) behandeln Uncertainty als **post-hoc rec
 - [[Knowledge-Graph-Finance-Architecture]] — Konzeptseite (komplementär: KG + uncertainty-aware Retrieval)
 - [[Knowledge-Graph-Architektur-Roadmap]] — neue Synthesis v0.1 (RAG-vs-KG-Trade-off)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B23
-- [[Lebede Ngartera]], [[Saralees Nadarajah]], [[Rodoumta Koina]] — Author-Entities
+- [[lebede-ngartera|Lebede Ngartera]], [[saralees-nadarajah|Saralees Nadarajah]], [[rodoumta-koina|Rodoumta Koina]] — Author-Entities

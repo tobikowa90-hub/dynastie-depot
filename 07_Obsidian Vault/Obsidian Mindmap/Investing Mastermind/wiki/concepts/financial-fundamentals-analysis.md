@@ -55,7 +55,7 @@ Zeigt tatsächliche Geldflüsse — wichtiger als Buchgewinn.
 
 ## Einsatz im LLM-Kontext
 
-Aus [[LLMs for Equity Stock Ratings]] (J.P. Morgan):
+Aus [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] (J.P. Morgan):
 - Letzte 4 Quartalsberichte (12 Monate) werden im Kontext bereitgestellt
 - **Format:** HTML-Tabellen (übertrifft JSON/CSV für LLM-Verständnis)
 - Detaillierte Metriken-Definitionen im System-Prompt
@@ -84,5 +84,5 @@ Aus [[LLMs for Equity Stock Ratings]] (J.P. Morgan):
 
 ## Verbundene Seiten
 
-- [[LLMs for Equity Stock Ratings]] · [[LLM-Based Stock Rating]] · [[Analyst Stock Ratings]]
-- [[S&P 500]] · [[Forward Returns Evaluation]] · [[AI in Investment Analysis]]
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] · [[llm-stock-rating|LLM-Based Stock Rating]] · [[analyst-stock-ratings|Analyst Stock Ratings]]
+- [[sp-500|S&P 500]] · [[forward-returns-evaluation|Forward Returns Evaluation]] · [[ai-in-investment-analysis|AI in Investment Analysis]]

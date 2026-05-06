@@ -53,7 +53,7 @@ adoption_decision:
 # Stop Building AI Agents. Use This Folder System Instead.
 
 **Source:** [Jake Van Clief — 2026-03-10](https://www.youtube.com/watch?v=MkN-ss2Nl10)
-**Raw transcript:** [[transcript]] (in `raw/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents/`)
+**Raw transcript:** `transcript` (in `raw/videos/updating-system/2026-03-10-jake-van-clief-folder-system-ai-agents/`)
 
 ## Source-Credibility
 

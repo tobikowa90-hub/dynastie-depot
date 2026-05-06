@@ -106,4 +106,4 @@ Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 - [[insider-intelligence]] — Form-4-Automatisierung
 - [[non-us-fundamentals]] — yfinance für ASML/RMS/SU
 - [[Non-US-Scoring]] — IFRS-Addendum
-- [[Steuer-Architektur]] — Tax-Mechaniken
+- [[steuer-architektur|Steuer-Architektur]] — Tax-Mechaniken

@@ -36,7 +36,7 @@ Der entscheidende Unterschied: Ein LLM kann hunderte Unternehmen **gleichzeitig,
 
 ## Bewiesene Vorteile gegenüber menschlichen Analysten
 
-Aus [[LLMs for Equity Stock Ratings]] (J.P. Morgan, 2024):
+Aus [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] (J.P. Morgan, 2024):
 1. **Geringerer MAE** bei 3-, 6- und 12-Monats-Prognosen (Vanilla: 1.447 vs. Analyst: 1.570)
 2. **Kein Positivitäts-Bias:** Analysten vergeben 43% Strong Buy, LLMs verteilen gleichmäßiger
 3. **Konsistenz:** Gleiche Methodik für alle Unternehmen, keine persönlichen Interessenkonflikte
@@ -56,11 +56,11 @@ Aus [[LLMs for Equity Stock Ratings]] (J.P. Morgan, 2024):
 ## Technische Umsetzung (Best Practices aus Forschung)
 
 1. System-Prompt: Analyst-Persona + explizite Rating-Skala mit Definitionen
-2. [[Chain-of-Thought Prompting]]: erst begründen, dann raten
+2. [[chain-of-thought-prompting|Chain-of-Thought Prompting]]: erst begründen, dann raten
 3. Few-Shot Beispiel im Kontext
 4. HTML-Format für tabellarische Daten (Fundamentals)
 5. CoVE (Chain of Verification) für Datumsprüfung
-6. [[News Sentiment Analysis|Sentiment-Scores]] statt Volltext-News (gleiche Performance, weniger Token)
+6. [[news-sentiment-analysis|Sentiment-Scores]] statt Volltext-News (gleiche Performance, weniger Token)
 
 ## Offene Forschungsfragen
 
@@ -84,7 +84,7 @@ Operative Integration über die [[Analyse-Pipeline]]: LLM-gestützte Tiefen­ana
 
 ## Verbundene Seiten
 
-- [[LLMs for Equity Stock Ratings]] (Quelle) · [[Analyst Stock Ratings]] (Vergleich)
-- [[Financial Fundamentals Analysis]] · [[Chain-of-Thought Prompting]] · [[News Sentiment Analysis]]
-- [[Forward Returns Evaluation]] · [[GPT-4]] · [[AI in Investment Analysis]]
+- [[llms-for-equity-stock-ratings|LLMs for Equity Stock Ratings]] (Quelle) · [[analyst-stock-ratings|Analyst Stock Ratings]] (Vergleich)
+- [[financial-fundamentals-analysis|Financial Fundamentals Analysis]] · [[chain-of-thought-prompting|Chain-of-Thought Prompting]] · [[news-sentiment-analysis|News Sentiment Analysis]]
+- [[forward-returns-evaluation|Forward Returns Evaluation]] · [[gpt-4|GPT-4]] · [[ai-in-investment-analysis|AI in Investment Analysis]]
 - [[DEFCON-System]] · [[Analyse-Pipeline]] · [[dynastie-depot-skill]]

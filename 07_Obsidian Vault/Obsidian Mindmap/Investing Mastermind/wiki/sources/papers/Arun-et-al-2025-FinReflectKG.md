@@ -120,4 +120,4 @@ Reflection erzeugt **15,8 Triples/Chunk** (vs. 13,3 / 12,4), ECR 0,53 (vs. 0,30/
 - [[Knowledge-Graph-Architektur-Roadmap]] — neue Synthesis v0.1 (Entscheidungsvorlage)
 - [[insider-intelligence]] — Skill, für den diese Architektur-Frage relevant ist
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B21
-- [[Abhinav Arun]], [[Fabrizio Dimino]], [[Tejas Prakash Agarwal]], [[Bhaskarjit Sarmah]], [[Stefano Pasquali]] — Author-Entities
+- [[abhinav-arun|Abhinav Arun]], [[fabrizio-dimino|Fabrizio Dimino]], [[tejas-prakash-agarwal|Tejas Prakash Agarwal]], [[bhaskarjit-sarmah|Bhaskarjit Sarmah]], [[stefano-pasquali|Stefano Pasquali]] — Author-Entities

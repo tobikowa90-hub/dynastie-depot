@@ -19,7 +19,7 @@ Co-Autor von *Bayesian RAG* ([[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]]). Ak
 
 ## Verbundene Seiten
 
-- [[Lebede Ngartera]] — Co-Autor (TeraSystemsAI Philadelphia)
-- [[Saralees Nadarajah]] — Co-Autor (U Manchester)
+- [[lebede-ngartera|Lebede Ngartera]] — Co-Autor (TeraSystemsAI Philadelphia)
+- [[saralees-nadarajah|Saralees Nadarajah]] — Co-Autor (U Manchester)
 - [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] — Wiki Source-Seite
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B23

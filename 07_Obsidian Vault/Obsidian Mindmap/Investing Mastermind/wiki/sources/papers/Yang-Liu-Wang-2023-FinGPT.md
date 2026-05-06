@@ -19,7 +19,7 @@ related:
   - "[[Jadhav-Mirza-2025]]"
   - "[[Li-Kim-Cucuringu-Ma-2026-FINSABER]]"
   - "[[LLM-Investing-Bias-Audit]]"
-  - "[[News Sentiment Analysis]]"
+  - "[[news-sentiment-analysis|News Sentiment Analysis]]"
   - "[[DEFCON-System]]"
   - "[[Wissenschaftliche-Fundierung-DEFCON]]"
 raw_path: "../../../raw/papers/Yang et al. (2023).pdf"
@@ -87,7 +87,7 @@ FINSABER (B19):              Bias-Audit-Framework               → "wie weiß m
 - [[Jadhav-Mirza-2025]] — komplementäre LLM-Survey (B11)
 - [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] — Bias-Audit (B19)
 - [[LLM-Investing-Bias-Audit]] — Concept-Page
-- [[News Sentiment Analysis]] — operatives LLM-Anwendungsfeld
+- [[news-sentiment-analysis|News Sentiment Analysis]] — operatives LLM-Anwendungsfeld
 - [[DEFCON-System]] — kein direkter Score-Pfad
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Source-only-Quelle
-- [[Hongyang Yang]], [[Xiao-Yang Liu]], [[Christina Dan Wang]] — Author-Entities
+- [[hongyang-yang|Hongyang Yang]], [[xiao-yang-liu|Xiao-Yang Liu]], [[christina-dan-wang|Christina Dan Wang]] — Author-Entities

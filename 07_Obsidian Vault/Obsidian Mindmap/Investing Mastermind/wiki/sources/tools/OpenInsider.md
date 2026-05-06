@@ -30,5 +30,5 @@ SEC EDGAR Form 4 direkt. GuruFocus Insiders als weiterer Fallback.
 
 ## Verlinkungen
 
-- [[insider-intelligence-skill]] — Automatisierter Form-4-Scanner
+- [[insider-intelligence]] — Automatisierter Form-4-Scanner
 - [[DEFCON-System]]

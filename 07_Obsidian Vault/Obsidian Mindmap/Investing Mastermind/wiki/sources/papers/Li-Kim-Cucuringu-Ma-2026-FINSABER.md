@@ -100,4 +100,4 @@ Die Autoren testen die in der LLM-Trading-Literatur viel-zitierte Behauptung, LL
 - [[Factor-Investing-Framework]] — Aghassi 2023 als komplementäre Validations-Ebene
 - [[Backtest-Methodik-Roadmap]] — v2.1 Update durch FINSABER + GT-Score
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B19
-- [[Weixian Waylon Li]], [[Hyeonjun Kim]], [[Mihai Cucuringu]], [[Tiejun Ma]] — Author-Entities
+- [[waylon-li|Weixian Waylon Li]], [[hyeonjun-kim|Hyeonjun Kim]], [[mihai-cucuringu|Mihai Cucuringu]], [[tiejun-ma|Tiejun Ma]] — Author-Entities
