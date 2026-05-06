@@ -545,9 +545,32 @@ Probe-Trigger `trig_01XYuQ5mugsvZGZD4K52rjXh` wiederverwenden. Prompt je Test vi
 | T3 | Symbol-Trap (adversarial, Codex Fix #1) | Per-Ticker-Query für SU.PA und RMS.PA erzwingen; **zusätzlich**: prüfe den emittierten `tavily_search.query`-Parameter (muss COMPANY_NAME UND TICKER enthalten); **und**: manuelle Noise-Injection — Tester liest Output und verifiziert dass keine Suncor/Rockwell-Headlines durchgerutscht sind auch bei hoher Tavily-Rangliste für Homonyme | Results enthalten nur Schneider/Hermès-Headlines; emittierter `query`-String enthält beide Terme; manuelle Content-Prüfung findet keinen Trap-Durchschlag |
 | T4 | Fehler-Klassen | Prompt provoziert Klassen 2c (bad params: `query=""`+`max_results=-1` analog Phase 0 Test C) und 4 (valid query mit sehr nischigen Term für results[]=[]) | Klasse 2c: Phase 0 R1 Test C bereits PASS; Klasse 4 sichtbar als "keine News"; Run läuft durch |
 | T5 | Post-Update Content-Verify (Codex Fix #7) | Nach `RemoteTrigger update`: `RemoteTrigger get` aufrufen, content grep auf `SCHRITT 4.5` + Negativ-Grep auf `Keine News-Suche` | Beide Checks PASS bevor Manual-Run getriggert wird |
-| T6 | **Adversarial-Provenance-Test (NEU v3.0.5)** | Probe-Trigger Run unter natürlicher Stale-Source-Bedingung (Wochenende, Feiertag, EOD-Lag-Fenster) — analog T5 (Adversarial-Stale-Shibui) aus v3.0.4-Hotfix-Plan-Migration. Reviewer öffnet nach Run die `RemoteTrigger get`-Tool-Response-History und führt 5-Punkt-Cross-Check durch (manuelle Tag-Authentizitäts-Verifikation; Auto-Capture-Diff-Skript ist v3.1-Backlog). | (1) **Tag-Pflicht-Grep:** Jeder mapped-Feld-Wert im Output trägt Tag mit `source_ref` im Format `[source_ref@source_date]` (external-Klasse) ODER `[source_ref]` (file-read-derived bzw. §6F-5/§6F-6 Klassen, wo `source_date` per Schema fehlt — siehe §6F Klassen-Tabelle). T6-Grep-Contract: regex `\[(file:|tavily@|shibui_)[^\]]+\]` matcht alle gültigen Tag-Formen. (2) **Tag-Authentizität:** Jeder Tag-Wert matcht einen Eintrag aus der Tool-Response-History bzw. dem konkreten File-Read-Wert. (3) **Klassen-Compliance:** Bei Mismatch-Trigger erscheint korrekte §6F-Klasse-Output-String mit Klassen-Label (`source-lag` / `schema-drift` / `access-fail` / `cross-source-mismatch` / `file-sync-drift` / `missing-file-row`) — T6 grept auf Klassen-Labels, NICHT auf `@`-Tag-Format-Universalpattern. (4) Self-Check-Gate (SCHRITT 4.8) wurde durchlaufen — sichtbar im Run-Verlauf oder als impliziter Pre-Output-Marker. (5) Keine `n.v.`-Zeile ohne §6F-Klassen-Begründung. (6) **NEU v3.0.6 Anti-Fabrikation:** Bei jedem Failure-Mode (Tavily-Auth, Tavily-Domain-Block, Tool-Unavailable, Schema-malformed, Calendar-Mismatch etc.) darf KEINE neue Source-Klasse oder neues Tag-Format erfunden werden, das nicht in §3.0(a) FIELD→SOURCE-MAP oder §6F-Klassen-Tabelle existiert. Beispiele verbotener Erfindungen: `[websearch@<domain>]`, `[yahoo@<domain>]`, `[manual@...]`, `[fallback@...]`. Tag-Authentizität gilt auch im Failure-Modus. Reviewer prüft via grep auf erlaubte Tag-Patterns nur (Allow-List `\[(file:|tavily@|shibui_)[^\]]+\]` plus §6F-Klassen-Labels). Alle 6 Assertions PASS. |
+| T6 | **Adversarial-Provenance-Test (NEU v3.0.5)** | Probe-Trigger Run unter natürlicher Stale-Source-Bedingung (Wochenende, Feiertag, EOD-Lag-Fenster) — analog T5 (Adversarial-Stale-Shibui) aus v3.0.4-Hotfix-Plan-Migration. Reviewer öffnet nach Run die `RemoteTrigger get`-Tool-Response-History und führt 5-Punkt-Cross-Check durch (manuelle Tag-Authentizitäts-Verifikation; Auto-Capture-Diff-Skript ist v3.1-Backlog). | (1) **Tag-Pflicht-Grep:** Jeder mapped-Feld-Wert im Output trägt Tag mit `source_ref` im Format `[source_ref@source_date]` (external-Klasse) ODER `[source_ref]` (file-read-derived bzw. §6F-5/§6F-6 Klassen, wo `source_date` per Schema fehlt — siehe §6F Klassen-Tabelle). T6-Grep-Contract: regex `\[(file:|tavily@|shibui_)[^\]]+\]` matcht alle gültigen Tag-Formen. (2) **Tag-Authentizität:** Jeder Tag-Wert matcht einen Eintrag aus der Tool-Response-History bzw. dem konkreten File-Read-Wert. (3) **Klassen-Compliance:** Bei Mismatch-Trigger erscheint korrekte §6F-Klasse-Output-String mit Klassen-Label (`source-lag` / `schema-drift` / `access-fail` / `cross-source-mismatch` / `file-sync-drift` / `missing-file-row`) — T6 grept auf Klassen-Labels, NICHT auf `@`-Tag-Format-Universalpattern. (4) Self-Check-Gate (SCHRITT 4.8) wurde durchlaufen — sichtbar im Run-Verlauf oder als impliziter Pre-Output-Marker. (5) Keine `n.v.`-Zeile ohne §6F-Klassen-Begründung. (6) **NEU v3.0.6 Anti-Fabrikation:** Bei jedem Failure-Mode (Tavily-Auth, Tavily-Domain-Block, Tool-Unavailable, Schema-malformed, Calendar-Mismatch etc.) darf KEINE neue Source-Klasse oder neues Tag-Format erfunden werden, das nicht in §3.0(a) FIELD→SOURCE-MAP oder §6F-Klassen-Tabelle existiert. Beispiele verbotener Erfindungen: `[websearch@<domain>]`, `[yahoo@<domain>]`, `[manual@...]`, `[fallback@...]`. Tag-Authentizität gilt auch im Failure-Modus. Reviewer prüft via grep auf erlaubte Tag-Patterns nur (Allow-List **kanonisch v3.1.0**, Codex-PASS 5/5 Tag-Forms): `\[(file:[^\]]+|tavily@[a-z0-9.\-]+,\d{4}-\d{2}-\d{2}|shibui_[a-z_]+@\d{4}-\d{2}-\d{2}(; score_date=\d{4}-\d{2}-\d{2})?|Yahoo 403 known)\]` plus zwei separate Klassen-Label-Sets: **(i) §6F Mismatch-Labels** (`n.v. (source-lag: ...)`, `n.v. (schema-drift: ...)`, `n.v. (access-fail: ...)`, `n.v. (cross-source-mismatch: ...)`, `n.v. (file-sync-drift: ...)`, `n.v. (missing-file-row: ...)`) und **(ii) §4.5(E) Tool-Status-Outputs** (`n.v. (tool-unavailable)`, `n.v. (tool-error)`, `n.v. (parse-error)`, `n.v. (bad request)`, `n.v. (Tavily <code>)`, `Auth-Fehler — Key rotieren`, `Rate-Limit erreicht (Budget ausgeschoepft)`, `Keine material News`). Klassen-Label-Sets sind disjunkt — §6F adressiert Source-Mismatch (Source liefert technisch, aber Wert passt nicht), §4.5(E) adressiert Tool-Erreichbarkeit (Source liefert nicht oder gar nicht). Allow-List-Regex deckt alle 5 beobachteten Tag-Forms in v3.0.6-Prompt ab: `[file:...]`, `[tavily@<domain>,<date>]`, `[shibui_stock_quotes@<date>]`, `[shibui_stock_quotes@<date>; score_date=<date>]`, `[Yahoo 403 known]`. Form `[file:PORTFOLIO.md vs file:Faktortabelle.md]` faellt in `file:[^\]]+`-Branch. Alle 6 Assertions PASS. |
 
 Alle 6 Tests müssen **PASS** bevor Prod-Update v3.0.5.
+
+### Pre-Phase-3-Gate: Tavily-UI-Reattach-Verify (NEU v3.1.0, Q3-Fix)
+
+**Auslöser:** Vor jeder Probe-Test-Iteration auf `trig_01XYuQ5mugsvZGZD4K52rjXh` nach Tavily-Key-Rotation oder UI-Connector-Drift-Verdacht.
+
+**Hintergrund:** Memory `feedback_tavily_connector_uuid_rotation.md` — Body-`mcp_connections`-Update refresht NICHT die UI-Connector-Bindung. Stale-Auth manifestiert sich NICHT als 401/403, sondern als "Tool fehlt in allowed_tools" (= Output `NEWS-SIGNAL: n.v. (tool-unavailable)`). Body-GET-Roundtrip ist KEIN ausreichender Verify; nur Manual-Run mit tatsächlichem Tavily-Aufruf zählt.
+
+**Pflicht-Sequenz vor jedem Probe-Test:**
+
+1. Manual-Run via Claude Desktop App auf Probe-Trigger (`trig_01XYuQ5mugsvZGZD4K52rjXh`).
+
+2. Output muss MINDESTENS EINES der folgenden Pass-Patterns enthalten:
+   - **(a)** ≥1 valide `[tavily@<domain>,<date>]`-getaggte Headline in mindestens einem Cohort- ODER Per-Ticker-Block (Beweis: Tool wurde invoked + Response geparsed + Tag korrekt aufgebaut)
+   - **(b)** Explizites `Keine material News`-Statement (oder funktional äquivalentes §4.5(E) Pattern für leere-Allowlist-Result) bei nachweisbar erfolgten Tavily-Calls
+
+3. Output darf NICHT enthalten:
+   - `NEWS-SIGNAL: n.v. (tool-unavailable)` — das ist **Pre-Gate-FAIL** (= stale UI-Connector-Bindung; Reattach in Routine "tavily-probe" via Claude Desktop App erforderlich, danach erneuter Pre-Gate-Run)
+
+4. Edge-Case (a) und (b) nicht erfüllt UND tool-unavailable nicht präsent: Manual-Inspection ob Tavily-Calls überhaupt versucht wurden (Run-History prüfen). Eskalation an User wenn unklar.
+
+**Pass:** Pre-Gate PASS → Phase-3-Test-Suite freigegeben.
+**Fail:** Pre-Gate FAIL → User-Notify, UI-Reattach durch User, danach Schritt 1 retry. KEIN automatischer Phase-3-Start.
+
 
 **Hinweis zu T-Numbering-Drift (Bucket-A.3-Cleanup pending, kein Bucket-B-Scope):** Der v3.0.4-Hotfix-Plan (`docs/superpowers/plans/2026-04-20-briefing-v3.0.4-hotfix.md`) führte einen separaten T5 *Adversarial-Stale-Shibui* ein, der nie in die Spec migriert wurde (Drift, weil v3.0.4 nie deployed wurde). Spec-T5 hier = *Post-Update Content-Verify* (Codex Fix #7, ursprünglich v3.0). Konsolidierung der zwei T5-Definitionen ist offener Bucket-A.3-Cleanup-Schritt, gehört nicht in v3.0.5 Bucket-B (würde Architektur-Phase mit Index-Refactor mischen). Für v3.0.5-Deploy-Gate gilt: **T1-T6 hier in dieser Tabelle PASS** + **separat T-Stale-Shibui aus Hotfix-Plan PASS** (operativ derselbe Run möglich, getrennte Assertions).
 
@@ -611,6 +634,53 @@ Durchgeführt 2026-04-19, Ergebnis führte zum Revert auf MCP:
 - Prod-Update + Post-Update-Verify + Manual-Run: ~5 Min
 - Total: ~25 Min, keine Downtime
 - Deployment-Fenster: bis 08:00 UTC am Deployment-Tag (damit 10:00-Cron die neue Version nimmt — obwohl wir das heute manuell triggern, nicht Cron)
+
+---
+
+## 10A. Layer-A/Layer-B-Architektur (Pre-Briefing Control-Plane, NEU v3.1.0)
+
+**Architektur-Klarstellung (CRITICAL für Spec-Reader):** Calendar-Hook ist Operator-Awareness-Channel, NICHT Cron-Briefing-Input. Drift-Schutz erfolgt INDIREKT via Operator-Reaktion. Cron-Body bleibt selbst-contained mit FIELD→SOURCE-MAP-Schema.
+
+```
+LAYER A: Operator-Awareness (Claude Code CLI-Session)
+  └─ briefing-sync-check.ps1 (M2-Single-Owner SessionStart/SessionEnd-Hook)
+     ├─ Funktion 1: Briefing-Versions-Drift-Check (Sync-State 00_Core/* unpushed?)
+     ├─ Funktion 2: Earnings-Calendar-Drift-Check (yfinance ∪ Override-YAML, 06.05. NEU)
+     └─ Funktion 3: M2-Owner für Lifecycle-Events (Plan-v1.2 etabliert 05.05.)
+  → Output: systemMessage-JSON an Claude in CLI-Session
+  → Claude/User reagiert: PORTFOLIO/Faktortabelle update, Calendar-Override-Pflege etc.
+
+LAYER B: Cron-Briefing (Anthropic-Cloud-Routine, separates Runtime)
+  ├─ Probe-Trigger trig_01XYuQ5mugsvZGZD4K52rjXh (v3.1.0-Body)
+  └─ Prod-Trigger  trig_01PyAVAxFpjbPkvXq7UrS2uG (v2.1-Rollback → Ziel v3.1.0)
+  → Body: morning-briefing-prompt-v3.md FIELD→SOURCE-MAP-Schema
+      ├─ Tavily news-signal (Anti-Fallback v3.0.6 + neue v3.1.0-Edits)
+      ├─ Shibui kurs/delta (latest_close + score_date_close)
+      └─ File-reads (Faktortabelle, PORTFOLIO)
+
+Bridge zwischen Layer A → Layer B: AUSSCHLIESSLICH via geteilten File-State
+(PORTFOLIO/Faktortabelle). NIEMALS Hook-Output → Cron-Briefing-Body direkt.
+```
+
+**Layer A — Data Flow:**
+1. SessionStart oder SessionEnd Hook fired
+2. `briefing-sync-check.ps1` läuft (M2-Single-Owner)
+3. Funktion 1: `git status` auf 9 briefing-files → dirty-count
+4. Funktion 2: `python earnings_calendar.py --check --json 2>$null` (fail-soft, exit-Filter 0/2)
+5. Output JSON mit `systemMessage` zu stdout
+6. Claude Code CLI parsed JSON, zeigt Warning an Claude
+7. Claude/User reagiert: PORTFOLIO/Faktortabelle update bei Drift, Calendar-Override-Pflege bei Schedule-Mismatch
+
+**Layer B — Data Flow:** unverändert seit v3.0.6 (siehe §7 Data Flow). Cron-Trigger fires → RemoteTrigger executes Body → Agent runs SCHRITT 1-5 mit FIELD→SOURCE-MAP-Schema.
+
+**Bridge Layer A → Layer B Sequenz:**
+- T0: Layer-A-Hook signalisiert Drift (z.B. SU Q1 30.07. nicht in PORTFOLIO)
+- T1: User updated PORTFOLIO + Faktortabelle (manueller Sync, ggf. §18-Sync-Set)
+- T2: Nächster Cron-Briefing-Run liest aktualisierte File-State → korrekter Earnings-Trigger-Output
+
+**Niemals:** Hook-Output → Cron-Briefing-Body direkt. Cron-Body ist statisch in `events[0].data.message.content`.
+
+**Implementations-Hinweis:** `briefing-sync-check.ps1` wird in v3.1.0 NICHT im Code geändert. Multi-Funktions-Charakter wird ausschließlich hier in der Spec dokumentiert. Begründung: M2-Owner-Stabilität priorisiert; Welle-3-Hook-Promotion-Plan blockiert auf "kein Touch ohne expliziten Plan".
 
 ---
 
