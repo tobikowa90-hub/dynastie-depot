@@ -2087,3 +2087,18 @@ Netto: ~-9 Pkt = Score 50/D2.
 - (a) **Zwei sukzessive CR-Pässe sind nicht redundant** — Cluster-B-Pass surfaceet 1 NEUE Critical + 1 NEUE Major, die Cluster-A-Pass nicht hatte (LLM-Probabilismus + leicht erweiterter Diff-Scope durch Cluster-B-Edits). Konsequenz: jeder weitere Cluster (C/D/E) bekommt eigenen CR-Pass, Pipeline-Item #47 wird inkrementell erweitert statt am Ende einmal.
 - (b) **Cluster-B-Pattern bestätigt:** Mechanische Ruff-Fixes überleben CR-Review unverändert (8/8 clean), nur Polish-Nits — d.h. Lint-Tool-Sicherheit ist hoch. Risiko liegt in pre-existing Bestandscode, nicht in der Auto-Fix-Mechanik. Genau das war die §18-Sync-Erwartung.
 - (c) **APPLIED-LEARNING-Promotion gerechtfertigt** — User-Direktive: "Sogar ein Applied Learning Kandidat?" Antwort: Ja. 96+ pre-existing CR-Findings über 2 Pässe = belastbarer Datapunkt für Tier-2-Promotion. Bullet v2.7 dokumentiert die Regel "Tooling-Bulk-Edit: CR-Pass koppeln". Re-Activation-Trigger für Bullet-Refresh: bei nächstem ≥10-File-Tooling-Edit nochmal Pass-Empirik validieren.
+
+## [2026-05-07] ruff-cleanup | Phase-Tooling Cluster E (PTH-Modernisierung) — mechanisch
+
+2026-05-07: Python-Tooling-Initiative Phase-Cluster E — 2 trivial Path-Modernisierung-Fixes aus Restmenge 17 nach Cluster-B-Commit `0424384`.
+
+- **PTH123** `video_ingest_lib.py:36` — `with open(path, "rb") as f:` → `with path.open("rb") as f:` (path ist bereits Path-Objekt durch Type-Hint)
+- **PTH105** `migrate_defcon_drift.py:87` — `os.replace(tmp, ARCHIVE)` → `tmp.replace(ARCHIVE)` (tmp ist Path via `.with_suffix`); plus `import os` entfernt (nach Fix unused) + Docstring `os.replace` → `Path.replace`
+
+**Verify:** ruff 17 → 15 Findings (2 weg = exakt Cluster E). Import-Smoke beide Files OK (`video_ingest_lib.sha256_file` + `migrate_defcon_drift.main` callable). Kein Verhaltenwechsel — `Path.replace` ist semantisch identisch zu `os.replace` (atomar, beide rufen `MoveFileExW` auf Windows / `rename(2)` auf POSIX).
+
+**Kein CR-Pass für Cluster E** — Diff zu klein (2 line-changes), Pre-Existing-CR-Findings würden mit Cluster-B-Pass-Δ (PIPELINE #47) überlappen. CR-Pass nach Cluster D geplant, wenn D+E Diff zusammen sinnvolle Audit-Surface bietet.
+
+**§18-Sync (Code-Edit-only):** 2 Files (`video_ingest_lib.py`, `migrate_defcon_drift.py`) + log.md (dieser Eintrag). Kein PIPELINE-Update (CR-Pass deferred), kein APPLIED-LEARNING-Update, kein Score/FLAG/Sparrate.
+
+**Verbleibend:** 15 Lint-Findings — Cluster D 11× SIM105 (User-Style-Choice pending) + Cluster C 4× state_writer.py:67-77 (atomic-write CRLF-sensitiv, isolated-Commit pflicht).

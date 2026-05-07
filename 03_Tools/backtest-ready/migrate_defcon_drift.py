@@ -5,7 +5,7 @@ Records in score_history.jsonl auf, die unter aktuellem Schema
 (_check_defcon_level seit 18.04. mit SKILL-aligned Thresholds 80/65/50)
 inkonsistent sind. Vorher (vor 18.04.) galten 70/60/50.
 
-Idempotent: Re-Run = no-op. Atomare Datei-Operation via .tmp + os.replace.
+Idempotent: Re-Run = no-op. Atomare Datei-Operation via .tmp + Path.replace.
 
 Usage:
     python migrate_defcon_drift.py --dry-run    # zeige Diff, schreibe nicht
@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -84,7 +83,7 @@ def main() -> int:
     tmp = ARCHIVE.with_suffix(".jsonl.tmp")
     with tmp.open("w", encoding="utf-8") as fh:
         fh.write("\n".join(out_lines) + "\n")
-    os.replace(tmp, ARCHIVE)
+    tmp.replace(ARCHIVE)
     print(f"WROTE {len(drifted)} corrections atomically to {ARCHIVE.name}")
     return 0
 

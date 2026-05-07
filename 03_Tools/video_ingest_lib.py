@@ -33,7 +33,7 @@ def build_slug(date_iso: str, channel: str, topic: str, collision_suffix: int | 
 def sha256_file(path: Path, chunk_size: int = 65536) -> str:
     """Return hex sha256 of file content. Streams to handle large files."""
     h = hashlib.sha256()
-    with open(path, "rb") as f:
+    with path.open("rb") as f:
         while True:
             chunk = f.read(chunk_size)
             if not chunk:
