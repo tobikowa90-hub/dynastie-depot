@@ -1,6 +1,23 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-07 nach Phase-5-§18-Sync Briefing v3.1.1 Cutover-Closure. **Primärer Resume-Trigger:** **Tavily-Connector-Reattach Prod** (PIPELINE #45) sobald News-Signal in Prod-Briefing relevant wird — User-UI-Action ~5min. **Sekundär:** 11.05. Mo nächster Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26. **Briefing v3.1.x:** Probe + Prod beide live, v2.1-Rollback-Pfad 30-Tage Recovery-Window dokumentiert. v3.1.x-Plan ALL-DONE per Phase-5-Sync.
+**Aktualisiert:** 2026-05-07 nach Phase-Tooling-Cluster-A-Closure (Commit `f05a294`). **Primärer Resume-Trigger:** **Tavily-Connector-Reattach Prod** (PIPELINE #45) sobald News-Signal in Prod-Briefing relevant wird — User-UI-Action ~5min. **Sekundärer Side-Track:** **Python-Tooling-Initiative Cluster B/C/D/E** (25 Lint-Findings remaining post-`f05a294`) — Cluster B (8 trivial mech.) → C (4 state_writer atomic-write, CRLF-sensitiv) → D (11 SIM105 contextlib.suppress User-Style-Choice) → E (2 PTH-Modernisierung). Pre-decoded Triage in dieser Session-History; CR-Output `.cr_clusterA.txt` (gitignored) lokal als Reference. **Tertiär:** 11.05. Mo nächster Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26. **Briefing v3.1.x:** Probe + Prod beide live, v2.1-Rollback-Pfad 30-Tage Recovery-Window dokumentiert. v3.1.x-Plan ALL-DONE per Phase-5-Sync.
+
+### 🛠 Python-Tooling-Initiative — Phase-Status (2026-05-07)
+
+| Phase | Commit | Scope |
+|-------|--------|-------|
+| 1 — Config | `9e82904` | pyproject.toml + .vscode setup, Ruff 0.15.12 pin, py314 target |
+| 2 — Auto-Fix | `0e898be` | 199 Findings auto-applied (21 Files, +186/-128) |
+| 3a — Cluster A | `f05a294` | Bugs/Dead-Code: B023 + F841 + RUF034. CR-Pass surfaced #46 + #47 |
+| 3b — Cluster B/C/D/E | PENDING | 25 Findings, Triage in Conversation-History + `.cr_clusterA.txt` |
+
+**Cluster-B/C/D/E Triage-Map:**
+- **B (8 trivial):** SIM103 `_forward_verify_helpers.py:104` · SIM102 `cross_source.py:308` · SIM110 `provenance_gate.py:109` · RUF005 `portfolio_risk.py:276` + `vault_backlinks.py:40` · RUF059 `flag_event_study.py:237` + `provenance_gate.py:305` · B007 `store_freshness.py:80`
+- **C (4 atomic-write, CRLF-sensitiv):** SIM115 + PTH105 + PTH108 + SIM105 alle in `state_writer.py:67-77` — Memory `feedback_windows_python_crlf_text_mode.md` beachten
+- **D (11 SIM105):** verteilt — User-Style-Choice ob `with contextlib.suppress(E)` oder `try-except-pass` lassen
+- **E (2 PTH):** PTH123 `video_ingest_lib.py:36` + PTH105 `migrate_defcon_drift.py:87`
+
+**Resume-Direktive:** Cluster B (mechanisch) als nächstes — alle 8 in einem Commit oder per File einzeln (User-Choice). Memory `feedback_cr_pass_after_bulk_refactor.md` aktiviert.
 
 ### 📅 Earnings-Calendar Stufe 2 — Spec + Implementation ✅ ALL-DONE (06.05.2026)
 
