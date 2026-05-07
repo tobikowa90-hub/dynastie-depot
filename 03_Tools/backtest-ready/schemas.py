@@ -22,6 +22,8 @@ from typing import Final, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from versions import DEFCON_ACTIVE_VERSION
+
 # ---------------------------------------------------------------------------
 # Module-level constants
 # ---------------------------------------------------------------------------
@@ -317,7 +319,6 @@ class ScoreRecord(BaseModel):
     @model_validator(mode="after")
     def _check_forward_version(self) -> ScoreRecord:
         """Forward-Records müssen aktive DEFCON-Version deklarieren; Backfill ist frei."""
-        from versions import DEFCON_ACTIVE_VERSION
         if self.source == "forward" and self.defcon_version != DEFCON_ACTIVE_VERSION:
             raise ValueError(
                 f"forward record must use defcon_version '{DEFCON_ACTIVE_VERSION}', "

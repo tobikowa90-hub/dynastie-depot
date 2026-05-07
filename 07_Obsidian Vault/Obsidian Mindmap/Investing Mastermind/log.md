@@ -2309,3 +2309,23 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 - (a) CR auf Resolve-Commit hat Initial-Commit-Out-of-Scope-Hinweis explizit bestätigt (Z.247 Benchmark-Cap). User-Review-Rückkopplung war effizienter als post-hoc Folge-Item — Detection in derselben Session, kein Stundenzettel-Spread.
 - (b) `--base-commit <SHA>` Flag der CR-CLI greift NICHT bei lokalen Repos — CR reviewt trotzdem alle changed-vs-default-Base, was ohne origin-main den Initial-Commit als Base nimmt → 157 Files (Limit 150). Workaround: `--dir <path>` zur Scope-Begrenzung. Keep für künftige Folgepässe.
 - (c) ImportError-Lücke in Pydantic-v2-Validatoren ist scharfer Failure-Modus — silent für ALLE Validation-Calls, nicht nur den problematischen Record. PIPELINE #47-Critical-Konto +1 (jetzt 5 critical insgesamt: Cluster-A 1, Cluster-B 2, Cluster-C 3, Cluster-D 2, CR-Folgepass 1; Union nach Overlap-Bereinigung etwas weniger).
+
+## [2026-05-07] tooling | schemas.py — CR-Folgepass²-Critical RESOLVED
+
+2026-05-07 spätabends (post-Folgepass-Commit `033ab06`): User-Entscheidung Option 2 → den frisch surfaced Critical aus dem CR-Folgepass direkt fixen.
+
+**Fix:** `schemas.py:317-326` Lazy-Import `from versions import DEFCON_ACTIVE_VERSION` aus `_check_forward_version`-Validator entfernt + Modul-Level-Import an Top hinzugefügt (CR Option A, preferred). Pydantic v2 catched in Validatoren nur ValueError/AssertionError/PydanticCustomError — ImportError aus Lazy-Import propagiert ungehandelt → würde alle forward-Records silent brechen.
+
+**Sicherheits-Check vor Edit:** `versions.py` ist standalone (nur `DEFCON_ACTIVE_VERSION: Final[str] = "v3.7"`, kein Import); `provenance_gate.py` importiert es bereits Modul-Level (gleicher Pattern, präzedent). → Kein Circular-Import-Risk.
+
+**Sanity-Verify:**
+- `import schemas` PASS, `schemas.DEFCON_ACTIVE_VERSION == "v3.7"` propagiert.
+- `_smoke_test_event_study.py` 2/2 PASS unverändert (orthogonaler Code-Pfad, aber als Regression-Sanity).
+
+**§18-Sync (Pipeline-Item-Resolve, kein Score-Event):** schemas.py (2× Edit: Top-Level-Import +1 Zeile, Validator-Body -1 Zeile) · PIPELINE.md (#47-CR-Folgepass-Block (i) als RESOLVED markiert + Footer v1.9→v2.0) · log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml / flag_events.jsonl / SYSTEM.md / STATE.md / CORE-MEMORY.md.
+
+**Lessons:**
+- (a) Lazy-Imports IN Pydantic-v2-Validatoren sind anti-pattern: silent-fail-Modus für ALLE Validations, nicht nur den problematischen Record. Modul-Level-Import (wenn kein Circular) ist quasi-immer korrekt; sonst try/except → re-raise als ValueError.
+- (b) Pre-Edit Circular-Import-Check via grep auf `from <modul>` und Inhalt der Quelldatei kostet 30 Sekunden und schließt False-Positive-Risk aus. Hier: `versions.py` ist 8-Zeilen-Konstanten-Datei → trivial sicher.
