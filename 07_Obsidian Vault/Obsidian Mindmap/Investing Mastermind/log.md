@@ -2266,3 +2266,27 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 - (a) `n.v. (tool-unavailable)` ist multi-cause — `allowed_tools`-Allowlist UND Connector-Bind beide Kandidaten, beide checken (Probe-Diagnostic-Run schließt URL-Key als Variable aus).
 - (b) Lokales `/mcp Clear authentication` ist potenzieller Cloud-Cron-Killer für gemeinsam genutzte connector_uuid (Server-Side-OAuth-Revoke). Recovery: Web-UI-Connector-Recreation, nicht UI-Reattach (Reattach refresht nur UI-Cache).
 - (c) RemoteTrigger-Body-Edits IMMER Full-`ccr`-Resend, nie partial-subset. Plan-§14.1+§17.1-Wording 'Partial-Update mit ccr-subset' empirisch falsifiziert — auch im 07.05. v3.1.1-Cutover schon dokumentiert, heute zweite Bestätigung.
+
+## [2026-05-07] tooling | flag_event_study.py — PIPELINE #46 + #47-Cluster-C-Critical-#4 RESOLVED
+
+2026-05-07 abends (post-Tavily-Resolve-Session): Zwei Algo-Bugs in `03_Tools/backtest-ready/flag_event_study.py` gefixt — beide CR-discovered (Cluster-A bzw. Cluster-C), beide pre-existing, keine Regression.
+
+**Fix #46 (max_drawdown_pct running-peak-scan):** Block Z.202-209 ersetzt. Vorher: `(min(fenster_prices) - kurs_at_trigger) / kurs_at_trigger * 100` — semantisch „Return zum Tiefpunkt seit Trigger", **nicht** echter peak-to-trough Max Drawdown. Bei Recovery-Spike (z.B. 100→90→110→95) zeigte alter Algo nur -10% (zum frühen 90er-Tief), echter peak-to-trough ist (95-110)/110 = -13.6364%. Neuer Algo: `peak` startet bei `kurs_at_trigger`, iteriert sortierte Fenster-Items, updated `peak` wenn `p > peak`, trackt most-negative `dd = (p-peak)/peak`. `max_drawdown_window_end` ist jetzt das Trough-Datum (nicht mehr Fenster-Ende — Semantik passt zum Spaltennamen „bis {date}" im Report-Output).
+
+**Fix #47-C-#4 (Forward-Fallback today-Cap, §29.5 Look-Ahead-Prevention):** Z.220-226 inline gekappt. Vorher: `closest_close_on_or_before(prices, target_date)` → fallback `closest_close_on_or_after(prices, target_date)` mit Default `max_days=7` → konnte bis zu 7 Tage post-`today` scannen → Look-Ahead-Bias bei observed-horizon. Jetzt: `max_fwd = max(0, (today - target_date).days)`, fallback-Call mit `max_days=min(7, max_fwd)`. Kein API-Eingriff in `closest_close_on_or_after` selbst — nur Call-Site-Cap.
+
+**Smoke-Test `_smoke_test_event_study.py`:** Standalone-Skript mit zwei diskriminierenden Tests:
+- TEST 1 — Recovery-Spike-Reihe (100/90/110/95): NEU max_dd=-13.6364% trough=2026-01-04. Negativer Sanity-Check: `math.isclose(max_dd, -10.0, abs_tol=0.1)` würde alten (min-trigger)/trigger-Algo sofort fail markieren.
+- TEST 2 — target=2025-10-31, today=2025-11-01, prices = {10-01: 100, 11-05: 105}: NEU +30d=n.a. (gekappt), +90d=pending. Vor Fix wäre +30d=observed mit post-today-Preis 11-05.
+- Beide Tests PASS (`2/2 passed.`). Tests sind keep-around (kein ad-hoc-Tempfile), liegen neben dem Fixturedaten-Script in `03_Tools/backtest-ready/_smoke_test_event_study.py`.
+
+**Bewusst NICHT angefasst:** Der parallele Surface in `flag_event_study.py:233` (Benchmark-Block: `closest_close_on_or_before(bench, ...) or closest_close_on_or_after(bench, ...)`) hat denselben Bug-Modus. User-Spec war strikt Z.221-226 → out-of-scope für diesen Edit-Pass. Falls semantisch konsistent gewünscht, separates Pipeline-Item öffnen (1-Zeilen-Fix). PIPELINE #47 (Bulk-Item) als Hinweis aktualisiert.
+
+**§18-Sync (Pipeline-Item-Resolve, kein Score-Event):** flag_event_study.py (Code-Edit) · neuer Smoke-Test `_smoke_test_event_study.py` · PIPELINE.md (#46 entfernt + Numbering-Gap, #47 Subitem (ii) als RESOLVED markiert + Footer-Bump v1.7→v1.8) · log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml / flag_events.jsonl / SYSTEM.md / STATE.md / CORE-MEMORY.md — Tool-Bugfix, kein Score/FLAG/Sparraten/System-Event. Score-Re-Process historischer Records in PIPELINE #46 als „ggf." gelistet; aktuell n=2 Backfill-Sample (MSFT/GOOGL), Drawdown-Magnitude in keinem aktiven Forward-Verify-Run relevant — Re-Process nicht nötig.
+
+**Lessons:**
+- (a) Recovery-Spike unterzeichnet (min-trigger)/trigger systematisch. Bei Bull-Phase + Mid-Cycle-Korrektur (typischer DEFCON-Scoring-Kontext) ist das ein Drawdown-Underreporting-Bias — gut, dass das vor n>>2-Sample-Größe gefixt ist.
+- (b) `closest_close_on_or_after` mit Default `max_days=7` ist nur look-ahead-sicher, wenn `target_date` mind. 7 Tage in der Vergangenheit liegt. In Forward-Horizon-Logik wo `target_date` bis exakt `today` reichen kann, MUSS Cap auf `(today - target_date).days` aktiv sein. §29.5 Sin #2 in der Praxis.
+- (c) Zwei Bugs im selben File via zwei verschiedene CR-Pässe (A vs C) discovered — bestätigt CR-Pass-Δ-Pattern aus PIPELINE #47 (~30% net new pro Pass). Beide pre-existing, beide algorithmisch (nicht Lint), beide Backtest-Critical (Look-Ahead + Drawdown-Bias) — strukturelle Lücke war: keine Smoke-Tests gegen synthetische Fixtures für Event-Study-Logik bis heute.

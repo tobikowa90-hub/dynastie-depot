@@ -199,14 +199,25 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
         if bench_hit is not None:
             er.kurs_benchmark_at_trigger = bench_hit[1]
 
-    # Max Drawdown im Fenster [trigger_date, today]
-    fenster_prices = [
-        p for d, p in prices.items() if er.kurs_at_trigger_date <= d <= today
-    ]
-    if fenster_prices:
-        min_price = min(fenster_prices)
-        er.max_drawdown_pct = (min_price - er.kurs_at_trigger) / er.kurs_at_trigger * 100.0
-        er.max_drawdown_window_end = min(today, max(d for d in prices if d <= today))
+    # Max Drawdown im Fenster [trigger_date, today] — running-peak-scan (peak-to-trough).
+    # Vorher: (min_price - kurs_at_trigger) / kurs_at_trigger → unterzeichnet Drawdown
+    # bei Recovery-Spike. Jetzt: peak trackt running maximum, dd = (price-peak)/peak.
+    fenster_items = sorted(
+        (d, p) for d, p in prices.items() if er.kurs_at_trigger_date <= d <= today
+    )
+    if fenster_items:
+        peak = er.kurs_at_trigger
+        max_dd_pct = 0.0
+        trough_date = fenster_items[0][0]
+        for d, p in fenster_items:
+            if p > peak:
+                peak = p
+            dd = (p - peak) / peak * 100.0
+            if dd < max_dd_pct:
+                max_dd_pct = dd
+                trough_date = d
+        er.max_drawdown_pct = max_dd_pct
+        er.max_drawdown_window_end = trough_date
 
     # Forward-Horizonte
     for h in HORIZONS:
@@ -217,10 +228,13 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
             hr.pending_days_remaining = (target_date - today).days
             continue
 
-        # Closest business day on/before target (if target itself missing, walk back)
+        # Closest business day on/before target (if target itself missing, walk back).
+        # Forward-Fallback durch `today` kappen — §29.5 Look-Ahead-Prevention:
+        # ohne Cap würde ein observed-horizon mit post-cutoff Preis markiert.
         t_hit = closest_close_on_or_before(prices, target_date)
         if t_hit is None:
-            t_hit = closest_close_on_or_after(prices, target_date)
+            max_fwd = max(0, (today - target_date).days)
+            t_hit = closest_close_on_or_after(prices, target_date, max_days=min(7, max_fwd))
         if t_hit is None:
             hr.status = "n.a."
             continue
