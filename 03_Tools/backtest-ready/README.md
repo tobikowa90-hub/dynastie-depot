@@ -119,14 +119,14 @@ Alle Smoke-Tests nutzen Temp-Files — echte Archive bleiben unangetastet.
 
 ## Sync-Pflicht (§18 INSTRUKTIONEN v2.1)
 
-Nach jeder `!Analysiere`: **7 Dateien** in einem git-Commit aktualisieren (+ `flag_events.jsonl` nur bei FLAG-Trigger/Resolution):
+Nach jeder `!Analysiere`: **6 Pflicht-Dateien** in einem git-Commit aktualisieren — `flag_events.jsonl` ist optional (nur bei FLAG-Trigger/Resolution, CLI-direkt via `archive_flag.py`):
 1. `log.md` (Vault)
 2. `CORE-MEMORY.md` (00_Core)
 3. `Faktortabelle.md`
 4. `PORTFOLIO.md` (seit 00_Core Hub-Split, vorher `STATE.md`)
 5. `score_history.jsonl` ← dieser Append (seit v3.7.2 via Skill orchestriert)
 6. `01_Skills/dynastie-depot/config.yaml` (Pflicht auch ohne FLAG-Change — sonst Ticker-Block stale gegen PORTFOLIO/Faktortabelle; v2.1-Lücke 25.04. nach 7-Tage-TMO-Drift gefixt)
-7. `flag_events.jsonl` (nur bei FLAG-Trigger/Resolution, CLI-direkt via `archive_flag.py`)
+7. *(optional)* `flag_events.jsonl` — nur bei FLAG-Trigger/Resolution.
 
 **SKILL.md Schritt 7 (dynastie-depot v3.7.2)** ist die kanonische Trigger-Stelle: Draft → `Skill(skill="backtest-ready-forward-verify", args=<pfad>)` → 6-Fall-Stdout-Report.
 

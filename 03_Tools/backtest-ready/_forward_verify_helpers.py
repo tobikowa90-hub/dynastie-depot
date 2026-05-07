@@ -259,19 +259,26 @@ def check_freshness(repo_root: str) -> list[str]:
     Matches files by basename, so ``00_Core/PORTFOLIO.md`` in git output maps to
     ``PORTFOLIO.md``.
     """
-    result = subprocess.run(
-        ["git", "status", "--porcelain"],
-        cwd=repo_root,
-        capture_output=True,
-        encoding="utf-8",
-    )
-    # CR 2026-05-07: returncode-Check — sonst silent „alle Files unmodified" bei
-    # git-Failure (nicht-Repo, git nicht installiert, Permissions) → Freshness-Gate
-    # könnte fälschlich PASSEN/FAILEN. Klares User-Error statt Mis-Diagnose.
+    # CR 2026-05-07: timeout=30 verhindert indefinite-block (NFS, locked .git/index,
+    # huge untracked-trees). Returncode-Check verhindert silent „alle unmodified" bei
+    # git-Failure (nicht-Repo, git nicht installiert, Permissions). Beide Fehlermodi
+    # eskalieren zu RuntimeError mit klarem repo_root + stderr-Kontext.
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain"],
+            cwd=repo_root,
+            capture_output=True,
+            encoding="utf-8",
+            timeout=30,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise RuntimeError(
+            f"git status timed out after 30s in {repo_root}"
+        ) from exc
     if result.returncode != 0:
         raise RuntimeError(
             f"git status failed in {repo_root} (returncode={result.returncode}): "
-            f"{result.stderr.strip() or result.stdout.strip() or '(no stderr)'}"
+            f"{result.stderr.strip() or result.stdout.strip() or '(no output)'}"
         )
     # Each line: 2-char status code + space + path
     modified_basenames: set[str] = set()

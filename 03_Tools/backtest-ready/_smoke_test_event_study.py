@@ -11,6 +11,7 @@ Exit 0 bei PASS, exit 1 bei FAIL.
 
 from __future__ import annotations
 
+import contextlib
 import math
 import sys
 from datetime import date
@@ -40,9 +41,24 @@ def _make_event(ticker: str, event_datum: date) -> FlagEvent:
 
 
 def _patch_fetch(price_table: dict[str, dict[date, float]]):
-    """Monkey-patch fes.fetch_history_window, lookup per ticker; ignoriert start/end."""
-    def _fake(ticker, start, end):
-        return price_table.get(ticker)
+    """Monkey-patch fes.fetch_history_window, lookup per ticker; ignoriert start/end.
+
+    CR 2026-05-07: KeyError-fail-fast statt None-Default — bei Typo / fehlendem
+    Ticker (z.B. BENCHMARK_TICKER-Rename) sofort diagnose-bare Fehlermeldung
+    statt opaker AttributeError downstream.
+    """
+    # Note (CR 2026-05-07): Monkey-patching via attribute reassignment
+    # (`fes.fetch_history_window = ...` unten) ist hier korrekt, weil
+    # `fetch_history_window` IM SELBEN Modul wie `compute_event_result`
+    # definiert ist (kein `from <other> import` Late-Bind-Risk). Mock.patch
+    # wäre alternativ idiomatischer, aber funktional äquivalent.
+    def _fake(ticker, _start, _end):
+        if ticker not in price_table:
+            raise KeyError(
+                f"_patch_fetch: ticker {ticker!r} not in fixture — "
+                f"add to price_table (known: {sorted(price_table)})"
+            )
+        return price_table[ticker]
     return _fake
 
 
@@ -94,7 +110,13 @@ def test_forward_fallback_today_cap() -> tuple[bool, str]:
         date(2025, 10, 1): 100.0,   # Trigger-Day-Preis
         date(2025, 11, 5): 105.0,   # Look-Ahead-Preis (post-today)
     }
-    bench = dict(prices)
+    # CR 2026-05-07: bench flat — würde sonst Look-Ahead-Daten enthalten
+    # (dict(prices) inkludierte 2025-11-05). Test asserted nur ticker-side,
+    # aber sauber ist sauber: bench-Look-Ahead nicht Teil dieses Tests.
+    # Sparsity-Sicherheit: closest_close_on_or_before/after returnen None bei
+    # missing dates (KEIN KeyError) → b_hit=None → benchmark-fields bleiben
+    # None. Verified gegen flag_event_study.closest_close_on_or_after (Z.138).
+    bench = {date(2025, 10, 1): 1000.0}
     today = date(2025, 11, 1)
 
     table = {"TEST": prices, fes.BENCHMARK_TICKER: bench}
@@ -105,7 +127,11 @@ def test_forward_fallback_today_cap() -> tuple[bool, str]:
     finally:
         fes.fetch_history_window = orig
 
-    h30 = er.horizons[30]
+    # CR 2026-05-07: defensive .get() statt direct-index — bei Schema-Drift
+    # (z.B. HORIZONS-Erweiterung) klare Fehlermeldung statt opaker KeyError.
+    h30 = er.horizons.get(30)
+    if h30 is None:
+        return False, f"+30d horizon key missing (keys={list(er.horizons)})"
     if h30.status != "n.a.":
         return False, (
             f"+30d status={h30.status} (kurs_target_date={h30.kurs_target_date}, "
@@ -113,14 +139,21 @@ def test_forward_fallback_today_cap() -> tuple[bool, str]:
         )
 
     # +90d und höher müssen 'pending' sein (target>today)
-    if er.horizons[90].status != "pending":
-        return False, f"+90d status={er.horizons[90].status}, expected 'pending'"
+    h90 = er.horizons.get(90)
+    if h90 is None:
+        return False, f"+90d horizon key missing (keys={list(er.horizons)})"
+    if h90.status != "pending":
+        return False, f"+90d status={h90.status}, expected 'pending'"
 
     return True, f"+30d=n.a. (gekappt), +90d=pending"
 
 
 def main() -> int:
-    fes._ensure_utf8_stdout()
+    # CR 2026-05-07: UTF-8-stdout setup inline — vermeidet Abhängigkeit auf
+    # private API fes._ensure_utf8_stdout (würde bei Rename/Inline silent break).
+    if hasattr(sys.stdout, "reconfigure"):
+        with contextlib.suppress(Exception):
+            sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
     tests = [
         ("Pipeline #46 max_drawdown running-peak-scan", test_max_drawdown_running_peak_scan),
         ("Pipeline #47-C-#4 forward-fallback today-cap", test_forward_fallback_today_cap),

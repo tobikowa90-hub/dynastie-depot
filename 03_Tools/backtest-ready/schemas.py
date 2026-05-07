@@ -109,8 +109,10 @@ class MigrationEvent(BaseModel):
 
     @model_validator(mode="after")
     def _check_delta(self) -> MigrationEvent:
-        expected = round(self.forward_score - self.algebra_score, 6)
-        if round(self.delta, 6) != expected:
+        # CR 2026-05-07: tolerance-based comparison statt round()-Vergleich;
+        # robuster gegen Float-Edge-Cases (z.B. 0.1+0.2 != 0.3 nach round(6)).
+        expected = self.forward_score - self.algebra_score
+        if abs(self.delta - expected) > 1e-6:
             raise ValueError(
                 f"delta arithmetic inconsistent: forward_score({self.forward_score}) "
                 f"- algebra_score({self.algebra_score}) = {expected}, got delta={self.delta}"
@@ -279,14 +281,13 @@ class MetrikenRoh(BaseModel):
                 f"rel_staerke_sp500_6m_pct ({self.rel_staerke_sp500_6m_pct}) conflict — "
                 f"set only one or set both equal"
             )
+        # CR 2026-05-07: direct assignment statt object.__setattr__ — MetrikenRoh
+        # hat kein frozen=True, daher ist normales setattr in mode="after"-Validatoren
+        # erlaubt. Der __setattr__-Bypass war unnötiger Workaround.
         if self.rel_strength_sp500_6m_pct is None and self.rel_staerke_sp500_6m_pct is not None:
-            object.__setattr__(
-                self, "rel_strength_sp500_6m_pct", self.rel_staerke_sp500_6m_pct
-            )
+            self.rel_strength_sp500_6m_pct = self.rel_staerke_sp500_6m_pct
         elif self.rel_staerke_sp500_6m_pct is None and self.rel_strength_sp500_6m_pct is not None:
-            object.__setattr__(
-                self, "rel_staerke_sp500_6m_pct", self.rel_strength_sp500_6m_pct
-            )
+            self.rel_staerke_sp500_6m_pct = self.rel_strength_sp500_6m_pct
         return self
 
 

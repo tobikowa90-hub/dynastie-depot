@@ -142,7 +142,11 @@ def _load_existing_flag_ids(path: Path) -> set[str]:
                 if not line:
                     continue
                 rec = json.loads(line)
-                if rec.get("event_typ") == "trigger":
+                # CR 2026-05-07: isinstance-Guard — json.loads kann non-dict
+                # zurückgeben (list/string/number/bool/null). .get() würde dann
+                # AttributeError werfen, was vom äußeren `except OSError|JSON…`
+                # NICHT gefangen wird → Hard-Crash.
+                if isinstance(rec, dict) and rec.get("event_typ") == "trigger":
                     fid = rec.get("flag_id")
                     if isinstance(fid, str):
                         out.add(fid)
@@ -172,6 +176,16 @@ def _append_error_log(path: Path, message: str) -> None:
 
 def _build_event(cand: BackfillCandidate) -> FlagEvent:
     """Validate + return FlagEvent. Raises ValidationError on failure."""
+    # CR 2026-05-07 defensive: metric-Struktur (name/schwelle) ist hardcoded
+    # auf capex_ocf (Z.185-187). Bei Catalogue-Erweiterung um andere flag_typ-
+    # Werte wäre der Hardcode silent corruption — explicit reject hier.
+    # Voller Refactor (BackfillCandidate.metric_name/schwelle) bleibt PIPELINE
+    # #47-Cluster-A-Item.
+    if cand.flag_typ != "capex_ocf":
+        raise ValueError(
+            f"_build_event only supports flag_typ='capex_ocf' "
+            f"(metric/schwelle hardcoded), got '{cand.flag_typ}'"
+        )
     flag_id = f"{cand.ticker}_{cand.flag_typ}_{cand.trigger_datum}"
     payload: dict[str, Any] = {
         "schema_version": "1.0",

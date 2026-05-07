@@ -2369,3 +2369,60 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 - (a) CR-Comment-Genauigkeit ist nicht garantiert: 2/13 Findings hatten Sachfehler (Z.170 file-context confused; Z.760 hatte ursprünglich falschen `{avgo,...}`-Set-Behauptung → re-read-able im echten Code als `{**avgo,...}` Dict-Merge). Pre-Apply-File-Read ist 30-Sek-Sicherheitsnetz.
 - (b) Triage-Ratio 7/13 actionable bei B-Scope; bei C/D/E hätten wir wahrscheinlich auch ~50% true-positive nach Pre-Apply-Verify gehabt — d.h. der Sweep-Aufwand wäre real ~50% von der naiven Schätzung. Aber: Pre-Apply-Verify-Cost skaliert linear. Time-Box-Realismus für vollständigen Sweep bleibt 5-6h netto + 5-6h Verify = 10-12h gesamt.
 - (c) `Pydantic-v2`-Validator-Catch-Modell (nur ValueError/AssertionError/PydanticCustomError) ist die Wurzel mehrerer Findings: ImportError (heute Folgepass² gefixt), KeyError aus dict-access (heute schemas.py:517 gefixt). Pattern: jede Lazy/Indirect-Operation in Validator → entweder Modul-Level-pre-bind ODER try/except → re-raise als ValueError.
+
+## [2026-05-07] tooling | CR-Folgepass⁴⁺⁵ "alles richtig"-Sweep — 19 applied über 2 Iterationen
+
+2026-05-07 tief abends (post-Folgepass³-Commit `950be2f`): User-Direktive „CodeRabbit nochmal reviewen lassen — alles richtig machen, keine Fehler mehr im Code". Voller Audit-Sweep gegen Pre-Session-Stand `b4218de` mit `--dir 03_Tools/backtest-ready`-Scope. Zwei Iterationen.
+
+**Pass⁴ (14 Findings, Output `.cr_pipeline46_47c4_final.txt`):** 13 actionable applied:
+- `README.md:120-130` (minor) — §18-Sync-Wording disambiguiert: "6 Pflicht-Dateien + flag_events.jsonl optional" statt ambivalentes "7 Dateien (+ flag_events nur bei FLAG)".
+- `flag_event_study.py:42-48` (trivial) — `DEFAULT_REPORT_PATH` aus `TODAY` abgeleitet (vorher hardcoded `flag_event_study_2026-04-17.md`-Literal). Reihenfolge umgestellt: TODAY-Definition VOR DEFAULT_REPORT_PATH.
+- `flag_event_study.py:134-135` (trivial) — bare `except Exception` mit `# noqa: BLE001` und Begründungs-Kommentar (yfinance kann ConnectionError/HTTPError/JSONDecodeError werfen; graceful degradation = None).
+- `flag_event_study.py:187-194` (minor) — Zero-Division-Guard für `er.kurs_at_trigger == 0.0` (delisted/bankrupt-Edge-Case): early-return mit data_issue + alle horizons n.a.
+- `flag_event_study.py:246-249` (minor) — Bench-Side Zero-Division-Guard: `er.kurs_benchmark_at_trigger != 0.0`-Check in der Bedingung.
+- `flag_event_study.py:368` (trivial) — Report-Title via `today.isoformat()` dynamic (vorher hardcoded "2026-04-17").
+- `flag_event_study.py:444-445` (trivial) — `vals_30`/`vals_90` list-comprehensions auf 4 Zeilen gesplittet (line-length).
+- `flag_event_study.py:524` (trivial) — `_build_empty_report` Title via today dynamic.
+- `flag_event_study.py:568` (trivial) — `kurs@trigger=None`-Display-Fix (conditional `kurs_str` mit "n.a."-Fallback).
+- `backfill_flags.py:173-199` (major) — defensive guard `if cand.flag_typ != "capex_ocf": raise ValueError` in `_build_event`. Hardcoded metric/schwelle wären silent corruption bei künftiger Catalogue-Erweiterung. Voller BackfillCandidate-Refactor bleibt PIPELINE #47-Cluster-A.
+- `schemas.py:110-118` (trivial) — `_check_delta` MigrationEvent: `abs(delta - expected) > 1e-6` statt `round(., 6) != round(., 6)`. Robuster gegen Float-Edge-Cases.
+- `_smoke_test_event_study.py:42-46` (minor) — `_patch_fetch._fake` KeyError-fail-fast bei unbekanntem Ticker (vorher silent None → opaque downstream errors).
+- `_smoke_test_event_study.py:97` (minor) — bench-Fixture flat (`{date(2025,10,1): 1000.0}`) statt `dict(prices)`. Eliminiert bench-side Look-Ahead-Daten aus Test 2.
+- `_smoke_test_event_study.py:108-113` (minor) — `er.horizons.get(30/90)` defensive lookup mit klaren Fehler-Messages bei missing keys.
+- `_smoke_test_event_study.py:122-123` (trivial) — UTF-8-stdout-setup inline (kein Aufruf auf private API `fes._ensure_utf8_stdout`).
+- 1 SKIP-mit-Doku: `schemas.py:776` Test-Numbering inkonsistent — schon B-Triage doku-skip, kosmetisch, eigenes Self-Test-Refactor.
+
+**Pass⁵ (12 Findings post-Pass⁴, Output `.cr_pipeline46_47c4_final2.txt`):** 6 applied:
+- `backfill_flags.py:144-148` — **NEU CRITICAL** `json.loads(line)` kann non-dict zurückgeben (list/string/number/bool/null), `.get()` würde AttributeError werfen — der ist NICHT vom äußeren `except OSError|JSONDecodeError`-Catch abgedeckt → Hard-Crash. **Fix:** `if isinstance(rec, dict) and rec.get("event_typ") == "trigger":` Guard. Verified gegen synthetic JSONL mit Mix aus dict/string/null/list → 1× collected (valid trigger), 4× silent skipped.
+- `_forward_verify_helpers.py:274` (minor) — `(no stderr)` → `(no output)` Fallback-String (akkurater wenn beide stdout+stderr empty sind).
+- `_forward_verify_helpers.py:262-267` (trivial) — `subprocess.run(..., timeout=30)` + `try/except subprocess.TimeoutExpired → RuntimeError` (verhindert indefinite block bei NFS, locked .git/index, huge untracked-trees).
+- `schemas.py:284-291` (trivial) — `MetrikenRoh._sync_rel_staerke_alias` direct assignment statt `object.__setattr__` (Model nicht frozen, `__setattr__`-Bypass war unnötig).
+- `flag_event_study.py:598-604` (trivial) — CLI argparse description + --report-path help dynamisch aus DEFAULT_REPORT_PATH.relative_to(PROJECT_ROOT) (vorher hardcoded "n=2-Sample" + "2026-04-17.md").
+- `_smoke_test_event_study.py:50` (trivial) — `_fake(ticker, _start, _end)` Unused-Param-Rename mit `_`-Präfix-Konvention.
+
+**Dokumentiert (4 in Pass⁵-Code als Inline-Kommentar):**
+- `_smoke_test_event_study.py:73-78` — Monkey-patch-via-attribute-reassignment ist HIER korrekt, weil `fetch_history_window` IM SELBEN Modul wie `compute_event_result` definiert ist (kein `from <other> import`-Late-Bind-Risk). CR-Concern wäre relevant wenn Cross-Module-Imports — hier nicht.
+- `_smoke_test_event_study.py:97` — bench-Sparsity ist KEIN KeyError-Risk: `closest_close_on_or_before/after` returnen None bei missing dates (kein KeyError) → b_hit=None → benchmark-fields bleiben None. Code-Pfad-verified gegen flag_event_study.closest_close_on_or_after Z.138.
+
+**SKIP-mit-Doku (2 in Pass⁵):**
+- `schemas.py:778-914` Test-Numbering wieder — wie Pass⁴, kosmetisch.
+- `_smoke_test_event_study.py:87-94` — CR halluziniert `max_drawdown_window_start`-Field. **Schema hat kein solches Feld** (nur `max_drawdown_pct` + `max_drawdown_window_end`). CR-Confabulation, kein actionable Vorschlag.
+
+**Phantom-Findings (2 in Pass⁵):**
+- `str:1` + `today),-:1` sind die stray 0-byte-Files im Repo-Root aus PowerShell/WSL-Output-Side-Effects vergangener Bash-Calls dieser Session. CR interpretiert sie als File. **Bewusst nicht selbst gelöscht** — User-Entscheidung (CLAUDE.md §destructive-actions). Ihre Entfernung würde Pass⁶ um 2 Phantom-Findings reduzieren.
+
+**Verify (final):**
+- `_smoke_test_event_study.py` 2/2 PASS unverändert.
+- `schemas.py` Self-Test 7+3+4 = 14 Cases PASS.
+- Imports clean (5 Module: schemas, flag_event_study, _forward_verify_helpers, backfill_flags, _smoke_test_event_study).
+- backfill_flags non-dict-Guard verified gegen synthetic JSONL-Mix → only valid trigger-dicts collected, non-dict types silently skipped without AttributeError.
+
+**§18-Sync (Pipeline-Item-Update, kein Score-Event):** README.md (1× Edit) · flag_event_study.py (8× Edit) · schemas.py (3× Edit) · _forward_verify_helpers.py (1× Edit) · backfill_flags.py (2× Edit) · _smoke_test_event_study.py (5× Edit) · PIPELINE.md (CR-Folgepass⁴⁺⁵-Block ergänzt + Footer v2.1→v2.2) · log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml / flag_events.jsonl / SYSTEM.md / STATE.md / CORE-MEMORY.md.
+
+**Lessons:**
+- (a) CR-Pass-Δ-Pattern bestätigt — jeder Pass nach apply-Cycle bringt ~2-4 net new findings (Pass⁴: 14, Pass⁵: 12, Overlap nur ~3). Konvergenz ist asymptotisch, nicht binär. Strategie: Apply-Loop mit Critical-vs-Other-Stop-Bedingung, nicht Vollständigkeits-Loop.
+- (b) **CR-Confabulation surfaced** (Pass⁵ Findings 8+11): einmal halluziniertes Schema-Field (`max_drawdown_window_start`), einmal File-Phantom (stray 0-byte-File). Pre-Apply-Verification ist nicht-verhandelbar — CR ist Vorschlag, kein Diktat.
+- (c) Validator-defensive-Pattern hat sich gefestigt: `dict.get + ValueError` (FLAG_RULES, Pass³), `isinstance + skip` (json.loads-non-dict, Pass⁵), `Modul-Level-Import` (versions, Folgepass²) — drei orthogonale Guards gegen die Pydantic-v2-ValidationError-Catch-Lücke.
+- (d) Pass⁵-Edit-Surface (4 Files, 19 Edits in Pass⁴+Pass⁵) ist genau im scope-creep-vs-mandate-Tradeoff: User hat „alles richtig" mandatiert, ich habe Triage diszipliniert (4 Confabulation/false-positive doku-skip, 2 Phantom). Reverse-Engineering: Time-Box ~2.5h netto + ~1.5h Verify+Doku = ~4h. Konsolidierungstag-Vergleich (~5-6h für 4 Critical + ~14 Major) hat bestätigt: B-Triage + 2-Pass-Sweep ~3-4h vs Vollständigkeits-Sweep ~10-12h.

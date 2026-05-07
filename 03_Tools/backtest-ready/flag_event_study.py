@@ -41,11 +41,14 @@ from schemas import FlagEvent  # noqa: E402
 
 PROJECT_ROOT = SCRIPT_DIR.parent.parent  # C:/Users/tobia/OneDrive/Desktop/Claude Stuff
 FLAG_EVENTS_PATH = PROJECT_ROOT / "05_Archiv" / "flag_events.jsonl"
-DEFAULT_REPORT_PATH = PROJECT_ROOT / "02_Analysen" / "flag_event_study_2026-04-17.md"
 
 HORIZONS = [30, 90, 180, 360]
 BENCHMARK_TICKER = "^GSPC"
 TODAY = date(2026, 4, 17)  # Fixiertes Analyse-Datum für Reproduzierbarkeit
+
+# DEFAULT_REPORT_PATH abgeleitet von TODAY (CR 2026-05-07): vorher hardcoded
+# "2026-04-17"-Literal, würde bei TODAY-Bump stale werden.
+DEFAULT_REPORT_PATH = PROJECT_ROOT / "02_Analysen" / f"flag_event_study_{TODAY.isoformat()}.md"
 
 
 # ---------------------------------------------------------------------------
@@ -131,7 +134,7 @@ def fetch_history_window(ticker: str, start: date, end: date) -> dict[date, floa
                 d = pd.Timestamp(ts).to_pydatetime().date()
             out[d] = float(row["Close"])
         return out
-    except Exception:
+    except Exception:  # noqa: BLE001 — yfinance kann ConnectionError/HTTPError/JSONDecodeError/etc. werfen; graceful degradation = None
         return None
 
 
@@ -200,6 +203,14 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
         return er
     er.kurs_at_trigger_date, er.kurs_at_trigger = trigger_hit
 
+    # CR 2026-05-07: Zero-Division-Guard. kurs_at_trigger == 0 ist ein Edge-Case
+    # (delisted/bankrupt) — alle Return-Berechnungen würden ZeroDivisionError werfen.
+    if er.kurs_at_trigger == 0.0:
+        er.data_issue = f"kurs_at_trigger=0.0 for {event.ticker} — cannot compute returns"
+        for h in HORIZONS:
+            er.horizons[h].status = "n.a."
+        return er
+
     if bench is not None:
         bench_hit = closest_close_on_or_after(bench, event_date)
         if bench_hit is not None:
@@ -249,7 +260,11 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
         hr.status = "observed"
         hr.raw_return_pct = (hr.kurs_target - er.kurs_at_trigger) / er.kurs_at_trigger * 100.0
 
-        if bench is not None and er.kurs_benchmark_at_trigger is not None:
+        if (
+            bench is not None
+            and er.kurs_benchmark_at_trigger is not None
+            and er.kurs_benchmark_at_trigger != 0.0  # CR 2026-05-07: Zero-Division-Guard auch bench-side
+        ):
             # Symmetrisch zum Ticker-Block oben: Forward-Fallback durch `today` kappen
             # (§29.5 Look-Ahead-Prevention) — CR Pipeline #46/47-Folgepass.
             b_hit = closest_close_on_or_before(bench, target_date)
@@ -365,7 +380,7 @@ def build_report(results: list[EventResult], today: date) -> str:
     datum_max = max(r.event_datum for r in results).isoformat()
 
     lines: list[str] = []
-    lines.append("# FLAG-Event-Study 2026-04-17 — Deskriptive Auswertung")
+    lines.append(f"# FLAG-Event-Study {today.isoformat()} — Deskriptive Auswertung")
     lines.append("")
     lines.append(
         f"**Stichprobengröße:** n = {n} Events | **Zeitraum:** {datum_min} bis {datum_max}"
@@ -441,8 +456,16 @@ def build_report(results: list[EventResult], today: date) -> str:
         return f"[{min(xs):+.2f}%, {max(xs):+.2f}%]" if xs else "–"
 
     for typ, items in sorted(by_typ.items()):
-        vals_30 = [r.horizons[30].raw_return_pct for r in items if r.horizons[30].status == "observed" and r.horizons[30].raw_return_pct is not None]
-        vals_90 = [r.horizons[90].raw_return_pct for r in items if r.horizons[90].status == "observed" and r.horizons[90].raw_return_pct is not None]
+        vals_30 = [
+            r.horizons[30].raw_return_pct
+            for r in items
+            if r.horizons[30].status == "observed" and r.horizons[30].raw_return_pct is not None
+        ]
+        vals_90 = [
+            r.horizons[90].raw_return_pct
+            for r in items
+            if r.horizons[90].status == "observed" and r.horizons[90].raw_return_pct is not None
+        ]
         lines.append(
             f"| {typ} | {len(items)} | {_med(vals_30)} | {_range(vals_30)} | {_med(vals_90)} | {_range(vals_90)} |"
         )
@@ -521,7 +544,7 @@ def build_report(results: list[EventResult], today: date) -> str:
 
 def _build_empty_report(today: date) -> str:
     lines = [
-        "# FLAG-Event-Study 2026-04-17 — Deskriptive Auswertung",
+        f"# FLAG-Event-Study {today.isoformat()} — Deskriptive Auswertung",
         "",
         "**Stichprobengröße:** n = 0 Events",
         "**Disclaimer:** *Nicht statistisch belastbar, rein deskriptiv. "
@@ -565,18 +588,21 @@ def summary_for_stdout(results: list[EventResult]) -> str:
                 h_parts.append(f"+{h}d={hr.raw_return_pct:+.2f}%")
             else:
                 h_parts.append(f"+{h}d={hr.status}")
-        lines.append(f"  {r.flag_id}: kurs@trigger={r.kurs_at_trigger} | " + ", ".join(h_parts))
+        kurs_str = f"{r.kurs_at_trigger:.2f}" if r.kurs_at_trigger is not None else "n.a."
+        lines.append(f"  {r.flag_id}: kurs@trigger={kurs_str} | " + ", ".join(h_parts))
     return "\n".join(lines)
 
 
 def main() -> int:
     _ensure_utf8_stdout()
-    parser = argparse.ArgumentParser(description="FLAG-Event-Study (deskriptiv, n=2-Sample).")
+    parser = argparse.ArgumentParser(
+        description="FLAG-Event-Study (deskriptiv, Infrastruktur-Validierung)."
+    )
     parser.add_argument(
         "--report-path",
         type=Path,
         default=DEFAULT_REPORT_PATH,
-        help="Target Markdown path (default: 02_Analysen/flag_event_study_2026-04-17.md)",
+        help=f"Target Markdown path (default: {DEFAULT_REPORT_PATH.relative_to(PROJECT_ROOT)})",
     )
     parser.add_argument(
         "--dry-run",
