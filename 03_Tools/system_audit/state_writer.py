@@ -1,11 +1,11 @@
 """Idempotent Last-Audit-block writer for STATE.md.
 
 Spec §6.5 + Codex-Patch P5: HTML-comment markers define a unique replacement region.
-Atomic write via tmp-file + os.replace.
+Atomic write via tmp-file + Path.replace.
 """
 from __future__ import annotations
 
-import os
+import contextlib
 import tempfile
 from pathlib import Path
 
@@ -64,17 +64,17 @@ def write_last_audit(
             line_start = text.rfind("\n", 0, footer_idx) + 1
             new_text = text[:line_start] + block + "\n" + text[line_start:]
 
-    tmp = tempfile.NamedTemporaryFile(
-        mode="w", encoding="utf-8", delete=False,
-        dir=state_path.parent, prefix=".state_audit_", suffix=".tmp",
-    )
+    tmp_path: Path | None = None
     try:
-        tmp.write(new_text)
-        tmp.close()
-        os.replace(tmp.name, state_path)
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", delete=False,
+            dir=state_path.parent, prefix=".state_audit_", suffix=".tmp",
+        ) as tmp:
+            tmp_path = Path(tmp.name)
+            tmp.write(new_text)
+        tmp_path.replace(state_path)
     except Exception:
-        try:
-            os.unlink(tmp.name)
-        except OSError:
-            pass
+        if tmp_path is not None:
+            with contextlib.suppress(OSError):
+                tmp_path.unlink()
         raise

@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-07 nach Phase-Tooling-Cluster-B-Closure (Commit folgt nach Verify). **Primärer Resume-Trigger:** **Tavily-Connector-Reattach Prod** (PIPELINE #45) sobald News-Signal in Prod-Briefing relevant wird — User-UI-Action ~5min. **Sekundärer Side-Track:** **Python-Tooling-Initiative Cluster C/D/E** (17 Lint-Findings remaining nach Cluster-B-Commit) — Cluster E (2 trivial PTH) → D (11 SIM105 contextlib.suppress User-Style-Choice mit Quick-Frage) → C (4 state_writer atomic-write, CRLF-sensitiv, **muss isoliert committed werden**). Memory `feedback_windows_python_crlf_text_mode.md` aktiv für Cluster C. CR-Outputs `.cr_clusterA.txt` + `.cr_clusterB.txt` (gitignored) lokal als Reference. **Tertiär:** 11.05. Mo nächster Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26. **Briefing v3.1.x:** Probe + Prod beide live, v2.1-Rollback-Pfad 30-Tage Recovery-Window dokumentiert. v3.1.x-Plan ALL-DONE per Phase-5-Sync.
+**Aktualisiert:** 2026-05-07 nach **Python-Tooling-Initiative Phase 3 ALL-DONE** (5 Cluster, 25 manuelle Fixes, 4 CR-Pässe, ~204 unique CR-Findings → PIPELINE #47). Ruff `03_Tools/` jetzt **100% clean (230 → 0)**. **Primärer Resume-Trigger:** **Tavily-Connector-Reattach Prod** (PIPELINE #45) sobald News-Signal in Prod-Briefing relevant wird — User-UI-Action ~5min. **Sekundärer Side-Track:** **PIPELINE #47 Konsolidierungs-Backlog** (4 critical + ~14 major aus 4 CR-Pässen — z.B. `markdown_header.py:143` KeyError, `cross_source.py:183` defcon-Default, `flag_event_study.py:221-226` post-cutoff-Preis, `governance_parity.py:35-61+88-112`, `backfill_flags.py` hardcoded capex_ocf, `bad_score.jsonl` Fixture, `sample_transcript_normal.md` Quality-Mismatch). Aufwand ~5-6h. Trigger Konsolidierungstag, orthogonal zu Earnings-Window. **Tertiär:** 11.05. Mo nächster Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26. **Briefing v3.1.x:** Probe + Prod beide live, v2.1-Rollback-Pfad 30-Tage Recovery-Window dokumentiert. v3.1.x-Plan ALL-DONE per Phase-5-Sync.
 
 ### 🛠 Python-Tooling-Initiative — Phase-Status (2026-05-07)
 
@@ -9,15 +9,14 @@
 | 1 — Config | `9e82904` | pyproject.toml + .vscode setup, Ruff 0.15.12 pin, py314 target |
 | 2 — Auto-Fix | `0e898be` | 199 Findings auto-applied (21 Files, +186/-128) |
 | 3a — Cluster A | `f05a294` | Bugs/Dead-Code: B023 + F841 + RUF034. CR-Pass surfaced #46 + #47 |
-| 3b — Cluster B | (this session) | 8 trivial mech. + 1 CR-polish. CR-Pass-Δ → #47 erweitert (NEU 1 critical + 1 major). APPLIED-LEARNING +1 v2.7 |
-| 3c — Cluster C/D/E | PENDING | 17 Findings, Triage in dieser Datei + `.cr_clusterB.txt` |
+| 3b — Cluster B | `0424384` | 8 trivial mech. + 1 CR-polish. CR-Pass-Δ → #47 (NEU 1 crit + 1 major). APPLIED-LEARNING +1 v2.7 |
+| 3c — Cluster E | `166ac1a` | 2 PTH mech. (video_ingest_lib + migrate_defcon_drift). Kein CR-Pass (Diff zu klein) |
+| 3d — Cluster D | `224d28d` | 11× SIM105 → contextlib.suppress (User-Decision Option A) + 1 CR-Folge-Edit (portfolio_risk:455 Konsistenz). CR-Pass-Δ → #47 (NEU 2 crit + 2 major) |
+| 3e — Cluster C | (this session) | 4 atomic-write Refactor (state_writer.py:67-77) + 1 Refactor-Bug entdeckt durch CR (tmp_path leak bei write-Failure) gefixt. Smoke-Tests TEST1-4 PASS. CR-Pass-Δ → #47 (NEU 1 crit reklassifiziert) |
 
-**Cluster-C/D/E Triage-Map (post Cluster-B):**
-- **C (4 atomic-write, CRLF-sensitiv) — MUSS isoliert committed werden:** SIM115 + PTH105 + PTH108 + SIM105 alle in `state_writer.py:67-77` — Memory `feedback_windows_python_crlf_text_mode.md` beachten, danach pre/post Smoke-Test (atomic-write Path)
-- **D (11 SIM105) — User-Style-Decision benötigt:** verteilt über `archive_flag.py:20`, `archive_score.py:60`, `backfill_flags.py:35`, `backfill_scores.py:50`, `flag_event_study.py:90`, `migrate_defcon_drift.py:93`, `migrate_tmo_28_block_coverage.py:201`, `provenance_gate.py:407`, `schemas.py:955`, `portfolio_risk.py:391`, `_smoke_temp_repo.py:28`. Quick-Frage: `with contextlib.suppress(E):` oder `try/except E: pass` lassen?
-- **E (2 trivial PTH) — mechanisch:** PTH123 `video_ingest_lib.py:36` + PTH105 `migrate_defcon_drift.py:87`
+**Phase-3-Closure-Bilanz:** Ruff 230 → 0 Findings. 25 manual Edits + 2 CR-discovered fixes (1 surfaced+self-fixed, 1 Folge-Konsistenz). 4 CR-Pässe akkumulierten ~204 unique Findings → PIPELINE #47 als Konsolidierungs-Backlog (4 critical + ~14 major).
 
-**Resume-Direktive:** Cluster E (mechanisch, 2 Findings) → Cluster D (mit User-Style-Frage) → Cluster C (isoliert, CRLF-sensitiv). Final-CR-Pass nach E oder D je nach Dichte → PIPELINE #47 final update. Memory `feedback_cr_pass_after_bulk_refactor.md` + `feedback_windows_python_crlf_text_mode.md` aktiviert.
+**Resume-Direktive:** Phase 3 done — keine offenen Tooling-Items. PIPELINE #47 wartet auf Konsolidierungs-Slot. Nächster Tooling-Bulk-Edit ≥5 Files: APPLIED-LEARNING v2.7 anwenden (CR-Pass mid-authoring statt post-hoc).
 
 ### 📅 Earnings-Calendar Stufe 2 — Spec + Implementation ✅ ALL-DONE (06.05.2026)
 

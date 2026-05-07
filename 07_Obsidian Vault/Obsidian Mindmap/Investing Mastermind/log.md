@@ -2147,3 +2147,69 @@ PIPELINE #47 erweitert um Cluster-D-Pass-Δ (Critical-Count 2 → 3, Major-Count
 - (b) **Out-of-Scope-Disziplin halten:** CR's Vorschlag `contextlib.suppress(Exception)` zu narrow Exception-Listen ist gültig aber eigene Spur (BLE001-Sweep). Cluster D 1:1-SIM105 bleibt 1:1.
 - (c) **Compound-Discovery:** 3 sukzessive CR-Pässe (A/B/D) cumulieren auf ~140 unique Findings (3 critical, ~13 major). Bestätigt v2.7-Bullet-Empirik. C wird vermutlich noch weitere finden.
 - (d) **`contextlib.suppress`-Pattern aktiviert Ruff's lint-default auch zukünftig** — neue try/except/pass werden weiterhin geflaggt. Keine globale Suppression nötig (Option B abgelehnt).
+
+## [2026-05-07] ruff-cleanup | Phase-Tooling Cluster C (state_writer atomic-write) — Phase-3-CLOSURE
+
+2026-05-07: Python-Tooling-Initiative Phase-Cluster C — 4 Findings auf `state_writer.py:67-77` (atomic-write-Block) refactored. **Phase 3 ALL-DONE — Ruff `03_Tools/` jetzt 100% clean (230 → 0 over 5 Cluster).**
+
+**4 Findings adressiert:**
+- **SIM115** L67 — `tempfile.NamedTemporaryFile(...)` ohne context-manager → mit `with`-Block
+- **PTH105** L74 — `os.replace(tmp.name, state_path)` → `tmp_path.replace(state_path)` (Path-API)
+- **SIM105** L76 — `try/except OSError: pass` → `with contextlib.suppress(OSError):`
+- **PTH108** L77 — `os.unlink(tmp.name)` → `tmp_path.unlink()` (Path-API)
+
+Plus `import os` entfernt (nach Fix unused) + `import contextlib` ergänzt + Docstring `os.replace` → `Path.replace`.
+
+**Neue Struktur:**
+```python
+tmp_path: Path | None = None
+try:
+    with tempfile.NamedTemporaryFile(...) as tmp:
+        tmp_path = Path(tmp.name)  # ← ASSIGN VOR write (Cluster-C-Bug-Fix, siehe unten)
+        tmp.write(new_text)
+    tmp_path.replace(state_path)
+except Exception:
+    if tmp_path is not None:
+        with contextlib.suppress(OSError):
+            tmp_path.unlink()
+    raise
+```
+
+**🚨 CR-Pass-Discovery — echter Bug in meinem ersten Refactor-Versuch:** Initial hatte ich `tmp_path = Path(tmp.name)` NACH `tmp.write(new_text)` platziert. CR (Major-Severity) flagged: bei write-Failure (disk-full / IO-error) raised `tmp.write` bevor Assignment lief → `tmp_path` blieb `None`, NamedTemporaryFile schließt aber löscht nicht (`delete=False`) → Outer-except's Cleanup wurde übersprungen → tmp-File-Leak.
+
+Original-Code hatte den Bug nicht: `tmp = NamedTemporaryFile(...)` ohne Context-Manager macht `tmp.name` direkt verfügbar, Cleanup nutzte `tmp.name` direkt. Mein Refactor brach das durch falsche Assignment-Order — exakt der Failure-Mode den Memory `feedback_cr_pass_after_bulk_refactor.md` als CR-Discovery-Goldgrube beschreibt.
+
+**Fix:** Assignment vor write geswapt. **Smoke-Test TEST4 verifiziert Bug-Fix:**
+- TEST1 fresh insert + footer-preserve PASS
+- TEST2 replace + idempotency PASS
+- TEST3 error-path raises + cleanup PASS
+- TEST4 (NEW) simulated OSError aus `tmp.write` → Exception propagiert + 0 leaked tmp-Files PASS
+
+Ohne den CR-Pass wäre der Bug latent gewesen — disk-full ist seltener Edge-Case, hätte aber bei Konsolidierungs-Tag mit großem System-Audit-Run verlogene `.state_audit_*.tmp`-Dateien hinterlassen.
+
+**CRLF-Verhalten unverändert:** `mode="w"` text-mode default, `\n` → `\r\n` auf Windows-Write — gleich wie pre-Refactor. STATE.md ist Markdown (CRLF acceptabel), keine Patches/JSONL → Memory `feedback_windows_python_crlf_text_mode.md` nicht relevant für diesen File-Typ.
+
+**Verify:** ruff 4 → 0 Findings — `All checks passed!` in `03_Tools/`. AST OK. 4 Smoke-Tests grün.
+
+**CR-Pass Ergebnis (`.cr_clusterC.txt`, 1422 LOC):** 45 Findings über 18 Files (3 critical / 9 major / 11 minor / 22 trivial). 1 actionable auf state_writer (gefixt, siehe oben). Δ vs A+B+D: NEU CRITICAL `flag_event_study.py:221-226` (`closest_close_on_or_after` nicht durch today gekappt — war B-Pass minor, jetzt critical re-klassifiziert; verwandt mit #46 max_drawdown algo).
+
+PIPELINE #47 erweitert um Cluster-C-Pass-Δ (Critical-Count 3 → 4, Major-Count 13 → 14 union, Minor/Trivial-Count ~190 union).
+
+**§18-Sync (Code-Edit + Pipeline-Item-Event):** state_writer.py + log.md + PIPELINE.md (#47 Cluster-C-Δ + Phase-3-Closure-Marker). APPLIED-LEARNING unverändert. Kein Score/FLAG/Sparrate.
+
+**Phase-3-Closure-Bilanz:**
+| Cluster | Findings | Commit | Sync-Set |
+|---------|----------|--------|----------|
+| A | 3 manual (Bugs/Dead-Code) | `f05a294` | Code + PIPELINE + log + .gitignore |
+| B | 8 trivial + 1 polish | `0424384` | Code + PIPELINE + APPLIED-LEARNING + SESSION-HANDOVER + log |
+| E | 2 PTH | `166ac1a` | Code + log |
+| D | 11 SIM105 + 1 Folge-Edit | `224d28d` | Code + PIPELINE + log |
+| C | 4 atomic-write + 1 Refactor-Bug-Fix | (this) | Code + PIPELINE + log |
+
+Total: 25 manuelle Findings adressiert, 1 Folge-Edit (portfolio_risk:455 Konsistenz), 1 Refactor-Bug entdeckt+gefixt (state_writer:73-74 tmp-Leak). 4 CR-Pässe akkumuliert ~204 unique Findings (4 critical, ~14 major, ~190 minor/trivial) → PIPELINE #47 als Konsolidierungs-Backlog.
+
+**Lehren — Phase 3 finale Konsolidierung:**
+- (a) **CR-Pass kann eigene Refactor-Bugs detektieren** — der state_writer:73-74 Leak war direkt durch meinen Cluster-C-Refactor introduziert, von CR sofort gefangen. Memory `feedback_cr_pass_after_bulk_refactor.md` voll bestätigt.
+- (b) **`tmp.name`-Pattern in Original war defensiver als gedacht:** der "alte" Style mit `tempfile.NamedTemporaryFile()` ohne context-manager macht `tmp.name` direkt verfügbar — Refactor-Falle vermeidbar wenn man bei Migration explizit darauf achtet, dass jede Variable vor jedem potentiell-raisenden Statement gesetzt ist.
+- (c) **Atomic-Write-Pattern ist subtil** — `delete=False` + `with`-Block + post-block-replace ist die korrekte Form, aber Order-of-Operations-Sensitiv. Smoke-Test mit injected-failure (TEST4) ist Pflicht für solche Refactors.
+- (d) **Phase-3-Closure-Verdikt:** 230 → 0 Lint-Findings über 5 Cluster + 4 CR-Pässe + 25 manual Edits + 1 surfaced+gefixter Refactor-Bug. APPLIED-LEARNING v2.7-Bullet ("Tooling-Bulk-Edit: CR-Pass koppeln") ist empirisch validiert. Konsolidierungs-Backlog #47 wartet auf Slot.
