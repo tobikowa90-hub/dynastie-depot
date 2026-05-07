@@ -251,12 +251,9 @@ class MetrikenRoh(BaseModel):
     eps_revisions_down_90d: int | None = None
     pt_dispersion_pct: float | None = None
 
-    # Spec-Feld (v3.4 Name) — primär
-    rel_strength_sp500_6m_pct: float | None = Field(
-        default=None,
-        alias="rel_strength_sp500_6m_pct",
-    )
-    # v3.5-Rename-Alias (backwards compatibility)
+    # Spec-Feld (v3.4 Name) — primär (CR 2026-05-07: redundanter alias entfernt; field-name == alias-string)
+    rel_strength_sp500_6m_pct: float | None = None
+    # v3.5-Rename-Alias (backwards compatibility) — beide via _sync_rel_staerke_alias konsistent gehalten
     rel_staerke_sp500_6m_pct: float | None = None
 
     # v3.5 neu
@@ -268,7 +265,20 @@ class MetrikenRoh(BaseModel):
 
     @model_validator(mode="after")
     def _sync_rel_staerke_alias(self) -> MetrikenRoh:
-        """Wenn nur einer der beiden Rel-Staerke-Namen gesetzt ist, spiegele ihn."""
+        """Wenn nur einer der beiden Rel-Staerke-Namen gesetzt ist, spiegele ihn.
+        Beide gesetzt + unterschiedlich → Reject (CR 2026-05-07: detection-only,
+        vorher konnten inkonsistente Records silent durch).
+        """
+        if (
+            self.rel_strength_sp500_6m_pct is not None
+            and self.rel_staerke_sp500_6m_pct is not None
+            and self.rel_strength_sp500_6m_pct != self.rel_staerke_sp500_6m_pct
+        ):
+            raise ValueError(
+                f"rel_strength_sp500_6m_pct ({self.rel_strength_sp500_6m_pct}) and "
+                f"rel_staerke_sp500_6m_pct ({self.rel_staerke_sp500_6m_pct}) conflict — "
+                f"set only one or set both equal"
+            )
         if self.rel_strength_sp500_6m_pct is None and self.rel_staerke_sp500_6m_pct is not None:
             object.__setattr__(
                 self, "rel_strength_sp500_6m_pct", self.rel_staerke_sp500_6m_pct
@@ -514,7 +524,17 @@ class FlagEvent(BaseModel):
         if self.metrik.wert is None:
             return self
 
-        expected_schwelle, direction = FLAG_RULES[self.flag_typ]
+        # CR 2026-05-07: defensive lookup statt direct index — KeyError aus dict-access
+        # würde Pydantic-v2-Validator-Catch (ValueError/AssertionError/PydanticCustomError)
+        # umgehen und ungehandelt propagieren. Heute synced (Literal == FLAG_RULES.keys),
+        # Cap schützt gegen Drift bei künftiger Literal-Erweiterung.
+        rule = FLAG_RULES.get(self.flag_typ)
+        if rule is None:
+            raise ValueError(
+                f"flag_typ '{self.flag_typ}' has no rule in FLAG_RULES "
+                f"(known: {sorted(FLAG_RULES)})"
+            )
+        expected_schwelle, direction = rule
         # Hard-coded per spec: Schwellen sind Teil des Modells, nicht Input
         if self.metrik.schwelle != expected_schwelle:
             raise ValueError(
@@ -756,7 +776,6 @@ def _smoke_tests() -> None:
     print("  [1/7] valid AVGO forward record parsed; score_gesamt=80, defcon=4")
 
     # Case 2: arithmetic mismatch
-    bad_arith = dict(avgo)
     bad_arith = {**avgo, "score_gesamt": 81}  # off by one
     try:
         ScoreRecord.model_validate(bad_arith)

@@ -120,9 +120,15 @@ def fetch_history_window(ticker: str, start: date, end: date) -> dict[date, floa
         if hist is None or hist.empty:
             return None
         out: dict[date, float] = {}
+        import pandas as pd  # local — yfinance schon importiert oben
         for ts, row in hist.iterrows():
-            # ts is pandas Timestamp with tz — convert to date
-            d = ts.date() if hasattr(ts, "date") else ts
+            # ts is pandas Timestamp with tz — convert to date.
+            # Defensive fallback (CR 2026-05-07): coerce non-Timestamp via pd.Timestamp,
+            # damit dict-keys konsistent `datetime.date` sind (kein gemischter type).
+            if hasattr(ts, "date"):
+                d = ts.date()
+            else:
+                d = pd.Timestamp(ts).to_pydatetime().date()
             out[d] = float(row["Close"])
         return out
     except Exception:
@@ -427,16 +433,16 @@ def build_report(results: list[EventResult], today: date) -> str:
         "| FLAG-Typ | Anzahl | Median Raw +30 | Range Raw +30 | Median Raw +90 | Range Raw +90 |"
     )
     lines.append("|---|---|---|---|---|---|")
+
+    def _med(xs: list[float]) -> str:
+        return _fmt_pct(median(xs)) if xs else "–"
+
+    def _range(xs: list[float]) -> str:
+        return f"[{min(xs):+.2f}%, {max(xs):+.2f}%]" if xs else "–"
+
     for typ, items in sorted(by_typ.items()):
         vals_30 = [r.horizons[30].raw_return_pct for r in items if r.horizons[30].status == "observed" and r.horizons[30].raw_return_pct is not None]
         vals_90 = [r.horizons[90].raw_return_pct for r in items if r.horizons[90].status == "observed" and r.horizons[90].raw_return_pct is not None]
-
-        def _med(xs: list[float]) -> str:
-            return _fmt_pct(median(xs)) if xs else "–"
-
-        def _range(xs: list[float]) -> str:
-            return f"[{min(xs):+.2f}%, {max(xs):+.2f}%]" if xs else "–"
-
         lines.append(
             f"| {typ} | {len(items)} | {_med(vals_30)} | {_range(vals_30)} | {_med(vals_90)} | {_range(vals_90)} |"
         )
@@ -583,7 +589,11 @@ def main() -> int:
         print(f"[ERROR] {FLAG_EVENTS_PATH} not found.", file=sys.stderr)
         return 1
 
-    events = load_flag_events(FLAG_EVENTS_PATH)
+    try:
+        events = load_flag_events(FLAG_EVENTS_PATH)
+    except Exception as e:  # noqa: BLE001
+        print(f"[ERROR] Failed to parse {FLAG_EVENTS_PATH}: {e}", file=sys.stderr)
+        return 1
     # Filter: nur Trigger-Events (Resolutions wären separat behandelt — n=0 aktuell)
     triggers = [e for e in events if e.event_typ == "trigger"]
 

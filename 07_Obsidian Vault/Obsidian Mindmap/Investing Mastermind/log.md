@@ -2329,3 +2329,43 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 **Lessons:**
 - (a) Lazy-Imports IN Pydantic-v2-Validatoren sind anti-pattern: silent-fail-Modus für ALLE Validations, nicht nur den problematischen Record. Modul-Level-Import (wenn kein Circular) ist quasi-immer korrekt; sonst try/except → re-raise als ValueError.
 - (b) Pre-Edit Circular-Import-Check via grep auf `from <modul>` und Inhalt der Quelldatei kostet 30 Sekunden und schließt False-Positive-Risk aus. Hier: `versions.py` ist 8-Zeilen-Konstanten-Datei → trivial sicher.
+
+## [2026-05-07] tooling | CR-Folgepass³-Sweep B-Triage — 7 applied / 5 doku-skip / 1 CR-Mistake
+
+2026-05-07 spätabends (post-Folgepass²-Commit `801d7d2`): User-Direktive Option B („heutigen Pass durchziehen, nicht der ganze #47-Sweep") nach Trade-off-Diskussion (Earnings-Wait §19.1, §0.3 Surgical, CR-Pass-Probabilismus). 13 Findings im post-Pass `--dir 03_Tools/backtest-ready` Output (`.cr_pipeline46_47c4_post.txt` 397 LOC).
+
+**Triage:**
+
+**APPLIED (7 — 1 major, 1 minor, 5 trivial):**
+- `_forward_verify_helpers.py:262-267` (major) — `subprocess.run(["git","status",...])` returncode-Check + `RuntimeError` mit `repo_root + stderr|stdout`-Kontext. Vorher: silent „alle Files unmodified" bei git-Failure (nicht-Repo, git nicht installiert, Permissions) → Freshness-Gate konnte fälschlich PASSEN/FAILEN.
+- `schemas.py:269-280` (minor) — `_sync_rel_staerke_alias` Conflict-Detection: beide Felder gesetzt + ungleich → ValueError. Vorher: silent-pass mit inkonsistentem Record (validation-loophole im v3.4↔v3.5-Alias-Sync).
+- `flag_event_study.py:123-126` (trivial) — defensive `pd.Timestamp(ts).to_pydatetime().date()` statt naked `ts`-Fallback (dict-keys garantiert `datetime.date`).
+- `flag_event_study.py:434-438` (trivial) — `_med`/`_range` aus `for typ, items`-Loop-Body extrahiert (1× Definition statt N×).
+- `flag_event_study.py:586` (trivial) — `try/except` um `load_flag_events` (CLI-Robustheit gegen JSON/Unicode-Failures, klarer User-Error statt Stack-Trace).
+- `schemas.py:511-544` (trivial) — `_check_metrik_direction` defensive `FLAG_RULES.get` + ValueError mit known-keys-list. Parallel zum Folgepass²-Critical schemas.py:317-326 (Pydantic-v2 catched in Validatoren keinen KeyError → propagiert ungehandelt).
+- `schemas.py:254-258` (trivial) — redundanter `alias="rel_strength_sp500_6m_pct"` aus Field-Definition entfernt (no-op, field-name == alias-string).
+- (`schemas.py:759-760` (trivial)) — dead `bad_arith = dict(avgo)`-Zeile gelöscht. CR's ursprünglicher Comment behauptete Z.760 sei ein Set (`{avgo, ...}`), echter Code ist `{**avgo, ...}`-Dict-Merge — nur Z.759 ist tatsächlich dead.
+
+**DOKUMENTIERT-SKIP (5):**
+- `flag_event_study.py:290-346` (trivial, hardcoded MSFT/GOOGL narratives) — generischer Fallback existiert bereits in `build_report` Z.448-453 (`for r in rest:`).
+- `backfill_flags.py:233-238` (trivial, `_parser_errors.log` rename) — File-Rename mit Cross-Reference-Folgen, eigenes Refactor.
+- `backfill_flags.py:173-199` (trivial, BackfillCandidate metric-fields) — schon in PIPELINE #47-Cluster-A als major getrackt (Bulk-Catalogue-Refactor).
+- `schemas.py:756-893` (trivial, Test-Numbering inkonsistent) — kosmetisch, größeres Self-Test-Refactor.
+- (Erweiterung der `schemas.py` Sub-Score-Sum-Validator-Lücke aus #47 NEU MAJOR — bewusst NICHT angepackt; Sub-Score-Validators für 5 Block-Klassen sind einzeln klein, aber Bulk + cap-Logic-Diskussion (le-Bound vs Block-Cap) gehört in eigene Session.)
+
+**CR-MISTAKE (1):**
+- `_forward_verify_helpers.py:170` (trivial, `len(cells) < 5` vs `< 6`). Code im Body greift NUR `cells[0..4]` (Ticker/Score/DEFCON/FLAG) zu — CR-Vorschlag `< 6` würde 5-cell-Rows fälschlich aussortieren. CR hat hier file-context confused. Dokumentiert.
+
+**Verify:**
+- `_smoke_test_event_study.py` 2/2 PASS unverändert.
+- `schemas.py` Self-Test 7+3+4 = 14 Cases PASS (`✅ all schema smoke tests passed`).
+- `python -c "import schemas; import flag_event_study; import _forward_verify_helpers"` clean.
+
+**§18-Sync (Pipeline-Item-Update, kein Score-Event):** flag_event_study.py (3× Edit) · schemas.py (4× Edit) · _forward_verify_helpers.py (1× Edit) · PIPELINE.md (CR-Folgepass³-Block ergänzt + Footer v2.0→v2.1) · log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml / flag_events.jsonl / SYSTEM.md / STATE.md / CORE-MEMORY.md.
+
+**Lessons:**
+- (a) CR-Comment-Genauigkeit ist nicht garantiert: 2/13 Findings hatten Sachfehler (Z.170 file-context confused; Z.760 hatte ursprünglich falschen `{avgo,...}`-Set-Behauptung → re-read-able im echten Code als `{**avgo,...}` Dict-Merge). Pre-Apply-File-Read ist 30-Sek-Sicherheitsnetz.
+- (b) Triage-Ratio 7/13 actionable bei B-Scope; bei C/D/E hätten wir wahrscheinlich auch ~50% true-positive nach Pre-Apply-Verify gehabt — d.h. der Sweep-Aufwand wäre real ~50% von der naiven Schätzung. Aber: Pre-Apply-Verify-Cost skaliert linear. Time-Box-Realismus für vollständigen Sweep bleibt 5-6h netto + 5-6h Verify = 10-12h gesamt.
+- (c) `Pydantic-v2`-Validator-Catch-Modell (nur ValueError/AssertionError/PydanticCustomError) ist die Wurzel mehrerer Findings: ImportError (heute Folgepass² gefixt), KeyError aus dict-access (heute schemas.py:517 gefixt). Pattern: jede Lazy/Indirect-Operation in Validator → entweder Modul-Level-pre-bind ODER try/except → re-raise als ValueError.

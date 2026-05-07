@@ -265,6 +265,14 @@ def check_freshness(repo_root: str) -> list[str]:
         capture_output=True,
         encoding="utf-8",
     )
+    # CR 2026-05-07: returncode-Check — sonst silent „alle Files unmodified" bei
+    # git-Failure (nicht-Repo, git nicht installiert, Permissions) → Freshness-Gate
+    # könnte fälschlich PASSEN/FAILEN. Klares User-Error statt Mis-Diagnose.
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"git status failed in {repo_root} (returncode={result.returncode}): "
+            f"{result.stderr.strip() or result.stdout.strip() or '(no stderr)'}"
+        )
     # Each line: 2-char status code + space + path
     modified_basenames: set[str] = set()
     for line in result.stdout.splitlines():
