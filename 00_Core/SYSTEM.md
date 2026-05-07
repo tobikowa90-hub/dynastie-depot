@@ -91,4 +91,22 @@
 
 ---
 
-*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 05.05.2026 abends (Welle-3a Doctor-Periodic-Cadence ACTIVE — Snapshot-1 in `05_Archiv/ruflo-doctor-history/2026-05-05.txt`, 6 PASS / 8 WARN / 0 FAIL, 1226ms internal; Cadence-Anker Mo morgens fortan)*
+## §Briefing-Status (NEU 2026-05-07, PIPELINE #2 v3.1.0+v3.1.1 Cutover-Closure)
+
+**Probe-Trigger** `trig_01XYuQ5mugsvZGZD4K52rjXh`: v3.1.1 live (07.05. ~02:56). Cron `0 0 31 12 *` (dormant — manual runs only). Manual-Run-Verify PASS.
+
+**Prod-Trigger** `trig_01PyAVAxFpjbPkvXq7UrS2uG`: v3.1.1 live (07.05. ~01:40). Cron `0 8 * * *` (08:00 UTC = 10:00 MESZ daily). Enabled true. Manual-Run-Verify PASS bzgl. A1-A3 (Allow-List + Bracket-Reservation + Anti-Fabrikation) + B1-B9 (State).
+
+**Architektur:** Pre-Briefing Control-Plane mit Layer-A (Operator-Awareness via `briefing-sync-check.ps1`) ↔ Layer-B (Cron-Briefing-Body in events[0]) Trennung. Bridge nur via geteilten File-State.
+
+**Allow-List-Regex (kanonisch v3.1.0):** `\[(file:[^\]]+|tavily@[a-z0-9.\-]+,\d{4}-\d{2}-\d{2}|shibui_[a-z_]+@\d{4}-\d{2}-\d{2}(; score_date=\d{4}-\d{2}-\d{2})?|Yahoo 403 known)\]`. Bracket-Notation v3.1.1 reserviert für Provenance — Prosa-Annotationen via Parens.
+
+**Pending-Issue:** Tavily-Connector-UUID-Reattach Prod (Pre-Existing, Memory `feedback_tavily_connector_uuid_rotation.md`-Pattern). News-Signal degradiert auf `n.v. (tool-unavailable)` korrekt klassifiziert per v3.0.6 — kein Body-Defekt. Reattach als separates PIPELINE-Item.
+
+**v2.1-Rollback-Backup-Pfad:** 30 Tage Recovery-Window. Last v2.x-Body verfügbar in Conversation-Transcript 07.05. Step 16.1 GET. Pre-Update updated_at war `2026-05-06T08:04:31Z`.
+
+**API-Empirie:** `job_config.ccr` ist Object-Level Replace-Unit (sub-fields müssen gemeinsam gesendet werden). Trigger-Root-Felder Field-Level partial preserved.
+
+---
+
+*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 07.05.2026 (Briefing v3.1.1 Probe + Prod live; Welle-3a Doctor-Periodic-Cadence ACTIVE seit 05.05.)*

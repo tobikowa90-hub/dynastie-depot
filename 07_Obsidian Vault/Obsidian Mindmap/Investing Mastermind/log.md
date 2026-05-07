@@ -2030,3 +2030,8 @@ Netto: ~-9 Pkt = Score 50/D2.
   - (c) **Architektur-Klarstellung Hook-vs-Cron-Separation entstand erst beim Spec-Schreiben**, nicht im Δ-Audit — beweist dass Spec-Schreiben Validierungs-Layer ist, nicht nur Doku-Layer. Lesson: bei Hook-Architektur-Themen Code-Read der Hook-Datei vor Δ-Audit-Pass durchführen.
   - (d) **Codex-Diff-Re-Review fand Tavily-Format-Bug** der durch initiale Pattern-Annahme „bare-domain" entstand — Codex-File-Read der konkreten Tag-Beispiele in Prompt+Spec wäre Pre-Q2-Vorbereitung gewesen. Lesson: Allow-List-Regex IMMER aus Live-File-Beispielen erstellen, nicht aus Memory.
   - (e) **Shibui-Composite-Form-Bug von mir entdeckt nach Codex-R2** — beweist dass auch nach Sparring-PASS noch Detail-Audits nötig sind. Lesson: bei Pattern-Entscheidungen IMMER eigenständigen File-Read als zweite Quelle parallel zum Sparring.
+
+
+## [2026-05-07] briefing | Briefing v3.1.0 + v3.1.1 deployed (Probe + Prod Cutover)
+
+2026-05-07: Briefing v3.1.0 Architektur-Bump + v3.1.1 Bracket-Notation-Hotfix deployed auf Probe + Prod (commits 4c9003c + 97145ba). Pre-Briefing Control-Plane: Layer-A/B-Trennung in Spec, Hook-Output-Disclaimer + Anti-Fabrikations-Allow-List + Bracket-Notation-Reservation in Prompt, Test-Fixture-Update §5 Prosa-Bracket-FAIL-Liste. Phase 3 Probe PASS, Phase 4 Prod PASS (B1-B9 + A1-A3). Codex-Sparring 5 Runden Plan-Refresh + Mid-Execution-Review + Structural-Review post-FAIL → 96-99% Confidence. Tavily-Connector-Reattach-Issue Prod surfaced als separates PIPELINE-Follow-Up (Pre-Existing). API-Empirie ergänzt: job_config.ccr ist Object-Level Replace-Unit.
