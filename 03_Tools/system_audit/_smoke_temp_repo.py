@@ -7,6 +7,7 @@ Verifies:
 """
 from __future__ import annotations
 
+import contextlib
 import sys
 
 # Python auto-inserts the script's directory (03_Tools/system_audit/) at
@@ -25,10 +26,8 @@ if sys.path and sys.path[0].endswith("system_audit"):
 # emoji (e.g. status-section heading) that crashes on re-print.  Reconfigure
 # our own stdout/stderr to utf-8 with replace fallback.
 for _stream in (sys.stdout, sys.stderr):
-    try:
+    with contextlib.suppress(AttributeError):
         _stream.reconfigure(encoding="utf-8", errors="replace")
-    except AttributeError:
-        pass
 
 import datetime
 import json

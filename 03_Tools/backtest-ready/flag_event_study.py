@@ -21,6 +21,7 @@ CLI:
 from __future__ import annotations
 
 import argparse
+import contextlib
 import sys
 from dataclasses import dataclass, field
 from datetime import date, timedelta
@@ -87,10 +88,8 @@ class EventResult:
 
 
 def _ensure_utf8_stdout() -> None:
-    try:
+    with contextlib.suppress(Exception):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-    except Exception:
-        pass
 
 
 def load_flag_events(path: Path) -> list[FlagEvent]:

@@ -14,6 +14,7 @@ DEFCON v3.7 alignment:
 
 from __future__ import annotations
 
+import contextlib
 import copy
 import re
 from datetime import date
@@ -952,8 +953,6 @@ def _smoke_tests() -> None:
 if __name__ == "__main__":
     import sys
     # Best-effort: upgrade stdout to UTF-8 so the checkmark renders.
-    try:
+    with contextlib.suppress(Exception):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-    except Exception:
-        pass
     _smoke_tests()

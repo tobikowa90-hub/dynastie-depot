@@ -7,6 +7,7 @@ Schema lives in `schemas.py` (single source of truth); this CLI is pure I/O.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import re
 import sys
@@ -17,10 +18,8 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).parent))
 from schemas import FLAG_RULES, FlagEvent
 
-try:
+with contextlib.suppress(Exception):
     sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-except Exception:
-    pass
 
 from pydantic import ValidationError
 

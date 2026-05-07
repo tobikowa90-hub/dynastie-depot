@@ -48,6 +48,7 @@ Step 0.5.4.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from pathlib import Path
@@ -198,8 +199,6 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    try:
+    with contextlib.suppress(Exception):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-    except Exception:
-        pass
     sys.exit(main())

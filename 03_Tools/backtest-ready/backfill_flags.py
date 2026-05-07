@@ -22,6 +22,7 @@ Design notes (per spec 2026-04-16 §6.4 + task-brief):
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 from dataclasses import dataclass
@@ -32,10 +33,8 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).parent))
 from schemas import FlagEvent
 
-try:
+with contextlib.suppress(Exception):
     sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-except Exception:
-    pass
 
 from pydantic import ValidationError
 

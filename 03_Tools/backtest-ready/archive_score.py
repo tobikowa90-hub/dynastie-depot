@@ -27,6 +27,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 import argparse
+import contextlib
 import json
 from datetime import date, timedelta
 from typing import Any
@@ -57,10 +58,8 @@ def _configure_stdout_utf8() -> None:
         stream = getattr(sys, stream_name, None)
         if stream is None:
             continue
-        try:
+        with contextlib.suppress(Exception):
             stream.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-        except Exception:
-            pass
 
 
 def _read_json_from_file(path: Path) -> Any:

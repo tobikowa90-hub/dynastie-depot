@@ -2102,3 +2102,48 @@ Netto: ~-9 Pkt = Score 50/D2.
 **§18-Sync (Code-Edit-only):** 2 Files (`video_ingest_lib.py`, `migrate_defcon_drift.py`) + log.md (dieser Eintrag). Kein PIPELINE-Update (CR-Pass deferred), kein APPLIED-LEARNING-Update, kein Score/FLAG/Sparrate.
 
 **Verbleibend:** 15 Lint-Findings — Cluster D 11× SIM105 (User-Style-Choice pending) + Cluster C 4× state_writer.py:67-77 (atomic-write CRLF-sensitiv, isolated-Commit pflicht).
+
+## [2026-05-07] ruff-cleanup | Phase-Tooling Cluster D (SIM105 → contextlib.suppress)
+
+2026-05-07: Python-Tooling-Initiative Phase-Cluster D — 11× SIM105 try/except/pass-Pattern auf `contextlib.suppress` umgestellt aus Restmenge 15 nach Cluster-E-Commit `166ac1a`.
+
+**User-Style-Decision (07.05. via AskUserQuestion):** Option A `contextlib.suppress` über alle 11 Stellen, statt globalem Lint-Ignore (Option B) oder per-File-noqa (Option C). Begründung: Pythonic-modern, -22 LOC, identische Semantik (Exception-Suppression ist nur 1-line-body in allen Fällen → kein verstärkter Suppression-Scope-Effekt).
+
+**11 Stellen transformiert:**
+- `archive_flag.py:20-23` (top-level UTF-8-stdout-Reconfigure, Exception)
+- `archive_score.py:60-63` (inside `for stream_name`-Loop, Exception)
+- `backfill_flags.py:35-38` (top-level, Exception)
+- `backfill_scores.py:50-53` (top-level, Exception)
+- `flag_event_study.py:90-93` (inside `_ensure_utf8_stdout()`-Helper, Exception)
+- `migrate_defcon_drift.py:92-95` (inside `if __name__`, Exception)
+- `migrate_tmo_28_block_coverage.py:201-204` (inside `if __name__`, Exception)
+- `provenance_gate.py:407-410` (inside `if __name__`, Exception)
+- `schemas.py:955-958` (inside `if __name__`, Exception)
+- `portfolio_risk.py:391-394` (inside CLI-main, AttributeError)
+- `_smoke_temp_repo.py:27-31` (inside `for _stream`-Loop, AttributeError)
+
+Plus 11× `import contextlib` an passender alphabetischer Stelle pro File ergänzt (PEP8-konform, Ruff I001 silent).
+
+**Verify:** ruff 15 → 4 Findings (11 weg = exakt Cluster D, restant 4 = Cluster C state_writer). AST-parse aller 11 Files OK. Smoke-Tests aller Algo-relevanten Files unverändert PASS:
+- `provenance_gate.py --smoke` 9/9 PASS
+- `schemas.py --smoke` D1-D4 PASS
+- `system_audit.py --core --no-write` 11/14 PASS (pre-existing FAIL/WARN)
+
+**CR-Pass Ergebnis (`.cr_clusterD.txt`, 2282 LOC):** 76 Findings über 23 Files (2 critical / 11 major / 14 minor / 49 trivial) — größere Surface vs Cluster-B-Pass (54) durch 11 Refactor-Files. Cluster-D-spezifische Comments: 2 trivial Nitpicks ("contextlib.suppress(Exception) too broad — narrow to AttributeError/LookupError/OSError/ValueError"). **Out-of-Scope abgelehnt** — Cluster D war 1:1-SIM105-Refactor, BLE001-narrowing wäre eigene Refinement-Spur.
+
+**1× actionable Cluster-D-Folgeschaden (gefixt in selber Session):** `portfolio_risk.py:455` bare `sys.stdout.reconfigure(encoding="utf-8")` war jetzt inkonsistent mit dem neuen `contextlib.suppress(AttributeError)`-Wrap an L392-393. CR-Vorschlag (Major): Konsistenz herstellen. **Minimaler Fix:** Suppress-Wrap auch um L455 (statt zentralisiertes main()-Refactor), bewahrt direct-call-Invariante von `persist_daily_snapshot`. Zusätzlicher Edit in selbem Commit.
+
+**Δ vs Cluster-A/B-CR-Pässe — neue Surfaces:**
+- **NEU CRITICAL** `markdown_header.py:143` — KeyError-Risiko bei `targets_override` mit unbekannter `kind`-Value (missing PARSERS-Validation).
+- **NEU CRITICAL** `cross_source.py:183` — `data.get("defcon", -1)` vs downstream `is None`-Check → false-positive DEFCON-mismatch für Vault-Entities ohne defcon-Field.
+- 11 Major: 9 pre-existing in Cluster A/B-Δ (overlap ~70%), 2 NEW (`cross_source.py:255-325` + `:270-290`).
+
+PIPELINE #47 erweitert um Cluster-D-Pass-Δ (Critical-Count 2 → 3, Major-Count 9 → ~13 union).
+
+**§18-Sync (Code-Edit-only):** 11 Cluster-D-Files + 1 portfolio_risk-Folge-Edit (12 Code total) + log.md + PIPELINE.md (#47 Cluster-D-Δ). APPLIED-LEARNING unverändert (v2.7-Bullet bleibt SSoT). Kein Score/FLAG/Sparrate.
+
+**Lehren:**
+- (a) **Refactor-Folgeschaden = CR-Discovery-Goldgrube:** mein Cluster-D-Wrap an L392 hat die L455-Inkonsistenz erst sichtbar gemacht. Pattern: bei jedem Refactor `git grep` der modifizierten Pattern in restlichem File-Scope, ob Konsistenz verlangt ist.
+- (b) **Out-of-Scope-Disziplin halten:** CR's Vorschlag `contextlib.suppress(Exception)` zu narrow Exception-Listen ist gültig aber eigene Spur (BLE001-Sweep). Cluster D 1:1-SIM105 bleibt 1:1.
+- (c) **Compound-Discovery:** 3 sukzessive CR-Pässe (A/B/D) cumulieren auf ~140 unique Findings (3 critical, ~13 major). Bestätigt v2.7-Bullet-Empirik. C wird vermutlich noch weitere finden.
+- (d) **`contextlib.suppress`-Pattern aktiviert Ruff's lint-default auch zukünftig** — neue try/except/pass werden weiterhin geflaggt. Keine globale Suppression nötig (Option B abgelehnt).

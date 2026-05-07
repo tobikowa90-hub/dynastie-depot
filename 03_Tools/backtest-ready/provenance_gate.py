@@ -11,6 +11,7 @@ Nicht direkt CLI-aufrufbar — Library-Funktion fuer SKILL.md-Orchestrator.
 """
 from __future__ import annotations
 
+import contextlib
 import re
 import sys
 from pathlib import Path
@@ -404,8 +405,6 @@ def _smoke_tests() -> None:
 
 
 if __name__ == "__main__":
-    try:
+    with contextlib.suppress(Exception):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-    except Exception:
-        pass
     _smoke_tests()

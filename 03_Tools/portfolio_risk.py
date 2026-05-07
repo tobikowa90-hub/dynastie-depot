@@ -18,6 +18,7 @@ Risk-Metrics (Sortino/Calmar/Max-DD/CVaR/IR). Aktivierung Review
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import os
 import sys
@@ -388,10 +389,8 @@ def persist_daily_snapshot(
                 f.truncate(bench_size_before)
         raise
 
-    try:
+    with contextlib.suppress(AttributeError):
         sys.stdout.reconfigure(encoding="utf-8")
-    except AttributeError:
-        pass
     print(
         f"[OK] Snapshot {trading_date} appended -- Portfolio {portfolio_value_gross:.2f} EUR "
         f"(r={portfolio_return:.4%}), Benchmark {benchmark}={bench_close:.2f} "
@@ -453,7 +452,8 @@ def main() -> int:
     out_file = out_dir / f"PORTFOLIO-RISK-{date.today().isoformat()}.md"
     out_file.write_text(report, encoding="utf-8")
 
-    sys.stdout.reconfigure(encoding="utf-8")
+    with contextlib.suppress(AttributeError):
+        sys.stdout.reconfigure(encoding="utf-8")
     print(report)
     print(f"\n[written to {out_file}]", file=sys.stderr)
     return 0
