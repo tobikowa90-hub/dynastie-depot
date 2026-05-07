@@ -101,9 +101,7 @@ def _parse_flags_active(cell: str) -> bool:
     """
     clean = _strip_bold(cell).strip()
     # 🔴 is U+1F534
-    if clean.startswith("\U0001f534"):
-        return True
-    return False
+    return clean.startswith("\U0001f534")
 
 
 # ---------------------------------------------------------------------------

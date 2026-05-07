@@ -37,7 +37,7 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         if (time.monotonic() - start) > timeout_s:
             return CheckResult(
                 name="vault_backlinks", status="SKIP", n_checked=n_checked, n_passed=n_passed,
-                failures=failures + [FailureDetail(
+                failures=[*failures, FailureDetail(
                     location="vault_backlinks", expected=f"scan < {timeout_s}s",
                     actual="timed out", severity="warning", hint="Scope reduzieren oder Timeout erhöhen",
                 )],

@@ -2,7 +2,7 @@
 name: Applied Learning Log
 description: Kuratierte Arbeitsprinzipien für Dynasty-Depot-Sessions (Tier 2 des 3-Tier-Lernsystems). Enthält Pflege-Regeln und Versionshistorie.
 type: learning-log
-updated: 2026-05-02
+updated: 2026-05-07
 ---
 
 # Applied Learning — Kuratierte Arbeitsprinzipien
@@ -10,7 +10,7 @@ updated: 2026-05-02
 > Tier 2 des 3-Tier-Systems (Auto-Memory → Applied Learning → INSTRUKTIONEN.md).
 > <15 Wörter pro Bullet. Nur operativ relevante Arbeitsprinzipien — keine Tool-References (→ Auto-Memory) und keine systemischen Regeln (→ INSTRUKTIONEN.md §§).
 
-## Bullets (Stand: 12/20)
+## Bullets (Stand: 13/20)
 
 > **Proaktive Pflege (seit 18.04.2026):** Bei jedem Monats-Übergang: 5-Min-Scan — Tool-References identifizieren und evakuieren. Verhindert Buildup, billiger als reaktive Überlauf-Sanierung.
 >
@@ -30,6 +30,7 @@ updated: 2026-05-02
 - Plan-Self-Review verfehlt Bash/sed/grep-Pipeline-Bugs — externe Review-Instanz (Codex) pflicht vor Execution
 - 1:1-Migration-Commit darf keine Meta-Logging-Einträge ergänzen — separater Commit nach Verify-PASS
 - Pre-Append-Audit-Klausel: vor erstem Live-Run neuer Pipeline-Version Audit PASS pflicht — kein Append bei FAIL (Provenance-Gate-Pattern, V/MSFT 28.04.)
+- Tooling-Bulk-Edit: CR-Pass koppeln — Ruff/Codex sehen Lint, CR surfacet semantische Bestandsbugs (~50/Pass empirisch 07.05.)
 
 ## Promotion-Logik
 
@@ -47,3 +48,4 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 | v2.4 | 21.04.2026 | +1 (Exhaustive-Drift-Check, aus Pre-Provenance-Plan-Compat-Check 12/27 silent v3.7-Threshold-Drift). |
 | v2.5 | 24.04.2026 | +2 (Plan-Self-Review-Blindspot, Migrations-Invariante-vs-Meta-Logging — beide aus 3-fach-Review CLAUDE.md-Routing-Refactor, nach Tier-1-Deploy). Stand: **14/20**. |
 | v2.6 | 02.05.2026 | **Bridge-Coherence-Scan** post-Ruflo-Phase-1.2-1.7-DONE: −3 Bullets entfernt (Info-Loss-Aversion, Spec-§-Drift, Exhaustive-Drift-Check — alle als Auto-Memory bereits evakuiert; Doppel-Speicherung verzerrte Bridge-PageRank-Recall). +1 neu (Pre-Append-Audit-Klausel aus Provenance-Gate-Plan v3.1 + V/MSFT-Pre-Earnings-Klausel 28.04.). +1 Pflege-Regel-Erweiterung (Bridge-Coherence beim Monatsscan). Stand: **12/20**. |
+| v2.7 | 07.05.2026 | +1 (Tooling-Bulk-Edit + CR-Pass koppeln) — empirische Evidenz aus Ruff-Cleanup Cluster A+B: 96+ pre-existing CR-Findings (3 critical / 14 major union) durch zwei sukzessive `coderabbit review -t uncommitted --dir 03_Tools/`-Pässe surfacet, die Ruff allein nicht sieht (semantische Algo-Drift, hardcoded-Annahmen, missing cross-validators, Test-Fixture-Quality). Reaktiver Konsolidierungs-Backlog (PIPELINE #46 + #47) wäre durch periodische CR-Reviews während Authoring größtenteils vermieden worden. Stand: **13/20**. |

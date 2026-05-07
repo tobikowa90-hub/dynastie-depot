@@ -1,6 +1,6 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-07 nach Phase-Tooling-Cluster-A-Closure (Commit `f05a294`). **Primärer Resume-Trigger:** **Tavily-Connector-Reattach Prod** (PIPELINE #45) sobald News-Signal in Prod-Briefing relevant wird — User-UI-Action ~5min. **Sekundärer Side-Track:** **Python-Tooling-Initiative Cluster B/C/D/E** (25 Lint-Findings remaining post-`f05a294`) — Cluster B (8 trivial mech.) → C (4 state_writer atomic-write, CRLF-sensitiv) → D (11 SIM105 contextlib.suppress User-Style-Choice) → E (2 PTH-Modernisierung). Pre-decoded Triage in dieser Session-History; CR-Output `.cr_clusterA.txt` (gitignored) lokal als Reference. **Tertiär:** 11.05. Mo nächster Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26. **Briefing v3.1.x:** Probe + Prod beide live, v2.1-Rollback-Pfad 30-Tage Recovery-Window dokumentiert. v3.1.x-Plan ALL-DONE per Phase-5-Sync.
+**Aktualisiert:** 2026-05-07 nach Phase-Tooling-Cluster-B-Closure (Commit folgt nach Verify). **Primärer Resume-Trigger:** **Tavily-Connector-Reattach Prod** (PIPELINE #45) sobald News-Signal in Prod-Briefing relevant wird — User-UI-Action ~5min. **Sekundärer Side-Track:** **Python-Tooling-Initiative Cluster C/D/E** (17 Lint-Findings remaining nach Cluster-B-Commit) — Cluster E (2 trivial PTH) → D (11 SIM105 contextlib.suppress User-Style-Choice mit Quick-Frage) → C (4 state_writer atomic-write, CRLF-sensitiv, **muss isoliert committed werden**). Memory `feedback_windows_python_crlf_text_mode.md` aktiv für Cluster C. CR-Outputs `.cr_clusterA.txt` + `.cr_clusterB.txt` (gitignored) lokal als Reference. **Tertiär:** 11.05. Mo nächster Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26. **Briefing v3.1.x:** Probe + Prod beide live, v2.1-Rollback-Pfad 30-Tage Recovery-Window dokumentiert. v3.1.x-Plan ALL-DONE per Phase-5-Sync.
 
 ### 🛠 Python-Tooling-Initiative — Phase-Status (2026-05-07)
 
@@ -9,15 +9,15 @@
 | 1 — Config | `9e82904` | pyproject.toml + .vscode setup, Ruff 0.15.12 pin, py314 target |
 | 2 — Auto-Fix | `0e898be` | 199 Findings auto-applied (21 Files, +186/-128) |
 | 3a — Cluster A | `f05a294` | Bugs/Dead-Code: B023 + F841 + RUF034. CR-Pass surfaced #46 + #47 |
-| 3b — Cluster B/C/D/E | PENDING | 25 Findings, Triage in Conversation-History + `.cr_clusterA.txt` |
+| 3b — Cluster B | (this session) | 8 trivial mech. + 1 CR-polish. CR-Pass-Δ → #47 erweitert (NEU 1 critical + 1 major). APPLIED-LEARNING +1 v2.7 |
+| 3c — Cluster C/D/E | PENDING | 17 Findings, Triage in dieser Datei + `.cr_clusterB.txt` |
 
-**Cluster-B/C/D/E Triage-Map:**
-- **B (8 trivial):** SIM103 `_forward_verify_helpers.py:104` · SIM102 `cross_source.py:308` · SIM110 `provenance_gate.py:109` · RUF005 `portfolio_risk.py:276` + `vault_backlinks.py:40` · RUF059 `flag_event_study.py:237` + `provenance_gate.py:305` · B007 `store_freshness.py:80`
-- **C (4 atomic-write, CRLF-sensitiv):** SIM115 + PTH105 + PTH108 + SIM105 alle in `state_writer.py:67-77` — Memory `feedback_windows_python_crlf_text_mode.md` beachten
-- **D (11 SIM105):** verteilt — User-Style-Choice ob `with contextlib.suppress(E)` oder `try-except-pass` lassen
-- **E (2 PTH):** PTH123 `video_ingest_lib.py:36` + PTH105 `migrate_defcon_drift.py:87`
+**Cluster-C/D/E Triage-Map (post Cluster-B):**
+- **C (4 atomic-write, CRLF-sensitiv) — MUSS isoliert committed werden:** SIM115 + PTH105 + PTH108 + SIM105 alle in `state_writer.py:67-77` — Memory `feedback_windows_python_crlf_text_mode.md` beachten, danach pre/post Smoke-Test (atomic-write Path)
+- **D (11 SIM105) — User-Style-Decision benötigt:** verteilt über `archive_flag.py:20`, `archive_score.py:60`, `backfill_flags.py:35`, `backfill_scores.py:50`, `flag_event_study.py:90`, `migrate_defcon_drift.py:93`, `migrate_tmo_28_block_coverage.py:201`, `provenance_gate.py:407`, `schemas.py:955`, `portfolio_risk.py:391`, `_smoke_temp_repo.py:28`. Quick-Frage: `with contextlib.suppress(E):` oder `try/except E: pass` lassen?
+- **E (2 trivial PTH) — mechanisch:** PTH123 `video_ingest_lib.py:36` + PTH105 `migrate_defcon_drift.py:87`
 
-**Resume-Direktive:** Cluster B (mechanisch) als nächstes — alle 8 in einem Commit oder per File einzeln (User-Choice). Memory `feedback_cr_pass_after_bulk_refactor.md` aktiviert.
+**Resume-Direktive:** Cluster E (mechanisch, 2 Findings) → Cluster D (mit User-Style-Frage) → Cluster C (isoliert, CRLF-sensitiv). Final-CR-Pass nach E oder D je nach Dichte → PIPELINE #47 final update. Memory `feedback_cr_pass_after_bulk_refactor.md` + `feedback_windows_python_crlf_text_mode.md` aktiviert.
 
 ### 📅 Earnings-Calendar Stufe 2 — Spec + Implementation ✅ ALL-DONE (06.05.2026)
 

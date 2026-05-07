@@ -2055,3 +2055,35 @@ Netto: ~-9 Pkt = Score 50/D2.
 - (a) **CR-Pass auf uncommitted-Diff** liefert breites Free-Audit (CR sieht den ganzen Diff vs origin/main, nicht nur Cluster-A-Hunks). Bei Bulk-Refactor mit Codex-Pre-Commit-Pattern den CR-Pass parallel laufen lassen — surfaced Bugs die Ruff/Codex nicht sehen (semantische Algo-Drift, hardcoded-Annahmen, missing cross-validators).
 - (b) **CR vs Codex Lens-Disagreement bewusst werten:** CR's Default-Args-Pushback war korrekt-aber-irrelevant (löst Lint-Tool-Konflikt nicht). Memory-Heuristik „Reviews via Codex statt Advisor" gilt für Strategie-Reviews; CR ist additiv für Code-Health-Sweep nach mechanischen Refactors.
 - (c) **Ruff-Findings sind nur Tip of the Iceberg** — 31 Lint-Findings haben 57 CR-Findings + 1 echten Algo-Bug (#46) surfaced. Lint-Cleanup-Sessions in Zukunft IMMER mit nachgeschaltetem CR-Pass koppeln.
+
+## [2026-05-07] ruff-cleanup | Phase-Tooling Cluster B (Trivial-Cleanups) + CR-Pass-Δ + APPLIED-LEARNING +1
+
+2026-05-07: Python-Tooling-Initiative Phase-Cluster B — 8 mechanische Ruff-Findings adressiert (Trivial-Cleanups aus Restmenge 25 nach Cluster-A-Commit `f05a294`).
+
+- **SIM103** `_forward_verify_helpers.py:104-106` — `if cond: return True; return False` → `return cond`
+- **SIM102** `cross_source.py:312` — Nested `if` → combined Boolean
+- **SIM110** `provenance_gate.py:109-113` — for-loop early-return → `return not any(...)` (initial `all(not ...)` Form, dann CR-Polish auf `not any(...)` für Lesbarkeit)
+- **RUF005** `portfolio_risk.py:276` — `list(tickers.values()) + [benchmark]` → `[*tickers.values(), benchmark]`
+- **RUF005** `vault_backlinks.py:40` — `failures + [FailureDetail(...)]` → `[*failures, FailureDetail(...)]`
+- **RUF059** `flag_event_study.py:236` — `b_date, b_price = b_hit` → `_b_date, b_price = b_hit` (unused tuple-element)
+- **RUF059** `provenance_gate.py:305` — `passed_v, reasons_v = ...` → `passed_v, _reasons_v = ...` (unused tuple-element)
+- **B007** `store_freshness.py:80` — `for store_name, path in stores.items():` → `for _store_name, path in stores.items():`
+- **CodeRabbit-Review-Pass** uncommitted-Cluster-B via `coderabbit review --plain -t uncommitted --dir 03_Tools` ergab **54 Findings über 23 Files** (2 critical / 6 major / 17 minor / 29 trivial) — CR reviewed gesamten 03_Tools-Diff, nicht nur Cluster-B-Edits. Output gesichert in `.cr_clusterB.txt` (gitignored).
+
+**CR-Verdict für Cluster-B-Fixes:** 2 von 54 Findings auf Cluster-B-modifizierten Lines — beide non-actionable: 1× "Good"-Bestätigung (`store_freshness.py:80` Underscore-Konvention), 1× Polish-Nitpick (`provenance_gate.py:109-113` `not any(...)` lesbarer als `all(not ...)` — **applied** in selber Session). Restant 52 Findings = pre-existing in `system_audit/`, `backtest-ready/`, `briefing-sync-check.ps1`, `morning-briefing-prompt-v3.md`, Test-Fixtures.
+
+**Δ vs Cluster-A-CR-Pass — neue Surfaces:**
+- **NEU CRITICAL** `governance_parity.py:88-112` — `_live_core_count(repo_root)` ohne Error-Handling-Wrapper, kann Check-Crash propagieren
+- **ESCALATION** `governance_parity.py:35-61` von major (A) → critical (B) — gleiche Code-Stelle, härter klassifiziert
+- **NEU MAJOR** `tests/fixtures/sample_transcript_normal.md:1-50` — Fixture-Quality-Mismatch (Random-Keyword-Spam vs realistischer Transcript)
+- 3× weitere MAJOR auf anderen Code-Blöcken in `briefing-sync-check.ps1`, `backfill_flags.py`, `existence.py` als A
+- ~50% Overlap mit Cluster-A-Findings (CR-LLM-Probabilismus)
+
+**§18-Sync (Pipeline-Item-Event + Tier-2-Event):** PIPELINE.md (#47 erweitert um Cluster-B-Pass-Δ + neue Critical/Major) + APPLIED-LEARNING.md (+1 Bullet "Tooling-Bulk-Edit + CR-Pass koppeln" → Stand 12/20 → 13/20, Historie v2.7) + log.md (dieser Eintrag) + Cluster-B-Code-Edits (8 Files: `_forward_verify_helpers.py`, `cross_source.py`, `provenance_gate.py`, `portfolio_risk.py`, `vault_backlinks.py`, `flag_event_study.py`, `store_freshness.py`). Kein Score/FLAG/Sparraten-Event.
+
+**Verify-Pass:** `python -m ruff check 03_Tools/` 25 → 17 Findings (8 weg = exakt Cluster B). `python provenance_gate.py --smoke` 9/9 PASS (Carryover-Logik nach SIM110+CR-Polish unverändert). `python system_audit.py --core --no-write` 11/14 PASS (gleicher Stand wie 04.05. abends — keine Regression).
+
+**Lehren:**
+- (a) **Zwei sukzessive CR-Pässe sind nicht redundant** — Cluster-B-Pass surfaceet 1 NEUE Critical + 1 NEUE Major, die Cluster-A-Pass nicht hatte (LLM-Probabilismus + leicht erweiterter Diff-Scope durch Cluster-B-Edits). Konsequenz: jeder weitere Cluster (C/D/E) bekommt eigenen CR-Pass, Pipeline-Item #47 wird inkrementell erweitert statt am Ende einmal.
+- (b) **Cluster-B-Pattern bestätigt:** Mechanische Ruff-Fixes überleben CR-Review unverändert (8/8 clean), nur Polish-Nits — d.h. Lint-Tool-Sicherheit ist hoch. Risiko liegt in pre-existing Bestandscode, nicht in der Auto-Fix-Mechanik. Genau das war die §18-Sync-Erwartung.
+- (c) **APPLIED-LEARNING-Promotion gerechtfertigt** — User-Direktive: "Sogar ein Applied Learning Kandidat?" Antwort: Ja. 96+ pre-existing CR-Findings über 2 Pässe = belastbarer Datapunkt für Tier-2-Promotion. Bullet v2.7 dokumentiert die Regel "Tooling-Bulk-Edit: CR-Pass koppeln". Re-Activation-Trigger für Bullet-Refresh: bei nächstem ≥10-File-Tooling-Edit nochmal Pass-Empirik validieren.

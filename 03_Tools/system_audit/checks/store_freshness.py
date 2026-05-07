@@ -77,7 +77,7 @@ def run(
     n_passed = 0
     any_checked = False
 
-    for store_name, path in stores.items():
+    for _store_name, path in stores.items():
         if not path.exists() or path.stat().st_size == 0:
             continue
         any_checked = True

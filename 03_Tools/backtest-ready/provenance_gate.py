@@ -106,11 +106,11 @@ def _is_placeholder(value: str) -> bool:
         return False
 
     # (c) Reason-Token terminal
-    for r in CARRYOVER_REASON_TERMINAL:
-        if stem == r or stem.endswith("_" + r):
-            return False
-
-    return True  # Carryover ohne anerkannten Stamm
+    # Carryover ohne anerkannten Stamm → True
+    return not any(
+        stem == r or stem.endswith("_" + r)
+        for r in CARRYOVER_REASON_TERMINAL
+    )
 
 
 def check_provenance(
@@ -302,7 +302,7 @@ def _smoke_tests() -> None:
     for placeholder in ("TBD", "?", "  N/A  ", "PLACEHOLDER"):
         rec_v = _build_valid_vollanalyse()
         rec_v["quellen"]["fundamentals"] = placeholder
-        passed_v, reasons_v = check_provenance(rec_v, [], None)
+        passed_v, _reasons_v = check_provenance(rec_v, [], None)
         assert not passed_v, f"[8b:{placeholder!r}] expected fail"
 
     # 8c: 'gurufocus_carryover' (legitimer Source-Token whole-word) -> pass

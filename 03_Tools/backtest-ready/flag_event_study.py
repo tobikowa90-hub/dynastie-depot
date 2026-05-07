@@ -233,7 +233,7 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
         if bench is not None and er.kurs_benchmark_at_trigger is not None:
             b_hit = closest_close_on_or_before(bench, target_date) or closest_close_on_or_after(bench, target_date)
             if b_hit is not None:
-                b_date, b_price = b_hit
+                _b_date, b_price = b_hit
                 hr.benchmark_return_pct = (b_price - er.kurs_benchmark_at_trigger) / er.kurs_benchmark_at_trigger * 100.0
                 hr.alpha_pp = hr.raw_return_pct - hr.benchmark_return_pct
 

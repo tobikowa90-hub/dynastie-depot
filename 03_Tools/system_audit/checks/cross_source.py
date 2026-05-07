@@ -309,16 +309,19 @@ def run(
                     ))
                     n_passed += 1
                     continue
-            if mirror_name == "Faktortabelle.md":
-                if m.get("flag") is not None and bool(m["flag"]) != c_flag:
-                    failures.append(FailureDetail(
-                        location=f"{mirror_name}: {ticker}",
-                        expected=f"flag={c_flag}",
-                        actual=f"flag={m['flag']}",
-                        severity="error",
-                        hint="Faktortabelle-FLAG-Spalte syncen",
-                    ))
-                    continue
+            if (
+                mirror_name == "Faktortabelle.md"
+                and m.get("flag") is not None
+                and bool(m["flag"]) != c_flag
+            ):
+                failures.append(FailureDetail(
+                    location=f"{mirror_name}: {ticker}",
+                    expected=f"flag={c_flag}",
+                    actual=f"flag={m['flag']}",
+                    severity="error",
+                    hint="Faktortabelle-FLAG-Spalte syncen",
+                ))
+                continue
             n_passed += 1
 
     has_error = any(f.severity == "error" for f in failures)

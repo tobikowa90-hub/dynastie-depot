@@ -273,7 +273,7 @@ def persist_daily_snapshot(
         gap_calendar_days = (as_of - date.fromisoformat(last_archived_date)).days
         lookback_days = max(14, gap_calendar_days + 7)
 
-    all_symbols = list(tickers.values()) + [benchmark]
+    all_symbols = [*tickers.values(), benchmark]
     trading_date_obj, latest_closes, prev_closes, available_sessions = (
         _fetch_latest_common_closes(all_symbols, lookback_days=lookback_days, as_of=as_of)
     )
