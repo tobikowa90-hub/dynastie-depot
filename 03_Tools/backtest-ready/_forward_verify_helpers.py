@@ -260,9 +260,11 @@ def check_freshness(repo_root: str) -> list[str]:
     ``PORTFOLIO.md``.
     """
     # CR 2026-05-07: timeout=30 verhindert indefinite-block (NFS, locked .git/index,
-    # huge untracked-trees). Returncode-Check verhindert silent „alle unmodified" bei
-    # git-Failure (nicht-Repo, git nicht installiert, Permissions). Beide Fehlermodi
-    # eskalieren zu RuntimeError mit klarem repo_root + stderr-Kontext.
+    # huge untracked-trees). FileNotFoundError-Catch fängt git-fehlt-im-PATH +
+    # repo_root-existiert-nicht (subprocess.run wirft FileNotFoundError BEVOR
+    # returncode existiert). Returncode-Check verhindert silent „alle unmodified"
+    # bei nicht-Repo / Permissions. Alle drei Fehlermodi → RuntimeError mit
+    # klarem repo_root-Kontext.
     try:
         result = subprocess.run(
             ["git", "status", "--porcelain"],
@@ -274,6 +276,11 @@ def check_freshness(repo_root: str) -> list[str]:
     except subprocess.TimeoutExpired as exc:
         raise RuntimeError(
             f"git status timed out after 30s in {repo_root}"
+        ) from exc
+    except FileNotFoundError as exc:
+        raise RuntimeError(
+            f"git status could not run in {repo_root} "
+            f"(git nicht installiert oder repo_root existiert nicht): {exc}"
         ) from exc
     if result.returncode != 0:
         raise RuntimeError(

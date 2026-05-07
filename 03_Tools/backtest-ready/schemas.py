@@ -271,10 +271,13 @@ class MetrikenRoh(BaseModel):
         Beide gesetzt + unterschiedlich → Reject (CR 2026-05-07: detection-only,
         vorher konnten inkonsistente Records silent durch).
         """
+        # CR 2026-05-07 Pass⁶: float-tolerance statt direct `!=`. Verhindert false-
+        # positive-Reject, wenn der gleiche logische Wert aus zwei Quellen mit
+        # Float-Drift kommt (z.B. 73.5 vs 73.50000000000001).
         if (
             self.rel_strength_sp500_6m_pct is not None
             and self.rel_staerke_sp500_6m_pct is not None
-            and self.rel_strength_sp500_6m_pct != self.rel_staerke_sp500_6m_pct
+            and abs(self.rel_strength_sp500_6m_pct - self.rel_staerke_sp500_6m_pct) > 1e-9
         ):
             raise ValueError(
                 f"rel_strength_sp500_6m_pct ({self.rel_strength_sp500_6m_pct}) and "
