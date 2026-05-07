@@ -2290,3 +2290,22 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 - (a) Recovery-Spike unterzeichnet (min-trigger)/trigger systematisch. Bei Bull-Phase + Mid-Cycle-Korrektur (typischer DEFCON-Scoring-Kontext) ist das ein Drawdown-Underreporting-Bias — gut, dass das vor n>>2-Sample-Größe gefixt ist.
 - (b) `closest_close_on_or_after` mit Default `max_days=7` ist nur look-ahead-sicher, wenn `target_date` mind. 7 Tage in der Vergangenheit liegt. In Forward-Horizon-Logik wo `target_date` bis exakt `today` reichen kann, MUSS Cap auf `(today - target_date).days` aktiv sein. §29.5 Sin #2 in der Praxis.
 - (c) Zwei Bugs im selben File via zwei verschiedene CR-Pässe (A vs C) discovered — bestätigt CR-Pass-Δ-Pattern aus PIPELINE #47 (~30% net new pro Pass). Beide pre-existing, beide algorithmisch (nicht Lint), beide Backtest-Critical (Look-Ahead + Drawdown-Bias) — strukturelle Lücke war: keine Smoke-Tests gegen synthetische Fixtures für Event-Study-Logik bis heute.
+
+## [2026-05-07] tooling | flag_event_study.py — CR-Folgepass post-#46-Resolve
+
+2026-05-07 abends (post-Initial-Resolve-Commit `6651d92`): User initiierte CR-Review auf den Resolve-Commit. CR-Output `.cr_pipeline46_47c4.txt` 584 LOC, 16 Findings (per `coderabbit review --plain --base-commit b4218de --dir 03_Tools/backtest-ready` via WSL). 6 in-scope (Initial-Commit), 10 pre-existing in anderen Files.
+
+**In-Scope-Resolve (1 minor, semantisch konsistent):** `flag_event_study.py:247` Benchmark-Block-Forward-Fallback hatte denselben Look-Ahead-Bug-Pattern wie der bereits gefixte Ticker-Block Z.221-226. CR-Vorschlag = exakt unser Pattern (`max_days=min(7, max_fwd_b)`). Initial-Commit hatte das explizit als „1-Zeilen-Folge-Item" benannt; User-OK → nachgezogen. Smoke-Test bleibt 2/2 PASS (TEST 2 trifft Ticker-Pfad; Benchmark ist Side-Branch).
+
+**NEU in PIPELINE #47 ergänzt (CR-Folgepass-Block):** 1 NEU CRITICAL (`schemas.py:317-326` — Lazy-Import `from versions import DEFCON_ACTIVE_VERSION` IM @model_validator → ImportError escapt Pydantic-v2 ValidationError-Catch, propagiert ungehandelt → könnte alle forward-Records silent brechen; war in keinem der vier Cluster-Pässe ausgewiesen, frisch surfaced) + 2 NEU MAJOR (`_forward_verify_helpers.py:247-288` git-returncode-Check fehlt → silent „alle unmodified"; `schemas.py:143-158` 5 Score-Block-Klassen haben keinen Intra-Block-Sum-Validator + positive Sub-Score-Felder ohne `le`-Bound) + 1 NEU MINOR + diverse Trivials. PIPELINE #47-Block erweitert + Footer v1.8→v1.9.
+
+**Bewusst NICHT angepackt:** 3 minor Findings auf `_smoke_test_event_study.py` (Stub-Default {}, private-API-Use, KeyError-Defensiveness). Defensives Cleanup, keine Bugs; kann später optional. CR-Mistake bei einem davon (claim "+60d standard horizon" — `HORIZONS = [30, 90, 180, 360]` enthält 60 nicht) dokumentiert. Pre-existing-Findings in anderen Files (10) gehören zu PIPELINE #47-Sweep, separater Konsolidierungstag.
+
+**§18-Sync (Pipeline-Item-Update, kein Score-Event):** flag_event_study.py (1× Edit Z.246-251) · PIPELINE.md (#47 Subitem (ii) erweitert + CR-Folgepass-Block + Footer v1.8→v1.9) · log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml / flag_events.jsonl / SYSTEM.md / STATE.md / CORE-MEMORY.md — Tool-Bugfix-Folgepass.
+
+**Lessons:**
+- (a) CR auf Resolve-Commit hat Initial-Commit-Out-of-Scope-Hinweis explizit bestätigt (Z.247 Benchmark-Cap). User-Review-Rückkopplung war effizienter als post-hoc Folge-Item — Detection in derselben Session, kein Stundenzettel-Spread.
+- (b) `--base-commit <SHA>` Flag der CR-CLI greift NICHT bei lokalen Repos — CR reviewt trotzdem alle changed-vs-default-Base, was ohne origin-main den Initial-Commit als Base nimmt → 157 Files (Limit 150). Workaround: `--dir <path>` zur Scope-Begrenzung. Keep für künftige Folgepässe.
+- (c) ImportError-Lücke in Pydantic-v2-Validatoren ist scharfer Failure-Modus — silent für ALLE Validation-Calls, nicht nur den problematischen Record. PIPELINE #47-Critical-Konto +1 (jetzt 5 critical insgesamt: Cluster-A 1, Cluster-B 2, Cluster-C 3, Cluster-D 2, CR-Folgepass 1; Union nach Overlap-Bereinigung etwas weniger).

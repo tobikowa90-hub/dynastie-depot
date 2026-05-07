@@ -244,7 +244,12 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
         hr.raw_return_pct = (hr.kurs_target - er.kurs_at_trigger) / er.kurs_at_trigger * 100.0
 
         if bench is not None and er.kurs_benchmark_at_trigger is not None:
-            b_hit = closest_close_on_or_before(bench, target_date) or closest_close_on_or_after(bench, target_date)
+            # Symmetrisch zum Ticker-Block oben: Forward-Fallback durch `today` kappen
+            # (§29.5 Look-Ahead-Prevention) — CR Pipeline #46/47-Folgepass.
+            b_hit = closest_close_on_or_before(bench, target_date)
+            if b_hit is None:
+                max_fwd_b = max(0, (today - target_date).days)
+                b_hit = closest_close_on_or_after(bench, target_date, max_days=min(7, max_fwd_b))
             if b_hit is not None:
                 _b_date, b_price = b_hit
                 hr.benchmark_return_pct = (b_price - er.kurs_benchmark_at_trigger) / er.kurs_benchmark_at_trigger * 100.0
