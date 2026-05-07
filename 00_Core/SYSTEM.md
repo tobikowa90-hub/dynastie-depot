@@ -101,7 +101,7 @@
 
 **Allow-List-Regex (kanonisch v3.1.0):** `\[(file:[^\]]+|tavily@[a-z0-9.\-]+,\d{4}-\d{2}-\d{2}|shibui_[a-z_]+@\d{4}-\d{2}-\d{2}(; score_date=\d{4}-\d{2}-\d{2})?|Yahoo 403 known)\]`. Bracket-Notation v3.1.1 reserviert für Provenance — Prosa-Annotationen via Parens.
 
-**Pending-Issue:** Tavily-Connector-UUID-Reattach Prod (Pre-Existing, Memory `feedback_tavily_connector_uuid_rotation.md`-Pattern). News-Signal degradiert auf `n.v. (tool-unavailable)` korrekt klassifiziert per v3.0.6 — kein Body-Defekt. Reattach als separates PIPELINE-Item.
+**Tavily-Connector-Status (07.05. abends):** ✅ Resolved via Connector-Recreation (claude.ai Web-UI). Neue connector_uuid `21639169-bc58-4ad9-8c3a-8be264b9d528` (vorher `0da14a12-...` server-side broken nach `/mcp Clear authentication`-Revoke). Beide Triggers (Probe + Prod) Body-updated. Prod Manual-Run-Verify PASS — Cohort + Per-Ticker News-Signal-Pfade live. URL-Key `tvly-dev-3tUC8a-...` (default2). Lessons in Memory `feedback_tavily_connector_uuid_rotation.md` (zwei-stufiger Pattern: allowed_tools + Connector-Recreation) + neue Memory `feedback_remote_trigger_shallow_partial_update.md` (API-Empirie ccr-shallow-replace).
 
 **v2.1-Rollback-Backup-Pfad:** 30 Tage Recovery-Window. Last v2.x-Body verfügbar in Conversation-Transcript 07.05. Step 16.1 GET. Pre-Update updated_at war `2026-05-06T08:04:31Z`.
 
@@ -109,4 +109,4 @@
 
 ---
 
-*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 07.05.2026 (Briefing v3.1.1 Probe + Prod live; Welle-3a Doctor-Periodic-Cadence ACTIVE seit 05.05.)*
+*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 07.05.2026 abends (Tavily-Connector-Recreation ✅ Resolved — neue UUID, Briefing-News-Signal live; Briefing v3.1.1 Probe + Prod live; Welle-3a Doctor-Periodic-Cadence ACTIVE)*

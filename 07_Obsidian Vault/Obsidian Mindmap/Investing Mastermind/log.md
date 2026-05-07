@@ -2245,3 +2245,24 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 **§18-Sync (Pipeline-Item-Update):** PIPELINE.md (#45 erweitert um Partial-Resolve-Detail + 3 Action-Optionen für nächste Session) + log.md (dieser Eintrag). KEIN Score/FLAG/Sparrate. CORE-MEMORY §13 + Memory `feedback_tavily_connector_uuid_rotation.md`-Update geplant für nächste Session (sobald Final-Resolve gelingt → vollständiger 3-Schritt-Pattern dokumentiert).
 
 **Lehre vorläufig:** UI-Reattach + UUID-Update + Key-Rotation reichen NICHT immer für Prod-Trigger. Server-Side Connector-Binding-Cache auf Claude.ai kann eigene Refresh-Mechanik benötigen (z.B. Connector-Delete + Recreate in Desktop App). Briefing v3.0.6 Anti-Fabrikations-Logik funktioniert sauber — emittiert konsistent `Auth-Fehler — Key rotieren`-Klassen-Label, kein Fabrikations-FAIL.
+
+## [2026-05-07] tavily-resolve | Connector-Recreation → PIPELINE #45 RESOLVED
+
+2026-05-07 abends (post-PARTIAL-RESOLVE-Session): Zweistufiger Final-Fix für Tavily-Briefing-Pipeline.
+
+**Stufe 1 — `allowed_tools`-Patch:** Prod-Trigger-Body hatte nur `[Bash,Read,Glob,Grep]` (ohne `mcp__tavily__tavily_search`); Probe hatte das Tool. v3.0.6-Output `n.v. (tool-unavailable)` ist mehrdeutig — zwei Ursachen-Klassen (Tool-Allowlist OR Connector-Bind). Patch via `RemoteTrigger update` `session_context.allowed_tools` erweitert. **API-Bug entdeckt:** minimal-partial-Update shallow-replaced den ganzen `job_config.ccr`-Block, prompt-Body verschwand. Recovery via Voll-Body-Resend aus get-1-Snapshot.
+
+**Stufe 2 — Connector-Recreation:** Manual-Runs Probe+Prod nach Stufe 1 lieferten BEIDE `tool-unavailable` (egal ob URL-Key `4er43M` oder `3tUC8a`). Connector generell broken in Cloud-Runtime. Hypothese: lokales `/mcp Clear authentication` (CLI) revokte auch Server-Side-OAuth-Tokens für connector_uuid `0da14a12-...`. User-Recreation in claude.ai Web-UI → neue UUID `21639169-bc58-4ad9-8c3a-8be264b9d528`. Beide Trigger-Bodies updated (Prod `trig_01PyAVAxFpjbPkvXq7UrS2uG` + Probe `trig_01XYuQ5mugsvZGZD4K52rjXh`).
+
+**Verify:** Manual-Run Prod liefert `Cohort: Keine material News` + 3 FLAG-Per-Ticker (APH/AVGO/MSFT). Sauber emittiert, kein Auth-Fehler, kein tool-unavailable. Cron 08.05. 08:01 UTC live mit echtem News-Signal.
+
+**API-Empirie validiert (zweite Bestätigung nach v3.1.1-Cutover):** `job_config.ccr` ist Object-Level Replace-Unit. Sub-fields müssen GEMEINSAM gesendet werden. `mcp_connections` (Top-Level) ist Field-Level partial preserved (Shibui blieb erhalten beim Tavily-Edit).
+
+**§18-Sync (Pipeline-Item-Resolve, kein Score-Event):** PIPELINE.md #45 entfernt + Footer-Bump (Numbering-Convention: Gap signalisiert Archive in CORE-MEMORY §13 + git log) · STATE.md Critical-Alert top · SYSTEM.md §Briefing-Status Pending-Issue→Resolved + Footer-Bump · CORE-MEMORY.md §13 (07.05. [Briefing]) · log.md (dieser Eintrag) · Memory `feedback_tavily_connector_uuid_rotation.md` erweitert (Stage-2-Pattern + Cache-Hypothesen-Befund) · neue Memory `feedback_remote_trigger_shallow_partial_update.md` (API-Empirie ccr-shallow-replace).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml — kein Score/FLAG/Sparraten-Event.
+
+**Lessons:**
+- (a) `n.v. (tool-unavailable)` ist multi-cause — `allowed_tools`-Allowlist UND Connector-Bind beide Kandidaten, beide checken (Probe-Diagnostic-Run schließt URL-Key als Variable aus).
+- (b) Lokales `/mcp Clear authentication` ist potenzieller Cloud-Cron-Killer für gemeinsam genutzte connector_uuid (Server-Side-OAuth-Revoke). Recovery: Web-UI-Connector-Recreation, nicht UI-Reattach (Reattach refresht nur UI-Cache).
+- (c) RemoteTrigger-Body-Edits IMMER Full-`ccr`-Resend, nie partial-subset. Plan-§14.1+§17.1-Wording 'Partial-Update mit ccr-subset' empirisch falsifiziert — auch im 07.05. v3.1.1-Cutover schon dokumentiert, heute zweite Bestätigung.
