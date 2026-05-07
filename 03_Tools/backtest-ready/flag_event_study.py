@@ -206,7 +206,6 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
     ]
     if fenster_prices:
         min_price = min(fenster_prices)
-        min_date = min(d for d, p in prices.items() if er.kurs_at_trigger_date <= d <= today and p == min_price)
         er.max_drawdown_pct = (min_price - er.kurs_at_trigger) / er.kurs_at_trigger * 100.0
         er.max_drawdown_window_end = min(today, max(d for d in prices if d <= today))
 

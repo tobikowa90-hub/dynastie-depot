@@ -2035,3 +2035,23 @@ Netto: ~-9 Pkt = Score 50/D2.
 ## [2026-05-07] briefing | Briefing v3.1.0 + v3.1.1 deployed (Probe + Prod Cutover)
 
 2026-05-07: Briefing v3.1.0 Architektur-Bump + v3.1.1 Bracket-Notation-Hotfix deployed auf Probe + Prod (commits 4c9003c + 97145ba). Pre-Briefing Control-Plane: Layer-A/B-Trennung in Spec, Hook-Output-Disclaimer + Anti-Fabrikations-Allow-List + Bracket-Notation-Reservation in Prompt, Test-Fixture-Update §5 Prosa-Bracket-FAIL-Liste. Phase 3 Probe PASS, Phase 4 Prod PASS (B1-B9 + A1-A3). Codex-Sparring 5 Runden Plan-Refresh + Mid-Execution-Review + Structural-Review post-FAIL → 96-99% Confidence. Tavily-Connector-Reattach-Issue Prod surfaced als separates PIPELINE-Follow-Up (Pre-Existing). API-Empirie ergänzt: job_config.ccr ist Object-Level Replace-Unit.
+
+## [2026-05-07] ruff-cleanup | Phase-Tooling Cluster A (Bugs/Dead-Code) + 2 neue PIPELINE-Items via CR-Pass
+
+2026-05-07: Python-Tooling-Initiative Phase-Cluster A — 3 manuelle Ruff-Findings adressiert (Cluster A: Bugs/Dead-Code aus Restmenge 31 nach Auto-Fix-Commit `0e898be`).
+
+- **B023** `03_Tools/system_audit/checks/cross_source.py:112-118` — Closure-late-binding Risk in `def get(name)` inside row-Loop. Fix: Default-Args-Trick `_col_idx=col_idx, _cells=cells` bindet pro Iteration. CR-Vorschlag „Original lassen" als Style-Geschmack abgelehnt — würde B023 weiter triggern.
+- **F841** `03_Tools/backtest-ready/flag_event_study.py:204-211` — `min_date` assigned-but-never-used. Initial Hypothese (`er.max_drawdown_window_end = min_date`) durch CR-Pass widerlegt: CR identifiziert tieferen algorithmischen Bug — aktueller Algo rechnet nicht echtes peak-to-trough Max Drawdown. Fix Cluster A = Ruff-Default (Zeile löschen, Verhalten unverändert). Algo-Fix als PIPELINE #46 deferred.
+- **RUF034** `03_Tools/backtest-ready/archive_flag.py:135-137` — `referenz = "x" if cond else "x"` mit identischen Branches. Simplify zu single string. Behavior-preserving.
+- **CodeRabbit-Review-Pass** uncommitted-Cluster-A via `coderabbit review --plain -t uncommitted --dir 03_Tools` ergab **57 Findings über 25 Files** (1 critical / 8 major / 18 minor / 30 trivial) — CR reviewed gesamten Diff vs origin/main, nicht nur die 3 Cluster-A-Edits. **Critical:** `backfill_flags.py:186-188` hardcoded capex_ocf-Annahme. **Major-Highlights:** `_forward_verify_helpers.py:264-269`, `pointer_completeness.py:84-90`, `governance_parity.py:35-62`, `briefing-sync-check.ps1:22-31`, `existence.py:82-96 + :104-146`, `schemas.py:304` cross-validator missing. Output gesichert in `.cr_clusterA.txt` (gitignored).
+- **2 neue PIPELINE-Items:**
+  - **#46** flag_event_study.py max_drawdown Algo-Bug (semantisch, älter als Lint-Cleanup, kein Regression durch Cluster A)
+  - **#47** CR-Code-Health-Sweep (1 critical + 8 major über 25 Files)
+- **Status Manual-Findings:** 31 → 25 nach Cluster A. Cluster B (Trivial-Cleanups) / C (state_writer atomic-write) / D (12 SIM105) / E (Path-Modernisierung) pending.
+
+**§18-Sync (Pipeline-Item-Event):** PIPELINE.md (#46 + #47) + log.md (dieser Eintrag) + .gitignore (`.cr_clusterA.txt`). Cluster-A-Code-Edits separat in selber Session als Folge-Commit. Kein Score/FLAG/Sparraten-Event.
+
+**Lehren:**
+- (a) **CR-Pass auf uncommitted-Diff** liefert breites Free-Audit (CR sieht den ganzen Diff vs origin/main, nicht nur Cluster-A-Hunks). Bei Bulk-Refactor mit Codex-Pre-Commit-Pattern den CR-Pass parallel laufen lassen — surfaced Bugs die Ruff/Codex nicht sehen (semantische Algo-Drift, hardcoded-Annahmen, missing cross-validators).
+- (b) **CR vs Codex Lens-Disagreement bewusst werten:** CR's Default-Args-Pushback war korrekt-aber-irrelevant (löst Lint-Tool-Konflikt nicht). Memory-Heuristik „Reviews via Codex statt Advisor" gilt für Strategie-Reviews; CR ist additiv für Code-Health-Sweep nach mechanischen Refactors.
+- (c) **Ruff-Findings sind nur Tip of the Iceberg** — 31 Lint-Findings haben 57 CR-Findings + 1 echten Algo-Bug (#46) surfaced. Lint-Cleanup-Sessions in Zukunft IMMER mit nachgeschaltetem CR-Pass koppeln.

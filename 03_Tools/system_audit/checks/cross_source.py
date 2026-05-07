@@ -109,9 +109,13 @@ def _parse_faktortabelle(path: Path) -> dict[str, dict]:
 
         cells = [c.strip() for c in stripped.strip("|").split("|")]
 
-        def get(name: str) -> str | None:
-            i = col_idx.get(name) if col_idx else None
-            return cells[i] if i is not None and i < len(cells) else None
+        def get(
+            name: str,
+            _col_idx: dict[str, int] | None = col_idx,
+            _cells: list[str] = cells,
+        ) -> str | None:
+            i = _col_idx.get(name) if _col_idx else None
+            return _cells[i] if i is not None and i < len(_cells) else None
 
         def strip_bold(s: str | None) -> str:
             return (s or "").replace("**", "").strip()

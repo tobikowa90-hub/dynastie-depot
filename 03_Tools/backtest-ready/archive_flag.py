@@ -132,9 +132,7 @@ def _build_flag_event(
     schwelle, _direction = FLAG_RULES[flag_typ]
     metrik_name = FLAG_METRIK_NAME[flag_typ]
 
-    referenz = (
-        "close_of_event_datum" if event_typ in ("trigger", "resolution") else "close_of_event_datum"
-    )
+    referenz = "close_of_event_datum"
 
     return FlagEvent.model_validate(
         {
