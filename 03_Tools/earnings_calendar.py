@@ -21,10 +21,10 @@ import argparse
 import contextlib
 import re
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import date
+from datetime import UTC, date
 from pathlib import Path
-from typing import Callable, Optional
 
 import yaml
 import yfinance as yf
@@ -51,7 +51,7 @@ SMOKE_DATE = date(2026, 8, 1)
 class EarningsResult:
     ticker: str
     yahoo_symbol: str
-    earnings_date: Optional[date]
+    earnings_date: date | None
     # source: "earnings_dates" | "calendar" | "override" | "no_data" | "error" | "calendar_stale"
     # ODER alphabetisch sortierte Plus-Concat aller matching sources bei same-date,
     # z.B. "earnings_dates+override" | "calendar+override". Sortier-Order
@@ -60,7 +60,7 @@ class EarningsResult:
     # nie in min-Aggregation; siehe next_earnings Aggregations-Semantik).
     source: str
     note: str = ""
-    event_type: Optional[str] = None
+    event_type: str | None = None
 
 
 @dataclass
@@ -143,8 +143,8 @@ def next_earnings(
     sym = yahoo_symbol(ticker)
     t = data_source(sym)
     yf_dates: list[date] = []
-    cal_date_future: Optional[date] = None
-    cal_date_stale: Optional[date] = None
+    cal_date_future: date | None = None
+    cal_date_stale: date | None = None
     errors: list[str] = []
 
     # 1) Primaer: earnings_dates mit future-Filter
@@ -178,7 +178,7 @@ def next_earnings(
 
     # 4) Future-Candidate-Aggregation: union(yf_dates, override-dates, cal_future)
     #    earliest-wins. cal_date_stale wird hier bewusst NICHT eingebracht.
-    candidates: list[tuple[date, str, Optional[str]]] = []
+    candidates: list[tuple[date, str, str | None]] = []
     for d in yf_dates:
         candidates.append((d, "earnings_dates", None))
     for ev in overrides:
@@ -307,7 +307,7 @@ def build_json_payload(
     exit_code: int,
 ) -> dict:
     """Result-Schema-Shape orientiert an system_audit/types.py::CheckResult (kein Hard-Import)."""
-    from datetime import datetime, timezone
+    from datetime import datetime
 
     items = []
     for r in results:
@@ -331,7 +331,7 @@ def build_json_payload(
         "schema_version": "1.0",
         "tool": "earnings_calendar",
         "tool_version": TOOL_VERSION,
-        "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "timestamp": datetime.now(UTC).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "summary": {
             "tickers_checked": len(results),
             "tickers_with_data": tickers_with_data,

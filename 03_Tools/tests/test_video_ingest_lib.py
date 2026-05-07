@@ -1,13 +1,12 @@
 """Tests for video_ingest_lib pure functions."""
-from pathlib import Path
 import sys
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from video_ingest_lib import (
     build_slug,
-    sha256_file,
     quality_gate,
-    GateResult,
+    sha256_file,
 )
 
 FIXT = Path(__file__).parent / "fixtures"

@@ -13,8 +13,8 @@ from __future__ import annotations
 import datetime
 import re
 import time
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable
 
 from system_audit.types import AuditContext, CheckResult, FailureDetail
 
@@ -109,7 +109,7 @@ PARSERS: dict[str, Callable[[str, datetime.date], datetime.date | None]] = {
 
 def run(
     repo_root: Path,
-    context: AuditContext,  # noqa: ARG001 — context kept for registry-contract uniformity (§4.3)
+    context: AuditContext,
     *,
     targets_override: list[tuple[Path, str]] | None = None,
     today: datetime.date | None = None,

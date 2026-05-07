@@ -138,7 +138,10 @@ def test_jsonl_schema_skip_on_missing_file() -> None:
 
 
 def test_store_freshness_warn_on_stale() -> None:
-    import tempfile, json, datetime
+    import datetime
+    import json
+    import tempfile
+
     from system_audit.checks.store_freshness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -158,7 +161,10 @@ def test_store_freshness_warn_on_stale() -> None:
     assert len(result.failures) == 2
 
 def test_store_freshness_pass_on_fresh() -> None:
-    import tempfile, json, datetime
+    import datetime
+    import json
+    import tempfile
+
     from system_audit.checks.store_freshness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -222,6 +228,7 @@ def test_markdown_header_excludes_future_dates() -> None:
     as 'newest event' — Stand is journal-catch-up, not future-planning-foresight."""
     import datetime as _dt
     import tempfile
+
     from system_audit.checks.markdown_header import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -256,7 +263,9 @@ def test_cross_source_pass_on_aligned() -> None:
     assert all(f.severity != "error" for f in result.failures)
 
 def test_cross_source_fail_on_divergence() -> None:
-    import shutil, tempfile
+    import shutil
+    import tempfile
+
     from system_audit.checks.cross_source import run
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "cross_source"
     with tempfile.TemporaryDirectory() as td:
@@ -299,6 +308,7 @@ def test_flag_mismatch_matrix() -> None:
 def test_existence_pass_on_existing_paths() -> None:
     """Existing slashed-path → PASS; missing slashed-path → FAIL."""
     import tempfile
+
     from system_audit.checks.existence import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -315,6 +325,7 @@ def test_existence_pass_on_existing_paths() -> None:
 def test_existence_skips_bare_filenames() -> None:
     """2026-05-06: Bare-Filename ohne Slash = Prosa-Mention, nicht Path-Ref."""
     import tempfile
+
     from system_audit.checks.existence import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -331,6 +342,7 @@ def test_existence_skips_bare_filenames() -> None:
 def test_existence_skips_memory_files() -> None:
     """2026-05-06: Memory-File-Pattern (feedback_*.md etc.) lebt außerhalb Repo."""
     import tempfile
+
     from system_audit.checks.existence import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -346,6 +358,7 @@ def test_existence_skips_memory_files() -> None:
 def test_existence_demotes_plan_findings_to_warning() -> None:
     """2026-05-06: docs/superpowers/plans/* findings sind WARN, nicht FAIL."""
     import tempfile
+
     from system_audit.checks.existence import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -362,6 +375,7 @@ def test_existence_demotes_plan_findings_to_warning() -> None:
 def test_existence_ignores_paths_with_spaces() -> None:
     """PATH_RE by design ignores space-containing paths (e.g. '07_Obsidian Vault/...')."""
     import tempfile
+
     from system_audit.checks.existence import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -394,6 +408,7 @@ def _make_zip(root: Path, name: str, version: str) -> None:
 def test_skill_version_pass_fixture() -> None:
     """PASS: SKILL.md == ZIP version."""
     import tempfile
+
     from system_audit.checks.skill_version import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -407,6 +422,7 @@ def test_skill_version_pass_fixture() -> None:
 def test_skill_version_warn_on_unpacked_newer_fixture() -> None:
     """WARN: SKILL.md v2.0.0 aber hoechste ZIP nur v1.9.0 (ungepackt)."""
     import tempfile
+
     from system_audit.checks.skill_version import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -420,6 +436,7 @@ def test_skill_version_warn_on_unpacked_newer_fixture() -> None:
 def test_skill_version_warn_on_orphan_zip_fixture() -> None:
     """WARN: ZIP ohne passendes 01_Skills/<name>/."""
     import tempfile
+
     from system_audit.checks.skill_version import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -434,6 +451,7 @@ def test_skill_version_warn_on_orphan_zip_fixture() -> None:
 def test_skill_version_pass_on_bare_zip_fixture() -> None:
     """PASS: SKILL.md vN.N.N + non-versioned <name>.zip (accepted convention)."""
     import tempfile
+
     from system_audit.checks.skill_version import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -449,6 +467,7 @@ def test_skill_version_pass_on_bare_zip_fixture() -> None:
 def test_skill_version_warn_on_orphan_bare_zip_fixture() -> None:
     """WARN: bare-name ZIP ohne passendes 01_Skills/<name>/ oder _extern/<name>/."""
     import tempfile
+
     from system_audit.checks.skill_version import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -464,6 +483,7 @@ def test_skill_version_warn_on_orphan_bare_zip_fixture() -> None:
 def test_skill_version_pass_on_extern_bare_zip_fixture() -> None:
     """PASS: bare-ZIP deren Name = _extern/<name>/-Subfolder matcht → kein Orphan."""
     import tempfile
+
     from system_audit.checks.skill_version import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -479,6 +499,7 @@ def test_skill_version_pass_on_extern_bare_zip_fixture() -> None:
 def test_skill_version_skip_on_missing_frontmatter_fixture() -> None:
     """EDGE: SKILL.md ohne version-Frontmatter -> nicht gecheckt, kein Fail."""
     import tempfile
+
     from system_audit.checks.skill_version import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -529,7 +550,9 @@ def test_log_lag_live_repo_pass() -> None:
     assert result.status in ("PASS", "SKIP"), f"failures={result.failures}"
 
 def test_log_lag_fail_on_stale() -> None:
-    import tempfile, subprocess
+    import subprocess
+    import tempfile
+
     from system_audit.checks.log_lag import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -615,6 +638,7 @@ def test_report_human_severity_icons_and_grouping() -> None:
 
 def test_report_json_format_is_valid() -> None:
     import json
+
     from system_audit.report import render_json
     results = [
         CheckResult(name="a", status="PASS", n_checked=1, n_passed=1,
@@ -684,6 +708,7 @@ def test_render_json_partial_flag_emits_internal_errors() -> None:
     """With internal_errors supplied, render_json marks payload partial, overrides
     exit_code to 2, and attaches the error list for automation consumers."""
     import json as _json
+
     from system_audit.report import render_json
     from system_audit.types import CheckResult
     results = [CheckResult(name="dummy", status="PASS", n_checked=1, n_passed=1)]
@@ -706,6 +731,7 @@ def test_render_json_without_internal_errors_is_non_partial() -> None:
     """Backward-compat: absence of internal_errors must yield partial=False and no
     internal_errors key. Exit-code remains 0/1 per existing FAIL semantics."""
     import json as _json
+
     from system_audit.report import render_json
     from system_audit.types import CheckResult
     results = [CheckResult(name="dummy", status="PASS", n_checked=1, n_passed=1)]
@@ -718,6 +744,7 @@ def test_render_json_without_internal_errors_is_non_partial() -> None:
 
 def test_state_writer_first_run_inserts_before_footer() -> None:
     import tempfile
+
     from system_audit.state_writer import write_last_audit
     with tempfile.TemporaryDirectory() as td:
         p = Path(td) / "STATE.md"
@@ -736,6 +763,7 @@ def test_state_writer_first_run_inserts_before_footer() -> None:
 
 def test_state_writer_second_run_replaces_block() -> None:
     import tempfile
+
     from system_audit.state_writer import write_last_audit
     with tempfile.TemporaryDirectory() as td:
         p = Path(td) / "STATE.md"
@@ -836,6 +864,7 @@ def test_orchestrator_invalid_timeout_rejected() -> None:
 
 def test_state_writer_raises_on_orphan_start_marker() -> None:
     import tempfile
+
     from system_audit.state_writer import write_last_audit
     with tempfile.TemporaryDirectory() as td:
         p = Path(td) / "STATE.md"
@@ -854,6 +883,7 @@ def test_state_writer_raises_on_orphan_start_marker() -> None:
 def test_vault_backlinks_pass_fixture() -> None:
     """PASS: [[Note]] zeigt auf existierende Note."""
     import tempfile
+
     from system_audit.checks.vault_backlinks import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -868,6 +898,7 @@ def test_vault_backlinks_pass_fixture() -> None:
 def test_vault_backlinks_fail_on_missing() -> None:
     """FAIL: [[Missing]] hat keinen Target."""
     import tempfile
+
     from system_audit.checks.vault_backlinks import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -882,6 +913,7 @@ def test_vault_backlinks_fail_on_missing() -> None:
 def test_status_matrix_pass_fixture() -> None:
     """PASS: B1-B5 lückenlos, keine Duplikate. Table-row format."""
     import tempfile
+
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -905,6 +937,7 @@ def test_status_matrix_pass_fixture() -> None:
 def test_status_matrix_fail_on_gap() -> None:
     """FAIL: B3 fehlt zwischen B2 und B4. Table-row format."""
     import tempfile
+
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -928,6 +961,7 @@ def test_status_matrix_fail_on_gap() -> None:
 def test_status_matrix_fail_on_duplicate() -> None:
     """FAIL: B2 erscheint 2× als Tabellen-Row. Real-dup-detection (row-anchored)."""
     import tempfile
+
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -959,6 +993,7 @@ def test_status_matrix_no_dup_on_legend_range_mention() -> None:
     Nachher (row-anchored): Prose-Mentions ignored, Tabelle clean.
     """
     import tempfile
+
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -998,6 +1033,7 @@ def test_status_matrix_no_dup_on_legend_range_mention() -> None:
 def test_vault_backlinks_skip_on_missing_vault() -> None:
     """EDGE: Kein Vault-Verzeichnis → SKIP ohne Failures."""
     import tempfile
+
     from system_audit.checks.vault_backlinks import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1013,6 +1049,7 @@ def test_status_matrix_header_anchored_not_prose_match() -> None:
     VOR dem echten Header, und die Status-Matrix wird nie gescannt → silent PASS.
     """
     import tempfile
+
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1042,6 +1079,7 @@ def test_status_matrix_subsections_are_scanned() -> None:
     dem '## Status-Matrix'-Header den eigentlichen B-Label-Scan weg.
     """
     import tempfile
+
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1072,6 +1110,7 @@ def test_status_matrix_n_passed_arithmetic_with_gaps() -> None:
     Richtig: n_passed = |numbers| - |duplicates| = 3 - 0 = 3.
     """
     import tempfile
+
     from system_audit.checks.status_matrix import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1102,6 +1141,7 @@ def test_jsonl_schema_malformed_json_hint() -> None:
     Pydantic v2 type='json_invalid' markiert JSON-Parse-Fehler.
     """
     import tempfile
+
     from system_audit.checks.jsonl_schema import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1172,6 +1212,7 @@ SCORE_EVENT_FILES_CANONICAL = (
 def test_score_event_parity_pass_on_aligned_readme() -> None:
     """PASS: README enthaelt alle 7 Files + v2.1-String."""
     import tempfile
+
     from system_audit.checks.score_event_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1208,6 +1249,7 @@ def test_score_event_parity_pass_on_aligned_readme() -> None:
 def test_score_event_parity_fail_on_v17_drift() -> None:
     """FAIL F1: README sagt §18 v1.7 statt v2.1."""
     import tempfile
+
     from system_audit.checks.score_event_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1237,6 +1279,7 @@ def test_score_event_parity_fail_on_v17_drift() -> None:
 def test_score_event_parity_fail_on_missing_file_in_briefing_sync() -> None:
     """FAIL F4: briefing-sync-check.ps1 listet config.yaml nicht."""
     import tempfile
+
     from system_audit.checks.score_event_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1274,6 +1317,7 @@ def test_score_event_parity_fail_on_missing_file_in_briefing_sync() -> None:
 def test_score_event_parity_skip_on_missing_sources() -> None:
     """SKIP: keine der erwarteten Source-Files vorhanden — kein FAIL."""
     import tempfile
+
     from system_audit.checks.score_event_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1320,6 +1364,7 @@ def test_score_event_parity_fail_on_drift_in_section_with_decoy_outside() -> Non
     Sliding-window cluster-detection must catch this.
     """
     import tempfile
+
     from system_audit.checks.score_event_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1366,8 +1411,8 @@ def test_score_event_parity_window_helper_clusters_only() -> None:
     within the same N-line window.
     """
     from system_audit.checks.score_event_parity import (
-        _basenames_in_best_window,
         CANONICAL_SCORE_EVENT_BASENAMES,
+        _basenames_in_best_window,
     )
     # Cluster: 7 basenames in one line
     text_clustered = (
@@ -1394,6 +1439,7 @@ def test_score_event_parity_window_helper_clusters_only() -> None:
 
 def test_skill_frontmatter_pass_on_complete() -> None:
     import tempfile
+
     from system_audit.checks.skill_frontmatter import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1410,6 +1456,7 @@ def test_skill_frontmatter_pass_on_complete() -> None:
 def test_skill_frontmatter_warn_on_missing_version() -> None:
     """F8-Pathologie: SKILL.md hat name+description aber version: fehlt."""
     import tempfile
+
     from system_audit.checks.skill_frontmatter import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1429,6 +1476,7 @@ def test_skill_frontmatter_warn_on_missing_version() -> None:
 
 def test_skill_frontmatter_warn_on_missing_description() -> None:
     import tempfile
+
     from system_audit.checks.skill_frontmatter import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1446,6 +1494,7 @@ def test_skill_frontmatter_warn_on_missing_description() -> None:
 def test_skill_frontmatter_skip_on_no_frontmatter() -> None:
     """Convention: SKILL.md ohne Frontmatter ist 'draft', WARN nicht FAIL."""
     import tempfile
+
     from system_audit.checks.skill_frontmatter import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1460,6 +1509,7 @@ def test_skill_frontmatter_skip_on_no_frontmatter() -> None:
 def test_skill_frontmatter_ignores_extern_subskills() -> None:
     """_extern/<name>/ Skills sind nicht audit-scope (read-only third-party)."""
     import tempfile
+
     from system_audit.checks.skill_frontmatter import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1474,6 +1524,7 @@ def test_skill_frontmatter_ignores_extern_subskills() -> None:
 def test_header_freshness_fail_on_placeholder() -> None:
     """F6-Pathologie: Header `Deployed: <YYYY-MM-DD>` Placeholder."""
     import tempfile
+
     from system_audit.checks.header_freshness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1497,6 +1548,7 @@ def test_header_freshness_warn_on_stale_date() -> None:
     """Stand-Datum > 30d alt: WARN."""
     import datetime as _dt
     import tempfile
+
     from system_audit.checks.header_freshness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1519,6 +1571,7 @@ def test_header_freshness_warn_on_stale_date() -> None:
 def test_header_freshness_pass_on_recent() -> None:
     import datetime as _dt
     import tempfile
+
     from system_audit.checks.header_freshness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1536,6 +1589,7 @@ def test_header_freshness_pass_on_recent() -> None:
 
 def test_header_freshness_skip_on_no_targets() -> None:
     import tempfile
+
     from system_audit.checks.header_freshness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1547,6 +1601,7 @@ def test_header_freshness_skip_on_no_targets() -> None:
 
 def test_governance_parity_pass_on_aligned() -> None:
     import tempfile
+
     from system_audit.checks.governance_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1566,6 +1621,7 @@ def test_governance_parity_pass_on_aligned() -> None:
 def test_governance_parity_fail_on_count_drift() -> None:
     """F11-Pathologie: Slash sagt '7' aber CORE-Registry hat 8."""
     import tempfile
+
     from system_audit.checks.governance_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1585,6 +1641,7 @@ def test_governance_parity_fail_on_count_drift() -> None:
 
 def test_governance_parity_warn_on_missing_minimal_baseline_mention() -> None:
     import tempfile
+
     from system_audit.checks.governance_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1612,6 +1669,7 @@ def test_governance_parity_fail_on_missing_timeout_per_check_flag() -> None:
     silently pass via the prior under-specified EXPECTED_FLAGS list).
     """
     import tempfile
+
     from system_audit.checks.governance_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1636,6 +1694,7 @@ def test_governance_parity_accepts_short_or_long_v_form() -> None:
     are alt-forms of the same flag. Documentation passes if either appears.
     """
     import tempfile
+
     from system_audit.checks.governance_parity import run
     base = (
         "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
@@ -1660,6 +1719,7 @@ def test_governance_parity_fail_on_no_v_form_at_all() -> None:
     NOR --verbose in the doc, the alt-set fails.
     """
     import tempfile
+
     from system_audit.checks.governance_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1681,6 +1741,7 @@ def test_governance_parity_fail_on_no_v_form_at_all() -> None:
 
 def test_governance_parity_skip_on_missing_slash_cmd() -> None:
     import tempfile
+
     from system_audit.checks.governance_parity import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1692,6 +1753,7 @@ def test_governance_parity_skip_on_missing_slash_cmd() -> None:
 def test_cross_source_reverse_pass_on_aligned() -> None:
     """PASS: alle Vault/PORTFOLIO-Ticker auch in config (satelliten OR watchlist)."""
     import tempfile
+
     from system_audit.checks.cross_source_reverse import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1713,6 +1775,7 @@ def test_cross_source_reverse_pass_on_aligned() -> None:
 def test_cross_source_reverse_warn_on_orphan_vault_ticker() -> None:
     """F18-Pathologie: MA im Vault, fehlt in config (alle 3 Listen)."""
     import tempfile
+
     from system_audit.checks.cross_source_reverse import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1738,6 +1801,7 @@ def test_cross_source_reverse_fail_on_satelliten_tag_mismatch() -> None:
     Tag-Drift = echte Inkonsistenz, nicht Recherche-Phase.
     """
     import tempfile
+
     from system_audit.checks.cross_source_reverse import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1767,6 +1831,7 @@ def test_cross_source_reverse_dotted_ticker_extracted() -> None:
     (Critical-bug fix from initial Code-Quality-Review).
     """
     import tempfile
+
     from system_audit.checks.cross_source_reverse import _vault_ticker_locations
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1781,6 +1846,7 @@ def test_cross_source_reverse_dotted_ticker_extracted() -> None:
 
 def test_cross_source_reverse_skip_on_missing_config() -> None:
     import tempfile
+
     from system_audit.checks.cross_source_reverse import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1796,6 +1862,7 @@ def test_cross_source_reverse_fail_on_invalid_yaml() -> None:
     parse-failure returned three empty sets).
     """
     import tempfile
+
     from system_audit.checks.cross_source_reverse import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1827,6 +1894,7 @@ def test_cross_source_reverse_fail_on_invalid_yaml() -> None:
 
 def test_pointer_completeness_pass_on_existing_targets() -> None:
     import tempfile
+
     from system_audit.checks.pointer_completeness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1847,6 +1915,7 @@ def test_pointer_completeness_fail_on_missing_pointer_target() -> None:
     """F12-style: Pointer auf existing Target ist OK; aber Pointer auf
     fehlende Datei muss FAIL."""
     import tempfile
+
     from system_audit.checks.pointer_completeness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1867,6 +1936,7 @@ def test_pointer_completeness_fail_on_missing_pointer_target() -> None:
 
 def test_pointer_completeness_skip_on_no_claude_md() -> None:
     import tempfile
+
     from system_audit.checks.pointer_completeness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -1878,6 +1948,7 @@ def test_pointer_completeness_section_scoped_not_routing_table() -> None:
     """P2-09: Backtick-Pfade in Routing-Tabelle (anderer Section) duerfen
     nicht als Pointer-Behauptung gewertet werden."""
     import tempfile
+
     from system_audit.checks.pointer_completeness import run
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)

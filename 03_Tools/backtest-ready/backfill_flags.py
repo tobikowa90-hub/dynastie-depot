@@ -27,18 +27,17 @@ import sys
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent))
-from schemas import FlagEvent  # noqa: E402
+from schemas import FlagEvent
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
 except Exception:
     pass
 
-from pydantic import ValidationError  # noqa: E402
-
+from pydantic import ValidationError
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -65,11 +64,11 @@ class BackfillCandidate:
 
     ticker: str
     flag_typ: str
-    wert: Optional[float]
+    wert: float | None
     trigger_datum: str  # ISO
     metrik_definition: str
     notizen: str
-    skip_reason: Optional[str] = None
+    skip_reason: str | None = None
 
 
 # Alle 4 bekannten FLAGs (Plan Task 2.2). 2 archivierbar, 2 skipped.
@@ -293,7 +292,7 @@ def _build_parser() -> argparse.ArgumentParser:
     return p
 
 
-def main(argv: Optional[list[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     args = _build_parser().parse_args(argv)
     summary = run(
         archive_path=ARCHIVE_PATH,

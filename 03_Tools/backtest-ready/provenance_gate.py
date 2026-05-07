@@ -18,7 +18,7 @@ from typing import Final
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from versions import DEFCON_ACTIVE_VERSION  # noqa: E402
+from versions import DEFCON_ACTIVE_VERSION
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -192,12 +192,12 @@ def check_provenance(
 
 
 __all__ = [
-    "DEFCON_ACTIVE_VERSION",
-    "PLATZHALTER_BLACKLIST",
+    "CARRYOVER_REASON_TERMINAL",
+    "CARRYOVER_SOURCE_PREFIXES",
     "CARRYOVER_SOURCE_TOKENS",
     "CARRYOVER_SOURCE_TOKENS_MULTI",
-    "CARRYOVER_SOURCE_PREFIXES",
-    "CARRYOVER_REASON_TERMINAL",
+    "DEFCON_ACTIVE_VERSION",
+    "PLATZHALTER_BLACKLIST",
     "QUELLEN_PFLICHT_FELDER",
     "check_provenance",
 ]

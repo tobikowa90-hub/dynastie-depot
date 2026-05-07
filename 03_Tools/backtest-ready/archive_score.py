@@ -33,8 +33,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from schemas import ScoreRecord  # noqa: E402
-
+from schemas import ScoreRecord
 
 # ---------------------------------------------------------------------------
 # Paths

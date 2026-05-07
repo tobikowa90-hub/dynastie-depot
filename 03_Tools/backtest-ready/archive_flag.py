@@ -10,20 +10,19 @@ import argparse
 import json
 import re
 import sys
-from datetime import date
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable, Optional
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent))
-from schemas import FlagEvent, FlagMetrik, Kurs, FLAG_RULES  # noqa: E402
+from schemas import FLAG_RULES, FlagEvent
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
 except Exception:
     pass
 
-from pydantic import ValidationError  # noqa: E402
-
+from pydantic import ValidationError
 
 # ---------------------------------------------------------------------------
 # Paths + constants
@@ -102,7 +101,7 @@ def _parse_flag_id(flag_id: str) -> tuple[str, str, str]:
 
 def _find_event(
     events: Iterable[dict[str, Any]], flag_id: str, event_typ: str
-) -> Optional[dict[str, Any]]:
+) -> dict[str, Any] | None:
     for rec in events:
         if rec.get("flag_id") == flag_id and rec.get("event_typ") == event_typ:
             return rec
@@ -122,8 +121,8 @@ def _build_flag_event(
     waehrung: str,
     kurs_quelle: str,
     source: str,
-    related_score_record_id: Optional[str],
-    notizen: Optional[str],
+    related_score_record_id: str | None,
+    notizen: str | None,
 ) -> FlagEvent:
     """Construct + validate FlagEvent; schwelle/name derived from FLAG_RULES."""
     if flag_typ not in FLAG_RULES:
@@ -398,7 +397,7 @@ def _build_parser() -> argparse.ArgumentParser:
     return p
 
 
-def main(argv: Optional[list[str]] = None, archive_path: Optional[Path] = None) -> int:
+def main(argv: list[str] | None = None, archive_path: Path | None = None) -> int:
     parser = _build_parser()
     args = parser.parse_args(argv)
 
@@ -431,8 +430,8 @@ def _run_smoke_tests() -> int:
 
     def run(argv: list[str]) -> tuple[int, str, str]:
         """Run main() capturing stdout/stderr."""
-        import io
         import contextlib
+        import io
 
         out = io.StringIO()
         err = io.StringIO()

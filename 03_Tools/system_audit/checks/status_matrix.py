@@ -25,7 +25,7 @@ B_ROW_RE = re.compile(r"^\|\s*B(\d+)\s*\|", re.MULTILINE)
 HEADER_RE = re.compile(r"^#{1,6}\s+[^\n]*Status-Matrix[^\n]*$", re.MULTILINE | re.IGNORECASE)
 
 
-def run(repo_root: Path, context: AuditContext) -> CheckResult:  # noqa: ARG001 — context kept for registry-contract uniformity (§4.3), this check has no per-run config
+def run(repo_root: Path, context: AuditContext) -> CheckResult:
     start = time.monotonic()
     target = repo_root / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
     if not target.exists():

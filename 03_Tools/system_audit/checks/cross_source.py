@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Check-3: Score/DEFCON/FLAG consistency across config.yaml / PORTFOLIO.md /
 Faktortabelle.md / Vault entity frontmatter.
 

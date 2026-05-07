@@ -21,13 +21,11 @@ CLI:
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from dataclasses import dataclass, field
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from pathlib import Path
 from statistics import median
-from typing import Optional
 
 # Projekt-lokale Imports
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -59,11 +57,11 @@ class HorizonResult:
     horizon_days: int
     status: str  # "observed" | "pending" | "n.a."
     pending_days_remaining: int = 0
-    kurs_target: Optional[float] = None
-    kurs_target_date: Optional[date] = None
-    raw_return_pct: Optional[float] = None
-    benchmark_return_pct: Optional[float] = None
-    alpha_pp: Optional[float] = None
+    kurs_target: float | None = None
+    kurs_target_date: date | None = None
+    raw_return_pct: float | None = None
+    benchmark_return_pct: float | None = None
+    alpha_pp: float | None = None
 
 
 @dataclass
@@ -73,14 +71,14 @@ class EventResult:
     flag_typ: str
     event_datum: date
     age_days: int
-    kurs_at_trigger: Optional[float]
-    kurs_at_trigger_date: Optional[date]
-    kurs_benchmark_at_trigger: Optional[float]
-    max_drawdown_pct: Optional[float] = None  # im Fenster [trigger, TODAY]
-    max_drawdown_window_end: Optional[date] = None
+    kurs_at_trigger: float | None
+    kurs_at_trigger_date: date | None
+    kurs_benchmark_at_trigger: float | None
+    max_drawdown_pct: float | None = None  # im Fenster [trigger, TODAY]
+    max_drawdown_window_end: date | None = None
     horizons: dict[int, HorizonResult] = field(default_factory=dict)
     wert_available: bool = True
-    data_issue: Optional[str] = None
+    data_issue: str | None = None
 
 
 # ---------------------------------------------------------------------------
@@ -106,7 +104,7 @@ def load_flag_events(path: Path) -> list[FlagEvent]:
     return events
 
 
-def fetch_history_window(ticker: str, start: date, end: date) -> Optional[dict[date, float]]:
+def fetch_history_window(ticker: str, start: date, end: date) -> dict[date, float] | None:
     """Fetch daily Close prices for [start, end]. Returns {date: close} or None on failure."""
     try:
         import yfinance as yf
@@ -132,7 +130,7 @@ def fetch_history_window(ticker: str, start: date, end: date) -> Optional[dict[d
         return None
 
 
-def closest_close_on_or_after(prices: dict[date, float], target: date, max_days: int = 7) -> Optional[tuple[date, float]]:
+def closest_close_on_or_after(prices: dict[date, float], target: date, max_days: int = 7) -> tuple[date, float] | None:
     """Find first available close on or after `target`, scanning up to `max_days` forward."""
     for i in range(max_days + 1):
         d = target + timedelta(days=i)
@@ -141,7 +139,7 @@ def closest_close_on_or_after(prices: dict[date, float], target: date, max_days:
     return None
 
 
-def closest_close_on_or_before(prices: dict[date, float], target: date, max_days: int = 7) -> Optional[tuple[date, float]]:
+def closest_close_on_or_before(prices: dict[date, float], target: date, max_days: int = 7) -> tuple[date, float] | None:
     for i in range(max_days + 1):
         d = target - timedelta(days=i)
         if d in prices:
@@ -248,11 +246,11 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
 # ---------------------------------------------------------------------------
 
 
-def _fmt_pct(v: Optional[float]) -> str:
+def _fmt_pct(v: float | None) -> str:
     return f"{v:+.2f}%" if v is not None else "–"
 
 
-def _fmt_pp(v: Optional[float]) -> str:
+def _fmt_pp(v: float | None) -> str:
     return f"{v:+.2f}pp" if v is not None else "–"
 
 
@@ -275,9 +273,9 @@ def _fmt_alpha_cell(hr: HorizonResult) -> str:
 def format_event_narrative_msft(er: EventResult) -> str:
     parts: list[str] = []
     parts.append(
-        f"**Hintergrund (CORE-MEMORY §12):** CapEx/OCF Q2 FY26 GAAP 83,6 % (bereinigt um "
-        f"Finance Leases ~63 %), damit über der 60 %-Schwelle. Trigger-Datum 2026-01-15 "
-        f"ist Proxy (Monatsmitte; Earnings-Call ca. 30.01.)."
+        "**Hintergrund (CORE-MEMORY §12):** CapEx/OCF Q2 FY26 GAAP 83,6 % (bereinigt um "
+        "Finance Leases ~63 %), damit über der 60 %-Schwelle. Trigger-Datum 2026-01-15 "
+        "ist Proxy (Monatsmitte; Earnings-Call ca. 30.01.)."
     )
     if er.kurs_at_trigger is not None:
         parts.append(

@@ -9,16 +9,12 @@ from datetime import date
 from pathlib import Path
 from unittest.mock import MagicMock
 
-import pytest
-
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from earnings_calendar import (
     EarningsResult,
-    ScheduleEvent,
     load_overrides,
     next_earnings,
 )
-
 
 # ------------------------------------------------------------
 # Test 4d: Broken YAML → load_overrides fail-soft

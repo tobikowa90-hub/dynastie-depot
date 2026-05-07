@@ -45,7 +45,6 @@ import re
 import sys
 from datetime import date, datetime
 from pathlib import Path
-from typing import Optional
 
 # --- stdout UTF-8 (mirror schemas.py) --------------------------------------
 try:
@@ -56,9 +55,9 @@ except Exception:
 # --- import schemas --------------------------------------------------------
 sys.path.insert(0, str(Path(__file__).parent))
 
-from pydantic import ValidationError  # noqa: E402
+from pydantic import ValidationError
 
-from schemas import (  # noqa: E402
+from schemas import (
     Flags,
     FundamentalsScore,
     InsiderScore,
@@ -104,7 +103,7 @@ def _log_parser_error(reason: str, raw: str) -> None:
         fh.write(f"[{ts}] backfill_scores.py reason={reason!r} raw={raw!r}\n")
 
 
-def parse_datum(raw: str) -> Optional[date]:
+def parse_datum(raw: str) -> date | None:
     """Parse German date strings from column 4.
 
     Accepts:
@@ -141,7 +140,7 @@ def parse_datum(raw: str) -> Optional[date]:
     return None
 
 
-def parse_defcon_level(raw: str) -> Optional[int]:
+def parse_defcon_level(raw: str) -> int | None:
     """Extract the 1-4 digit from '🟡 3' / '🔴 1' etc."""
     m = DEFCON_LEVEL_RE.search(raw)
     if not m:
@@ -168,7 +167,7 @@ def extract_table_rows(md_text: str) -> list[list[str]]:
     lines = md_text.splitlines()
 
     # locate section start
-    start_idx: Optional[int] = None
+    start_idx: int | None = None
     for i, line in enumerate(lines):
         if SECTION_HEADER_RE.match(line):
             start_idx = i
@@ -287,7 +286,7 @@ def build_record(
     ticker: str,
     score: int,
     score_datum: date,
-    parsed_defcon: Optional[int],
+    parsed_defcon: int | None,
     status: str,
     naechste_aktion: str,
 ) -> ScoreRecord:
@@ -377,7 +376,7 @@ def append_record(path: Path, record: ScoreRecord) -> None:
 # ---------------------------------------------------------------------------
 
 
-def main(argv: Optional[list[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Backfill score history from CORE-MEMORY.md Section 4.",
     )
@@ -454,7 +453,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             if args.verbose:
                 print(f"[FAIL] {ticker}: {e.errors()[0].get('msg', 'validation error')}")
             continue
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             _log_parser_error(f"build_error: {type(e).__name__}: {e}", raw_row)
             failed += 1
             if args.verbose:

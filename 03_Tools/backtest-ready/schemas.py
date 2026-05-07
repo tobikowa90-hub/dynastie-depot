@@ -17,10 +17,9 @@ from __future__ import annotations
 import copy
 import re
 from datetime import date
-from typing import Final, Literal, Optional
+from typing import Final, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-
 
 # ---------------------------------------------------------------------------
 # Module-level constants
@@ -227,42 +226,42 @@ class MetrikenRoh(BaseModel):
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
     # Fundamentals
-    fwd_pe: Optional[float] = None
-    p_fcf: Optional[float] = None
-    net_debt_ebitda: Optional[float] = None
-    current_ratio: Optional[float] = None
-    goodwill_pct_assets: Optional[float] = None
-    capex_ocf_pct_gaap: Optional[float] = None
-    capex_ocf_pct_bereinigt: Optional[float] = None
-    capex_bereinigung_art: Optional[str] = None
-    roic_gaap_pct: Optional[float] = None
-    roic_bereinigt_pct: Optional[float] = None
-    roic_bereinigungsgrund: Optional[str] = None
-    wacc_pct: Optional[float] = None
-    fcf_yield_pct: Optional[float] = None
-    sbc_revenue_pct: Optional[float] = None
-    sbc_ocf_pct: Optional[float] = None
-    accruals_ratio_pct: Optional[float] = None
-    tariff_exposure_pct: Optional[float] = None
-    gm_trend_3j_pct_p_a: Optional[float] = None
-    eps_revisions_up_90d: Optional[int] = None
-    eps_revisions_down_90d: Optional[int] = None
-    pt_dispersion_pct: Optional[float] = None
+    fwd_pe: float | None = None
+    p_fcf: float | None = None
+    net_debt_ebitda: float | None = None
+    current_ratio: float | None = None
+    goodwill_pct_assets: float | None = None
+    capex_ocf_pct_gaap: float | None = None
+    capex_ocf_pct_bereinigt: float | None = None
+    capex_bereinigung_art: str | None = None
+    roic_gaap_pct: float | None = None
+    roic_bereinigt_pct: float | None = None
+    roic_bereinigungsgrund: str | None = None
+    wacc_pct: float | None = None
+    fcf_yield_pct: float | None = None
+    sbc_revenue_pct: float | None = None
+    sbc_ocf_pct: float | None = None
+    accruals_ratio_pct: float | None = None
+    tariff_exposure_pct: float | None = None
+    gm_trend_3j_pct_p_a: float | None = None
+    eps_revisions_up_90d: int | None = None
+    eps_revisions_down_90d: int | None = None
+    pt_dispersion_pct: float | None = None
 
     # Spec-Feld (v3.4 Name) — primär
-    rel_strength_sp500_6m_pct: Optional[float] = Field(
+    rel_strength_sp500_6m_pct: float | None = Field(
         default=None,
         alias="rel_strength_sp500_6m_pct",
     )
     # v3.5-Rename-Alias (backwards compatibility)
-    rel_staerke_sp500_6m_pct: Optional[float] = None
+    rel_staerke_sp500_6m_pct: float | None = None
 
     # v3.5 neu
-    kurs_vs_200ma_pct: Optional[float] = None
-    ma200_slope: Optional[Literal["rising", "falling", "flat"]] = None
+    kurs_vs_200ma_pct: float | None = None
+    ma200_slope: Literal["rising", "falling", "flat"] | None = None
 
     # v3.7 neu
-    operating_margin_ttm_pct: Optional[float] = None
+    operating_margin_ttm_pct: float | None = None
 
     @model_validator(mode="after")
     def _sync_rel_staerke_alias(self) -> MetrikenRoh:
@@ -301,8 +300,8 @@ class ScoreRecord(BaseModel):
     flags: Flags
     metriken_roh: MetrikenRoh
     quellen: Quellen
-    notizen: Optional[str] = None
-    migration_event: Optional[MigrationEvent] = None
+    notizen: str | None = None
+    migration_event: MigrationEvent | None = None
 
     @field_validator("record_id")
     @classmethod
@@ -478,7 +477,7 @@ class FlagMetrik(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     name: str
-    wert: Optional[float] = None
+    wert: float | None = None
     schwelle: float
     definition: str
 
@@ -495,8 +494,8 @@ class FlagEvent(BaseModel):
     event_datum: date
     metrik: FlagMetrik
     kurs_bei_event: Kurs
-    related_score_record_id: Optional[str] = None
-    notizen: Optional[str] = None
+    related_score_record_id: str | None = None
+    notizen: str | None = None
 
     @field_validator("flag_id")
     @classmethod
@@ -602,10 +601,10 @@ class BenchmarkReturnRecord(BaseModel):
 # ---------------------------------------------------------------------------
 
 __all__ = [
-    "BenchmarkReturnRecord",
     "FLAG_RULES",
     "FUNDAMENTALS_CAP",
     "FUNDAMENTALS_FLOOR",
+    "BenchmarkReturnRecord",
     "FlagEvent",
     "FlagMetrik",
     "Flags",

@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import shutil
 import subprocess
 import sys
 import time
@@ -21,7 +20,7 @@ from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from video_ingest_lib import build_slug, sha256_file, quality_gate
+from video_ingest_lib import build_slug, quality_gate, sha256_file
 
 VAULT = Path(__file__).resolve().parents[1] / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind"
 RAW_VIDEOS = VAULT / "raw" / "videos"
@@ -302,7 +301,7 @@ _(human-curated synthesis, generated during INGEST step 8 per WIKI-SCHEMA workfl
     src_page.write_text(fm, encoding="utf-8")
     log(f"[step 7] wrote source page: {src_page}")
 
-    print(f"\nSUCCESS. Next: complete the source page body and run standard INGEST steps 4-9 (entities, concepts, synthesis, index, log, lint).")
+    print("\nSUCCESS. Next: complete the source page body and run standard INGEST steps 4-9 (entities, concepts, synthesis, index, log, lint).")
     print(f"Source page: {src_page}")
     print(f"Raw artifacts: {work_dir}")
     return 0

@@ -79,8 +79,8 @@ def main() -> int:
         # Timestamp within 120s (relaxed for temp-repo overhead)
         m = re.search(r"Timestamp \(UTC\):\*\*\s*(\S+)", state_text)
         assert m, "timestamp not found in STATE.md"
-        ts = datetime.datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc)
-        now = datetime.datetime.now(datetime.timezone.utc)
+        ts = datetime.datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.UTC)
+        now = datetime.datetime.now(datetime.UTC)
         delta = (now - ts).total_seconds()
         assert 0 <= delta < 120, f"timestamp not recent: {delta}s ago"
         print(f"[OK] smoke temp-repo passed; audit rc={rc.returncode}, timestamp {delta:.1f}s ago")
@@ -111,7 +111,7 @@ def smoke_seeded_drift() -> int:
     data = json.loads(rc.stdout)
     fail_names = [c["name"] for c in data["checks"] if c["status"] == "FAIL"]
     assert "jsonl_schema" in fail_names, f"expected jsonl_schema FAIL, got {fail_names}"
-    print(f"[OK] seeded-drift smoke: jsonl_schema FAIL detected, rc=1")
+    print("[OK] seeded-drift smoke: jsonl_schema FAIL detected, rc=1")
     return 0
 
 

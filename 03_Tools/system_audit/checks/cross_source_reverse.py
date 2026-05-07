@@ -77,7 +77,7 @@ def _vault_ticker_locations(vault_dir: Path) -> dict[str, str]:
     return out
 
 
-def run(repo_root: Path, context: AuditContext) -> CheckResult:  # noqa: ARG001 — context kept for registry-contract uniformity (§4.3)
+def run(repo_root: Path, context: AuditContext) -> CheckResult:
     start = time.monotonic()
     failures: list[FailureDetail] = []
     n_checked = 0

@@ -192,8 +192,8 @@ def main() -> int:
             fh.write(ending)
     tmp_path.replace(ARCHIVE_PATH)
 
-    print(f"\n[APPLIED] 1 record migrated, score_history.jsonl rewritten "
-          f"(original line-endings preserved).")
+    print("\n[APPLIED] 1 record migrated, score_history.jsonl rewritten "
+          "(original line-endings preserved).")
     return 0
 
 

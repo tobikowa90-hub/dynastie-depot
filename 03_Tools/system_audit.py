@@ -24,8 +24,10 @@ import importlib
 import sys
 import traceback
 from collections.abc import Callable
-from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
+from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import TimeoutError as FuturesTimeoutError
 from pathlib import Path
+
 
 def _preflight_dependencies() -> int | None:
     """Check hard runtime deps before any check-module import.
@@ -136,7 +138,7 @@ def _run_one(
                 category=category,
             )
             return synthetic, None
-        except Exception as e:  # noqa: BLE001 — uncaught check exception = tool bug (rc=2)
+        except Exception as e:
             return None, e
     finally:
         executor.shutdown(wait=False)
@@ -217,7 +219,7 @@ def main(argv: list[str] | None = None) -> int:
         include_optional=include_optional,
         vault_timeout_s=args.timeout_per_check,
     )
-    timestamp_utc = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    timestamp_utc = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     results: list[CheckResult] = []
     internal_errors: list[tuple[str, Exception]] = []

@@ -41,7 +41,7 @@ def _render_failure(f: FailureDetail, indent: str) -> list[str]:
     return out
 
 
-def _group_failures(failures: Sequence[FailureDetail]) -> "OrderedDict[str, list[FailureDetail]]":
+def _group_failures(failures: Sequence[FailureDetail]) -> OrderedDict[str, list[FailureDetail]]:
     """Group by section, ordered by group size (desc), then first-seen (stable)."""
     buckets: dict[str, list[FailureDetail]] = {}
     first_seen: dict[str, int] = {}
