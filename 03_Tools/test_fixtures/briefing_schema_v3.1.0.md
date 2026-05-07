@@ -1,6 +1,6 @@
-# Briefing Schema Test-Fixture v3.1.0
+# Briefing Schema Test-Fixture v3.1.1
 
-**Status:** Synthetische Schema-Test-Referenz für v3.1.0-Plan Phase-3-Test-Suite. Referenziert von `docs/superpowers/specs/2026-05-06-briefing-v3.1.0-control-plane-design.md` §4.3 + §7.3.2.
+**Status:** Synthetische Schema-Test-Referenz für v3.1.1-Plan Phase-3-Test-Suite. Referenziert von `docs/superpowers/specs/2026-05-06-briefing-v3.1.0-control-plane-design.md` §4.3 + §7.3.2. v3.1.1-Hotfix 07.05. ergänzt §5 um Prosa-Bracket-FAIL-Examples (Codex-Structural-Sparring 07.05.).
 **Strategie:** Hybrid (Schema synthetisch / State live) — User-Decision C in Spec §1. Diese Datei ist Schema-Seite. State-Tests laufen gegen Live-PORTFOLIO mit Drift-Akzeptanz.
 
 ## §1 Allow-List-Regex (kanonisch v3.1.0)
@@ -75,6 +75,10 @@ Diese Klassen sind disjunkt von §4 (§4.5(E) Tool-Status-Outputs).
 | `[tavily@FORBES.COM,2026-05-06]`     | Domain MUSS lowercase sein (Regex `[a-z0-9.\-]+`)                   |
 | `[tavily@reuters.com,06-05-2026]`    | Datum MUSS YYYY-MM-DD sein (Regex `\d{4}-\d{2}-\d{2}`)              |
 | `[shibui_stock_quotes@2026-5-5]`     | Datum MUSS Zero-Padded YYYY-MM-DD sein                              |
+| `[carryover]`                        | Prosa-Annotation, kein Provenance-Tag (NEU v3.1.1) — als `(carryover)` schreiben |
+| `[reaktiviert]`                      | Prosa-Annotation, Watch-State-Marker (NEU v3.1.1) — als `(reaktiviert)` schreiben |
+| `[NEU]`                              | Prosa-Annotation, Hervorhebung (NEU v3.1.1) — als `(NEU)` schreiben |
+| `[Update]` / `[Slot-N]` / `[overdue]` / `[Watchlist-Review]` / `[abgeschlossen]` / `[pending]` / `[done]` / `[in progress]` | Prosa-Annotationen (NEU v3.1.1) — als `(...)` oder `— ... —` schreiben, NIEMALS `[...]`. Mehrdeutigkeit Tag/Prosa schwaecht Reviewer-Invariante. |
 
 ## §6 Reviewer-Test-Schritt (Spec §9 T6 (6) Anti-Fabrikation)
 
@@ -94,4 +98,4 @@ Manual-Reviewer-Step: grep über kompletten Briefing-Output mit Allow-List-Regex
 
 ---
 
-*Test-Fixture v3.1.0 — Stand: 2026-05-06 — Synthetische Schema-Referenz, kein State-Snapshot*
+*Test-Fixture v3.1.1 — Stand: 2026-05-07 (v3.1.1 Hotfix Prosa-Brackets) — Synthetische Schema-Referenz, kein State-Snapshot*
