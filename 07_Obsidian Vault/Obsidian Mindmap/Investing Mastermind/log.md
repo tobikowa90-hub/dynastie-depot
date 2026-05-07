@@ -2213,3 +2213,35 @@ Total: 25 manuelle Findings adressiert, 1 Folge-Edit (portfolio_risk:455 Konsist
 - (b) **`tmp.name`-Pattern in Original war defensiver als gedacht:** der "alte" Style mit `tempfile.NamedTemporaryFile()` ohne context-manager macht `tmp.name` direkt verfügbar — Refactor-Falle vermeidbar wenn man bei Migration explizit darauf achtet, dass jede Variable vor jedem potentiell-raisenden Statement gesetzt ist.
 - (c) **Atomic-Write-Pattern ist subtil** — `delete=False` + `with`-Block + post-block-replace ist die korrekte Form, aber Order-of-Operations-Sensitiv. Smoke-Test mit injected-failure (TEST4) ist Pflicht für solche Refactors.
 - (d) **Phase-3-Closure-Verdikt:** 230 → 0 Lint-Findings über 5 Cluster + 4 CR-Pässe + 25 manual Edits + 1 surfaced+gefixter Refactor-Bug. APPLIED-LEARNING v2.7-Bullet ("Tooling-Bulk-Edit: CR-Pass koppeln") ist empirisch validiert. Konsolidierungs-Backlog #47 wartet auf Slot.
+
+## [2026-05-07] tavily-reattach | Prod-Trigger Reattach-Versuch — PARTIAL-RESOLVE (PIPELINE #45 bleibt offen)
+
+2026-05-07 abends: Versuch Tavily-Reattach für Prod-Trigger `trig_01PyAVAxFpjbPkvXq7UrS2uG`. **4 Body-Updates + 4 Manual-Runs durchgeführt — Auth weiter broken, aber 2 Layer fixed.**
+
+**Was funktioniert hat:**
+- **UI-Reattach durch User:** Account-Tavily healthy. Verify in CLI-Session via `mcp__tavily__tavily_search` Test-Query (0.92s, request_id präsent, gültige Response).
+- **connector_uuid `4a633350-...` → `0da14a12-...`:** Tool-Schema lädt jetzt im Prod-Trigger. Status `tool-unavailable` → `HTTP 401`. Tool ist da, Auth bricht.
+- **Tavily-Dev-Key Rotation `default1` → `default2`:** alter Key revoked auf tavily.com, neuer in Body-URL persisted (`updated_at: 2026-05-07T14:37:20`).
+
+**Was nicht funktioniert hat:**
+- **OAuth-only URL (kein apiKey):** weiter HTTP 401 — Cloud-Runtime braucht apiKey, OAuth-Connector-Binding allein reicht nicht.
+- **Neuer Key in URL:** weiter HTTP 401 — selbst nach Body-Update mit `default2`. Hypothese: server-side Connector-Binding-Cache auf Claude.ai-Seite ignoriert URL-eingebetteten apiKey und nutzt zwischengespeicherte (revoked) Key-Version aus `0da14a12-...`-UUID-Slot.
+
+**Workflow (4 Body-Updates):**
+1. UI-Reattach durch User (Claude Desktop)
+2. Body: connector_uuid `4a633350-...` → `0da14a12-...` + alter apiKey beibehalten
+3. Body: URL ohne `?tavilyApiKey=...` (OAuth-Test)
+4. Body: URL mit neuem `default2`-Key
+
+**Final-State Trigger-Body:** connector_uuid `0da14a12-...` + URL `https://mcp.tavily.com/mcp/?tavilyApiKey=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`. `default1`-Key revoked.
+
+**Briefing-Output Run-4:**
+```
+NEWS-SIGNAL: Auth-Fehler — Key rotieren
+Cohort: n.v. (Auth-Fehler — Key rotieren)
+APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
+```
+
+**§18-Sync (Pipeline-Item-Update):** PIPELINE.md (#45 erweitert um Partial-Resolve-Detail + 3 Action-Optionen für nächste Session) + log.md (dieser Eintrag). KEIN Score/FLAG/Sparrate. CORE-MEMORY §13 + Memory `feedback_tavily_connector_uuid_rotation.md`-Update geplant für nächste Session (sobald Final-Resolve gelingt → vollständiger 3-Schritt-Pattern dokumentiert).
+
+**Lehre vorläufig:** UI-Reattach + UUID-Update + Key-Rotation reichen NICHT immer für Prod-Trigger. Server-Side Connector-Binding-Cache auf Claude.ai kann eigene Refresh-Mechanik benötigen (z.B. Connector-Delete + Recreate in Desktop App). Briefing v3.0.6 Anti-Fabrikations-Logik funktioniert sauber — emittiert konsistent `Auth-Fehler — Key rotieren`-Klassen-Label, kein Fabrikations-FAIL.
