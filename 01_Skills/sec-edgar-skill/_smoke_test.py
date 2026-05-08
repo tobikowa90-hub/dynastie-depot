@@ -51,10 +51,19 @@ def case_1() -> None:
         timeout=30,
     )
     out = (result.stdout or "").strip()
-    # Some edgartools versions print a warning instead of raising — accept both
-    # but log which path was taken
-    assert out.startswith("RAISED:") or "identity" in (result.stderr or "").lower(), (
-        f"Expected Identity-Error or stderr-mention, got stdout={out!r}, stderr={result.stderr!r}"
+    stderr = (result.stderr or "").lower()
+    # Strict gate: NO_ERROR_RAISED is a hard FAIL even if stderr happens to mention
+    # "identity" (e.g. boot-log noise like "loading identity defaults"). Accept only
+    # an explicit RAISED:<ExceptionType> from the subprocess, OR a non-zero exit-code
+    # combined with an identity-error mention in stderr (some edgartools versions
+    # raise during import/init before the try-block runs).
+    assert "NO_ERROR_RAISED" not in out, (
+        f"Identity-Gate broken: subprocess executed Company('MSFT') without set_identity() "
+        f"and printed NO_ERROR_RAISED. stdout={out!r}, stderr={result.stderr!r}"
+    )
+    assert out.startswith("RAISED:") or (result.returncode != 0 and "identity" in stderr), (
+        f"Expected RAISED:<ExceptionType> in stdout or non-zero exit + identity in stderr, "
+        f"got rc={result.returncode}, stdout={out!r}, stderr={result.stderr!r}"
     )
 
 

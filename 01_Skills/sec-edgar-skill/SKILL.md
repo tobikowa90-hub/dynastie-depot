@@ -221,7 +221,7 @@ Run:
 ```bash
 python 01_Skills/sec-edgar-skill/_smoke_test.py
 ```
-Expected (post-edgartools-Install + Identity): `✅ all 6/6 cases passed`
+Expected (post-edgartools-Install + Identity): `OK all 6/6 cases passed` (ASCII-Output-Pattern für Windows-Console-Encoding-Robustheit; identische Semantik zum Plan-Original `✅`).
 
 ---
 
