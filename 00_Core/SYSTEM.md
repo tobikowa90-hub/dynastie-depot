@@ -108,6 +108,8 @@
 
 **API-Empirie:** `job_config.ccr` ist Object-Level Replace-Unit (sub-fields müssen gemeinsam gesendet werden). Trigger-Root-Felder Field-Level partial preserved.
 
+**2026-05-08 sec-edgar-skill v1.1 deployed:** Track-5a Skill-Promotion `01_Skills/_extern/sec-edgar-skill/` → `01_Skills/sec-edgar-skill/` v1.1. Briefing-Body-Touchpoint: **None** — SEC-EDGAR-Skill ist Eskalations-Fallback (NICHT auto in `!Analysiere`), Briefing v3.1.1-Body fokussiert auf News + Score + Earnings + Tavily-Provenance. Kein §25-Refresh erforderlich (Skip-Pfad). Skill-Deployment-Detail: SYSTEM.md §System-Zustand neuer Bullet + CORE-MEMORY §13 + log.md (Commit-1 `a87cb88`); Codex-Review-HIGH-2-Fix (`512a641`); PIPELINE-Status-Transition + #43-Korrektur (Commit-2 `b6b54e3`); Mini-Commit-3 dieser §Briefing-Status-Bullet (Skip-Pfad-Closure).
+
 ---
 
 *🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 07.05.2026 abends (Tavily-Connector-Recreation ✅ Resolved — neue UUID, Briefing-News-Signal live; Briefing v3.1.1 Probe + Prod live; Welle-3a Doctor-Periodic-Cadence ACTIVE)*
