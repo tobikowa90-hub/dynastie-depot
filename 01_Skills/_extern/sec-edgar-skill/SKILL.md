@@ -3,6 +3,8 @@ name: sec-edgar-skill
 description: SEC EDGAR filing analysis using EdgarTools. Use when user asks about SEC filings, company financials, 10-K/10-Q analysis, insider trading, revenue trends, or financial comparisons. Triggers include "SEC filing", "10-K", "10-Q", "8-K", "EDGAR", "company financials", "revenue", "earnings", "insider trading", "financial statements". Do NOT use for real-time stock prices or market data (use market-data skill instead).
 ---
 
+> **⚠️ SUPERSEDED 2026-05-08:** Dieser `_extern/`-Skill wurde durch `01_Skills/sec-edgar-skill/SKILL.md` v1.1 ersetzt (Track-5a-Promotion, Spec `docs/superpowers/specs/2026-05-08-track5a-edgar-skill-refresh-design.md`). Inhaltlich gültig als Token-Tabellen-Quelle (übernommen) und Workflows-Referenz, aber Auto-Discovery erfolgt jetzt via promotedem Skill. Datei bleibt als Audit-Trail.
+
 # SEC EDGAR Skill - Filing Analysis
 
 ## Prerequisites
