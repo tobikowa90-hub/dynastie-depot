@@ -138,6 +138,20 @@ def run(
                 severity="warning", hint="Target fehlt — Struktur geaendert?",
             ))
             continue
+        # CR-#47-Critical-Cluster-D: targets_override mit unbekanntem `kind`
+        # liess `PARSERS[kind]` silent KeyError raisen. Defensive: Guard +
+        # FailureDetail + Skip-Iteration; erlaubt Tests/External-Caller, das
+        # Issue zu surfacen statt Stacktrace.
+        if kind not in PARSERS:
+            path_str = str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
+            failures.append(FailureDetail(
+                location=path_str,
+                expected=f"kind in {sorted(PARSERS.keys())}",
+                actual=f"kind={kind!r}",
+                severity="error",
+                hint="Targets-Override mit unbekanntem kind — PARSERS-Tabelle pruefen",
+            ))
+            continue
         text = path.read_text(encoding="utf-8", errors="replace")
         stand = _stand_date(text)
         newest = PARSERS[kind](text, today)

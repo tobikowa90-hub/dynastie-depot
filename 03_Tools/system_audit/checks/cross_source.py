@@ -178,9 +178,14 @@ def _parse_vault_entities(entities_dir: Path) -> dict[str, dict]:
         if "score" not in data:
             continue
         ticker = data.get("ticker") or md.stem
+        # CR-#47-Cluster-D-Cosmetic: dead-code `data.get("defcon", -1)` Default
+        # entfernt — Outer-Ternary fängt None bereits ab, der `-1` Default war
+        # Lesbarkeits-Trap, kein Bug. Downstream Z.280-281 handled `None`-Case
+        # explizit (Vault-Skip wenn defcon-frontmatter-frei).
+        defcon_raw = data.get("defcon")
         out[ticker] = {
             "score": int(data["score"]),
-            "defcon": int(data.get("defcon", -1)) if data.get("defcon") is not None else None,
+            "defcon": int(defcon_raw) if defcon_raw is not None else None,
             "flag": bool(data.get("flag", False)),
         }
     return out
@@ -232,9 +237,21 @@ def run(
             category="core",
         )
     satelliten = config.get("satelliten", [])
-    portfolio_by_ticker = _parse_state_table(sources["portfolio"]) if sources.get("portfolio") and sources["portfolio"].exists() else {}
-    fakt_by_ticker = _parse_faktortabelle(sources["faktortabelle"]) if sources.get("faktortabelle") and sources["faktortabelle"].exists() else {}
-    vault_by_ticker = _parse_vault_entities(sources["vault_entities_dir"]) if sources.get("vault_entities_dir") else {}
+    portfolio_by_ticker = (
+        _parse_state_table(sources["portfolio"])
+        if sources.get("portfolio") and sources["portfolio"].exists()
+        else {}
+    )
+    fakt_by_ticker = (
+        _parse_faktortabelle(sources["faktortabelle"])
+        if sources.get("faktortabelle") and sources["faktortabelle"].exists()
+        else {}
+    )
+    vault_by_ticker = (
+        _parse_vault_entities(sources["vault_entities_dir"])
+        if sources.get("vault_entities_dir")
+        else {}
+    )
 
     for sat in satelliten:
         try:

@@ -12,8 +12,10 @@ from unittest.mock import MagicMock
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from earnings_calendar import (
     EarningsResult,
+    evaluate_smoke,
     load_overrides,
     next_earnings,
+    render_report,
 )
 
 # ------------------------------------------------------------
@@ -327,3 +329,149 @@ def test_ac2_json_schema_minimal(tmp_path, monkeypatch):
     blob = json.dumps(payload)
     parsed = json.loads(blob)
     assert parsed["tool"] == "earnings_calendar"
+
+
+# ------------------------------------------------------------
+# Codex-R10-MED-2 Follow-up: Smoke-Anchor-Pfade (PIPELINE #44 Gap a)
+# ------------------------------------------------------------
+
+def test_smoke_pass_when_anchor_matches():
+    """OK-Pfad: smoke_result.earnings_date == SMOKE_DATE → PASS, failed=False."""
+    smoke = EarningsResult(
+        "BRK.B", "BRK-B", date(2026, 8, 1), "earnings_dates", event_type=None,
+    )
+    msg, failed = evaluate_smoke(
+        today=date(2026, 5, 8),
+        smoke_result=smoke,
+        smoke_ticker="BRK.B",
+        smoke_date=date(2026, 8, 1),
+    )
+    assert "PASS" in msg
+    assert failed is False
+
+
+def test_smoke_fail_when_anchor_mismatches():
+    """FAIL-Pfad: smoke_result.earnings_date != SMOKE_DATE → FAIL, failed=True."""
+    smoke = EarningsResult(
+        "BRK.B", "BRK-B", date(2026, 8, 5), "earnings_dates", event_type=None,
+    )
+    msg, failed = evaluate_smoke(
+        today=date(2026, 5, 8),
+        smoke_result=smoke,
+        smoke_ticker="BRK.B",
+        smoke_date=date(2026, 8, 1),
+    )
+    assert "FAIL" in msg
+    assert "2026-08-05" in msg
+    assert "expected 2026-08-01" in msg
+    assert failed is True
+
+
+def test_smoke_skip_when_anchor_in_past():
+    """Skip-if-past: today > smoke_date → SKIPPED, failed=False (kein exit 1)."""
+    smoke = EarningsResult(
+        "BRK.B", "BRK-B", date(2026, 11, 5), "earnings_dates", event_type=None,
+    )
+    msg, failed = evaluate_smoke(
+        today=date(2026, 8, 15),  # today > smoke_date
+        smoke_result=smoke,
+        smoke_ticker="BRK.B",
+        smoke_date=date(2026, 8, 1),
+    )
+    assert "SKIPPED" in msg
+    assert "2026-11-05" in msg  # actual yfinance-date im SKIP-Hinweis
+    assert failed is False  # Skip darf NIE exit 1 triggern
+
+
+def test_smoke_fail_when_no_result():
+    """Edge-Case: smoke_result=None → FAIL with 'None' actual, failed=True."""
+    msg, failed = evaluate_smoke(
+        today=date(2026, 5, 8),
+        smoke_result=None,
+        smoke_ticker="BRK.B",
+        smoke_date=date(2026, 8, 1),
+    )
+    assert "FAIL" in msg
+    assert "None" in msg
+    assert failed is True
+
+
+# ------------------------------------------------------------
+# PIPELINE #44 Gap b: Alert-Window-Boundary (days==alert_window vs +1)
+# ------------------------------------------------------------
+
+def test_alert_window_boundary_drift_at_exact_window():
+    """days==alert_window UND nicht im Trigger → DRIFT (inclusive boundary)."""
+    today = date(2026, 5, 8)
+    earnings_in_10 = EarningsResult(
+        "VEEV", "VEEV", date(2026, 5, 18),  # exactly +10 days
+        "earnings_dates", event_type=None,
+    )
+    portfolio = "| VEEV | 74 | 3 | 38€ | ✅ | Q1 ~Ende Mai |\n"
+    report, drifts = render_report([earnings_in_10], today, alert_window=10,
+                                    portfolio_text=portfolio)
+    assert any(r.ticker == "VEEV" for r in drifts), \
+        f"days==10 mit alert_window=10 sollte DRIFT triggern, drifts={drifts}"
+    assert "DRIFT" in report
+
+
+def test_alert_window_boundary_soon_one_day_past_window():
+    """days==alert_window+1 → SOON, NICHT DRIFT."""
+    today = date(2026, 5, 8)
+    earnings_in_11 = EarningsResult(
+        "VEEV", "VEEV", date(2026, 5, 19),  # +11 days
+        "earnings_dates", event_type=None,
+    )
+    portfolio = "| VEEV | 74 | 3 | 38€ | ✅ | Q1 ~Ende Mai |\n"
+    report, drifts = render_report([earnings_in_11], today, alert_window=10,
+                                    portfolio_text=portfolio)
+    assert not drifts, f"days==11 mit alert_window=10 darf NICHT drift sein, drifts={drifts}"
+    assert "🟡 soon" in report
+
+
+def test_alert_window_boundary_in_trigger_suppresses_drift():
+    """days==alert_window aber Datum im PORTFOLIO-Trigger → 🟢 in trigger, kein DRIFT."""
+    today = date(2026, 5, 8)
+    earnings_in_10 = EarningsResult(
+        "VEEV", "VEEV", date(2026, 5, 18),
+        "earnings_dates", event_type=None,
+    )
+    # PORTFOLIO-Trigger erwähnt 18.05. explizit → in_trigger=True
+    portfolio = "| VEEV | 74 | 3 | 38€ | ✅ | 18.05.2026 Q1 FY27 Earnings |\n"
+    report, drifts = render_report([earnings_in_10], today, alert_window=10,
+                                    portfolio_text=portfolio)
+    assert not drifts, f"in_trigger=True muss DRIFT suppressen, drifts={drifts}"
+    assert "🟢 in trigger" in report
+
+
+# ------------------------------------------------------------
+# PIPELINE #44 Gap c: End-to-End CLI-JSON-Smoke (subprocess + JSON-Roundtrip)
+# ------------------------------------------------------------
+
+def test_e2e_cli_json_subprocess_help_exits_clean():
+    """E2E: subprocess --help exit 0, kein crash, Help-Text enthält bekannte Flags.
+
+    Schneller proxy für CLI-Wiring (argparse + help-print) ohne yfinance-Network-Call.
+    """
+    import subprocess
+    tool = Path(__file__).resolve().parent / "earnings_calendar.py"
+    result = subprocess.run(
+        [sys.executable, str(tool), "--help"],
+        capture_output=True, text=True, timeout=15, check=False,
+    )
+    assert result.returncode == 0, f"--help exit_code={result.returncode}, stderr={result.stderr}"
+    for flag in ("--check", "--smoke-test", "--alert-window", "--json"):
+        assert flag in result.stdout, f"flag {flag!r} fehlt im --help-Output"
+
+
+def test_e2e_cli_json_subprocess_argparse_rejects_unknown_flag():
+    """E2E: subprocess mit unbekanntem Flag → exit 2 (argparse default), error in stderr."""
+    import subprocess
+    tool = Path(__file__).resolve().parent / "earnings_calendar.py"
+    result = subprocess.run(
+        [sys.executable, str(tool), "--no-such-flag"],
+        capture_output=True, text=True, timeout=15, check=False,
+    )
+    # argparse default: unknown arg → exit 2 + error stderr
+    assert result.returncode != 0, "Unknown flag muss non-zero exit haben"
+    assert "no-such-flag" in result.stderr or "no-such-flag" in result.stdout

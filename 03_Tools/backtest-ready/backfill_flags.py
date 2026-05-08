@@ -33,7 +33,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).parent))
 from schemas import FlagEvent
 
-with contextlib.suppress(Exception):
+with contextlib.suppress(AttributeError):
     sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
 
 from pydantic import ValidationError

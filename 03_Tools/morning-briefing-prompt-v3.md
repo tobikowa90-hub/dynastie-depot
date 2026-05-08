@@ -1,6 +1,6 @@
 # Morning Briefing Remote Trigger — Prompt v3.0
 **Trigger-ID:** `trig_01PyAVAxFpjbPkvXq7UrS2uG`
-**Deployed:** 2026-04-20 (v3.0.3, currently rolled back — Prod auf v2.2)
+**Deployed:** 2026-05-07 (v3.1.1 active in production; Verlauf: v3.0.3 → v2.2-Rollback 20.04. → v3.1.1-Cutover 07.05.)
 **Version:** v3.1.1 — Pre-Briefing Control-Plane PATCH (Bracket-Notation reserviert fuer Provenance, Prosa via Klammern)
 
 ## Changelog

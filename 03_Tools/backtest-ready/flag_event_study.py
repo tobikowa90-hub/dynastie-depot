@@ -134,7 +134,9 @@ def fetch_history_window(ticker: str, start: date, end: date) -> dict[date, floa
                 d = pd.Timestamp(ts).to_pydatetime().date()
             out[d] = float(row["Close"])
         return out
-    except Exception:  # noqa: BLE001 — yfinance kann ConnectionError/HTTPError/JSONDecodeError/etc. werfen; graceful degradation = None
+    except Exception:
+        # yfinance kann ConnectionError/HTTPError/JSONDecodeError/etc. werfen;
+        # graceful degradation = None.
         return None
 
 
@@ -617,7 +619,7 @@ def main() -> int:
 
     try:
         events = load_flag_events(FLAG_EVENTS_PATH)
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         print(f"[ERROR] Failed to parse {FLAG_EVENTS_PATH}: {e}", file=sys.stderr)
         return 1
     # Filter: nur Trigger-Events (Resolutions wären separat behandelt — n=0 aktuell)

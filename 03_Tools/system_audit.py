@@ -277,7 +277,7 @@ def main(argv: list[str] | None = None) -> int:
                 f"{type(exc).__name__}: {exc}",
                 file=sys.stderr,
             )
-            traceback.print_exception(type(exc), exc, exc.__traceback__, file=sys.stderr)
+            traceback.print_exception(exc, file=sys.stderr)
         return 2
 
     if args.json:

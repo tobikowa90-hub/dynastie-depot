@@ -2426,3 +2426,149 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 - (b) **CR-Confabulation surfaced** (Pass⁵ Findings 8+11): einmal halluziniertes Schema-Field (`max_drawdown_window_start`), einmal File-Phantom (stray 0-byte-File). Pre-Apply-Verification ist nicht-verhandelbar — CR ist Vorschlag, kein Diktat.
 - (c) Validator-defensive-Pattern hat sich gefestigt: `dict.get + ValueError` (FLAG_RULES, Pass³), `isinstance + skip` (json.loads-non-dict, Pass⁵), `Modul-Level-Import` (versions, Folgepass²) — drei orthogonale Guards gegen die Pydantic-v2-ValidationError-Catch-Lücke.
 - (d) Pass⁵-Edit-Surface (4 Files, 19 Edits in Pass⁴+Pass⁵) ist genau im scope-creep-vs-mandate-Tradeoff: User hat „alles richtig" mandatiert, ich habe Triage diszipliniert (4 Confabulation/false-positive doku-skip, 2 Phantom). Reverse-Engineering: Time-Box ~2.5h netto + ~1.5h Verify+Doku = ~4h. Konsolidierungstag-Vergleich (~5-6h für 4 Critical + ~14 Major) hat bestätigt: B-Triage + 2-Pass-Sweep ~3-4h vs Vollständigkeits-Sweep ~10-12h.
+
+## [2026-05-08] tooling | PIPELINE #44 ✅ DONE — Earnings-Calendar v2.0 Test-Coverage-Refinement (Codex-R10-MED-2-Closure)
+
+**Trigger:** Quick-Win-Slot Konsolidierungstag (User-Direktive 08.05. spätnachmittags „dann erst der quick win"). PIPELINE #44 war seit 06.05. spätabends als Codex-R10-MED-2-Follow-up gelistet (~30-45 min Aufwand-Schätzung).
+
+**Scope:** 3 dokumentierte Test-Coverage-Gaps in `03_Tools/_test_earnings_calendar.py` (vor Patch 11 Tests, nach Patch 20 Tests):
+- **(a) Smoke-Anchor-Pfade** — `SMOKE_TICKER`/`SMOKE_DATE`-Logik in `main()` war ungetestet (3 Pfade: PASS / FAIL / Skip-if-past + Edge-Case smoke=None).
+- **(b) Alert-Window-Boundary** — `days <= alert_window`-Inclusive-Boundary war ungetestet (Edge-Case `days==10` vs `days==11` vs `days==10+in_trigger`).
+- **(c) End-to-End CLI-JSON-Smoke** — subprocess-Pfad `python earnings_calendar.py --check --json` war ungetestet (Codex-R10-LOW-3 AC3a/b/c PASS-Evidence nicht im Diff sichtbar).
+
+**Refactor (1× Edit `03_Tools/earnings_calendar.py`):** Smoke-Logik aus `main()` extrahiert in eigenständigen `evaluate_smoke(today, smoke_result, smoke_ticker, smoke_date) -> tuple[str, bool]`-Helper (gleiche String-Outputs + gleiche `failed`-Semantik wie inline-Code; main() konsumiert nur noch Helper). Surgical-Change, keine Verhaltensänderung — Live-Smoke verifiziert: `BRK.B = 2026-08-01 PASS`, 11/11 Ticker-Pulls clean.
+
+**Neue Tests (8 Stück, 1× Edit `03_Tools/_test_earnings_calendar.py`):**
+- (a) `test_smoke_pass_when_anchor_matches` · `test_smoke_fail_when_anchor_mismatches` · `test_smoke_skip_when_anchor_in_past` · `test_smoke_fail_when_no_result` (4 Pfade)
+- (b) `test_alert_window_boundary_drift_at_exact_window` (days==10 → DRIFT) · `test_alert_window_boundary_soon_one_day_past_window` (days==11 → SOON, kein DRIFT) · `test_alert_window_boundary_in_trigger_suppresses_drift` (days==10 + in_trigger → 🟢 in trigger)
+- (c) `test_e2e_cli_json_subprocess_help_exits_clean` (subprocess `--help` exit 0 + alle 4 Flags im Output) · `test_e2e_cli_json_subprocess_argparse_rejects_unknown_flag` (`--no-such-flag` → exit !=0 + stderr-Mention)
+
+**Verify:** 20/20 PASS in 2.32s (Baseline-11 + neue 9 — 8 echte neue + Helper-Refactor unbroken). `python 03_Tools/earnings_calendar.py --check --smoke-test` Live-Lauf: 11/11 PASS, Smoke-OK BRK.B=2026-08-01.
+
+**§18-Sync (kein Score-Event, Pipeline-Item-DONE-Update):** earnings_calendar.py (Helper-Extract) · _test_earnings_calendar.py (8 neue Tests) · PIPELINE.md (#44 ✅ DONE-Block + Footer-Bump) · log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml / flag_events.jsonl / SYSTEM.md / STATE.md / CORE-MEMORY.md — kein Score/FLAG/Sparraten-Event.
+
+**Lessons:**
+- (a) Codex-R10-MED-2 Follow-up sauber abgeschlossen: Original-Concern war „Smoke + Boundary + Real-Subprocess fehlt" — alle drei in einem ~40-min-Sweep adressiert. Helper-Extract war günstiger als monkeypatch-of-main() weil er gleichzeitig Code-Lesbarkeit verbessert (DRY: smoke-Logik nicht inline).
+- (b) Subprocess-E2E-Test als `--help`-Exit-Verify + `--no-such-flag`-Argparse-Verify reicht für CLI-Wiring-Coverage ohne yfinance-Network-Dependency. Real-yfinance-Subprocess wäre integration-test, nicht unit-test — Time-Cost (~30s) + Flakiness vs Wert nicht gegeben.
+- (c) Test-Numbering vs PIPELINE-Items: Numbering-Convention von #44 als „Earnings-Calendar v2.0 Test-Coverage-Refinement" hält Cross-Reference im Test-Code (`PIPELINE #44 Gap a/b/c`-Inline-Kommentare) historisch lesbar — analog Stable-Numbering-Konvention der PIPELINE selbst.
+
+## [2026-05-08] tooling | PIPELINE #47 verbleibende Critical ✅ ALL-RESOLVED — 3 CR-Findings + 1 Bonus-Bug
+
+**Trigger:** User-Direktive 08.05. abends „47" (post-#44-Quick-Win-Slot). PIPELINE #47-Critical-Konto stand bei 2 dokumentiert (3 Files): `governance_parity.py:88-112`, `markdown_header.py:143`, `cross_source.py:183`.
+
+**Pre-Flight:** `python -m pytest 03_Tools/system_audit/` zeigte **1 pre-existing FAIL** ungeplant: `test_governance_parity_fail_on_no_v_form_at_all` — schreibt Doku ohne `-v`/`--verbose`, erwartet FAIL, bekam PASS. **Surprise-Befund:** 4. Bug, nicht im CR-Inventar — naked `"-v" in text` matched silent als **Substring** gegen `"--vault"`. Existing Regression-Test war stumm-failing.
+
+**Per-Finding-Triage + Patches:**
+
+**(1) governance_parity.py CR-Critical (Cluster-B) ✅ APPLIED.** `_live_core_count(repo_root)` ruft `importlib.import_module("system_audit.checks")` ohne Error-Handling. Pre-fix: ImportError/AttributeError/ModuleNotFoundError propagiert ungehandelt → Audit-Run-Crash. **Patch:** try/except um Live-Core-Count-Pfad in `run()`, FailureDetail (severity=warning), Count-Parity-Sub-Check skipped, Flag-Coverage-Sub-Checks laufen weiter. Defensive analog Pre-existing missing-file-Pattern.
+
+**(2) governance_parity.py BONUS-Bug Substring-Match (NICHT im CR-Inventar) ✅ APPLIED.** Naked `any(alt in text for alt in alts)` — `"-v"` ist Substring von `"--vault"`. Pre-fix: Doku ohne `-v`/`--verbose` passierte silent. **Patch:** `FLAG_TOKEN_RE = re.compile(r"-{1,2}[A-Za-z][A-Za-z0-9-]*")` extrahiert Flag-Tokens als Set, alt-Check via `alt in text_flags`. Token-Equality statt Substring-Containment. Failing-Regression-Test (`test_governance_parity_fail_on_no_v_form_at_all`) jetzt grün.
+
+**(3) markdown_header.py CR-Critical (Cluster-D) ✅ APPLIED.** `targets_override` mit unbekanntem `kind` → `PARSERS[kind]` raised KeyError. Default-Targets nutzen nur 3 PARSERS-Keys, KeyError-Risiko nur via Tests/External-Callers. **Patch:** `if kind not in PARSERS:` Guard, FailureDetail (severity=error mit `kind` + erlaubte Keys), continue. Test-Pattern: Mixed-Targets (1 valid + 1 invalid) → n_checked=1 + error → status=FAIL.
+
+**(4) cross_source.py CR-Critical (Cluster-D) — TEILWEISE CR-MISTAKE, COSMETIC-FIX APPLIED.** CR's Behauptung: `data.get("defcon", -1)` → false-positive DEFCON-mismatch für Vault-Entities ohne defcon-field. **Verdikt nach Code-Read:** False-Positive tritt **nicht** auf — Outer-Ternary `if data.get("defcon") is not None else None` fängt missing-field bereits ab; Downstream Z.280-281 `if mirror_name == "Vault" and m.get("defcon") is None: pass` skipped korrekt. Der `-1`-Default ist Dead-Code (feuert nie wegen Outer-Guard), aber Lesbarkeits-Trap. **Patch (cosmetic-only):** `defcon_raw = data.get("defcon")` extrahiert, dead-`-1`-Default entfernt, Inline-Kommentar-Begründung. Kein semantischer Change. Kein Test nötig (kein Verhalten geändert).
+
+**Neue Smoke-Tests (3 Stück, `_smoke_test.py` 98→101 PASS):**
+- `test_governance_parity_handles_live_core_count_import_failure` — `unittest.mock.patch("importlib.import_module", side_effect=ImportError(...))` (importlib lokal in `_live_core_count` importiert → stdlib-level patch, nicht via governance_parity-namespace), Verify status=WARN + Count-Parity-Sub-Skip + 8/9 Flag-Sub-Checks PASS.
+- `test_governance_parity_substring_match_does_not_swallow_v_flag` — Regression-Test für Bonus-Bug (4): Doku mit `--vault` aber ohne `-v`/`--verbose` muss FAIL liefern, nicht PASS via Substring-Match.
+- `test_markdown_header_unknown_kind_emits_failure_not_keyerror` — Mixed-Targets-Pattern (`good`+`nonexistent-kind`), Verify FailureDetail mit kind-Name in actual + n_checked=1 + status=FAIL.
+
+**Verify (final):**
+- `pytest 03_Tools/system_audit/` 101/101 PASS in 1.99s (98 pre-existing alle unverändert grün + 3 neue + 1 pre-existing repariert via Bonus-Bug-Fix).
+- `pytest 03_Tools/_test_earnings_calendar.py 03_Tools/system_audit/` 121/121 PASS in 4.15s (full Test-Surface).
+- `python 03_Tools/system_audit.py --core --no-write` Live-Lauf: 11/14 PASS (2 FAIL + 1 WARN unverändert pre-existing forward-declared per PIPELINE 42.2 + STATE.md Last-Audit-Block); meine geänderten Checks 11/12/13 alle PASS.
+
+**§18-Sync (System-Zustand-Change, kein Score-Event):** governance_parity.py (3× Edit) · markdown_header.py (1× Edit) · cross_source.py (1× Edit) · _smoke_test.py (3 neue Tests) · PIPELINE.md (#47-Footer-Update v2.3→v2.4 + Critical-Konto 2→0) · log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml / flag_events.jsonl / SYSTEM.md / STATE.md / CORE-MEMORY.md — kein Score/FLAG/Sparraten-Event.
+
+**Lessons:**
+- (a) **Pre-Flight-Test-Run before Patches** war goldwert: surfaced den Substring-Bug der weder im CR-Inventar noch in PIPELINE-#47-Tracking stand. Ohne Pre-Flight wäre der Bug latent geblieben — und der Patch (FLAG_TOKEN_RE) ist das eigentlich impactvollere Hardening (CR's _live_core_count-Concern ist „kann theoretisch crashen", Substring-Bug ist „silent passing-Doku-Drift").
+- (b) **CR-Mistake-Pattern weiter konsistent** (Pass³ #47-Cluster-C cells<6, Pass⁵ schemas-field-confabulation, jetzt cross_source.defcon-default): jedes 3.-4. CR-Critical ist on-Logic falsch interpretiert. Pre-Apply Code-Read mit Downstream-Trace ist nicht-verhandelbar — sonst applied man Phantom-Patches.
+- (c) **3-Critical-Sweep ~45min** vs Pass⁴⁺⁵ 2-Iteration-„alles richtig"-Sweep ~4h: Time-Cost skaliert mit Triage-Disziplin. „1 Critical = 1 Patch + 1 Test" ist saubere Convention; CR-Mistake-Findings = `dokumentiert-skip` mit Code-Trace-Begründung in Inline-Kommentar.
+- (d) **`importlib`-lokal-Import ist Patch-Anti-Pattern** für Tests: `unittest.mock.patch("module.importlib.import_module", ...)` failt wenn importlib nur lokal in Funktion importiert ist (kein Modul-Attribut). Workaround: stdlib-level patch (`patch("importlib.import_module", ...)`) — funktioniert weil patch() den globalen import_module hookt, der von der lokalen Funktion via name-resolution gesehen wird. Memory-Kandidat: Lokal-Imports in Tool-Code sind gegen Test-Hooks resistent.
+
+## [2026-05-08] tooling | Ruff + CodeRabbit Breit-Scope-Sweep — 8 APPLIED, 6 CR-Mistakes, 5 deferred, 16 trivials skipped
+
+**Trigger:** User-Direktive 08.05. abends „Können wir Ruff und CodeRabbit nochmal mit breiterem Scope über die Codebasis drüberschauen lassen? Ich will, dass alles optimal geschrieben ist und funktioniert!" (post-#47-Closure).
+
+**Ruff (`03_Tools/`, Config bereits breit: E/F/I/UP/B/SIM/PTH/RUF):** 7 Findings, alle pre-existing in `backtest-ready/`. Auto-fix: 5 fixable (1× F541 f-prefix, 3× RUF100 unused-noqa, 1× I001 isort-blank-line). Manual: 1× narrative-comment-conversion (`flag_event_study.py:137` `# noqa: BLE001 — yfinance ConnectionError/HTTPError/...` → plain-Comment, Information bewahrt). Config: per-file-ignores `03_Tools/backtest-ready/_smoke_*.py` für E402 ergänzt (parallel zu `system_audit/_smoke_*.py`-Pattern, deckt sys.path-mutation-Pattern). Ruff endstand: **All checks passed!**.
+
+**CodeRabbit (`-t uncommitted --dir 03_Tools` via WSL Ubuntu, Output `.cr_uncommitted_2026-05-08.txt` 1109 LOC):** 35 Findings über 22 Files (1 critical / 3 major / 6 minor / 25 trivial). Initial-Run mit voll-Scope schlug fehl (`Too many files! 161 > 150 limit`); `--dir 03_Tools/` skoping war nötig.
+
+**APPLIED (8):**
+- (1) `system_audit/report.py` Major+Trivial — `compute_exit_code(results)`-Helper konsumiert in `render_human` Z.110 + `render_json` non-partial Z.129 (DRY, 2 inline-duplikate eliminiert; partial-override `2 if partial else ...` unverändert).
+- (2) `briefing-sync-check.ps1:68` Minor — Comment `<3 is just normal session churn` → `<5 is just normal session churn` (Variable steht auf 5 seit deploy, Comment war stale).
+- (3) `morning-briefing-prompt-v3.md:3` Minor — `Deployed: 2026-04-20 (v3.0.3, currently rolled back — Prod auf v2.2)` → `Deployed: 2026-05-07 (v3.1.1 active in production; Verlauf: v3.0.3 → v2.2-Rollback 20.04. → v3.1.1-Cutover 07.05.)` (post-Cutover-Stand-Sync).
+- (4) `_test_earnings_calendar.py` 2× Trivial — `evaluate_smoke` + `render_report` zu Top-Level-Imports (alphabetisch sortiert), 7 Inline-`from earnings_calendar import`-Statements entfernt aus 4 Smoke-Tests + 3 Boundary-Tests.
+- (5) `system_audit.py:280` Trivial — `traceback.print_exception(type(exc), exc, exc.__traceback__, file=sys.stderr)` → `traceback.print_exception(exc, file=sys.stderr)` (Python 3.10+ 1-arg API, deprecated 3-arg form ersetzt).
+- (6) `system_audit/_smoke_test.py:1202-1210` Trivial — unused `SCORE_EVENT_FILES_CANONICAL`-Tuple (7 Score-Event-Files-Liste) entfernt; verifiziert via `grep -r SCORE_EVENT_FILES_CANONICAL 03_Tools/` keine Code-Referenzen.
+- (7) `backtest-ready/backfill_flags.py:36-37` Minor — `contextlib.suppress(Exception)` → `contextlib.suppress(AttributeError)` (Stdout-reconfigure-Wrap, narrowing auf erwartete Failure-Mode statt blanket-suppression).
+- (8) `system_audit/checks/cross_source.py:240-242` Trivial — 3× lange ternary-Assignments (>140 Char) auf Multi-Line-Form gesplittet (heute touched, polishing).
+
+**CR-MISTAKE / DOKUMENTIERT-SKIP (6, mit Code-Trace-Begründung):**
+- (a) `bad_score.jsonl` CRITICAL „score_gesamt=162 vs sub-scores=63 mismatch" — File-Pfad ist `system_audit/fixtures/jsonl_schema/bad_score.jsonl`, **explizit malformed** für negative-Test-Coverage (Filename-Konvention ist self-documenting). Schema-Validator-Tests verifizieren genau diese Mismatch-Detection. CR hat Test-Fixture-Zweck nicht erkannt.
+- (b) `cross_source.py:112-118` Trivial „nested get() default-params unkonventionell" — `def get(name, _col_idx=col_idx, _cells=cells)` ist **idiomatisches Python für Loop-Closure-Capture**. CR's „direct-scope reference"-Vorschlag würde **Late-Binding-Bug** einführen: `cells`/`col_idx` werden pro Loop-Iteration rebound, ohne default-param-capture würde get() immer letzten Loop-Wert sehen.
+- (c) `morning-briefing-prompt-v3.md:199` Trivial „regex hyphen escape unnötig" — Allow-List-Regex ist Codex-verified v3.1.0 (Codex-PASS 5/5 Tag-Forms gegen Spec). „Functionally identical" reicht hier nicht als Touch-Trigger ohne Re-Verify-Pass.
+- (d) `_smoke_test_event_study.py:166` Trivial „re-add `# noqa: BLE001`" — Ruff hat die noqa korrekt entfernt weil BLE001 nicht im aktiven Ruleset ist (deselected zugunsten contextual-Pattern). Re-add wäre Regression.
+- (e) `header_freshness.py:88-101` Minor „German hint vs English" — Codebase-Konvention ist bilingual (German hints für domain-spezifische Slot-Anweisungen, English für API-shape). Codex-Reviews der vergangenen Pässe haben diese Konvention nicht angemerkt. Intentional.
+- (f) `flag_event_study.py:137-140` Trivial „add logging.debug" — Graceful-degradation-Begründung steht als Inline-Comment direkt am except-Block. logging-import + config-decision ist out-of-scope für Failure-Hint.
+
+**DEFER (5 als separate Items):**
+- (i) `T1-happy-path.md` Major „CRLF line endings" — `.gitattributes`-Setup ist eigenes Item (autocrlf-Politik fürs ganze Repo, nicht punktuell).
+- (ii) `morning-briefing-prompt-v2.md:13` Major „STATE.md vs PORTFOLIO.md changelog" — v2.x ist legacy (rolled-back-Phase). Prod läuft auf v3.1.1 (siehe Patch 3); v2-Spec-Update ohne Wirkung auf Live-System.
+- (iii) `flag_event_study.py:227-239` Trivial „rename `max_drawdown_window_end` → `max_drawdown_trough_date`" — **legitimer Naming-Bug** (Field hält trough_date, nicht window_end), aber Field-Rename hat Propagations-Folgen (dataclass + compute_event_result + build_report + Schema-Doku). Eigener Refactor-Slot.
+- (iv) `morning-briefing-prompt-v3.md:200` Minor „square-bracket pass-through clarification" — substantive Spec-Edit (regelt Source-Files mit `[NEU]`-Annotation). v3.1.1-Spec-Slot zugewiesen.
+- (v) Trivials skippen (16): `pipeline_ssot.py:33-37` (dict.fromkeys micro-opt), `pipeline_ssot.py:73` (long-line), `markdown_header.py:133-191` + `existence.py:104-146` (path-extract refactor), `pointer_completeness.py:115-127` + `header_freshness.py:152-164` (Literal-status type-narrowing — würde types.py touchen, scope-creep), `governance_parity.py:162` (n_passed-semantics — CR notes „current logic is correct"), `skill_frontmatter.py:68-69` (defensive-dead-code), `_forward_verify_helpers.py:300-301` (git-quote special-chars, low-ROI), `sample_transcript_normal.md` 3× (fixture-doc, nicht in scope), `morning-briefing-prompt-v3.md:1-456` (architectural observation, kein action-item), `backfill_flags.py:184-188` (ValueError-Guard war Pipeline-#47-Cluster-A-Item bereits getrackt).
+
+**Verify (final):**
+- `python -m ruff check 03_Tools/`: **All checks passed!** (post-Patch).
+- `python -m pytest 03_Tools/_test_earnings_calendar.py 03_Tools/system_audit/ 03_Tools/tests/ 03_Tools/backtest-ready/_smoke_test_event_study.py`: **141/141 PASS** in 4.30s (20+101+18+2 = 141).
+- `python 03_Tools/system_audit.py --core --no-write`: **11/14 PASS** unchanged (2 FAIL + 1 WARN pre-existing forward-declared per PIPELINE 42.2 + STATE.md Last-Audit, kein neues Regression).
+
+**§18-Sync (System-Zustand-Change, kein Score-Event):** 9 modifizierte Code-Files (report.py · briefing-sync-check.ps1 · morning-briefing-prompt-v3.md · _test_earnings_calendar.py · system_audit.py · system_audit/_smoke_test.py · backfill_flags.py · cross_source.py · flag_event_study.py) + 1 modified Ruff-Config (pyproject.toml — backtest-ready/_smoke_*.py per-file-ignores) + PIPELINE.md Footer-Update + log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / config.yaml / flag_events.jsonl / SYSTEM.md / STATE.md / CORE-MEMORY.md — kein Score/FLAG/Sparraten-Event.
+
+**Lessons:**
+- (a) **CR-Scope ohne `--dir` failt bei großen Repos** — voll-Scope sieht 161 Files (>150 limit). `--dir 03_Tools` ist saubere Workaround-Convention für Dynastie-Depot (Markdown ist Bulk; Code ist 03_Tools/-only).
+- (b) **CR-Mistake-Pattern weiter konsistent (6/35 = 17% in diesem Pass)** — Pattern aus 07.05. Pass⁵ (CR-Confabulation auf Schema-Field) bestätigt; Mistake-Klassen sind Test-Fixture-Zweck (`bad_score.jsonl`), Loop-Closure-Idiom (`get()` default-params), Tooling-Convention (Codex-verified Regex), Codebase-Convention (bilingual hints), zurückgenommene Defaults (BLE001-noqa). Pre-Apply Code-Read mit Downstream-Trace nicht-verhandelbar.
+- (c) **Triage-Disziplin spart Token-Cost** — 8 APPLY + 6 doku-skip + 5 defer + 16 trivial-skip = saubere Zero-Inbox vs Vollständigkeits-Sweep der 4-5h gekostet hätte. Memory `feedback_codex_sparring_heuristic.md` „Single-Pass Default" + `feedback_cr_pass_after_bulk_refactor.md` „CR additiv zu Codex, nicht Ersatz" haben sich operationalisiert.
+- (d) **Ruff-Auto-Fix vor CR ist sinnvolle Sequenz** — Ruff findet strukturelles (5 Findings auto-fixed in <10s); CR sieht dann nur die semantischen/architekturellen Fragen. Reverse-Sequenz (CR zuerst) hätte Token-Cost auf strukturelles Zeug verschwendet.
+
+**Folgepass (Diff-Re-Review post-8-Patch, Output `.cr_uncommitted_2026-05-08_folgepass.txt` 1364 LOC, 47 Findings):** 3 critical / 3 major / 11 minor / 30 trivial. Konvergenz-Pattern aus Pass⁴⁺⁵ (07.05.) bestätigt: Findings-Count steigt durch Re-Scan + ~70% Overlap, neuer-Surfacing-Wert ist asymptotisch.
+
+**Folgepass-APPLIED (1):** `governance_parity.py:39-66` — `len(mod.CORE)` kann TypeError werfen wenn CORE malformed (kein Sized-Type). Folgepass-Major-3 ergänzt `TypeError` zur except-Tuple `(ImportError, AttributeError, ModuleNotFoundError, TypeError)`. Real-Improvement zum #47-Patch (defensive vollständig statt nur partial).
+
+**Folgepass-CR-MISTAKE (3 Criticals, alle gleicher Pattern „CR liest pyproject.toml/Test-Fixture-Zweck nicht"):**
+- (a) `good_score.jsonl:1` „ROIC<WACC value-destruction" — File-Pfad `system_audit/fixtures/jsonl_schema/good_score.jsonl`, **explizit positive-Test-Fixture**, `notizen`-Field dokumentiert ROIC<WACC-Akzeptanz (Visa Europe 2016 = one-off, GW <30%-threshold). Parallel zu Pass-1 `bad_score.jsonl`-Mistake.
+- (b) `system_audit.py:274-280` „traceback.print_exception(exc, ...) Python 3.10+ only" — pyproject.toml deklariert `requires-python = ">=3.14"`, Live-Test-Run zeigt Python 3.14.3. Mein Pass-1-Patch (3-arg → 1-arg) ist korrekt, CR liest Project-Compat-Constraint nicht.
+- (c) `system_audit.py:222` „datetime.UTC Python 3.11+ only" — gleicher Project-Compat-Mistake. Existing-Code (nicht von mir gepatcht), Project requires-Python 3.14, datetime.UTC safe.
+
+**Folgepass-DEFER (2 Majors, real aber out-of-scope):**
+- (i) `pointer_completeness.py:25-26` „NEXT_SECTION_RE matched nur `##` nicht `#`" — Real-Defensive-Bug, file nicht in today's diff; eigener PIPELINE-Slot.
+- (ii) `schemas.py:321` „migration_event.forward_score == score_gesamt cross-validator" — Real-Invariant; schemas.py war im 07.05.-Sweep heavy reviewed, eigener Schema-Hardening-Slot.
+
+**Folgepass-DEFER (2 Minors in heutigen Files, low-priority):**
+- (iii) `governance_parity.py:162` n_passed-semantics — Same wie Pass-1 (CR damals selbst „current logic is correct"); Clamping fängt Negative ab, kein Bug, nur Semantic-looseness. Würde sub-check-tracking-Redesign brauchen.
+- (iv) `cross_source.py:20-29` Emoji-Variation-Selector-Handling — Hypothetisch, alle Emojis kommen aus controlled Project-Files (PORTFOLIO/Faktortabelle), Tests grün. Defensive-Refactor ohne empirischen Bug-Trigger.
+
+**Folgepass-Triage 30 Trivials:** Spread über 19 Files, hauptsächlich pre-existing (T1-happy-path Doku · skill_frontmatter dead-code · pipeline_ssot dict.fromkeys · existence path-extract · cross_source_reverse minors · _smoke_test 3 trivials · etc.). Konvergenz erreicht — kein neuer-Surfacing-Wert vs Pass-1.
+
+**Verify (post-Folgepass-Patch):**
+- Ruff `03_Tools/`: All checks passed!
+- Tests `03_Tools/_test_earnings_calendar.py 03_Tools/system_audit/`: **121/121 PASS** in 4.10s.
+- Live-Audit: 11/14 PASS unchanged (2 FAIL + 1 WARN forward-declared).
+
+**Final-Pattern (Pass-1 + Folgepass kombiniert):**
+- 9 APPLIED über beide Pässe (8 Pass-1 + 1 Folgepass)
+- 9 dokumentiert-skip (6 CR-Mistake Pass-1 + 3 CR-Mistake Folgepass — alle Test-Fixture-Zweck oder Project-Compat-Constraint)
+- 7 deferred (5 Pass-1 + 2 Folgepass)
+- 46 trivials skipped (16 Pass-1 + 30 Folgepass — Konvergenz)
+
+**Lessons (Folgepass-spezifisch):**
+- (e) **CR liest Project-Compat-Constraints nicht** — `pyproject.toml requires-python = ">=3.14"` war im Repo, CR meldet trotzdem 2× Critical für Python 3.10+/3.11+ APIs. Pre-Apply-Pflicht: `pyproject.toml` als Compat-SSoT lesen, CR-Python-Version-Concerns gegen Project-Min-Python validieren.
+- (f) **Folgepass-Konvergenz bestätigt asymptotisch**: 35 → 47 Findings (=+12 net new), aber 1 APPLY-rate vs 8 Pass-1-APPLY = ~12% APPLY-rate fällt auf <3% in Folgepass. Nach 1-2 Pässen ist Real-Bug-Surfacing erschöpft, weiteres Sparring = Token-Verbrauch.
+- (g) **Test-Fixture-Mistake-Klasse als systemisches CR-Anti-Pattern**: Pass-1 `bad_score.jsonl` + Folgepass `good_score.jsonl` — beide Critical, beide CR-Mistake-on-Fixture-Zweck. Filename-Konvention (`bad_*.jsonl`/`good_*.jsonl`) reicht CR nicht als Fixture-Zweck-Signal. Mitigation: CR könnte mit `.coderabbit.yaml` `path-instructions` für `**/fixtures/**` configured werden (separater Item).

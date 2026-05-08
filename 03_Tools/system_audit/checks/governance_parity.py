@@ -30,6 +30,10 @@ EXPECTED_FLAGS: tuple[tuple[str, ...], ...] = (
     ("--timeout-per-check",),
 )
 COUNT_RE = re.compile(r"(\d+)\s*Kern-Checks?", re.IGNORECASE)
+# Token-Match (CR-#47-Folgepass): naked `in`-check matched `-v` als Substring
+# von `--vault` und liess Doku ohne -v/--verbose silent durch (Regression-Test
+# `test_governance_parity_fail_on_no_v_form_at_all` failed pre-fix).
+FLAG_TOKEN_RE = re.compile(r"-{1,2}[A-Za-z][A-Za-z0-9-]*")
 
 
 def _live_core_count(repo_root: Path) -> int:
@@ -86,13 +90,33 @@ def run(
         )
 
     text = cmd_path.read_text(encoding="utf-8", errors="replace")
+    text_flags = set(FLAG_TOKEN_RE.findall(text))
     n_checked = 0
 
     # 1. Count-Parity
     n_checked += 1
-    expected = expected_core_count if expected_core_count is not None else _live_core_count(repo_root)
+    if expected_core_count is not None:
+        expected: int | None = expected_core_count
+    else:
+        # CR-#47-Critical-Cluster-B + Folgepass-Hardening: ImportError/Attribute
+        # Error/ModuleNotFoundError aus dynamischem `system_audit.checks`-Import
+        # plus TypeError aus `len(mod.CORE)` wenn CORE malformed (kein Sized);
+        # alle wuerden sonst den ganzen Check crashen. Defensive:
+        # FailureDetail + Skip der Count-Parity-Sub-Pruefung, andere Sub-Checks
+        # (Flag-Coverage) laufen weiter.
+        try:
+            expected = _live_core_count(repo_root)
+        except (ImportError, AttributeError, ModuleNotFoundError, TypeError) as e:
+            failures.append(FailureDetail(
+                location=f"{SLASH_CMD_PATH}: count-parity sub-check",
+                expected="readable system_audit.checks.CORE registry",
+                actual=f"import failed: {type(e).__name__}: {str(e)[:80]}",
+                severity="warning",
+                hint="system_audit.checks unimportierbar — sys.path / Repo-Struktur pruefen",
+            ))
+            expected = None
     m = COUNT_RE.search(text)
-    if m:
+    if m and expected is not None:
         claimed = int(m.group(1))
         if claimed != expected:
             failures.append(FailureDetail(
@@ -102,7 +126,7 @@ def run(
                 severity="error",
                 hint=f"Slash-Doku-Drift: CORE-Registry hat {expected}, Doku sagt {claimed}",
             ))
-    else:
+    elif not m:
         failures.append(FailureDetail(
             location=str(SLASH_CMD_PATH),
             expected="explicit 'N Kern-Checks' phrase",
@@ -117,9 +141,11 @@ def run(
     # der erst nach Slash-Doku-Stand eingefuehrt wurde (Codex-Review P2-04:
     # einzige spec-gestuetzte Warning-Exception).
     # Each alt-tuple passes if any form in the tuple appears (e.g. -v OR --verbose).
+    # Token-Match gegen FLAG_TOKEN_RE-extrahierte Set verhindert Substring-Trap
+    # (z.B. `-v` matched naked `in` gegen `--vault`).
     for alts in EXPECTED_FLAGS:
         n_checked += 1
-        if not any(alt in text for alt in alts):
+        if not any(alt in text_flags for alt in alts):
             primary = alts[0]
             display = "/".join(alts) if len(alts) > 1 else primary
             severity = "warning" if "--minimal-baseline" in alts else "error"

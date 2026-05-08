@@ -107,7 +107,7 @@ def render_human(results: Sequence[CheckResult], *, timestamp_utc: str) -> str:
     lines.append("")
     lines.append(f"Summary: {n_pass}/{total} PASS, {n_fail} FAIL, {n_warn} WARN, {n_skip} SKIP")
     lines.append(f"Duration: {total_ms}ms")
-    exit_code = 1 if n_fail > 0 else 0
+    exit_code = compute_exit_code(results)
     lines.append(f"Exit-Code: {exit_code}")
     return "\n".join(lines)
 
@@ -126,7 +126,7 @@ def render_json(
     must skip on partial so no corrupted audit state is persisted.
     """
     partial = bool(internal_errors)
-    exit_code = 2 if partial else (1 if any(r.status == "FAIL" for r in results) else 0)
+    exit_code = 2 if partial else compute_exit_code(results)
     summary = {
         "total": len(results),
         "passed": sum(1 for r in results if r.status == "PASS"),

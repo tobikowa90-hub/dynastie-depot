@@ -65,7 +65,7 @@ try {
 
 # Threshold: only warn when noise becomes actionable
 # Uncommitted changes are always relevant (user has unsaved work).
-# Unpushed commits only matter in bulk — <3 is just normal session churn.
+# Unpushed commits only matter in bulk — <5 is just normal session churn.
 $unpushedThreshold = 5
 
 # Earnings-Calendar Drift-Check (additive, fail-soft)

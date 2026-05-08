@@ -22,6 +22,7 @@ if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
 import flag_event_study as fes
+
 from schemas import FlagEvent, FlagMetrik, Kurs
 
 
@@ -145,7 +146,7 @@ def test_forward_fallback_today_cap() -> tuple[bool, str]:
     if h90.status != "pending":
         return False, f"+90d status={h90.status}, expected 'pending'"
 
-    return True, f"+30d=n.a. (gekappt), +90d=pending"
+    return True, "+30d=n.a. (gekappt), +90d=pending"
 
 
 def main() -> int:
@@ -162,7 +163,7 @@ def main() -> int:
     for name, fn in tests:
         try:
             ok, detail = fn()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             ok, detail = False, f"EXCEPTION {type(exc).__name__}: {exc}"
         marker = "PASS" if ok else "FAIL"
         print(f"[{marker}] {name} — {detail}")

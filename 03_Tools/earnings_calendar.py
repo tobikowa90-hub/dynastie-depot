@@ -343,6 +343,32 @@ def build_json_payload(
     }
 
 
+def evaluate_smoke(
+    today: date,
+    smoke_result: EarningsResult | None,
+    smoke_ticker: str = SMOKE_TICKER,
+    smoke_date: date = SMOKE_DATE,
+) -> tuple[str, bool]:
+    """Smoke-Test-Logic für main() — testbarer Helper (Codex-R10-MED-2-Closure).
+
+    Returns (msg, failed). failed=True propagiert exit 1, wenn --smoke-test gesetzt.
+    """
+    actual = smoke_result.earnings_date if smoke_result else None
+    if today > smoke_date:
+        return (
+            f"i  Smoke-Test SKIPPED: Anker {smoke_ticker}={smoke_date.isoformat()} "
+            f"liegt in der Vergangenheit (today={today.isoformat()}). "
+            f"Anker manuell auf naechsten BRK.B-Q-Termin updaten (yfinance: {actual}).",
+            False,
+        )
+    if smoke_result is not None and smoke_result.earnings_date == smoke_date:
+        return f"OK Smoke-Test: {smoke_ticker} = {smoke_date.isoformat()} PASS", False
+    return (
+        f"FAIL Smoke-Test: {smoke_ticker} = {actual} (expected {smoke_date.isoformat()})",
+        True,
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Dynastie-Earnings-Calendar (yfinance)")
     ap.add_argument("--check", action="store_true", help="run check + print report")
@@ -372,21 +398,7 @@ def main(argv: list[str] | None = None) -> int:
 
     # Smoke-Test (gleiche Logik wie v1.0; --smoke-test kann FAIL->exit 1 erzwingen)
     smoke = next((r for r in results if r.ticker == SMOKE_TICKER), None)
-    smoke_msg = ""
-    smoke_failed = False
-    if today > SMOKE_DATE:
-        actual = smoke.earnings_date if smoke else None
-        smoke_msg = (
-            f"i  Smoke-Test SKIPPED: Anker {SMOKE_TICKER}={SMOKE_DATE.isoformat()} "
-            f"liegt in der Vergangenheit (today={today.isoformat()}). "
-            f"Anker manuell auf naechsten BRK.B-Q-Termin updaten (yfinance: {actual})."
-        )
-    elif smoke is not None and smoke.earnings_date == SMOKE_DATE:
-        smoke_msg = f"OK Smoke-Test: {SMOKE_TICKER} = {SMOKE_DATE.isoformat()} PASS"
-    else:
-        actual = smoke.earnings_date if smoke else None
-        smoke_msg = f"FAIL Smoke-Test: {SMOKE_TICKER} = {actual} (expected {SMOKE_DATE.isoformat()})"
-        smoke_failed = True
+    smoke_msg, smoke_failed = evaluate_smoke(today, smoke)
 
     # MED-1-Fix (Codex-R5): exit_code-Bestimmung MUSS smoke-fail-Propagation
     # bereits beruecksichtigen, BEVOR build_json_payload aufgerufen wird —

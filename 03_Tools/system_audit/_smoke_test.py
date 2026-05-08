@@ -1199,16 +1199,6 @@ def test_pyyaml_preflight_clean_message() -> None:
             _sys.modules["yaml"] = saved_yaml
 
 
-SCORE_EVENT_FILES_CANONICAL = (
-    "log.md",
-    "CORE-MEMORY.md",
-    "Faktortabelle.md",
-    "PORTFOLIO.md",
-    "score_history.jsonl",
-    "config.yaml",
-    "flag_events.jsonl",
-)
-
 def test_score_event_parity_pass_on_aligned_readme() -> None:
     """PASS: README enthaelt alle 7 Files + v2.1-String."""
     import tempfile
@@ -1748,6 +1738,105 @@ def test_governance_parity_skip_on_missing_slash_cmd() -> None:
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx)
     assert result.status == "SKIP"
+
+
+def test_governance_parity_handles_live_core_count_import_failure() -> None:
+    """CR-#47-Critical-Cluster-B: ImportError aus _live_core_count crashed
+    pre-fix den ganzen Check. Post-fix: warning + Count-Parity-Skip, andere
+    Sub-Checks (Flag-Coverage) laufen weiter.
+    """
+    import tempfile
+    from unittest.mock import patch
+
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        cmd.write_text(
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+            "--minimal-baseline --no-write --json -v --verbose --timeout-per-check\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        # Force ImportError aus _live_core_count. importlib wird lokal in
+        # _live_core_count importiert, deshalb stdlib-level patch nicht via
+        # governance_parity.importlib (existiert nicht als module-attr).
+        with patch(
+            "importlib.import_module",
+            side_effect=ImportError("simulated"),
+        ):
+            result = run(tdp, ctx)  # KEIN expected_core_count -> trifft except-Branch
+    # Check darf NICHT crashen; Count-Parity-Sub-Check liefert warning,
+    # Flag-Coverage-Sub-Checks laufen normal durch (alle 8 Flags da → PASS).
+    assert any(
+        f.severity == "warning" and "import failed" in f.actual
+        for f in result.failures
+    ), f"missing graceful-import-failure warning; got {result.failures}"
+    assert result.status == "WARN"
+    # Flag-Coverage muss noch laufen → 9 sub-checks (1 count + 8 flags), 8 passed
+    assert result.n_checked == 9
+    assert result.n_passed == 8
+
+
+def test_governance_parity_substring_match_does_not_swallow_v_flag() -> None:
+    """Substring-Match-Trap (vor #47-Folgepass): naked `"-v" in text` matched
+    silent gegen `"--vault"` und liess Doku ohne -v/--verbose pass.
+    Post-fix via FLAG_TOKEN_RE-Tokenization: -v und --vault sind getrennte Tokens.
+    """
+    import tempfile
+
+    from system_audit.checks.governance_parity import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
+        cmd.parent.mkdir(parents=True)
+        # --vault explicit, KEIN -v/--verbose; Substring-Bug-Pre-Fix matched -v in --vault.
+        cmd.write_text(
+            "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
+            "--minimal-baseline --no-write --json --timeout-per-check\n",
+            encoding="utf-8",
+        )
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        result = run(tdp, ctx, expected_core_count=11)
+    assert result.status == "FAIL", \
+        f"expected FAIL for missing -v/--verbose, got {result.status} (Substring-Bug-Regression?)"
+
+
+def test_markdown_header_unknown_kind_emits_failure_not_keyerror() -> None:
+    """CR-#47-Critical-Cluster-D: targets_override mit unbekanntem `kind`
+    raised pre-fix `KeyError`. Post-fix: FailureDetail-Eintrag, kein Crash.
+
+    Mixed-Targets (1 valid + 1 invalid) → n_checked=1 (valid läuft) +
+    error-Failure (invalid) → status=FAIL.
+    """
+    import datetime as _dt
+    import tempfile
+
+    from system_audit.checks.markdown_header import run
+    with tempfile.TemporaryDirectory() as td:
+        tdp = Path(td)
+        good = tdp / "good.md"
+        good.write_text(
+            "**Stand:** 08.05.2026\nEvent on 2026-05-08\n", encoding="utf-8",
+        )
+        bad = tdp / "bad.md"
+        bad.write_text("**Stand:** 08.05.2026\n", encoding="utf-8")
+        ctx = AuditContext(repo_root=tdp, include_optional=False)
+        # Pre-fix would raise KeyError on the second target.
+        result = run(
+            tdp, ctx,
+            targets_override=[(good, "state"), (bad, "nonexistent-kind")],
+            today=_dt.date(2026, 5, 8),
+        )
+    # Kein KeyError-Crash.
+    assert any(
+        f.severity == "error" and "nonexistent-kind" in f.actual
+        for f in result.failures
+    ), f"missing unknown-kind error; got {result.failures}"
+    # Valid target ran (n_checked=1) → status FAIL (has error).
+    assert result.n_checked == 1
+    assert result.status == "FAIL"
 
 
 def test_cross_source_reverse_pass_on_aligned() -> None:
