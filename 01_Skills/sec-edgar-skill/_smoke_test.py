@@ -82,17 +82,47 @@ def case_2() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Case 3: MSFT income_statement(periods=3)
+# Case 3: MSFT income_statement — Default annual + Quarterly-Param Regression
 # ---------------------------------------------------------------------------
 def case_3() -> None:
+    """
+    Verifies two contracts (post-context7-validation 2026-05-08):
+      (a) Default `period='annual'` — periods=3 returns 3 annual columns (FY-prefixed)
+      (b) Explicit `period='quarterly', periods=4` returns 4 quarterly columns (Q-prefixed)
+
+    Regression-protection: Plan-Original-Wording 'periods=20  # 5J quarterly' was
+    a comment-vs-code-mismatch (default-annual would return ~6 annual capped, not
+    20 quarterly). Forces UC4-style calls to use period='quarterly' explicitly.
+    """
     from edgar import set_identity, Company
     set_identity(IDENTITY)
     c = Company("MSFT")
-    income = c.income_statement(periods=3)
-    assert income is not None, "income_statement returned None"
-    # Defensive: edgartools may expose either DataFrame, Statement, or repr-like
-    assert hasattr(income, "to_dataframe") or hasattr(income, "__repr__"), (
-        f"income object has neither to_dataframe nor __repr__: {type(income)!r}"
+
+    # (a) Default annual — periods=3 → 3 FY-columns
+    inc_annual = c.income_statement(periods=3)
+    assert inc_annual is not None, "income_statement(periods=3) returned None"
+    assert hasattr(inc_annual, "to_dataframe"), (
+        f"annual income lacks to_dataframe: {type(inc_annual)!r}"
+    )
+    df_a = inc_annual.to_dataframe()
+    period_cols_a = [
+        col for col in df_a.columns
+        if col not in {"label", "depth", "is_abstract", "is_total", "section", "concept", "confidence"}
+    ]
+    assert any(str(c).startswith("FY") for c in period_cols_a), (
+        f"Default period must be annual (FY-prefixed), got period_cols={period_cols_a!r}"
+    )
+
+    # (b) Explicit quarterly — periods=4 → 4 Q-columns
+    inc_q = c.income_statement(period="quarterly", periods=4)
+    assert inc_q is not None, "income_statement(period='quarterly', periods=4) returned None"
+    df_q = inc_q.to_dataframe()
+    period_cols_q = [
+        col for col in df_q.columns
+        if col not in {"label", "depth", "is_abstract", "is_total", "section", "concept", "confidence"}
+    ]
+    assert any(str(c).startswith("Q") for c in period_cols_q), (
+        f"Quarterly period must yield Q-prefixed columns, got period_cols={period_cols_q!r}"
     )
 
 

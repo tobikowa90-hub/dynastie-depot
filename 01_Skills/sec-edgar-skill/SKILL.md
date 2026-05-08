@@ -161,13 +161,26 @@ for f in form4:
 ### UC4 — Multi-Period-Trend via Entity-Facts-API
 
 **Trigger:** Methodology-Watch-Befund (z.B. defeatbeta-Inkonsistenz V/MSFT, PIPELINE #21/#25), 5J/20Q-Verifikation gegen XBRL.
-**Action:** `Company.income_statement(periods=N)` / `.balance_sheet(periods=N)` / `.cash_flow_statement(periods=N)`.
+**Action:** `Company.income_statement(period=..., periods=N)` / `.balance_sheet(...)` / `.cash_flow_statement(...)`.
+
+**API-Hinweis (context7-validiert 2026-05-08, edgartools 5.31.0):** `period`-Parameter steuert Annual/Quarterly/TTM. **Default ist `period='annual'`** — `periods=20` ohne `period=`-Parameter liefert **20 Annual periods (kapped auf verfügbare ~6)**, NICHT 20 Quartale. Für 5J-Quarterly explizit `period='quarterly', periods=20` setzen. Legacy: `annual=False` als Synonym für `period='quarterly'`.
 
 ```python
 from edgar import Company
 c = Company("MSFT")
-income = c.income_statement(periods=20)  # 5J quarterly
+
+# 5J quarterly (20 Quartale) — Methodology-Watch-Default
+income = c.income_statement(period='quarterly', periods=20)
 print(income)
+
+# Alternative: TTM (rolling 4 quarters) für aktuellen Trend
+ttm = c.income_statement(period='ttm')
+
+# Alternative: Annual (Default) für Long-Range-Trend
+annual = c.income_statement(periods=10)  # 10J annual
+
+# Convenience: as_dataframe=True für Pandas-Pipeline
+df = c.income_statement(period='quarterly', periods=20, as_dataframe=True)
 ```
 
 ### UC5 — Form-13F Holdings-Pull (NEU für v1.1)
@@ -189,7 +202,9 @@ print(f13f.search("Apple"))
 ### UC6 — 8-K Material-Events-Read (NEU für v1.1)
 
 **Trigger:** Earnings-Calendar-Stufe-2-Drift-Detection (z.B. Pre-Earnings-Pre-Announcement, M&A-Event-Filing, ad-hoc Material-Events). Earnings-Calendar pulse via `03_Tools/earnings_calendar.py` flaggt Drift; UC6 verifiziert über 8-K.
-**Action:** `get_filings(form="8-K").latest()` + `filing.items()` zur Material-Event-Klassifikation.
+**Action:** `get_filings(form="8-K").latest()` + `filing.items` (attribute, kein method-call) zur Material-Event-Klassifikation.
+
+**API-Hinweis (live-validiert 2026-05-08, edgartools 5.31.0):** `filing.items` ist **attribute** (string mit Item-Numbers wie `"5.07"` / `"8.01"` / `"5.02"`), KEIN method. `filing.items()` würde `TypeError: 'str' object is not callable` werfen.
 
 ```python
 from edgar import Company
@@ -197,7 +212,11 @@ c = Company("AVGO")
 recent_8k = c.get_filings(form="8-K")[:5]
 for f in recent_8k:
     print(f.to_context())
-    print("Items:", f.items())
+    print(f"Items: {f.items}  (Filing: {f.filing_date})")
+# Beispiel-Live-Output 2026-05-08 für AVGO 3 latest:
+#   2026-04-21 → Items: 5.07  (Submission of Matters to a Vote of Security Holders)
+#   2026-04-06 → Items: 8.01  (Other Events)
+#   2026-04-02 → Items: 5.02  (Departure/Election of Directors / Officers)
 ```
 
 ---
@@ -212,7 +231,7 @@ Datei: `01_Skills/sec-edgar-skill/_smoke_test.py` (analog `01_Skills/backtest-re
 |---|------|-------------|
 | 1 | Identity-Pre-Check Failure-Path | `Company("MSFT")` ohne `set_identity()` wirft Error (SEC-Legal-Requirement-Verify) |
 | 2 | MSFT-Lookup | `"MICROSOFT" in c.name.upper()`, `cik`-Padding == "0000789019" |
-| 3 | MSFT-income_statement(periods=3) | non-None Result, hat `.to_dataframe()` oder gleichwertig |
+| 3 | MSFT-income_statement Annual+Quarterly-Regression | (a) Default `periods=3` liefert 3 FY-prefixed Annual-Columns (b) Explicit `period='quarterly', periods=4` liefert Q-prefixed Quarterly-Columns. Schützt vor UC4-Comment-vs-Code-Mismatch (post-context7-Validation 2026-05-08). |
 | 4 | Company.to_context() Char-Budget | `len(c.to_context()) ≤ 500 chars` (≈100 Tokens nominal +25% Puffer); Live-Char-Wert wird in PASS-Output geloggt für Audit |
 | 5 | XBRL.to_context() Char-Budget | `len(xbrl.to_context()) ≤ 1500 chars` (≈300 Tokens nominal +25% Puffer); Live-Char-Wert geloggt |
 | 6 | edgartools-Version-Sanity | `pip show edgartools` Version-String erfasst und in PASS-Output geloggt (Drift-Buffer-Audit) |
