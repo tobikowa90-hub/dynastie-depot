@@ -1,23 +1,24 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-09 spätabends (post-PIPELINE-#34-DCF-Malus-Schema-Closure, AVGO-Cluster-A komplett)
-- **Working tree:** dirty (Pre-Commit für #34 Sync-Set: schemas.py + provenance_gate.py + SKILL.md + INSTRUKTIONEN.md §27.8 + PIPELINE.md + STATE.md + CORE-MEMORY.md §13 + log.md + dieser Banner)
-- **Pipeline:** PIPELINE #34 ✅ DONE — DCF-Malus Bull-Source-Schema-Pflicht. Schema-Validator + Provenance-Gate Check #9 doppelte Verteidigungslinie; Smoke-Tests 19/19 (schema) + 10/10 (gate) + 8/8 (forward-verify) PASS. AVGO-Cluster-A komplett geschlossen (0 Items Restbestand: #30/#31/#32/#33/#34 alle DONE). 09.05.-Closure-Pentagon abgeschlossen (Wave-1 + Cluster-A-#31 + Wave-2 + Wave-3 + #34).
-- **Approval:** User-Direktive 09.05.2026 spätabends „Weiter gehts mit Task #34" — surgical Schema-Eingriff exakt nach PIPELINE-Spec ausgeführt; Sync-Set wie in PIPELINE-Item-Body explizit erklärt.
-- **Commits heute (chronologisch, vor #34-Commit):** `5fe80d6` (#31 DONE) → `1d56f0b` → `2b8f456` → `e22f534` → `db7f435` (#32+#33) → `79c6944` → `e5d8b54` (CR) → `f6b1926` (Wave-2) → `ddd1db3` (Wave-3) → `a76e50e` (#54 Wiki-Modus) → `f24be23` (PIPELINE-Cleanup) → #34-Commit (dieser).
+- **Datum:** 2026-05-09 tief-spätabends (post-PIPELINE-#22-Helper-Refactor, Konsolidierungstag-Wave-4 Tooling-Hardening)
+- **Working tree:** dirty (Pre-Commit für #22 Sync-Set: _forward_verify_helpers.py + _forward_verify_helpers_test.py NEU + PIPELINE.md + STATE.md + CORE-MEMORY.md §13 + log.md + dieser Banner)
+- **Pipeline:** PIPELINE #22 ✅ DONE — Helper `--porcelain=v1 -z`-Robust-Follow-Up. binary-mode + NUL-Split + Rename/Copy-Two-Path-Branch (X+Y Column R/C). 6 neue Edge-Case-Tests via subprocess.run-Mock + 8 existing smoke = **14/14 PASS**. Codex-Single-Pass 96% Confidence ≥ User-Gate 95% (0 HIGH, 1 minor Coverage-Gap geschlossen, 1 LOW defensive akzeptiert). 09.05.-Closure-Hexagon abgeschlossen (Wave-1 + Cluster-A-#31 + Wave-2 + Wave-3 + #54 Wiki-Modus + #34 DCF-Malus + Wave-4 #22 Helper).
+- **Approval:** User-Direktive 09.05.2026 tief-spätabends „weiter gehts mit der konsolidierungsliste" → AskUserQuestion-Auswahl `#22 (Recommended)` aus 4-Optionen-Menü; User-Gate ≥95% Confidence vor Commit explizit, 45min Auto-Mode-Abwesenheit (Katzen-Versorgung).
+- **Commits heute (chronologisch, vor #22-Commit):** `5fe80d6` (#31 DONE) → `1d56f0b` → `2b8f456` → `e22f534` → `db7f435` (#32+#33) → `79c6944` → `e5d8b54` (CR) → `f6b1926` (Wave-2) → `ddd1db3` (Wave-3) → `a76e50e` (#54 Wiki-Modus) → `f24be23` (PIPELINE-Cleanup) → `0fe3b6c` (#34 DCF-Malus) → #22-Commit (dieser).
 
 ## 🎯 Resume-Anweisung für nächste Session
 
 **KRITISCHE Test-Probe (Wave-2 Skill-Lazy-Load) ✅ erneut bestätigt diese Session:** `dynastie-depot`-Skill wurde bei Session-Start nicht auto-geladen — Schema/Code-Edit-Session ohne Skill-Aktivierung gelaufen.
 
-**Resume-Trigger:** Keine offene Direktive mehr. **Offene CR-Frage:** User hat 09.05. spätabends gefragt ob CR-Pass auf #34 separat ODER in #48 — Empfehlung dokumentiert in Antwort: in #48 Codebase-Defect-Pattern-Audit folden (#34 ist surgical 2-File-Python + 2-File-Markdown, Smoke-Tests grün, AVGO-Cluster-A-Pattern nutzt Codex-Sparring nicht CR; #48 hat explizit Konvergenz-Lesson „keine blind-CR-Pässe ohne Hypothese"). Falls User trotzdem CR will: `--dir 03_Tools/backtest-ready` Skoping, ~3-5k Token, 1-2 Findings erwartbar.
+**Resume-Trigger:** Keine offene Direktive mehr. Konsolidierungstag-Wave-4-Closure abgeschlossen, 8 PIPELINE-Items in einer Tagessession DONE.
+
+**Offene Folgefrage CR-Pass:** Wave-4-#22-Refactor wurde via Codex-Single-Pass (96%) abgenommen — kein CR-Pass; User-Memory `feedback_cr_pass_after_bulk_refactor.md` rechtfertigt CR additiv zu Codex bei Bulk-Refactor (>5 File-Edits ODER neue Algo-Logik in 200+ LOC), #22 ist 2-File-surgical-Refactor (1 Helper + 1 NEU-Test) → Single-Pass-Codex reicht. **Falls User trotzdem CR-Pass will:** `coderabbit review -t uncommitted --dir 03_Tools/backtest-ready` (~2-3k Token, 0-2 Findings erwartbar gegeben Codex-96%).
 
 **Sekundärer Termin: Mo 11.05.** Welle-3a Doctor-Snapshot-Cadence-Lauf (`python 03_Tools/system_audit.py --core` + Snapshot-File `05_Archiv/ruflo-doctor-history/2026-05-11.txt`; Δ-Vergleich gegen 05.05.-Baseline 6 PASS / 8 WARN / 0 FAIL).
 
 **Tertiär Pipeline-Items für nächste Konsolidierungs-Session:**
 - **#48** Codebase-Defect-Pattern-Audit (~4-6h, neue Session, post 2-Wochen-CR-Lauf)
-- **#22** Helper `--porcelain -z`-mode-Robust-Follow-Up (~1h, Konsolidierungstag oder Trigger)
 - **#52** Quick-Screener-Refresh deferred bis Use-Case-Trigger (10 Drift-Dimensionen audit'd)
 - **#53** Trigger-Landschafts-Audit !QuickCheck + !Rebalancing (eigene Session)
 
@@ -42,13 +43,8 @@
 
 **Lessons (siehe CORE-MEMORY §13 + Memory-Doc):** (a) Spec-Lücken ≠ Wortlaut-Widersprüche bei User-Frage ehrlich differenzieren; (b) Skill-Frontmatter-Description ist parallele Auto-Trigger-Quelle (CLAUDE.md + Frontmatter beide verengen); (c) Test-Probe für nächste Default-Session als Verifikations-Mechanismus formuliert.
 
-### Restbestand AVGO-Cluster-A (deferred — eigene Sessions)
-
-- **#34** DCF-Malus `bull_dcf_source`-Feld Schema-Erweiterung (~30-45 Min Schema-Eingriff in `schemas.py` + `provenance_gate.py` + Smoke-Tests) — Konsolidierungstag (eigene Session, keine Markdown-Edits)
-
 ### Andere offene Slots (kein fester Termin)
 
-- **#22** Helper `--porcelain -z` Refactor (~60-75 Min Tools-Engineering + Tests) — Konsolidierungstag ODER bei nächstem Pipeline-Path-Issue
 - **#48** Codebase-Defect-Pattern-Audit (~4-6h, eigene Session) — User-Direktive „kann ja nicht sein, dass wir immer wieder neue Fehler entdecken!" Pattern-Map über 03_Tools/-Codebase + 01_Skills/-SKILL.md-Logic
 - **#53** Trigger-Landschafts-Audit !QuickCheck + !Rebalancing — Strategie-Entscheidung, eigene Session
 - **#51** Cloud-AIDefence-Alternative — Decision ~Woche

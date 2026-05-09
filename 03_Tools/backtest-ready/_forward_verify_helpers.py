@@ -245,7 +245,7 @@ def build_migration_event(
 
 
 def check_freshness(repo_root: str) -> list[str]:
-    """Run ``git status --porcelain`` from *repo_root*.
+    """Run ``git status --porcelain=v1 -z`` from *repo_root*.
 
     Check which of the three REQUIRED_TOUCH_FILES (PORTFOLIO.md, Faktortabelle.md,
     log.md) are **not** modified (i.e., not shown in git status output).
@@ -258,6 +258,17 @@ def check_freshness(repo_root: str) -> list[str]:
 
     Matches files by basename, so ``00_Core/PORTFOLIO.md`` in git output maps to
     ``PORTFOLIO.md``.
+
+    Format spec (``man git-status``, porcelain v1 with ``-z``):
+
+    - Normal entry:  ``XY SP <path> NUL``
+    - Rename/Copy:   ``XY SP <path1> NUL <path2> NUL``
+      (status R/C — both old and new path consumed; basename added for both
+      so a rename of PORTFOLIO.md still counts as touched.)
+
+    The ``-z`` mode disables filename quoting / backslash-escaping, so paths
+    with spaces, Umlauts, embedded newlines, or other special chars survive
+    the round-trip intact (PIPELINE #22).
     """
     # CR 2026-05-07: timeout=30 verhindert indefinite-block (NFS, locked .git/index,
     # huge untracked-trees). FileNotFoundError-Catch fängt git-fehlt-im-PATH +
@@ -265,12 +276,13 @@ def check_freshness(repo_root: str) -> list[str]:
     # returncode existiert). Returncode-Check verhindert silent „alle unmodified"
     # bei nicht-Repo / Permissions. Alle drei Fehlermodi → RuntimeError mit
     # klarem repo_root-Kontext.
+    # PIPELINE #22 (2026-05-09): kein encoding= → bytes-mode, da -z literal NUL
+    # ausgibt (NUL ist nicht text-decodable als field separator).
     try:
         result = subprocess.run(
-            ["git", "status", "--porcelain"],
+            ["git", "status", "--porcelain=v1", "-z"],
             cwd=repo_root,
             capture_output=True,
-            encoding="utf-8",
             timeout=30,
         )
     except subprocess.TimeoutExpired as exc:
@@ -283,24 +295,41 @@ def check_freshness(repo_root: str) -> list[str]:
             f"(git nicht installiert oder repo_root existiert nicht): {exc}"
         ) from exc
     if result.returncode != 0:
+        stderr_str = (result.stderr or b"").decode("utf-8", errors="replace").strip()
+        stdout_str = (result.stdout or b"").decode("utf-8", errors="replace").strip()
         raise RuntimeError(
             f"git status failed in {repo_root} (returncode={result.returncode}): "
-            f"{result.stderr.strip() or result.stdout.strip() or '(no output)'}"
+            f"{stderr_str or stdout_str or '(no output)'}"
         )
-    # Each line: 2-char status code + space + path
+
     modified_basenames: set[str] = set()
-    for line in result.stdout.splitlines():
-        if not line or len(line) < 4:
+    # Each entry is NUL-terminated; the trailing NUL after the last entry yields
+    # an empty trailing token after split — drop it.
+    entries = result.stdout.split(b"\x00")
+    if entries and not entries[-1]:
+        entries.pop()
+
+    i = 0
+    while i < len(entries):
+        entry = entries[i]
+        # Layout: XY (2 bytes) + space (1 byte) + path bytes
+        if len(entry) < 4:
+            i += 1
             continue
-        # porcelain format: XY<space>path — always 3-char prefix
-        filepath = line[3:].strip()
-        # Git quotes paths containing spaces or special chars with surrounding "..."
-        # (default core.quotePath=true). Strip quotes so basename matching works
-        # for files in paths like "07_Obsidian Vault/.../log.md".
-        if len(filepath) >= 2 and filepath[0] == '"' and filepath[-1] == '"':
-            filepath = filepath[1:-1]
-        basename = Path(filepath).name
-        modified_basenames.add(basename)
+        xy = entry[:2]
+        path_str = entry[3:].decode("utf-8", errors="replace")
+        modified_basenames.add(Path(path_str).name)
+
+        # Rename (R) or Copy (C) status: NEXT entry is the second path
+        # (no XY prefix, raw path bytes — git docs: in -z mode "from" follows "to").
+        # Accept R/C in either index (porcelain XY can be 'R ', ' R', 'RM', etc.).
+        if xy[0:1] in (b"R", b"C") or xy[1:2] in (b"R", b"C"):
+            if i + 1 < len(entries):
+                second_path = entries[i + 1].decode("utf-8", errors="replace")
+                modified_basenames.add(Path(second_path).name)
+                i += 2
+                continue
+        i += 1
 
     missing = [
         fname
