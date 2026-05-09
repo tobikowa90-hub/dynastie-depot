@@ -11,7 +11,14 @@
 
 **KRITISCHE Test-Probe (Wave-2 Skill-Lazy-Load) ✅ erneut bestätigt diese Session:** `dynastie-depot`-Skill wurde bei Session-Start nicht auto-geladen — Schema/Code-Edit-Session ohne Skill-Aktivierung gelaufen.
 
-**Resume-Trigger:** Keine offene Direktive mehr. Konsolidierungstag-Wave-4-Closure abgeschlossen, 8 PIPELINE-Items in einer Tagessession DONE.
+**Resume-Direktive nächste Session — PIPELINE #53 Trigger-Landschafts-Audit `!QuickCheck` + `!Rebalancing`** (~30-45 min, eigene Session, User-Strategie-Entscheidung): 2/4 `!`-Trigger ungelebt — `!Rebalancing` 0× genutzt seit Trigger-Definition; `!QuickCheck` 1× in 6 Wochen (Mastercard-Intake). `!Analysiere` aktiv, `!SyncBriefing` regelmäßig. **Drei Optionen zur User-Entscheidung:**
+- **(A) Archivieren:** ungelebte Trigger aus CLAUDE.md Routing-Table entfernen + Skills (`quick-screener` + Rebalancing-Workflow) auf Hibernate-Status — Watchlist-Sweep + Rebalancing informell statt formal.
+- **(B) Routine-Anker:** monatlicher Anker für `!QuickCheck` (1-2 Watchlist-Kandidaten/Monat) + quarterly Anker für `!Rebalancing` (post-Earnings-Window-Schluss z.B. ~03.08. nach BRK.B Q2).
+- **(C) Weiter beobachten:** keine Aktion, 2-Monats-Re-Audit ~09.07.2026 mit Use-Case-Count-Tracking.
+
+**Sync-Set bei (A):** CLAUDE.md Routing-Table + Skill-Hibernate-Marker + log.md + PIPELINE.md (#53 streichen + Footer-Bump). **Sync-Set bei (B):** Calendar-Anker in PORTFOLIO.md + ggf. SKILL.md-Anpassung + log.md + PIPELINE.md (#53 streichen + Footer-Bump). **Sync-Set bei (C):** nur Memory-Note + 2-Monats-Re-Audit-Item + PIPELINE.md (#53 streichen für 2-Monats-Re-Audit-Replacement-Item).
+
+**Resume-Trigger Standard:** „Session starten" + STATE/PORTFOLIO laden + dann „weiter mit #53" → Strategie-Frage stellen (User wählt A/B/C) → Sync-Set nach §18 → Commit → Push.
 
 **Offene Folgefrage CR-Pass:** Wave-4-#22-Refactor wurde via Codex-Single-Pass (96%) abgenommen — kein CR-Pass; User-Memory `feedback_cr_pass_after_bulk_refactor.md` rechtfertigt CR additiv zu Codex bei Bulk-Refactor (>5 File-Edits ODER neue Algo-Logik in 200+ LOC), #22 ist 2-File-surgical-Refactor (1 Helper + 1 NEU-Test) → Single-Pass-Codex reicht. **Falls User trotzdem CR-Pass will:** `coderabbit review -t uncommitted --dir 03_Tools/backtest-ready` (~2-3k Token, 0-2 Findings erwartbar gegeben Codex-96%).
 
