@@ -1,7 +1,8 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-05-09 (Vault-Health-Maintenance PIPELINE #54: Index-Drift fix — `[[Quality-Trap]]` + `[[MA]]` ergänzt; `[[RETROSPECTIVE-GATE]]` Vault-Stub NEU als Backlink-Anker für `00_Core/RETROSPECTIVE-GATE.md` (§29 Pointer-Extraction Wave-3); 15 Concept-Pages §29-Backlink-Refresh.)
+> Last updated: 2026-05-09 (Paper-Ingest Phase D-1 Final-Closure — Gemini-Recherche-Triage: 2 neue Source-Pages [[Peters-Taylor-2017-Intangible-Capital]] (B29) + [[Daniel-Hirshleifer-Sun-2020-Behavioural-Factors]] (B30); 2 neue Concept-Pages [[Intangible-Adjusted-Value]] + [[Behavioural-Factors-DHS-Model]]; 5 neue Author-Stubs [[ryan-h-peters]] / [[lucian-a-taylor]] / [[kent-d-daniel]] / [[david-hirshleifer]] / [[lin-sun]]; Synthese [[Wissenschaftliche-Fundierung-DEFCON]] 34→36 Quellen / 28→30 Befunde + Codex-Pkt-7-Sync-Bruch-Korrektur (B30 Wortlaut-Präzisierung); SKILL.md §410-B29-Anker + §27.7-B30-Anti-Buyback-Cross-Reference. Codex-Single-Pass 96% APPROVE. Phase D-2/D-3 deferred.)
+> Last updated (zuvor): 2026-05-09 (Vault-Health-Maintenance PIPELINE #54: Index-Drift fix — `[[Quality-Trap]]` + `[[MA]]` ergänzt; `[[RETROSPECTIVE-GATE]]` Vault-Stub NEU als Backlink-Anker für `00_Core/RETROSPECTIVE-GATE.md` (§29 Pointer-Extraction Wave-3); 15 Concept-Pages §29-Backlink-Refresh.)
 > Last updated (zuvor): 2026-05-06 (Satelliten-State-Drift-Cleanup: 8 von 11 Zeilen auf aktuellen DEFCON/Score/Sparraten/FLAG-State gebracht — AVGO 84→53/D4→D2/FLAG, COST/RMS/VEEV/SU 🟢4→🟡3 Schema-Fix, V 86→64/D4→D2 Rescoring 28.04., APH 63→61/D3→D2 Q1 30.04., TMO 63/D2→67/D3 Resolve 23.04., MSFT 59→50 Q3 30.04. Sparraten als Tertiär-Info ergänzt.)
 > Last updated (zuvor): 2026-04-27 (Paper-Ingest Phase A+B+C: 14 source-pages B25-B28 + 10 SOURCE-ONLY, 6 neue concept-pages, 30 entity-pages. Phase-B-Errata gefixt: 3 entity-files mit halluzinierten Vornamen umbenannt + broken sources-link `Amundi-2024-Quality-Pillars` → `Amundi-Quality-2021` korrigiert in 4 entity-pages.)
 > Last updated (zuvor): 2026-04-26 (Hub-Split-Lückenschluss: 3 neue Vault-Stubs PORTFOLIO/PIPELINE/SYSTEM als Backlink-Anker + DEFCON-System 4-Layer→5-Layer Inkonsistenz gefixt; Lint-Follow-up zur Vault-Sanitation 25.04.)
@@ -55,6 +56,10 @@
 - [[Hou-Xue-Zhang-2015-q-Factor]] — Review of Financial Studies 2015: q-Theory-Faktor (Mkt+ME+I/A+ROE) — konvergente Evidenz zu FF-5 (SOURCE-ONLY anchors B2, B8) ← NEU 2026-04-26 Phase A
 - [[Yang-Liu-Wang-2023-FinGPT]] — FinLLM 2023 @ IJCAI: Open-Source 5-Layer-Framework für Finance-LLMs; LoRA-Fine-Tuning (SOURCE-ONLY komplementär B19, B24) ← NEU 2026-04-26 Phase A
 - [[2iQ-Insider-Meta-Review-2021]] — 2iQ Research Blog 2021 (industry-meta): Konsolidiertes Review Insider-Trading-Akademie 1968-2018 (SOURCE-ONLY anchors B26, B27) ← NEU 2026-04-26 Phase A
+
+### Akademische Paper (Paper-Ingest Phase D-1 — B29 + B30 Gemini-Recherche-Triage) — `wiki/sources/papers/`
+- [[Peters-Taylor-2017-Intangible-Capital]] — Journal of Financial Economics 123(2) 2017: Total q (physisches + intangibles Capital) erfüllt Hayashi-Bedingung; klassisches Tobin's q ist Mess-Artefakt; theoretische Fundierung der §410 IC-bereinigten ROIC (B29 `active-scoring-validation`) ← NEU 2026-05-09 Phase D-1
+- [[Daniel-Hirshleifer-Sun-2020-Behavioural-Factors]] — Review of Financial Studies 33(4) 2020: DHS-3-Faktor-Behavioural-Modell (MKT+PEAD+FIN); Klammer-Anker über B11/B26/B27/B28 + Anti-Buyback-Sentiment-Drift-Disziplin (B30 `active-scoring-validation`) ← NEU 2026-05-09 Phase D-1
 
 ### Datenquellen-APIs (`wiki/sources/tools/`)
 - [[defeatbeta]] — US-Fundamentals (Primär): Income, Cash Flow, ROIC, WACC, Geographic Revenue
@@ -113,6 +118,11 @@ _(noch leer)_
 - [[mihai-cucuringu|Mihai Cucuringu]] — Co-Autor FINSABER (UCLA Math/Stats + Oxford OMI) ← NEU 2026-04-20
 - [[tiejun-ma|Tiejun Ma]] — Co-Autor FINSABER (Edinburgh AIAI, vermutlich Supervisor) ← NEU 2026-04-20
 - [[alexander-pearson-sheppert|Alexander Pearson Sheppert]] — Alleinautor GT-Score (Capitol Tech U) ← NEU 2026-04-20
+- [[ryan-h-peters|Ryan H. Peters]] — Co-Autor Peters-Taylor-2017 (Tulane / Wharton); Total-q-Konstruktion / Investment-q-Korrektur (B29) ← NEU 2026-05-09 Phase D-1
+- [[lucian-a-taylor|Lucian A. Taylor]] — Co-Autor Peters-Taylor-2017 (Wharton); Corporate Investment + Intangible-Capital-Measurement (B29) ← NEU 2026-05-09 Phase D-1
+- [[kent-d-daniel|Kent D. Daniel]] — Co-Autor DHS-2020 (Columbia GSB); Behavioural-Finance + DHS-1998-Overconfidence-Modell (B30) ← NEU 2026-05-09 Phase D-1
+- [[david-hirshleifer|David Hirshleifer]] — Co-Autor DHS-2020 (UCI / USC Marshall); Limited-Attention + Behavioural-Modelle (B30) ← NEU 2026-05-09 Phase D-1
+- [[lin-sun|Lin Sun]] — Co-Autorin DHS-2020 (FIU); Asset-Pricing + Behavioural-Faktor-Empirie (B30) ← NEU 2026-05-09 Phase D-1
 - [[abhinav-arun|Abhinav Arun]] — Erstautor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
 - [[fabrizio-dimino|Fabrizio Dimino]] — Co-Autor FinReflectKG + Präsentator Quant x AI NY 2025 (Domyn NY) ← NEU 2026-04-20 Phase 1b
 - [[tejas-prakash-agarwal|Tejas Prakash Agarwal]] — Co-Autor FinReflectKG (Domyn NY) ← NEU 2026-04-20 Phase 1b
@@ -221,6 +231,8 @@ _(noch leer)_
 - [[Media-Pessimism-Sentiment]] — Tetlock 2007 Mean-Reversion-Anker; hohe Media-Pessimism → kurzfrist Drawdown + komplette Reversion zu Fundamentals 5-10 Tage; ankert Sentiment-Block-Architektur (B28 design-context) ← NEU 2026-04-26 Phase B
 - [[Noise-Trader-Model]] — Liquidity-Trader-Modell zu Tetlock 2007 Volume-Pattern (Absolut-Wert); ergänzt B28-Architektur ← NEU 2026-04-26 Phase B
 - [[Competitive-Advantage-Period]] — Mauboussin/Callahan 2024 CAP-Konzept; zweite Moat-Dimension neben ROIC-WACC-Spread (Magnitude × Sustainability) ← NEU 2026-04-26 Phase B
+- [[Intangible-Adjusted-Value]] — Peters/Taylor 2017 Total-q-Theorie + Crouzet/Eberly 2019 Goodwill-als-externalisiertes-Intangibles-Brücke; wissenschaftliche Fundierung der §410 IC-bereinigten ROIC (B29 `active-scoring-validation`) ← NEU 2026-05-09 Phase D-1
+- [[Behavioural-Factors-DHS-Model]] — Daniel/Hirshleifer/Sun 2020 PEAD+FIN-Klammer-Anker über B11/B26/B27/B28; Anti-Buyback-Sentiment-Drift-Disziplin + Earnings-Wait-Discipline-PEAD-Fundierung (B30 `active-scoring-validation`) ← NEU 2026-05-09 Phase D-1
 
 ### Backtest-Validation-Framework (§29 Gate — FUTURE-ACTIVATION 2028-04-01)
 - [[PBO-Backtest-Overfitting]] — Bailey PBO/CSCV-Methode; §29.1 Methoden-Gate (B15) ← NEU 2026-04-19

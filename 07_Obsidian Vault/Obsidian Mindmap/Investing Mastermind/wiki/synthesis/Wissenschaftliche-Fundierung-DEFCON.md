@@ -37,6 +37,8 @@ sources:
   - "[[Hou-Xue-Zhang-2015-q-Factor]]"
   - "[[Yang-Liu-Wang-2023-FinGPT]]"
   - "[[2iQ-Insider-Meta-Review-2021]]"
+  - "[[Peters-Taylor-2017-Intangible-Capital]]"
+  - "[[Daniel-Hirshleifer-Sun-2020-Behavioural-Factors]]"
 concepts:
   - "[[5J-Fundamental-Fenster]]"
   - "[[FCF-Primacy]]"
@@ -61,6 +63,8 @@ concepts:
   - "[[RAG-Uncertainty-Quantification]]"
   - "[[LLM-Preference-Optimization-Finance]]"
   - "[[Sentiment-Strength-Logit-Extraction]]"
+  - "[[Intangible-Adjusted-Value]]"
+  - "[[Behavioural-Factors-DHS-Model]]"
 related:
   - "[[DEFCON-System]]"
   - "[[Analyse-Pipeline]]"
@@ -87,10 +91,11 @@ status: aktiv
 # Wissenschaftliche Fundierung DEFCON v3.7
 
 > Dieses Dokument belegt, dass das DEFCON-Scoring-System auf peer-reviewed Forschung basiert.
-> 34 Quellen → 28 Befunde → operative Konsequenzen für das Dynasty-Depot.
+> 36 Quellen → 30 Befunde → operative Konsequenzen für das Dynasty-Depot.
 > **Stand 2026-04-20 Abend nach Phase-1b-Ingest:** B21-B24 sind **keine Scoring-Änderungen**, sondern Architektur/Methoden-Befunde für zukünftige Skill-Erweiterungen + Validation-Pflichten.
 > **Stand 2026-04-26 nach Paper-Ingest Phase A:** B25-B28 ergänzt. B25 ist `meta-gate` (§29.7 M&P-Discount angelegt 26.04.2026). B26 ist `active-scoring-validation` (Codex-Re-Klassifikation: bestätigt Insider-Block-Heuristik, kein neues Score-Element). B27 + B28 sind `design-context` (Codex-Re-Klassifikation: insider-intelligence-v2-Roadmap-Anker + Sentiment-Mean-Reversion-Architektur-Anker).
 > **Stand 2026-04-27 Phase C-1:** Quellen-Übersicht-Tabelle 20 → 34 erweitert. 10 SOURCE-ONLY-Pages aus Phase A (QMJ, Mauboussin/Callahan, Amundi, FF-2015, HLZ-2016, AMP-VME, FF-2006, HXZ-q-Factor, FinGPT, 2iQ-Meta) als **nicht-Befund-Anker** integriert — sie ankern bestehende Befunde (B2, B5, B7, B8, B16, B26) wissenschaftlich, ohne eigenständigen Score-Pfad oder neue B-Befund-ID. Befund-Zähler bleibt bei 28.
+> **Stand 2026-05-09 Phase D-1 (Gemini-Recherche-Ingest):** B29 + B30 ergänzt — Peters/Taylor 2017 (Total q / Intangible-Adjusted-Value) als `active-scoring-validation` für §410 IC-bereinigte ROIC; Daniel/Hirshleifer/Sun 2020 (PEAD+FIN Behavioural-Faktor-Klammer) als `active-scoring-validation` für Sentiment+Insider-Block-Existenz. Beide sind **keine neuen Score-Pfade**, sondern wissenschaftliche Härtung bestehender Mechaniken: B29 fundiert §410-Bereinigung theoretisch (statt rein Präzedenz-Argument); B30 liefert die Klammer über B11/B26/B27/B28 + Anti-Buyback-Sentiment-Drift-Anker (V-Q2-28.04. + BRK.B-04.05. Methodology-Lehren). 34 → 36 Quellen, 28 → 30 Befunde. Phase D-2 (Eisfeldt/Papanikolaou + Barillas/Shanken `meta-gate`) + Phase D-3 (NBER + CPZ SOURCE-ONLY) bleiben deferred.
 
 ---
 
@@ -110,7 +115,7 @@ status: aktiv
 
 ---
 
-## 28-Befunde Entscheidungsmatrix (Stand: 26.04.2026, post Phase-A-Ingest)
+## 30-Befunde Entscheidungsmatrix (Stand: 09.05.2026, post Phase-D-1-Ingest)
 
 | # | Befund | Quelle | Block | Empfehlung | Konsequenz |
 |---|--------|--------|-------|------------|------------|
@@ -142,6 +147,8 @@ status: aktiv
 | **B26** | Insider-Käufe > Insider-Verkäufe in Information; Aggregate-Predictability; Small-Cap-Concentration; Contrarian-Timing | [[Lakonishok-Lee-2001]] | `active-scoring-validation` — Insider-Block (5 Pt.) | Bestätigt Status-quo-Heuristik (Buy-Side höher gewichtet, Form-4-X/M-Filter via [[OpenInsider]]) | Keine Score-Änderung; primär-empirische Validation der seit insider-intelligence-v1 operativen Filter |
 | **B27** | Insider-Verkäufe Q-9 bis Q-3 vor Earnings-Break (Legal-Jeopardy-vermeidet); Q-2/Q-1 fast Null abnormal; aktuelles 6M-Window verfehlt strukturell | [[Ke-Huddart-Petroni-2003]] | `design-context` — Insider-Block (Window-Erweiterung deferred) | Pipeline-Item: insider-intelligence v2 mit 24-Monats-Lookback gegen Performance-Backtest auf Score-Archiv | Kein Score-Element heute; erklärt scheinbare Buy>Sell-Asymmetrie aus B26 als Window-Artefakt |
 | **B28** | Hohe Media-Pessimism prädiziert kurzfrist Drawdown + komplette Reversion zu Fundamentals (5-10 Tage); Volume-Pattern in Absolut-Wert (Liquidity-Trader-Modell) | [[Tetlock-2007]] | `design-context` — Sentiment-Block (10 Pt.) Architektur-Anker | Mean-Reversion-Prinzip ankert Score-Stabilität gegen Tagesnachrichten; validiert B11 Crowd-Consensus-Malus | Keine Score-Änderung; begründet Sentiment-Block-Existenz empirisch (gegen Sideshow-Hypothese) |
+| **B29** | Total q (physisch + intangibles Capital) erfüllt Hayashi-Bedingung; klassisches Tobin's q ist Mess-Artefakt; Goodwill bei M&A-Compoundern = externalisiertes Intangibles-Capital (Crouzet/Eberly 2019 Brücke) | [[Peters-Taylor-2017-Intangible-Capital]] | `active-scoring-validation` — Fundamentals-Block (50 Pt.) §410 IC-bereinigte ROIC | §410-Bereinigung wissenschaftlich fundiert statt rein Präzedenz-Argument (AVGO 30.04.); Tie-Break IC-GW vs Regel-4 (40%-Goodwill-Asset-Schwelle) theoretisch erklärt | Keine Score-Änderung; SKILL.md §410-Block trägt B29-Anker explizit (Phase D-1 2026-05-09); Phase D-2 OrgCap-Sub-Score (Eisfeldt/Papanikolaou) deferred |
+| **B30** | DHS-3-Faktor-Modell (MKT+PEAD+FIN) erklärt breitere Anomalie-Menge als FF-5; PEAD = Short-Horizon Underreaction (~3M Half-Life); FIN = Long-Horizon Manager-Timing via Net-Issuance (1-3J Half-Life); Klammer für B11/B26/B27/B28 | [[Daniel-Hirshleifer-Sun-2020-Behavioural-Factors]] | `active-scoring-validation` — Sentiment-Block (10 Pt.) + Insider-Block (5 Pt.) | Buyback ≠ Sentiment-Bonus (V-Q2-28.04. + BRK.B-04.05.-Methodology-Lehren); Earnings-Wait-Discipline §19.1 wissenschaftlich verankert via PEAD-Theorie | Keine Score-Änderung; Anti-Buyback-Disziplin im SKILL.md §27.7-Cross-Reference verankert (Phase D-1 Final-Closure 2026-05-09); SKILL-Output-Template Sentiment+Insider B30-Klammer-Notation deferred bis Schritt-3-Edit-Slot; FIN-Sub-Score §28.1-Migration deferred |
 
 ---
 
@@ -190,6 +197,8 @@ status: aktiv
 | B26 | `active-scoring-validation` | Insider-Block (5 Pt.) — bestätigt Buy>Sell + Form-4-X/M-Filter via [[OpenInsider]] | Codex-WARN re-klassifiziert (Page-Body: „kein neues Scoring-Element, primär-empirische Validation") |
 | B27 | `design-context` | insider-intelligence v2 Pipeline (24-Monats-Sell-Window für Pre-Earnings-Break-Detection) | Codex-WARN re-klassifiziert (Page-Body: „Kein Live-Score-Change bis insider-intelligence v2 deployed"); deferred bis §29-Backtest-Gate-Kriterien erfüllt |
 | B28 | `design-context` | Sentiment-Block (10 Pt.) — Architektur-Anker für Mean-Reversion-Score-Stabilität + B11-Crowd-Consensus-Validation | Codex-WARN re-klassifiziert (Page-Body: „B28 deaktiviert KEINEN bestehenden Score-Pfad"); ankert die Anti-Tagesnachrichten-Architektur |
+| B29 | `active-scoring-validation` | Fundamentals-Block (50 Pt.) — §410 IC-bereinigte ROIC; Tie-Break IC-GW vs Regel-4 (40%-Goodwill-Asset-Schwelle) | Total-q-Theorie als wissenschaftliche Fundierung der seit AVGO-30.04.2026 operativen Goodwill-Bereinigung; SKILL.md §410-Block trägt B29-Anker explizit (Phase D-1 2026-05-09) |
+| B30 | `active-scoring-validation` | Sentiment-Block (10 Pt.) + Insider-Block (5 Pt.) — Klammer-Anker über B11/B26/B27/B28; Anti-Buyback-Sentiment-Drift-Disziplin | DHS-Modell als theoretische Klammer; Anti-Methodology-Drift-Anker (V-Q2-28.04. + BRK.B-04.05.); Earnings-Wait-Discipline §19.1 PEAD-fundiert; Anti-Buyback-Disziplin via SKILL.md §27.7-Cross-Reference verdrahtet (Phase D-1 Final-Closure 2026-05-09); SKILL-Output-Template Sentiment+Insider B30-Klammer-Notation deferred bis Schritt-3-Edit-Slot |
 
 ### Aktivierungs-Regeln (bindend)
 
@@ -218,7 +227,7 @@ Jeder zukünftige Befund MUSS bei Ingest in diese Matrix eingetragen werden mit 
 
 ---
 
-## Quellen-Übersicht (34 Paper — Stand: 27.04.2026 — Phase A + C-1)
+## Quellen-Übersicht (36 Paper — Stand: 09.05.2026 — Phase A + C-1 + D-1)
 
 | Quelle | Jahr | Kernthese | DEFCON-Block | Neue Befunde |
 |--------|------|-----------|--------------|-------------|
@@ -256,6 +265,8 @@ Jeder zukünftige Befund MUSS bei Ingest in diese Matrix eingetragen werden mit 
 | [[Hou-Xue-Zhang-2015-q-Factor]] | 2015 | q-Theory-Faktor-Modell (Mkt+ME+I/A+ROE) — konvergente Evidenz zu FF-5 aus zweiter, theoretisch unabhängiger Methodologie | Fundamentals (Profitability + Investment-Validation) | SOURCE-ONLY (anchors B2, B8) ← NEU 2026-04-26 Phase A |
 | [[Yang-Liu-Wang-2023-FinGPT]] | 2023 | Open-Source 5-Layer-Framework für Finance-LLMs (Data Source / Engineering / LLMs / Tasks / Applications); LoRA-Fine-Tuning | Architektur-Kontext (DEFCON-orthogonal Long-Only) | SOURCE-ONLY (komplementär B19, B24) ← NEU 2026-04-26 Phase A |
 | [[2iQ-Insider-Meta-Review-2021]] | 2021 | Industry-Meta-Review Insider-Trading 1968-2018 (Lorie/Niederhoffer/Seyhun/L&L/JMZ/Dardas/Alldredge/Kang) | Insider-Block (insider-intelligence-Skill-Begründung) | SOURCE-ONLY (industry-meta — anchors B26, B27) ← NEU 2026-04-26 Phase A |
+| [[Peters-Taylor-2017-Intangible-Capital]] | 2017 | Total q (physisches + intangibles Capital) erfüllt Hayashi-Bedingung; klassisches Tobin's q ist Mess-Artefakt; Goodwill als externalisiertes Intangibles-Capital | Fundamentals-Block (50 Pt.) — §410 IC-bereinigte ROIC | B29 ← NEU 2026-05-09 Phase D-1 |
+| [[Daniel-Hirshleifer-Sun-2020-Behavioural-Factors]] | 2020 | DHS-3-Faktor-Modell (MKT+PEAD+FIN); PEAD Short-Horizon Underreaction + FIN Long-Horizon Manager-Timing via Net-Issuance | Sentiment-Block (10 Pt.) + Insider-Block (5 Pt.) Klammer-Anker | B30 ← NEU 2026-05-09 Phase D-1 |
 
 ---
 
@@ -312,6 +323,8 @@ Jadhav-Mirza-2025 ─────► B11 (Bestätigung) ────────
 Piotroski-2000 ────────► [[F-Score-Quality-Signal]] ────► Fundamentals Quality-Bonus (B12)
 Novy-Marx-2013 ────────► [[Gross-Profitability-Premium]] ► Fundamentals GP/TA-Metrik (B13)
 Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] ────► Fundamentals Accrual Ratio (B14)
+Peters-Taylor-2017 ────► [[Intangible-Adjusted-Value]] ──► §410 IC-bereinigte ROIC (B29)
+Daniel-Hirshleifer-Sun-2020 ─► [[Behavioural-Factors-DHS-Model]] ─► Sentiment+Insider Klammer (B30)
 ```
 
 ## Scoring-System-Audit v3.4 → v3.5 (16.04.2026)
@@ -346,10 +359,11 @@ Sloan-1996 ────────────► [[Accruals-Anomalie-Sloan]] �
 | 2026-04-20 Abend | **Phase 1b** des 6-Paper-Ingest-Projekts: 4 Severity-🟡-Papers integriert — FinReflectKG (B21, Arun et al. Domyn 2025) + Labre-Companion (B22, Towards AI 2025) + Bayesian RAG (B23, Ngartera et al. Frontiers 2026) + FinDPO (B24, Iacovides et al. Imperial 2025). 16→20 Quellen, 20→24 Befunde. B21-B24 sind **keine Scoring-Änderungen**, sondern: (1) Architektur-Referenzen für zukünftige KG/RAG-Skill-Erweiterungen (neue Synthesis [[Knowledge-Graph-Architektur-Roadmap]] v0.1 mit Entscheidungsvorlage Gate 1-3); (2) wissenschaftliche Fundierung des v3.0.3 Morning-Briefing Korrektheits-Prinzips; (3) Methoden-Kontext für Future-News-Sentiment-Integration. **Vault-only-Phase** — DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert. Hard-Checkpoint vor Phase 2 (System-Konsequenzen) eingehalten. |
 | 2026-04-26 | **Paper-Ingest Phase A** Phase-B1: 4 neue Befunde B25-B28 in Status-Matrix + Entscheidungsmatrix integriert. **Codex-Re-Klassifikation übernommen** (Page-Tags `active-scoring` widersprachen Page-Body): B25 = `meta-gate` (§29.7 M&P-Discount in B1-2 in INSTRUKTIONEN.md angelegt 26.04.2026), B26 = `active-scoring-validation` (NEUES Status-Label — Insider-Block-Heuristik primär-empirisch bestätigt, kein neues Score-Element), B27 = `design-context` (NEUES Status-Label — insider-intelligence-v2-Window-Erweiterung deferred), B28 = `design-context` (Sentiment-Block Mean-Reversion-Architektur-Anker). 20 Quellen → 28 Befunde. **Vault-only-Phase** — DEFCON v3.7 unverändert, Scores unverändert. Quellen-Übersicht-Tabelle (20→34 inkl. 10 SOURCE-ONLY-Pages aus Phase A) erfolgt in Phase C-1. |
 | 2026-04-27 | **Paper-Ingest Phase C-1**: Quellen-Übersicht-Tabelle 20 → 34 Zeilen erweitert. 14 neue Zeilen integriert: B25-B28 (McLean-Pontiff, Lakonishok-Lee, Ke-Huddart-Petroni, Tetlock) mit voller B-Befund-ID + DEFCON-Block-Mapping; 10 SOURCE-ONLY (Asness/Frazzini/Pedersen QMJ, Mauboussin/Callahan, Amundi-Quality, Fama/French 2015 Five-Factor, Harvey/Liu/Zhu 2016, Asness/Moskowitz/Pedersen VME, Fama/French 2006, Hou/Xue/Zhang q-Factor, Yang/Liu/Wang FinGPT, 2iQ-Insider-Meta) als nicht-Befund-Anker mit `SOURCE-ONLY (anchors BX)`-Notation in Spalte 5. Header-Counter 20 → 34 Quellen aktualisiert (Befund-Zähler 28 unverändert — SOURCE-ONLY-Pages erzeugen keine neuen B-IDs). Frontmatter-`sources:`-Array um 10 Einträge erweitert. McLean-Pontiff-Eintrag verwendet konsistent **58% operativer Total-Decline** (cde7fa9 / c847dba) statt 32pp publication-effect lower bound (Vermeidung Discount-Verschmelzung — Hauptrisiko Phase C). DEFCON v3.7 unverändert, Scores unverändert. |
+| 2026-05-09 | **Paper-Ingest Phase D-1** (Gemini-Recherche-Triage 09.05.): 2 neue Befunde B29 + B30 als `active-scoring-validation` integriert — Peters/Taylor 2017 (Total q / Intangible-Adjusted-Value, JFE 123(2)) als wissenschaftliche Fundierung der seit AVGO-30.04.2026 operativen §410-IC-bereinigten ROIC; Daniel/Hirshleifer/Sun 2020 (PEAD+FIN Behavioural-Faktor-Modell, RFS 33(4)) als theoretische Klammer über B11/B26/B27/B28 + Anti-Buyback-Sentiment-Drift-Anker (V-Q2-28.04. + BRK.B-04.05.-Methodology-Lehren). 34 → 36 Quellen, 28 → 30 Befunde. Quellen-Übersicht-Tabelle erweitert. Frontmatter-`sources:`-Array + `concepts:`-Array um je 2 Einträge erweitert (Intangible-Adjusted-Value + Behavioural-Factors-DHS-Model). Konzept-Karte um 2 Linien erweitert. SKILL.md §410-Block trägt B29-Anker explizit (Eigen-Edit innerhalb Phase D-1). SKILL-Output-Template Sentiment+Insider-Block trägt B30-Klammer-Notation analog B26/B27/B28 (deferred bis SKILL.md-Schritt-3-Edit-Slot). **Vault-only-Phase** — DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert. **Phase D-2 deferred:** Eisfeldt/Papanikolaou 2013 (`design-context` OrgCap-Sub-Score-Anker) + Barillas/Shanken 2017+2018 (`meta-gate` §29.4-Erweiterung Bayesian-Tie-Break). **Phase D-3 deferred:** NBER „Intangible Value" + Chen/Pelger/Zhu 2023 als SOURCE-ONLY-Anker. **Reject:** Bryzgalova/Pelger/Zhu 2020 (DEFCON-orthogonal — Asset-Pricing-Tree-Konstruktion, kein Long-Only-Stock-Picker-Pfad). Gemini-Cross-Sync-Audit deferred bis post-Codex-Single-Pass-Review. |
 
 ## Validierung der Befunde (Backtest-Ready-Infrastructure, seit 2026-04-17)
 
-Die 28 Befunde sind heute **nicht formal validiert** — das Scoring-System ist wissenschaftlich fundiert (peer-reviewed Papers) und hart kalibriert (AVGO/MKL/SNPS als Anker), aber statistische Forward-Return-Validation scheitert an Sample-Size (11 Satelliten × ~2 Jahre Historie, sparse FLAG-Events).
+Die 30 Befunde sind heute **nicht formal validiert** — das Scoring-System ist wissenschaftlich fundiert (peer-reviewed Papers) und hart kalibriert (AVGO/MKL/SNPS als Anker), aber statistische Forward-Return-Validation scheitert an Sample-Size (11 Satelliten × ~2 Jahre Historie, sparse FLAG-Events).
 
 **Lösung:** Nicht heute validieren, sondern Infrastruktur bauen, die 2028+ **überhaupt Validierung ermöglicht**. Ab 17.04.2026 wird jeder Score + jedes FLAG-Event unveränderlich in `05_Archiv/*.jsonl` archiviert.
 
