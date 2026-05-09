@@ -1,8 +1,60 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-09 nach Cluster-A-#31 ✅ DONE + AVGO-Closure-Welle-1-Setup für nächste Session. Working tree clean. Drei Commits heute: `5fe80d6` (#31 DONE) + `1d56f0b` (Banner-Refresh) + `2b8f456` (AVGO-Closure-Anker) + Folge-Commit (dieser Banner-Edit).
+**Aktualisiert:** 2026-05-09 abends nach Welle-1 AVGO-Cluster-A-Closure ✅ DONE (PIPELINE #32 + #33 Solo-Commit-Bündel, Codex-R1+R2 96% APPROVE). Working tree clean. Fünf Commits heute: `5fe80d6` (#31 DONE) + `1d56f0b` (Banner-Refresh #31) + `2b8f456` (AVGO-Closure-Anker Welle-1-Setup) + `e22f534` (Banner-Refinement) + `db7f435` (#32+#33 Welle-1 DONE) + Folge-Commit (dieser Banner-Refresh).
 
-## 🎯 Resume-Anweisung für nächste Session (HÖCHSTE PRIORITÄT)
+## 🎯 Resume-Anweisung für nächste Session
+
+**Kein kritischer Resume-Trigger.** Welle-1 (#32 + #33) ist abgeschlossen. Nächster regulärer Termin: **Mo 11.05.** Welle-3a Doctor-Snapshot-Cadence-Lauf (`python 03_Tools/system_audit.py --core` + Snapshot-File `05_Archiv/ruflo-doctor-history/2026-05-11.txt`; Δ-Vergleich gegen 05.05.-Baseline 6 PASS / 8 WARN / 0 FAIL).
+
+**User-Manual-Step heute Abend:** `06_Skills-Pakete/dynastie-depot_v3.7.6.zip` neu deployen (mit den heute eingearbeiteten SKILL.md-Edits) + Desktop-App-Install. Skill-Versions-Stempel bleibt v3.7.6 (Klarstellungs-Edits, kein neues Feature, keine Versions-Bump).
+
+### Welle-1 Recap (09.05. abends)
+
+**Edits committed in `db7f435`:**
+- **SKILL.md Schritt 0 Bullet 4 NEU (Backfill-Eligibility-Klausel #32):** Skip-Window-Carryover nur zulässig wenn vorhergehender Record `analyse_typ=vollanalyse` mit voller Coverage (Schritt 6c/7); bei `backfill`/`rescoring` mit unvollständiger Coverage Live-Pull-Pflicht trotz <14d. Cross-Reference PIPELINE #23.
+- **SKILL.md Technicals-Block NEU Sub-Sektion `##### ATH-Distance-Boundaries` (#33):** 5-Bucket-Tabelle (Breakout >+1% → 0/4 / ±2% → 1/4 / -2% bis -5% → 2/4 / -5% bis -25% inkl. → 3/4 / <-25% → 4/4) + Bewertungsstichtag-Klausel + Window-Scope `period='max'` (distinkt vom 52W-High des v3.7.6-Drawdown-Modulators) + Trennungs-Disziplin ATH-Distance vs Drawdown-Modulator + Rechenweg + Präzedenzfälle.
+- **INSTRUKTIONEN.md §19.1 NEU 1-Zeilen-Cross-Reference-Anker** nach Z.436 (Tag-+1-Workflow-Block-Ende), vor Z.438 (Outlier-Caveat).
+
+**Codex-R1+R2-Sparring-Trail (96% Final-Confidence):**
+- R1 Single-Pass via codex-rescue-Subagent: **92%** Confidence (unter 95%-Gate). Edit-1 APPROVE-WITH-NITS (2 MED Coverage-Kopplung literal `vollständige scores + vollständige metriken_roh` + INSTRUKTIONEN-Position revidiert auf nach Z.436). Edit-2 **REJECT** (2 HIGH MSFT-Empirie-Drift `>-15% deep correction → 4/4` vs historisch 3/4 bei -25%; ATH vs Drawdown-Modulator-Trennung pflicht; 1 MED Window-Scope offen).
+- R2 Diff-Re-Review mit revidierten Apply-Ready-Drafts + Window-Scope-Entscheidung `period='max'` + Bucket-Boundary-Edge-Case-Sanity-Check: **96%** Confidence (über Gate). Edge-Cases als LOW non-blocking (mathematische Intervallschreibweise wäre Stilbruch zur SKILL.md-Prose-Konvention).
+
+**Lessons:**
+- (a) Codex-Diff-Re-Review als billigster Sparring-Schritt (~5-10k Tokens) wenn R1 Apply-Ready-Drafts liefert + Confidence-Gate knapp verfehlt — Memory `feedback_codex_sparring_heuristic.md` empirisch revalidiert.
+- (b) MSFT-Empirie-Cross-Verify war kritischer Drift-Detektor — naive User-Banner-Vorlage (`>-15% deep correction → 4/4`) wäre ohne Codex-R1-REJECT durchgegangen; PORTFOLIO.md Tech-3/10-Komponenten-Decomposition (ATH 3 + 200MA 0 + RelStr 0) zwang Bucket-Schema-Revision.
+- (c) ATH-Window-Scope `period='max'` als saubere Trennungs-Disziplin verhindert spätere Methodology-Drift gegen v3.7.6-Drawdown-Modulator (52W-High-basiert).
+
+### Restbestand AVGO-Cluster-A (deferred)
+
+- **#30** §410 IC-GW vs Regel-4 Cash-ROIC-Priorität (~30 Min SKILL-Klausel-Hardening) — Konsolidierungstag ODER natürlicher Trigger TMO Q2 ~Ende Juli / APH Q2 ~23.07.
+- **#34** DCF-Malus `bull_dcf_source`-Feld Schema-Erweiterung (~30-45 Min Schema-Eingriff in `schemas.py` + `provenance_gate.py` + Smoke-Tests) — Konsolidierungstag (eigene Session, keine Markdown-Edits)
+
+---
+
+### 📅 Nächste reguläre Termine (chronologisch)
+
+| Datum | Item | Aktion |
+|-------|------|--------|
+| **Mo 11.05.** | Welle-3a Doctor-Snapshot | Cadence-Anker-Lauf — `python 03_Tools/system_audit.py --core` + Snapshot-File `05_Archiv/ruflo-doctor-history/2026-05-11.txt`; Δ-Vergleich gegen 05.05.-Baseline (6 PASS / 8 WARN / 0 FAIL) |
+| **14.05.** | Form-13F Apple-Trim-Magnitude (#37) + MSFT Insider-Re-Score (#26) | Form-13F BRK CIK 0001067983 lookup via SEC EDGAR + insider_intel.py MSFT post-14d-Skip-Window |
+| **27.05.** | VEEV Q1 FY27 | Klasse-B Earnings (yfinance-Pull 30.04. confirmed) |
+| **28.05.** | COST Q3 FY26 | Klasse-B Earnings (Membership-Yield-Watch) |
+
+### Pending offene Slots (kein fester Termin)
+
+- **AVGO-Cluster-A-Restbestand #30 + #34** — Konsolidierungstag ODER natürlicher Trigger
+- **PIPELINE #47 Konsolidierungs-Backlog** — 4 critical + ~14 major aus 4 CR-Pässen (~5-6h Aufwand, Konsolidierungstag)
+- **PIPELINE #48 Codebase-Defect-Pattern-Audit** — taxonomische Pattern-Map + Mitigations (~7-10h, eigene Session)
+- **PIPELINE #51 Cloud-AIDefence-Alternative** — Decision-Fenster ~1 Woche post-#49-DONE (frühestens ~15.05.); aktuelle Empfehlung Akzeptanz Local-Only-Schutz
+- **PIPELINE #53 Trigger-Landschafts-Audit** — eigene Session, drei Optionen Archivieren/Routine-Anker/Weiter-beobachten
+
+## ⚠️ Achtung Vorgänger-Banner
+
+Der Welle-1-Setup-Banner aus dem `2b8f456`-Commit wurde mit dieser Aktualisierung abgelöst. Resume-Direktive nächste Session: **diese 09.05.-abends-Sektion folgen**. Frühere Welle-1-Setup-Detail-Sektion ist jetzt obsolet (Welle-1 DONE).
+
+---
+
+## 🎯 Vorgänger-Resume-Anweisung (Welle-1-Setup, jetzt obsolet)
 
 **Direkt starten mit:** **AVGO-Cluster-A-Closure Welle-1 — PIPELINE #32 + #33 als Solo-Commit-Bündel** (Option B Welle-1 aus 09.05.-Diskussion). Kontext-Frische-Vorteil: sources.md §7 + INSTRUKTIONEN §27.4 wurden heute editiert, AVGO-30.04.-Lessons sind noch im Kopf. **~50-70 Min realistisch** (50 Min Edit + 15-20 Min Codex-R1-Verify für #33-Bucket-Semantik). Earnings-Window-Konflikt: null. Restliche Cluster-A-Items #30 + #34 bleiben weiter deferred (Schema-Eingriffe, Konsolidierungstag).
 
