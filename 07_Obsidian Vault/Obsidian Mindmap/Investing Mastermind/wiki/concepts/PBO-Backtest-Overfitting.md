@@ -79,7 +79,7 @@ Paper liefert nicht nur PBO, sondern Framework mit 4 Dimensionen:
 
 ## Operationalisierung im Dynasty-Depot
 
-- **§29 Retrospective-Analyse-Gate** (`00_Core/INSTRUKTIONEN.md`) — PBO < 0,05 als §29.1 Komponente
+- **§29 Retrospective-Analyse-Gate** ([[RETROSPECTIVE-GATE]] / `00_Core/RETROSPECTIVE-GATE.md`; INSTRUKTIONEN.md §29 = Stub-Pointer seit Pointer-Extraction Wave-3 09.05.2026) — PBO < 0,05 als §29.1 Komponente
 - **Aktivierungs-Trigger:** Review 2028-04-01 **oder** erstmaliges Scoring-Parameter-Tuning
 - **Implementierungs-Pfad:** `03_Tools/backtest-ready/pbo_cscv.py` bei Aktivierung; CRAN R-Package `pbo` als Referenz; Python-Portierung trivial
 - **Brücke zu Palomar Ch. 8.4:** walk-forward und randomized backtests als komplementäre (nicht konkurrierende) Validierungs-Verfahren — siehe [[Palomar-Methods-Reference]]

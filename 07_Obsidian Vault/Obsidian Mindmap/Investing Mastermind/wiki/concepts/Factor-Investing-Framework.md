@@ -89,7 +89,7 @@ Ilmanen-Daten über 100 Jahre:
 
 ## Operationalisierung
 
-- **§29 Retrospective-Analyse-Gate** (`00_Core/INSTRUKTIONEN.md`): §29.2 Portfolio-SR-Band-Check, §29.4 t-Stat-Hurdle
+- **§29 Retrospective-Analyse-Gate** ([[RETROSPECTIVE-GATE]] / `00_Core/RETROSPECTIVE-GATE.md`; INSTRUKTIONEN.md §29 = Stub-Pointer seit Pointer-Extraction Wave-3 09.05.2026): §29.2 Portfolio-SR-Band-Check, §29.4 t-Stat-Hurdle
 - **!Analysiere-Checkliste:** Fwd P/E gegen eigene 5J-Range im Kommentartext anmerken
 - **Einzel-Positions-Drawdown-Kontext:** AQR-Faktor-Drawdown-Statistiken als Referenz bei V-/TMO-Unterperformance-Diskussion
 

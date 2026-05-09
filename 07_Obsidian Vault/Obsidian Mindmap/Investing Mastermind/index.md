@@ -1,7 +1,8 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-05-06 (Satelliten-State-Drift-Cleanup: 8 von 11 Zeilen auf aktuellen DEFCON/Score/Sparraten/FLAG-State gebracht — AVGO 84→53/D4→D2/FLAG, COST/RMS/VEEV/SU 🟢4→🟡3 Schema-Fix, V 86→64/D4→D2 Rescoring 28.04., APH 63→61/D3→D2 Q1 30.04., TMO 63/D2→67/D3 Resolve 23.04., MSFT 59→50 Q3 30.04. Sparraten als Tertiär-Info ergänzt.)
+> Last updated: 2026-05-09 (Vault-Health-Maintenance PIPELINE #54: Index-Drift fix — `[[Quality-Trap]]` + `[[MA]]` ergänzt; `[[RETROSPECTIVE-GATE]]` Vault-Stub NEU als Backlink-Anker für `00_Core/RETROSPECTIVE-GATE.md` (§29 Pointer-Extraction Wave-3); 15 Concept-Pages §29-Backlink-Refresh.)
+> Last updated (zuvor): 2026-05-06 (Satelliten-State-Drift-Cleanup: 8 von 11 Zeilen auf aktuellen DEFCON/Score/Sparraten/FLAG-State gebracht — AVGO 84→53/D4→D2/FLAG, COST/RMS/VEEV/SU 🟢4→🟡3 Schema-Fix, V 86→64/D4→D2 Rescoring 28.04., APH 63→61/D3→D2 Q1 30.04., TMO 63/D2→67/D3 Resolve 23.04., MSFT 59→50 Q3 30.04. Sparraten als Tertiär-Info ergänzt.)
 > Last updated (zuvor): 2026-04-27 (Paper-Ingest Phase A+B+C: 14 source-pages B25-B28 + 10 SOURCE-ONLY, 6 neue concept-pages, 30 entity-pages. Phase-B-Errata gefixt: 3 entity-files mit halluzinierten Vornamen umbenannt + broken sources-link `Amundi-2024-Quality-Pillars` → `Amundi-Quality-2021` korrigiert in 4 entity-pages.)
 > Last updated (zuvor): 2026-04-26 (Hub-Split-Lückenschluss: 3 neue Vault-Stubs PORTFOLIO/PIPELINE/SYSTEM als Backlink-Anker + DEFCON-System 4-Layer→5-Layer Inkonsistenz gefixt; Lint-Follow-up zur Vault-Sanitation 25.04.)
 > Last updated (zuvor): 2026-04-25 (Vault-Concept-Seiten-Sanierung Tier-2-00_Core-Refactor — 14 Files: Hub-Split STATE→Hub+PORTFOLIO/PIPELINE/SYSTEM, CORE-MEMORY §1→§12/§13, §18 v2.1 Trigger-Mapping, Tripwire-Migration STATE→PORTFOLIO. Keine neuen Pages, nur Drift-Sanierung)
@@ -178,6 +179,7 @@ _(noch leer)_
 - [[RACE]] — RMS-Ersatz | Luxus-Auto, Wide Moat, Non-US
 - [[DE]] — SU-Ersatz | Landmaschinen, Precision-Ag
 - [[SPGI]] — Watchlist | Finanzinfrastruktur, Q1 Earnings 28.04.
+- [[MA]] — V-Ersatz | Payment-Network-Duopol mit Visa | QuickScan 25.04.2026 🟢 GRÜN (P/FCF 30,2 / ROIC 43% / Wide Moat)
 
 ---
 
@@ -202,6 +204,8 @@ _(noch leer)_
 - [[Score-Archiv]] — Append-only JSONL-Historie aller Score-Records; Basis für 2028+ Backtest (neu 17.04.2026)
 - [[FLAG-Event-Log]] — Trigger + Resolution für 4 FLAG-Typen; Quelle für deskriptive Event-Study (neu 17.04.2026)
 - [[Backtest-Ready-Infrastructure]] — 5-Layer-Architektur (State/Narrative/History/Projection-Live/Hub) seit Tier-2-Refactor 25.04.2026; §18 v2.1 Trigger-basiertes Sync-Mapping (neu 17.04.2026)
+- [[Quality-Trap]] — Wide-Moat × High-Multiple-Cap-Mechanik (DEFCON v3.7 §472-§478); Wide × Fwd P/E ∈ [22;30] → max 1, Wide × P/FCF >35 → hart 0; §410 Goodwill-Bereinigung als Eskalations-Pfad; B6 Drawdown-Modulator v3.7.6 (AVGO/MSFT 30.04.2026 als Live-Run-Anker)
+- [[RETROSPECTIVE-GATE]] — §29 Retrospective-Analyse-Gate Vault-Stub für `00_Core/RETROSPECTIVE-GATE.md` (4-Dimensionen-Framework Methoden-/Bench-/Decay-/t-Stat-Gate + §29.5 Seven-Sins + §29.7 M&P-Discount; FUTURE-ACTIVATION 2028-04-01 außer §29.5 aktiv-jetzt; Pointer-Extraction Wave-3 09.05.2026)
 
 ### Wissenschaftliche Fundierung DEFCON
 - [[5J-Fundamental-Fenster]] — 5J-Durchschnitt > Spot als Prädiktor; Pflichtperspektive in jeder Analyse

@@ -55,7 +55,7 @@ Validiert via Pydantic: Arithmetik-Check (`score_gesamt` = Summe 5 Blöcke), DEF
 
 Wenn Forward-Historie (~15-25 Records pro Jahr) genug Sample-Size erreicht hat: Entscheidung über formalen Backtest — siehe [[Backtest-Methodik-Roadmap]].
 
-## Retrospective-Validation (§29 + Papers)
+## Retrospective-Validation (§29 + Papers; siehe [[RETROSPECTIVE-GATE]])
 
 Das Score-Archiv ist die Datengrundlage für §29-Retrospective-Analysen (ab 2028):
 

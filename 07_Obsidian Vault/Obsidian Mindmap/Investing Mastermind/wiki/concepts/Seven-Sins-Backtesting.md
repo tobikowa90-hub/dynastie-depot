@@ -84,7 +84,7 @@ PBO (Sin #4 formalisiert) ist ein Teil des Overfitting-Schutzes, aber **Sünden 
 
 **Status:** **Irrelevant für uns.** Dynasty-Depot ist strikt Long-Only. Keine Mitigation nötig. Explizit dokumentiert im Sünden-Gate als "not applicable".
 
-## Pre-Flight-Checkliste (§29.5)
+## Pre-Flight-Checkliste (§29.5; siehe [[RETROSPECTIVE-GATE]])
 
 Vor **jeder** retrospektiven Score-History-Analyse:
 

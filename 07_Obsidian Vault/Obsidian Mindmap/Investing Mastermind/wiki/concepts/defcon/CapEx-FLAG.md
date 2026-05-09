@@ -81,6 +81,6 @@ Der CapEx-FLAG triggert Investment-Klasse-Beobachtung. Per Flint-Vermaak 2021 ha
 - **Aktuelle Scope:** MSFT CapEx/OCF 83.6% FLAG aktiv → §30 pflicht
 - **Schema-Watch:** TMO fcf_trend_neg schema-getriggert, bewusst nicht aktiviert (WC-Noise) → §30 nicht automatisch
 
-**Rückverweise:** §29.3 (Half-Life-Cadence) liefert die wissenschaftliche Fundierung; §30 (Live-Monitoring) operationalisiert die Monthly-Refresh-Pflicht für aktive Investment-FLAGs.
+**Rückverweise:** §29.3 (Half-Life-Cadence; siehe [[RETROSPECTIVE-GATE]]) liefert die wissenschaftliche Fundierung; §30 (Live-Monitoring) operationalisiert die Monthly-Refresh-Pflicht für aktive Investment-FLAGs.
 
 Quellen: [[Flint-Vermaak-2021-Decay]], [[Factor-Information-Decay]]

@@ -47,7 +47,7 @@ aliases:
 
 ## Beziehung zu anderen Validation-Layern
 
-Post-Publication-Decay ist eine **eigene Dimension** im 4-Dimensionen-Validation-Gate (§29):
+Post-Publication-Decay ist eine **eigene Dimension** im 4-Dimensionen-Validation-Gate (§29; siehe [[RETROSPECTIVE-GATE]]):
 
 - §29.1 PBO/CSCV (Bailey 2015) testet **in-sample-Overfitting** — adressiert NICHT Publication-Decay
 - §29.2 External Bench (Aghassi 2023) reduziert in-sample-Bias, NICHT Publication-Decay

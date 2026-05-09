@@ -86,7 +86,7 @@ Warum wir **nicht** klassische Markowitz-MVO verwenden:
 
 ## Operationalisierung
 
-- **§29.6** (Portfolio-Return-Metrik-Layer): Ch. 6 Formel-Konventionen als Referenz bei Aktivierung `risk-metrics-calculation`-Skill 2028
+- **§29.6** ([[RETROSPECTIVE-GATE]] — Portfolio-Return-Metrik-Layer): Ch. 6 Formel-Konventionen als Referenz bei Aktivierung `risk-metrics-calculation`-Skill 2028
 - **§29.1 komplementär:** Ch. 8.4 walk-forward / randomized als Zusatz-Validation zu CSCV
 - **§29.5 bonus:** Ch. 8.5 synthetic data für Outlier-Stress-Test (Sin #6)
 - **Validation-Reading (keine Operationalisierung):** Ch. 7.5 + 11 als akademischer Kontext

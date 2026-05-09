@@ -62,7 +62,7 @@ Faktor-Decay ist die **Temporal-Dimension** einer umfassenden Backtest-Validatio
 | **Zeit** | **Dieses Konzept** | **Wie lange Signale valide sind** |
 | Sünden | [[Seven-Sins-Backtesting]] | Pre-Flight-Check vor Analyse |
 
-## Anwendung in §29.3
+## Anwendung in §29.3 (siehe [[RETROSPECTIVE-GATE]])
 
 Retrospective-Gate §29.3 prüft bei Review 2028:
 - Ist unsere tatsächliche Cadence (Earnings-Trigger) konsistent mit der Faktor-Half-Life-Dominanz der jeweiligen Ticker?

@@ -66,7 +66,7 @@ Deskriptive Auswertung: siehe [[Backtest-Methodik-Roadmap]] + `02_Analysen/flag_
 
 ## Wissenschaftliche Fundierung (nachträglich 19.04.2026)
 
-Das FLAG-Event-Log ist Point-in-Time-Dokumentation und dient §29.5 Sin #2 Look-Ahead-Prevention:
+Das FLAG-Event-Log ist Point-in-Time-Dokumentation und dient §29.5 Sin #2 Look-Ahead-Prevention (siehe [[RETROSPECTIVE-GATE]]):
 
 - **Sin #2 (Look-Ahead):** FLAG-Trigger muss in dem Moment persistiert werden, in dem die Daten vorlagen — keine rückwirkende "Ich hätte es wissen müssen"-Einträge
 - **Sin #3 (Storytelling):** Trigger-Rationale wird ex-ante im flag_events.jsonl-`notizen`-Feld dokumentiert, nicht post-hoc

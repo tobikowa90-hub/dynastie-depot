@@ -88,7 +88,7 @@ DEFCON ist regelbasiertes Composite-Scoring, nicht LLM-Inferenz. FINSABER's Befu
 
 ## Operationalisierung im Dynasty-Depot
 
-- **§29.5 Erweiterung** — Seven-Sins-Pre-Flight um FINSABER-Audit-Fragen ergänzen (Reject-Set, Iteration-Count, Hold-Out-Definition)
+- **§29.5 Erweiterung** ([[RETROSPECTIVE-GATE]]) — Seven-Sins-Pre-Flight um FINSABER-Audit-Fragen ergänzen (Reject-Set, Iteration-Count, Hold-Out-Definition)
 - **Mögliche §33 "Skill-Self-Audit"** — DEFCON als Selection-Strategy formell dokumentieren, jährliche Audit-Cadence (Codex Round 2 Empfehlung — Phase 2.5 Codex-Gate vor Adoption)
 - **`backtest-ready-forward-verify` Schema** — `bias_flags` Feld in `score_history.jsonl` (survivorship-checked, lookahead-checked, snooping-checked Boolean)
 - **Aktivierungs-Trigger:** sofort wirksam für jede neue Migration; PBO/CSCV-Pflicht ab Review 2028 oder erstem Parameter-Tuning

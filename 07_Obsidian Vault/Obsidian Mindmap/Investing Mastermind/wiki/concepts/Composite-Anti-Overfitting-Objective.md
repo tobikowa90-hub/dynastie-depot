@@ -86,7 +86,7 @@ Track 5b FRED Regime-Filter optimiert über **1620 Combos** (hy_oas × curve × 
 
 ## Operationalisierung im Dynasty-Depot
 
-- **§29.1 Erweiterung** — GT-Score als komplementäre In-the-Loop-Methode neben Bailey PBO (Post-hoc)
+- **§29.1 Erweiterung** ([[RETROSPECTIVE-GATE]]) — GT-Score als komplementäre In-the-Loop-Methode neben Bailey PBO (Post-hoc)
 - **§29.6 Erweiterung** — Downside-Risk-Komponente formell aufnehmen (Sortino, Max-DD, CVaR — bereits implizit in Palomar Ch 6)
 - **Track 5b Plan-Diff** — GT-Score-Aggregat als Tie-Break R0 in Grid-Search-Acceptance-Layer (Phase 3 Action)
 - **Mögliche §33 Skill-Self-Audit** — falls etabliert, GT-Score als Audit-Methode dokumentieren

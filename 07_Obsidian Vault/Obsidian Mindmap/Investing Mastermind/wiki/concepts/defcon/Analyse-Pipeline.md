@@ -89,6 +89,6 @@ Die 5-Block-Analyse-Pipeline (Fundamentals/Moat/Quality/Insider/Technicals) mapp
 - **Technicals** → **Momentum**-Faktor (UMD)
 - **Insider** → non-AQR-Edge (kein direkter Faktor-Anker, Dynasty-Depot-spezifisch)
 
-**Seven-Sins-Pre-Flight (§29.5)** greift ab sofort bei Migration-Events (§28), bei Live-Analysen Backlog 2028.
+**Seven-Sins-Pre-Flight (§29.5; siehe [[RETROSPECTIVE-GATE]])** greift ab sofort bei Migration-Events (§28), bei Live-Analysen Backlog 2028.
 
 Quellen: [[Aghassi-2023-Fact-Fiction]], [[Factor-Investing-Framework]], [[Seven-Sins-Backtesting]]

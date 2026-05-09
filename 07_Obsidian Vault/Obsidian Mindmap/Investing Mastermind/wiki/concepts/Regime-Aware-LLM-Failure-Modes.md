@@ -69,7 +69,7 @@ Naheliegender Einwand: "Wir sind Long-Only, also kann uns Bear-Aggressivität ni
 
 ## Operationalisierung im Dynasty-Depot
 
-- **§29.2 Erweiterung** — AQR-Bench-Check um Bull/Bear-Subsample-SR-Trennung erweitern
+- **§29.2 Erweiterung** ([[RETROSPECTIVE-GATE]]) — AQR-Bench-Check um Bull/Bear-Subsample-SR-Trennung erweitern
 - **Track 5b Plan-Diff** — FINSABER als "Empirischer Anker" im Plan-Header markieren (Phase 3 Action)
 - **`backtest-ready-forward-verify` Schema** — `regime_tag` Feld (Bull/Bear/Neutral basierend auf Track-5b-Filter, sobald aktiv)
 - **CORE-MEMORY §5 Lektion** — Bull/Bear-Asymmetrie als Validation-Pflicht bei DEFCON-Future-Reviews

@@ -121,4 +121,4 @@ Der DEFCON-Score wird durch ein erweitertes Paper-Framework methodisch validiert
 
 **DEFCON v3.7 unverändert** nach gesamtem 6-Paper-Ingest. §28.3 Nicht-Migration-Trigger bestätigt.
 
-→ Operative Gates: INSTRUKTIONEN.md §29 (6 Sub-Gates, §29.4+§29.5 sofort aktiv), §33 (Skill-Self-Audit), §4 !Analysiere-Router.
+→ Operative Gates: [[RETROSPECTIVE-GATE]] / `00_Core/RETROSPECTIVE-GATE.md` (4-Dimensionen-Framework + 7 Sub-Gates inkl. §29.7 M&P-Discount, §29.4+§29.5 sofort aktiv; INSTRUKTIONEN.md §29 = Stub-Pointer seit Pointer-Extraction Wave-3 09.05.2026), §33 (Skill-Self-Audit), §4 !Analysiere-Router.

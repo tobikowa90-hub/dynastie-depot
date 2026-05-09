@@ -48,7 +48,7 @@ aliases:
 | **insider-intelligence v2** (deferred) | 24-Monate Lookback (~8 Quartale) | Captured Q-9 bis Q-3 vollständig + Q-2/Q-1 (Compliance-Kontext) |
 | Theoretical Optimum | Quartals-stratifiziert mit Break-Definition | Erfordert EPS-Fortschreibung pro Ticker; Skill-Komplexität >> v2-Scope |
 
-**Aktivierungs-Trigger:** §29-Backtest-Gate-Kriterien erfüllt (Score-Archiv ausreichend gefüllt + §29.7 M&P-Discount-Plausibility-Check). Kein Live-Score-Change bis Deploy.
+**Aktivierungs-Trigger:** §29-Backtest-Gate-Kriterien erfüllt (Score-Archiv ausreichend gefüllt + §29.7 M&P-Discount-Plausibility-Check; siehe [[RETROSPECTIVE-GATE]]). Kein Live-Score-Change bis Deploy.
 
 ## Bridge-Befund: Insider-Trades führen Earnings-Disclosures
 
