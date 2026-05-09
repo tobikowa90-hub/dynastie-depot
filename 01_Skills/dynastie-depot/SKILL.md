@@ -1,44 +1,17 @@
 ---
 name: dynastie-depot
 version: "3.7.6"
-Stand: "2026-04-30"
+Stand: "2026-05-09"
 zieljahr: 2058
 system: DEFCON v3.7
 description: >
-  Investmentanalyse-System für das Dynastie-Depot (Zieljahr 2058). Verwende diesen Skill bei JEDEM Gespräch über Aktienanalyse, Portfolio-Bewertung, DEFCON-Scoring, Sparplan, Rebalancing, Depot-Strategie, Watchlist, Ersatzbank oder Steuerplanung. Bei Unsicherheit: lieber aktivieren als ignorieren.
+  Schwergewichts-Workflow-Skill für DEFCON-v3.7-Investmentanalyse, Sparplan-Rebalancing und CapEx/FCF-Excel-Modelle (Dynastie-Depot, Zieljahr 2058). NICHT auto-laden — Aktivierung ausschließlich via expliziten Workflow-Trigger (`!Analysiere`/`!CAPEX-FCF-ANALYSIS`/`!Rebalancing`/`!QuickCheck`/`!Briefing`) oder direkter User-Aufforderung zum Workflow-Start. Generische Erwähnungen von Aktien, Portfolio, Score, FLAG, Sparplan, Watchlist usw. in Pipeline-/Strategie-/Wiki-/Tools-Sessions sind KEIN Aktivierungsgrund — Routing-Table in `CLAUDE.md` ist normativ. Lazy-Load-Regel: `00_Core/TOKEN-RULES.md` "Skills lazy-load"-Bullet (eingeführt 2026-05-09 zum Schließen der Spec-Lücke).
 trigger_words:
 - "!Analysiere"
 - "!CAPEX-FCF-ANALYSIS"
 - "!Rebalancing"
 - "!QuickCheck"
 - "!Briefing"
-- DEFCON
-- Sparplan
-- Satellit
-- "Wide Moat"
-- Watchlist
-- Ersatzbank
-- Score
-- FLAG
-- Depot
-- Portfolio
-- Aktie
-- Ticker
-- Bewertung
-- Fundamentals
-- FCF
-- CapEx
-- "P/FCF"
-- ROIC
-- Dividend
-- Einstieg
-- Auswechslung
-- "Bull/Bear"
-- "Value Legend"
-- Steuer
-- FIFO
-- Lombardkredit
-- NV-Bescheinigung
 ---
 # 🦅 Dynastie-Depot – Skill v3.7.6
 
@@ -314,6 +287,8 @@ Vor Schritt 7 (Archiv-Write) pro Block (fundamentals/moat/technicals/insider/sen
 
 Diese Klausel ist **Workflow-Disziplin** (kein Skill-Code-Check) — Provenance-Gate Schicht B+D fängt Roh-Werte-Lücken ab, aber NICHT Sub-Score/Roh-Wert-Inkonsistenzen ohne `_carryover`-Markierung. Bei V/MSFT-Live-Runs vor Schritt 7 manuell durchgehen.
 
+**Cross-Reference Carryover-Asymmetrie (NEU 09.05.2026, INSTRUKTIONEN §27.7):** Bei `*_carryover`-Markierung gilt zusätzlich `scores.<block>.<sub_score> ≤ letzter_primary_source_<sub_score>` (Up-Score-Verbot, Down-Score erlaubt). Aufwertung erfordert Wechsel auf Live-Source-Token. Präzedenz V Q2 28.04. Codex-MEDIUM-2 (Insider 5→6 mit Buyback-Disziplin-Begründung war regelwidrig — Buyback gehört zu Sentiment-Block).
+
 ### Schritt 7: Archiv-Write (via `backtest-ready-forward-verify`-Skill)
 
 Am Ende jeder `!Analysiere`-Ausgabe. Pipeline-Disziplin (Freshness / Tripwire / Provenance-Gate P3.5 / §28.2 Δ-Gate / Dry-Run / Append / git-add) ist in den Skill `backtest-ready-forward-verify` gekapselt.
@@ -408,10 +383,17 @@ Summe der drei Teilwerte = Bilanz-Score (max. 9).
 | ROIC \> WACC + 5% | 4–5 |
 | ROIC \> WACC | 2–3 |
 | ROIC \< WACC | 0–1 |
-⚠️ Goodwill-Ausnahme (M\&A \>5B): Bereinigten ROIC verwenden
+⚠️ Goodwill-Ausnahme §410 (M\&A \>5B): Bereinigten ROIC verwenden
 Formel: EBIT×(1-Steuer) / (Invested Capital - Goodwill)
 → Abweichung explizit dokumentieren
 → Kalibrierung: SNPS (3,8% GAAP vs. 15–18% bereinigt)
+
+**Tie-Break §410 IC-GW vs Regel-4 Cash-ROIC-add-back (NEU 09.05.2026, PIPELINE #30 Closure):**
+Bei M&A-Compoundern mit Goodwill > 40% Assets dominiert die §410-IC-GW-Ausnahme (NOPAT / (Invested Capital − Goodwill)) über die Pre-Processing-Regel-4-Cash-ROIC-add-back-Methode (NOPAT + 0,65 × D&A) / Invested Capital). **Nicht beide kombinieren** — §410 ist die kanonische Bereinigung bei extremen Goodwill-Anteilen, Regel-4 ist Approximation für moderate Goodwill-Anteile (30-40% Assets) ohne strukturelle M&A-Compounder-Identität. Bei GW 30-40% Assets bleibt Regel-4 Default; bei GW >40% ist §410 zwingend.
+
+**Confidence-Caveat bei externer Methodology-Drift:** Wenn primary-source-Methodologie (defeatbeta GAAP-ROIC + WACC) materiell (>5pp absolute Differenz) gegen Sekundärquellen-Wert (GuruFocus / StockAnalysis) disagiert UND §410-Bereinigung den Score-Block-Pfad in den Top-Bereich (7-8/8) hebt, **konservative Score-Wahl 7/8 statt 8/8**. Begründung: §410-Anwendung ist algebraisch korrekt, aber Score-Block-Maximum erfordert robust-konsistente Multi-Source-Bestätigung der Bereinigung. Im ScoreRecord-`notizen` literal dokumentieren: `§410-IC-GW-bereinigt; konservativ 7/8 wegen Methodology-Drift <Quelle> <Wert> vs primary-source <Wert>`.
+
+**Präzedenzfall AVGO Forward-Vollanalyse 30.04.2026:** NOPAT TTM $22,2B / IC-GW $48,6B = 45,7% bereinigt vs GAAP 3,98%; Goodwill $97,8B = 57,2% Assets (M&A-Compounder VMware $61B + CA $19B + Symantec $10B + Brocade $5,5B); WACC defeatbeta 15,96%. Score 7/8 statt 8/8 wegen StockAnalysis-Methodology-Drift (StockAnalysis ROIC 21,33% vs primary-source 3,98% / 45,7% — siehe sources.md §7 Hard-Ausschluss-Register). Codex-R1-APPROVE der Anwendung mit Confidence-Caveat-Logik.
 
 Alternativ bei fehlender WACC-Schätzung (ROIC absolut):
 | ROIC | Score |

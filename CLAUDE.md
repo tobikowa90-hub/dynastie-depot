@@ -2,7 +2,7 @@
 
 **PFLICHT bei `Session starten`:** Lies sofort **`00_Core/STATE.md` (Hub) und `00_Core/PORTFOLIO.md`** — ohne Rückfrage. Hub gibt Navigation + Critical-Alert; PORTFOLIO ist der Live-State für 90% der Sessions (Scores, DEFCON, FLAGs, Sparraten, Trigger, Watches).
 
-Danach: kompakte Zusammenfassung (max. 10 Zeilen) + **dynastie-depot**-Skill aktivieren.
+Danach: kompakte Zusammenfassung (max. 10 Zeilen). **`dynastie-depot`-Skill NICHT auto-laden** — nur lazy via Routing-Table-Trigger (`!Analysiere`/`!QuickCheck`/`!Rebalancing`/`!Briefing`/`!CAPEX-FCF-ANALYSIS`) oder expliziter User-Aufforderung. Begründung: Default-Session = Pipeline/Strategie/Wiki/Tools-Engineering ohne Skill-Bedarf; eager-load kostete ~10-15k Tokens pro non-Analysis-Session. Spec-Lücke 09.05.2026 geschlossen via TOKEN-RULES.md "Skills lazy-load"-Bullet + SKILL.md-Frontmatter-Verengung. Bei Unsicherheit lieber Routing-Table-Match prüfen statt eager laden.
 
 ## Verhalten
 

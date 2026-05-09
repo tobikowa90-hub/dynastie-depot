@@ -1,17 +1,59 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-09 abends
-- **Working tree:** clean
-- **Pipeline:** Welle-1 AVGO-Cluster-A-Closure ✅ DONE (PIPELINE #32 + #33 Solo-Commit-Bündel)
-- **Approval:** Codex-R1+R2-Sparring 96% Final-Confidence
-- **Commits heute (chronologisch):** `5fe80d6` (#31 DONE) → `1d56f0b` (Banner-Refresh #31) → `2b8f456` (Welle-1-Setup) → `e22f534` (Banner-Refinement) → `db7f435` (#32+#33 Welle-1 DONE) → `79c6944` (Banner-Refresh post-Welle-1) → CR-Findings-Folge-Commit (dieser Edit)
+- **Datum:** 2026-05-09 spätabends
+- **Working tree:** clean (nach Konsolidierungstag-Wave-2-Commit)
+- **Pipeline:** Konsolidierungstag-Wave-2 ✅ DONE — Skill-Lazy-Load-Spec-Lücke geschlossen + PIPELINE #23 + #30 Closure + Bridge-Re-Sync + CR-Folgepass-Trail kondensiert
+- **Approval:** User-Direktive 09.05.2026 spätabends „JETZT Konsolidierungstag" — Tier-1-Bündel ohne Codex-Sparring (Specs in PIPELINE klar, kein Live-Workflow-Risiko)
+- **Commits heute (chronologisch):** `5fe80d6` (#31 DONE) → `1d56f0b` (Banner #31) → `2b8f456` (Welle-1-Setup) → `e22f534` (Banner-Refinement) → `db7f435` (#32+#33 Welle-1 DONE) → `79c6944` (Banner post-Welle-1) → `e5d8b54` (CR-Findings-Folge-Commit) → Konsolidierungstag-Wave-2-Commit (dieser Edit)
 
 ## 🎯 Resume-Anweisung für nächste Session
 
-**Kein kritischer Resume-Trigger.** Welle-1 (#32 + #33) ist abgeschlossen. Nächster regulärer Termin: **Mo 11.05.** Welle-3a Doctor-Snapshot-Cadence-Lauf (`python 03_Tools/system_audit.py --core` + Snapshot-File `05_Archiv/ruflo-doctor-history/2026-05-11.txt`; Δ-Vergleich gegen 05.05.-Baseline 6 PASS / 8 WARN / 0 FAIL).
+**KRITISCHE Test-Probe nächste Session (Skill-Lazy-Load-Verify):** Bei `Session starten` ohne weiteren Trigger MUSS `dynastie-depot`-Skill **NICHT** auto-laden. Falls Skill geladen wird → Discovery-System override aktiv → weiterer Verengungs-Schritt am SKILL.md-Frontmatter nötig. Falls Skill NICHT geladen wird → Lazy-Load-Refactor empirisch verifiziert.
 
-**User-Manual-Step heute Abend:** `06_Skills-Pakete/dynastie-depot_v3.7.6.zip` neu deployen (mit den heute eingearbeiteten SKILL.md-Edits) + Desktop-App-Install. Skill-Versions-Stempel bleibt v3.7.6 (Klarstellungs-Edits, kein neues Feature, keine Versions-Bump).
+**Resume-Trigger (vorrangig):** PIPELINE #16 INSTRUKTIONEN.md Slim-Refactor — Variante A Pointer-Extraction:
+- **§29 Retrospective-Analyse-Gate** (Z.859 ff, ~160 LOC) → eigene Datei `00_Core/RETROSPECTIVE-GATE.md` (Future-Arch, aktiviert 2028-04-01); INSTRUKTIONEN.md behält Stub + Pointer; Cross-Reference-Anker §28→§29 funktional.
+- **§24 + §25 Morning Briefing** (Z.515-627, ~110 LOC) → `03_Tools/morning-briefing-spec.md` (co-located mit Tool); INSTRUKTIONEN.md behält Stub + Pointer.
+- **Erwartete Reduktion:** ~270 LOC = 25% (1057 → ~790 LOC / 70 KB → 52 KB).
+- **Cross-Reference-Pflege-Pflicht:** §28→§29 Anker bleiben funktional; PIPELINE.md Z.30 erwähnt RETROSPECTIVE-GATE.md + morning-briefing-spec.md (Existing existence-Drift im SystemAudit Baseline 09.05. = wird durch #16-Execution aufgelöst). CLAUDE.md Routing-Table Stub-Anker prüfen.
+- **Sync-Set bei #16-Execution:** INSTRUKTIONEN.md + RETROSPECTIVE-GATE.md (NEU) + morning-briefing-spec.md (NEU) + log.md System-Event + ggf. CLAUDE.md (falls Routing-Table-Edit nötig — wahrscheinlich nicht, Stub deckt Trigger-Anforderungen ab).
+
+**Plus Final-SystemAudit + Wave-3-Sync-Commit nach #16-Execution.**
+
+**Sekundärer Termin: Mo 11.05.** Welle-3a Doctor-Snapshot-Cadence-Lauf (`python 03_Tools/system_audit.py --core` + Snapshot-File `05_Archiv/ruflo-doctor-history/2026-05-11.txt`; Δ-Vergleich gegen 05.05.-Baseline 6 PASS / 8 WARN / 0 FAIL).
+
+**User-Manual-Step heute Abend:** `06_Skills-Pakete/dynastie-depot_v3.7.6.zip` neu deployen (mit den heute eingearbeiteten SKILL.md-Edits inkl. Wave-2 §410 Tie-Break + Schritt 6c Cross-Reference + Frontmatter-Verengung) + Desktop-App-Install. Skill-Versions-Stempel bleibt v3.7.6 (Klarstellungs-Edits + Frontmatter-Hardening, kein neues Feature, keine Versions-Bump).
+
+### Konsolidierungstag-Wave-2 Recap (09.05. spätabends)
+
+**Edits committed im Konsolidierungstag-Wave-2-Commit:**
+- **CLAUDE.md Z.5 (Skill-Lazy-Load):** alte „dynastie-depot-Skill aktivieren" entfernt; neu „dynastie-depot-Skill NICHT auto-laden — nur lazy via Routing-Table-Trigger (`!Analysiere`/`!QuickCheck`/`!Rebalancing`/`!Briefing`/`!CAPEX-FCF-ANALYSIS`) oder expliziter User-Aufforderung" mit Begründung Token-Save 10-15k pro non-Analysis-Session.
+- **`00_Core/TOKEN-RULES.md` neuer Bullet:** „Skills lazy-load (NEU 2026-05-09)" parallel zum MCP-Lazy-Load-Bullet — 5 Workflow-Skills enumeriert, 3 Aktivierungs-Kanäle (a/b/c).
+- **`01_Skills/dynastie-depot/SKILL.md` Frontmatter:** description rewrite (alte permissive „Verwende ... bei JEDEM Gespräch" → neue klare „Schwergewichts-Workflow-Skill ... NICHT auto-laden") + trigger_words 32 → 5 (nur explizite `!`-Workflow-Trigger).
+- **`00_Core/INSTRUKTIONEN.md` §27.7 NEU (PIPELINE #23):** Carryover-Discipline-Asymmetrie — Pflichtcheck `scores.<block>.<sub_score> ≤ letzter_primary_source` bei `*_carryover`-Markierung; Up-Score-Verbot, Down-Score erlaubt; programmatischer Check deferred.
+- **SKILL.md Schritt 6c (PIPELINE #23):** 1-Zeilen Cross-Reference auf §27.7 mit V-Q2-Präzedenz.
+- **SKILL.md §410-Block (PIPELINE #30):** Tie-Break GW>40% → §410 dominiert über Regel-4 + Confidence-Caveat Methodology-Drift >5pp → konservative 7/8-Wahl + Präzedenzfall AVGO 30.04.
+- **PIPELINE.md:** #23 + #30 als ✅ DONE markiert (Numbering-Convention) + CR-Folgepass-Trail kondensiert (~6 LOC-Blob → 1 Zeile-Pointer mit Memory-Cross-Reference) + Footer v2.6 → v2.7.
+
+**Memory-Doc neu (09.05. Wave-2):** `feedback_skill_lazy_load_dual_trigger_source.md` — Skill-Frontmatter-Description ist parallele Auto-Trigger-Quelle zur SessionStart-Direktive; bei Lazy-Load-Refactor BEIDE verengen, sonst Skill lädt via Discovery-System zurück rein; Spec-Lücke ≠ Wortlaut-Widerspruch ehrlich differenzieren.
+
+**Bridge-Re-Sync:** `mcp__ruflo__memory_import_claude` allProjects=true (PIPELINE #50 Bug-Workaround) → 79 Total-Entries inkl. neue Skill-Lazy-Load-Doc. `bridge_status`-Counter stale (zeigt 20, dokumentierter Bug). Post-Prune übersprungen heute (24+ Code-Project-Pollution würde in MCP-validation-bug auf Sonderzeichen laufen).
+
+**SystemAudit Baseline (parallel zu Edits gelaufen):** 11/14 PASS / 2 FAIL / 1 WARN — gleich zur 06.05.-Baseline. Existing Drift dokumentiert (RETROSPECTIVE-GATE.md + morning-briefing-spec.md noch nicht angelegt = wird durch #16-Execution aufgelöst).
+
+**Lessons (siehe CORE-MEMORY §13 + Memory-Doc):** (a) Spec-Lücken ≠ Wortlaut-Widersprüche bei User-Frage ehrlich differenzieren; (b) Skill-Frontmatter-Description ist parallele Auto-Trigger-Quelle (CLAUDE.md + Frontmatter beide verengen); (c) Test-Probe für nächste Default-Session als Verifikations-Mechanismus formuliert.
+
+### Restbestand AVGO-Cluster-A (deferred — eigene Sessions)
+
+- **#34** DCF-Malus `bull_dcf_source`-Feld Schema-Erweiterung (~30-45 Min Schema-Eingriff in `schemas.py` + `provenance_gate.py` + Smoke-Tests) — Konsolidierungstag (eigene Session, keine Markdown-Edits)
+
+### Andere offene Slots (kein fester Termin)
+
+- **#22** Helper `--porcelain -z` Refactor (~60-75 Min Tools-Engineering + Tests) — Konsolidierungstag ODER bei nächstem Pipeline-Path-Issue
+- **#48** Codebase-Defect-Pattern-Audit (~4-6h, eigene Session) — User-Direktive „kann ja nicht sein, dass wir immer wieder neue Fehler entdecken!" Pattern-Map über 03_Tools/-Codebase + 01_Skills/-SKILL.md-Logic
+- **#53** Trigger-Landschafts-Audit !QuickCheck + !Rebalancing — Strategie-Entscheidung, eigene Session
+- **#51** Cloud-AIDefence-Alternative — Decision ~Woche
+- **#42.3** G3 3-Felder-Konsistenz-Check als Tooling — Phase-2a-Slot ab ~13.05.
 
 ### Welle-1 Recap (09.05. abends)
 

@@ -777,6 +777,18 @@ brechen darf.
 
 **Rationale:** Erweitert v1.0 (PIPELINE #24 deployed 30.04.) um (a) Coverage-Lücke bei Non-US-Quartalen ohne Earnings-Call (SU Q1 30.04. verpasst) und (b) Trigger-Lücke (manueller On-demand-Aufruf). Hook-Integration adressiert Mental-Off-Switch-Risiko strukturell statt prozedural. Codex-Sparring-Trail in Spec `docs/superpowers/specs/2026-05-06-earnings-calendar-stufe2-coverage-trigger-design.md`.
 
+### 27.7 Carryover-Discipline-Asymmetrie (NEU 09.05.2026, PIPELINE #23 Closure)
+
+**Regel:** `_carryover`-markierte Quellen (Source-Token Whole-Word, Source-Prefix `ir_`, oder Reason-Token terminal — Whitelist `03_Tools/backtest-ready/provenance_gate.py::CARRYOVER_SOURCE_TOKENS` / `CARRYOVER_SOURCE_PREFIXES` / `CARRYOVER_REASON_TERMINAL`) erlauben semantisch ausschließlich **unveränderte Übernahme** des Sub-Score-Werts vom letzten primary-source-Run. **Up-Scoring** (Sub-Score steigt vs letztem primary-source-Wert) ist bei `_carryover`-Markierung Workflow-Verstoß. **Down-Scoring** (konservative Korrektur z.B. nach Reviewer-Feedback) bleibt erlaubt — Disziplin gilt asymmetrisch.
+
+**Pflichtcheck pro Block:** Bei `quellen.<block>` mit legitimem `*_carryover`-Suffix gilt `scores.<block>.<sub_score> ≤ letzter_primary_source_<sub_score>`. Aufwertung erfordert explizite neue Datenerhebung (Form-4-Re-Pull, Earnings-Call-Transcript-Re-Read, Live-WACC-Pull, Live-Insider-Scan etc.) — und damit Wechsel von `*_carryover`-Quelle auf Live-Source-Token. Keine Mischung „Carryover plus Up-Score-Begründung aus anderem Block" (z.B. Buyback-Disziplin als Insider-Up-Score-Begründung — gehört zum Sentiment-Block, nicht Insider).
+
+**Operationalisierung:** Reviewer-Disziplin (manuell beim Pre-Append-Audit, Cross-Reference SKILL.md Schritt 6c). Programmatischer `provenance_gate.py`-Check für Carryover-Up-Score-Asymmetrie aktuell **deferred** (PIPELINE #23 — INSTRUKTIONEN-Klarstellung reicht für Reviewer-Disziplin; Code-Erweiterung erfordert vorhergehende primary-source-Werte als zweite Eingabe und ist out-of-scope für aktuelle pipeline_gate-Architektur).
+
+**Präzedenzfall (V Q2 28.04.2026 Reinfall, Codex-MEDIUM-2):** 28.04.-Vollanalyse-Record hatte Insider-Score 5→6 mit Begründung „carryover-rounding clean record + Q2-Buyback-Disziplin Ø $320,66 = Management-Conviction-Signal". `quellen.insider="openinsider_form4_skip_window_pre_score_carryover"` ist Carryover-Markierung ohne neue Datenerhebung. Buyback-Disziplin ist Company-Action und gehört semantisch zu Sentiment-Block (PT-Upside / EPS-Revision-Momentum), nicht Insider (Net Buy / Ownership / kein-$20M-Selling). Korrekt wäre: Insider 5/10 unverändert mit `_carryover`-Markierung, ggf. Sentiment-Sub-Score-Anpassung mit eigener Live-Source-Begründung.
+
+**Cross-Reference:** SKILL.md Schritt 6c Pre-Flight-Klausel + INSTRUKTIONEN §19.1 Cross-Reference Backfill-Eligibility (Schritt 0 Bullet 4). Carryover-Asymmetrie ist orthogonal zur Backfill-Eligibility — Backfill-Eligibility prüft ob Skip-Window-Carryover ÜBERHAUPT zulässig ist (vorhergehender Record vollanalyse mit voller Coverage); Carryover-Asymmetrie regelt zusätzlich, dass innerhalb erlaubter Carryover-Übernahme kein Up-Score zulässig ist.
+
 ---
 
 ## 28. Scoring-Version-Migration-Workflow

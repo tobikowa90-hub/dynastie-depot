@@ -25,6 +25,7 @@ updated: 2026-04-25
 - **Pause-Regel:** >5 Min → /compact (Preserve: Score/Tabelle/Urteil/FLAGs) oder /clear
 - **DEFCON 1 Stopp:** Score <50 → Analyse stoppen (Insider-Modul läuft durch)
 - **MCP:** Tool Search lädt lazy. Manuell deaktivieren nur bei Vault-Only-Sessions.
+- **Skills lazy-load (NEU 2026-05-09):** Workflow-Skills (`dynastie-depot`, `backtest-ready-forward-verify`, `quick-screener`, `insider-intelligence`, `non-us-fundamentals`) werden NICHT bei Session-Start auto-geladen. Aktivierung nur via (a) Routing-Table-Trigger in `CLAUDE.md` (z.B. `!Analysiere`/`!QuickCheck`/`!Rebalancing`), (b) explizite User-Aufforderung, oder (c) programmatischer Skill-Aufruf aus anderem Skill (z.B. `dynastie-depot` Schritt 7 → `backtest-ready-forward-verify`). Default-Session-Start lädt nur STATE.md + PORTFOLIO.md (CLAUDE.md Z.3). Spart ~10-15k Tokens pro Pipeline/Strategie/Wiki/Tools-Engineering-Session.
 - **Modell:** Sonnet 4.6 default; `/model opus` für !Analysiere, Multi-Step-Refactors, strategische Entscheidungen.
 
 ## Skill-spezifische Ergänzungen
