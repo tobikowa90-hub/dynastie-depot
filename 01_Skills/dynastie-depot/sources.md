@@ -45,7 +45,7 @@ Lies diese Datei bei jeder `!Analysiere`- und `!CAPEX-FCF-ANALYSIS`-Analyse. Die
 | :---- | :---- | :---- |
 | **GuruFocus** | [gurufocus.com](https://gurufocus.com) | Moat-Score (Primär für Moat-Block!), term-Pages für Verifikation |
 | **AlphaSpread** | [alphaspread.com](https://alphaspread.com) | DCF Fair Value, Relative Valuation, Fwd PE/FCF — Non-US mit Börsen-Prefix |
-| **StockAnalysis** | [stockanalysis.com](https://stockanalysis.com) | Quarterly Cash Flow als Cross-Check zu Shibui |
+| **StockAnalysis** | [stockanalysis.com](https://stockanalysis.com) | ⚠️ NUR quarterly Cash Flow Cross-Check zu Shibui. **NIEMALS für ROIC / Forward-P/E / Score-Inputs** (Methodology-Drift, siehe §7) |
 | **Macrotrends** | [macrotrends.net](https://macrotrends.net) | 10-Jahres-Historie FCF/CapEx/OCF für Trend-Analyse |
 | **Yahoo Finance** | [finance.yahoo.com](https://finance.yahoo.com) | Live-Kurs, USD/EUR-Rate, Earnings Calendar |
 | **Finviz** | [finviz.com](https://finviz.com) | Screener, PE/FCF-Übersicht (Fallback wenn Shibui down) |
@@ -230,6 +230,7 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 2. **Yahoo Finance** (/analysis: Consensus EPS × aktueller Kurs) — **Sekundär**
 3. **Finviz** (Forward PE Zeile) — **Tertiär**
 * **Abweichung:** Bei >15% Abweichung den konservativsten Wert verwenden + Abweichung dokumentieren.
+* **Anti-Match-Note:** **StockAnalysis NICHT in Hierarchie aufnehmen** — Methodology-Drift bei Forward-P/E (Non-GAAP-Mix ohne SBC-Add-back-Konsistenz). Siehe §7 Hard-Ausschluss-Register.
 
 #### 6. Quarterly vs. Annual Daten
 
@@ -239,6 +240,35 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 | **CapEx/OCF** für historischen Trend | Annual (5–10 Jahre) | defeatbeta / Macrotrends |
 | **FCF** für DEFCON-Score | TTM Annual | defeatbeta / GuruFocus |
 | **FCF** für Forward-Bewertung | Nächstes volles Fiskaljahr | AlphaSpread / Konsensus |
+
+---
+
+## 🚫 §7 Methodology-Drift Hard-Ausschluss-Register
+
+**Zweck:** Quellen, die für bestimmte DEFCON-Score-Inputs **nicht** verwendet werden dürfen, weil ihre Methodologie systematisch von der GAAP-konservativen DEFCON v3.7 Standard-Lesart abweicht. Hard-Ausschluss bedeutet: **keine Score-Berechnung, keine Hierarchie-Position, keine „Sekundär"-Verwendung** — auch nicht bei fehlenden Primärdaten.
+
+### Aktuelles Register
+
+| Quelle | Hard-Ausschluss für | Erlaubt für | Drift-Typ | Präzedenz-Cases |
+| :---- | :---- | :---- | :---- | :---- |
+| **StockAnalysis** | ROIC, Forward-P/E, alle Score-Berechnungs-Inputs | Quarterly CashFlow Cross-Check zu Shibui (rein deskriptiv) | Non-GAAP-Methodologie ohne konsistente SBC-Add-back-Behandlung; Forward-P/E mit gemischter Konsensus-Basis | AVGO 30.04.2026 (ROIC 21,33% StockAnalysis vs 3,98% defeatbeta GAAP / 45,7% §410-Goodwill-bereinigt — Codex-R1-HIGH-2 REJECT); MSFT 30.04.2026 (ROIC 26,1% StockAnalysis vs 7,68% defeatbeta GAAP) |
+
+### Hintergrund
+
+DEFCON v3.7 Standard ist **GAAP-konservativ**: ROIC = NOPAT / Invested Capital ohne SBC-Add-back, Forward-P/E nach AlphaSpread/Yahoo/Finviz-Hierarchie (§5). StockAnalysis liefert Non-GAAP-Werte, die SBC teils inkonsistent behandeln und Forward-Konsensus aus gemischten Quellen ziehen. Resultat: systematischer Score-Lift +5 bis +30 Punkte gegenüber DEFCON-konformer Berechnung.
+
+### Operative Regel
+
+1. **Bei Quellen-Konflikt zwischen StockAnalysis und Primärquelle (defeatbeta / GuruFocus term / AlphaSpread):** Primärquelle gewinnt **immer**, unabhängig von Plausibilität.
+2. **§410-Goodwill-Bereinigung** (M&A-Compounder mit GW-Anteil >40% Assets) ist die **einzige** zulässige ROIC-Korrektur über die GAAP-Lesart hinaus. Nicht StockAnalysis-Wert übernehmen.
+3. **Pre-Analyse-Check:** Vor jeder Vollanalyse explizit verifizieren, dass kein Score-Input aus StockAnalysis stammt (außer quarterly CashFlow Cross-Check).
+4. **Erweiterung des Registers:** Neue Hard-Ausschluss-Einträge nur nach belegtem Methodology-Drift-Case (Codex-R1-HIGH oder mind. 2 unabhängige Drift-Cases). PIPELINE-Item + log.md-Eintrag.
+
+### Anti-Pattern (was NICHT passieren darf)
+
+- „StockAnalysis Forward-P/E ist niedriger, ich nehm den" → REJECT (Quellen-Hierarchie §5 strict)
+- „defeatbeta hat keinen ROIC für den Ticker, ich fall auf StockAnalysis zurück" → REJECT (alternative Reihenfolge: GuruFocus term/roic, dann §410-Goodwill-Bereinigung dokumentieren, sonst ROIC-Sub-Score nach SKILL-Ausnahme-Klausel handhaben)
+- „StockAnalysis und defeatbeta zeigen unterschiedliche ROIC-Werte, also Mittelweg" → REJECT (kein Mittelweg, Primärquelle wins)
 
 ---
 

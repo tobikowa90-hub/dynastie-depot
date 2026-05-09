@@ -726,6 +726,8 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 
 **Präzedenzfall (vertikal):** 21.04.2026 Pre-Check vor Provenance-Gate-Plan — 12/27 Records in `score_history.jsonl` waren seit 18.04.-Threshold-Migration silent inkonsistent, nie aufgefallen, weil zwischendurch nur Spot-Check auf Forward-Pfad lief (`feedback_exhaustive_drift_check.md`).
 
+**Dritte Klasse — Methodology-Drift (Quellen-Hard-Ausschluss):** Bei Score-Berechnungs-Inputs (ROIC, Forward-P/E, FCF-Yield) immer Quellen-Hierarchie aus `01_Skills/dynastie-depot/sources.md §5` + Hard-Ausschluss-Register §7 prüfen. Beispiel: StockAnalysis ist für ROIC + Forward-P/E **hart ausgeschlossen** (Non-GAAP-Drift, Präzedenz AVGO/MSFT 30.04.2026). Score-Drift +5 bis +30 Punkte möglich, wenn das missachtet wird.
+
 **Wissenschaftlicher Anker:** Double-Counting-Vermeidung und Bonus-Cap-Check verhindern False-Positives unterhalb §29.4 t-Stat ≥ 3 Hurdle (Harvey/Liu/Zhu). Jede neue Sub-Komponente muss t≥3 erreichen. → §29.4 / [[Aghassi-2023-Fact-Fiction]]
 
 ### 27.5 Migration-Regression-Guard (22.04.2026, system-audit v1.0)
