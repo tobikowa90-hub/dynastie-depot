@@ -1,6 +1,60 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-07 nach **Python-Tooling-Initiative Phase 3 ALL-DONE** (5 Cluster, 25 manuelle Fixes, 4 CR-Pässe, ~204 unique CR-Findings → PIPELINE #47). Ruff `03_Tools/` jetzt **100% clean (230 → 0)**. **Primärer Resume-Trigger:** **Tavily-Connector-Reattach Prod** (PIPELINE #45) sobald News-Signal in Prod-Briefing relevant wird — User-UI-Action ~5min. **Sekundärer Side-Track:** **PIPELINE #47 Konsolidierungs-Backlog** (4 critical + ~14 major aus 4 CR-Pässen — z.B. `markdown_header.py:143` KeyError, `cross_source.py:183` defcon-Default, `flag_event_study.py:221-226` post-cutoff-Preis, `governance_parity.py:35-61+88-112`, `backfill_flags.py` hardcoded capex_ocf, `bad_score.jsonl` Fixture, `sample_transcript_normal.md` Quality-Mismatch). Aufwand ~5-6h. Trigger Konsolidierungstag, orthogonal zu Earnings-Window. **Tertiär:** 11.05. Mo nächster Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26. **Briefing v3.1.x:** Probe + Prod beide live, v2.1-Rollback-Pfad 30-Tage Recovery-Window dokumentiert. v3.1.x-Plan ALL-DONE per Phase-5-Sync.
+**Aktualisiert:** 2026-05-09 — Strategie-Konsolidierung Cluster-A + Quick-Screener-Drift-Audit. Resume mit klarem Edit-Plan.
+
+## 🎯 Resume-Anweisung für nächste Session (HÖCHSTE PRIORITÄT)
+
+**Direkt starten mit:** Cluster-A-#31 DEFCON-Quellen-Hierarchie als Solo-Commit (StockAnalysis-Hard-Ausschluss in sources.md). **~30-45 min, kein Earnings-Window-Konflikt.**
+
+**Konkrete Edits (vorbereitet, NICHT ausgeführt am 09.05. wegen Kontext-Limit):**
+
+1. **`01_Skills/dynastie-depot/sources.md`** — neuer §7 „Methodology-Drift Hard-Ausschluss-Register" nach §6 (vor „Goldene Regel"):
+   - **StockAnalysis ausgeschlossen** für ROIC + Forward-P/E + Score-Berechnungs-Inputs (NICHT für quarterly-CashFlow Cross-Check)
+   - Cases: AVGO ROIC 21,33% StockAnalysis vs 3,98% defeatbeta GAAP / 45,7% §410-bereinigt; MSFT ROIC 26,1% StockAnalysis vs 7,68% defeatbeta
+   - Hintergrund: Non-GAAP-Methodologie ohne SBC-Add-back-Konsistenz; DEFCON v3.7 Standard ist GAAP-konservativ
+   - Plus §5 Z.231-232: Anti-Match-Note „StockAnalysis NICHT in Hierarchie aufnehmen — siehe §7"
+   - Plus Z.48 Web-Sekundärquellen-Tabelle: StockAnalysis-Caveat „nur quarterly CashFlow Cross-Check; NIEMALS für ROIC/Forward-P/E (Methodology-Drift, §7)"
+
+2. **`00_Core/INSTRUKTIONEN.md` §27.4 Z.728** — 1-Zeilen-Anker-Beispiel ergänzen mit Verweis auf sources.md §7
+
+3. **`00_Core/PIPELINE.md`** — drei Updates:
+   - #31 in DONE-Trail (Numbering-Convention: Item bleibt sichtbar, gestrichen)
+   - **NEU: Item „Quick-Screener-Refresh deferred bis Use-Case-Trigger"** (Drift-Audit dokumentiert, 10 Drift-Dimensionen, 2 HOCH; Refresh-Skip wegen 0-1 Use-Cases in 6 Wochen — Re-Activation-Trigger: nächster Watchlist-Kandidat ODER User-Routine-Etablierung ODER 2-Monats-Audit-Slot)
+   - **NEU: Item „Trigger-Landschafts-Audit !QuickCheck + !Rebalancing"** (2/4 !-Trigger ungelebt — strategische Entscheidung archivieren ODER Routine-Anker ODER weiter beobachten; eigene Session)
+
+4. **`00_Core/log.md`** — Session-Append: System-Event Cluster-A-#31 DONE + Quick-Screener-Drift-Audit + Trigger-Landschafts-Erkenntnis
+
+5. **`00_Core/CORE-MEMORY.md` §13** — Lifecycle-Eintrag 09.05. Strategie-Konsolidierung
+
+6. **`00_Core/STATE.md`** — neuer Critical-Alert + Last-Audit-Block (auto-managed via system_audit.py)
+
+**Sync-Set §18 (System-Event):** sources.md + INSTRUKTIONEN.md + log.md + STATE.md + CORE-MEMORY §13 + PIPELINE.md + diese SESSION-HANDOVER.md (Banner-Refresh nach Commit). **Kein Score/FLAG/Sparraten-Event** → KEIN Touch von PORTFOLIO/Faktortabelle/xlsx/jsonl/config.yaml.
+
+## 📋 Strategie-Erkenntnisse 09.05. (Begründung des Refresh-Skips)
+
+**Quick-Screener-Drift-Audit** (10 Dimensionen, 2 HOCH + 4 MITTEL + 4 NIEDRIG):
+- HOCH-1: StockAnalysis als Primär-Quelle (PIPELINE #31 explizit ausgeschlossen) — adressiert via Cluster-A-#31
+- HOCH-2: Kalibrierungsanker outdated (AVGO/MSFT würden False-GRUEN sagen wo DEFCON D2/FLAG sagt)
+- MITTEL: Quality-Trap fehlt / §410-Goodwill fehlt / Screener-Exceptions outdated (2/6) / V-Q2-Lehre blind
+- NIEDRIG: Pipeline-Einordnung outdated / !QuickCheck-Trigger fehlt in Skill-Triggerwords / xlsx-Sync nicht erwähnt / defeatbeta-MCP ungenutzt
+
+**Codex-R1-Single-Pass-Verdict:** APPROVE Voll-Refresh + 5 Anpassungen (HIGH=2 referenziert Drift-Findings, nicht Plan-Qualität → kein Sparring-Loop). Empfahl: zwei sequenzielle Commits (DEFCON zuerst, Quick-Screener danach), screen.py-Frage explizit klären, Pre-Crash-Anker für Balance.
+
+**User-Direktive-Pivot 09.05.:** !Rebalancing nie genutzt + !QuickCheck nur 1× in 6 Wochen (Mastercard-Intake) + screen.py 5 Wochen unverändert. **Konsolidierungs-Phase, nicht Skill-Drift-Problem.** Refresh ohne Use-Case = Über-Engineering. Quick-Screener bleibt im aktuellen Stand mit dokumentierter Drift; Re-Activation-Trigger klar definiert.
+
+**Cluster-A bleibt valide weil orthogonal:** !Analysiere wird aktiv genutzt; jede Vollanalyse profitiert von sources.md Quellen-Hardening. **#31 als Solo-Commit, restliche Cluster-A-Items #30/#32/#33/#34 bleiben deferred** (kein neuer Trigger seit AVGO 30.04.).
+
+**Memory-Doc geschrieben (09.05.):** `feedback_skill_refresh_without_usecase_overengineering.md` — Cross-Session-Heuristik: vor Skill-Refresh erst Use-Case-Realität prüfen via git log + Mtime + Memory-Index; bei 0-1 Use-Cases in 4-6 Wochen Refresh deferren statt Token-Math allein als Begründung akzeptieren.
+
+## ⚠️ Achtung Vorgänger-Banner
+
+Der Banner unterhalb dieser Sektion ist Stand 07.05. (Python-Tooling-Initiative Phase 3 ALL-DONE) und bleibt als Historie. Resume-Direktive nächste Session: **diese 09.05.-Sektion folgen**.
+
+---
+
+## Vorgänger-Banner (07.05.)
+
+**Aktualisiert (07.05.):** 2026-05-07 nach **Python-Tooling-Initiative Phase 3 ALL-DONE** (5 Cluster, 25 manuelle Fixes, 4 CR-Pässe, ~204 unique CR-Findings → PIPELINE #47). Ruff `03_Tools/` jetzt **100% clean (230 → 0)**. **Primärer Resume-Trigger:** **Tavily-Connector-Reattach Prod** (PIPELINE #45) sobald News-Signal in Prod-Briefing relevant wird — User-UI-Action ~5min. **Sekundärer Side-Track:** **PIPELINE #47 Konsolidierungs-Backlog** (4 critical + ~14 major aus 4 CR-Pässen — z.B. `markdown_header.py:143` KeyError, `cross_source.py:183` defcon-Default, `flag_event_study.py:221-226` post-cutoff-Preis, `governance_parity.py:35-61+88-112`, `backfill_flags.py` hardcoded capex_ocf, `bad_score.jsonl` Fixture, `sample_transcript_normal.md` Quality-Mismatch). Aufwand ~5-6h. Trigger Konsolidierungstag, orthogonal zu Earnings-Window. **Tertiär:** 11.05. Mo nächster Doctor-Snapshot · 14.05. Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) · 27.05. VEEV Q1 FY27 · 28.05. COST Q3 FY26. **Briefing v3.1.x:** Probe + Prod beide live, v2.1-Rollback-Pfad 30-Tage Recovery-Window dokumentiert. v3.1.x-Plan ALL-DONE per Phase-5-Sync.
 
 ### 🛠 Python-Tooling-Initiative — Phase-Status (2026-05-07)
 
