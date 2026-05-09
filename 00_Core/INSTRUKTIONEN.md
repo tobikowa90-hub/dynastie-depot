@@ -435,6 +435,8 @@ Standard `dynastie-depot` Vollanalyse (Schritte 0-7) — mit folgenden Pflicht-Q
 
 **Schritt 7 (ScoreRecord-Append) und §18-Sync laufen ausschließlich am Tag +1**, nicht am Tag 0. Damit ist 8-File-Sync atomar und eindeutig auf einen Workflow-Tag zugeordnet.
 
+**Cross-Reference Backfill-Eligibility (NEU 09.05.2026 post-AVGO §32 Closure):** Skip-Window-Carryover (SKILL.md Schritt 0, Bullet 4) ist nur zulässig, wenn der unmittelbar vorhergehende Score-Record `analyse_typ="vollanalyse"` war und vollständige Coverage gemäß Schritt 6c / Schritt 7 aufwies (vollständige `scores` + vollständige `metriken_roh`). Bei `analyse_typ="backfill"` oder bei `analyse_typ="rescoring"` mit unvollständiger Coverage gilt trotz `<14d` Live-Pull-Pflicht. Präzedenz: AVGO 30.04.2026, Codex-R1 HIGH-3 + R2 APPROVE Master-Reading.
+
 **Outlier-Caveat:** Wenn Press-Release-Day einen FLAG-Trigger erzeugt (Insider >$20M, CapEx/OCF >60%, FCF-Trend-neg etc.), erfolgt der FLAG-Event-Append (`archive_flag.py trigger`) am Tag 0 sofort — **ohne** Score-Move. Score-/D-Stufen-Anpassung kommt am Tag +1 mit der vollen Vollanalyse. Diese Trennung ist sauber, weil `flag_events.jsonl` und `score_history.jsonl` orthogonale SSoTs sind.
 
 **Sync-Set-Trennung Tag 0 vs Tag +1:**

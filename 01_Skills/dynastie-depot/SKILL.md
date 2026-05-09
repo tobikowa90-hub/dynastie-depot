@@ -95,6 +95,7 @@ Gilt für Chat, Cowork UND Claude Code.
 4. **Bei aktivem Klasse-B-Trigger — Scope nach score_datum (am Tag +1):**
    - score_datum < 14 Tage → Insider aus Faktortabelle übernehmen (API-Skip), Rest Vollanalyse
    - score_datum ≥ 14 Tage → Vollanalyse
+   - **Backfill-Eligibility-Klausel (NEU 09.05.2026 post-AVGO §32 Closure):** Skip-Window-Carryover (`score_datum < 14 Tage`) ist nur zulässig, wenn der unmittelbar vorhergehende Score-Record `analyse_typ="vollanalyse"` war und vollständige Coverage gemäß Schritt 6c / Schritt 7 aufweist (vollständige `scores` + vollständige `metriken_roh`). Bei `analyse_typ="backfill"` oder bei `analyse_typ="rescoring"` mit unvollständiger Coverage gilt trotz `<14d` Live-Pull-Pflicht. Präzedenz: AVGO 30.04.2026, Codex-R1 HIGH-3 + R2 APPROVE Master-Reading. Cross-Reference: PIPELINE #23 (`_carryover` erlaubt unveränderte Übernahme, kein Up-Scoring).
    - `analyse_typ: "delta"` hat aktuell **offene Semantik** (Review-Gate CORE-MEMORY §11) — nur bei expliziter User-Anforderung verwenden, sonst `"vollanalyse"`.
 
 **Begründung Wait-Discipline:** V Q2 FY26 28.04.2026 Reinfall — Mittags-Vollanalyse vor Call führte zu drei Methodology-Drifts (Codex-HIGH-1 ROIC SKILL-Wortlaut, HIGH-2 Carryover-Proxy-Kurs, MEDIUM-2 Insider carryover-rounding) durch Reviewer-Disziplin-Lücke unter Zeitdruck. Token-Aufwand für Revert + Spec-Erweiterung: ~100-130k. Mit Tag-+1-Slot: ~40-60k single-pass. Detail in INSTRUKTIONEN §19.1 + Memory `feedback_earnings_call_wait_discipline.md`.
@@ -595,6 +596,22 @@ Quelle: Quartr TICKER → letztes Earnings Call Transcript
 | Trend-Lage (über steigendem 200D-MA = positiv) | 3 |
 
 #### Technicals-Präzisierungen
+
+##### **ATH-Distance-Boundaries (NEU 09.05.2026 post-AVGO §33 Closure):**
+
+| **Abstand zum ATH** | **Score** |
+| :---: | :---: |
+| Breakout > +1% über vorherigem ATH | 0/4 |
+| ±2% um ATH | 1/4 |
+| -2% bis -5% vs. ATH | 2/4 |
+| -5% bis -25% vs. ATH (inkl. -25%) | 3/4 |
+| < -25% vs. ATH | 4/4 |
+
+- Bewertungsstichtag ist der Schlusskurs des Score-Datums (`kurs.referenz="close_of_score_datum"`).
+- ATH-Window: absolute Listing-Historie (`yfinance.history(period='max')` → `max(High)`). Distinkt vom 52W-High des v3.7.6-Drawdown-Modulators.
+- ATH-Distance ist eine eigenständige Technicals-Metrik. Sie ist NICHT mit dem v3.7.6-Drawdown-Modulator gleichzusetzen; der Modulator arbeitet separat mit 52-Wochen-High und Quality-Trap-Subscores.
+- Rechenweg: `dist_pct = (close_of_score_datum - ATH_ref) / ATH_ref × 100`.
+- Präzedenzfälle: AVGO 30.04.2026 `-1,5%` → 1/4; MSFT 30.04.2026 `-25%` → 3/4.
 
 ##### \*\*200MA Slope (Trendqualität):\*\*
 
