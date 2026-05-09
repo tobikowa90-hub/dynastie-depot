@@ -96,7 +96,7 @@ Gilt für Chat, Cowork UND Claude Code.
    - score_datum < 14 Tage → Insider aus Faktortabelle übernehmen (API-Skip), Rest Vollanalyse
    - score_datum ≥ 14 Tage → Vollanalyse
    - **Backfill-Eligibility-Klausel (NEU 09.05.2026 post-AVGO §32 Closure):** Skip-Window-Carryover (`score_datum < 14 Tage`) ist nur zulässig, wenn der unmittelbar vorhergehende Score-Record `analyse_typ="vollanalyse"` war und vollständige Coverage gemäß Schritt 6c / Schritt 7 aufweist (vollständige `scores` + vollständige `metriken_roh`). Bei `analyse_typ="backfill"` oder bei `analyse_typ="rescoring"` mit unvollständiger Coverage gilt trotz `<14d` Live-Pull-Pflicht. Präzedenz: AVGO 30.04.2026, Codex-R1 HIGH-3 + R2 APPROVE Master-Reading. Cross-Reference: PIPELINE #23 (`_carryover` erlaubt unveränderte Übernahme, kein Up-Scoring).
-   - `analyse_typ: "delta"` hat aktuell **offene Semantik** (Review-Gate CORE-MEMORY §11) — nur bei expliziter User-Anforderung verwenden, sonst `"vollanalyse"`.
+   - `analyse_typ: "delta"` ist aktuell **EXPERIMENTAL — DISABLED bis Review-Gate-Closure CORE-MEMORY §11** (NEU 09.05.2026 post-CR-Pass MAJOR-Finding). Ambiguitätsrisiken: (a) Aktivierungs-Kriterien gegenüber `"vollanalyse"`/`"rescoring"` undefiniert, (b) Interaktion mit Backfill-Eligibility-Klausel (Bullet 4 oben) unklar, (c) `metriken_roh`-null-Pattern (siehe Schritt 7) ist nur für `"delta"`-Records spezifiziert aber ohne harte Aktivierungs-Semantik missbrauchbar. **Bis CORE-MEMORY §11 Review-Gate geschlossen ist:** kein neuer Record mit `analyse_typ="delta"` schreiben — Standard ist `"vollanalyse"` (oder `"rescoring"` bei Korrektur-Records). Bestehende historische Delta-Records in `score_history.jsonl` bleiben unverändert (append-only). Re-Aktivierung erfordert §11-Closure + neue Klausel mit expliziten Aktivierungs-Kriterien (zulässige Felder, Max-Alter zur letzten Vollanalyse, Coverage-Anforderungen, Cross-Reference auf Backfill-Eligibility-Klausel).
 
 **Begründung Wait-Discipline:** V Q2 FY26 28.04.2026 Reinfall — Mittags-Vollanalyse vor Call führte zu drei Methodology-Drifts (Codex-HIGH-1 ROIC SKILL-Wortlaut, HIGH-2 Carryover-Proxy-Kurs, MEDIUM-2 Insider carryover-rounding) durch Reviewer-Disziplin-Lücke unter Zeitdruck. Token-Aufwand für Revert + Spec-Erweiterung: ~100-130k. Mit Tag-+1-Slot: ~40-60k single-pass. Detail in INSTRUKTIONEN §19.1 + Memory `feedback_earnings_call_wait_discipline.md`.
 
@@ -601,7 +601,7 @@ Quelle: Quartr TICKER → letztes Earnings Call Transcript
 
 | **Abstand zum ATH** | **Score** |
 | :---: | :---: |
-| Breakout > +1% über vorherigem ATH | 0/4 |
+| Neues ATH (>+1% über vorherigem ATH) | 0/4 |
 | ±2% um ATH | 1/4 |
 | -2% bis -5% vs. ATH | 2/4 |
 | -5% bis -25% vs. ATH (inkl. -25%) | 3/4 |

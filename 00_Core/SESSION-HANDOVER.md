@@ -1,6 +1,11 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-09 abends nach Welle-1 AVGO-Cluster-A-Closure ✅ DONE (PIPELINE #32 + #33 Solo-Commit-Bündel, Codex-R1+R2 96% APPROVE). Working tree clean. Fünf Commits heute: `5fe80d6` (#31 DONE) + `1d56f0b` (Banner-Refresh #31) + `2b8f456` (AVGO-Closure-Anker Welle-1-Setup) + `e22f534` (Banner-Refinement) + `db7f435` (#32+#33 Welle-1 DONE) + Folge-Commit (dieser Banner-Refresh).
+**Status-Banner:**
+- **Datum:** 2026-05-09 abends
+- **Working tree:** clean
+- **Pipeline:** Welle-1 AVGO-Cluster-A-Closure ✅ DONE (PIPELINE #32 + #33 Solo-Commit-Bündel)
+- **Approval:** Codex-R1+R2-Sparring 96% Final-Confidence
+- **Commits heute (chronologisch):** `5fe80d6` (#31 DONE) → `1d56f0b` (Banner-Refresh #31) → `2b8f456` (Welle-1-Setup) → `e22f534` (Banner-Refinement) → `db7f435` (#32+#33 Welle-1 DONE) → `79c6944` (Banner-Refresh post-Welle-1) → CR-Findings-Folge-Commit (dieser Edit)
 
 ## 🎯 Resume-Anweisung für nächste Session
 
@@ -50,7 +55,7 @@
 
 ## ⚠️ Achtung Vorgänger-Banner
 
-Der Welle-1-Setup-Banner aus dem `2b8f456`-Commit wurde mit dieser Aktualisierung abgelöst. Resume-Direktive nächste Session: **diese 09.05.-abends-Sektion folgen**. Frühere Welle-1-Setup-Detail-Sektion ist jetzt obsolet (Welle-1 DONE).
+Der Welle-1-Setup-Banner aus dem `2b8f456`-Commit wurde mit dieser Aktualisierung abgelöst. Resume-Direktive nächste Session: **Abschnitt „🎯 Resume-Anweisung für nächste Session" (Beginn ca. Z.10) folgen**. Frühere Welle-1-Setup-Detail-Sektion (`## 🎯 Vorgänger-Resume-Anweisung (Welle-1-Setup, jetzt obsolet)` weiter unten in diesem File) ist jetzt obsolet (Welle-1 DONE).
 
 ---
 
