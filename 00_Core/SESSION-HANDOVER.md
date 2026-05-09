@@ -1,10 +1,68 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-09 nach Cluster-A-#31 ✅ DONE Solo-Commit. Working tree clean nach Banner-Refresh-Folge-Commit.
+**Aktualisiert:** 2026-05-09 nach Cluster-A-#31 ✅ DONE + AVGO-Closure-Welle-1-Setup für nächste Session. Working tree clean. Drei Commits heute: `5fe80d6` (#31 DONE) + `1d56f0b` (Banner-Refresh) + `2b8f456` (AVGO-Closure-Anker) + Folge-Commit (dieser Banner-Edit).
 
-## 🎯 Resume-Anweisung für nächste Session
+## 🎯 Resume-Anweisung für nächste Session (HÖCHSTE PRIORITÄT)
 
-**Kein kritischer Resume-Trigger.** Cluster-A-#31 (Methodology-Drift Hard-Ausschluss-Register) DONE in Commit `5fe80d6`. Restliche Cluster-A-Items #30/#32/#33/#34 bleiben deferred (kein neuer Trigger seit AVGO 30.04.).
+**Direkt starten mit:** **AVGO-Cluster-A-Closure Welle-1 — PIPELINE #32 + #33 als Solo-Commit-Bündel** (Option B Welle-1 aus 09.05.-Diskussion). Kontext-Frische-Vorteil: sources.md §7 + INSTRUKTIONEN §27.4 wurden heute editiert, AVGO-30.04.-Lessons sind noch im Kopf. **~50-70 Min realistisch** (50 Min Edit + 15-20 Min Codex-R1-Verify für #33-Bucket-Semantik). Earnings-Window-Konflikt: null. Restliche Cluster-A-Items #30 + #34 bleiben weiter deferred (Schema-Eingriffe, Konsolidierungstag).
+
+**Konkrete Edits (vorbereitet, Codex-Verify Pflicht für #33):**
+
+### Edit 1 — PIPELINE #32: Skip-Window <14d Backfill-Eligibility-Klausel (~15 Min, klare Text-Edit)
+
+**Trigger-Kontext:** AVGO 30.04. Codex-R1-HIGH-3 challenged Skip-Window-Reading bei Backfill-Record mit inkonsistentem `gesamt=8` vs Sub-Scores=0. Codex-R2 APPROVE Master-Reading: Backfill-Records sind explizit AUSGESCHLOSSEN von Skip-Window-Eligibility wenn Sub-Score-Coverage fehlt. Schicht-D greift nur bei `forward+vollanalyse`. Cross-Reference Item #23 (Insider-Carryover-Discipline-Note).
+
+**Ziel-Datei:** `01_Skills/dynastie-depot/SKILL.md` Schritt 0, **nach Z.97** `score_datum ≥ 14 Tage → Vollanalyse`, **vor Z.98** `analyse_typ: "delta"`-Zeile. Neuer Bullet:
+
+> - **Backfill-Eligibility-Klausel (NEU 09.05.2026 post-AVGO §32 Closure):** Skip-Window-Carryover gilt NUR wenn vorhergehender Score-Record `analyse_typ=vollanalyse` mit voller Sub-Score-Coverage. Bei `analyse_typ=backfill` oder `rescoring` mit unvollständiger Sub-Score-Coverage → Live-Pull-Pflicht trotz <14d. Präzedenz AVGO 30.04. Codex-R1-HIGH-3 + R2 APPROVE Master-Reading. Cross-Reference Item #23 (Insider-Carryover-Discipline-Note: `_carryover`-Sources erlauben nur unveränderte Übernahme, kein Up-Score).
+
+**Sekundär-Sync:** `00_Core/INSTRUKTIONEN.md` §19.1 (Earnings-Call-Wait-Discipline-Block) — 1-Zeilen-Anker mit Verweis auf SKILL.md Schritt 0 Backfill-Eligibility-Klausel.
+
+### Edit 2 — PIPELINE #33: ATH-Distance Bucket-Boundaries explizit (~25-30 Min + Codex-Verify)
+
+**Trigger-Kontext:** AVGO 30.04. Codex-R1-HIGH-4 APPROVED ATH-Distance 1/4 bei -1,5% vs ATH, aber Disambiguierung der Bucket-Boundaries nur via Cross-Reference möglich. SKILL-Text Z.593 sagt nur „Abstand ATH (>-25% = Chance) | 4" — Bucket-zu-Score-Mapping fehlt.
+
+**Ziel-Datei:** `01_Skills/dynastie-depot/SKILL.md` Technicals-Block, **neue Sub-Sektion einfügen vor Z.599** `##### **200MA Slope (Trendqualität):**` (oder nach Z.596 als erste Präzisierung). Vorgeschlagener Text-Draft (Codex-Verify Pflicht):
+
+```markdown
+##### **ATH-Distance Bucket-Boundaries (NEU 09.05.2026 post-AVGO §33 Closure):**
+
+| **Abstand vom ATH** | **Bucket-ID** | **Score** |
+| :---: | :---: | :---: |
+| Neue ATH (Breakout >+1% über vorherigem ATH) | 4 | 0/4 |
+| ±2% von ATH (at-ATH) | 3 | 1/4 |
+| -2% bis -5% (near-ATH) | 2 | 2/4 |
+| -5% bis -15% (mid-correction) | 1 | 3/4 |
+| >-15% vs ATH (deep correction) | 0 | 4/4 |
+
+- Quelle: TradingView Chart 1J → ATH-Niveau visuell + Aktueller Kurs
+- Reproduzierbar via `yfinance.history(period='5y')` → `max(High)` für ATH-Niveau, dann `(close - ATH) / ATH × 100`
+- Bucket-ID-Asymmetrie-Hinweis: Bucket-ID 0 = höchster Score (deep correction = full chance signal); Bucket-ID 4 = niedrigster Score (new ATH = fully priced). Mapping deshalb invertiert dargestellt für visuelles ATH-Distance→Score-Lesen
+- Präzedenz-Empirie: AVGO 30.04. -1,5% → Bucket 3 → 1/4 (Codex-R1-HIGH-4 APPROVED 1/4)
+```
+
+**Codex-R1-Pflicht-Verify:** SKILL-Text-Edit zu Codex-Sparring schicken mit Frage „Sind die Bucket-Boundaries empirisch konsistent zu allen aktuellen Portfolio-Anwendungsfällen?". Ziel: Cross-Verify gegen ASML (-3% in Faktortabelle), V (-?% post-Q2), BRK.B (-?% post-Q1), MSFT (-25% per 30.04.). Bei Codex-Drift: revidieren vor Apply.
+
+### Sync-Set §18 (System-Event, kein Score-Event)
+
+SKILL.md Schritt 0 + SKILL.md Technicals-Block + INSTRUKTIONEN.md §19.1-Anker + PIPELINE.md (#32 + #33 als ✅ DONE 2026-05-10 markiert, Numbering-Convention) + STATE.md Critical-Alert + CORE-MEMORY.md §13 (Lifecycle-Eintrag) + log.md (Vault-Append) + diese SESSION-HANDOVER.md (Banner-Refresh nach Commit).
+
+**Bewusst NICHT angefasst:** PORTFOLIO/Faktortabelle/xlsx/jsonl/config.yaml/Prod-Trigger — kein Score/FLAG/Sparraten-Event.
+
+### Verbleibender Cluster-A-Restbestand nach Welle-1
+
+- **#30** §410 IC-GW vs Regel-4 Cash-ROIC-Priorität (~30 Min SKILL-Klausel) — Konsolidierungstag ODER natürlicher Trigger TMO Q2 ~Ende Juli / APH Q2 ~23.07.
+- **#34** DCF-Malus `bull_dcf_source`-Feld Schema-Erweiterung (~30-45 Min Schema-Eingriff in `schemas.py` + `provenance_gate.py` + Smoke-Tests) — Konsolidierungstag
+
+### Falls Welle-1 schneller fertig (<40 Min) und Energie da ist
+
+Optional **#33-Empirie-Verify-Sweep:** Faktortabelle.md alle 11 Satelliten ATH-Distance + Tech-Score gegen neues Mapping cross-checken. Bei Drift: keine Score-Moves (kein Trigger), nur Methodology-Watch-Notiz. ~15-20 Min.
+
+---
+
+**Falls Welle-1 später als geplant gestartet wird oder andere Priorität auftritt:**
+
+Cluster-A-#31 (Methodology-Drift Hard-Ausschluss-Register) DONE in Commit `5fe80d6`. Restliche Cluster-A-Items #30/#34 bleiben weiter deferred.
 
 **Nächste reguläre Termine (chronologisch):**
 
