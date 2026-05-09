@@ -1,34 +1,39 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
-**Aktualisiert:** 2026-05-09 — Strategie-Konsolidierung Cluster-A + Quick-Screener-Drift-Audit. Resume mit klarem Edit-Plan.
+**Aktualisiert:** 2026-05-09 nach Cluster-A-#31 ✅ DONE Solo-Commit. Working tree clean nach Banner-Refresh-Folge-Commit.
 
-## 🎯 Resume-Anweisung für nächste Session (HÖCHSTE PRIORITÄT)
+## 🎯 Resume-Anweisung für nächste Session
 
-**Direkt starten mit:** Cluster-A-#31 DEFCON-Quellen-Hierarchie als Solo-Commit (StockAnalysis-Hard-Ausschluss in sources.md). **~30-45 min, kein Earnings-Window-Konflikt.**
+**Kein kritischer Resume-Trigger.** Cluster-A-#31 (Methodology-Drift Hard-Ausschluss-Register) DONE in Commit `5fe80d6`. Restliche Cluster-A-Items #30/#32/#33/#34 bleiben deferred (kein neuer Trigger seit AVGO 30.04.).
 
-**Konkrete Edits (vorbereitet, NICHT ausgeführt am 09.05. wegen Kontext-Limit):**
+**Nächste reguläre Termine (chronologisch):**
 
-1. **`01_Skills/dynastie-depot/sources.md`** — neuer §7 „Methodology-Drift Hard-Ausschluss-Register" nach §6 (vor „Goldene Regel"):
-   - **StockAnalysis ausgeschlossen** für ROIC + Forward-P/E + Score-Berechnungs-Inputs (NICHT für quarterly-CashFlow Cross-Check)
-   - Cases: AVGO ROIC 21,33% StockAnalysis vs 3,98% defeatbeta GAAP / 45,7% §410-bereinigt; MSFT ROIC 26,1% StockAnalysis vs 7,68% defeatbeta
-   - Hintergrund: Non-GAAP-Methodologie ohne SBC-Add-back-Konsistenz; DEFCON v3.7 Standard ist GAAP-konservativ
-   - Plus §5 Z.231-232: Anti-Match-Note „StockAnalysis NICHT in Hierarchie aufnehmen — siehe §7"
-   - Plus Z.48 Web-Sekundärquellen-Tabelle: StockAnalysis-Caveat „nur quarterly CashFlow Cross-Check; NIEMALS für ROIC/Forward-P/E (Methodology-Drift, §7)"
+| Datum | Item | Aktion |
+|-------|------|--------|
+| **Mo 11.05.** | Welle-3a Doctor-Snapshot | Cadence-Anker-Lauf — `python 03_Tools/system_audit.py --core` + Snapshot-File `05_Archiv/ruflo-doctor-history/2026-05-11.txt`; Δ-Vergleich gegen 05.05.-Baseline (6 PASS / 8 WARN / 0 FAIL) |
+| **14.05.** | Form-13F Apple-Trim-Magnitude (#37) + MSFT Insider-Re-Score (#26) | Form-13F BRK CIK 0001067983 lookup via SEC EDGAR + insider_intel.py MSFT post-14d-Skip-Window |
+| **27.05.** | VEEV Q1 FY27 | Klasse-B Earnings (yfinance-Pull 30.04. confirmed) |
+| **28.05.** | COST Q3 FY26 | Klasse-B Earnings (Membership-Yield-Watch) |
 
-2. **`00_Core/INSTRUKTIONEN.md` §27.4 Z.728** — 1-Zeilen-Anker-Beispiel ergänzen mit Verweis auf sources.md §7
+**Pending offene Slots (kein fester Termin):**
+- **PIPELINE #47 Konsolidierungs-Backlog** — 4 critical + ~14 major aus 4 CR-Pässen (~5-6h Aufwand, Konsolidierungstag)
+- **PIPELINE #48 Codebase-Defect-Pattern-Audit** — taxonomische Pattern-Map + Mitigations (~7-10h, eigene Session)
+- **PIPELINE #51 Cloud-AIDefence-Alternative** — Decision-Fenster ~1 Woche post-#49-DONE (frühestens ~15.05.); aktuelle Empfehlung Akzeptanz Local-Only-Schutz
+- **PIPELINE #53 Trigger-Landschafts-Audit** — eigene Session, drei Optionen Archivieren/Routine-Anker/Weiter-beobachten
 
-3. **`00_Core/PIPELINE.md`** — drei Updates:
-   - #31 in DONE-Trail (Numbering-Convention: Item bleibt sichtbar, gestrichen)
-   - **NEU: Item „Quick-Screener-Refresh deferred bis Use-Case-Trigger"** (Drift-Audit dokumentiert, 10 Drift-Dimensionen, 2 HOCH; Refresh-Skip wegen 0-1 Use-Cases in 6 Wochen — Re-Activation-Trigger: nächster Watchlist-Kandidat ODER User-Routine-Etablierung ODER 2-Monats-Audit-Slot)
-   - **NEU: Item „Trigger-Landschafts-Audit !QuickCheck + !Rebalancing"** (2/4 !-Trigger ungelebt — strategische Entscheidung archivieren ODER Routine-Anker ODER weiter beobachten; eigene Session)
+## 📊 Cluster-A-#31 ✅ DONE — Was passiert ist (09.05.2026)
 
-4. **`00_Core/log.md`** — Session-Append: System-Event Cluster-A-#31 DONE + Quick-Screener-Drift-Audit + Trigger-Landschafts-Erkenntnis
+**Commit `5fe80d6`:** Solo-Commit Methodology-Drift Hard-Ausschluss-Register. 6 Files modifiziert, +51/-5 Zeilen.
 
-5. **`00_Core/CORE-MEMORY.md` §13** — Lifecycle-Eintrag 09.05. Strategie-Konsolidierung
+**Edits:**
+- `01_Skills/dynastie-depot/sources.md` — Z.48 StockAnalysis-Caveat + §5 Anti-Match-Note + NEU §7 Hard-Ausschluss-Register (Tabelle StockAnalysis hard-excluded für ROIC/Forward-P/E/Score-Inputs; nur quarterly CashFlow Cross-Check erlaubt; Präzedenz AVGO+MSFT 30.04.; 4 operative Regeln + 3 Anti-Patterns)
+- `00_Core/INSTRUKTIONEN.md` §27.4 — 1-Zeilen-Anker „Dritte Klasse — Methodology-Drift" mit Verweis auf sources.md §7
+- `00_Core/PIPELINE.md` — #31 als ✅ DONE 2026-05-09 markiert (Numbering-Convention: gestrichen + Resolution-Note); 2 neue deferred Items #52 (Quick-Screener-Refresh deferred bis Use-Case-Trigger) + #53 (Trigger-Landschafts-Audit !QuickCheck + !Rebalancing); Footer auf 09.05.
+- `00_Core/STATE.md` — Critical-Alert 09.05. + Footer-Stand-Update
+- `00_Core/CORE-MEMORY.md §13` — Lifecycle-Tabellenzeile `2026-05-09 [Meta]` + Footer-Stand-Update
+- `07_Obsidian Vault/.../log.md` — Vault-Append `## [2026-05-09] system | Cluster-A-#31 ✅ DONE…`
 
-6. **`00_Core/STATE.md`** — neuer Critical-Alert + Last-Audit-Block (auto-managed via system_audit.py)
-
-**Sync-Set §18 (System-Event):** sources.md + INSTRUKTIONEN.md + log.md + STATE.md + CORE-MEMORY §13 + PIPELINE.md + diese SESSION-HANDOVER.md (Banner-Refresh nach Commit). **Kein Score/FLAG/Sparraten-Event** → KEIN Touch von PORTFOLIO/Faktortabelle/xlsx/jsonl/config.yaml.
+**Sync-Set §18 vollständig:** 6/6 Files in Atomic-Commit + diese SESSION-HANDOVER.md als Banner-Refresh-Folge-Commit. **Kein Score/FLAG/Sparraten-Event** → PORTFOLIO/Faktortabelle/xlsx/jsonl/config.yaml/Prod-Trigger bewusst NICHT angefasst.
 
 ## 📋 Strategie-Erkenntnisse 09.05. (Begründung des Refresh-Skips)
 
