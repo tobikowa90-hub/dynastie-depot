@@ -637,6 +637,8 @@ Bei Score ≥ 80 vor \!CAPEX-FCF-ANALYSIS: DCF-Bandbreite verpflichtend dokument
 - Bull/Base/Bear Szenarien: ±15% Rev-Wachstum zur Base-Annahme
 - Vorlage: capex-fcf-template.md Sheet 2 (bereits angelegt)
 
+**DCF-Malus Bull-Source-Pflicht (PIPELINE #34, NEU 09.05.2026):** Bei aktivem DCF-Malus (`scores.technicals.dcf_relation_delta = -1`, d.h. Kurs > Bull-DCF +20%) MÜSSEN im ScoreRecord `metriken_roh.bull_dcf_source` und `metriken_roh.bull_dcf_value_usd` gesetzt sein mit literal-Quellen-Label (z.B. `"alphaspread_bull_band_2026-04-30"` oder `"internal_capex_fcf_bull_$520"`). Heuristische Werte wie `"heuristic_x115"`, `"unknown"`, `"tbd"` oder leerer String werden vom Schema (`schemas.py::ScoreRecord._check_dcf_malus_source`) und vom Provenance-Gate (`provenance_gate.py` Check #9) fail-close abgelehnt. **Präzedenz:** AVGO 30.04.2026 Codex-R1-HIGH-5 REJECT — `Bull = AlphaSpread Base $256 × 1,15 = $294` heuristic-Uplift war regelwidrig, kein dokumentierter Bull-Band als primary-source. Korrekt wäre: Bull-Band aus `capex-fcf-template.md` Sheet 2 oder externer Bull-DCF-Quelle (Morningstar Bull, ValueInvesting.io Bull, etc.). Backfill-Records sind ausgenommen.
+
 ### Insider (10 Punkte)
 
 | \*\*Kriterium\*\* | \*\*Max\*\* |

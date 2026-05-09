@@ -719,6 +719,22 @@ brechen darf.
 
 **Cross-Reference:** SKILL.md Schritt 6c Pre-Flight-Klausel + INSTRUKTIONEN §19.1 Cross-Reference Backfill-Eligibility (Schritt 0 Bullet 4). Carryover-Asymmetrie ist orthogonal zur Backfill-Eligibility — Backfill-Eligibility prüft ob Skip-Window-Carryover ÜBERHAUPT zulässig ist (vorhergehender Record vollanalyse mit voller Coverage); Carryover-Asymmetrie regelt zusätzlich, dass innerhalb erlaubter Carryover-Übernahme kein Up-Score zulässig ist.
 
+### 27.8 DCF-Malus Bull-Source-Pflicht (NEU 09.05.2026, PIPELINE #34 Closure)
+
+**Regel:** Wenn der Technicals-Sub-Score `dcf_relation_delta < 0` (DCF-Malus aktiv, Kurs > Bull-DCF +20% per SKILL.md §Technicals Bull/Bear-Anker), MUSS im ScoreRecord `metriken_roh.bull_dcf_source` ein literal-Quellen-Label tragen (Beispiele: `"alphaspread_bull_band_2026-04-30"`, `"internal_capex_fcf_bull_$520"`, `"morningstar_bull_band_2026-04-30"`). Optionales Feld `metriken_roh.bull_dcf_value_usd` (float) hält den Bull-Band-Wert für spätere Backtest-Auswertung.
+
+**Heuristic/Empty Reject:** Werte wie `None`, `""`, `"   "`, `"unknown"`, `"tbd"`, `"todo"`, `"placeholder"`, `"none"`, `"na"`, `"n/a"`, `"?"`, `"heuristic"` ODER alles, was die Substring `"heuristic"` enthält (z.B. `"base_x_115_heuristic"`), werden fail-close abgelehnt. Whitelist siehe `03_Tools/backtest-ready/schemas.py::BULL_DCF_HEURISTIC_BLACKLIST` + Helper `_is_heuristic_bull_dcf_source`.
+
+**Doppelte Verteidigungslinie:**
+1. **Schema-Validator** (`schemas.py::ScoreRecord._check_dcf_malus_source`, model_validator mode="after"): Pydantic-seitig fail-close bei Forward-Records.
+2. **Provenance-Gate Check #9** (`provenance_gate.py::check_provenance`): Vor Pydantic-Validation, gibt domain-spezifische Reason-String an Caller (Backtest-Ready-Forward-Verify Skill).
+
+**Skip-Conditions (beide Layer):** `source == "backfill"` (historische Records ohne Bull-Source-Doku zulässig) ODER `dcf_relation_delta >= 0` (kein Malus aktiv). Forward + Vollanalyse + Malus-aktiv = Bull-Source pflicht.
+
+**Präzedenzfall (AVGO 30.04.2026, Codex-R1-HIGH-5 REJECT):** Vollanalyse-Draft hatte `Bull = AlphaSpread Base $256 × 1,15 = $294` als heuristischen Bull-Band-Uplift angenommen — kein dokumentierter Bull-Band aus capex-fcf-template oder externer Bull-DCF-Quelle. Codex-R1 REJECTED den +1-DCF-Bonus-Pfad als regelwidrig (SKILL.md verlangt actual Bull/Bear-Band). Final-Score 53/D2 ohne DCF-Malus-Aktivierung. Diese Regel macht den Schutz schema-side enforced für künftige Vollanalysen.
+
+**Cross-Reference:** SKILL.md §Technicals Bull/Bear-DCF-Block (Stand 09.05.2026 mit Bull-Source-Pflicht-Note) + `01_Skills/dynastie-depot/capex-fcf-template.md` Sheet 2 (Vorlage Bull/Base/Bear-Szenarien) + Schema-Smoke-Tests `schemas.py::_smoke_tests` Cases M1-M5 + Provenance-Gate-Smoke-Tests `provenance_gate.py::_smoke_tests` Case 10a-10f.
+
 ---
 
 ## 28. Scoring-Version-Migration-Workflow

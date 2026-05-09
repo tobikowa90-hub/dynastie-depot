@@ -1,18 +1,17 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-09 spätabends (post-Konsolidierungstag-Wave-3)
-- **Working tree:** clean (nach Konsolidierungstag-Wave-3-Commit)
-- **Pipeline:** Konsolidierungstag-Wave-3 ✅ DONE — PIPELINE #16 INSTRUKTIONEN.md Slim-Refactor Variante A Pointer-Extraction (§29 → RETROSPECTIVE-GATE.md NEU + §24+§25 → morning-briefing-spec.md NEU mit Inline-Drift-Refresh §24-Header v2.1→v3.1.1; INSTRUKTIONEN.md 1149→960 LOC -16,4%; Gemini-Cross-Sync-Review 97% GO). 09.05.-Closure-Triade abgeschlossen (Wave-1 + Cluster-A-#31 + Wave-2 + Wave-3).
-- **Approval:** User-Direktive 09.05.2026 Resume-Direktive aus Wave-2-Banner ausgeführt mit Sparring-Eskalation („Gemini Review als kontextbasierter cross-sync-reviewer" + „>95% Confidence dann 100%-Rework"). Variante-B-Inline-Drift-Refresh §24 v2.1→v3.1.1 nach User-AskQuestion-Decision.
-- **Commits heute (chronologisch):** `5fe80d6` (#31 DONE) → `1d56f0b` (Banner #31) → `2b8f456` (Welle-1-Setup) → `e22f534` (Banner-Refinement) → `db7f435` (#32+#33 Welle-1 DONE) → `79c6944` (Banner post-Welle-1) → `e5d8b54` (CR-Findings-Folge-Commit) → `f6b1926` (Konsolidierungstag-Wave-2 DONE) → Konsolidierungstag-Wave-3-Commit (dieser Edit, post-#16)
+- **Datum:** 2026-05-09 spätabends (post-PIPELINE-#34-DCF-Malus-Schema-Closure, AVGO-Cluster-A komplett)
+- **Working tree:** dirty (Pre-Commit für #34 Sync-Set: schemas.py + provenance_gate.py + SKILL.md + INSTRUKTIONEN.md §27.8 + PIPELINE.md + STATE.md + CORE-MEMORY.md §13 + log.md + dieser Banner)
+- **Pipeline:** PIPELINE #34 ✅ DONE — DCF-Malus Bull-Source-Schema-Pflicht. Schema-Validator + Provenance-Gate Check #9 doppelte Verteidigungslinie; Smoke-Tests 19/19 (schema) + 10/10 (gate) + 8/8 (forward-verify) PASS. AVGO-Cluster-A komplett geschlossen (0 Items Restbestand: #30/#31/#32/#33/#34 alle DONE). 09.05.-Closure-Pentagon abgeschlossen (Wave-1 + Cluster-A-#31 + Wave-2 + Wave-3 + #34).
+- **Approval:** User-Direktive 09.05.2026 spätabends „Weiter gehts mit Task #34" — surgical Schema-Eingriff exakt nach PIPELINE-Spec ausgeführt; Sync-Set wie in PIPELINE-Item-Body explizit erklärt.
+- **Commits heute (chronologisch, vor #34-Commit):** `5fe80d6` (#31 DONE) → `1d56f0b` → `2b8f456` → `e22f534` → `db7f435` (#32+#33) → `79c6944` → `e5d8b54` (CR) → `f6b1926` (Wave-2) → `ddd1db3` (Wave-3) → `a76e50e` (#54 Wiki-Modus) → `f24be23` (PIPELINE-Cleanup) → #34-Commit (dieser).
 
 ## 🎯 Resume-Anweisung für nächste Session
 
-**KRITISCHE Test-Probe abgeschlossen ✅ (09.05. Wave-3):** `dynastie-depot`-Skill wurde bei Session-Start NICHT auto-geladen — Skill-Lazy-Load-Refactor (Wave-2) empirisch verifiziert.
+**KRITISCHE Test-Probe (Wave-2 Skill-Lazy-Load) ✅ erneut bestätigt diese Session:** `dynastie-depot`-Skill wurde bei Session-Start nicht auto-geladen — Schema/Code-Edit-Session ohne Skill-Aktivierung gelaufen.
 
-**Resume-Trigger:** Keine offene Direktive mehr aus 09.05.-Closure-Triade. **Restbestand AVGO-Cluster-A:**
-- **#34 DCF-Malus `bull_dcf_source`-Schema-Erweiterung** — Schema-Eingriff `03_Tools/backtest-ready/schemas.py` + `provenance_gate.py` + Smoke-Tests; eigene Session, ~30-45 Min.
+**Resume-Trigger:** Keine offene Direktive mehr. **Offene CR-Frage:** User hat 09.05. spätabends gefragt ob CR-Pass auf #34 separat ODER in #48 — Empfehlung dokumentiert in Antwort: in #48 Codebase-Defect-Pattern-Audit folden (#34 ist surgical 2-File-Python + 2-File-Markdown, Smoke-Tests grün, AVGO-Cluster-A-Pattern nutzt Codex-Sparring nicht CR; #48 hat explizit Konvergenz-Lesson „keine blind-CR-Pässe ohne Hypothese"). Falls User trotzdem CR will: `--dir 03_Tools/backtest-ready` Skoping, ~3-5k Token, 1-2 Findings erwartbar.
 
 **Sekundärer Termin: Mo 11.05.** Welle-3a Doctor-Snapshot-Cadence-Lauf (`python 03_Tools/system_audit.py --core` + Snapshot-File `05_Archiv/ruflo-doctor-history/2026-05-11.txt`; Δ-Vergleich gegen 05.05.-Baseline 6 PASS / 8 WARN / 0 FAIL).
 

@@ -37,6 +37,34 @@ QT_FWD_PE_MAX1_LOW: Final[float] = 22.0
 QT_P_FCF_HARD: Final[float] = 35.0
 QT_P_FCF_MAX1_LOW: Final[float] = 22.0
 
+# DCF-Malus Bull-Source-Pflicht (PIPELINE #34, 2026-05-09; Trigger: AVGO 30.04.
+# Codex-R1-HIGH-5 REJECTED heuristic Bull+15%-DCF-Uplift). Wenn
+# scores.technicals.dcf_relation_delta < 0 (DCF-Malus aktiv) MUSS
+# metriken_roh.bull_dcf_source ein literal-Quellen-Label tragen
+# (z.B. "alphaspread_bull_band_2026-04-30" oder "internal_capex_fcf_bull_$520").
+# Heuristic/Empty -> Reject. Definition siehe _is_heuristic_bull_dcf_source.
+BULL_DCF_HEURISTIC_BLACKLIST: Final[frozenset[str]] = frozenset({
+    "unknown", "tbd", "todo", "placeholder", "none", "na", "n/a", "?",
+    "heuristic",
+})
+
+
+def _is_heuristic_bull_dcf_source(value: str | None) -> bool:
+    """True wenn value als Heuristik/Empty fuer DCF-Malus-Pflicht gilt.
+
+    - None / Empty / Whitespace-only -> True
+    - Pure Blacklist-Token -> True
+    - Substring "heuristic" enthalten -> True (z.B. "base_x_115_heuristic")
+    """
+    if value is None:
+        return True
+    stripped = value.strip().lower()
+    if not stripped:
+        return True
+    if stripped in BULL_DCF_HEURISTIC_BLACKLIST:
+        return True
+    return "heuristic" in stripped
+
 # FLAG-Typ Schwellen + Verletzungsrichtung (Spec Section 4.2)
 FLAG_RULES: Final[dict[str, tuple[float, str]]] = {
     "capex_ocf": (60.0, ">"),
@@ -265,6 +293,14 @@ class MetrikenRoh(BaseModel):
     # v3.7 neu
     operating_margin_ttm_pct: float | None = None
 
+    # PIPELINE #34 (2026-05-09): DCF-Malus Bull-Source-Pflicht.
+    # Wenn TechnicalsScore.dcf_relation_delta < 0, MUSS bull_dcf_source ein
+    # literal-Quellen-Label sein (siehe _is_heuristic_bull_dcf_source).
+    # Validierung in ScoreRecord._check_dcf_malus_source (root-level, da
+    # Cross-Block: TechnicalsScore × MetrikenRoh).
+    bull_dcf_source: str | None = None
+    bull_dcf_value_usd: float | None = None
+
     @model_validator(mode="after")
     def _sync_rel_staerke_alias(self) -> MetrikenRoh:
         """Wenn nur einer der beiden Rel-Staerke-Namen gesetzt ist, spiegele ihn.
@@ -425,6 +461,35 @@ class ScoreRecord(BaseModel):
                     f"scores.fundamentals.p_fcf <= 1, got {self.scores.fundamentals.p_fcf}"
                 )
 
+        return self
+
+    @model_validator(mode="after")
+    def _check_dcf_malus_source(self) -> ScoreRecord:
+        """PIPELINE #34: DCF-Malus aktiv -> bull_dcf_source pflicht (literal Quellen-Label).
+
+        Trigger AVGO 30.04.2026 Forward-Vollanalyse Codex-R1-HIGH-5: heuristischer
+        Bull+15%-DCF-Uplift (AlphaSpread Base $256 only) wurde als regelwidrig
+        REJECTED — SKILL.md verlangt actual Bull-Band aus capex-fcf-template oder
+        externer Bull-DCF-Quelle. Diese Regel macht das schema-side enforced fuer
+        forward-Records.
+
+        Skip-Conditions:
+          - source != 'forward' (Backfill darf historische Records ohne Bull-Source-Doku tragen)
+          - dcf_relation_delta >= 0 (kein Malus aktiv -> Source nicht pflicht)
+        """
+        if self.source != "forward":
+            return self
+        if self.scores.technicals.dcf_relation_delta >= 0:
+            return self
+
+        bull_src = self.metriken_roh.bull_dcf_source
+        if _is_heuristic_bull_dcf_source(bull_src):
+            raise ValueError(
+                f"DCF-Malus active (technicals.dcf_relation_delta={self.scores.technicals.dcf_relation_delta}) "
+                f"requires metriken_roh.bull_dcf_source with literal source label "
+                f"(e.g. 'alphaspread_bull_band_2026-04-30' or 'internal_capex_fcf_bull_$520'); "
+                f"got {bull_src!r}. Heuristic/empty values are rejected per PIPELINE #34."
+            )
         return self
 
     @model_validator(mode="after")
@@ -627,6 +692,7 @@ class BenchmarkReturnRecord(BaseModel):
 # ---------------------------------------------------------------------------
 
 __all__ = [
+    "BULL_DCF_HEURISTIC_BLACKLIST",
     "FLAG_RULES",
     "FUNDAMENTALS_CAP",
     "FUNDAMENTALS_FLOOR",
@@ -648,6 +714,7 @@ __all__ = [
     "Scores",
     "SentimentScore",
     "TechnicalsScore",
+    "_is_heuristic_bull_dcf_source",
 ]
 
 
@@ -966,6 +1033,74 @@ def _smoke_tests() -> None:
     rec_d4 = ScoreRecord.model_validate(d4)
     assert rec_d4.source == "backfill"
     print("  [D4] block-coverage: backfill skipped -> parses OK")
+
+    # ------------------------------------------------------------------
+    # Cases M1-M5: DCF-Malus Bull-Source-Pflicht (PIPELINE #34, 2026-05-09)
+    # ------------------------------------------------------------------
+
+    def _make_dcf_malus_record() -> dict:
+        """Forward-Vollanalyse mit dcf_relation_delta=-1, arithmetisch konsistent.
+
+        Basis: avgo (score_gesamt=80, defcon=4). dcf_relation_delta -1 senkt
+        technicals.gesamt 10->9, score_gesamt 80->79, defcon 4->3.
+        """
+        r = copy.deepcopy(avgo)
+        r["record_id"] = "2026-05-01_AVGO_vollanalyse"
+        r["score_datum"] = "2026-05-01"
+        r["scores"]["technicals"]["dcf_relation_delta"] = -1
+        r["scores"]["technicals"]["gesamt"] = 9  # 4+3+3-1
+        r["score_gesamt"] = 79  # 33+18+9+10+9
+        r["defcon_level"] = 3
+        return r
+
+    # Case M1: DCF-Malus aktiv + bull_dcf_source missing -> ValidationError
+    m1 = _make_dcf_malus_record()
+    try:
+        ScoreRecord.model_validate(m1)
+    except ValidationError as e:
+        assert "DCF-Malus active" in str(e), f"wrong error: {e}"
+        assert "bull_dcf_source" in str(e), f"bull_dcf_source not in error: {e}"
+        print("  [M1] DCF-Malus + bull_dcf_source missing -> ValidationError")
+    else:
+        raise AssertionError("expected DCF-Malus ValueError for missing bull_dcf_source")
+
+    # Case M2: DCF-Malus aktiv + bull_dcf_source='heuristic_bull_band_x115' -> ValidationError
+    m2 = _make_dcf_malus_record()
+    m2["metriken_roh"]["bull_dcf_source"] = "heuristic_bull_band_x115"
+    try:
+        ScoreRecord.model_validate(m2)
+    except ValidationError as e:
+        assert "DCF-Malus active" in str(e), f"wrong error: {e}"
+        print("  [M2] DCF-Malus + 'heuristic_*' source -> ValidationError")
+    else:
+        raise AssertionError("expected DCF-Malus ValueError for heuristic source")
+
+    # Case M3: DCF-Malus aktiv + bull_dcf_source='alphaspread_bull_band_2026-04-30' -> parses OK
+    m3 = _make_dcf_malus_record()
+    m3["metriken_roh"]["bull_dcf_source"] = "alphaspread_bull_band_2026-04-30"
+    m3["metriken_roh"]["bull_dcf_value_usd"] = 295.0
+    rec_m3 = ScoreRecord.model_validate(m3)
+    assert rec_m3.metriken_roh.bull_dcf_source == "alphaspread_bull_band_2026-04-30"
+    assert rec_m3.metriken_roh.bull_dcf_value_usd == 295.0
+    print("  [M3] DCF-Malus + literal source label -> parses OK")
+
+    # Case M4: Backfill mit DCF-Malus, kein bull_dcf_source -> parses OK (Skip Source)
+    m4 = _make_dcf_malus_record()
+    m4["source"] = "backfill"
+    m4["defcon_version"] = "historical"
+    rec_m4 = ScoreRecord.model_validate(m4)
+    assert rec_m4.source == "backfill"
+    assert rec_m4.metriken_roh.bull_dcf_source is None
+    print("  [M4] Backfill + DCF-Malus + no source -> parses OK (skip)")
+
+    # Case M5: Forward OHNE DCF-Malus (delta=0), kein bull_dcf_source -> parses OK
+    m5 = copy.deepcopy(avgo)
+    m5["record_id"] = "2026-05-02_AVGO_vollanalyse"
+    m5["score_datum"] = "2026-05-02"
+    rec_m5 = ScoreRecord.model_validate(m5)
+    assert rec_m5.scores.technicals.dcf_relation_delta == 0
+    assert rec_m5.metriken_roh.bull_dcf_source is None
+    print("  [M5] Forward + no DCF-Malus + no source -> parses OK")
 
     try:
         print("\u2705 all schema smoke tests passed")

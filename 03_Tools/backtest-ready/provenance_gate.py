@@ -19,6 +19,7 @@ from typing import Final
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from schemas import _is_heuristic_bull_dcf_source
 from versions import DEFCON_ACTIVE_VERSION
 
 # ---------------------------------------------------------------------------
@@ -187,6 +188,23 @@ def check_provenance(
                 f"skill_meta.migration_to_version='{meta_to_version}' "
                 f"inconsistent with record.defcon_version='{record_version}' "
                 f"(recycled skill_meta)"
+            ]
+
+    # Check #9: DCF-Malus aktiv -> bull_dcf_source pflicht (PIPELINE #34, 2026-05-09)
+    # Trigger AVGO 30.04. Codex-R1-HIGH-5: heuristischer Bull+15%-Uplift ohne
+    # primary-source Bull-Band war regelwidrig. Schema-Validator deckt es Pydantic-
+    # seitig; dieser Check fail-closed schon vor der Pydantic-Validation, damit der
+    # Caller eine domain-spezifische Reason-String bekommt.
+    technicals = (record_dict.get("scores") or {}).get("technicals") or {}
+    dcf_delta = technicals.get("dcf_relation_delta")
+    if isinstance(dcf_delta, (int, float)) and dcf_delta < 0:
+        bull_src = (record_dict.get("metriken_roh") or {}).get("bull_dcf_source")
+        if _is_heuristic_bull_dcf_source(bull_src):
+            return False, [
+                f"DCF-Malus active (technicals.dcf_relation_delta={dcf_delta}) "
+                f"requires metriken_roh.bull_dcf_source with literal source label "
+                f"(e.g. 'alphaspread_bull_band_YYYY-MM-DD' or "
+                f"'internal_capex_fcf_bull_$<value>'); got {bull_src!r}"
             ]
 
     return True, []
@@ -401,7 +419,52 @@ def _smoke_tests() -> None:
     assert "recycled skill_meta" in reasons[0], f"[9] {reasons}"
     print("  [9/9] recycled skill_meta (migration_to_version inconsistent) -> fail")
 
-    print("[OK] all provenance_gate smoke tests passed (9/9)")
+    # ---- Case 10: Check #9 DCF-Malus Bull-Source-Pflicht (PIPELINE #34) ----
+    # 10a: dcf_relation_delta=-1 + bull_dcf_source missing -> fail
+    rec = _build_valid_vollanalyse()
+    rec["scores"] = {"technicals": {"dcf_relation_delta": -1}}
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[10a] expected fail for missing bull_dcf_source"
+    assert "DCF-Malus active" in reasons[0], f"[10a] {reasons}"
+    assert "bull_dcf_source" in reasons[0], f"[10a] {reasons}"
+
+    # 10b: dcf_relation_delta=-1 + bull_dcf_source='heuristic_x115' -> fail
+    rec = _build_valid_vollanalyse()
+    rec["scores"] = {"technicals": {"dcf_relation_delta": -1}}
+    rec["metriken_roh"] = {"bull_dcf_source": "heuristic_x115"}
+    passed, reasons = check_provenance(rec, [], None)
+    assert not passed, "[10b] expected fail for heuristic bull_dcf_source"
+    assert "DCF-Malus active" in reasons[0], f"[10b] {reasons}"
+
+    # 10c: dcf_relation_delta=-1 + bull_dcf_source='alphaspread_bull_band_2026-04-30' -> pass
+    rec = _build_valid_vollanalyse()
+    rec["scores"] = {"technicals": {"dcf_relation_delta": -1}}
+    rec["metriken_roh"] = {"bull_dcf_source": "alphaspread_bull_band_2026-04-30"}
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[10c] expected pass for literal source, got {reasons}"
+
+    # 10d: dcf_relation_delta=0 + bull_dcf_source missing -> pass (kein Malus)
+    rec = _build_valid_vollanalyse()
+    rec["scores"] = {"technicals": {"dcf_relation_delta": 0}}
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[10d] expected pass for delta=0, got {reasons}"
+
+    # 10e: backfill + dcf_relation_delta=-1 + bull_dcf_source missing -> pass (Check #1 skip)
+    rec = _build_valid_vollanalyse()
+    rec["source"] = "backfill"
+    rec["scores"] = {"technicals": {"dcf_relation_delta": -1}}
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[10e] backfill should skip Check #9, got {reasons}"
+
+    # 10f: dcf_relation_delta='0' (string -> not numeric) -> Check #9 skip, pass
+    rec = _build_valid_vollanalyse()
+    rec["scores"] = {"technicals": {"dcf_relation_delta": "-1"}}
+    passed, reasons = check_provenance(rec, [], None)
+    assert passed, f"[10f] non-numeric delta should skip Check #9, got {reasons}"
+
+    print("  [10/10] DCF-Malus bull_dcf_source pflicht (10a-10f) -> all checks pass")
+
+    print("[OK] all provenance_gate smoke tests passed (10/10)")
 
 
 if __name__ == "__main__":
