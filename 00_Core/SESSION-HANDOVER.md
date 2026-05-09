@@ -16,6 +16,7 @@
 | **28.05.** | COST Q3 FY26 | Klasse-B Earnings (Membership-Yield-Watch) |
 
 **Pending offene Slots (kein fester Termin):**
+- **AVGO-Cluster-A-Closure-Empfehlung (NEU 09.05.)** — vier offene Items #30 (§410 IC-GW vs Regel-4 Cash-ROIC-Priorität), #32 (Skip-Window <14d Backfill-Eligibility-Klausel), #33 (ATH-Distance 0-4 Bucket-Boundaries explizit), #34 (DCF-Malus `bull_dcf_source`-Feld Schema-Erweiterung) — alle aus AVGO-Vollanalyse 30.04. **Empfehlung: Option A — Solo-Commit-Bündel „AVGO-Cluster-A-Closure" am Konsolidierungstag zwischen 11.05. (Welle-3a-Snapshot) und 14.05. (Form-13F/MSFT)**, ~2-2,5h, orthogonal zu Earnings. Begründung: kontextuell zusammenhängend (alle aus 30.04. AVGO-Lessons), Closing-Move sauberer als Stückelung, Earnings-Window-Konflikt null. **Alternative B (zwei Wellen):** Welle-1 #32+#33 SKILL-Text-Klarstellungen (~50 Min) + Welle-2 #34+#30 Schema/Klausel mit Smoke-Tests (~1-1,5h). **Alternative C (Naturwarten):** #30 erst bei TMO/APH Q2 ~Ende Juli wo Mechanismus real getriggert; #32/#33/#34 generell Konsolidierungs-Slot.
 - **PIPELINE #47 Konsolidierungs-Backlog** — 4 critical + ~14 major aus 4 CR-Pässen (~5-6h Aufwand, Konsolidierungstag)
 - **PIPELINE #48 Codebase-Defect-Pattern-Audit** — taxonomische Pattern-Map + Mitigations (~7-10h, eigene Session)
 - **PIPELINE #51 Cloud-AIDefence-Alternative** — Decision-Fenster ~1 Woche post-#49-DONE (frühestens ~15.05.); aktuelle Empfehlung Akzeptanz Local-Only-Schutz
