@@ -1,26 +1,26 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-09 spätabends
-- **Working tree:** clean (nach Konsolidierungstag-Wave-2-Commit)
-- **Pipeline:** Konsolidierungstag-Wave-2 ✅ DONE — Skill-Lazy-Load-Spec-Lücke geschlossen + PIPELINE #23 + #30 Closure + Bridge-Re-Sync + CR-Folgepass-Trail kondensiert
-- **Approval:** User-Direktive 09.05.2026 spätabends „JETZT Konsolidierungstag" — Tier-1-Bündel ohne Codex-Sparring (Specs in PIPELINE klar, kein Live-Workflow-Risiko)
-- **Commits heute (chronologisch):** `5fe80d6` (#31 DONE) → `1d56f0b` (Banner #31) → `2b8f456` (Welle-1-Setup) → `e22f534` (Banner-Refinement) → `db7f435` (#32+#33 Welle-1 DONE) → `79c6944` (Banner post-Welle-1) → `e5d8b54` (CR-Findings-Folge-Commit) → Konsolidierungstag-Wave-2-Commit (dieser Edit)
+- **Datum:** 2026-05-09 spätabends (post-Konsolidierungstag-Wave-3)
+- **Working tree:** clean (nach Konsolidierungstag-Wave-3-Commit)
+- **Pipeline:** Konsolidierungstag-Wave-3 ✅ DONE — PIPELINE #16 INSTRUKTIONEN.md Slim-Refactor Variante A Pointer-Extraction (§29 → RETROSPECTIVE-GATE.md NEU + §24+§25 → morning-briefing-spec.md NEU mit Inline-Drift-Refresh §24-Header v2.1→v3.1.1; INSTRUKTIONEN.md 1149→960 LOC -16,4%; Gemini-Cross-Sync-Review 97% GO). 09.05.-Closure-Triade abgeschlossen (Wave-1 + Cluster-A-#31 + Wave-2 + Wave-3).
+- **Approval:** User-Direktive 09.05.2026 Resume-Direktive aus Wave-2-Banner ausgeführt mit Sparring-Eskalation („Gemini Review als kontextbasierter cross-sync-reviewer" + „>95% Confidence dann 100%-Rework"). Variante-B-Inline-Drift-Refresh §24 v2.1→v3.1.1 nach User-AskQuestion-Decision.
+- **Commits heute (chronologisch):** `5fe80d6` (#31 DONE) → `1d56f0b` (Banner #31) → `2b8f456` (Welle-1-Setup) → `e22f534` (Banner-Refinement) → `db7f435` (#32+#33 Welle-1 DONE) → `79c6944` (Banner post-Welle-1) → `e5d8b54` (CR-Findings-Folge-Commit) → `f6b1926` (Konsolidierungstag-Wave-2 DONE) → Konsolidierungstag-Wave-3-Commit (dieser Edit, post-#16)
 
 ## 🎯 Resume-Anweisung für nächste Session
 
-**KRITISCHE Test-Probe nächste Session (Skill-Lazy-Load-Verify):** Bei `Session starten` ohne weiteren Trigger MUSS `dynastie-depot`-Skill **NICHT** auto-laden. Falls Skill geladen wird → Discovery-System override aktiv → weiterer Verengungs-Schritt am SKILL.md-Frontmatter nötig. Falls Skill NICHT geladen wird → Lazy-Load-Refactor empirisch verifiziert.
+**KRITISCHE Test-Probe abgeschlossen ✅ (09.05. Wave-3):** `dynastie-depot`-Skill wurde bei Session-Start NICHT auto-geladen — Skill-Lazy-Load-Refactor (Wave-2) empirisch verifiziert.
 
-**Resume-Trigger (vorrangig):** PIPELINE #16 INSTRUKTIONEN.md Slim-Refactor — Variante A Pointer-Extraction:
-- **§29 Retrospective-Analyse-Gate** (Z.859 ff, ~160 LOC) → eigene Datei `00_Core/RETROSPECTIVE-GATE.md` (Future-Arch, aktiviert 2028-04-01); INSTRUKTIONEN.md behält Stub + Pointer; Cross-Reference-Anker §28→§29 funktional.
-- **§24 + §25 Morning Briefing** (Z.515-627, ~110 LOC) → `03_Tools/morning-briefing-spec.md` (co-located mit Tool); INSTRUKTIONEN.md behält Stub + Pointer.
-- **Erwartete Reduktion:** ~270 LOC = 25% (1057 → ~790 LOC / 70 KB → 52 KB).
-- **Cross-Reference-Pflege-Pflicht:** §28→§29 Anker bleiben funktional; PIPELINE.md Z.30 erwähnt RETROSPECTIVE-GATE.md + morning-briefing-spec.md (Existing existence-Drift im SystemAudit Baseline 09.05. = wird durch #16-Execution aufgelöst). CLAUDE.md Routing-Table Stub-Anker prüfen.
-- **Sync-Set bei #16-Execution:** INSTRUKTIONEN.md + RETROSPECTIVE-GATE.md (NEU) + morning-briefing-spec.md (NEU) + log.md System-Event + ggf. CLAUDE.md (falls Routing-Table-Edit nötig — wahrscheinlich nicht, Stub deckt Trigger-Anforderungen ab).
-
-**Plus Final-SystemAudit + Wave-3-Sync-Commit nach #16-Execution.**
+**Resume-Trigger:** Keine offene Direktive mehr aus 09.05.-Closure-Triade. **Restbestand AVGO-Cluster-A:**
+- **#34 DCF-Malus `bull_dcf_source`-Schema-Erweiterung** — Schema-Eingriff `03_Tools/backtest-ready/schemas.py` + `provenance_gate.py` + Smoke-Tests; eigene Session, ~30-45 Min.
 
 **Sekundärer Termin: Mo 11.05.** Welle-3a Doctor-Snapshot-Cadence-Lauf (`python 03_Tools/system_audit.py --core` + Snapshot-File `05_Archiv/ruflo-doctor-history/2026-05-11.txt`; Δ-Vergleich gegen 05.05.-Baseline 6 PASS / 8 WARN / 0 FAIL).
+
+**Tertiär Pipeline-Items für nächste Konsolidierungs-Session:**
+- **#48** Codebase-Defect-Pattern-Audit (~4-6h, neue Session, post 2-Wochen-CR-Lauf)
+- **#22** Helper `--porcelain -z`-mode-Robust-Follow-Up (~1h, Konsolidierungstag oder Trigger)
+- **#52** Quick-Screener-Refresh deferred bis Use-Case-Trigger (10 Drift-Dimensionen audit'd)
+- **#53** Trigger-Landschafts-Audit !QuickCheck + !Rebalancing (eigene Session)
 
 **User-Manual-Step heute Abend:** `06_Skills-Pakete/dynastie-depot_v3.7.6.zip` neu deployen (mit den heute eingearbeiteten SKILL.md-Edits inkl. Wave-2 §410 Tie-Break + Schritt 6c Cross-Reference + Frontmatter-Verengung) + Desktop-App-Install. Skill-Versions-Stempel bleibt v3.7.6 (Klarstellungs-Edits + Frontmatter-Hardening, kein neues Feature, keine Versions-Bump).
 
