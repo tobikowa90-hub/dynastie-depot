@@ -12,6 +12,11 @@ from pathlib import Path
 from system_audit.types import AuditContext, CheckResult, FailureDetail
 
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:\|[^\]]+)?(?:#[^\]]+)?\]\]")
+# Inline-Code-Spans (single backticks) und Schema-Beispiele wie `[[Page Title]]`
+# sind dokumentarische Mentions, keine echten Wikilinks. Strip-vor-Match um
+# False-Positives auf Convention-Beispiele (WIKI-SCHEMA.md, log.md Pass-Notes,
+# archive/log historisierte Refs) zu vermeiden.
+INLINE_CODE_RE = re.compile(r"`[^`]*`")
 
 
 def run(repo_root: Path, context: AuditContext) -> CheckResult:
@@ -25,14 +30,45 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     # Notes-Set inkludiert raw/-Files als valide Wikilink-Targets (Obsidian sieht
     # sie als Vault-Notes), aber wir scannen sie nicht für outgoing wikilinks
     # (raw-Imports sind unkurriert, ihre internen Links sind irrelevant).
-    notes = {p.stem for p in vault.rglob("*.md")}
+    # Plus Frontmatter-Aliases pro Note: Obsidian resolved `[[Clifford S. Asness]]`
+    # auf eine Note `clifford-asness.md` mit `aliases: ["Clifford S. Asness"]`.
+    # Ohne Alias-Resolution würden alle Author-Stubs mit Full-Name-Refs als
+    # dangling falsch-positiv getriggert (siehe 2026-05-10 Audit-Run, 8 Findings).
+    notes = set()
+    alias_re = re.compile(r"^aliases:\s*$\n((?:^\s+-\s.+$\n?)+)", re.MULTILINE)
+    alias_item_re = re.compile(r'^\s+-\s+"?([^"\n]+?)"?\s*$', re.MULTILINE)
+    for p in vault.rglob("*.md"):
+        notes.add(p.stem)
+        try:
+            text = p.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        # Nur Frontmatter (zwischen den ersten zwei `---`-Markern) für Aliases scannen.
+        if not text.startswith("---"):
+            continue
+        fm_end = text.find("\n---", 4)
+        if fm_end < 0:
+            continue
+        fm = text[4:fm_end]
+        m = alias_re.search(fm)
+        if not m:
+            continue
+        for am in alias_item_re.finditer(m.group(1)):
+            notes.add(am.group(1).strip())
 
     failures: list[FailureDetail] = []
     n_checked = 0
     n_passed = 0
 
     for md in vault.rglob("*.md"):
-        if "/raw/" in str(md).replace("\\", "/"):
+        md_path = str(md).replace("\\", "/")
+        if "/raw/" in md_path:
+            continue
+        # Frozen historic archive (Quartals-Rollover per INSTRUKTIONEN §18.6).
+        # Analog log_lag-Konvention: archive/log/ ist read-only, dangling Refs
+        # auf nie-indexierte Notes (z.B. Video-Titel-Plan-Pages) sind historisch
+        # akzeptabel und sollen nicht actionable getriggert werden.
+        if "/archive/log/" in md_path:
             continue
         if (time.monotonic() - start) > timeout_s:
             return CheckResult(
@@ -44,7 +80,14 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
                 duration_ms=int((time.monotonic() - start) * 1000),
                 category="optional",
             )
-        for lineno, line in enumerate(md.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+        in_fence = False
+        for lineno, raw_line in enumerate(md.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            if raw_line.lstrip().startswith("```"):
+                in_fence = not in_fence
+                continue
+            if in_fence:
+                continue
+            line = INLINE_CODE_RE.sub("", raw_line)
             for m in WIKILINK_RE.finditer(line):
                 n_checked += 1
                 # Markdown-Table-Pipe-Escape: `[[BRKB\|BRK.B]]` in Tabellen-Zellen

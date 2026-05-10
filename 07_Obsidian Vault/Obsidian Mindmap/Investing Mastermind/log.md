@@ -1276,3 +1276,10 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 - Convention: quartalsweise Roll-over (April/Juli/Oktober/Januar) → `archive/log/log-YYYY-Qn.md`. Verankert in INSTRUKTIONEN.md §18.6 (NEU) + CORE-MEMORY.md §13 + SYSTEM.md §System-Zustand.
 - Gemini Cross-Sync-Audit: 96% PROCEED. 0 externe Vault-Wikilinks zu log.md, 2 Self-Refs harmlos (innerhalb jeweiliger Halben).
 - 8-File-Sync-Commit atomar: log.md + archive/log/log-bis-2026-04.md + INSTRUKTIONEN.md §18.6 + CORE-MEMORY.md §13 + SYSTEM.md System-Zustand-Bullet + WIKI-SCHEMA.md Z.23 + SESSION-HANDOVER.md Z.43 + 03_Tools/system_audit/checks/log_lag.py Kommentar.
+
+## [2026-05-10] system-event | Audit-Cleanup-Pack + PIPELINE #50 Ruflo-Bridge-Bugs Decision (Codex 97% Option A)
+- **Audit:** `python 03_Tools/system_audit.py --full` 12/16 PASS · 3 FAIL → **14/16 PASS · 0 FAIL · 2 WARN** (beide design-akzeptiert: Track-4 Auto-Persist-Cron + 30 Plan-Forward-Refs).
+- **Edits:** CORE-MEMORY/SYSTEM Header-Bumps; STATE.md Z.16/25/28/55 Refs unwrapped+Vault-prefixed; PIPELINE.md placeholder italics; vault_backlinks.py Tool-Extension (Inline-Backtick-Strip + Frontmatter-Aliases-Resolution + archive/log-Skip).
+- **Author-Stub-Insight:** alle 6 vermeintlich-fehlenden Stubs (Asness/Pedersen/Fama/French/Harvey/Mauboussin) existieren mit passenden `aliases:` — Tool-Extension matched Obsidian-Verhalten, Stub-Backfill war unnötig.
+- **PIPELINE #50 Decision DONE:** Source-Investigation in `memory-tools.js` confirmed beide Bugs (Bug A WSL-cwd-Mismatch Z.634-636 + Bug B Asymm. Validation Z.49-55+421+670+680). Codex-Single-Pass via codex:codex-rescue → **Option A 97% APPROVED** (Maintainer-Issues + Workaround). Issue-Drafts in CORE-MEMORY §13 dokumentiert; Filing pending User-Aktion.
+- **§18-Sync atomar:** STATE/PIPELINE/SYSTEM/CORE-MEMORY/Vault log.md + 5 Audit-Cleanup-Edits + vault_backlinks Tool-Fix. Scoring-neutral. DEFCON v3.7 + 11 Scores + Sparraten unverändert.
