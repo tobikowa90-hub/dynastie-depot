@@ -3,7 +3,7 @@ title: "Intangible-Adjusted Value"
 type: concept
 tags: [defcon, intangible-capital, total-q, goodwill-bereinigung, fundamentals-block, b29, active-scoring-validation]
 created: 2026-05-09
-updated: 2026-05-09
+updated: 2026-05-10
 sources: [Peters-Taylor-2017-Intangible-Capital]
 related: [Wissenschaftliche-Fundierung-DEFCON, Quality-Trap, QMJ-Faktor, FCF-Primacy, Buffett-Faktorlogik, Wolff-Echterling-2023, Buffetts-Alpha, DEFCON-System, AVGO, MSFT, V, BRKB]
 wissenschaftlicher_anker: "B29 (Peters & Taylor 2017, JFE 123(2)) — Total q als investment-q-Korrektur über physisches PLUS intangibles Kapital; Hayashi-Bedingung wird unter Total q nicht abgelehnt, unter klassischem Tobin's q schon. Theoretische Fundierung der seit AVGO-30.04.2026 operativen §410-Goodwill-Bereinigung (NOPAT / (Invested Capital − Goodwill)) als Mainstream-Asset-Pricing-Anker statt rein-Präzedenz-Argument."
@@ -37,7 +37,7 @@ Im DEFCON-Kontext wird diese Theorie operativ über **§410 IC-Bereinigung** umg
 
 ## Theoretische Brücke Goodwill ↔ Intangibles
 
-Peters/Taylor diskutieren Goodwill nur peripher. **Crouzet & Eberly (2019)** formalisieren: bei Acquisition-Heavy-Sektoren ist Bilanz-Goodwill eine Lower-Bound-Approximation für extern erworbenes Intangibles-Capital. Die Logik:
+Peters/Taylor diskutieren Goodwill nur peripher (S. 13 + Robustness Table 9 „Exclude Goodwill" — Hauptbefunde unverändert). **Crouzet/Eberly/Eisfeldt/Papanikolaou (2022)** ([[Crouzet-Eberly-Eisfeldt-Papanikolaou-2022-Economics-Intangible-Capital]], JEP 36(3) Summer 2022, S. 29-52) formalisieren über die zwei distinguishing properties Non-Rivalry in Use + Limited Excludability: bei Acquisition-Heavy-Sektoren ist Bilanz-Goodwill eine Lower-Bound-Approximation für extern erworbenes Intangibles-Capital. Die Logik:
 
 1. Eine Firma erwirbt eine andere für $X über Bilanz-Buchwert hinaus.
 2. Dieser Excess-Payment ($X − Bilanz-Buchwert-Target) reflektiert die ökonomische Bewertung der nicht-bilanzierten Intangibles des Targets (Brand, Customer-Relationships, Tech-Stack, Talent-Base).
@@ -66,14 +66,14 @@ Peters/Taylor diskutieren Goodwill nur peripher. **Crouzet & Eberly (2019)** for
 - **Vollständiges Total-q-Capital-Reconstruction** (Peters/Taylor PIM-Methode mit Branch-spezifischen R&D/OC-Depreciation-Rates) — Reconstruction-Aufwand prohibitiv für 4-Min-Score-Routine; §410 ist die pragmatische Approximation.
 - **Intangible-Adjusted Book/Value als eigener Faktor-Score** — wäre §28.1-Migration-Workflow mit §29.4 t-Hurdle + §29.7 M&P-Discount. Deferred. Trigger: gehäuftes Auftreten von Bilanz-vs-Total-q-Diskrepanzen über mehrere Q-Vollanalysen, die §410 nicht ausreichend abdeckt.
 - **Organisation-Capital als eigenständige Sub-Score-Achse** (Eisfeldt/Papanikolaou 2013, +4,6% p.a.) — `design-context`-Phase D-2 deferred. Trigger: V Q3 FY26 ROIC-Methodology-Verify (PIPELINE #21).
-- **NBER „Intangible Value"-Strategy (Kuchler et al.)** — SOURCE-ONLY Phase D-3, anchors B29 + ggf. zukünftiges OrgCap-B-Befund.
+- **NBER „Intangible Value"-Strategy (Eisfeldt/Kim/Papanikolaou 2020)** — siehe [[Eisfeldt-Kim-Papanikolaou-2020-Intangible-Value]], Phase-D-2 active-deferred-D2 (per User-Direktive 2026-05-10 von D-3 SOURCE-ONLY hochgestuft, Cluster mit EP-2013 für Q3-2026-V-Trigger).
 
 ## Limitationen
 
 - **PIM-Sensitivität:** Peters/Taylor verwenden Branch-spezifische R&D-Depreciation 10-30%; ±5pp ändert Total-q-Werte um ~5-15%. §410-Goodwill-Approach ist robuster (Goodwill ist hard-bilanziert), aber gröber.
 - **Non-US-Übertragbarkeit:** IFRS R&D-Capitalization-Regeln (development phase aktivierbar, research phase nicht) unterscheiden sich von US-GAAP (Expense-Mehrheit). §410 ist neutral gegenüber dieser Unterschiedslage, weil es nur Goodwill (IFRS+GAAP einheitlich) entfernt; Total-q wäre Non-US-anpassungsbedürftig.
 - **Acquisition-Vintage-Bias:** Goodwill aus 1990er-Akquisitionen reflektiert ökonomische Realität von 1990, nicht 2026. M&A-Compounder mit alten Goodwill-Stücken (BRK.B, IBM) haben strukturell höhere Goodwill-Reductions-Risiken — §410 ist robust gegen aktuelle FV-Tests, aber nicht prädiktiv gegen zukünftige Impairment-Risiken (siehe BRK.B KHC-OTTI-Watch PIPELINE #36 als Sonderfall).
-- **Fortlaufende Drift:** Das Total-q-Konzept war 2017 state-of-the-art; Folge-Literatur (Falato et al. 2022) hinterfragt SG&A-OC-Konstruktion methodisch. §410 ist robust gegen diese Methodik-Drift, weil es nur die Bilanz-Goodwill-Position adressiert.
+- **Fortlaufende Methodik-Diskussion:** Das Total-q-Konzept war 2017 state-of-the-art; die in Peters/Taylor referenzierte alternative δ_SG&A=20%-Spezifikation (Falato/Kadyrzhanova/Sim 2013, FEDS Working Paper 2013-67) und die offene Frage zur Heterogenität von SG&A-Komponenten (Marketing-Flow vs. echte Capital-Investitionen) sind dokumentierte methodische Caveats. §410 ist robust gegen diese Methodik-Diskussion, weil es nur die Bilanz-Goodwill-Position adressiert, nicht die PIM-Konstruktion selbst.
 
 ## Operative Anwendung in DEFCON
 

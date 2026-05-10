@@ -7,7 +7,10 @@ tags: [defcon, behavioural-finance, peed-factor, fin-factor, sentiment-block, in
 url: https://academic.oup.com/rfs/article-abstract/33/4/1673/5544316
 venue: "Review of Financial Studies 33(4), 2020, 1673-1736 (NBER WP 24163, 2018)"
 authors: "Kent D. Daniel (Columbia GSB), David Hirshleifer (UC Irvine / USC Marshall), Lin Sun (Florida International University)"
-status: processed
+status: primary-belegt
+medium: paper
+created: 2026-05-09
+updated: 2026-05-10
 defcon_relevanz: "Befund B30 (`active-scoring-validation`, eingeführt 2026-05-09 Phase D-1). Sentiment-Block (10 Pt.) + Insider-Block (5 Pt., konzeptuell-erweitert) — wissenschaftlicher Klammer-Anker für die heute lose nebeneinander stehenden behavioural-empirischen Ankerquellen B11 (Crowd-Consensus-Bias, Jadhav/Mirza), B26 (Insider-Buy>Sell, Lakonishok/Lee), B27 (Insider-Sell-Window, Ke/Huddart/Petroni) und B28 (Media-Pessimism Mean-Reversion, Tetlock). Kern-These: Zwei Behavioural-Faktoren reichen empirisch aus, um eine breite Anomalie-Menge zu erklären — (1) PEAD = Post-Earnings-Announcement Drift (Short-Horizon Underreaction auf Earnings-Surprises) + (2) FIN = Financing-Faktor (Long-Horizon Mispricing via Issuance-vs-Buyback-Asymmetrie). Operative Konsequenz für DEFCON: KEIN neues Score-Element. B30 liefert das Modell-Klammer-Argument, warum die DEFCON-Blöcke Sentiment + Insider + Buyback-relevante-Indikatoren empirisch funktionieren — sie sind Manifestationen derselben zwei Behavioural-Drift-Phänomene. Wichtige praktische Implikation aus der Long-Horizon-Komponente FIN: Buyback-Aktivität ist KEIN Sentiment-Signal (Methodology-Drift V-Q2-28.04. + BRK.B-04.05.-Annual-Meeting-Lehre), sondern ein eigenständiger Long-Horizon-Behavioural-Indikator — das Mapping `Buybacks → Sentiment-Bonus` ist falsch; korrektes Mapping wäre `Buybacks → strukturelles FIN-Signal mit langem Half-Life`."
 sources: []
 related:
@@ -22,7 +25,7 @@ related:
   - "[[Jadhav-Mirza-2025]]"
   - "[[Wissenschaftliche-Fundierung-DEFCON]]"
   - "[[DEFCON-System]]"
-raw_path: null
+raw_path: "raw/papers/Daniel, Hirshleifer, Sun (2020).pdf"
 aliases:
   - "Daniel Hirshleifer Sun 2020"
   - "DHS 2020"
@@ -33,17 +36,19 @@ aliases:
 
 # Daniel, Hirshleifer & Sun (2020) — Short- and Long-Horizon Behavioral Factors
 
-> ⚠️ **CONFIDENCE-WARNUNG (sekundärer Beleg):** Diese Source-Page synthesisiert **NICHT aus der Primärquelle** (Raw-PDF nicht ingested), sondern aus (1) RFS-Abstract, NBER-WP-24163-Public-Version (2018-Draft), (2) Sekundärliteratur (Hirshleifer/Jiang/DiGiovanni 2020 PEAD-Reviews; Daniel/Hirshleifer/Subrahmanyam 1998 als theoretischer Vorläufer), (3) AEA-Conference-Paper-Versions. **Spezifische Magnituden** (Faktor-Loadings, t-Stats, Anzahl erklärter Anomalien) sind sekundär-zitiert. **Pflicht bei Bedarf an Primärzitaten:** RFS 33(4) S. 1673-1736 oder NBER WP 24163 konsultieren — Original-Tabellen-Werte verifizieren bevor sie in Briefings oder formale §28.1-Migration-Workflows einfließen. Confidence-Level: **Inhaltliche Befunde HOCH** (Daniel/Hirshleifer-Linie ist seit 1998-DHS-Overconfidence-Modell etabliert, ~600+ citations für 2020-Paper bei RFS), **numerische Magnituden MITTEL** (sekundär-zitiert).
+> ✅ **PRIMÄRBELEG (Voll-PDF gelesen 2026-05-09 sehr-spät / 2026-05-10 früh, Phase-D-1 Confidence-Upgrade-Pass):** Daniel/Hirshleifer/Sun (2020) RFS 33(4) S. 1673-1736 vollständig ingested. Alle quantitativen Magnituden (Faktor-Konstruktionen, Spanning-Statistiken, GRS-F-Werte, Sample-Periode, Long-/Short-Leg-Asymmetrie) sind aus Original-Tabellen verifiziert (Tables 1-10 + Sections 2-5 + Footnote 13 zur CAR-vs-SUE-Wahl). **Confidence-Level: HOCH** für Befunde + Magnituden + Methodik-Beschreibung. **Verbleibende Restvorbehalte (markiert):** (a) Eine exakte Long-Only-Konversionsquote ist im Paper nicht beziffert — die in Tabelle 10 dokumentierte Long-/Short-Leg-Asymmetrie (avg βF IN +0,03 long vs −0,27 short; avg βPEAD +0,31 long vs −0,51 short) erlaubt nur qualitative Einordnung; eine quantitative Long-Only-Implementierung erfordert §28.1-Backtest-Validierung. (b) Der M&P-Discount-Faktor 0,42 ist **DEFCON-Konvention** über [[McLean-Pontiff-2016]] (B25), **nicht** eigenständige DHS-Paper-Implikation.
 
 ## Abstract (eigene Worte)
 
 Daniel, Hirshleifer und Sun konstruieren ein **Drei-Faktor-Behavioural-Modell** als Alternative zu Fama-French-3-/4-/5-Faktoren-Modellen. Das Modell besteht aus:
 
 1. **Markt-Faktor (MKT)** — Standard-Markt-Excess-Return über Risk-Free-Rate.
-2. **PEAD-Faktor (Post-Earnings-Announcement Drift)** — Short-Horizon-Faktor, der die systematische Underreaction auf Earnings-Surprises operationalisiert: Long-Position in Stocks mit höchsten standardisierten Earnings-Surprises (SUE), Short-Position in niedrigsten. Drift hält ~3 Monate an, Half-Life kurz.
-3. **FIN-Faktor (Financing)** — Long-Horizon-Faktor aus Net Stock Issuance: Long-Position in Buyback-Heavy-Firmen (negative Net Stock Issuance), Short-Position in Issuance-Heavy-Firmen. Mispricing-Erosion über 1-3 Jahre.
+2. **PEAD-Faktor (Post-Earnings-Announcement Drift)** — Short-Horizon-Faktor, der die systematische Underreaction auf Earnings-Surprises operationalisiert: Long-Position in Stocks mit höchster 4-Tage-Cumulative-Abnormal-Return (CAR) um die jüngste Earnings-Announcement, Short-Position in niedrigsten. CAR berechnet als R_i,d − R_m,d über das Window (t−2, t+1) um RDQ. **Footnote 13 des Papers:** CAR-basierter PEAD-Faktor hat stärkere Erklärungskraft als SUE-basierter (Chan/Jegadeesh/Lakonishok 1996); SUE bleibt empirische Robustness-Komparator. Drift signifikant 1-2 Quartale post-Formation; statistische Insignifikanz nach 6-9 Monaten (Tabelle 5 Panel A).
+3. **FIN-Faktor (Financing)** — Long-Horizon-Faktor aus Net Stock Issuance: Long-Position in Buyback-Heavy-Firmen (negative Net Stock Issuance), Short-Position in Issuance-Heavy-Firmen; konstruiert über Index aus 1-Jahres-Net-Share-Issuance (Pontiff/Woodgate 2008) UND 5-Jahres-Composite-Share-Issuance (Daniel/Titman 2006); 2x3 Sort auf Size × Financing-Index. Mispricing-Erosion über 1-3 Jahre. **Kritisch:** FIN benötigt MULTI-YEAR-Issuance-Pattern, nicht single-quarter Buyback-Authorization — methodischer Anker für die §27.7 Anti-Sentiment-Drift-Disziplin (V-Q2 28.04. + BRK.B 04.05. Reinfälle waren multi-faceted: Klassifikations- + Zeit-Horizont-Fehler).
 
 **Theoretische Begründung:** PEAD ist klassische Underreaction durch Limited-Attention/Anchoring (Hirshleifer/Teoh 2003). FIN reflektiert Manager-Timing-Ability gegen Mispricing — Manager kaufen Aktien zurück, wenn sie ihre eigenen Aktien für unterbewertet halten, und emittieren neue Aktien bei Überbewertung (Loughran/Ritter 1995). Beide sind Behavioural-Theorie-konsistent, NICHT risk-based.
+
+**Anti-Sentiment-Drift-Anker (DHS S. 5, literal):** „FIN is designed to capture longer-term mispricing and correction, as opposed to short-term mispricing... such corporate events [issuance and repurchase] tend to occur only occasionally, rather than as immediate responses to even transient mispricing." Direkter theoretischer Anker für die DEFCON-Disziplin: Buyback ist KEIN Sentiment-Signal — die zugrundeliegende Capital-Allocation-Entscheidung adressiert mittel- bis langfristige Mispricing, nicht den Tagesnachrichten-Pulse, der den Sentiment-Block treibt.
 
 **Empirie-Ergebnis:** Das DHS-3-Faktor-Modell **erklärt eine breitere Anomalie-Menge als Fama-French-5-Faktor** — insbesondere viele Quality-/Profitabilitäts-Anomalien werden durch FIN absorbiert (Buyback-Heavy-Firmen sind oft Quality-Firmen). PEAD absorbiert Momentum-related Drift bei Earnings-Events. Zusammen reduzieren die zwei Behavioural-Faktoren die Anzahl unerklärter Anomalien substanziell gegenüber dem klassischen Multi-Faktor-Kanon.
 
@@ -86,10 +91,10 @@ Daniel, Hirshleifer und Sun konstruieren ein **Drei-Faktor-Behavioural-Modell** 
 
 ## Methodische Würdigung
 
-- **Faktor-Konstruktion:** PEAD via 2x3 Sort auf SUE × Size; FIN via 2x3 Sort auf Net Issuance × Size. Standard-Fama-French-Methode, robust gegen Construction-Variations (Hou/Xue/Zhang 2020 q-Factor-Critique).
-- **Spanning-Tests:** DHS-3-Faktor-Modell spannt 24/30 untersuchte Anomalien gegenüber FF-5 19/30 — substantielle Verbesserung. Aber: Carhart-4 (mit Momentum) liefert ähnliche Spanning-Performance auf Subset. DHS-Vorteil ist primär bei Quality-/Issuance-related Anomalien.
-- **Out-of-Sample:** Sample 1972-2017, US-Compustat. NBER-WP-Version (2018) zeigt OoS-Performance über 2008-2017-Sub-Sample stabil; FIN ist nach McLean/Pontiff (B25) post-publication-Decay-Kandidat — bei Anwendung in DEFCON-Briefings wäre M&P-Discount-Faktor 0,42 auf zitierte FIN-Outperformance zu setzen.
-- **Long-Short vs. Long-Only-Übertragbarkeit:** Faktoren sind Long-Short konstruiert. Long-Only-Mapping ist nicht trivial — die Long-Side allein erklärt typischerweise nur 50-60% des Faktor-Returns. Das ist der zentrale Grund, warum DEFCON keinen direkten FIN-/PEAD-Sub-Score adoptiert: das Modell-Mapping ist nicht 1:1.
+- **Faktor-Konstruktion:** PEAD via 2x3 Sort auf CAR × Size; FIN via 2x3 Sort auf Financing-Index × Size (Index aus 1-Jahres-Net-Issuance + 5-Jahres-Composite-Issuance). Standard-Fama-French-Methode, robust gegen Construction-Variations (Hou/Xue/Zhang 2020 q-Factor-Critique).
+- **Spanning-Tests (Table 7 Panel C):** DHS-BF3-Modell hat **3 von 34** untersuchten Anomalien mit signifikantem α auf 5%-Niveau (also 31/34 gespannt); FF-5 hat **18/34** signifikante αs (16/34 gespannt). HXZ4 (q-Factor) hat 6 sig. αs, SY4 (Stambaugh/Yuan-Mispricing) hat 7 sig. αs. GRS-F-Test über alle 34 Anomalien: BF3 F=**1,61** (kleinster), FF5 F=**2,60**, HXZ4 F=**2,42** — BF3 dominiert in Aggregation. Carhart-4 ist nicht zentraler Vergleichsbenchmark im Paper; Spanning-Vorteil von BF3 ist primär bei Quality-/Issuance-Cluster und Earnings-Drift-Subset.
+- **Sample / Out-of-Sample:** Sample 1972:07–2014:12 (510 Monate), US-Compustat/CRSP. **M&P-Discount-Faktor 0,42** ist **DEFCON-Konvention** via [[McLean-Pontiff-2016]] (B25), **nicht** eigenständige DHS-Paper-Implikation; bei Anwendung in DEFCON-Briefings auf zitierte FIN-/PEAD-Outperformance zu setzen.
+- **Long-Short vs. Long-Only-Übertragbarkeit:** Faktoren sind Long-Short konstruiert. **Tabelle 10** zeigt Asymmetrie zwischen Long- und Short-Leg: avg βF IN = **+0,03** (long-leg) vs **−0,27** (short-leg) bei 22 long-horizon Anomalien; avg βPEAD = **+0,31** (long-leg) vs **−0,51** (short-leg) bei 12 short-horizon Anomalien. Short-Side trägt strukturell 70-80% der Faktor-Loadings — Long-Only-Implementierung des FIN-/PEAD-Faktors verliert systematisch Faktor-Return-Anteil; eine exakte Long-Only-Quote ist im Paper nicht beziffert. Das ist der zentrale Grund, warum DEFCON keinen direkten FIN-/PEAD-Sub-Score adoptiert: das Modell-Mapping ist nicht 1:1, und Migration via §28.1 erfordert Long-Only-Backtest-Validierung.
 - **Behavioural vs Risk:** Daniel/Hirshleifer argumentieren rein behavioural; Risk-Based-Alternative-Erklärungen (Cochrane 2017) sind nicht ausgeschlossen. Diese Theoriedebatte ist für DEFCON irrelevant — beide Klassen liefern dieselbe operative Schlussfolgerung (Net-Issuance + Earnings-Surprise sind cross-section-prädiktiv).
 
 ## Operative Schlussfolgerungen
@@ -115,4 +120,4 @@ Daniel, Hirshleifer und Sun konstruieren ein **Drei-Faktor-Behavioural-Modell** 
 - [[Iacovides-Zhou-Mandic-2025-FinDPO]] — moderner ML-Counterpart (B24, Long-Short-orthogonal)
 - [[Wissenschaftliche-Fundierung-DEFCON]] — Befund B30
 - [[DEFCON-System]] — Sentiment-Block 10 Pt. + Insider-Block 5 Pt.
-- [[kent-d-daniel|Kent D. Daniel]], [[david-hirshleifer|David Hirshleifer]], [[lin-sun|Lin Sun]] — Author-Entities (deferred bis Phase D-2 oder Lint-Pass)
+- [[kent-d-daniel|Kent D. Daniel]], [[david-hirshleifer|David Hirshleifer]], [[lin-sun|Lin Sun]] — Author-Entities

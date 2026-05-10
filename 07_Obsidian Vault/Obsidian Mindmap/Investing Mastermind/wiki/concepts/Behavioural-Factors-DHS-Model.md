@@ -20,17 +20,19 @@ aliases:
 
 # Behavioural Factors — DHS Model
 
-> Daniel, Hirshleifer & Sun (2020) konstruieren ein Drei-Faktor-Behavioural-Modell (MKT + PEAD + FIN), das eine breite Anomalie-Menge besser erklärt als Fama-French-Multi-Faktor-Modelle. Zwei Behavioural-Drift-Phänomene reichen empirisch aus: kurzfristige Underreaction auf Earnings-Surprises (PEAD, ~3 Monate Half-Life) + langfristige Mispricing-Korrektur via Manager-Timing-Indikatoren (FIN, 1-3 Jahre). Das Modell liefert die theoretische Klammer für viele heute lose nebeneinanderstehende DEFCON-Anker-Befunde.
+> Daniel, Hirshleifer & Sun (2020) konstruieren ein Drei-Faktor-Behavioural-Modell (MKT + PEAD + FIN), das eine breite Anomalie-Menge besser erklärt als Fama-French-Multi-Faktor-Modelle. Zwei Behavioural-Drift-Phänomene reichen empirisch aus: kurzfristige Underreaction auf Earnings-Surprises (PEAD-Drift signifikant 1-2 Quartale post-Formation; statistische Insignifikanz nach 6-9 Monaten, Tabelle 5 Panel A) + langfristige Mispricing-Korrektur via Manager-Timing-Indikatoren (FIN, 1-3 Jahre Half-Life). Das Modell liefert die theoretische Klammer für viele heute lose nebeneinanderstehende DEFCON-Anker-Befunde.
 
 ## Operative Definition
 
 **DHS-Modell** bezeichnet das von Daniel/Hirshleifer/Sun (2020) vorgeschlagene Drei-Faktor-Asset-Pricing-Modell mit:
 
 1. **MKT** (Markt-Excess-Return) — Standard.
-2. **PEAD-Faktor** (Post-Earnings-Announcement Drift) — Long Top-SUE-Quintile / Short Bottom-SUE-Quintile. Half-Life ~3 Monate. Theoretischer Mechanismus: Limited-Attention/Anchoring (Hirshleifer/Teoh 2003).
+2. **PEAD-Faktor** (Post-Earnings-Announcement Drift) — Long Top-CAR-Quintile / Short Bottom-CAR-Quintile. CAR = 4-Tage-Cumulative-Abnormal-Return um Earnings-Announcement, Window (t−2, t+1) um RDQ. Footnote 13 des Papers wählt CAR-basierten PEAD über SUE-basierten (stärkere Erklärungskraft, Chan/Jegadeesh/Lakonishok 1996). Drift signifikant 1-2 Quartale post-Formation; statistische Insignifikanz nach 6-9 Monaten (Tabelle 5 Panel A). Theoretischer Mechanismus: Limited-Attention/Anchoring (Hirshleifer/Teoh 2003).
 3. **FIN-Faktor** (Financing) — Long Buyback-Heavy-Firmen / Short Issuance-Heavy-Firmen, definiert über Net Stock Issuance. Half-Life 1-3 Jahre. Theoretischer Mechanismus: Manager-Timing-gegen-Mispricing (Loughran/Ritter 1995).
 
-**SUE** = Standardized Unexpected Earnings = (actual EPS − consensus EPS) / σ(consensus). Standard-Maß für Earnings-Surprise.
+**CAR (4-Day Cumulative Abnormal Return um Earnings-Announcement)** = Σ_{d=t−2}^{t+1} (R_i,d − R_m,d) — primäre PEAD-Sortier-Variable im DHS-Modell.
+
+**SUE** = Standardized Unexpected Earnings = (actual EPS − consensus EPS) / σ(consensus). Standard-Maß für Earnings-Surprise; im DHS-Modell **nur als Robustness-Komparator** (siehe Footnote 13 zur stärkeren CAR-Erklärungskraft), nicht primäre Faktor-Konstruktions-Variable.
 
 **Net Stock Issuance** = (Shares Outstanding_t − Shares Outstanding_{t-1}) × Price / Market-Cap_{t-1}. Buybacks zählen negativ, Equity-Emissionen positiv.
 
@@ -38,7 +40,8 @@ aliases:
 
 | Test | DHS-3-Faktor (MKT+PEAD+FIN) | FF-5-Faktor (MKT+SMB+HML+RMW+CMA) |
 |---|---|---|
-| Anzahl gespannter Anomalien (von 30 untersuchten) | ~24/30 | ~19/30 |
+| Unerklärte Anomalien (sig. α 5%, 34 untersucht) | **3/34** BF3 | **18/34** FF5 |
+| GRS-F-Test über alle 34 Anomalien (Table 7 Panel C) | F=**1,61** (kleinster) | F=**2,60** |
 | Quality-/Profitabilitäts-Anomalien | weitgehend absorbiert via FIN | partiell absorbiert via RMW |
 | Issuance-related Anomalien | direkt absorbiert via FIN | nicht spezifisch adressiert |
 | Earnings-Drift-Anomalien (PEAD-related) | direkt absorbiert via PEAD | nicht spezifisch adressiert |
@@ -106,8 +109,8 @@ PEAD-Drift entfaltet sich über 1-3 Monate; Tag-0-Reaktion auf Earnings-Surprise
 ## Limitationen
 
 - **Long-Short-Konstruktion:** Faktoren sind Long-Short. DEFCON-Long-Only-Mapping ist nicht 1:1; das ist der zentrale Grund warum kein direkter FIN-/PEAD-Sub-Score adoptiert wird.
-- **Post-Publication-Decay:** McLean/Pontiff (B25) impliziert M&P-Discount-Faktor 0,42 auf zitierte FIN-/PEAD-Outperformance. Bei Briefing-Sprache und §28.1-Migration zwingend zu berücksichtigen.
-- **Sample-Periode:** 1972-2017 US-Compustat. Non-US-Übertragbarkeit (Faktor-Konstruktion bei Non-US) nicht im Originalpapier. Für DEFCON 8 US-Satelliten + 3 Non-US-Satelliten relevant: B30-Klammer-Logik gilt theoretisch international, aber Faktor-Konstruktion müsste pro Markt re-validiert werden — irrelevant solange B30 nur als Klammer, nicht als Sub-Score.
+- **Post-Publication-Decay (DEFCON-Konvention):** [[McLean-Pontiff-2016]] (B25) liefert die DEFCON-Konvention M&P-Discount-Faktor 0,42 auf zitierte FIN-/PEAD-Outperformance — das ist DEFCON-eigene Vorsichtsmarge, **nicht** eigenständige DHS-Paper-Implikation. Bei Briefing-Sprache und §28.1-Migration zwingend zu berücksichtigen.
+- **Sample-Periode:** 1972:07–2014:12 (510 Monate, US-Compustat). Non-US-Übertragbarkeit (Faktor-Konstruktion bei Non-US) nicht im Originalpapier. Für DEFCON 8 US-Satelliten + 3 Non-US-Satelliten relevant: B30-Klammer-Logik gilt theoretisch international, aber Faktor-Konstruktion müsste pro Markt re-validiert werden — irrelevant solange B30 nur als Klammer, nicht als Sub-Score.
 - **Behavioural vs. Risk-Theorie:** Daniel/Hirshleifer argumentieren rein behavioural; Risk-Based-Alternative (Cochrane 2017) nicht ausgeschlossen. Für DEFCON irrelevant — Cross-Section-Predikabilität ist beides Mal vorhanden.
 - **Methodology-Drift-Anti-Pattern ist KEIN automatischer Schutz:** B30 sagt „Buyback gehört nicht in Sentiment", aber operative Schutzmaßnahme bleibt SKILL-Output-Template-Klammer-Notation + Codex-Review-Disziplin. Theorie-Anker reduziert das Risiko, eliminiert es nicht.
 
