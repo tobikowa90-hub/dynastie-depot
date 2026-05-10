@@ -14,6 +14,12 @@ from system_audit.types import AuditContext, CheckResult, FailureDetail
 
 LOG_ENTRY_RE = re.compile(r"^##\s+\[(\d{4}-\d{2}-\d{2})\]", re.MULTILINE)
 
+# NOTE (2026-05-10): `archive/log/` ist BEWUSST NICHT included. Lag-Logik soll
+# nur den AKTIVEN log.md prüfen — sonst würde der Quartals-Roll-over (INSTRUKTIONEN
+# §18.6) False-OK erzeugen, weil ein archiviertes File mit altem Datum als
+# „aktuellster Eintrag" gelesen würde. Roll-over-Convention: log.md startet
+# nach Roll-over leer/schlank, der Lag-Check muss strikt auf der aktiven Datei
+# bleiben.
 DEFAULT_LOG_PATHS = [
     Path("log.md"),
     Path("07_Obsidian Vault") / "Obsidian Mindmap" / "Investing Mastermind" / "log.md",

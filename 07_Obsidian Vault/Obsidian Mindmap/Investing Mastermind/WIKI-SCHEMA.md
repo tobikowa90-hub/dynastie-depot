@@ -20,7 +20,9 @@ This document is the authoritative schema. Follow it in every session.
   WIKI-SCHEMA.md            ← dieses Dokument (Schema + Regeln)
   CLAUDE.md                 ← kurzer Scope-Hinweis (auto-geladen)
   index.md                  ← Content-Katalog; bei jeder Operation aktualisieren
-  log.md                    ← append-only Activity Log
+  log.md                    ← append-only Activity Log (quartalsweise Roll-over → archive/log/, siehe INSTRUKTIONEN §18.6)
+  archive/                  ← Read-only Archive (gerollte log.md-Quartale)
+    log/                    ← log-YYYY-Qn.md (quartalsweise) bzw. log-bis-YYYY-MM.md (Initial-Cuts)
   raw/                      ← immutable Quelldokumente (nie editieren)
     papers/                 ← akademische PDFs/MDs
     tools/                  ← Tool-Docs, Skill-Manifeste

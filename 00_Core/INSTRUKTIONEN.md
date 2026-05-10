@@ -391,6 +391,19 @@ Alle 8 `00_Core/`-Files (`PORTFOLIO`, `STATE`, `CORE-MEMORY`, `Faktortabelle`, `
 
 Score-Append läuft via `backtest-ready-forward-verify` Skill, das nun Phase P3.5 (Provenance-Gate, fail-close) zwischen P2b und P3 ausführt. Bei `FAIL phase=P3.5` gibt es keinen `--force`-Bypass — Recovery durch Workflow-Korrektur (Pflicht-Touch-Files berühren / `analyse_typ` umklassifizieren / `quellen`-Felder mit echten Quellen oder legitimen `*_carryover`-Suffixen befüllen / Versions-Drift via Migration-Pipeline lösen). Carryover-Token-Whitelist in `03_Tools/backtest-ready/provenance_gate.py::CARRYOVER_SOURCE_TOKENS` + `CARRYOVER_SOURCE_PREFIXES` + `CARRYOVER_REASON_TERMINAL`.
 
+### 18.6 Log-Rollover-Convention (seit 2026-05-10)
+
+Vault `log.md` wird **quartalsweise** in `archive/log/log-YYYY-Qn.md` ausgelagert (Roll-over-Termine: 1. April / 1. Juli / 1. Oktober / 1. Januar). Initial-Cut 2026-05-10: alles ≤ 2026-04-30 → `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/archive/log/log-bis-2026-04.md`. Aktiver `log.md` startet ab Mai 2026 (~1270 Z.).
+
+**Roll-over-Mechanik:**
+- Cut-Boundary: erster Eintrag des neuen Quartals = neue erste Zeile in `log.md`. Alle vorherigen Einträge → neues archive-File mit Header `# Wiki Log — Archiv bis YYYY-MM-DD` + Read-only-Hinweis + Pointer auf `../../log.md`.
+- Aktiver Log behält den Original-Header (`# Wiki Log` + Append-only-Hinweis), zusätzlich Pointer auf zuletzt erstelltes Archiv-File.
+- Roll-over selbst wird als letzter Eintrag (`## [YYYY-MM-DD] system-event | log.md Quartals-Rollover`) im aktiven `log.md` protokolliert.
+
+**Sync-Set bei Roll-over** (System-Zustand-Change-Event-Typ §18.1, scoring-neutral): `log.md` (gekürzt + Roll-over-Notiz) + neues `archive/log/log-YYYY-Qn.md` + `INSTRUKTIONEN.md §18.6` (Datum-Update) + `CORE-MEMORY.md §13` (Lifecycle-Eintrag) + `SYSTEM.md §System-Zustand` (Bullet-Update). Optional WIKI-SCHEMA.md Z.23 + SESSION-HANDOVER.md History-Block falls deren Wortlaut noch alte Singular-Form verwendet.
+
+**Rationale:** Log-Datei wuchs auf 2830 Z. (10.05.2026); tägliche Reads in §18-Sync-Welle + tail-Inspektionen wurden teuer. Quartalsweise (statt monatlich) hält Archive-Fragmentierung bei 4 Files/Jahr und liefert je ~700-1500 Z. pro Archiv-Datei. Externe Vault-Wikilinks zu `log.md` sind Null (Gemini Cross-Sync-Audit 2026-05-10, 96% PROCEED) — Risk frei. CORE-MEMORY §13 bleibt kondensierte Lifecycle-SSoT, log.md ist die volle Erzählung.
+
 **Änderungsprotokoll:**
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
 - v1.6 → v1.7 (2026-04-19): Schritt 5 (score_history.jsonl) wird via Skill `backtest-ready-forward-verify` orchestriert — Pipeline-Kapsel statt Inline-CLI-Call in dynastie-depot Schritt 7.
