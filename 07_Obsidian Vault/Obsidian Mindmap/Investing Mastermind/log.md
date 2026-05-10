@@ -1283,3 +1283,9 @@ APH/AVGO/MSFT — n.v. (Auth-Fehler — Key rotieren)
 - **Author-Stub-Insight:** alle 6 vermeintlich-fehlenden Stubs (Asness/Pedersen/Fama/French/Harvey/Mauboussin) existieren mit passenden `aliases:` — Tool-Extension matched Obsidian-Verhalten, Stub-Backfill war unnötig.
 - **PIPELINE #50 Decision DONE:** Source-Investigation in `memory-tools.js` confirmed beide Bugs (Bug A WSL-cwd-Mismatch Z.634-636 + Bug B Asymm. Validation Z.49-55+421+670+680). Codex-Single-Pass via codex:codex-rescue → **Option A 97% APPROVED** (Maintainer-Issues + Workaround). Issue-Drafts in CORE-MEMORY §13 dokumentiert; Filing pending User-Aktion.
 - **§18-Sync atomar:** STATE/PIPELINE/SYSTEM/CORE-MEMORY/Vault log.md + 5 Audit-Cleanup-Edits + vault_backlinks Tool-Fix. Scoring-neutral. DEFCON v3.7 + 11 Scores + Sparraten unverändert.
+
+## [2026-05-10] system-event | PIPELINE #50 Ruflo Issues gefilt — ruvnet/ruflo#1883 + #1884
+- **Bug A:** [ruvnet/ruflo#1883](https://github.com/ruvnet/ruflo/issues/1883) — memory_import_claude WSL/cwd-Mismatch.
+- **Bug B:** [ruvnet/ruflo#1884](https://github.com/ruvnet/ruflo/issues/1884) — memory_delete vs storeEntry Validation-Asymmetrie.
+- Beide Issues mit 5-Step-Repro + Source-Pointers (memory-tools.js Z.634-636 + Z.49-55+421+670+680) + Suggested-Fixes.
+- Re-Activation-Trigger: (a) Ruflo-Update mit Fix, (b) Mini-Refactor-Slot, (c) Maintainer-Issue accepted+landed.
