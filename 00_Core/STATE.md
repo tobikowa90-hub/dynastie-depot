@@ -44,15 +44,15 @@
 | Strategie / Allokation | KONTEXT.md (on-demand) |
 | Score-Detail pro Ticker | Faktortabelle.md |
 
-**Sync-Pflicht (§18 v2.3):** bei Score/FLAG/Sparraten-Change → PORTFOLIO.md + CORE-MEMORY + Faktortabelle + log.md + score_history.jsonl + `01_Skills/dynastie-depot/config.yaml` + `03_Tools/Rebalancing_Tool_v3.4.xlsx` + `03_Tools/Satelliten_Monitor_v2.0.xlsx` (+ flag_events.jsonl). Details in INSTRUKTIONEN §18 (inkl. Multi-Event-Union-Regel + xlsx-Tools-Pflicht seit v2.3 28.04. spätabends).
+**Sync-Pflicht (§18 v2.4):** bei Score/FLAG/Sparraten-Change → PORTFOLIO.md + CORE-MEMORY + Faktortabelle + log.md + score_history.jsonl + `01_Skills/dynastie-depot/config.yaml` + `03_Tools/Rebalancing_Tool_v3.4.xlsx` + `03_Tools/Satelliten_Monitor_v2.0.xlsx` (+ flag_events.jsonl). Nach xlsx-Write **verpflichtender §18.7 Smoke-Test** (`03_Tools/xlsx-smoke-test.md`, fail-close vor `git add`). Details in INSTRUKTIONEN §18 (inkl. Multi-Event-Union-Regel + xlsx-Tools-Pflicht seit v2.3 28.04. spätabends + Smoke-Test seit v2.4 11.05.2026).
 
 <!-- system-audit:last-audit:start -->
 ---
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-05-11T18:04:46Z
-**Result:** 15/18 PASS (1 FAIL, 2 WARN)
+**Timestamp (UTC):** 2026-05-11T21:05:54Z
+**Result:** 13/18 PASS (3 FAIL, 2 WARN)
 **Run:** `python 03_Tools/system_audit.py --full`
 **Full-Report:** stdout (kein Archiv-File)
 

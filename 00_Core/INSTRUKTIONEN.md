@@ -346,9 +346,9 @@ Ein Ad-hoc-Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 ---
 
-## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2.3, 2026-04-28 spätabends)
+## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2.4, 2026-05-11)
 
-Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 8 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill + 2 xlsx-Tools) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.1: +2 xlsx-Tools (`Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx`) — User-Direktive 28.04.2026 spätabends: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte und Depot-Übersicht (Zero-Token-Lookup-Pflicht).
+Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 8 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill + 2 xlsx-Tools) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.1: +2 xlsx-Tools (`Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx`) — User-Direktive 28.04.2026 spätabends: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte und Depot-Übersicht (Zero-Token-Lookup-Pflicht). Seit v2.4 (11.05.2026): jeder xlsx-Sync löst verpflichtenden Post-Write-Smoke-Test §18.7 aus (fail-close vor `git add`).
 
 ### 18.1 Event-Typ-Mapping
 
@@ -404,6 +404,22 @@ Vault `log.md` wird **quartalsweise** in `archive/log/log-YYYY-Qn.md` ausgelager
 
 **Rationale:** Log-Datei wuchs auf 2830 Z. (10.05.2026); tägliche Reads in §18-Sync-Welle + tail-Inspektionen wurden teuer. Quartalsweise (statt monatlich) hält Archive-Fragmentierung bei 4 Files/Jahr und liefert je ~700-1500 Z. pro Archiv-Datei. Externe Vault-Wikilinks zu `log.md` sind Null (Gemini Cross-Sync-Audit 2026-05-10, 96% PROCEED) — Risk frei. CORE-MEMORY §13 bleibt kondensierte Lifecycle-SSoT, log.md ist die volle Erzählung.
 
+### 18.7 xlsx Post-Write Smoke-Test Stufe 1 (seit 2026-05-11, v2.4)
+
+Verpflichtender Post-Write-Validation-Step für die xlsx-Sync-Welle. Adressiert silent-Korruptions-Risiken durch `openpyxl`-Writes auf Formel-/Conditional-Format-tragenden xlsx-Dateien (Rebalancing v3.4: 218 Formeln + 6 CF; Satelliten-Monitor v2.0: 12 Formeln + 5 CF).
+
+**Reihenfolge:** Smoke-Test läuft **nach** Provenance-Gate §18.5 (P3.5 PASS), **nach** `openpyxl`-Write der Pflicht-Zellen, **vor** `git add` der xlsx-Files. Damit greift §18.3-Commit-Atomarität wie geplant — Smoke-Test ist Pre-Stage-Gate, nicht Post-Commit-Audit.
+
+**Scope:** verpflichtender Smoke-Test (Punkte A-F gemäß Checklist) auf `03_Tools/Rebalancing_Tool_v3.4.xlsx` + `03_Tools/Satelliten_Monitor_v2.0.xlsx`. Minimal-Check-Annex (nur Punkt A + Existenz) auf `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` — Hochstufung erst nach Watchlist-Tool-Update.
+
+**Failure-Mode (fail-close, analog §18.5-Pattern):** Bei jedem Fail-Signal (Repair-Prompt, Formel-Fehler `#REF!`/`#NAME?`/`#VALUE!`/`#N/A`-Treffer, Pflicht-Zell-Stale, Conditional-Format-Bruch, ungewollter Save-Prompt) → STOP, kein `git add`, Recovery durch Re-Edit des openpyxl-Write-Scripts. **Kein `--force`-Bypass**. Recovery-Pfade: Pflicht-Zell-Adresse korrigieren / Sheet-Name verifizieren / Toleranz-Ausnahme für `=NA()`-Zellen prüfen / Conditional-Format-Re-Apply via Backup-Restore wenn nötig.
+
+**Checklist-SSoT:** `03_Tools/xlsx-smoke-test.md` — enthält 6-Punkte-Manual-Checklist + Excel-Desktop-Fallback (Linux/Remote ohne Excel-Installation) + partielle-Fallback-Validitäts-Klausel + Stufe-2-Roadmap (Programmatic-Audit-Modul, DEFERRED — Detail dort §Stufe-2-Roadmap).
+
+**Cross-Reference Memory `feedback_xlsx_tools_in_sync_set.md`:** Edit-Pattern-Helper (nicht-normativ, Konvenienz für openpyxl-Code-Snippets der Pflicht-Zell-Writes). Pflicht-Zell-Liste normativ ausschließlich in §18.1 (Sync-Vertrag) und §18.7 / `xlsx-smoke-test.md` (Verify-Pflicht). Bei Drift gewinnt §18-Spec über Memory.
+
+**Wissenschaftlicher Anker:** Post-Write-Validation entspricht §29.5-Sin-#3 (Data-Snooping-Schutz via Point-in-Time-Integrität): xlsx-Drift in Sparplan-/Score-Lookup-Zellen würde operativ unsichtbare Look-Ahead-Inkonsistenz erzeugen (User-Entscheidung auf veralteten/gebrochenen xlsx-Zahlen). Fail-close ist konservativer als optional-Check.
+
 **Änderungsprotokoll:**
 - v1.5 → v1.6 (2026-04-17): Erweitert auf 6 Dateien durch Backtest-Ready Infrastructure (§26).
 - v1.6 → v1.7 (2026-04-19): Schritt 5 (score_history.jsonl) wird via Skill `backtest-ready-forward-verify` orchestriert — Pipeline-Kapsel statt Inline-CLI-Call in dynastie-depot Schritt 7.
@@ -412,6 +428,7 @@ Vault `log.md` wird **quartalsweise** in `archive/log/log-YYYY-Qn.md` ausgelager
 - v2.0 → v2.1 (2026-04-25): `config.yaml` aus „Bei FLAG-Change manuell sync"-Sub-Note in das Score-Event-File-Set hochgezogen — Lücke aufgedeckt durch TMO 23.04.-Drift (Score 64→67, kein FLAG-Trigger ⇒ alte Klausel griff nicht ⇒ config.yaml stale für 7 Tage bis 25.04.-Finalize-Commit `bb9986e`). Kein Set-Wachstum bei FLAG-Events (config.yaml ohnehin schon im Set), aber +1 manueller File bei reinen Score/Sparraten-Changes.
 - v2.1 → v2.2 (2026-04-28): §18.5 Provenance-Gate-Klausel ergänzt (Pipeline-Phase P3.5 fail-close, kein `--force`-Bypass). Schicht B `provenance_gate.py` + Schicht D `_check_vollanalyse_block_coverage` + SSoT `versions.py::DEFCON_ACTIVE_VERSION` deployed.
 - v2.2 → v2.3 (2026-04-28 spätabends): xlsx-Tools `Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx` ins Score/FLAG/Sparraten-Pflicht-Set hochgezogen. Anlass User-Direktive: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte + Depot-Übersicht (Zero-Token-Lookup). Drift seit 23.04. (Satelliten-Monitor R3-Header + R24/R25 Footer noch auf 23.04.-Stand) bei V Rescoring-Revert (`b8cf4ae`/`1069e8d` 28.04. spätabends) durch User-Korrektur aufgedeckt. Mehraufwand: 2 xlsx-Edits pro Score-Event via `openpyxl` (Edit-Pattern siehe Memory `feedback_xlsx_tools_in_sync_set.md`).
+- v2.3 → v2.4 (2026-05-11): §18.7 xlsx Post-Write Smoke-Test Stufe 1 verpflichtend eingeführt (fail-close, kein `--force`-Bypass, analog §18.5-Provenance-Gate-Pattern). Anlass: openpyxl-Writes können silent Cross-Sheet-Formeln / Conditional Formats brechen — aktuell kein Post-Write-Validation-Step. 6-Punkte-Manual-Checklist in `03_Tools/xlsx-smoke-test.md` (Repair-Prompt-Detect, Formel-Fehler-Scan, Pflicht-Zell-Cross-Check Rebalancing + Satelliten-Monitor, Conditional-Format-Stichprobe, Read-only-Close-Verify) + Excel-Desktop-Fallback für Linux/Remote + partielle-Fallback-Validitäts-Klausel + Stufe-2-Roadmap (DEFERRED `system_audit/checks/xlsx_integrity.py`). Watchlist v1.1 als Minimal-Check-Annex (Punkt A + Existenz, 0 Formeln/0 CF). Validiert via Gemini Cross-Sync-Audit + Codex-Round-2-Sparring (96% Konfidenz, >95%-Gate APPROVE).
 
 ---
 

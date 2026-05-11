@@ -1308,3 +1308,41 @@ PIPELINE #48 + #42 closed. Spec v1.1 + Plan v1.2 applied via executing-plans ski
 - **CR-Sparring (WSL Ubuntu):** CP1 (2 findings) + CP2 (3 findings incl. **CRITICAL** string-version-compare-Bug bei v10.0+) applied.
 - **§18-Sync (System-Event, scoring-neutral):** pyproject.toml + .coderabbit.yaml + 6 neue + 11 modified Python-Files + 2 SKILL.md-Edits + Spec + Plan + Validation-Matrix + PIPELINE #48/#42 closed + STATE Critical-Alert + CORE-MEMORY §13 + log.md (dieser Eintrag) + MEMORY.md + neue Memory. **Bewusst NICHT angefasst:** PORTFOLIO/Faktortabelle/xlsx/jsonl/config.yaml/CLAUDE.md/INSTRUKTIONEN.md/SKILL dynastie-depot M1-Registry. DEFCON v3.7 + 11 Scores + Sparraten unverändert. Scoring-neutral.
 
+## [2026-05-11 spät] §18 Sync-Vertrag v2.3 → v2.4 — xlsx Post-Write Smoke-Test Stufe 1 deployed (System-Event, scoring-neutral)
+
+**Event-Typ:** Tooling-/Spec-Change ohne Score-/FLAG-/Sparraten-Touch.
+
+**Was passiert ist:**
+
+1. **Anlass:** openpyxl-Writes auf zwei xlsx-Tools (`03_Tools/Rebalancing_Tool_v3.4.xlsx` mit 218 Formeln + 6 Conditional Formats, `03_Tools/Satelliten_Monitor_v2.0.xlsx` mit 12 Formeln + 5 Conditional Formats) können silent Cross-Sheet-Formeln / CF-Regeln brechen. Bisher kein Post-Write-Validation-Step im §18-Sync-Vertrag — operative xlsx-Drift wäre erst beim nächsten User-Lookup sichtbar.
+2. **Sparring:** Marketplace-Plugin-Evaluation (Equity Research / Earnings Reviewer / Financial Analysis / Market Researcher) → keiner installierbar/nutzbar (Enterprise-MCP-Stack + Claude-for-Financial-Services-Account-Pflicht). Inhaltliche Soft-Pickup `xlsx-Audit-Pattern Stufe 1` als Pareto-Sieger gegenüber Sektor-Layer extrahiert.
+3. **Cross-Sync-Audit Gemini:** Cross-Reference-Liste der xlsx-Sync-Mentionings in 00_Core/ (INSTRUKTIONEN §18 + STATE Z.47 + PIPELINE Z.37/66 + CORE-MEMORY §12.x + CLAUDE.md Z.12). Empfehlung: §18.7 als eigener Sub-Step nach §18.6 (nicht §18.5.1, da funktional eigenständig vs. Provenance-Gate).
+4. **Codex-R1-Sparring (88%):** Vier Korrekturen verlangt — (a) Punkt G SHA256-Hash aus Stufe 1 entfernen (Stufe-2-Roadmap), (b) Watchlist v1.1 als „Minimal-Check-Annex" explizit benennen, (c) Excel-Desktop-Fallback für Linux/Remote ergänzen, (d) Memory-Pointer nicht-normativ markieren.
+5. **Codex-R2-Sparring (96%):** Re-Konfidenz nach Revisions APPROVED. Zusatz-Präzisierung: partielle-Fallback-Validitäts-Klausel (Punkte E + F sind UI-/Rendering-Checks, programmatischer Fallback ersetzt sie nur partiell — bei operativer Sparraten-Konsequenz Sichtprüfung beim nächsten Excel-Zugriff nachziehen).
+6. **§18.7-Inhalt deployed:** fail-close-Spec analog §18.5-Provenance-Gate-Pattern, Reihenfolge `nach openpyxl-Write → vor git add`, kein `--force`-Bypass. Checklist-SSoT `03_Tools/xlsx-smoke-test.md` mit 6 Punkten (Repair-Prompt-Detect / Formel-Fehler-Scan #REF!/#NAME?/#VALUE!/#N/A / Pflicht-Zell-Cross-Check Rebalancing N18-N28/O18-O28/P-Spalte/R2 + Satelliten-Monitor O2/B3/H3/K3/L-N-Ticker/B24-B25-Footer-Σ / CF-Stichprobe 3-Zellen / Read-only-Close-Verify). Excel-Desktop-Fallback mit Warning-Operationalisierung (openpyxl-Warnings stderr = Fail-Signal). Stufe-2-Roadmap (DEFERRED `system_audit/checks/xlsx_integrity.py` mit SHA256-Hash-Diff bei Stufe-1-Disziplin-Versagen).
+7. **Watchlist v1.1 Scope:** Minimal-Check-Annex (Punkt A + Existenz), 0 Formeln + 0 CF → kein Korruptions-Risiko via openpyxl. Hochstufung in Voll-Smoke-Test erst nach Watchlist-Tool-Update (offenes PIPELINE-Item).
+
+**Sync-Set (atomar, System-Event):**
+- NEU `03_Tools/xlsx-smoke-test.md`
+- `00_Core/INSTRUKTIONEN.md` §18-Header v2.3→v2.4 + §18.7-Block neu + Änderungsprotokoll v2.3→v2.4-Eintrag
+- `00_Core/STATE.md` Z.47 Versions-Mirror v2.3→v2.4 + Smoke-Test-Hinweis
+- `CLAUDE.md` (Root, Project-Level) Z.12 Versions-Mirror + Smoke-Test-Klausel
+- `00_Core/PIPELINE.md` neues Item #56 ✅ DONE-Entry (Pruning beim nächsten Konsolidierungstag erlaubt)
+- `00_Core/SYSTEM.md` System-Zustand-Bullet (§18 v2.3→v2.4 deployed)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+- Memory `feedback_xlsx_tools_in_sync_set.md` Pointer-Ergänzung auf Smoke-Test (nicht-normativ markiert)
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / score_history.jsonl / flag_events.jsonl / config.yaml / xlsx-Tools selbst / SKILL dynastie-depot M1-Registry / Faktortabelle. Kein Score-Move, kein FLAG-Event, kein Sparraten-Change. DEFCON v3.7 + 11 Scores + Sparraten unverändert.
+
+**Lehre:**
+- **Pareto-Disziplin bei Plugin-Eval:** Drei Soft-Pickups identifiziert, davon zwei zurückgestellt (Sektor-Layer = Variante A Manual-Notes deferred; xlsx-Audit Stufe 2 = DEFERRED Programmatic-Modul) und nur Stufe-1-xlsx-Smoke-Test sofort umgesetzt. Verhindert Über-Engineering bei klarer Pareto-Hierarchie.
+- **Doppel-Sparring (Gemini + Codex) bei §-Vertrags-Änderungen:** Gemini liefert Cross-Reference-Topologie, Codex liefert Risk-Flag-Verdict — komplementäre Stärken. Konfidenz-Gate (>95% User-Direktive) zwingt Iteration nach R1-88% → R2-96%, verhindert Half-Baked-Spec-Commits.
+- **Fail-close-Pattern als Standard:** §18.5 Provenance-Gate + §18.7 Smoke-Test teilen dieselbe Failure-Semantik (kein `--force`-Bypass). Macht §18-Vertrag konsistent — bei Pflicht-Gate fail-close, bei optional-Hint warn-only. Konvention wert für künftige §-Erweiterungen.
+- **Memory-Disziplin bei normativen vs. konvenienten Pointern:** Memory `feedback_xlsx_tools_in_sync_set.md` als Edit-Pattern-Helper explizit nicht-normativ markiert — bei Drift gewinnt §18-Spec. Verhindert Schatten-SSoT.
+
+**Cross-Reference:**
+- INSTRUKTIONEN §18.7 (neu) / §18.5 (Provenance-Gate-Pattern-Parallele) / §18.1 (Pflicht-Zell-Liste normativ)
+- 03_Tools/xlsx-smoke-test.md (Checklist-SSoT)
+- PIPELINE #56 ✅ DONE (Pruning-Trigger Konsolidierungstag)
+- Memory `feedback_xlsx_tools_in_sync_set.md` (Edit-Pattern-Helper, nicht-normativ)
+
