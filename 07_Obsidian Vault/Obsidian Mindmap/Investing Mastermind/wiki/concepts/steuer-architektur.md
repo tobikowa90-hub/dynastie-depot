@@ -3,7 +3,7 @@ title: "Steuer-Architektur"
 type: concept
 tags: [steuer, finanzen, langfrist, planung, depot, lombardkredit, fifo]
 created: 2026-04-10
-updated: 2026-04-10
+updated: 2026-05-11
 related: [defcon-system, depot-state-april-2026, etf-core]
 aliases:
   - "Steuer-Architektur"
@@ -21,6 +21,8 @@ aliases:
 | ING | 1.500–1.600€ | Vorabpauschale thesaurierende ETFs |
 | Scalable | 400–500€ | Dividenden der Satelliten |
 | Rentendepots (ab 2027) | 0€ (Anspar) | 2×150€ als Sonderausgaben absetzbar |
+
+**Sparerpauschbetrag:** 1.000€/Jahr (Einzelveranlagung) bzw. 2.000€/Jahr (gemeinsam veranlagte Ehepaare) seit Steuerjahr 2023 (vorher 801€/1.602€). Freistellungsaufträge entsprechend auf die Broker verteilt.
 
 **Abgeltungsteuer:** 26,375% (inkl. Solidaritätszuschlag) | FIFO-Methode.
 
@@ -49,7 +51,7 @@ aliases:
 Wenn Verkauf thematisiert wird:
 1. FIFO prüfen — welche Tranchen werden zuerst verkauft?
 2. Abgeltungsteuer 26,375% kalkulieren
-3. Freibeträge (801€/Jahr Sparerpauschbetrag) checken
+3. Freibeträge (1.000€/Jahr Sparerpauschbetrag, 2.000€ bei Ehepaaren) checken
 4. Alternative: Sparplan umlenken statt verkaufen
 
 ## Verlinkungen
