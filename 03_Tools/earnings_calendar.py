@@ -152,7 +152,7 @@ def next_earnings(
         df = t.earnings_dates
         if df is not None and not df.empty:
             yf_dates = sorted({idx.date() for idx in df.index if idx.date() >= today})
-    except Exception as e:
+    except (OSError, ValueError, KeyError, AttributeError, RuntimeError) as e:
         errors.append(f"earnings_dates: {e}")
 
     # 2) calendar-Fallback NUR wenn yfinance future-leer
@@ -170,7 +170,7 @@ def next_earnings(
                         cal_date_future = d
                     else:
                         cal_date_stale = d  # NICHT in min-aggregation aufnehmen
-        except Exception as e:
+        except (OSError, ValueError, KeyError, AttributeError, RuntimeError) as e:
             errors.append(f"calendar: {e}")
 
     # 3) Override-Pull (load_overrides filtert bereits future-only)

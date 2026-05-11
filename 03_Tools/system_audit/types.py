@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Literal
 
 Status = Literal["PASS", "WARN", "FAIL", "SKIP"]
-Severity = Literal["error", "warning"]
+Severity = Literal["error", "warning", "info"]
 Category = Literal["core", "optional"]
 
 

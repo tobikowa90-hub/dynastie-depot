@@ -25,6 +25,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # 03_Tools/ for _atomic_io
 
 import argparse
 import contextlib
@@ -34,6 +35,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
+from _atomic_io import atomic_jsonl_append
 from schemas import ScoreRecord
 
 # ---------------------------------------------------------------------------
@@ -130,13 +132,14 @@ def _check_uniqueness(record: ScoreRecord, archive_path: Path) -> None:
 
 
 def _append_record(record: ScoreRecord, archive_path: Path) -> int:
-    """Append one JSONL line and return total record count after append."""
-    archive_path.parent.mkdir(parents=True, exist_ok=True)
-    payload = record.model_dump(mode="json")
-    line = json.dumps(payload, ensure_ascii=False)
-    with archive_path.open("a", encoding="utf-8") as fh:
-        fh.write(line + "\n")
-    # Count lines after
+    """Append one JSONL line atomically; return total count after append.
+
+    `atomic_jsonl_append` uses `record.model_dump_json()` (Pydantic v2) which
+    defaults to UTF-8 native with no ASCII-escape — semantically equivalent to
+    the previous `json.dumps(record.model_dump(mode="json"), ensure_ascii=False)`.
+    """
+    atomic_jsonl_append(archive_path, record)
+    # Count lines after (separate read — atomic_jsonl_append handles parents+write)
     total = 0
     with archive_path.open("r", encoding="utf-8") as fh:
         for raw in fh:

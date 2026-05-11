@@ -15,6 +15,7 @@ import json
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 from datetime import date
 from pathlib import Path
@@ -30,24 +31,26 @@ SRC_VIDEOS = VAULT / "wiki" / "sources" / "videos"
 def tool_version(cmd: list[str]) -> str:
     """Return first line of `<tool> --version` output, or 'unknown'."""
     try:
-        out = subprocess.run(cmd, capture_output=True, text=True, timeout=10).stdout.strip()
+        out = subprocess.run(  # noqa: PLW1510 — we read stdout/stderr ourselves
+            cmd, capture_output=True, text=True, timeout=10
+        ).stdout.strip()
         return out.split("\n", 1)[0] if out else "unknown"
-    except Exception as e:
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError, OSError) as e:
         return f"error: {e}"
 
 
 def whisper_package_version() -> str:
     """Read openai-whisper version from package metadata (whisper has no --version)."""
     try:
-        out = subprocess.run(
+        out = subprocess.run(  # noqa: PLW1510
             [sys.executable, "-m", "pip", "show", "openai-whisper"],
-            capture_output=True, text=True, timeout=10
+            capture_output=True, text=True, timeout=10,
         ).stdout
         for line in out.splitlines():
             if line.lower().startswith("version:"):
                 return f"openai-whisper {line.split(':', 1)[1].strip()}"
         return "openai-whisper unknown"
-    except Exception as e:
+    except (subprocess.TimeoutExpired, subprocess.SubprocessError, OSError) as e:
         return f"openai-whisper error: {e}"
 
 
@@ -56,7 +59,8 @@ def url_reachable(url: str, timeout: int = 10) -> bool:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return r.status == 200
-    except Exception:
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+        # ValueError for malformed URLs; URLError covers HTTPError + connection issues
         return False
 
 
@@ -94,7 +98,7 @@ def main() -> int:
         """Always write run.log — call before every early exit."""
         try:
             (work_dir / "run.log").write_text("\n".join(log_lines), encoding="utf-8")
-        except Exception as e:
+        except OSError as e:
             print(f"WARN: could not flush run.log: {e}", file=sys.stderr)
 
     # 0. URL reachability

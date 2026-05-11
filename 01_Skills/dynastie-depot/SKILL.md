@@ -1117,4 +1117,37 @@ FLAG-Trigger: Code `S`, Betrag > $20M / 90 Tage → OpenInsider-Pflichtgegenchec
 6.  **FLAG heilig:** FLAG-Regeln überschreiben jeden Score.
 7.  **Steuer-Bewusstsein:** Bei Verkaufs-Fragen immer auf Abgeltungsteuer (26,375%), FIFO und Freibeträge hinweisen. Details in manifest.md Kapitel 5+6.
 
+---
+
+## Methodology-Switch-Disziplin (M1 — Spec 2026-05-11-codebase-defect-patterns §3)
+
+**Hard-Pflicht VOR jedem Sub-Score-Methodology-Switch (alternative Skala,
+Bonus-Lift, Boundary-Override):** wörtliche Klausel-Trigger-Verifikation.
+
+### Decision-Tree
+
+~~~
+WENN du erwägst, eine alternative Skala oder Bonus-Lift anzuwenden:
+  1. Identifiziere die SKILL-Klausel, die den Switch erlaubt.
+  2. Lies die Klausel WÖRTLICH — keine Paraphrase, keine "im Sinne von".
+  3. Prüfe die Klausel-Bedingung literal:
+     - "WACC vorhanden" ≠ "WACC inkonsistent"
+     - "Pricing-Power-Confirmation Q-Call" ≠ "bereits umgesetzt im Q"
+     - "Methodology-Drift kompensierbar" ≠ "Wert empirisch plausibel"
+  4. Wenn Klausel-Bedingung NICHT literal erfüllt → Methodology-Watch in
+     PIPELINE.md statt Skala-Switch. Carryover, kein Score-Move.
+  5. Wenn literal erfüllt → Switch anwenden + ScoreRecord §Methodology
+     dokumentieren.
+~~~
+
+### Präzedenz-Fälle (Anti-Patterns)
+
+| Fall | Klausel-Behauptung | Reale Klausel | Resultat |
+|------|--------------------|---------------|----------|
+| V Q2 FY26 28.04.2026 | „WACC inkonsistent → alternative Skala" | „fehlende WACC-Schätzung" | Score 1→7 Sub-Move regelwidrig, Codex-Revert nötig |
+
+(Tabelle wächst on-demand bei künftigen confirmed Anti-Patterns; kein Placeholder.)
+
+**Memory-Anker:** `feedback_skill_methodology_drift_v_q2.md`.
+
 ```

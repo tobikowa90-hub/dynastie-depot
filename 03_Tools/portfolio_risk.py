@@ -380,13 +380,20 @@ def persist_daily_snapshot(
             f.write(json.dumps(bench_record, ensure_ascii=False) + "\n")
             f.flush()
             os.fsync(f.fileno())
-    except Exception:
-        if archive_path.exists():
-            with archive_path.open("r+b") as f:
-                f.truncate(archive_size_before)
-        if benchmark_path.exists():
-            with benchmark_path.open("r+b") as f:
-                f.truncate(bench_size_before)
+    except OSError as original_err:
+        # Inner-try: rollback failures must not mask the original IO error.
+        try:
+            if archive_path.exists():
+                with archive_path.open("r+b") as f:
+                    f.truncate(archive_size_before)
+            if benchmark_path.exists():
+                with benchmark_path.open("r+b") as f:
+                    f.truncate(bench_size_before)
+        except OSError as truncate_err:
+            sys.stderr.write(
+                f"WARN: rollback truncate failed ({truncate_err}); "
+                f"original error: {original_err}\n"
+            )
         raise
 
     with contextlib.suppress(AttributeError):

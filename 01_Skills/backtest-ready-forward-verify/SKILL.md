@@ -264,6 +264,18 @@ git add 05_Archiv/score_history.jsonl
 
 ---
 
+### Schema-Defaults — Domain-Meaningful nur
+
+Schema-Default-Werte MÜSSEN domain-meaningful sein, nie Sentinel-Werte wie
+`-1`, `""`, `0` als „missing" oder „N/A"-Indikator. Stattdessen:
+`Optional[T]` mit Default `None`. Sentinel-Defaults sind versteckter
+Schema-Drift (Klasse c, Spec 2026-05-11-codebase-defect-patterns §2).
+
+**Präzedenz:** `cross_source.py:183` defcon-Default-`-1` → None-Pass-Through
+(CR-#47-Cluster-D-Fix 09.05.2026).
+
+---
+
 ## 8. Out-of-Scope (Vollständige Liste)
 
 Diese Aktionen sind bewusst **nicht** Teil dieser Skill:

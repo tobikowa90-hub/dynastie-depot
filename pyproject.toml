@@ -20,16 +20,19 @@ extend-exclude = [
 
 [tool.ruff.lint]
 select = [
-    "E4",   # import errors
-    "E7",   # statement-level style errors
-    "E9",   # runtime errors
-    "F",    # pyflakes (unused, undefined, shadowing)
-    "I",    # isort (import sorting)
-    "UP",   # pyupgrade (modernize syntax for target version)
-    "B",    # flake8-bugbear (likely bugs)
-    "SIM",  # flake8-simplify (refactor hints)
-    "PTH",  # use pathlib over os.path
-    "RUF",  # ruff-specific rules
+    "E4",     # import errors
+    "E7",     # statement-level style errors
+    "E9",     # runtime errors
+    "F",      # pyflakes (unused, undefined, shadowing)
+    "I",      # isort (import sorting)
+    "UP",     # pyupgrade (modernize syntax for target version)
+    "B",      # flake8-bugbear (likely bugs)
+    "SIM",    # flake8-simplify (refactor hints)
+    "PTH",    # use pathlib over os.path
+    "RUF",    # ruff-specific rules
+    "BLE",    # flake8-blind-except (M4 — broad-except detection)
+    "TRY",    # tryceratops (M4 — exception-handling hygiene, incl. TRY401)
+    "PLW",    # pylint-warnings (M2 — incl. PLW0177 NaN-equality)
 ]
 ignore = [
     "E501",  # line too long — soft limit, formatter handles wrapping
@@ -38,12 +41,14 @@ ignore = [
     "RUF001",  # ambiguous unicode in string — German umlauts (ä/ö/ü/ß)
     "RUF002",  # ambiguous unicode in docstring — German umlauts
     "RUF003",  # ambiguous unicode in comment — German umlauts
+    "TRY003",  # long messages outside exception class — opinionated, off-target for M4
+    "TRY300",  # move statement to else block — opinionated flow rule
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"03_Tools/tests/**" = ["B", "SIM", "F841"]
-"03_Tools/system_audit/_smoke_*.py" = ["F401", "E402"]
-"03_Tools/backtest-ready/_smoke_*.py" = ["F401", "E402"]
+"03_Tools/tests/**" = ["B", "SIM", "F841", "BLE001", "TRY"]
+"03_Tools/**/_smoke_*.py" = ["F401", "E402", "BLE001", "TRY"]
+"03_Tools/**/_*_test.py" = ["BLE001", "TRY"]
 "**/__init__.py" = ["F401"]
 
 [tool.ruff.lint.isort]

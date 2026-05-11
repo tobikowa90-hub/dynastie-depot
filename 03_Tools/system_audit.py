@@ -138,7 +138,7 @@ def _run_one(
                 category=category,
             )
             return synthetic, None
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 — plugin-dispatch boundary; new check modules may raise arbitrary types
             return None, e
     finally:
         executor.shutdown(wait=False)

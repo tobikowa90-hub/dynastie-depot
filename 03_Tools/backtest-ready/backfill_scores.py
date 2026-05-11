@@ -452,7 +452,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.verbose:
                 print(f"[FAIL] {ticker}: {e.errors()[0].get('msg', 'validation error')}")
             continue
-        except Exception as e:
+        except (ValueError, TypeError, KeyError, AttributeError) as e:
             _log_parser_error(f"build_error: {type(e).__name__}: {e}", raw_row)
             failed += 1
             if args.verbose:

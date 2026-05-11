@@ -16,6 +16,8 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # 03_Tools/ for _atomic_io
+from _atomic_io import atomic_jsonl_append
 from schemas import FLAG_RULES, FlagEvent
 
 with contextlib.suppress(Exception):
@@ -70,11 +72,9 @@ def _load_events(path: Path) -> list[dict[str, Any]]:
 
 
 def _append_event(path: Path, record: FlagEvent) -> None:
-    """Append single FlagEvent as JSONL line."""
+    """Append single FlagEvent as JSONL line (atomic, tear-safe)."""
     try:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("a", encoding="utf-8") as f:
-            f.write(record.model_dump_json() + "\n")
+        atomic_jsonl_append(path, record)
     except OSError as e:
         print(f"\u274c IOError: cannot write {path}: {e}", file=sys.stderr)
         sys.exit(2)

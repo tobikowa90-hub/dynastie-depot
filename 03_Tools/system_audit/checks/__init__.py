@@ -2,6 +2,12 @@
 
 Populated incrementally as checks are implemented. Orchestrator imports CORE/
 OPTIONAL dicts and dispatches them.
+
+Konvention (Klasse f, Validator-Catch-Lücken — Spec 2026-05-11-codebase-defect-patterns):
+  Check-Functions MÜSSEN immer `CheckResult` zurückgeben (auch im Failure-Pfad).
+  Silent `return None` ist verboten — stattdessen
+  `CheckResult(status="WARN" oder "FAIL", failures=[FailureDetail(...)])`.
+  Validatoren emit FailureDetail, never KeyError-escape.
 """
 from __future__ import annotations
 
@@ -20,7 +26,9 @@ CORE: dict[str, str] = {
     "governance_parity": "system_audit.checks.governance_parity:run",
     "cross_source_reverse": "system_audit.checks.cross_source_reverse:run",
     "pointer_completeness": "system_audit.checks.pointer_completeness:run",
-}      # name → "system_audit.checks.<module>:run"  (14 core checks)
+    "sum_consistency": "system_audit.checks.sum_consistency:run",
+    "g3_consistency": "system_audit.checks.g3_consistency:run",
+}      # name → "system_audit.checks.<module>:run"  (16 core checks)
 OPTIONAL: dict[str, str] = {
     "vault_backlinks": "system_audit.checks.vault_backlinks:run",
     "status_matrix": "system_audit.checks.status_matrix:run",

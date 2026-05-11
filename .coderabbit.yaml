@@ -1,0 +1,42 @@
+# CodeRabbit Konfiguration — Dynastie-Depot
+#
+# Zwei Hauptziele:
+# 1. Test-Fixtures nicht als Production-Code reviewen (Klasse d — Fixture-Confabulation)
+# 2. Python-Compat: pyproject.toml requires-python ist authoritative (Klasse g)
+#
+# Spec-Ref: docs/superpowers/specs/2026-05-11-codebase-defect-patterns-design.md §L4
+
+reviews:
+  path_instructions:
+    - path: "**/fixtures/**"
+      instructions: |
+        Diese Pfade enthalten reviewer-side Test-Fixtures (synthetische JSONL,
+        Schema-Bad/Good-Inputs). Behandle Fixtures als Daten, nicht als Code:
+        keine Suggestion zu Variablen-Naming, Refactoring, "missing test
+        coverage", oder Pythonic-Style. Schema-Compliance prüfen ist OK.
+
+    - path: "**/_smoke_*.py"
+      instructions: |
+        Smoke-Tests sind intentional broad-catch + intentional `except Exception`
+        für Robust-Run. Keine Suggestion BLE001/blind-except hier.
+
+    - path: "**/tests/**"
+      instructions: |
+        Test-Code darf intentional broad-catches, fixture-spezifische
+        Hard-Coded-Values, und nicht-Pythonic-Style enthalten.
+        pyproject.toml [tool.ruff.lint.per-file-ignores] dokumentiert die
+        explizit erlaubten Lockerungen.
+
+    - path: "03_Tools/**/*.py"
+      instructions: |
+        Python-Version-Compat: pyproject.toml [project] requires-python ist
+        AUTHORITATIVE. Aktuell `>=3.14`. Suggestions die backwards-compatible
+        Patterns für Python 3.10/3.11/3.12 vorschlagen sind FALSCH und
+        sollen unterbleiben. PEP 695 type-statement, match-statement,
+        `Self` in typing, `|`-union-types — alle erlaubt.
+
+    - path: "01_Skills/**/SKILL.md"
+      instructions: |
+        SKILL.md-Files sind Workflow-Definitionen, nicht Code. Reviewe nur
+        auf logische Konsistenz, nicht auf Markdown-Style. Klausel-Wortlaut
+        ist normativ (siehe Spec §M1 Methodology-Switch-Disziplin).

@@ -23,7 +23,16 @@ def _parse_semver(s: str) -> tuple[int, int, int] | None:
     return int(m.group(1)), int(m.group(2)), int(m.group(3))
 
 
-def _skill_version(skill_dir: Path) -> tuple[int, int, int] | None:
+def _skill_version(
+    skill_dir: Path,
+    parse_errors: list[tuple[Path, str]] | None = None,
+) -> tuple[int, int, int] | None:
+    """Return parsed (major, minor, patch) from SKILL.md frontmatter, or None.
+
+    L7 Plan-Fix: YAML-parse-errors no longer silent. If `parse_errors` is
+    provided, parse failures append (skill_md_path, error_msg) to it instead
+    of swallowing them — caller surfaces them as FailureDetail.
+    """
     md = skill_dir / "SKILL.md"
     if not md.exists():
         return None
@@ -33,7 +42,9 @@ def _skill_version(skill_dir: Path) -> tuple[int, int, int] | None:
     try:
         _, fm, _ = text.split("---", 2)
         data = yaml.safe_load(fm) or {}
-    except (ValueError, yaml.YAMLError):
+    except (ValueError, yaml.YAMLError) as e:
+        if parse_errors is not None:
+            parse_errors.append((md, f"{type(e).__name__}: {e}"))
         return None
     v = data.get("version")
     return _parse_semver(str(v)) if v else None
@@ -75,11 +86,12 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             category="core",
         )
 
+    parse_errors: list[tuple[Path, str]] = []
     for skill_dir in skills_dir.iterdir():
         if not skill_dir.is_dir() or skill_dir.name.startswith("_"):
             continue
         skill_name = skill_dir.name
-        md_ver = _skill_version(skill_dir)
+        md_ver = _skill_version(skill_dir, parse_errors=parse_errors)
         if md_ver is None:
             continue
         n_checked += 1
@@ -134,6 +146,17 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
                     severity="warning",
                     hint="Skill-Dir entfernt? ZIP archivieren",
                 ))
+
+    # Surface YAML parse-errors collected in _skill_version (L7 Plan-Fix)
+    for md_path, err in parse_errors:
+        rel = md_path.relative_to(repo_root) if md_path.is_relative_to(repo_root) else md_path
+        failures.append(FailureDetail(
+            location=str(rel),
+            expected="parseable YAML frontmatter",
+            actual=err,
+            severity="warning",
+            hint="SKILL.md frontmatter YAML-Syntax pruefen",
+        ))
 
     has_error = any(f.severity == "error" for f in failures)
     has_warn = any(f.severity == "warning" for f in failures)

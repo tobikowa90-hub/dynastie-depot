@@ -22,11 +22,14 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import json
 import sys
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 from pathlib import Path
 from statistics import median
+
+from pydantic import ValidationError
 
 # Projekt-lokale Imports
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -134,9 +137,9 @@ def fetch_history_window(ticker: str, start: date, end: date) -> dict[date, floa
                 d = pd.Timestamp(ts).to_pydatetime().date()
             out[d] = float(row["Close"])
         return out
-    except Exception:
+    except (OSError, ValueError, KeyError, AttributeError, RuntimeError):
         # yfinance kann ConnectionError/HTTPError/JSONDecodeError/etc. werfen;
-        # graceful degradation = None.
+        # graceful degradation = None. Bewusst breit gefasst (Library-Boundary).
         return None
 
 
@@ -619,7 +622,7 @@ def main() -> int:
 
     try:
         events = load_flag_events(FLAG_EVENTS_PATH)
-    except Exception as e:
+    except (OSError, ValueError, json.JSONDecodeError, ValidationError) as e:
         print(f"[ERROR] Failed to parse {FLAG_EVENTS_PATH}: {e}", file=sys.stderr)
         return 1
     # Filter: nur Trigger-Events (Resolutions wären separat behandelt — n=0 aktuell)

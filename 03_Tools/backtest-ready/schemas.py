@@ -17,12 +17,21 @@ from __future__ import annotations
 import contextlib
 import copy
 import re
+import sys
 from datetime import date
+from pathlib import Path
 from typing import Final, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+# Make Foundation-Helpers in 03_Tools/ importable from this subpackage
+# (mirrors sys.path.insert pattern in archive_score.py).
+_TOOLS_ROOT = Path(__file__).resolve().parent.parent
+if str(_TOOLS_ROOT) not in sys.path:
+    sys.path.insert(0, str(_TOOLS_ROOT))
 
-from versions import DEFCON_ACTIVE_VERSION
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator  # noqa: E402
+
+from _numeric_utils import float_close  # noqa: E402  (after sys.path bootstrap)
+from versions import DEFCON_ACTIVE_VERSION  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Module-level constants
@@ -178,6 +187,12 @@ class FundamentalsScore(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     gesamt: int = Field(..., ge=FUNDAMENTALS_FLOOR, le=FUNDAMENTALS_CAP)
+    # NOTE (Plan v1.2 2026-05-11 Phase 4 empirical finding): per-field le=10
+    # bounds REMOVED. Legacy v1.0 records stored gesamt (range 0-50) into the
+    # `fwd_pe` sub-field (24/34 records have fwd_pe in 29-44). Adding le=10
+    # retroactively broke jsonl_schema-Check Pydantic strict-revalidation.
+    # Per-field bounds-checking is deferred to the audit-layer (analog M3-T2
+    # Option C: schema_version-Allowlist, v2.0+ strict) — see sum_consistency.py.
     fwd_pe: int = Field(..., ge=0)
     p_fcf: int = Field(..., ge=0)
     bilanz: int = Field(..., ge=0)
@@ -605,7 +620,7 @@ class FlagEvent(BaseModel):
             )
         expected_schwelle, direction = rule
         # Hard-coded per spec: Schwellen sind Teil des Modells, nicht Input
-        if self.metrik.schwelle != expected_schwelle:
+        if not float_close(self.metrik.schwelle, expected_schwelle, abs_tol=1e-9):
             raise ValueError(
                 f"flag_typ '{self.flag_typ}' requires schwelle={expected_schwelle}, "
                 f"got {self.metrik.schwelle}"
@@ -613,8 +628,11 @@ class FlagEvent(BaseModel):
 
         wert = self.metrik.wert
         if self.event_typ == "trigger":
-            violates = (direction == ">" and wert > expected_schwelle) or (
-                direction == "<" and wert < expected_schwelle
+            # Threshold-Compare: erst nicht-close prüfen, dann strict >/<
+            not_close = not float_close(wert, expected_schwelle, abs_tol=1e-9)
+            violates = not_close and (
+                (direction == ">" and wert > expected_schwelle)
+                or (direction == "<" and wert < expected_schwelle)
             )
             if not violates:
                 raise ValueError(
@@ -622,8 +640,11 @@ class FlagEvent(BaseModel):
                     f"(wert {direction} {expected_schwelle}), got wert={wert}"
                 )
         else:  # resolution
-            holds = (direction == ">" and wert <= expected_schwelle) or (
-                direction == "<" and wert >= expected_schwelle
+            # Resolution gilt wenn float_close ODER strikt auf der Resolution-Seite
+            is_close = float_close(wert, expected_schwelle, abs_tol=1e-9)
+            holds = is_close or (
+                (direction == ">" and wert < expected_schwelle)
+                or (direction == "<" and wert > expected_schwelle)
             )
             if not holds:
                 raise ValueError(

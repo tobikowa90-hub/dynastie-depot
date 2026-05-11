@@ -11,6 +11,7 @@
 
 > **Konvention (11.05.2026 Slim-Refactor):** Critical-Alerts sind 1-3-Zeilen-Pointer. Sub-Detail-Decomposition (A/B/C/D… + §18-Sync-Set + bewusst-NICHT-angefasst) gehört NICHT hierher — kanonische Archivquelle ist `git log` (Commit-Body) + `CORE-MEMORY.md §13` (Lifecycle) + PIPELINE-Item-Body bei aktiven Items.
 
+- **11.05. (Mo) ✅ Codebase-Defect-Pattern-Audit + G3-Tooling + Sum-Consistency DONE** (Spec 2026-05-11 v1.1 + Plan v1.2). M1-M5 + L1-L7 + Z1-Z3 G3-Check + Sum-Consistency-Audit-Check applied (Option C, schema_version-Allowlist). Apply-Phase-Empirie revealed Group-C `le=10` retroactively breaks 24 legacy v1.0 records (fwd_pe ∈ [29, 44]) → bounds REVERTED, bounds-check deferred to audit-layer follow-up. Validation-Matrix 12/15 hard-hit PASS + 2 N/A conditional → ≥12/15 threshold met (`docs/superpowers/specs/2026-05-11-codebase-defect-patterns-validation.md`). System-Audit 14/16 → 15/18 PASS (zwei neue Checks `g3_consistency` + `sum_consistency`). CR-CP1 + CP2 applied (5 findings total incl. CRITICAL string-version-compare bug). PIPELINE #48 + #42 DONE — entfernt.
 - **11.05. (Mo) ✅ Prod-Cutover Briefing v3.1.1 → v3.2.0 DONE** (D-pre AIDEFENCE-Block + FAIL-OPEN-Pfad live). Probe-Run 11:30 PASS, Prod-Body-Push via UI-Edit 13:56 MESZ, Verify via `RemoteTrigger get` Hash-Match. PIPELINE #51 ✅ DONE final. Nächster Prod-Cron Di 12.05. 10:07 MESZ. **Plus PORTFOLIO.md-Slim-Refactor** (80→65 LOC, ~5k Token Save: Vorgeschichte-Quotes 17.04.→04.05. raus, 2 resolved Watches archiviert, DONE-Trigger-Zeilen entfernt). **Plus STATE.md-Slim-Refactor** (dieser Commit, 11 Mega-Bullets vom 04.-10.05. kondensiert auf 1-3-Zeilen-Pointer, ~22k Token Save). **Plus Doctor-Mo-Anker** Wave-3a Woche 2/4 (7P/7W/0F, Snapshot `05_Archiv/ruflo-doctor-history/2026-05-11.txt`). Scoring-neutral. Detail → git log + PIPELINE #51 + SYSTEM.md §Briefing-Status v3.2.0.
 - **10.05. (So) ✅ Audit-Cleanup-Pack + PIPELINE #50 Ruflo-Bridge-Bugs Decision** — System-Audit 12/16 → 14/16 PASS, vault_backlinks Tool-Extension (Skip Inline-Backticks + Frontmatter-Aliases-Resolution + archive/log skip). Source-Investigation beider Bridge-Bugs in `memory-tools.js` (WSL-cwd-mismatch Z.634-636 + Asymmetrie Write/Delete-Validation Z.49-55+421); Codex-Single-Pass 97% APPROVED Option A → Issues [ruvnet/ruflo#1883](https://github.com/ruvnet/ruflo/issues/1883) + [#1884](https://github.com/ruvnet/ruflo/issues/1884) gefilt. Workaround `allProjects=true + post-prune` bleibt aktiv. → commits `6cf995b` + `1cc86fa` + PIPELINE #50.
 - **10.05. (So) ✅ PIPELINE #51 Cloud-AIDefence Decision USER-APPROVED Option (c) Akzeptanz** + **#53 Trigger-Landschafts-Audit Decision-C USER-APPROVED** (Weiter beobachten, Re-Audit ~09.07.). Decision-Doc `docs/superpowers/specs/2026-05-10-cloud-aidefence-decision.md` (gitignored). FAIL-OPEN-Akzeptanz im Cloud-Cron, Memory-Note `project_trigger_landscape_audit_2026-05.md` für Re-Audit-Schwellen. → commit `14b4cde` + PIPELINE #51/#53.
@@ -50,8 +51,8 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-05-10T12:36:50Z
-**Result:** 14/16 PASS (2 WARN)
+**Timestamp (UTC):** 2026-05-11T18:04:46Z
+**Result:** 15/18 PASS (1 FAIL, 2 WARN)
 **Run:** `python 03_Tools/system_audit.py --full`
 **Full-Report:** stdout (kein Archiv-File)
 
