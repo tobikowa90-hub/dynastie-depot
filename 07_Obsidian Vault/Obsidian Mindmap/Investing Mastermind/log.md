@@ -1346,3 +1346,71 @@ PIPELINE #48 + #42 closed. Spec v1.1 + Plan v1.2 applied via executing-plans ski
 - PIPELINE #56 ✅ DONE (Pruning-Trigger Konsolidierungstag)
 - Memory `feedback_xlsx_tools_in_sync_set.md` (Edit-Pattern-Helper, nicht-normativ)
 
+## [2026-05-11 abends] system-event | QuickWin-Sweep — System-Audit FAIL-Resolve + PIPELINE #56 Archive
+
+**Event-Typ:** System-Cleanup ohne Score-/FLAG-/Sparraten-Touch.
+
+**Was passiert ist:**
+
+1. **System-Audit-Run:** `python 03_Tools/system_audit.py --full` → 15/18 PASS, 1 FAIL, 2 WARN.
+2. **FAIL identifiziert:** `Check-12 governance_parity` 8/9. Slash-Doku-Drift: `.claude/commands/SystemAudit.md` Z.15 listete „14 Kern-Checks" während `03_Tools/system_audit/checks/__init__.py` CORE-Registry 16 Checks (zwei neue heute aus Codebase-Defect-Pattern-Apply: `sum_consistency` + `g3_consistency`). Count-Parity-Sub-Check vergleicht `COUNT_RE` aus Slash-Doku gegen `len(CORE)`.
+3. **Surgical-Fix:** SystemAudit.md Z.15 Count 14→16 + zwei neue Check-Namen in expliziter Listing ergänzt.
+4. **Re-Audit:** Check-12 → 9/9 PASS. Summary **16/18 PASS, 0 FAIL, 2 WARN, 0 SKIP** (Check-2 store_freshness 0/2 = Track-4-Hibernation Design-akzeptiert; Check-5 existence 91/121 = bekannte Pointer-Lücken Backlog-typisch, kein Drift).
+5. **PIPELINE #56 Archive:** §56 (xlsx Post-Write Smoke-Test §18 v2.3→v2.4) wurde im 23:40-Commit `7df40e9` mit ✅ DONE markiert, blieb aber per Numbering-Convention im Aktiv-Block bis zum nächsten Konsolidierungstag. Entfernung jetzt — Numbering-Gap (Z.71 nach #55) signalisiert Archive-Pointer auf CORE-MEMORY §13 + git log.
+
+**Sync-Set (atomar, System-Event):**
+- `.claude/commands/SystemAudit.md` (Count 14→16 + zwei Check-Namen ergänzt)
+- `00_Core/PIPELINE.md` (#56 entfernt + Footer v2.21→v2.22)
+- `00_Core/STATE.md` Last-Audit-Block (auto-write durch audit-Run)
+- `00_Core/CORE-MEMORY.md` §13 (QuickWin-Sweep-Eintrag 11.05. abends + Header-Stand-Bump)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / flag_events.jsonl / config.yaml / CLAUDE.md / INSTRUKTIONEN.md / SKILL dynastie-depot. Kein Score-Move, kein FLAG-Event, kein Sparraten-Change. DEFCON v3.7 + 11 Scores + Sparraten unverändert.
+
+**Lehre:**
+- **Audit-Tool ist Drift-Frühwarnung wenn Tooling-Refactor + Slash-Doku auseinanderlaufen:** Zwei neue Checks heute via Apply-Phase appended, aber `.claude/commands/SystemAudit.md` als orthogonale Doku-Datei wurde nicht im 5d96b5e-Apply-Sync-Set erfasst. Lesson: Audit-Tool-Erweiterungen müssen Slash-Doku-Update im selben Commit haben (Convention für künftige Check-Promotion).
+- **Numbering-Convention-Pruning lohnt periodisch (nicht nur am Konsolidierungstag):** DONE-Items aus Aktiv-Liste innerhalb der nächsten Session entfernen senkt Token-Footprint von PIPELINE.md ohne Info-Loss (CORE-MEMORY §13 + git log + Item-Body sind SSoT).
+
+**Cross-Reference:**
+- `03_Tools/system_audit/checks/__init__.py` (CORE-Registry mit 16 Einträgen seit Codebase-Defect-Pattern-Apply 11.05. abends)
+- `03_Tools/system_audit/checks/governance_parity.py` (Count-Parity-Check Z.118-128 vergleicht `COUNT_RE` gegen `len(CORE)`)
+- CORE-MEMORY §13 Eintrag 11.05. „QuickWin-Sweep abends"
+- git log Commit `7df40e9` (§18 v2.3→v2.4 + #56 DONE-Markierung) — Pruning-Trigger durch diesen QuickWin-Sweep eingelöst
+
+## [2026-05-11 spät-abends] system-event | Ruflo Bridge-Bugs A+B UPSTREAM FIXED — PIPELINE #50 → READY
+
+**Event-Typ:** Upstream-Maintainer-Resolution + Status-Bump ohne Score-/FLAG-/Sparraten-Touch.
+
+**Was passiert ist:**
+
+1. **GitHub-Verify post-QuickWin-Sweep:** `gh issue view 1883/1884 --repo ruvnet/ruflo --json state,updatedAt,comments` zeigt beide Issues **CLOSED** 2026-05-10 14:37 UTC.
+2. **PR #1886 commit `d0c507e6` merged** und in **`ruflo@3.7.0-alpha.21`** + `@claude-flow/cli@3.7.0-alpha.21` + `claude-flow@3.7.0-alpha.21` publiziert (alle Dist-Tags `alpha` + `latest` + `v3alpha`).
+3. **Fix #1883 (Bug A WSL-cwd):** neue `resolveProjectMemoryDir()` in `memory-tools.ts` mit 4 Kandidat-Hashes (Legacy-POSIX / WSL `/mnt/<drive>/` → Windows-Hash-Translation `C--Users-x-Project-Name` / Leading-Dash-Strip / Space→Dash) + neuer optionaler **`projectPath`-Input-Parameter** als Escape-Hatch für cross-Env-Setups + CI-Guard `memory-import-smoke` mit Dist-Scan + Fixture-Test gegen synthetische `/mnt/c/Users/tobia/OneDrive/Desktop/Claude Stuff`-cwd.
+4. **Fix #1884 (Bug B Asymmetrie):** neue `sanitizeMemoryKey()` an beiden `storeEntry`-Call-Sites (No-Section + Per-Section); Single-Source-of-Truth `DANGEROUS_KEY_CHARS` (write) + `DANGEROUS_KEY_PATTERN` (read) teilen jetzt Character-Class — Write/Read-Drift strukturell ausgeschlossen + CI-Property-Test gegen 27 adversarial Inputs.
+5. **Stranded-Keys-Caveat:** 7 alte Residue-Keys aus 08.05.-Workaround bleiben in DB (Shell-Metacharacters) — Maintainer-Empfehlung SQL-direct-Sweep: `sqlite3 .swarm/memory.db "DELETE FROM entries WHERE key GLOB 'claude:*[(){}<>!#;&|\`\$]*'"`.
+6. **PIPELINE #50 Status-Bump:** `DECISION-DONE + ISSUES-FILED` → **READY für Upgrade-Welle**. Upgrade-Plan-Skizze im Item-Body verankert: (i) Pre-Flight-Doctor-Snapshot V/N-Vergleich gegen 11.05. W2/4 7P/7W/0F, (ii) Bridge-Smoke-Test path-scoped mit neuem `projectPath`-Parameter (Verify imported≥39 + Cross-Project-Pollution=0), (iii) Tool-Mode `dynastie` post-Upgrade-Verify, (iv) AttestationLog-Pfad-Verify, (v) Hook-Konfig-Verify, (vi) Stranded-Keys-SQL-Sweep, (vii) Post-Upgrade-Doctor-Snapshot + History-Append, (viii) Override-Block + SYSTEM.md §Ruflo-Status Version-Stempel.
+7. **Plan-Trigger:** Werktags-Session (für Doctor-V/N-Vergleich relevante Tools online — vermeidet Sonntag-Wochenend-Mode-Fehlinterpretation analog 11.05.-Cutover-Lehre). Risk-Profile: Minor-Sprung mit `alpha`-Tag, realistisch Side-Effects auf Tool-Mode / Hooks / Doctor / AttestationLog → eigener Plan-Slot via `superpowers:writing-plans` rechtfertigt sich.
+8. **Bewusst NICHT in dieser Session:** kein `npx ruflo@latest`-Run, kein WSL-`dpkg upgrade`, kein Issue-Comment-Push, kein PIPELINE-#49-Re-Run, kein blind-Upgrade.
+
+**Sync-Set (atomar, System-Event, scoring-neutral):**
+- `00_Core/PIPELINE.md` #50 (Status `DECISION-DONE+ISSUES-FILED` → READY + Upgrade-Plan-Skizze + Footer v2.22→v2.23)
+- `00_Core/STATE.md` Critical-Alert (neuer Bullet 11.05. spät + Footer-Stand-Bump)
+- `00_Core/SYSTEM.md` §Ruflo-Status (neuer Bridge-Bugs-Fix-Status-Bullet + Footer-Stand-Bump)
+- `00_Core/CORE-MEMORY.md` §13 (neuer Lifecycle-Eintrag + Header-Stand-Bump)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / xlsx-Tools / score_history.jsonl / flag_events.jsonl / config.yaml / CLAUDE.md / INSTRUKTIONEN.md / SKILL dynastie-depot / `.claude/settings.json` / Ruflo-Runtime (v3.6.11 pinned). Kein Score-Move, kein FLAG-Event, kein Sparraten-Change. DEFCON v3.7 + 11 Scores + Sparraten unverändert.
+
+**Lehre:**
+- **Source-confirmed Issue-Filing mit Dist-Line-Numbered Repro provoziert qualitativ + schnelle Maintainer-Response:** ~3h vom Filing 10.05. sehr-spätabends (ca. 02:00 UTC, geschätzt) zum Fix-Publish 10.05. 14:37 UTC. Standard für künftige Upstream-Issues — Bundle-Bytecode-Lokalisierung mit Code-Zeile + Repro-Schritte zahlen sich massiv aus.
+- **Status-Bump als eigene Sync-Welle separat von Decision-Welle disziplinieren:** Decision DONE (10.05.) und Upstream-Fix (10.05.+) sind zwei distinkte Lifecycle-Events; jeweils eigener Sync-Set verhindert Verwechslung von „wir warten" mit „wir können".
+- **Alpha-Tag-Sprung verdient eigenen Plan-Slot:** Minor-Sprung mit `alpha`-Tag und Side-Effects-Surface auf Tool-Mode / Hooks / Doctor / AttestationLog ist nicht Status-Bump-In-Place; verhindert blind-Upgrade-Disaster analog 20.04. v3.0.3-Briefing-Reinfall.
+
+**Cross-Reference:**
+- GitHub Issues [ruvnet/ruflo#1883](https://github.com/ruvnet/ruflo/issues/1883) + [#1884](https://github.com/ruvnet/ruflo/issues/1884) (beide CLOSED 2026-05-10 14:37 UTC)
+- PR #1886 commit `d0c507e6` in `ruflo@3.7.0-alpha.21`
+- PIPELINE #50 Body (Upgrade-Plan-Skizze 8-Schritte)
+- SYSTEM.md §Ruflo-Status (neuer Bridge-Bugs-Fix-Status-Bullet)
+- CORE-MEMORY §13 Eintrag 11.05. „Ruflo Bridge-Bugs A+B UPSTREAM FIXED"
+- Vorgeschichte: §13 Eintrag 10.05. „Audit-Cleanup-Pack + PIPELINE #50 Ruflo-Bridge-Bugs Decision (Codex 97% Option A)" (Decision-Welle)
+
