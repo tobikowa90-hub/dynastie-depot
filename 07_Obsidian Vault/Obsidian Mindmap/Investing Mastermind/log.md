@@ -1547,3 +1547,61 @@ PIPELINE #48 + #42 closed. Spec v1.1 + Plan v1.2 applied via executing-plans ski
 - Plan-File: `docs/superpowers/plans/2026-05-12-ruflo-bridge-upgrade-alpha21.md` (unangetastet, ACs ab Z.781)
 - PIPELINE #50 (closed) → #57 (NEU, PENDING Session-Restart)
 - Memory-Heuristik: `feedback_codex_sparring_heuristic.md`
+
+---
+
+## [2026-05-12] system | Mini-Welle #57 Forensik-Konsolidierung — Bridge-Layer ⛔ BLOCKED + #50 retro-stempled ❌ FAILED-RETRO (4-Bug-Kaskade Win32+Win32)
+
+**Event-Typ:** System-Event, scoring-neutral (DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert).
+
+**Was passiert ist:**
+
+Mini-Welle #57 startete in fresh Claude-Code-Session als blind-Ausführung des `03_Tools/ruflo/mini-welle-57-precheck.md`. STOP-GATE-4.1.5 (Tool-Schema-Introspection) zeigte oberflächlich PASS — `mcp__ruflo__memory_import_claude` exposed `projectPath`-Parameter wie in PR #1886-Body annonciert. Decision PROCEED mit explizitem `projectPath="C:\Users\tobia\OneDrive\Desktop\Claude Stuff"`.
+
+**Step 4.2 Re-Import AC3 FAIL:** `imported:0`/`message:"No Claude memory files found"` — identisch zu 12.05.-spätabends-Behavior. DB unverändert (TOTAL 237 / Code-Prefix 51 / OD-Prefix 154). Schema-PASS war oberflächlich.
+
+**Codex-R3-Sparring (Hypothese D bewiesen + 3 weitere Bugs entdeckt):**
+
+1. **Bug #1 — Win32 Slug-Algorithmus broken** ([ruvnet/ruflo#1939](https://github.com/ruvnet/ruflo/issues/1939)): Tool-Code `memory-tools.ts:3342-3347` nutzt `process.cwd().replace(/\//g,'-')` — auf Win32 hat `cwd` keine Forward-Slashes, also bleibt der String unverändert. Mathematisch unmöglich, den real existierenden Disk-Slug `C--Users-tobia-OneDrive-Desktop-Claude-Stuff` zu produzieren. PR #1886 fixt setup-class WSL-Claude/Win32-MCP — unser Win32+Win32 ist unfixed Code-Branche. PowerShell-Reproduce: cwd-String nach `replace(/\//g,'-')` literal unverändert.
+
+2. **Bug #2 — `memory_bridge_status` lügt** ([ruvnet/ruflo#1940](https://github.com/ruvnet/ruflo/issues/1940)): Reporter meldet `totalEntries:0`/`status:not-synced` obwohl SQL-Direktdump 237 Entries zeigt (claude-memories:111, dynastie-memories-test:106, patterns:20; 154 Keys unter aktivem OD-Projekt-Prefix; Embedding-Model `Xenova/all-MiniLM-L6-v2` matcht `bridge.embedding`-Output exakt — also wirklich unsere Bridge-Daten, nicht zufälliges Sediment).
+
+3. **Bug #3 — HNSW-Index fehlt für `claude-memories`** ([ruvnet/ruflo#1941](https://github.com/ruvnet/ruflo/issues/1941)): `vector_indexes`-Tabelle hat nur `default` + `patterns` indiziert (beide 768-dim). Namespace `claude-memories` mit 111 importierten MDs hat KEINEN Index → `memory_search(namespace='claude-memories', query='BRK.B Earnings Call')` liefert deterministisch `total:0` mit backend `HNSW + sql.js`.
+
+4. **Bug #4 — Dimension-Drift** ([ruvnet/ruflo#1942](https://github.com/ruvnet/ruflo/issues/1942)): HNSW-Indexes 768-dim konfiguriert, Bridge-Embeddings faktisch 110× 384-dim (`all-MiniLM-L6-v2`) + 1× 128-dim. Setup-Drift aus älterer `all-MiniLM-L12-v2`-Era — selbst mit Namespace-Index wäre Search strukturell defekt.
+
+**Practical Impact:** Bridge hat seit 30.04.2026 (Phase 1.2-1.7 atomarer Commit `e983102`) gespeichert, aber nie real durchsuchbar funktioniert. 7 Wochen lang in „Bridge funktioniert"-Illusion gelebt — alle früheren Stempel (Welle-3a-Kickoff 05.05., PIPELINE #49 Bridge Re-Sync 08.05., PR #1886 UPSTREAM-FIXED 11.05., #50 12.05. spätabends „DONE-with-Caveats") sind retroaktiv ungültig, weil keiner end-to-end `memory_search` mit known-query-verify getestet hat. Memories de facto nur via direkte MD-Reads konsumiert; semantischer Recall war Wunschdenken.
+
+**Status:** ⛔ BLOCKED bis Upstream-Combined-Acceptance grün — alle 4 gleichzeitig: (i) Win32 Current-Project-Import ohne `allProjects=true`, (ii) truthful `memory_bridge_status`, (iii) HNSW-Index für `claude-memories` automatisch provisioniert, (iv) Dimension-konsistente Reindex-/Search-Pipeline mit known-query-verify (`memory_search "BRK.B Earnings Call"` similarity ≥ 0.7). Erwartete Trägerversion: `ruflo@3.7.0-alpha.22+`.
+
+**Workaround:** direkte MD-Reads aus `~/.claude/projects/.../memory/*.md` aktiv; `allProjects=true + post-prune` ist Storage-Workaround, kein Search-Fix; WSL-Migration adressiert nur Bug #1, Bugs #3+#4 bleiben.
+
+**PIPELINE #50 retro-stempled ❌ FAILED-RETRO:** ursprüngliches Upgrade-/Fix-Verdict (12.05. spätabends DONE-with-Caveats → PARTIAL) war zu großzügig. Defekte waren bereits vor alpha.21 vorhanden, kein Rollback auf v3.6.11 sinnvoll.
+
+**Sync-Set (atomar, scoring-neutral):**
+- PIPELINE.md #57 (BLOCKED-Rewrite + Footer v2.25→v2.26)
+- SYSTEM.md §Ruflo-Status (4-Bug-Block-Rewrite vorangestellt + Footer v1.0→v1.1)
+- STATE.md (neuer Critical-Alert-Bullet 12.05. nachts + Footer v2.1→v2.2)
+- CORE-MEMORY §13 (neuer 12.05.-Eintrag + Footer v1.13→v1.14)
+- Vault log.md (dieser Eintrag)
+- Memory `feedback_ruflo_memory_bridge_path_hash_pitfall.md` (Falle 4 NEU für 4-Bug-Kaskade)
+
+**Bewusst NICHT angefasst:** PORTFOLIO/Faktortabelle/xlsx/jsonl/config.yaml/SKILL.md/INSTRUKTIONEN.md/CLAUDE.md.
+
+**RUFLO-INTEGRATION-PLAN.md v1.3-Bump als separater Folge-Commit** (klare git-History, User-Direktive 12.05. nachts) — Storage-vs-Search-Split, Phase-1.8/1.9 Bridge-abhängige Items BLOCKED.
+
+**Lessons-Verdict-Discipline (Memory-Kandidat):** „Successful import" / „Status connected" / „Bridge-Bugs UPSTREAM FIXED" sind kein DONE-Verdict für Bridge-Layer; Bridge gilt erst als DONE wenn Storage + Reporter + Index + Search end-to-end mit known-query-verify (semantic similarity ≥ Schwelle auf real bekanntem Inhalt) bestehen. Diese Verdict-Discipline-Regel hat 7 Wochen Illusion verursacht.
+
+**Lessons technisch:**
+- Schema-Introspection-PASS ≠ Code-Path-PASS — Verify mind. 2-stufig (Schema-Existenz + tatsächliches Lookup-Behavior).
+- `bridge.status`/`totalEntries` aus Status-Reportern können systematisch lügen — bei Bridge-Layer-Verify nie auf Reporter-Output verlassen, immer SQL-Direktdump als Ground-Truth.
+- HNSW-Index-Provisioning ist nicht automatisch beim Storage-Import, sondern separater Provisioning-Schritt — fehlt der für einen Namespace, ist Search dort silent-broken.
+- Embedding-Dim-Mismatch zwischen Index-Konfig und tatsächlichen Embeddings ist Setup-Drift-Class die bei Modell-Wechsel jeden Setup trifft der nicht aktiv migriert.
+
+**Cross-Reference:**
+- 4 Issues: [#1939](https://github.com/ruvnet/ruflo/issues/1939) Slug · [#1940](https://github.com/ruvnet/ruflo/issues/1940) Reporter · [#1941](https://github.com/ruvnet/ruflo/issues/1941) HNSW · [#1942](https://github.com/ruvnet/ruflo/issues/1942) Dim-Drift
+- SYSTEM.md §Ruflo-Status (4-Bug-Block-Rewrite + Substrate-Layer-Detail)
+- CORE-MEMORY §13 (Lifecycle-Eintrag mit Codex-R3+R3.2-Sparring-Vollkontext)
+- PIPELINE #57 (BLOCKED bis Upstream-Combined-Acceptance grün)
+- Codex-R3-Output: agentId `a3bd4da0c50727eb4`, R3.2-Output: agentId `aceaac7643b3b85a1`
+- Memory `feedback_ruflo_memory_bridge_path_hash_pitfall.md` Falle 4 NEU

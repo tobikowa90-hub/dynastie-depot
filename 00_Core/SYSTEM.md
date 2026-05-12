@@ -41,7 +41,28 @@
 
 ---
 
-## §Ruflo-Status (NEU 30.04.2026, PIPELINE #20 Phase 1.2-1.7)
+## §Ruflo-Status (UPDATED 12.05.2026 nachts — ⛔ BRIDGE-LAYER BLOCKED / ❌ #50 FAILED-RETRO)
+
+> **Mini-Welle #57 Forensik-Verdict (12.05. nachts):** Win32+Win32-Bridge-Layer hat eine **4-Bug-Kaskade**, die bereits vor alpha.21 vorhanden war:
+> - **Bug #1 Import-Slugging** ([ruvnet/ruflo#1939](https://github.com/ruvnet/ruflo/issues/1939)): `memory_import_claude({allProjects:false})` leitet Current-Project-Slug via `replace(/\//g,'-')` ab — trifft Win32-cwds mit Backslashes/Colon/Spaces niemals. Realer Claude-Disk-Slug `C--Users-tobia-OneDrive-Desktop-Claude-Stuff` wird mathematisch nie gefunden. PowerShell-Reproduce: cwd-String bleibt nach `replace(/\//g,'-')` unverändert.
+> - **Bug #2 Reporter-Falschstand** ([ruvnet/ruflo#1940](https://github.com/ruvnet/ruflo/issues/1940)): `memory_bridge_status` meldet `totalEntries:0` / `status:not-synced`, obwohl SQL-Direktdump 237 Entries zeigt (`claude-memories:111`, `dynastie-memories-test:106`, `patterns:20`; 154 Keys unter aktivem OD-Projekt-Prefix; Embedding-Model `Xenova/all-MiniLM-L6-v2` matcht `bridge.embedding`-Output).
+> - **Bug #3 HNSW-Index fehlt** ([ruvnet/ruflo#1941](https://github.com/ruvnet/ruflo/issues/1941)): `claude-memories` hat 111 Rows, aber **keinen** `vector_indexes`-Eintrag (nur `default` + `patterns` indiziert, beide 768-dim). `memory_search(namespace='claude-memories', query='BRK.B Earnings Call')` liefert deterministisch `total:0` mit backend `HNSW + sql.js`.
+> - **Bug #4 Dimension-Drift** ([ruvnet/ruflo#1942](https://github.com/ruvnet/ruflo/issues/1942)): Search-Indexes 768-dim konfiguriert, Bridge-Embeddings faktisch **110× 384-dim** (`all-MiniLM-L6-v2`) + **1× 128-dim**. Selbst mit Namespace-Index wäre Search strukturell defekt — Setup-Drift aus älterer `all-MiniLM-L12-v2`-Era.
+>
+> **Practical Impact:** Bridge hat seit 30.04.2026 (Phase 1.2-1.7 atomarer Commit) gespeichert, aber nie real durchsuchbar funktioniert. Frühere „Bridge funktioniert"-Stempel (Welle-3a-Kickoff 05.05., PIPELINE #49 Bridge Re-Sync 08.05., PR #1886 UPSTREAM-FIXED 11.05., #50 DONE-with-Caveats 12.05. spätabends) sind retroaktiv ungültig — Memories wurden de facto nur via direkte MD-Reads konsumiert; semantischer Recall war Wunschdenken.
+>
+> **Workaround-Status:** direkte MD-Reads aus `~/.claude/projects/.../memory/*.md` = einzig belastbarer Retrieval-Pfad. `allProjects=true + post-prune` (08.05.-PIPELINE-#49-Stufe-1) ist Storage-Workaround, kein Search-Fix. WSL-Migration adressiert nur Bug #1, Bugs #3+#4 bleiben.
+>
+> **Operative Regel bis Upstream-Fix:** Keine Bridge-abhängigen Automationen, keine Search-/Recall-Claims über `claude-memories`, keine Fortschreibung von Phase-1.8/1.9-Items als „Bridge-ready", kein Re-Import-Versuch, keine Mini-Welle-#57-Resume-Versuche.
+>
+> **Exit-Gate (Combined-Acceptance, Re-Open #57):** alle vier gleichzeitig grün — (i) Win32 Current-Project-Import ohne `allProjects=true`, (ii) truthful `memory_bridge_status` mit Real-Counts, (iii) HNSW-Index für `claude-memories` automatisch provisioniert, (iv) Dimension-konsistente Reindex-/Search-Pipeline mit known-query-verify (`memory_search "BRK.B Earnings Call"` similarity ≥ 0.7). Erwartete Trägerversion: `ruflo@3.7.0-alpha.22+`.
+>
+> **PIPELINE #50 Retro-Stempel ❌ FAILED-RETRO:** ursprüngliches Upgrade-/Fix-Verdict (12.05. spätabends DONE-with-Caveats → PARTIAL) war zu großzügig. Defekte waren bereits vor alpha.21 vorhanden, kein Rollback auf v3.6.11 sinnvoll. Konsequenz: Phase-1-Bridge seit 30.04.2026 nur Storage-aktiv, nie Search-funktional; Plan-Phase-Roadmap braucht Storage-vs-Search-Split (siehe RUFLO-INTEGRATION-PLAN v1.3-Bump in Folge-Commit).
+
+---
+
+### §Ruflo-Status — Detail-Stand pre-Forensik (Substrate-Layer-Status, weiter gültig)
+
 
 - **Phase-Status:** 1.1 ✅ (28.04.) · Welle 0 WSL-Foundation ✅ (30.04. ~13:55) · **1.2-1.7 ✅ atomar (30.04. spätnachmittags)** · **1.8 Doctor-Periodic-Cadence ACTIVE seit 05.05.2026 (Welle 3a Off-Schedule-Kickoff Di — Cadence-Anker fortan Mo morgens, nächster regulärer Lauf Mo 11.05.)** · 1.9-Replace audit-trace-lite Pilot **PENDING Welle 3b ab 27.05.** (frühestens VEEV Q1 FY27).
 - **Runtime:** WSL Ubuntu-24.04 `/usr/bin/ruflo` **v3.7.0-alpha.21** (Upgrade 12.05.2026 via `sudo npm i -g ruflo@3.7.0-alpha.21`, Win32-`npx ruflo` weiterhin `ERR_DLOPEN_FAILED` für `onnxruntime_binding.node`; WSL-Bypass sauberer Pfad). **Versions-Reporting-Quirk:** `ruflo --version` reportet `v3.7.0-alpha.27` weil ruflo-Wrapper-Paket den gebündelten `@claude-flow/cli@3.7.0-alpha.27` (npm dist-tag `latest`) ausführt — ruflo-Package selbst ist exact `3.7.0-alpha.21` (verifizierbar via `npm ls -g ruflo`, Plan-Pin korrekt). alpha.27 ≥ alpha.21 = strukturell Superset der Bug-Fix-Welle PR #1886.
@@ -123,4 +144,4 @@
 
 ---
 
-*🦅 SYSTEM.md v1.0 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 12.05.2026 abends (Ruflo Runtime-Upgrade v3.6.11 → v3.7.0-alpha.21 DONE-with-Caveats — PIPELINE #50 closed: Doctor 10P/7W/0F, Bug-A/B-Verify DEFERRED auf Session-Restart wegen MCP-Server-Cache-Disconnect, Stranded-Keys-Sweep ABORTED nach Visual-Verify-Discovery dass Code-Pfad-Hash-Keys legitime Dynastie-Auto-Memories sind, OneDrive-Path-Cloud-Sync-Klarstellung User; saubere Cleanup via separate Mini-Welle MD-File-Migration)*
+*🦅 SYSTEM.md v1.1 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 12.05.2026 nachts post-Mini-Welle-#57-Forensik — **§Ruflo-Status Bridge-Layer ⛔ BLOCKED** (4-Bug-Kaskade Win32+Win32: Slug [#1939](https://github.com/ruvnet/ruflo/issues/1939) · Reporter [#1940](https://github.com/ruvnet/ruflo/issues/1940) · HNSW-Index [#1941](https://github.com/ruvnet/ruflo/issues/1941) · Dim-Drift [#1942](https://github.com/ruvnet/ruflo/issues/1942)). Bridge nur Storage-aktiv seit 30.04., Search-Layer fundamental defekt; PIPELINE #50 retro-stempled ❌ FAILED-RETRO (Defekte waren bereits vor alpha.21 vorhanden); PIPELINE #57 ⛔ BLOCKED bis Upstream-Combined-Acceptance grün. Substrate-Layer-Detail (Runtime/Doctor/Tool-Mode/Hooks) bleibt unverändert gültig.*
