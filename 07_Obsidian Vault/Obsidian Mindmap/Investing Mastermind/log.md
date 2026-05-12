@@ -1501,3 +1501,49 @@ PIPELINE #48 + #42 closed. Spec v1.1 + Plan v1.2 applied via executing-plans ski
 - Vorgeschichte: 12.05. morgens Plan-Draft-Lifecycle-Event (oben im log)
 - PIPELINE #50 (Status `READY` → entfernt aus Aktiv-Liste per Numbering-Gap)
 - Plan v1.2 Z.605 (Welle-0 v3.6.11-Stempel) bleibt frozen — historisch korrekt, kein Live-Versions-Stempel
+
+---
+
+## 2026-05-12 spätabends — Codex-R2-Sparring-Re-Stempelung PIPELINE #50 → PARTIAL + #57 NEU (System-Event, scoring-neutral)
+
+**Trigger:** Codex-Review-Pass auf Commit `f800250` post-Welle. Round 1 surfaced HIGH=1/MEDIUM=2/LOW=1 — User-Freigabe Round 2. Codex-R2 92% Confidence empfahl Re-Stempelung von "DONE-with-Caveats" auf **PARTIAL**, weil der Plan AC 3-7 als binary-checkable Pflicht für `DONE` definiert (Plan Z.781, 787-791) und der Commit genau diese ACs als DEFERRED/ABORTED dokumentiert. Achse-1-Empfehlung: Option-3-Hybrid (kein Amend, Follow-up-Commit Re-Stempelung + neues PIPELINE-Item, append-only Plan-Addendum optional).
+
+**Apply (4 Patches):**
+
+1. **`00_Core/SYSTEM.md §Ruflo-Status`** — Resume-Checkliste Mini-Welle eingefügt (4-Step: 4.1.5 First-Gate → 4.2-4.5 + 6.4 Verify → Staged-Recovery `.pre-import-*` / `.pre-sweep-*` statt `rm -rf` → Last-Resort-Rollback nur für vollständigen Neuaufbau). Bestehender Rollback-Pfad-Bullet als "Last-Resort" markiert.
+2. **`00_Core/PIPELINE.md`** — Neues Item **#57 Ruflo Mini-Welle — Bug-A/B-Resume + MD-File-Migration + Stranded-Keys-Sweep** mit Pflicht-Reihenfolge (a) Tool-Schema-Gate (b) Steps 4.2-4.5 + 6.4 (c) MD-File-Migration `C--Users-tobia-Code/memory/` → `C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory/` (d) Sweep. Exit-Criteria: AC3 + AC5 + AC7 PASS (für Sweep zusätzlich AC4 + AC6). Footer-Bump v2.24 → v2.25.
+3. **`00_Core/STATE.md`** — Critical-Alert 12.05. von `✅ DONE-with-Caveats` auf `⚠️ PARTIAL` + Verweis auf #57 + Footer-Bump.
+4. **`00_Core/CORE-MEMORY.md §13`** — Eintrag-Titel + Footer auf PARTIAL umgestempelt für Konsistenz mit STATE/PIPELINE/SYSTEM.
+
+**Memory-Pitfall-Doc-Split (NIT, separate Mini-Welle):** Codex-LOW-Finding empfiehlt Split der bestehenden `feedback_ruflo_memory_bridge_onedrive_pitfall.md` in (a) reine Cloud-Sync-Risiken (Edit-Collision, File-Lock-Race, Multi-Device-Sync) + (b) neue `feedback_ruflo_memory_bridge_path_hash_pitfall.md` (WSL/Windows-Hash-Translation, historisches `OneDrive`-Pfadartefakt, `C--Users-tobia-Code` → `C--Users-tobia-OneDrive-Desktop-Claude-Stuff`-Migration, Re-Import/Sweep-Risiken). Cross-Refs in SYSTEM §Ruflo-Status splitten. **Status:** als separate Mini-Mini-Welle erfasst, nicht in diesem Sync.
+
+**§18-Sync-Set System-Event-Variante (atomar, scoring-neutral):**
+
+- SYSTEM.md §Ruflo-Status (Resume-Checkliste-Insert + Rollback-Pfad Last-Resort-Markierung)
+- PIPELINE.md (#57 NEU + Footer v2.24 → v2.25)
+- STATE.md (Critical-Alert 12.05. Re-Stempelung + Footer)
+- CORE-MEMORY §13 (Eintrag-Titel + Footer Re-Stempelung)
+- Vault log.md (dieser Eintrag)
+
+**Bewusst NICHT angefasst:**
+
+- PORTFOLIO/Faktortabelle/xlsx-Tools/config.yaml/jsonl/SKILL.md/INSTRUKTIONEN.md (kein Score/FLAG/Sparraten-Event)
+- CLAUDE.md (kein Override-Block-Edit nötig, M1-Registry unverändert)
+- Plan v1.2 `00_Core/RUFLO-INTEGRATION-PLAN.md` (Re-Stempelung ≠ Plan-Bump, kein C2.1-Sync)
+- Original Plan-File `docs/superpowers/plans/2026-05-12-ruflo-bridge-upgrade-alpha21.md` (Codex-R2 explizit: ursprüngliche ACs bleiben unangetastet; optionale append-only Addendum-Sektion DEFERRED bis Mini-Welle-Resume)
+- Memory-Pitfall-Doc-Split (separate Mini-Mini-Welle, nicht in diesem Sync)
+- Commit f800250 (kein Amend gem. Pre-Commit-Diff-Inspection-Memory; Re-Stempelung läuft als Follow-up-Commit)
+
+**Lehre:**
+
+- **Codex-Sparring-Heuristik bestätigt:** Round-1 HIGH=1/MEDIUM=2 lag im Grenzbereich der `feedback_codex_sparring_heuristic.md`-Schwelle ("HIGH ≥2 ODER strukturelle Coverage-Gap"); Round-2 hat das Verdict ratifiziert und Patch-Liste konkretisiert. ~5-10k Tokens Round-2 = günstigster Sparring-Schritt (Diff-Re-Review auf bekanntem Diff-Set), Pattern weiter validiert.
+- **"DONE-with-Caveats"-Stempel ist semantisch schwach** bei monolithischen AC-Blöcken: wenn 4/12 AC DEFERRED + 1/12 ABORTED ist, ist `PARTIAL` ehrlicher als `DONE-with-Caveats`. Für künftige Wellen: entweder AC-Split (Substrate-AC vs. Bridge-Verify-AC) im Plan oder ehrlicher PARTIAL-Stempel ohne Augenwischerei.
+- **Plan-Files bleiben unangetastet retroaktiv:** Codex-R2 Achse-1 Option-3-Hybrid (Follow-up-Commit + neues Item statt Plan-Rewrite) schützt vor §C2.1-Plan-vs-Code-Sync-Verletzung. Plan ist historische Snapshot der Pre-Welle-Intent; Re-Stempelung läuft via STATE/PIPELINE/CORE-MEMORY-Sync, nicht Plan-Edit.
+
+**Cross-Reference:**
+
+- Vorgänger-Commit: `f800250` (Welle-DONE-with-Caveats-Stempel, jetzt re-gestempelt)
+- Codex-R1+R2-Output: in dieser Session-Transcript, agentId `a0811b7173132c327`
+- Plan-File: `docs/superpowers/plans/2026-05-12-ruflo-bridge-upgrade-alpha21.md` (unangetastet, ACs ab Z.781)
+- PIPELINE #50 (closed) → #57 (NEU, PENDING Session-Restart)
+- Memory-Heuristik: `feedback_codex_sparring_heuristic.md`
