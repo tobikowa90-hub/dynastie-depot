@@ -77,3 +77,6 @@ __pycache__/
 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/**/*.mp3
 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/**/*.webm
 07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/raw/videos/**/whisper_raw.json
+
+# Ruflo-MCP runtime side-effect (cwd-relativ vector-store)
+ruvector.db
