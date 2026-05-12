@@ -1,0 +1,40 @@
+# Doctor-Snapshot 2026-05-12 POST-UPGRADE (ruflo v3.6.11 → v3.7.0-alpha.21 / bundled @claude-flow/cli@3.7.0-alpha.27)
+# Pre-Counts:  7 PASS / 7 WARN / 0 FAIL (vor sudo npm i -g)
+# Post-Counts: 10 PASS / 7 WARN / 0 FAIL
+# Δ-Triage:
+#   Version-Drift-WARN: GONE (v3.6.11 WARN → v3.7.0-alpha.27 PASS, "up to date" — Bundle-Version-Reporting via @claude-flow/cli@3.7.0-alpha.27 superset von Plan-Pin alpha.21 — Bug-Fixes #1883+#1884 enthalten)
+#   +AIDefence PASS (NEU in alpha.21+: @claude-flow/aidefence loadable, aidefence_* MCP tools functional)
+#   +Federation Breaker PASS (NEU in alpha.21+: optional, plugin nicht installiert — informational)
+#   +Encryption at Rest WARN (NEU in alpha.21+: session/terminal/memory stores plaintext mode 0600 — Optionale Optimierung, Phase 2+ Defer)
+#   −Daemon/API-Keys/TypeScript/agentic-flow/Claude-Code-CLI/MCP-Servers WARN unchanged (siehe SYSTEM.md §Ruflo-Status WARN-Triage 30.04.: WSL-sicht-Limitation + Phase 2+ Defer + echte Optimierung deferred)
+#   Bug-A/B-Verify: DEFERRED — MCP-Server-Disconnect nach Diagnose-Kill (PID 299 pre-upgrade-cached); Session-Restart erforderlich für Bridge-Smoke-Test (Plan Steps 4.2-4.5 + 6.4)
+
+RuFlo Doctor
+System diagnostics and health check
+──────────────────────────────────────────────────
+
+... Running health checks in parallel...... Running health checks in parallel.....: Running health checks in parallel....:: Running health checks in parallel...::: Running health checks in parallel...::. Running health checks in parallel...:.. Running health checks in parallel...... Running health checks in parallel.....: Running health checks in parallel....:: Running health checks in parallel...::: Running health checks in parallel...::. Running health checks in parallel...:.. Running health checks in parallel...                                              ✓ Version Freshness: v3.7.0-alpha.27 (up to date)
+✓ Node.js Version: v20.20.2 (>= 20 required)
+✓ npm Version: v10.8.2
+⚠ Claude Code CLI: Not installed
+✓ Git: v2.43.0
+✓ Git Repository: In a git repository
+✓ Config File: Found: claude-flow.config.json
+⚠ Daemon Status: Not running
+✓ Memory Database: .swarm/memory.db (2.86 MB)
+⚠ API Keys: No API keys found
+⚠ MCP Servers: No MCP config found
+✓ AIDefence: @claude-flow/aidefence loadable — aidefence_* MCP tools functional
+✓ Disk Space: 276G available
+⚠ TypeScript: Not installed locally
+⚠ agentic-flow: Not installed (optional — embeddings/routing will use fallbacks)
+⚠ Encryption at Rest: Off — session/terminal/memory stores are plaintext (mode 0600 only)
+✓ Federation Breaker: Federation plugin not installed (optional) — install only if you need cross-installation peering
+
+──────────────────────────────────────────────────
+
+Summary: 10 passed, 7 warnings
+
+Run with --fix to see 7 suggested commands (does not auto-apply)
+
+All checks passed with some warnings.

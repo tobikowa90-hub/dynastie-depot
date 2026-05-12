@@ -1445,3 +1445,59 @@ PIPELINE #48 + #42 closed. Spec v1.1 + Plan v1.2 applied via executing-plans ski
 - Vorgeschichte: §13 Eintrag 11.05. „Ruflo Bridge-Bugs A+B UPSTREAM FIXED" (Status-Bump-Welle)
 - Codex-Subagent-Trail: 2× `codex:codex-rescue` (R1 → R2 + R3, in Conversation-Transcript persistiert; nicht in eigene Audit-Datei extrahiert)
 
+
+## 2026-05-12 (Di) abends — Ruflo Runtime-Upgrade v3.6.11 → v3.7.0-alpha.21 DONE-with-Caveats (System-Event, PIPELINE #50 ✅ closed, scoring-neutral)
+
+**Event-Typ:** System-Event Substrate-Version-Bump (kein Score/FLAG/Sparraten-Touch, kein Workflow-Logic-Change). Plan-Welle aus Plan-Draft 12.05. morgens via `superpowers:executing-plans`.
+
+**Plan-Welle Outcome:**
+
+1. **Phase 0 PEPF + Tasks 1-3 + 5 + 8 + 9-10 voll durchgezogen.** Tasks 4 + 6 partial mit dokumentierten Deferreds. Task 7 ABORTED nach Visual-Verify-Discovery.
+
+2. **Upgrade selbst:** `sudo npm i -g ruflo@3.7.0-alpha.21` in WSL Ubuntu-24.04 (user `tobia`) → ruflo-Wrapper-Paket exact alpha.21 (Plan-Pin, verifiziert via `npm ls -g ruflo`), gebündelter `@claude-flow/cli@3.7.0-alpha.27` (npm-latest, Superset der Bug-Fixes PR #1886). `ruflo --version` reportet Bundle-Version alpha.27 (Reporting-Quirk via Wrapper-Binary, kein echter Drift).
+
+3. **Doctor post-Upgrade:** 10 PASS / 7 WARN / 0 FAIL (Δ +3 PASS ggü. Pre 7P/7W/0F: Version-Freshness-WARN flipped zu PASS + AIDefence-MCP PASS neu + Federation-Breaker PASS neu; +1 neuer WARN Encryption-at-Rest als Phase-2-Defer). Snapshots `05_Archiv/ruflo-doctor-history/2026-05-12-pre-upgrade.txt` + `2026-05-12-post-upgrade.txt` (Δ-Triage-Header geprependt).
+
+4. **Bug-A/B empirical Verify DEFERRED — kritischste Discovery:** Pre-Upgrade-cached MCP-Server PID 299 (Spawn 18:06 vor npm-install 19:44, hatte v3.6.11-Code im RAM). Diagnose-Kill für Force-Reload → Claude-Code-Client hat MCP-Connection NICHT lazy re-spawnt, alle 237 `mcp__ruflo__*`-Tools dieser Session offline. `memory_import_claude({allProjects:false})` returned `imported: 0` vor Kill (verdict ambiguous: cached v3.6.11-server-code vs. tatsächliche alpha.21-Behavior). **`projectPath`-Parameter aus PR-Body NICHT im aktuellen Tool-Schema exposed** — Plan-Annahme Drift gegen Reality (entweder alpha.21 ohne Parameter shipped ODER alpha.22-27 entfernt). Session-Restart erforderlich für fresh-MCP-Server + Plan-Steps 4.2-4.5 (Bridge-Smoke + Bug-B 5-Step-Sequence Write/Read/Search/Delete/Post-Delete mit DANGEROUS_KEY_CHARS) + Step 6.4 (Behavioral-Verify `memory_search "BRK.B Earnings Call"`).
+
+5. **Stranded-Keys-Sweep ABORTED nach Visual-Verify-Discovery (Step 7.3 USER-APPROVAL-GATE-2):** Plan-Annahme „51 Cross-Project-Pollution-Keys" widerlegt. Visual-Sample-Verify aller 51 Keys (26 in `claude-memories` + 25 in `dynastie-memories-test`, alle `claude:C--Users-tobia-Code:`-Präfix) zeigte: das sind historische Dynastie-Auto-Memory-Imports unter altem Pfad-Hash (Inhalte: „Ruflo Memory-Bridge auf Cloud-Synced-Vault" / „00_Core lean halten" / „BRK.B kein Quarterly Earnings Call §19.1" — alle klar Dynastie-Topics). MD-Source-Files unter `~/.claude/projects/C--Users-tobia-Code/memory/`. Cross-Check: nur ~50% der Code-Keys haben Duplikat unter `OneDrive-Desktop-Claude-Stuff:`-Präfix; ~13 Keys (z.B. "00_Core lean halten") wären bei DELETE aus DB raus + Re-Import via path-scoped scan würde sie NICHT zurückbringen (Source-MD-Files unter falschem Pfad-Hash für post-Sweep path-scoped Re-Import). User-Entscheidung: Sweep ABORTEN, Pollution stehen lassen, sauberer Cleanup via separate Mini-Welle MD-File-Migration `C--Users-tobia-Code/memory/` → `C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory/` + danach sauber sweepen. Backup-Artefakte `.swarm/memory.db.pre-import-2026-05-12` + `.pre-sweep-2026-05-12` (gitignored) verbleiben als Audit-Snapshots.
+
+6. **OneDrive-Sync-Klarstellung User 12.05.:** Ordner `C:\Users\tobia\OneDrive\Desktop\Claude Stuff` ist NICHT Cloud-synced (weder OneDrive noch Google Drive); "OneDrive" im Pfad ist historisches Artefakt aus früherer Sync-Phase. Cloud-Sync-Pitfalls aus Memory `feedback_ruflo_memory_bridge_onedrive_pitfall.md` (Edit-Collision, File-Lock-Race) faktisch ohne Wirkung; Path-Hash-Pitfalls bleiben relevant. SYSTEM.md §Ruflo-Status Z.56 nachgezogen.
+
+7. **AgentDB-Path-Korrektur:** SYSTEM.md Z.80 sagte „WSL `/home/tobia/.local/share/ruflo/memory`" — Pfad existiert nicht in WSL. Tatsächlich cwd-relativ `.swarm/memory.db` (2.86 MB, Schema 3.0.0, Tabelle `memory_entries`). Korrigiert.
+
+**Side-Wins (außerhalb Plan-Welle, opportunistisch):**
+
+- **CodeRabbit-CLI v0.4.5 Distro-Migration:** von alter Distro `Ubuntu` (user `tobiatobia`) nach `Ubuntu-24.04` (user `tobia`) migriert via tar-pipe (`wsl -d Ubuntu ... tar c .local/bin/coderabbit .coderabbit | wsl -d Ubuntu-24.04 ... tar x`), binary 105 MB + `~/.coderabbit/auth.json` mit accessToken/workspaceId/user — Auth durch tar-Permission-Preservation intakt; alte Distro mit `wsl --set-default Ubuntu-24.04` + `wsl -t Ubuntu` stillgelegt (NICHT unregistered → Backup-Option via `wsl --export` erhalten).
+- **Sudo-Setup:** Passwort-Reset in `Ubuntu` (via `wsl -d Ubuntu -u root` + `passwd tobiatobia`) + NOPASSWD-Sudo-Setup für `tobia/Ubuntu-24.04` via `/etc/sudoers.d/tobia-nopasswd` (chmod 0440) — `sudo -n true` verify ✅. Ermöglicht künftige unattended `sudo`-Calls aus Claude Code.
+
+**Sync-Set (atomar, System-Event-Variante, scoring-neutral):**
+
+- `00_Core/SYSTEM.md` (§Ruflo-Status Runtime + OneDrive-Klarstellung + Bridge-Bugs-Fix-Status + Stranded-Keys-Sweep-Deferred-Doku + AgentDB-Path-Korrektur + Footer)
+- `00_Core/STATE.md` (Critical-Alert 12.05. + Footer; Last-Audit-Block bereits auto-aktualisiert auf 2026-05-12T17:05:32Z 3/3 PASS)
+- `00_Core/PIPELINE.md` (#50 entfernt aus Aktiv-Liste per Numbering-Gap-Convention + Footer v2.23→v2.24)
+- `00_Core/CORE-MEMORY.md` §13 (dieser Lifecycle-Eintrag + Footer v1.12→v1.13)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+- `05_Archiv/ruflo-doctor-history/2026-05-12-pre-upgrade.txt` + `2026-05-12-post-upgrade.txt` (Doctor-Snapshots)
+
+**Bewusst NICHT angefasst:**
+
+- PORTFOLIO/Faktortabelle/xlsx-Tools/config.yaml/jsonl/SKILL.md/INSTRUKTIONEN.md (kein Score/FLAG/Sparraten-Event, kein Workflow-Logic-Edit)
+- CLAUDE.md (Step 2.1 grep keine v3.6.11-Mentions im Override-Block → 9.5 SKIP)
+- Memory `reference_coderabbit_via_wsl.md` (post-Migration-Update als separate Mini-Commit deferred — Datei verweist auf alte Distro `Ubuntu`, aber CodeRabbit lebt jetzt in Ubuntu-24.04; nicht-kritisch da gleicher Aufruf-Syntax via `-d Ubuntu` für die alte oder `-d Ubuntu-24.04` für neue funktioniert)
+- Plan v1.2 `00_Core/RUFLO-INTEGRATION-PLAN.md` (Substrate-Bump ≠ Plan-Bump → kein C2.1-Sync)
+
+**Lehre:**
+
+- **MCP-Server-Lifecycle nicht lazy-re-spawn-fähig:** Kill der server-process killed die Connection bis Session-Restart. Force-Reload-Strategie bei in-flight Bug-Verifies kontraindiziert; bei MCP-bound Verify-Pflicht entweder bewusst Server-Restart vor Plan-Start ODER Verify als separate post-Restart-Welle planen. Stage-Capture in `.swarm/rollback-stage.txt` für Recovery-Pfad dokumentiert.
+- **Plan-Annahmen aus PR-Beschreibungen können von Implementation abweichen:** `projectPath`-Parameter aus PR #1886-Body war nicht im alpha.21-Tool-Schema exposed. Plan-Step 4.1.5 (Tool-Schema-Introspection vor Step 4.2 Re-Import) war daher rettender Gate — ohne den hätte ich blind mit altem Parameter-Name gerufen + falsche Hypothesen-Pfade getriggert.
+- **Visual-Sample-Verify vor SQL-DELETE ist nicht-verhandelbar:** Plan-Annahme „Cross-Project-Pollution" entpuppte sich als „historische Auto-Memory-Imports unter altem Pfad-Hash" mit ~50% Datenverlust-Risiko. USER-APPROVAL-GATE-2 (Step 7.3) hat legitime Dynastie-Memories vor DB-Wisch geschützt. Pattern für künftige SQL-DELETE-Operations: nie ohne pre-DELETE Visual-Sample mit Content-Inspection.
+- **Werktags-Plan-Slot + Pre-Flight-Discovery-Pattern bewährt sich:** PEPF (Phase 0) re-verifizierte Plan-Annahmen exakt vor Task-1-Start (Stranded-Counts 26+25=51 ✅, Namespaces 111/106/20 ✅, ruflo v3.6.11 ✅). Keine Drift seit Plan-Commit 12.05. — Pattern für künftige Substrate-Upgrade-Wellen.
+
+**Cross-Reference:**
+
+- Plan-File: `docs/superpowers/plans/2026-05-12-ruflo-bridge-upgrade-alpha21.md` (~854 LOC, gitignored, persistiert via Working-Tree)
+- Stage-Capture: `.swarm/rollback-stage.txt` (gitignored, FAIL-STAGE 4.2 intermediate dokumentiert)
+- Vorgeschichte: 12.05. morgens Plan-Draft-Lifecycle-Event (oben im log)
+- PIPELINE #50 (Status `READY` → entfernt aus Aktiv-Liste per Numbering-Gap)
+- Plan v1.2 Z.605 (Welle-0 v3.6.11-Stempel) bleibt frozen — historisch korrekt, kein Live-Versions-Stempel

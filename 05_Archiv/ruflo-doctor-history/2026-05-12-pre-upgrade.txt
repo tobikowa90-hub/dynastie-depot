@@ -1,0 +1,27 @@
+
+RuFlo Doctor
+System diagnostics and health check
+──────────────────────────────────────────────────
+
+... Running health checks in parallel...... Running health checks in parallel.....: Running health checks in parallel....:: Running health checks in parallel...::: Running health checks in parallel...::. Running health checks in parallel...:.. Running health checks in parallel...... Running health checks in parallel.....: Running health checks in parallel....:: Running health checks in parallel...::: Running health checks in parallel...::. Running health checks in parallel...                                              ⚠ Version Freshness: v3.6.11 (latest: v3.7.0-alpha.27)
+✓ Node.js Version: v20.20.2 (>= 20 required)
+✓ npm Version: v10.8.2
+⚠ Claude Code CLI: Not installed
+✓ Git: v2.43.0
+✓ Git Repository: In a git repository
+✓ Config File: Found: claude-flow.config.json
+⚠ Daemon Status: Not running
+✓ Memory Database: .swarm/memory.db (2.86 MB)
+⚠ API Keys: No API keys found
+⚠ MCP Servers: No MCP config found
+✓ Disk Space: 280G available
+⚠ TypeScript: Not installed locally
+⚠ agentic-flow: Not installed (optional — embeddings/routing will use fallbacks)
+
+──────────────────────────────────────────────────
+
+Summary: 7 passed, 7 warnings
+
+Run with --fix to see 7 suggested fixes
+
+All checks passed with some warnings.
