@@ -1414,3 +1414,34 @@ PIPELINE #48 + #42 closed. Spec v1.1 + Plan v1.2 applied via executing-plans ski
 - CORE-MEMORY §13 Eintrag 11.05. „Ruflo Bridge-Bugs A+B UPSTREAM FIXED"
 - Vorgeschichte: §13 Eintrag 10.05. „Audit-Cleanup-Pack + PIPELINE #50 Ruflo-Bridge-Bugs Decision (Codex 97% Option A)" (Decision-Welle)
 
+## [2026-05-12] system-event | PIPELINE #50 Ruflo-Bridge-Upgrade-Plan-Draft DONE post-Codex-3-Round-Sparring (~94% Confidence, Pre-Execution-Pre-Flight pending)
+
+**Event-Typ:** Plan-Draft-Lifecycle-Event (kein Score/FLAG/Sparraten-Touch, kein Runtime-State-Change). Plan-File persistiert via Working-Tree (gitignored per `docs/superpowers/`-Konvention).
+
+**Was passiert ist:**
+
+1. **Plan-Draft erstellt via `superpowers:writing-plans`:** `docs/superpowers/plans/2026-05-12-ruflo-bridge-upgrade-alpha21.md`. Scope: PIPELINE #50 Bridge-Upgrade-Welle v3.6.11 → v3.7.0-alpha.21 als single-session Werktags-Slot (10 Tasks, ~50 Steps inkl. neuer Phase 0 PEPF). Sync-Set System-Event-Variante (SYSTEM + STATE + PIPELINE + CORE-MEMORY §13 + ggf. CLAUDE.md + Vault log.md, atomar — NICHT Plan-v1.2-Bump-Set per §Sync-Pflicht-C2.1, da Substrate-Version-Bump, nicht Plan-Bump).
+2. **Plan-v1.2 (`RUFLO-INTEGRATION-PLAN.md`) gegengecheckt:** Bridge-Upgrade = ad-hoc Substrate-Bump, kein Plan-Bump → Plan v1.2 nicht im Sync-Set, Phase-1-Historie Z.605 frozen (Welle-0 v3.6.11-Stempel historisch korrekt).
+3. **Codex-3-Round-Sparring** (`codex:codex-rescue` Subagent): R1 90% (2 HIGH + 4 MEDIUM + 2 LOW) → R2 92% (3 MEDIUM-Residuen: `&amp` vs literal `&`, Tool-ID-Namespace-Drift, Failure-Stage-Capture nur prosaisch) → R3 92% (Sparring-Cap erreicht per Memory-Heuristik max 3 Rounds; Q3c via Stage-Tag-Scheme `[STOP-GATE-N.M]` an irreversible-action-Gates 3.3/3.4/4.2/4.3/7.3/7.4/8.2/10.1 nachverdrahtet). Residual Q3d (MCP-Server-Side-Execution-Pfad für literal-Backtick/Dollar) als documented-residual akzeptiert — Plan testet behavioral end-to-end via Write/Read/Search/Delete-5-Step-Sequence, PASS = Server-handling per Definition validated. Realistisch ~94% post-Wire-Up.
+4. **Pre-Flight-Discovery 12.05. (während Plan-Erstellung empirisch via sqlite3 ermittelt):** drei substanzielle Schema-Reality-Korrekturen gegen SYSTEM.md §Ruflo-Status Z.58 + PIPELINE #50 Body — (a) korrekter Table-Name ist `memory_entries`, nicht `entries`; (b) Maintainer-empfohlenes GLOB `'claude:*[(){}<>!#;&|\`$]*'` ist Dynastie-INKOMPATIBEL (matched 93 legitime Memory-Keys mit `(...)` aus §-Headings); (c) korrektes Cross-Project-Pollution-Pattern ist prefix-basiert `LIKE 'claude:C--Users-tobia-Code:%'`, mit aktuell **51 Keys** (26 in `claude-memories` + 25 in `dynastie-memories-test`), nicht erwartete 7. Task 7 entsprechend komplett überarbeitet inkl. USER-APPROVAL-GATE-2 für Sample-List-Visual-Verify vor DELETE.
+5. **Plan-Anreicherung post-User-Direktive „Pre-Flight saved our ass":** neue Phase 0 PEPF (Pre-Execution-Pre-Flight) als formelle Pre-Task-1-Section in den Plan — re-verifiziert 3 critical numbers (Stranded-Count / Namespace-Counts / Ruflo-Version) + Git-State + PIPELINE-#50-Status in der fresh Session bevor Task 1 startet. Mutiert nichts, ~5-10 min Smoke-Test.
+6. **Session-Break-Empfehlung:** fresh Session statt `/compact` für sauberen Execution-Reset; Pre-Read = STATE + PORTFOLIO (Routing-Default) + Plan-File + SYSTEM.md §Ruflo-Status. Execution-Mode = `superpowers:executing-plans` (inline, weil viele Verify-Gates contextual sind und User-Approval-Gates conversation-natürlich).
+
+**Sync-Set (atomar, System-Event-Mini-Variante, scoring-neutral):**
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag) — einziger tracked File
+- `docs/superpowers/plans/2026-05-12-ruflo-bridge-upgrade-alpha21.md` (gitignored per Project-Konvention, persistiert via Working-Tree für fresh Session)
+
+**Bewusst NICHT angefasst:** SYSTEM.md / STATE.md / PIPELINE.md / CORE-MEMORY.md / PORTFOLIO.md / Faktortabelle / xlsx-Tools / config.yaml / Ruflo-Runtime (v3.6.11 pinned). Plan-File-Existenz allein ist kein Lifecycle-Event auf PIPELINE-#50-Status — Status bleibt `READY für Upgrade-Welle` bis Execution-Closure. Mini-Variante des Sync-Sets bewusst gewählt, weil Plan-Draft kein Substrate-Mutate ist.
+
+**Lehre:**
+- **Codex-Sparring-Cap-Disziplin (Memory `feedback_codex_sparring_heuristic.md`):** max 3 Rounds. R3 lieferte zwei MEDIUM-Residuen — eine mechanisch (Q3c-Wire-Up) gefixt, andere (Q3d-Server-Side-Proof) als fundamental-nicht-plan-level-proofbar dokumentiert. Weitere Round-4 würde Diminishing-Returns produzieren ohne ≥95%-Schwelle zu schlagen.
+- **Maintainer-Output blind übernehmen ist Anti-Pattern:** SYSTEM.md §Ruflo-Status Z.58 hatte zwei Maintainer-empfohlene Strings 1:1 copy-pasted (Table-Name `entries` + GLOB-Pattern), beide für Dynastie-Schema falsch. Pre-Flight-Discovery via empirischen sqlite3-Probe (`.schema memory_entries` + Count-Queries) hat den Plan substantiell richtungs-korrigiert — Lehre: bei Source-extern empfohlenen SQL-Patterns IMMER Pre-Apply-Schema-Verify in der eigenen DB.
+- **Plan-Files sind gitignored per Project-Konvention:** `docs/superpowers/` komplett ignored. Audit-Trail für Plan-Edit-Lifecycle läuft über Vault log.md (tracked), nicht über Plan-File-Commit. Pattern: System-Event-Mini-Entry mit Cross-Reference zum Working-Tree-Plan-Path.
+- **Pre-Flight-Phase als formaler Plan-Bestandteil:** User-Direktive 12.05. nach Plan-Draft-Reflexion „die hat uns das letzte Mal auch den Arsch gerettet" → Phase 0 PEPF in den Plan integriert. Pattern für künftige Substrate-Upgrade-Plans: separate Pre-Execution-Pre-Flight-Phase die in der Execution-Session unmittelbar vor Task-1-Start läuft.
+
+**Cross-Reference:**
+- Working-Tree-Plan: `docs/superpowers/plans/2026-05-12-ruflo-bridge-upgrade-alpha21.md` (~600 LOC, gitignored)
+- PIPELINE #50 (Status `READY für Upgrade-Welle`, unverändert)
+- Vorgeschichte: §13 Eintrag 11.05. „Ruflo Bridge-Bugs A+B UPSTREAM FIXED" (Status-Bump-Welle)
+- Codex-Subagent-Trail: 2× `codex:codex-rescue` (R1 → R2 + R3, in Conversation-Transcript persistiert; nicht in eigene Audit-Datei extrahiert)
+
