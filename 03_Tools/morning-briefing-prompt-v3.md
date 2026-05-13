@@ -10,7 +10,6 @@
 - TOOL: `mcp__ruflo__aidefence_scan` (quick=true) per Tavily-Response (Cohort + Per-Ticker einzeln). Threshold severity in {medium, high, critical} = Block; severity=low = pass.
 - FAIL-MODE: Fail-open bei aidefence-Tool-Outage (kein Briefing-Hard-Stop). Begruendung: aidefence-Service-Verfuegbarkeit darf Briefing-Reliability nicht reduzieren — akzeptiertes Sicherheits-Trade-off (Tavily-Allowlist-Domains sind ohnehin reputable).
 - FALSE-POSITIVE-KLAUSEL: severity=low alleine kein Block. Bei wiederholtem mid-severity-False-Positive auf identische Headline-Patterns → Memory-Doc + Threshold-Re-Eval.
-- DEPLOY: Probe-Trigger Body-Update (allowed_tools += `mcp__ruflo__aidefence_scan`) + Manual-Run zur Verify (1× End-to-End Live-Probe-Briefing-Run).
 - SCOPE-NICHT: AIDefence ersetzt NICHT Materialitaets-Filter (D); ersetzt NICHT Auth-Fehler-Handling (E HTTP 401/403); ersetzt NICHT Anti-Tool-Fallback-Direktive (Critical Guards v3.0.6).
 - CODEX-REVIEW-PASS (08.05.2026 nachmittags, 2 MED + 4 LOW addressed): MED-1 Precedence-Klausel (BLOCK gewinnt ueber `is_safe=true` bei Widerspruch); MED-2 Schema-Drift-Pfad (unbekannte severity / malformed threats → FAIL-OPEN-aequivalent mit dedicated Logge-Format); LOW-1 D-pre PRECONDITION (skip bei leerem `results[]`); LOW-2 v3.0.6-Distinktion (FAIL-OPEN ist Skip-Validation, nicht Tool-Substitution); LOW-3 Truncation-Strategie (Titles first, then Content, hard-cap 8000); LOW-4 verified — kein downstream `[aidefence-flag]`-Hardcode in Repo. Codex-Verdict overall: directionally sound, gaps closed via diese 6 Fixes.
 

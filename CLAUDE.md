@@ -80,4 +80,4 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 
 ## Plugin-Layer (2026-05-13)
 
-Ruflo Sunset. Aktive Plugins als passive Substrate: **context-mode** (Tool-Output-Sandbox + FTS5) · **claude-mem** (Cross-Session-Memory + Chroma). AIDefence-Block im Morning-Briefing v3.2.0 unangetastet (FAIL-OPEN). Detail → SYSTEM.md §Plugin-Layer.
+Aktive Plugins als passive Substrate: **context-mode** (Tool-Output-Sandbox + FTS5) · **claude-mem** (Cross-Session-Memory + Chroma). AIDefence-Block im Morning-Briefing v3.2.0 unangetastet (FAIL-OPEN). Detail → SYSTEM.md §Plugin-Layer.

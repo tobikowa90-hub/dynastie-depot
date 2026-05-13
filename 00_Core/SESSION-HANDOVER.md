@@ -1,7 +1,7 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-13 (Mi) — Ruflo Hard-Rollback DONE. Replacement: context-mode + claude-mem (passive Substrate). DEFCON v3.7 + Scores + Sparraten unverändert. Working tree clean post-Sunset-Commit.
+- **Datum:** 2026-05-13 (Mi) — Plugin-Substrate-Refactor DONE. Aktive Plugins: context-mode + claude-mem (passive Substrate). DEFCON v3.7 + Scores + Sparraten unverändert. Working tree clean post-Refactor-Commit.
 
 ## 🎯 Resume-Anweisung für nächste Session
 

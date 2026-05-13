@@ -31,9 +31,9 @@ updated: 2026-05-07
 - 1:1-Migration-Commit darf keine Meta-Logging-Einträge ergänzen — separater Commit nach Verify-PASS
 - Pre-Append-Audit-Klausel: vor erstem Live-Run neuer Pipeline-Version Audit PASS pflicht — kein Append bei FAIL (Provenance-Gate-Pattern, V/MSFT 28.04.)
 - Tooling-Bulk-Edit: CR-Pass koppeln — Ruff/Codex sehen Lint, CR surfacet semantische Bestandsbugs (~50/Pass empirisch 07.05.)
-- Cloud-Sync-Verify ist Pre-Phase-Pflicht für AgentDB-/Memory-DB-Tools — Path-Hash + DriveFS-Audit via WSL-sqlite3 (Cloud-Sync-Pitfall generalisiert aus Ruflo Phase 1.2)
-- Bridge-/Substrate-Layer DONE-Verdict erfordert end-to-end Search-Verify mit known-query (similarity ≥ Schwelle), NICHT Storage+Reporter-Verify allein (Ruflo Mini-Welle #57 — 7 Wochen „Bridge connected"-Illusion ohne semantischen Recall-Test)
-- Plugin-/Substrate-Layer ohne konkreten Workflow-Use-Case = Über-Engineering — Nutzen empirisch belegen vor Engineering-Welle (Ruflo-Sunset-Lesson 13.05.; analog quick-screener-Refresh-Verzicht 09.05.)
+- Cloud-Sync-Verify ist Pre-Phase-Pflicht für AgentDB-/Memory-DB-Tools — Path-Hash + DriveFS-Audit via WSL-sqlite3 (Cloud-Sync-Pitfall bei OneDrive/Google-Drive-Vaults; Präzedenz 02.05.2026)
+- Bridge-/Substrate-Layer DONE-Verdict erfordert end-to-end Search-Verify mit known-query (similarity ≥ Schwelle), NICHT Storage+Reporter-Verify allein (Präzedenz: 7-Wochen-„Bridge connected"-Illusion ohne semantischen Recall-Test)
+- Plugin-/Substrate-Layer ohne konkreten Workflow-Use-Case = Über-Engineering — Nutzen empirisch belegen vor Engineering-Welle (Sunset-Präzedenz 13.05.; analog quick-screener-Refresh-Verzicht 09.05.)
 
 ## Promotion-Logik
 
