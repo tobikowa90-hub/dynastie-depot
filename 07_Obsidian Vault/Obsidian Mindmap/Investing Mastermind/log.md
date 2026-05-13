@@ -1605,3 +1605,7 @@ Mini-Welle #57 startete in fresh Claude-Code-Session als blind-Ausführung des `
 - PIPELINE #57 (BLOCKED bis Upstream-Combined-Acceptance grün)
 - Codex-R3-Output: agentId `a3bd4da0c50727eb4`, R3.2-Output: agentId `aceaac7643b3b85a1`
 - Memory `feedback_ruflo_memory_bridge_path_hash_pitfall.md` Falle 4 NEU
+
+## [2026-05-13] system | Ruflo Hard-Rollback DONE
+
+Substrate komplett deinstalliert nach 3 Wochen ohne DEFCON-Mehrwert. MCP `ruflo` detached, Runtime-Artifacts (.swarm/, agentdb.rvf, claude-flow.config.json, .claude/memory.db*) gecleant. RUFLO-INTEGRATION-PLAN + mini-welle-57-precheck → 05_Archiv. CLAUDE.md Override-Block + M1/M2/M3/G3/M5/Authority-Tabelle entfernt (-134 Z.). SYSTEM.md §Ruflo-Status entfernt, §Plugin-Layer ersetzt. PIPELINE #20 + #57 entfernt. Replacement: context-mode v1.0.124 + claude-mem v6.5.0 als passive Substrate. AIDefence-Block im Morning-Briefing-Prompt v3.2.0 unangetastet (FAIL-OPEN strukturell). DEFCON v3.7 + 11 Satelliten-Scores + Sparraten unverändert. Plan-File `~/.claude/plans/groovy-exploring-meadow.md`. Scoring-neutral.

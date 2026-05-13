@@ -1,11 +1,7 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-11 (Mo) — **Prod-Cutover Briefing v3.1.1→v3.2.0 ✅ LIVE** (PIPELINE #51 DONE-final, 13:56 MESZ via claude.ai-UI-Edit) + **STATE.md/PORTFOLIO.md Slim-Refactor** (Token-Save ~27k pro Session-Start) + **Doctor-Mo Wave-3a W2/4** (7P/7W/0F, kein FAIL-Drift). Vorgänger-Banner: 10.05. Audit-Cleanup + #50 Bridge-Bugs Issues gefilt + #51/#53 Decisions USER-APPROVED.
-- **Working tree:** clean (post-atomar-Sync-Commit STATE+PORTFOLIO+SYSTEM+CORE-MEMORY+log.md+SESSION-HANDOVER).
-- **Cutover-Outcome:** Probe-Werktags-Manual-Run 11:30 PASS strukturell (FAIL-OPEN-Pfad live: `AIDEFENCE-WARN: scan-tool-error, fallback to no-scan` in 3 Per-Ticker-Calls APH/MSFT/AVGO + Cohort-Skip via empty-results-PRECONDITION; Briefing-Reliability unbeeinträchtigt, Allow-List-Compliance gewahrt). Voll-Body-Push 13:56 via UI-Edit (`RemoteTrigger update` mit `job_config` scheiterte an v1↔v2 protobuf Translation-Bug serverseitig — `event_type required`/`unknown field event_type`-Schleife; UI-Pfad als Workaround). GET-Verify Hash-Match. allowed_tools v.t. ohne `mcp__ruflo__aidefence_scan` (vereinfachtes UI-Layout, Konnektor-Bind-Approach; Cloud-Cron-FAIL-OPEN bleibt akzeptiert via #51 Decision-C). next_run_at Di 12.05. 10:07 MESZ.
-- **Slim-Refactor-Outcome:** STATE.md 27.620→~5k Token (~22k Save, 80% Reduktion — 11 Mega-Bullets vom 04.-10.05. zu 1-3-Zeilen-Pointern); PORTFOLIO.md 80→65 LOC (~5k Save — Vorgeschichte-Quotes + 2 resolved Watches + 9 DONE-Trigger-Zeilen entfernt; Score-Tabelle 1:1 unverändert). Gemini-Cross-Sync-Audit pre-Sync: 1 Typo (`2031aca`→`2031ca6`) + 1 Bullet-Count-Drift, beide vor Commit gefixt. §13-Backlog-Sammel-Pointer für 8 nicht-einzeln-archivierte 08.-10.05.-Events (#49 / #31 / #32 + #33 / Wave-2 #23 + #30 / Wave-3 #16 / #54 / #34 / #22) eingezogen — Sammel-Pointer-Konvention für Sweep-/Welle-Tage etabliert.
-- **DEFCON v3.7 unverändert, 11 Satelliten-Scores unverändert, Sparraten unverändert.** System-Event scoring-neutral.
+- **Datum:** 2026-05-13 (Mi) — Ruflo Hard-Rollback DONE. Replacement: context-mode + claude-mem (passive Substrate). DEFCON v3.7 + Scores + Sparraten unverändert. Working tree clean post-Sunset-Commit.
 
 ## 🎯 Resume-Anweisung für nächste Session
 
@@ -18,7 +14,6 @@
 | **14.05.** | Form-13F Apple-Trim (#37) + MSFT Insider-Re-Score (#26) | Form-13F BRK CIK 0001067983 via SEC EDGAR + insider_intel.py MSFT post-14d-Skip-Window |
 | **27.05.** | VEEV Q1 FY27 | Klasse-B Earnings (yfinance-Pull 30.04. confirmed) |
 | **28.05.** | COST Q3 FY26 | Klasse-B Earnings (Membership-Yield-Watch) |
-| **27.05.** | Welle-3b 1.9-Replace audit-trace-lite Pilot (frühestens) | 2-3 Vollanalysen VEEV/COST/TMO Q2 + audit-trace |
 
 ### 📋 Pending offene Slots (kein fester Termin)
 

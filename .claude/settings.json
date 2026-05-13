@@ -24,34 +24,5 @@
     ]
   },
   "autoMemoryEnabled": true,
-  "autoDreamEnabled": true,
-  "env": {
-    "CLAUDE_FLOW_TOOL_GROUPS": "memory,monitor"
-  },
-  "ruflo": {
-    "_comment": "Ruflo Phase 1.5/1.7 — additive config, not enforced by Claude Code harness. Tool-Mode reduction via env above; Top-K=3 set via 'ruflo config set --key intelligence.topK --value 3' (persisted in ruflo-config). Hooks subset documented here as intent — actual hook firing is currently passive via memory_store/list calls; activation as Claude Code SessionStart/PreToolUse-chain deferred to Welle 3 to avoid Briefing-Sync-Check interference.",
-    "hooks_intent": {
-      "session-start": "enabled",
-      "session-end": "enabled",
-      "pre-task": "enabled",
-      "post-task": "enabled",
-      "pattern-store": "enabled",
-      "pattern-search": "enabled"
-    },
-    "hooks_disabled": [
-      "pre-edit", "post-edit", "pre-command", "post-command",
-      "route", "explain", "session-restore", "pretrain", "build-agents",
-      "transfer", "metrics", "init", "notify", "intelligence",
-      "intelligence_trajectory_start", "intelligence_trajectory_step",
-      "intelligence_trajectory_end", "intelligence_pattern_store",
-      "intelligence_pattern_search", "intelligence_stats", "intelligence_learn"
-    ],
-    "intelligence": {
-      "topK": 3
-    },
-    "contextAutopilot": {
-      "warnThreshold": 0.7,
-      "pruneThreshold": 0.85
-    }
-  }
+  "autoDreamEnabled": true
 }
