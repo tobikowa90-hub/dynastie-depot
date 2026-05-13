@@ -26,7 +26,7 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 
 ## Projektstruktur
 
-- `00_Core/` — Kontext, Instruktionen, Gedächtnis (STATE, CORE-MEMORY, INSTRUKTIONEN, APPLIED-LEARNING, TOKEN-RULES, KONTEXT, Faktortabelle, SESSION-HANDOVER)
+- `00_Core/` — Kontext, Instruktionen, Gedächtnis (STATE, CORE-MEMORY, INSTRUKTIONEN, RETROSPECTIVE-GATE, APPLIED-LEARNING, TOKEN-RULES, KONTEXT, Faktortabelle, SESSION-HANDOVER)
 - `01_Skills/` — dynastie-depot · backtest-ready-forward-verify · insider-intelligence · non-us-fundamentals · quick-screener · sec-edgar-skill · `_extern/` (read-only)
 - `02_Analysen/` — DEFCON-Analysen als Excel
 - `03_Tools/` — Rebalancing · Satelliten-Monitor · Watchlist · Briefing-Hook · system_audit
@@ -80,4 +80,4 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 
 ## Plugin-Layer (2026-05-13)
 
-Aktive Plugins als passive Substrate: **context-mode** (Tool-Output-Sandbox + FTS5) · **claude-mem** (Cross-Session-Memory + Chroma). AIDefence-Block im Morning-Briefing v3.2.0 unangetastet (FAIL-OPEN). Detail → SYSTEM.md §Plugin-Layer.
+Ruflo Sunset. Aktive Plugins als passive Substrate: **context-mode** (Tool-Output-Sandbox + FTS5) · **claude-mem** (Cross-Session-Memory + Chroma). AIDefence-Block im Morning-Briefing v3.2.0 unangetastet (FAIL-OPEN). Detail → SYSTEM.md §Plugin-Layer.
