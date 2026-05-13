@@ -12,11 +12,11 @@
 > **Konvention (11.05.2026 Slim-Refactor):** Critical-Alerts sind 1-3-Zeilen-Pointer. Sub-Detail-Decomposition (A/B/C/D… + §18-Sync-Set + bewusst-NICHT-angefasst) gehört NICHT hierher — kanonische Archivquelle ist `git log` (Commit-Body) + `CORE-MEMORY.md §13` (Lifecycle) + PIPELINE-Item-Body bei aktiven Items.
 
 - **13.05. (Mi) ✅ Plugin-Substrate-Refactor DONE** (System-Event, scoring-neutral). Substrate-Layer ausgetauscht, aktive Plugins: context-mode + claude-mem. DEFCON v3.7 + Scores + Sparraten unverändert. Detail → CORE-MEMORY §13.
-- **11.05. (Mo) ✅ Codebase-Defect-Pattern-Audit + G3-Tooling + Sum-Consistency DONE** (Spec 2026-05-11 v1.1 + Plan v1.2). M1-M5 + L1-L7 + Z1-Z3 G3-Check + Sum-Consistency-Audit-Check applied (Option C, schema_version-Allowlist). Apply-Phase-Empirie revealed Group-C `le=10` retroactively breaks 24 legacy v1.0 records (fwd_pe ∈ [29, 44]) → bounds REVERTED, bounds-check deferred to audit-layer follow-up. Validation-Matrix 12/15 hard-hit PASS + 2 N/A conditional → ≥12/15 threshold met (`docs/superpowers/specs/2026-05-11-codebase-defect-patterns-validation.md`). System-Audit 14/16 → 15/18 PASS (zwei neue Checks `g3_consistency` + `sum_consistency`). CR-CP1 + CP2 applied (5 findings total incl. CRITICAL string-version-compare bug). PIPELINE #48 + #42 DONE — entfernt.
+- **11.05. (Mo) ✅ Codebase-Defect-Pattern-Audit + G3-Tooling + Sum-Consistency DONE** (Spec 2026-05-11 v1.1 + Plan v1.2). M1-M5 + L1-L7 + Z1-Z3 G3-Check + Sum-Consistency-Audit-Check applied (Option C, schema_version-Allowlist). Apply-Phase-Empirie revealed Group-C `le=10` retroactively breaks 24 legacy v1.0 records (fwd_pe ∈ [29, 44]) → bounds REVERTED, bounds-check deferred to audit-layer follow-up. Validation-Matrix 12/15 hard-hit PASS + 2 N/A conditional → ≥12/15 threshold met (`05_Archiv/superpowers-pre-sunset/specs/2026-05-11-codebase-defect-patterns-validation.md`). System-Audit 14/16 → 15/18 PASS (zwei neue Checks `g3_consistency` + `sum_consistency`). CR-CP1 + CP2 applied (5 findings total incl. CRITICAL string-version-compare bug). PIPELINE #48 + #42 DONE — entfernt.
 - **11.05. (Mo) ✅ Prod-Cutover Briefing v3.1.1 → v3.2.0 DONE** (D-pre AIDEFENCE-Block + FAIL-OPEN-Pfad live). Probe-Run 11:30 PASS, Prod-Body-Push via UI-Edit 13:56 MESZ, Verify via `RemoteTrigger get` Hash-Match. PIPELINE #51 ✅ DONE final. Nächster Prod-Cron Di 12.05. 10:07 MESZ. **Plus PORTFOLIO.md-Slim-Refactor** (80→65 LOC, ~5k Token Save: Vorgeschichte-Quotes 17.04.→04.05. raus, 2 resolved Watches archiviert, DONE-Trigger-Zeilen entfernt). **Plus STATE.md-Slim-Refactor** (dieser Commit, 11 Mega-Bullets vom 04.-10.05. kondensiert auf 1-3-Zeilen-Pointer, ~22k Token Save). **Plus Doctor-Mo-Anker** Wave-3a Woche 2/4 (7P/7W/0F, Snapshot im Doctor-History-Archiv). Scoring-neutral. Detail → git log + PIPELINE #51 + SYSTEM.md §Briefing-Status v3.2.0.
 - **11.05. (Mo) abends ✅ QuickWin-Sweep — System-Audit FAIL-Resolve + PIPELINE #56 Archive** — Slash-Doku-Drift `SystemAudit.md` Count 14→16 (zwei neue Checks `sum_consistency` + `g3_consistency` heute promoted). Re-Run **16/18 PASS, 0 FAIL, 2 WARN** (Check-2/5 Design-akzeptiert). PIPELINE #56 xlsx-Smoke-Test §18 v2.3→v2.4 DONE per Numbering-Convention aus Aktiv-Liste entfernt. Sync-Set 5 Files atomar. Scoring-neutral.
 - **10.05. (So) ✅ Audit-Cleanup-Pack** — System-Audit 12/16 → 14/16 PASS, vault_backlinks Tool-Extension (Skip Inline-Backticks + Frontmatter-Aliases-Resolution + archive/log skip). → commits `6cf995b` + `1cc86fa`.
-- **10.05. (So) ✅ PIPELINE #51 Cloud-AIDefence Decision USER-APPROVED Option (c) Akzeptanz** + **#53 Trigger-Landschafts-Audit Decision-C USER-APPROVED** (Weiter beobachten, Re-Audit ~09.07.). Decision-Doc `docs/superpowers/specs/2026-05-10-cloud-aidefence-decision.md` (gitignored). FAIL-OPEN-Akzeptanz im Cloud-Cron, Memory-Note `project_trigger_landscape_audit_2026-05.md` für Re-Audit-Schwellen. → commit `14b4cde` + PIPELINE #51/#53.
+- **10.05. (So) ✅ PIPELINE #51 Cloud-AIDefence Decision USER-APPROVED Option (c) Akzeptanz** + **#53 Trigger-Landschafts-Audit Decision-C USER-APPROVED** (Weiter beobachten, Re-Audit ~09.07.). Decision-Doc `05_Archiv/superpowers-pre-sunset/specs/2026-05-10-cloud-aidefence-decision.md` (gitignored). FAIL-OPEN-Akzeptanz im Cloud-Cron, Memory-Note `project_trigger_landscape_audit_2026-05.md` für Re-Audit-Schwellen. → commit `14b4cde` + PIPELINE #51/#53.
 - **10.05. (So) ✅ PIPELINE #55 Phase-D-1 Confidence-Upgrade-Pass** — Voll-PDF-Read von 8 Papers + 9 Sachfehler-Korrekturen B29/B30 + 6 neue Source-Pages (D-2/-3-Stubs + Reject) + 11 Author-Stubs + SKILL §410 3 Präzisierungen + Wiss-Fundierung-Synthesis 8 Vollend-Edits. Codex 2-Round-Sparring 88%→96% PASS. Wiki-only, scoring-neutral. → git log + Vault log.md + PIPELINE #55 (Phase D-2/-3 deferred).
 - **09.05. (Sa) ✅ PIPELINE #55 Phase-1 (Gemini-Recherche-Triage)** — 8 Paper-Vorschläge triagiert, 2 Top-Picks Peters/Taylor + DHS als active-scoring-validation persistiert (4 neue Wiki-Pages B29/B30 + 5 Author-Stubs + SKILL §410-Anker-Härtung). Codex 96% APPROVE. → git log + Vault log.md + PIPELINE #55.
 - **09.05. (Sa) ✅ PIPELINE #22 Helper `--porcelain -z`-Robust-Refactor** — `_forward_verify_helpers.py::check_freshness` bytes-NUL-Split + Rename/Copy-Two-Path (Quote-Escape / Umlaut / Newline-im-Pfad gefixt). 6 neue Edge-Case-Tests + 14/14 PASS. Codex 96%. → git log + CORE-MEMORY §13.
@@ -52,11 +52,11 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-05-12T18:13:57Z
-**Result:** 16/18 PASS (2 WARN)
-**Run:** `python 03_Tools/system_audit.py --full`
+**Timestamp (UTC):** 2026-05-13T19:38:29Z
+**Result:** 14/15 PASS (1 WARN)
+**Run:** `python 03_Tools/system_audit.py --core`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->
 
-*🦅 STATE.md Hub v2.3 | Dynasty-Depot | Stand 2026-05-13.*
+*🦅 STATE.md Hub v2.3 | Dynasty-Depot | **Stand:** 13.05.2026.*
