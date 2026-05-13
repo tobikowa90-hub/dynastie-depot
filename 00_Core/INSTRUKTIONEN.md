@@ -1,5 +1,5 @@
 # ⚙️ INSTRUKTIONEN.md — Handlungsanweisungen & Skill-Guidance
-**Version:** 1.13 (Slim-Refactor PIPELINE #16 Variante A: §29 → RETROSPECTIVE-GATE.md, §24+§25 → morning-briefing-spec.md, ~205 LOC Reduktion; inline-Drift-Refresh §24-Header v2.1→v3.1.1)
+**Version:** 1.14 (§0.5 Pre-Refactor-Caller-Scan + §0.6 Approach-Reset-Schwelle NEU 2026-05-13 — CodeBurn-30d-Audit-Carryover, Read/Edit-Ratio-Lessons + Retry-Storm-Disziplin; Bezugs-Tabelle erweitert)
 > Dieses Dokument beschreibt das WIE — User-Workflows, Befehle, Meta-Regeln.
 > Scoring-Technik → [SKILL.md](../01_Skills/dynastie-depot/SKILL.md) | Strategie → KONTEXT.md | Gedächtnis → CORE-MEMORY.md
 
@@ -62,6 +62,21 @@
 - Multi-Step-Tasks: kurzer Plan mit `verify:`-Kriterien pro Schritt
   (Format konsistent zu `docs/superpowers/plans/`)
 
+### §0.5 Pre-Refactor-Caller-Scan
+- Vor Änderung an einer Funktion/Klasse/Tool-Schnittstelle/öffentlichen Konstante mit ≥1 externem Aufrufer: `Grep` auf Symbol-Name **codebase-weit vor** Edit
+- Ziel: Caller-Surface kennen bevor Signatur/Verhalten kippt — verhindert Edit→Run→Caller-Break→Retry-Spiralen
+- Gilt **nicht** für: File-lokale Helpers (private/`_`-prefixed), Markdown-Edits, String-Konstanten ohne Semantik, neue Symbole
+- Gilt **explizit für**: Python-Function-Renames, Schema-Field-Renames (`backtest-ready` ScoreRecord-Schema), MCP-Tool-Signatur-Änderungen, xlsx-Cell-Mapping-Refactor, Skill-Trigger-Phrasen
+- Test: „Wenn ich diese Signatur breche, finde ich den Bruch sofort durch Test/Lauf?" — wenn nein, erst Caller scannen
+
+### §0.6 Approach-Reset-Schwelle
+- Wenn 2 strukturell-identische Versuche an derselben Stelle scheitern (gleiche Fehlermeldung, gleiche Hypothese, gleiches Diff-Pattern): **Stop, kein dritter identischer Versuch**
+- Options: (a) Codex-Sparring 1-Pass-Diff-Review (`codex:rescue`), (b) Approach-Wechsel via Plan-Tool, (c) User-Konsultation mit Fakten-Lage
+- „Strukturell-identisch" = gleicher Edit-Vektor (selbe File/Funktion/Hypothese), auch wenn Wortlaut variiert
+- **Erlaubt:** 3. Versuch wenn (a) neue Fakten dazwischen (z.B. Codex-Befund, neuer Grep-Treffer, User-Korrektur), ODER (b) Approach explizit anders (anderer File, andere Hypothese, andere Layer)
+- **Gilt nicht für:** Codex-Sparring-Loops selbst (max 3 Runden per Memory `feedback_codex_sparring_heuristic`), Smoke-Test-Retries (deterministische Setup-Probleme), Network-Retries
+- Test: „Würde ich denselben Edit nochmal machen mit derselben Erwartung?" — wenn ja, das ist die Schwelle
+
 ### Bezug zu bestehenden Regeln
 
 | Regel | Verhältnis zu §0 |
@@ -69,6 +84,8 @@
 | §27.5 Migration-Regression-Guard | §0.3 Surgical Changes ist die generalisierte Form — §27.5 ist spezifisch für Migrations-Tasks |
 | §29.5 Look-Ahead-Prevention | §0.4 Goal-Driven ist die generalisierte Form — §29.5 ist spezifisch für Backtest-Code |
 | §18 Sync-Pflicht | §0 gilt nicht für Sync-Operationen — Sync ist mechanisch, nicht kreativ |
+| Memory `feedback_pre_commit_diff_inspection` | §0.5 Pre-Refactor-Caller-Scan ist Pre-Edit-Variante; Memory ist Pre-Commit-Variante (Hunk-Selection vor `git add`) — komplementär |
+| Memory `feedback_codex_sparring_heuristic` | §0.6 Approach-Reset-Schwelle ist allgemein (2-Versuche-Stop); Memory ist Codex-spezifisch (3-Runden-Max im Sparring) — §0.6 löst aus, Memory steuert Eskalations-Kadenz |
 
 **Konflikt-Auflösung:** Bei Konflikt zwischen §0 und einem späteren spezifischen § gewinnt der spezifische §. §0 ist Default-Verhalten, kein Override.
 
