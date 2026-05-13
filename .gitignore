@@ -74,9 +74,6 @@ __pycache__/
 ruvector.db
 
 # ── GSD baseline (auto-generated) ──
-.gsd
-.gsd-id
-.gsd.migrating/
 .mcp.json
 .bg-shell/
 *.swp
