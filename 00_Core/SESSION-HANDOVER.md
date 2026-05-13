@@ -1,11 +1,17 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-13 (Mi) — Plugin-Substrate-Refactor DONE. Aktive Plugins: context-mode + claude-mem (passive Substrate). DEFCON v3.7 + Scores + Sparraten unverändert. Working tree clean post-Refactor-Commit.
+- **Datum:** 2026-05-13 (Mi) abends — **M001 'Ruflo Full Cleanup' COMPLETE**: S01 (config + 00_Core ruflo-free, commit 7875be9) + S02 (R005-R007 + R013-R019 Auto-Memory + g3_consistency + Cross-Refs + Final-Verify, commit eddee14) + Housekeeping Stray-Files + .gsd.migrating-Untracking (7514ff0) + GSD-Tooling Komplett-Removal (8f7c593). Acceptance-Criteria pass: `rg -i ruflo` nur Allowlist + `system_audit.py --core` 14/15 PASS 0 FAIL Exit 0 + 0 orphan imports. Aktive Plugins: context-mode v1.0.124 + claude-mem v6.5.0 (passive Substrate, integriert in `00_Core/SYSTEM.md §Plugin-Layer`). DEFCON v3.7 + 11 Scores + Sparraten unverändert. Working tree clean nach 4 atomaren Commits dieser Session.
 
 ## 🎯 Resume-Anweisung für nächste Session
 
-**Default-Trigger:** „Session starten" → STATE.md + PORTFOLIO.md auto-load. Kein Phase-D-1-Restbestand mehr offen. Nächste Aktionen je nach Datum/Trigger:
+**User-Direktive 13.05. abends — zwei Pickup-Topics für nächste Session:**
+
+1. **Brainstorming: Optimale + vollumfängliche Integration der aktuellen Plugins context-mode + claude-mem.** Aktuell beide als passive Substrate installiert (nur SYSTEM.md §Plugin-Layer-Dokumentation, keine aktive Workflow-Anbindung). Brainstorm-Trigger: welche Workflows (DEFCON-Vollanalyse / earnings-recap / briefing-sync / system_audit / Wiki-Ingest) profitieren von welchem Plugin-Feature (context-mode Tool-Output-Sandbox + FTS5-Index vs claude-mem Cross-Session-Memory + Chroma)? Mapping → konkrete Routing-Table-Trigger oder SKILL-Phase-Anbindung. Output: spec-Draft + USER-Decision-Gate.
+
+2. **Root `CLAUDE.md`-Review & Verbesserung.** Aktuelle Projekt-CLAUDE.md prüfen auf: (a) post-Ruflo-Sunset-Residuals (Wortlaut-Drift in Routing-Table / Pointer / §-Refs); (b) Optimierungspotenzial — was kann lean-er, klarer, wertvoller? (c) Lazy-Load-Disziplin (Skill-Auto-Trigger seit 09.05. verengt — ist Wortlaut-Tight? Memory `feedback_skill_lazy_load_dual_trigger_source.md`). Vorgehen: read-only Audit + Verbesserungs-Diff-Vorschlag + USER-Decision-Gate vor Apply.
+
+**Default-Trigger:** „Session starten" → STATE.md + PORTFOLIO.md auto-load. Falls direkt einer der beiden obigen Pickups gewünscht: User triggert explizit per "Pickup #1 Plugin-Integration" oder "Pickup #2 CLAUDE.md-Review".
 
 ### 📅 Nächste reguläre Termine (chronologisch)
 
