@@ -59,6 +59,9 @@ __pycache__/
 # Backtest-Ready ephemere Draft-Handoffs (Skill backtest-ready-forward-verify)
 03_Tools/backtest-ready/_drafts/*.json
 
+# Hook-Latency-Probe-History (ephemeral JSONL — regenerable via 03_Tools/hook-latency-probe.py)
+03_Tools/hook-latency-history/
+
 # Obsidian per-Session UI state (tabs, layout, pan/zoom) — ephemeral, not shared config
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/workspace.json
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/graph.json
