@@ -71,7 +71,7 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 | MSFT | Microsoft | Cloud/Software | GOOGL |
 | COST | Costco Wholesale | Retail-Festung | — |
 | RMS | Hermès International | Luxury-Monopol | RACE |
-| VEEV | Veeva Systems | Nischen-SaaS | — (TYL !QuickCheck Rot 14.05., Brainstorm pending) |
+| VEEV | Veeva Systems | Nischen-SaaS | IDXX (User-Vorschlag 14.05., !QuickCheck 🟢 GRÜN — Vet-Diagnostics-Monopol) |
 | SU | Schneider Electric | Energie-Infrastruktur | DE |
 | BRK.B | Berkshire Hathaway B | Kapitalallokator | MKL / FFH.TO |
 | V | Visa Inc. | Zahlungs-Infrastruktur | MA |
@@ -89,6 +89,7 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 | ADBE | MSFT-Ersatz | 🟢 GRÜN (!QuickCheck 14.05.) | D3+ | NEU 14.05., Software-Plattform ohne Hyperscaler-CapEx; ROIC 35,97% / P/FCF ~10 / Wide Moat (Morningstar digital media); Source Web 14.05. |
 | KLAC | ASML-Ersatz | 🟢 GRÜN (!QuickCheck 14.05.) | D3+ | NEU 14.05., Wafer-Inspection-Monopol; ROIC 73,08% / P/FCF ~25-40 Gelb-Range / Wide Moat (de facto Marktführerschaft); Source Web 14.05. |
 | MA | V-Ersatz | 🟢 GRÜN (!QuickCheck-Carryover 25.04.) | D3+ | NEU 14.05. via Vault MA.md QuickScan 25.04.2026 (3 Wo, akzeptabel <6M-Staleness); P/FCF 30,2 / ROIC TTM 43% / Wide Moat Morningstar |
+| IDXX | VEEV-Ersatz | 🟢 GRÜN (!QuickCheck 14.05., User-Vorschlag post-TYL-Rot) | D3+ | NEU 14.05., Vet-Diagnostics-Monopol Catalyst-Platform; P/FCF 44,64 (Gelb-borderline, 10J-Median 64,87 — historisch günstig) / ROIC TTM 35,27% (ROIC>>WACC 11,45%) / Wide Moat (45% Marktanteil Companion-Animal, AI-Tools inVue Dx); Source Web 14.05.; Healthcare-Sub-Vertical-Diversifikation neben TMO/ZTS |
 | SNPS | Adjacent-Slot (Semi-Software) | 76 (16.04. stale, Re-Score #62) | 🟡 3 (stale) | Adjacent-Etikette ab 14.05.; ehemals ASML-Ersatz (KLAC übernimmt); Goodwill-Malus Ansys-Akquisition -3 Pkt seit DEFCON v3.5 Audit 16.04.2026 |
 | FFH.TO | BRK.B-Ersatz (Kanada) | 88 | 🟢 4 | Bestand unverändert |
 | MKL | BRK.B-Ersatz (USA) | 82 | 🟢 4 | Bestand unverändert |

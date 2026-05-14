@@ -1738,3 +1738,25 @@ KONTEXT §5 + §6 + §12 NEU + Lifecycle + Pipeline. 5 Drops (GOOGL · EXPN · H
 - Plan `05_Archiv/superpowers-pre-sunset/plans/2026-05-14-watchlist-ersatzbank-refresh.md` v2 (gitignored)
 - PIPELINE #62 + #63 (Folge-Phasen)
 
+## 2026-05-14 (Do) abends — Watchlist-Refresh v3.2 Welle-2: IDXX-Add (VEEV-Slot-Fill) + xlsx-Sync-Catchup
+
+System-Event, scoring-neutral. Same-Day-Amendment zu Welle-1-Commit `48d5984`. User-Same-Day-Follow-up post-Commit.
+
+**IDXX-Add (User-Vorschlag):** !QuickCheck 14.05. 🟢 GRÜN — P/FCF 44,64 (Gelb-borderline, 10J-Median 64,87, historisch günstig) · ROIC TTM 35,27% (>>WACC 11,45%) · Wide Moat (45% Marktanteil Companion-Animal-Diagnostics, Catalyst-Platform-Stickiness, AI-Tools inVue Dx). GF-Score 99/100, GF-Value $621.59 vs $575.72 = 7,4% unter fair value. §12 (b) Standard-Add ≥65-Äq./D3+. Strategische Passung: Healthcare-Sub-Vertical-Diversifikation neben TMO+ZTS. **VEEV-Ersatz-Slot durch IDXX geschlossen** — Brainstorm-Folge-Phase obsolet.
+
+**xlsx-Sync-Catchup (Plan-Gap):** `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` war im Plan v2 explizit als "out-of-scope" markiert. User-Direktive 14.05.: xlsx ist operative Lookup-Quelle, muss zwingend mit-synced werden. Block 1 (Daten R4-R20) + Block 2 (QuickScreen R23-R39) Komplett-Refresh: 6 Drops (incl. MRVL §5-Streichung) + 4 Adds (ADBE/KLAC/MA/IDXX) + 2 Reassigns + TYL-Rot-Audit-Doku-Eintrag. Stand 27.04.→14.05. **§18.7 Minimal-Smoke-Test** post-openpyxl-Write (Watchlist-Scope: Punkt A Open-Repair + Existenz).
+
+**§6 Final-State Welle-2:** 12 Tickers (4 Adds + 7 Bestand + SNPS-Adjacent) — Plan-Ziel v3.2 jetzt erreicht via IDXX-Slot-Fill.
+
+**Sync-Set Welle-2 (atomar):** KONTEXT.md (§5+§6 IDXX) + CORE-MEMORY.md §13 (Same-Day-Amendment + Footer v1.19→v1.20) + log.md (dieser Eintrag) + `Watchlist_Ersatzbank_Monitor_v1.1.xlsx`. Plus Memory `feedback_watchlist_xlsx_in_sync_set.md` NEU.
+
+**Lessons-neu Welle-2:**
+- §18-Sync-Set ist nicht-statisch; bei neuen Refactor-Typen muss Sync-Set ad-hoc erweitert werden (Sync-Set-Vertrag-Disziplin als eigene Audit-Dimension)
+- User-Same-Day-Follow-up nach Commit-Welle = legitimer Spec-Gap-Resolve-Mechanismus (additive Welle-2, kein Rollback)
+- IDXX-Add post-TYL-Rot: User-Intuition + 5-Min-!QuickCheck > strukturierter Brainstorm-Spec/Plan-Cycle für 1-Ticker-Slot-Fill (Overengineering vermieden)
+
+**Cross-Reference:**
+- CORE-MEMORY §13 Welle-2-Amendment-Eintrag 14.05.
+- KONTEXT §5 + §6 (IDXX-Zeile + Footer v1.3)
+- Memory `feedback_watchlist_xlsx_in_sync_set.md` (NEU — Sync-Set-Vertrag-Lesson)
+
