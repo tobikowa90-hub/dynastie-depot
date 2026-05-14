@@ -67,11 +67,11 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 | Ticker | Name | Typ | Ersatz |
 |--------|------|-----|--------|
 | ASML | ASML Holding | Hardware-Monopol | SNPS |
-| AVGO | Broadcom Inc. | KI/Chips Asset-Light | NVDA/MRVL |
+| AVGO | Broadcom Inc. | KI/Chips Asset-Light | NVDA |
 | MSFT | Microsoft | Cloud/Software | GOOGL |
 | COST | Costco Wholesale | Retail-Festung | — |
 | RMS | Hermès International | Luxury-Monopol | RACE |
-| VEEV | Veeva Systems | Nischen-SaaS | ZTS |
+| VEEV | Veeva Systems | Nischen-SaaS | — (TYL !QuickCheck Rot 14.05., Brainstorm pending) |
 | SU | Schneider Electric | Energie-Infrastruktur | DE |
 | BRK.B | Berkshire Hathaway B | Kapitalallokator | MKL / FFH.TO |
 | V | Visa Inc. | Zahlungs-Infrastruktur | MA |
@@ -82,23 +82,21 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 
 ---
 
-## 6. Ersatzbank & Watchlist (Stand: 27.04.2026)
+## 6. Ersatzbank & Watchlist (Stand: 14.05.2026 — Refresh v3.2)
 
-| Ticker | Score | DEFCON | Rolle |
-|--------|-------|--------|-------|
-| FFH.TO | 88 | 🟢 4 | BRK.B-Ersatz (Kanada) |
-| MKL | 82 | 🟢 4 | BRK.B-Ersatz (USA) |
-| NVDA | 86 | 🟢 4 | AVGO-Ersatz (KI-Chips) |
-| ZTS | 81 | 🟢 4 | VEEV-Ersatz (Healthcare) |
-| RACE | 73 | 🟢 4 | RMS-Ersatz (Luxury) |
-| PEGA | 85 | 🟢 4 | ⭐ Slot-16-Kandidat (Earnings Mai 2026) |
-| SNPS | 76 | 🟡 3 | ASML-Ersatz (Goodwill-Malus Ansys-Akquisition -3 Pkt seit DEFCON v3.5 Audit 16.04.2026) |
-| SPGI | 74 | 🟡 3 | Watchlist — Neueinstieg-Kandidat (ROIC-Verzerrung durch IHS Markit M&A-Goodwill, Non-GAAP ROIC ~82; DEFCON v3.5 Audit 16.04.2026 77→74) |
-| FICO | 67 | 🟡 3 | VEEV-Ersatz #1 (TTM-Verzerrung durch Kurscrash -52%, Fwd P/FCF ~19x; DEFCON v3.5 Audit 16.04.2026 70→67) |
-| HON | 71 | 🟡 3 | Post-Spinoff 2026 abwarten |
-| SAP | 72 | 🟡 3 | VEEV-Swap — ZTS bevorzugt |
-| EXPN | 61 | 🟡 3 | EU-Kredite, langsames Wachstum (Datenlücken erzwingen konservatives Scoring — siehe INSTRUKTIONEN §7) |
-| GOOGL | 72 | 🟡 3 | 🔴 FLAG: CapEx FY26 ~75% OCF — kein Einstieg |
+| Ticker | Rolle/Slot | Score | DEFCON | Notiz |
+|---|---|---|---|---|
+| ADBE | MSFT-Ersatz | 🟢 GRÜN (!QuickCheck 14.05.) | D3+ | NEU 14.05., Software-Plattform ohne Hyperscaler-CapEx; ROIC 35,97% / P/FCF ~10 / Wide Moat (Morningstar digital media); Source Web 14.05. |
+| KLAC | ASML-Ersatz | 🟢 GRÜN (!QuickCheck 14.05.) | D3+ | NEU 14.05., Wafer-Inspection-Monopol; ROIC 73,08% / P/FCF ~25-40 Gelb-Range / Wide Moat (de facto Marktführerschaft); Source Web 14.05. |
+| MA | V-Ersatz | 🟢 GRÜN (!QuickCheck-Carryover 25.04.) | D3+ | NEU 14.05. via Vault MA.md QuickScan 25.04.2026 (3 Wo, akzeptabel <6M-Staleness); P/FCF 30,2 / ROIC TTM 43% / Wide Moat Morningstar |
+| SNPS | Adjacent-Slot (Semi-Software) | 76 (16.04. stale, Re-Score #62) | 🟡 3 (stale) | Adjacent-Etikette ab 14.05.; ehemals ASML-Ersatz (KLAC übernimmt); Goodwill-Malus Ansys-Akquisition -3 Pkt seit DEFCON v3.5 Audit 16.04.2026 |
+| FFH.TO | BRK.B-Ersatz (Kanada) | 88 | 🟢 4 | Bestand unverändert |
+| MKL | BRK.B-Ersatz (USA) | 82 | 🟢 4 | Bestand unverändert |
+| NVDA | AVGO-Ersatz (KI-Chips) | 86 | 🟢 4 | MRVL als zweiter AVGO-Ersatz gestrichen 14.05. (§5) — NVDA exklusiv |
+| ZTS | TMO-Ersatz exklusiv | 81 | 🟢 4 | VEEV-Ersatz-Designation entfernt 14.05. (VEEV-Slot offen — TYL !QuickCheck Rot, Brainstorm pending) |
+| RACE | RMS-Ersatz (Luxury) | 73 | 🟢 4 | Bestand unverändert |
+| PEGA | ⭐ Slot-16-Kandidat / Workflow-SaaS | 85 | 🟢 4 | Earnings Mai 2026 |
+| SPGI | Neueinstieg-Kandidat | 74 (16.04. stale, Re-Score #62 Prio 1) | 🟡 3 (stale) | PIPELINE #62 Re-Score nach Q1-Earnings-Catch-up; ROIC-Verzerrung durch IHS-Markit-Goodwill, Non-GAAP ROIC ~82 |
 
 **Keine Zuteilung (strukturell):** CLPBY, MSCI (Exposure via ETFs), BA.L
 
@@ -209,4 +207,45 @@ Jede Score/FLAG/Sparraten-Änderung triggert Updates in **allen vier Layern** (6
 **Anti-Pattern:** Narrative- oder Projection-Layer als Wahrheit für Backtest zitieren. Diese Layer sind für Menschen gedacht und können nachträglich editiert werden — nur History-Layer hat Point-in-Time-Garantie.
 
 ---
-*🦅 KONTEXT.md v1.2 (§11 4-Layer-Architektur Backtest-Ready + Projection-Layer Hub-Split) | Dynastie-Depot | Stand: 25.04.2026*
+
+## 12. Watchlist-Eintritts-Disziplin (ab 2026-05-14)
+
+**Geltungsbereich:** Neue Adds in §6 Ersatzbank & Watchlist. Nicht retroaktiv auf Bestands-Einträge. Nicht auf Live-Satelliten in §5 (eigene Promotion-Disziplin via FLAG-/Score-Trigger).
+
+### Rule (a) — Schätz-Score-Verbot
+
+§6-Einträge benötigen **echten Score** (mind. !QuickCheck Stufe-0 ODER Vollanalyse mit dokumentiertem Datum).
+
+**Verbotene Score-Spalten-Werte:**
+- `pending`, `pending !QuickCheck`, `~XX`, `?`, leer
+- geschätzt-aus-Peer („wie SAP irgendwo 70+")
+- „16.04.-Altlast ohne Re-Score" (gilt als methodisch veraltet seit DEFCON-Upgrade v3.5→v3.7 + StockAnalysis-Hard-Exclude 09.05.)
+
+Bei Add-Wunsch ohne aktuellen Score: !QuickCheck **vor §6-Eintragung** pflicht (gleiche Session erlaubt).
+
+### Rule (b) — Eintrittsschwelle
+
+| Score | DEFCON | Verdikt | Begründungspflicht |
+|---|---|---|---|
+| ≥65 | ≥3 | **Standard-Add** | keine |
+| 60-64 | ≥3 | **Add zulässig** | dokumentierte Begründung pflicht im CORE-MEMORY §13 Lifecycle-Eintrag (z.B. strategische Slot-Funktion, Sektor-Diversifikation, US-Cap-Argument, Niche-Monopol) |
+| <60 | beliebig | **Add verboten** | — |
+| beliebig | <3 (D2/D1) | **Add verboten** | — |
+
+Bei !QuickCheck-Rot oder Score <60: kein §6-Eintrag, Slot bleibt offen oder Brainstorm-Neuauflage.
+
+### Anti-Patterns dokumentiert
+
+- „Plausibel ähnlicher Score wie Peer" → Schätz-Score, verboten via (a)
+- „Score zählt erst beim Slot-Tausch, nicht beim Watchlist-Eintrag" → Spec-Lücke geschlossen via (b); Watchlist-Eintrag ist methodische Vorprüfung
+- „Ersetze !QuickCheck durch alten v3.5-Score" → Schätz-Score-Verbot (a)
+
+### Cross-References
+
+- `INSTRUKTIONEN.md §27` — Methodology-Disziplin-Anker
+- `INSTRUKTIONEN.md §27.7` — Carryover-Discipline-Asymmetrie
+- `01_Skills/quick-screener/SKILL.md` — Stufe-0-Prüfungs-Definition
+- V-Q2-Incident 28.04.2026 — Präzedenz „Score-Move auf unzureichender Evidenz"
+
+---
+*🦅 KONTEXT.md v1.3 (§12 Watchlist-Eintritts-Disziplin NEU) | Dynastie-Depot | Stand: 14.05.2026*

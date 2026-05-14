@@ -1715,3 +1715,26 @@ CodeBurn-30d-Audit (Setup F 20/100, ~1471M Token-Savings-Potenzial) ausgewertet,
 - PIPELINE #26 (DONE-Path-#2, Numbering-Convention-Removal)
 - Memory `feedback_codex_sparring_heuristic` (Single-Pass legitim, kein Sparring-Trigger)
 
+## 2026-05-14 (Do) — Watchlist-Ersatzbank-Refresh v3.2 DONE (System-Event, scoring-neutral)
+
+KONTEXT §5 + §6 + §12 NEU + Lifecycle + Pipeline. 5 Drops (GOOGL · EXPN · HON · SAP · FICO), 3 Adds via In-Refresh-!QuickCheck 14.05. (ADBE / KLAC / MA — alle 🟢 GRÜN), **TYL 🔴 ROT** (ROIC <12% mehrquellig konvergent GuruFocus 4,84-6,1% — ROIC < WACC value-destroying). VEEV-Ersatz-Slot bleibt OFFEN, Brainstorm-Neuauflage als Folge-Phase (Spec §7 Phase 5). Rollen-Reassigns: ZTS exklusiv TMO-Ersatz, SNPS Adjacent-Slot Semi-Software. §5-Streichung: MRVL nicht mehr AVGO-Ersatz (NVDA exklusiv).
+
+**KONTEXT §12 NEU „Watchlist-Eintritts-Disziplin"** (Footer v1.2→v1.3): Rule (a) Schätz-Score-Verbot (echte !QuickCheck/Vollanalyse pflicht); Rule (b) Eintrittsschwelle ≥65/D3+ Standard / 60-64/D3+ zulässig-mit-Begründung / <60 oder <D3 verboten.
+
+**Audit-Trail:** 3× Codex-Spec v1→v3.1 + 1× Codex-Plan RP2 96% + 2× User-Eskalation (SaaS-Konzentration + Eintrittsschwelle).
+
+**Sync-Set (5 Files, atomar):** `00_Core/KONTEXT.md` (§5+§6+§12 NEU+Footer) + `00_Core/CORE-MEMORY.md` §13 + `00_Core/PIPELINE.md` (#62+#63 NEU+Footer v2.32→v2.33) + `00_Core/STATE.md` (Critical-Alert+Footer v2.3→v2.4) + log.md (dieser Eintrag).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md, Faktortabelle.md, xlsx-Tools, score_history.jsonl, flag_events.jsonl, config.yaml, SKILL.md, INSTRUKTIONEN.md (kein Score/FLAG/Sparraten-Event; INSTRUKTIONEN-§27.9-Anker per Codex-Plan-HIGH-2 verworfen zugunsten KONTEXT §12 NEU). DEFCON v3.7 + 11 Satelliten-Scores + Sparraten 285€ unverändert.
+
+**Folge-Phasen (PIPELINE):** #62 Re-Score-Batch SPGI+SNPS post-Live-Earnings-Window 14.-28.05. · #63 DE-Eintrag post-Q2 ~21.05. + !QuickCheck · #52 Quick-Screener-Refresh (separater Slot) · Brainstorm-Neuauflage für VEEV-Ersatz (User-Trigger).
+
+**Lesson-Crystal:** In-Refresh-!QuickCheck-Discovery 25%-Rot-Rate (1/4 — TYL) validiert §12 (a)+(b) operativ — TYL hätte mit Schätz-Score ~70 als Add gepasst, real ist ROIC < WACC value-destroying. Quellen-Verifikations-Pflicht (StockAnalysis 8,86% allein Gelb-borderline, aber konvergente GuruFocus-Range 4,84-6,1% liefert harten Rot-Beleg).
+
+**Cross-Reference:**
+- CORE-MEMORY §13 (Lifecycle-Eintrag literal `2026-05-14 Watchlist-Ersatzbank-Refresh v3.2`)
+- KONTEXT §12 (Watchlist-Eintritts-Disziplin NEU)
+- Spec `05_Archiv/superpowers-pre-sunset/specs/2026-05-14-watchlist-ersatzbank-refresh-design.md` v3.2 (gitignored)
+- Plan `05_Archiv/superpowers-pre-sunset/plans/2026-05-14-watchlist-ersatzbank-refresh.md` v2 (gitignored)
+- PIPELINE #62 + #63 (Folge-Phasen)
+
