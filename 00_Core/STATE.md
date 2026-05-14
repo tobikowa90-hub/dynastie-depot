@@ -33,7 +33,7 @@
 - **04.05. (Mo) ✅ BRK.B Q1 FY26 Tag-+1 Vollanalyse — Codex-R1-REJECT-Korrektur Score 75→71** (Δ-4), D3/Sparrate 38€/FLAG ✅ Clean Insurance-Exception unverändert, keine Kaskade. Sub-Karte F=35/M=19/T=1/I=10/S=6. 15/15 Codex-HIGH-Antis pre-empted. 6 Q2-Methodology-Watches PIPELINE #36-#41. ScoreRecord `2026-05-04_BRK.B_vollanalyse` Schritt 7 DONE Tag-+1-Abend. → CORE-MEMORY §12.4 + git log + PIPELINE #36-#41.
 
 **Forward-Triggers (~14 Tage):**
-- **~14.05.** BRK Form-13F Q1-26 Filing → Apple-Trim-Magnitude (PIPELINE #37)
+- **~15.05.** BRK Form-13F Q1-26 Filing → Apple-Trim-Magnitude (PIPELINE #37) — *EDGAR-Check 14.05.: noch nicht gefiltert; historisches BRK-Pattern Q1=15.05. konsistent seit 2021*
 - **28.05.** MSFT Insider-Skip-Window nächstes Expiry (post-14.05.-Re-Scan +14d) — nur bei Score-/FLAG-Trigger relevant
 
 ## Navigation (on-demand)
