@@ -1633,3 +1633,39 @@ CodeBurn-30d-Audit (Setup F 20/100, ~1471M Token-Savings-Potenzial) ausgewertet,
 - INSTRUKTIONEN §0.5 + §0.6 (Detail-SSoT)
 - Memory `feedback_pre_commit_diff_inspection`, `feedback_codex_sparring_heuristic`, `feedback_multi_commit_wip_resume`
 
+
+## [2026-05-14] system | PIPELINE #61 DONE — Retrospektive Top-5-Retry-Sessions (CodeBurn-30d-Audit-Fix-#5-Carryover)
+
+**Event-Typ:** System-Event, scoring-neutral (kein Score/FLAG/Sparraten-Touch). Retrospektive-Scan + Audit-Reading-Disziplin-Memory.
+
+**Was passiert ist:**
+
+1. **Pre-Activation-Pflicht eingehalten:** Item #61 verlangte „Frische Session mit lean context (Read-Load 5 Transcripts à ~50-100k Tokens würde aktuelle Session fluten)". Umgesetzt via `ctx_execute_file`-Pattern-Extraktion — die 5 JSONL-Files (`~/.claude/projects/C--Users-tobia-OneDrive-Desktop-Claude-Stuff/<uuid>.jsonl`, kumuliert ~6470 Zeilen ≈ 350-500k Tokens) wurden im Sandbox-Subprozess geparsed, nur Cluster-Statistik + 8 Asst-Text-Samples pro Session landeten im Context (~5-8k Token-Footprint vs Raw-Read).
+
+2. **Pattern-Decomposition pro Session:**
+   - `08e4dffa` (06.05., $45.35, 32 retries): Wiki-Cleanup-Marathon. 251 tool_uses (Bash 134 / Edit 62 / Read 42 / Write 13). 12 Errors, alle „File not yet read" oder ls-not-found auf richtigen Pfaden — Workflow-Bugs, kein Approach-Spiral. Größte Cluster: 3-4× Edit auf Wiki-Concept-Pages (Multi-Section, je different `old_string`). **§0.6-Hits: ~0.**
+   - `5ec71fa3` (11.05., $34.17, 35 retries): Apply-Phase Codebase-Defect-Patterns-Plan v1.2. 274 tool_uses (Bash 98 / Edit 57 / Read 48 / TaskUpdate 30 / TaskCreate 15). 9 Errors gemischt (ruff PTH105 / pytest-Fixture / „File not yet read"). Größtes Cluster 15× TaskCreate (Plan-Setup-Burst). Edit-Repeats nur 2× same old_string — typisch für „Edit-fail → mehr Kontext → Retry-success". **§0.6-Hits: ~0-1.**
+   - `6bb273bf` (18.04., $51.36, 10 retries): §18-Sync-Welle-Session (Score-Move-Event). 321 tool_uses (Edit 77 / Bash 65 / TaskUpdate 64 / Read 38 / TaskCreate 34). Cluster: 5× / 6× / 6× / 7× consecutive Edit auf STATE.md / Faktortabelle.md / config.yaml — alle mit unterschiedlichen `old_string`s (Multi-Section-Sync). Explizit durch §0-Bezugs-Tabelle Z.86 als „mechanisch, nicht kreativ" ausgeschlossen. **§0.6-Hits: 0.**
+   - `db739ec1` (17.04., $45.98, 7 retries): backtest-ready-infrastructure-Plan-Setup + Brainstorm. 321 tool_uses (Edit 77 / Bash 65 / TaskUpdate 64 / TaskCreate 34 / Agent 6). Cluster: 6× + 3× + 3× + 3× + 6× TaskCreate (Plan-Aufbau-Bursts) + 3× Edit auf Plan-File. 9 Errors gemischt. **§0.6-Hits: ~0-1.**
+   - `fcb97d60` (08.05., $34.52, 3 retries): PIPELINE #49 Ruflo-Stufe-1+2 (Phantom-Memory-Cleanup). 217 tool_uses (Bash 52 / **`mcp__ruflo__memory_delete` 31** / Read 23 / Grep 19). 31× consecutive memory_delete = intendierter Bulk-Delete-Loop. 17 Errors: 2× „File content exceeds maximum allowed tokens" (Read ohne offset/limit-doppelt) + 3× „ruflo: command not found" über mehrere WSL-Distros (Hypothese-Stickiness „Ruflo läuft hier") + Misc-Bash-Syntax. **§0.6-Hits: 2** (Read-Token-Limit-Repeat, Distro-Loop).
+
+3. **Aggregat-Verdikt:** ~95% der CodeBurn-"retries" über die 5 Sessions sind mechanische Cluster:
+   - §18-Sync-Wellen (Score/FLAG-Events, INSTRUKTIONEN §0 explizit ausgeschlossen)
+   - TaskCreate/TaskUpdate-Bursts bei Plan-Setup
+   - Intendierte Bulk-Mutations (memory_delete 31×)
+   - Multi-Heredoc-Python-Computation (sequential steps, je different)
+   Echte §0.6-Kandidaten (Hypothese-Stickiness, gleiche Fehlermeldung, identische Wiederholung): ~4-7 Mikro-Cases gesamt.
+
+4. **§0.6-Definition-Check:** „Wenn 2 strukturell-identische Versuche an derselben Stelle scheitern (gleiche Fehlermeldung, gleiche Hypothese, gleiches Diff-Pattern): Stop, kein dritter identischer Versuch" — eng formuliert genug, dass mechanische Cluster-Patterns (Multi-Section-Sync, Bulk-Ops, Plan-Setup) nicht fälschlich getroffen werden. **Kein §-Tweak.**
+
+5. **Eigentliches Lesson:** CodeBurn-30d-Audit-"retry"-Statistik ist Headline-Metric, nicht Disziplin-Diagnostik. Bei zukünftigen CodeBurn-Findings: Cluster-Pattern dekomponieren BEVOR §0.6/Disziplin-Action getriggert wird. → Memory `feedback_codeburn_retry_metric_calibration` NEU (Audit-Reading-Disziplin).
+
+**Sync-Set:** `00_Core/PIPELINE.md` (#61-Removal + Footer v2.32) + `00_Core/STATE.md` (Critical-Alert + Footer) + `00_Core/CORE-MEMORY.md` §13-Eintrag (v1.18) + log.md (dieser Eintrag) + Memory `feedback_codeburn_retry_metric_calibration` NEU + MEMORY.md Index-Append. **Bewusst NICHT angefasst:** INSTRUKTIONEN.md §0.6 (kein Tweak, Definition deckt echte Cases sauber), PORTFOLIO/Faktortabelle/xlsx/jsonl/config.yaml/SKILL.md (kein Score-Event), 5 Top-Retry-Transcripts (read-only via Sandbox).
+
+**Cross-Reference:**
+- CORE-MEMORY §13 (Lifecycle-Eintrag mit Pattern-Decomposition-Vollkontext)
+- PIPELINE #61 (DONE-Stempel, Numbering-Convention-Removal)
+- INSTRUKTIONEN §0.6 (Approach-Reset-Schwelle — Definition deckt echte Cases sauber)
+- Memory `feedback_codeburn_retry_metric_calibration` NEU
+- Cross-Memory: `feedback_codex_sparring_heuristic` (3-Runden-Max), `feedback_pre_commit_diff_inspection`, `feedback_multi_commit_wip_resume`
+
