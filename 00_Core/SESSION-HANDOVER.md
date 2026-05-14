@@ -1,17 +1,22 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-13 (Mi) abends — **M001 'Ruflo Full Cleanup' COMPLETE**: S01 (config + 00_Core ruflo-free, commit 7875be9) + S02 (R005-R007 + R013-R019 Auto-Memory + g3_consistency + Cross-Refs + Final-Verify, commit eddee14) + Housekeeping Stray-Files + .gsd.migrating-Untracking (7514ff0) + GSD-Tooling Komplett-Removal (8f7c593). Acceptance-Criteria pass: `rg -i ruflo` nur Allowlist + `system_audit.py --core` 14/15 PASS 0 FAIL Exit 0 + 0 orphan imports. Aktive Plugins: context-mode v1.0.124 + claude-mem v6.5.0 (passive Substrate, integriert in `00_Core/SYSTEM.md §Plugin-Layer`). DEFCON v3.7 + 11 Scores + Sparraten unverändert. Working tree clean nach 4 atomaren Commits dieser Session.
+- **Datum:** 2026-05-14 (Do) abends — **Plugin-Integration Spec + Plan R3-konvergent, execution-bereit.** Pickup #1 aus 13.05.-Banner durchgezogen: Spec `docs/superpowers/specs/2026-05-14-plugin-integration-design.md` (5 Sparring-Runden R3+R4+R5, Confidence >97%) + Implementation-Plan `docs/superpowers/plans/2026-05-14-plugin-integration.md` v1.3 (3 R-Runden Codex+Gemini, **Codex 96% APPROVE + Gemini 97% APPROVE**, beide >95%-Gate). 30 Tasks über 4 Phasen + 90-Tage-Review. Plus Spec-Mini-Edit Welle-Definition Präzisierung (R1 Gemini HIGH-1 Anti-Self-Validation). DEFCON v3.7 + 11 Scores + Sparraten unverändert. Beide File-Sets sind gitignored unter `docs/superpowers/` (kein Repo-Commit). Pickup #2 aus 13.05.-Banner (CLAUDE.md-Review) NICHT angefasst — bleibt offen.
 
 ## 🎯 Resume-Anweisung für nächste Session
 
-**User-Direktive 13.05. abends — zwei Pickup-Topics für nächste Session:**
+**User-Direktive 14.05. abends — Phase-0a-Execution in neuer Session für kontextfreies Window:**
 
-1. **Brainstorming: Optimale + vollumfängliche Integration der aktuellen Plugins context-mode + claude-mem.** Aktuell beide als passive Substrate installiert (nur SYSTEM.md §Plugin-Layer-Dokumentation, keine aktive Workflow-Anbindung). Brainstorm-Trigger: welche Workflows (DEFCON-Vollanalyse / earnings-recap / briefing-sync / system_audit / Wiki-Ingest) profitieren von welchem Plugin-Feature (context-mode Tool-Output-Sandbox + FTS5-Index vs claude-mem Cross-Session-Memory + Chroma)? Mapping → konkrete Routing-Table-Trigger oder SKILL-Phase-Anbindung. Output: spec-Draft + USER-Decision-Gate.
+1. **Pickup #A — Phase 0a Plugin-Integration starten** (Primär-Track). Plan: `docs/superpowers/plans/2026-05-14-plugin-integration.md` v1.3 R3-konvergent. Tasks 0–8 (Pre-Flight Environment + Plugin-Doku-Verify + Ruflo-Sunset-Cleanup + 24h Burn-in + Phase-0a-Gate). Aktive Arbeit ~60 min, danach 24h Burn-in-Wait, dann Phase-0b-Start frühestens 2026-05-15.
+   - **Empfohlene Execution-Skill:** `superpowers:executing-plans` (Inline mit Checkpoint-Pause vor Task 7 24h-Burn-in) oder `superpowers:subagent-driven-development` (fresh subagent pro Task, harte Pause bei Burn-in).
+   - **Optional Vor-Start:** 5-min Pending-Verify-Folgepass auf Task 6 Step 5b + Task 29 + Probe-Helper-Code für Confidence-Lift auf 99%+. Niedriges Risiko ohne — Gemini hat als „pending-Verify-akzeptabel" markiert.
+   - **Pre-Flight Task 0** ist kritisch: 9 Steps die jq/Bash/chmod/Plugin-Pfade verifizieren. Output landet in gitignored `docs/superpowers/plans/2026-05-14-plugin-integration-preflight-notes.md` und ist Quelle für alle Downstream-Pfad-Substitutionen.
 
-2. **Root `CLAUDE.md`-Review & Verbesserung.** Aktuelle Projekt-CLAUDE.md prüfen auf: (a) post-Ruflo-Sunset-Residuals (Wortlaut-Drift in Routing-Table / Pointer / §-Refs); (b) Optimierungspotenzial — was kann lean-er, klarer, wertvoller? (c) Lazy-Load-Disziplin (Skill-Auto-Trigger seit 09.05. verengt — ist Wortlaut-Tight? Memory `feedback_skill_lazy_load_dual_trigger_source.md`). Vorgehen: read-only Audit + Verbesserungs-Diff-Vorschlag + USER-Decision-Gate vor Apply.
+2. **Pickup #B — Root `CLAUDE.md`-Review & Verbesserung** (Sekundär, deferred aus 13.05.). Audit auf Post-Ruflo-Residuals + Optimierungspotenzial + Lazy-Load-Disziplin. Read-only Audit + Verbesserungs-Diff + USER-Decision-Gate. Trigger: „Pickup #B CLAUDE.md-Review".
 
-**Default-Trigger:** „Session starten" → STATE.md + PORTFOLIO.md auto-load. Falls direkt einer der beiden obigen Pickups gewünscht: User triggert explizit per "Pickup #1 Plugin-Integration" oder "Pickup #2 CLAUDE.md-Review".
+**Default-Trigger:** „Session starten" → STATE.md + PORTFOLIO.md auto-load. Pickup #A triggert User explizit per „Phase 0a starten" oder „Pickup #A Plugin-Integration".
+
+**Wichtig für Phase-0a-Start:** Plan ist gitignored → muss als `docs/superpowers/plans/2026-05-14-plugin-integration.md` direkt gelesen werden (kein git-checkout-Bezug). Spec analog gitignored.
 
 ### 📅 Nächste reguläre Termine (chronologisch)
 
