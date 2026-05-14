@@ -1,0 +1,102 @@
+  [MSFT] Lade Form-4-Filings (CIK: 0000789019)...
+  [MSFT] 61 Form-4-Filings gefunden, parse XML...
+[
+  {
+    "ticker": "MSFT",
+    "scan_date": "2026-05-14",
+    "cik": "0000789019",
+    "flag_active": false,
+    "flag_reason": "Kein FLAG",
+    "flag_transactions": [
+      {
+        "filing_date": "2026-03-09",
+        "transaction_date": "2026-03-06",
+        "insider_name": "Hogan Kathleen T",
+        "insider_title": "EVP, Strategy",
+        "is_director": false,
+        "is_officer": true,
+        "is_ten_pct_owner": false,
+        "transaction_code": "S",
+        "transaction_type": "Sale (Open Market)",
+        "is_10b51_plan": false,
+        "is_derivative": true,
+        "security": "Common Stock",
+        "shares": 12320.87,
+        "price_per_share": 409.52,
+        "transaction_value": 5045642.68,
+        "acquired_disposed": "D",
+        "post_holdings": 137933.097,
+        "ownership_type": "D",
+        "defcon_classification": "DISCRETIONARY_SALE"
+      }
+    ],
+    "window_90d": {
+      "discretionary_sell_value": 5045642.68,
+      "plan_sell_value": 0,
+      "buy_value": 1986750.0,
+      "net": -3058892.6799999997
+    },
+    "window_180d": {
+      "discretionary_sell_value": 5045642.68,
+      "plan_sell_value": 0,
+      "buy_value": 1986750.0,
+      "net": -3058892.6799999997,
+      "unique_buyers": [
+        "STANTON JOHN W"
+      ],
+      "unique_discretionary_sellers": [
+        "Hogan Kathleen T"
+      ]
+    },
+    "window_12m": {
+      "total_buy_value": 1986750.0,
+      "total_sell_value": 5045642.68,
+      "net": -3058892.6799999997
+    },
+    "transaction_counts": {
+      "total_parsed": 40,
+      "open_market_buys": 1,
+      "discretionary_sales": 1,
+      "plan_sales_10b51": 0,
+      "exercises_vestings": 0,
+      "grants_awards": 25,
+      "tax_withholding": 13,
+      "gifts": 0
+    },
+    "defcon_scoring": {
+      "net_buy_score": 1,
+      "ownership_score": "\u2014",
+      "no_flag_score": 2,
+      "subtotal": 3,
+      "max_without_ownership": 7,
+      "note": "Ownership-Score (max 3) benoetigt Market Cap + percent_insiders"
+    },
+    "top_insider_holdings": {
+      "Hood Amy": {
+        "shares": 562777.25,
+        "title": "EVP, Chief Financial Officer",
+        "as_of": "2026-03-02"
+      },
+      "SMITH BRADFORD L": {
+        "shares": 448007.2313,
+        "title": "Vice Chair and President",
+        "as_of": "2026-03-02"
+      },
+      "Hogan Kathleen T": {
+        "shares": 137933.097,
+        "title": "EVP, Strategy",
+        "as_of": "2026-03-06"
+      },
+      "Althoff Judson": {
+        "shares": 125947.434,
+        "title": "CEO, Commercial",
+        "as_of": "2026-03-02"
+      },
+      "STANTON JOHN W": {
+        "shares": 83905.0,
+        "title": "Director",
+        "as_of": "2026-02-18"
+      }
+    }
+  }
+]

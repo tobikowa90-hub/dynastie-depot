@@ -1669,3 +1669,49 @@ CodeBurn-30d-Audit (Setup F 20/100, ~1471M Token-Savings-Potenzial) ausgewertet,
 - Memory `feedback_codeburn_retry_metric_calibration` NEU
 - Cross-Memory: `feedback_codex_sparring_heuristic` (3-Runden-Max), `feedback_pre_commit_diff_inspection`, `feedback_multi_commit_wip_resume`
 
+## [2026-05-14] portfolio | MSFT Insider-Block-Re-Score DONE — PIPELINE #26 Path-#2 (Δ=0)
+
+**Trigger:** Skip-Window-Klausel (score_datum 30.04. + 14d = 14.05.). PIPELINE #26 (eröffnet 30.04. nach MSFT Q3 FY26 Tag-+1-Vollanalyse) sah Live-Re-Score Insider-Block vor, um Backfill-6/10-Carryover (methodologisch suspekt) zu verifizieren.
+
+**Live-Pull:** `python 01_Skills/insider-intelligence/insider_intel.py scan MSFT --json` → JSON in `02_Analysen/_insider_scans/MSFT_2026-05-14.json`. 61 Form-4-Filings 180d, 40 parsed.
+
+**Window-90d:**
+- Diskr.-Sell **$5.045.642** (1 Tx — Hogan Kathleen T, EVP Strategy, 06.03.2026, 12.320,87 sh × $409,52)
+- Buys **$1.986.750** (1 Tx — Stanton John W, Director)
+- Net **−$3.058.892**
+- **<<$20M-FLAG-Schwelle ✅ — kein 2. FLAG getriggert.**
+
+**Sub-Score Live vs 30.04.-Carryover:**
+
+| Sub | 30.04. | 14.05. | Δ |
+|---|---|---|---|
+| Net Buy 6M | 0/4 | 1/4 | +1 |
+| Kein-20M-Selling | 3/3 | 2/3 | -1 |
+| Ownership | 3/3 | 3/3 (Carryover) | 0 |
+| **Total** | **6/10** | **6/10** | **0** |
+
+**Path-#2 confirmed** (PIPELINE-#26-Body: „Falls Live-Wert ~6/10 bestätigt: Backfill war glücklicher Schätzer, Score 50 bleibt").
+
+**Score 50/D2 unverändert. FLAG `capex_fcf` unverändert. Sparrate 0€ unverändert.** §18-Sync nicht getriggert (Δ=0). Sub-Komponenten-Shift (Net 0→1, No-FLAG 3→2) netto neutral.
+
+**Side-Observation (DEFERRED):** Ownership-Score=3/3 ist methodisch fragwürdig — Top-5-Insider-Holdings ≈ 1,36M sh = 0,018% << 1%-Schwelle. Skill-Doku verlangt Mgmt-Ownership >1%. Quelle der 30.04.-3/3-Zuweisung ist die Shibui-`share_stats.percent_insiders`-Methodology (alle Insider-Klassen kombiniert?). **Kein Re-Score-Trigger** — DEFERRED, ggf. eigenes Methodology-Audit-Item bei nächster Insider-Analyse.
+
+**Lean-Sync:**
+- `00_Core/CORE-MEMORY.md` §12.6 (neuer 14.05.-Eintrag)
+- `00_Core/Faktortabelle.md` (MSFT-Insider-Re-Score-Comment + Nächster-Trigger-Spalte gepatcht)
+- `00_Core/PIPELINE.md` (#26-Removal per Numbering-Convention + Triggers-Zeile gepatcht)
+- `00_Core/STATE.md` (Critical-Alert + Forward-Triggers gepatcht)
+- log.md (dieser Eintrag)
+- JSON-Persistenz `02_Analysen/_insider_scans/MSFT_2026-05-14.json`
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md, score_history.jsonl, flag_events.jsonl, config.yaml, Rebalancing_Tool_v3.4.xlsx, Satelliten_Monitor_v2.0.xlsx — kein Score/FLAG/Sparraten-Event-Trigger.
+
+**Skip-Window-Reset:** 14.05. + 14d = **28.05.** nächstes Insider-Skip-Window-Expiry. Bis dahin Carryover legitim ohne Live-Re-Pull.
+
+**Aufwand-Real:** ~10 Min Scan + ~15 Min Sync = **~25 Min**, deutlich unter PIPELINE-#26-Schätzer ~15-20 + ~30-45 Min (lower-bound-Sync, weil kein Korrektur-Fall).
+
+**Cross-Reference:**
+- CORE-MEMORY §12.6 (Per-Ticker-Chronik MSFT)
+- PIPELINE #26 (DONE-Path-#2, Numbering-Convention-Removal)
+- Memory `feedback_codex_sparring_heuristic` (Single-Pass legitim, kein Sparring-Trigger)
+

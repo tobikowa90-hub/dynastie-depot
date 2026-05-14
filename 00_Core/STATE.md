@@ -11,6 +11,7 @@
 
 > **Konvention (11.05.2026 Slim-Refactor):** Critical-Alerts sind 1-3-Zeilen-Pointer. Sub-Detail-Decomposition (A/B/C/D… + §18-Sync-Set + bewusst-NICHT-angefasst) gehört NICHT hierher — kanonische Archivquelle ist `git log` (Commit-Body) + `CORE-MEMORY.md §13` (Lifecycle) + PIPELINE-Item-Body bei aktiven Items.
 
+- **14.05. (Do) ✅ PIPELINE #26 DONE MSFT-Insider-Block-Re-Score** (Score-Event, **Δ=0**). Live-Scan via `insider_intel.py scan MSFT --json`: Diskr.-90d **$5,05M** (<<$20M ✅, kein 2. FLAG), Sub-Score 6/10 (Net 1+ / No-FLAG 2- / Ownership 3=) **=** 30.04.-Backfill-Carryover 6/10 — PIPELINE-#26-Body-Path-#2 ("Backfill war glücklicher Schätzer") confirmed. **Score 50/D2, FLAG `capex_fcf`, Sparrate 0€ alle unverändert.** §18-Sync nicht getriggert (Δ=0). Lean-Sync: §12.6 + Faktortabelle-Comment + PIPELINE-#26-Removal + STATE + Vault-log. JSON-Persistenz `02_Analysen/_insider_scans/MSFT_2026-05-14.json`. Next Skip-Window-Expiry **28.05.**. Detail → CORE-MEMORY §12.6.
 - **14.05. (Do) ✅ PIPELINE #61 DONE Retrospektive Top-5-Retry-Sessions** (System-Event, scoring-neutral). 5 Transcript-Scans via `ctx_execute_file` (Lean-Context-Pre-Activation eingehalten); Cluster-Decomposition: ~95% der CodeBurn-"retries" sind §18-Sync-Wellen / TaskCreate-Bursts / Bulk-Mut / Multi-Step-Compute — **echte §0.6-Hits ~4–7 Mikro-Cases** über alle 5 Sessions. §0.6-Definition selbst deckt echte Cases sauber → **kein Tweak**, neue Memory `feedback_codeburn_retry_metric_calibration` als Reading-Disziplin-Anker. Detail → CORE-MEMORY §13.
 - **13.05. (Mi) ✅ Plugin-Substrate-Refactor DONE** (System-Event, scoring-neutral). Substrate-Layer ausgetauscht, aktive Plugins: context-mode + claude-mem. DEFCON v3.7 + Scores + Sparraten unverändert. Detail → CORE-MEMORY §13.
 - **11.05. (Mo) ✅ Codebase-Defect-Pattern-Audit + G3-Tooling + Sum-Consistency DONE** (Spec 2026-05-11 v1.1 + Plan v1.2). M1-M5 + L1-L7 + Z1-Z3 G3-Check + Sum-Consistency-Audit-Check applied (Option C, schema_version-Allowlist). Apply-Phase-Empirie revealed Group-C `le=10` retroactively breaks 24 legacy v1.0 records (fwd_pe ∈ [29, 44]) → bounds REVERTED, bounds-check deferred to audit-layer follow-up. Validation-Matrix 12/15 hard-hit PASS + 2 N/A conditional → ≥12/15 threshold met (`05_Archiv/superpowers-pre-sunset/specs/2026-05-11-codebase-defect-patterns-validation.md`). System-Audit 14/16 → 15/18 PASS (zwei neue Checks `g3_consistency` + `sum_consistency`). CR-CP1 + CP2 applied (5 findings total incl. CRITICAL string-version-compare bug). PIPELINE #48 + #42 DONE — entfernt.
@@ -32,8 +33,8 @@
 - **04.05. (Mo) ✅ BRK.B Q1 FY26 Tag-+1 Vollanalyse — Codex-R1-REJECT-Korrektur Score 75→71** (Δ-4), D3/Sparrate 38€/FLAG ✅ Clean Insurance-Exception unverändert, keine Kaskade. Sub-Karte F=35/M=19/T=1/I=10/S=6. 15/15 Codex-HIGH-Antis pre-empted. 6 Q2-Methodology-Watches PIPELINE #36-#41. ScoreRecord `2026-05-04_BRK.B_vollanalyse` Schritt 7 DONE Tag-+1-Abend. → CORE-MEMORY §12.4 + git log + PIPELINE #36-#41.
 
 **Forward-Triggers (~14 Tage):**
-- **14.05.** MSFT Insider-Block-Re-Score post-14d-Skip-Window via `insider_intel.py` (PIPELINE #26)
 - **~14.05.** BRK Form-13F Q1-26 Filing → Apple-Trim-Magnitude (PIPELINE #37)
+- **28.05.** MSFT Insider-Skip-Window nächstes Expiry (post-14.05.-Re-Scan +14d) — nur bei Score-/FLAG-Trigger relevant
 
 ## Navigation (on-demand)
 | Wenn du brauchst… | Lies… |
