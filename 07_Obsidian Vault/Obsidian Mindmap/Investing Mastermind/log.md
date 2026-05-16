@@ -1875,3 +1875,19 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Plugin-Governance; keine wiki/-Page-Mutation)
 
+## [2026-05-16] system | Pickup #C pre-commit-Substrate Spec v0.1 + Codex-Sparring-Gate PASS (PIPELINE #68)
+
+**Event-Typ:** Pipeline-Item (Spec-Erstellung, System-Event) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
+
+**Was passiert ist:**
+1. **Trigger:** USER „#C pre commit" → Pickup #C (pre-commit-Substrate, Plugin-Layer-Phase-0b-Erweiterung). Brainstorming-Skill (Process-First) statt Blind-Spec.
+2. **3 Design-Forks USER-entschieden:** (a) Hook-Substrat = **pre-commit-Framework-Runner + `repo:local`-Hybrid** (Ruff via gepinntem Mirror übernommen, 3 Dynastie-Validatoren lokal, kein Mirror-Drift, kein Schema-Doppel-SSoT); (b) Fail-Mode = **strikt fail-close alle 3** (= §18.7-Doktrin, kein `--no-verify`-Regelpfad); (c) CRLF = **One-Shot-Normalisierungs-Commit + `.gitattributes` + Dauer-Guard-Hook** (3-teilig).
+3. **Review-Topologie geklärt (USER-Frage):** Codex reviewt Spec (jetzt) + Code-Diff (Execution); CodeRabbit reviewt Code (Execution, `--dir 03_Tools` via WSL) — 2 Reviewer / 2 Phasen / kein Overlap; in Spec §5 K6 + §6 verankert.
+4. **Spec v0.1:** `docs/superpowers/specs/2026-05-15-pre-commit-substrate-design.md` (gitignored, via PIPELINE-#68-Pointer — Konvention wie Pickup-#B/#D). Alle #C-Soll-Sektionen: 6-Hook-Inventar, 3 Validator-Pseudocodes, 3-teilige CRLF-Migration, Akzeptanzkriterien, Review-Topologie, Risiken, Rollback, #68-Definition. Self-Review (Ref-Inkonsistenz gefixt).
+5. **Codex-Sparring-Gate PASS (2 Runden Foreground — Background bewusst vermieden, Memory-Lehre):** R1 **FAIL** 2 HIGH (F1 `ruff-format`-Mutation vs. Non-Mutations-Versprechen · F2 Windows/Git-Bash/WSL-Laufzeitmodell unspezifiziert) + 3 MED (F3 `.patch`-EOL · F4 `flag_events`-Schema-Pfad · F5 Append-only-Entscheider vage). Alle 5 eingearbeitet (Non-Mutations-Invariante + Ruff `--no-fix`/`--check` · §1.1 Plattformvertrag `language:system` · `.patch text eol=lf` · FlagEvent-Schema-SSoT-Extraktion als #68-Vorbedingung · präziser `+`/`-`/EOF-Entscheider). R2 Diff-Re-Review **PASS-WITH-NITS** (F1/F2/F3/F5 RESOLVED, 0 Regression, 1 LOW-Nit F4-Symbolname → gefixt: Import-Vertrag `FlagEvent`).
+6. **§18-Sync (Pipeline-Item, atomar, scoring-neutral):** PIPELINE.md (#68 NEU Numbering-Convention + Footer-Bump v2.38→v2.39 + #67-Footer-Omission aus Karpathy-Session mit-korrigiert) + STATE.md (Critical-Alert) + SESSION-HANDOVER.md (Banner-Lead + Resume-Anweisung + Pickup-#C-Block-Update) + Vault `log.md`. Spec gitignored = nicht im Commit, nur Pointer.
+7. **Execution = separate Session** (PIPELINE-#C-Direktive); Vorbedingung FlagEvent-Schema-Extraktion nach `03_Tools/backtest-ready/schemas.py`. Trigger „Pickup #C Execution" / „pre-commit-Substrate bauen". DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
+
+- Pages created: none
+- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
+
