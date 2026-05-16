@@ -361,6 +361,20 @@ Ein Ad-hoc-Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 → `backtest-ready-forward-verify` Step-7-Invocation ist davon ausgenommen, weil sie **keinen Scoring-Kontext braucht** — sie schreibt lediglich den fertigen `ScoreRecord` deterministisch ins Archiv.
 → Pipeline-Stufen, Skill-Architektur-Tabelle: `01_Skills/dynastie-depot/PIPELINE.md` (skill-internes Pipeline-Doc).
 
+### 17.1 Memory-Guard-Rail — Routing- und Live-State-Vorrang (PF-1 Option C)
+
+> Kanonische Voll-Spec; CLAUDE.md führt nur die kompakte normative Routing-Zeile + Pointer hierher. Empirisch fundiert (QuickCheck-VRT 2026-05-16: claude-mem capturt korrekte Reasoning-Trajektorie, aber append-only ohne Single-Fact-Verdikt — Interim-Memory-Fragment darf nicht als kanonisches Verdikt missverstanden werden).
+
+1. Bei jeder Anfrage, die Routing-Auswahl, Trigger-Auswahl, §-Ausführung oder Prioritätsauflösung erfordert, ist die Route ausschließlich aus folgenden route-determining Inputs zu bestimmen: (a) Routing-Table in `CLAUDE.md`, (b) explizite User-Nachricht, (c) Live-Dateien mit absolutem Vorrang: `PORTFOLIO.md`, `STATE.md`, `INSTRUKTIONEN.md`. `autoMemory`, `claude-mem`, folder-memory und `context-mode-search` sind keine route-determining Inputs.
+
+2. Recalled `autoMemory`, `claude-mem` Observation-Summary, folder-memory-Blöcke und `context-mode-search`-Treffer dürfen keine Route wählen, unterdrücken, umpriorisieren, erweitern oder in ihrer Reihenfolge verändern.
+
+3. Memory darf erst nach abgeschlossenem Route-Match aus den autoritativen Quellen gemäß Punkt 1 konsultiert werden.
+
+4. Memory ist strikt advisory. Es darf niemals Live-Dateien oder Live-Zustände überschreiben, relativieren oder faktisch verdrängen, insbesondere nicht `SYSTEM.md`, `log.md`, `score_history.jsonl`, den §18-Sync-State, Score-Werte, FLAG-Werte oder Trigger-Bedingungen.
+
+5. Bei Konflikt zwischen Memory und Live-Dateien oder Routing-Regeln ist Memory zu ignorieren. Maßgeblich sind die Live-Dateien. Der Konflikt ist in `log.md` unter `mem-conflict` zu protokollieren.
+
 ---
 
 ## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2.4, 2026-05-11)

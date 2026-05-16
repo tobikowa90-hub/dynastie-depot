@@ -52,6 +52,8 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 | Strategie-/Allokations-Frage | KONTEXT.md | Faktortabelle, Wiss-Fundierung | — |
 | Code-Edit-Session ohne anderen Trigger (z.B. „fix bug in X.py", „refactor Y") | INSTRUKTIONEN.md (§0 zuerst lesen) | alle anderen Pflicht-Lese-Files | — |
 
+**Memory-Guard-Rail (normativ; Voll-Spec → INSTRUKTIONEN.md §17.1):** Routing nur aus Routing-Table, expliziter User-Nachricht und absoluten Live-Dateien (`PORTFOLIO.md`, `STATE.md`, `INSTRUKTIONEN.md`) bestimmen. Memory (`autoMemory`, `claude-mem`, folder-memory, context-mode-search) erst nach Match konsultieren; strikt advisory, nie Override gegen Live-Dateien.
+
 **Edge-Cases der Match-Regel:**
 - **Trigger + Wiki-Begriff** (z.B. „!Analysiere TMO und update Vault-Faktortabelle"): Union beider „Lies zusätzlich"-Spalten; Skip-Spalten verlieren Wirkung wenn anderer Trigger die Datei explizit anfordert; Skill-Calls beider Trigger ausführen.
 - **Tippfehler / fast-exakte Trigger / Case-Drift / Sprach-Varianten** (z.B. `!Analysier`, `!Quickcheck`, `!analysiere`, `!Analyze TMO`): Kein Fuzzy-Match. Trigger sind strikt deutsch und PascalCase (`!Analysiere`, `!QuickCheck`, `!Rebalancing`, `!SyncBriefing`). Default-Verhalten + Rückfrage stellen („Meintest du `!Analysiere TMO`?"). Keine Selbstinterpretation.
@@ -70,7 +72,7 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 |-------|-------|
 | `00_Core/APPLIED-LEARNING.md` | Tier-2-Arbeitsprinzipien + Pflege-Regeln + Historie |
 | `00_Core/TOKEN-RULES.md` | Token-Effizienz-Regeln (Accessibility, kein Enforcement) |
-| `00_Core/INSTRUKTIONEN.md` | Tier-3-Regeln (Scoring-Skalen, Workflows, §§) |
+| `00_Core/INSTRUKTIONEN.md` | Tier-3-Regeln (Scoring-Skalen, Workflows, §§; §17.1 Memory-Guard-Rail: Routing-Inputs/Advisory-only/`mem-conflict`) |
 | `00_Core/PORTFOLIO.md` | Live-Portfolio (Satelliten + Watches + 30-Tage-Trigger) — default-load bei Session-Start |
 | `00_Core/PIPELINE.md` | Pipeline-SSoT (alle offenen Plan-Items + Long-Term-Gates) |
 | `00_Core/SYSTEM.md` | System-Zustand (DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog) |
@@ -78,6 +80,6 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 
 ---
 
-## Plugin-Layer (2026-05-13)
+## Plugin-Layer (2026-05-13, Hybrid 2026-05-16)
 
-Ruflo Sunset. Aktives passives Substrate: **context-mode** (Tool-Output-Sandbox + FTS5). **claude-mem** ist als Marketplace-Source registriert, aber **nie in `enabledPlugins` aktiviert** → Hooks dormant, kein Capture (Befund 16.05.2026 Phase-0b Task-9-Diagnose); Cross-Session-Memory lief durchgängig über natives autoMemory. AIDefence-Block im Morning-Briefing v3.2.0 unangetastet (FAIL-OPEN). Detail → SYSTEM.md §Plugin-Layer.
+Ruflo Sunset. Passive Substrate: context-mode + obsidian-skills + **claude-mem v13.2.0 enabled = rein additiver read-only Augmentation-Layer, nie SSoT**; natives autoMemory kanonisch + Live-State-Priorität unberührt (HYBRID, empirisch verifiziert). Memory-Guard-Rail → §Routing-Table + INSTRUKTIONEN.md §17.1. Voll-Detail (Bun-Invariante, Begründung, Backups) → **SYSTEM.md §Plugin-Layer**.

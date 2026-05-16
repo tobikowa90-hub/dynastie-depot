@@ -1833,3 +1833,17 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Doku-Drift-Korrektur; keine wiki/-Page-Mutation)
 
+## [2026-05-16] system | Phase-0b Memory-Architektur HYBRID-Final-State DONE (scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (§18 System-Event) — kein Score/FLAG/Sparraten-Touch
+
+**Was passiert ist:**
+1. **Trigger „Hybrid-Formalisierung"** (Resume aus SESSION-HANDOVER). Vorgeschichte: Task-9-Diagnose ergab claude-mem war nie enabled (vorheriger log-Eintrag); User-Direktive „testen statt annehmen" → claude-mem in `~/.claude/settings.json` enabled (Backup `.pre-claudemem-enable-2026-05-16.bak`), Bun installiert + PATH `~/.bash_profile` (Marker `claude-mem-bun-path 2026-05-16`).
+2. **User-eingeschobenes Real-Work-Test-Gate vor Formalisierung** (Praxis > Annahme): Clean-Slate-Wipe `~/.claude-mem/claude-mem.db` reversibel → `backups/...pre-clean-slate-2026-05-16T17-07-47Z` + `~/throwaway-claudemem-verify` gelöscht; Worker-Restart-Race empirisch diagnostiziert (Hook-Auto-Respawn PID 18892, health 200/ready, frische 221KB-Schema-DB). Dann scoring-neutraler `!QuickCheck VRT` (Vertiv) → **🔴 ROT** (P/FCF ~50–58 >45; ROIC ~19–20% 🟢; Moat-Proxy GM 37,15% 🟡; kein Config/§18, kein PIPELINE-Item).
+3. **Empirischer Befund:** claude-mem capturte 3 korrekte `discovery`-Observations der VRT-Arbeit (Project-Label „Claude Stuff" korrekt, Reasoning-Trajektorie progressiv, zitiert sogar dt. Schwellen-Regel). **Append-only-Modell bestätigt:** Korrektur P/FCF-Interim(gelb)→final(rot) nur als Trajektorie über id1→id3 rekonstruierbar, kein Single-Fact-Verdikt → Memory-Guard-Rail empirisch fundiert. Signal, nicht Noise — aber Verdikt-of-Record bleibt STATE/PORTFOLIO/score_history/git.
+4. **Lean-Reconciliation (User-Lean-Direktive überschreibt Handover-Wortlaut + Codex-Single-Pass):** CLAUDE.md bleibt lean — kompakte normative Memory-Guard-Rail-Zeile (Routing nur aus Routing-Table/User/Live-Files; Memory advisory, nie Override) + schlanker §Plugin-Layer-Hybrid-Pointer (Δ +35 words statt +206). **Voll-5-Punkte-Guard-Rail-Spec → `INSTRUKTIONEN.md §17.1`** (Tier-3 kanonisch, PF-1 Option-C: Punkt-1 Routing-Inputs PORTFOLIO/STATE/INSTRUKTIONEN, Punkt-4 Daten-Priorität +SYSTEM/log/score_history, Punkt-5 `mem-conflict`-Log). Voll-Plugin-Detail (verengte Bun-Invariante, Hybrid-Begründung, Backups) → `SYSTEM.md §Plugin-Layer`.
+5. **§Plugin-Layer Hybrid-Final-State** in SYSTEM.md (Task-9-Historie erhalten, Current-State korrigiert): autoMemory = kanonisches System-of-Record + Live-State-Priorität unberührt, nie disabled; claude-mem = additiver read-only Augmentation-Layer (capture-only, nie SSoT). Commit `cb58e1a` („claude-mem nicht enabled") als überholt notiert. 2 obsolete Pläne (`2026-05-14-plugin-integration.md`, `2026-05-16-phase0b-optionB-rescope.md`) SUPERSEDED-markiert (gitignored).
+6. Scoring-neutral: DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. Kein §18-Score-Sync-Set. Sync-Set 6 Files atomar: `CLAUDE.md` + `00_Core/SYSTEM.md` + `00_Core/INSTRUKTIONEN.md` + `00_Core/STATE.md` + `00_Core/PIPELINE.md` (#66 Numbering-Convention) + `00_Core/SESSION-HANDOVER.md` + Vault `log.md` (dieser Eintrag). Memory-Lehre `feedback_plan_on_runtime_not_doc_assumption.md` separat (~/.claude, kein Repo-Commit).
+- Pages created: none
+- Pages updated: none (System-Event Hybrid-Formalisierung; keine wiki/-Page-Mutation)
+
