@@ -1805,3 +1805,15 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (Schema-Sektion + System-Event; keine wiki/-Page-Mutation)
 
+## [2026-05-16] edit | PIPELINE-Hygiene-Cleanup — DONE/obsolete Residue entfernt (scoring-neutral)
+- User-Direktive „Mit DONE markiertes und obsoltes aus PIPELINE entfernen, ohne Kontext oder Zusammenhänge zu verlieren" — Scope A+B+C+D User-bestätigt
+- (A) `#26` (MSFT-Insider-Block-Re-Score, DONE 14.05.) aus Footer-„Aktive Items"-Liste entfernt — war Inkonsistenz (DONE, kein Body, aber gelistet)
+- (B) Stale Enumeration Z.22 `#21/#25-27/#30-34/#36-41` → `#21/#25/#27/#36-41` korrigiert; #26 + #30-34 (AVGO-Cluster-A DONE 09.05.) als Archiv-Pointer auf CORE-MEMORY §13 umformuliert (dangling-ref-Fix)
+- (C) Z.24 10-Tage-Trigger: #26-DONE-Parenthetical entfernt + stale Datum „14.05." → „~15.05." (#37 BRK Form-13F Trigger), Kontext-Pointer auf Item #37 + CORE-MEMORY §12.4 gesetzt
+- (D) Long-Term-Gates: Tavily-Key-Rotation-#2-Row entfernt (Status „KOMPLETT verified", Datum ~04.05. vergangen — gehört nicht in Forward-Gates-Tabelle); Kontext via Memory `feedback_tavily_connector_uuid_rotation` + SYSTEM §Briefing-Status + git log erhalten
+- Footer-Version-Bump v2.35→v2.36 mit Cleanup-Note. Numbering-Convention gewahrt (keine Renumber; #26 = Gap → SSoT CORE-MEMORY §12.6 + git log). Alle aktiv-deferred Items #7-#63 + Long-Term-Gates 2026-08-06→2028-04-01 unangetastet
+- `system_audit --core` 14/15 PASS, 0 FAIL, 1 WARN (Check-5 existence 71/71, Check-7 pipeline_ssot PASS — kein Regress); scoring-neutral, kein §18-Score-Event, DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert
+- Sync-Set 2 Files atomar: 00_Core/PIPELINE.md + Vault log.md (§18 Pipeline-Item-Event-Mapping; #26-DONE bereits in STATE-Alert 14.05. — kein neuer STATE-Alert)
+- Pages created: none
+- Pages updated: none (System-Event Pipeline-Hygiene; keine wiki/-Page-Mutation)
+

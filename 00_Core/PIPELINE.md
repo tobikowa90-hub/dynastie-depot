@@ -19,9 +19,9 @@
 
 ### 🟠 Portfolio — Kritische Triggers 10 Tage
 
-*(Earnings-Window 28.04.-04.05. abgeschlossen — V Q2 / MSFT Q3 / APH Q1 / BRK.B Q1 alle DONE. Detail-History in CORE-MEMORY §12.X + git log. Methodology-Watches als Items #21/#25-27/#30-34/#36-41 unten.)*
+*(Earnings-Window 28.04.-04.05. abgeschlossen — V Q2 / MSFT Q3 / APH Q1 / BRK.B Q1 alle DONE. Detail-History in CORE-MEMORY §12.X + git log. Methodology-Watches als Items #21/#25/#27/#36-41 unten; #26 (MSFT-Insider-Block-Re-Score 14.05.) + #30-34 (AVGO-Cluster-A 09.05.) DONE → CORE-MEMORY §13 + git log.)*
 
-- **14.05.** Form-13F Apple-Trim-Magnitude-Definitiv (#37) — *MSFT Insider-Block-Re-Score (#26) ✅ DONE 14.05. Path-#2 (Live 6/10 = Backfill 6/10, Score 50/D2 unverändert) — siehe CORE-MEMORY §12.6*
+- **~15.05.** Form-13F Apple-Trim-Magnitude-Definitiv (#37) — BRK Q1-26 13F-Filing-Re-Check (Trigger ~15.05.; Detail Item #37 + CORE-MEMORY §12.4)
 - **27.05.** VEEV Q1 FY27 Earnings (yfinance-Pull 30.04.) — Klasse-B
 - **28.05.** COST Q3 FY26 Earnings — Klasse-B (Membership-Yield-Watch)
 
@@ -77,7 +77,6 @@
 
 | Datum | Gate | Owner-Aktion |
 |-------|------|--------------|
-| ~04.05.2026 | Tavily Dev-Key Rotation #2 | **Rotation 27.04.2026 KOMPLETT verified** — alter Key `tvly-dev-4PYXp...` ersetzt + post-Restart Smoke-Test PASS (V-Headline-Query lieferte konsistente Daten zu Pre-Earnings-Brief) + alter Key auf tavily.com revoked. Neue Connector-UUID `0da14a12-17bb-4609-bcba-ba2b21152c9b` (alte `4a633350-...` disconnected). Connector-Name weiter `tavily`, friendly-name-Resolution `mcp__tavily__` greift unverändert — Repo-Prompts (`03_Tools/morning-briefing-prompt-v3.md`) unangetastet richtig. Spec-Doc `03_Tools/specs/2026-04-19-tavily-morning-briefing-design.md` enthält weiter alte UUID als historische Referenz (Doku, nicht operativ — kein Edit nötig). 7-Tage-Uhr läuft formal ab v3.0.4-Prod-Deploy, pragmatisch ~04.05. (7d-rolling ab 27.04.). |
 | 2026-08-06 | sec-edgar-skill Audit-Gate | Track-5a 90-Tage-Real-Run-Verify (mind. 1 Use-Case-Anwendung dokumentiert? Falls 0 → Skill-Hibernation überlegen / falls ≥1 → Continue-Status). Promotion-Stand 2026-05-08, edgartools 5.31.0, Smoke 6/6 PASS. |
 | 2026-10-17 | Score-Archiv-Interim-Gate | 6-Monats-Sanity-Check `05_Archiv/score_history.jsonl` (Forward-Window + Duplicate-Guard) |
 | 2027-10-19 | R5 Interim-Gate | 18-Mo-Dry-Run `risk-metrics-calculation` + Data-Quality `05_Archiv/portfolio_returns.jsonl` (inkl. FX-Conversion-Check) |
@@ -86,4 +85,4 @@
 
 ---
 
-*🦅 PIPELINE.md v2.35 | Dynasty-Depot | **Stand:** 16.05.2026 (#65 DONE Obsidian-Skills-Vault-Bindung — WIKI-SCHEMA §Obsidian-Skills-Bindung, System-Event scoring-neutral, per Numbering-Convention aus Aktiv-Liste entfernt; SSoT = git log + STATE Critical-Alert + Vault log.md. #64 DONE Phase-0a Cleanup PASS — Plugin-Integration-Gate; #62/#63 NEU Watchlist-Refresh-v3.2-Folge; #61 DONE Retrospektive Top-5-Retry-Sessions; Numbering-Convention: Gap signalisiert Archive, CORE-MEMORY §13 + log.md SSoT). Aktive Items: #17/#19/#21/#25/#26/#27/#36-#41/#52/#53/#55/#58/#59/#60/#62/#63. Nächster Forward-Trigger: 15.05. (#37 BRK Form-13F).*
+*🦅 PIPELINE.md v2.36 | Dynasty-Depot | **Stand:** 16.05.2026 (Hygiene-Cleanup: #26 DONE 14.05. aus Aktiv-Liste + stale #30-34/#26-Enumeration Z.22 korrigiert + Z.24 #26-DONE-Parenthetical gestrafft + Tavily-Key-Rotation-#2-Gate-Row COMPLETE entfernt — Kontext via CORE-MEMORY §12.6/§13 + git log + Memory `feedback_tavily_connector_uuid_rotation` erhalten, scoring-neutral. #65 DONE Obsidian-Skills-Vault-Bindung — WIKI-SCHEMA §Obsidian-Skills-Bindung; #64 DONE Phase-0a Cleanup PASS; #62/#63 NEU Watchlist-Refresh-v3.2-Folge; #61 DONE Retrospektive Top-5-Retry-Sessions; Numbering-Convention: Gap signalisiert Archive, CORE-MEMORY §13 + log.md SSoT). Aktive Items: #17/#19/#21/#25/#27/#36-#41/#52/#53/#55/#58/#59/#60/#62/#63. Nächster Forward-Trigger: ~15.05. (#37 BRK Form-13F).*
