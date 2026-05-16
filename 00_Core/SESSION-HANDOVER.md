@@ -1,19 +1,13 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner:**
-- **Datum:** 2026-05-14 (Do) ~04:20 Europe/Berlin — **Phase-0a Tasks 0-6 DONE in-session, Task 7 24h-Burn-in läuft, Re-Entry 2026-05-15 für Tasks 7+8 Gate.** Inline-Execution (Subagent-Driven-Discipline lazy aufgenommen, FS-Ops inline). Disk-Recovery 279 MB (Ruflo-Marketplace). Erweiterungen über Plan-Spirit (User-OK): 5 github-* skills + 20 agent-dirs + 10 slash-commands jetzt auch in `_legacy_2026-05-14/`. Slash-commands musste extra OUT of `~/.claude/commands/` discovery (interner mv reicht nicht — Discovery-Mechanismus inkonsistent zu Skills/Agents). Pre-Flight-Verdict in `docs/superpowers/plans/2026-05-14-plugin-integration-preflight-notes.md` gitignored. Commit `6f75a52` feat(tools): hook-latency-probe.py + .gitignore + STATE.md audit-trail. DEFCON v3.7 + 11 Scores + Sparraten unverändert.
+- **Datum:** 2026-05-16 (Sa) Europe/Berlin — **Phase-0a KOMPLETT: Tasks 0-8 DONE, Gate ✅ PASS.** Burn-in ~48h: `hook-errors.log` Δ=0 vs Baseline 0 (Schwelle 0-5 ✅) + Performance User-bestätigt unauffällig. Commit `0468ac5` (PIPELINE #64 Numbering-Removal + STATE Critical-Alert + Vault log.md, scoring-neutral). **Phase 0b freigegeben** (Tag-3 ~2026-05-16, Plan-konform) — als User-getriggerter Pickup, nicht auto-eingestiegen (Phasengrenze-Pause). Latency-Mess-Quelle option-b `03_Tools/hook-latency-probe.py`. Rollback-Artefakte intakt (nicht getriggert). Vorgänger-Commit `6f75a52` (hook-latency-probe.py + .gitignore). DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
 
 ## 🎯 Resume-Anweisung für nächste Session
 
-**User-Direktive 14.05. ~04:20 — Re-Entry morgens 2026-05-15 für Phase-0a-Gate-Check (Burn-in PASS + Task 8):**
+**Primär-Track: Phase 0b Plugin-Onboarding (User-getriggert).**
 
-1. **Pickup #A — Phase 0a Gate-Check** (Primär-Track 2026-05-15). Plan: `docs/superpowers/plans/2026-05-14-plugin-integration.md` v1.3 R3-konvergent. **Tasks 7-8 hands-on:**
-   - **Task 7 Step 2 Burn-in-Check:** `find ~/.claude ~/.claude-mem -name 'hook-*.log' 2>/dev/null` + Zeilenzahl vs Baseline (N/A da 0). Akzeptiert: 0-5 neue Zeilen.
-   - **Task 7 Step 3 Performance-Note:** Subjektive Lag-Einschätzung schreiben (sollte unauffällig sein).
-   - **Task 8 Gate:** Bei PASS → PIPELINE-DONE-Stempel (Numbering-Convention-Removal) + Vault `log.md` System-Event + STATE.md Critical-Alert-Pointer. Phase 0b ab Tag-3 (~2026-05-16) freigegeben.
-   - **Bei Burn-in FAIL** (hook-errors >5 / persistent slow): STOP, Rollback via Tarball `~/.claude/helpers-pre-sunset-2026-05-14.tar.gz` + `~/.claude/settings.json.pre-plugin-integration-2026-05-14.bak`.
-
-   **Trigger:** „Phase 0a Gate-Check" — User-initiiert.
+1. **Pickup #A — Phase 0a Gate-Check ✅ DONE 2026-05-16** (Commit `0468ac5`). Burn-in PASS (hook-errors.log Δ=0, ~48h, Performance User-bestätigt) + Task-8-Gate-Stempel komplett (PIPELINE #64 Numbering-Removal + STATE Critical-Alert + Vault log.md). **→ Nachfolge: Phase 0b Plugin-Onboarding** (Plan `docs/superpowers/plans/2026-05-14-plugin-integration.md` v1.3 R3-konvergent, Tasks 9-20). **Achtung Task 9** (claude-mem Stop-Haiku Throwaway-Verify): braucht 3-4 manuelle interaktive Claude-Code-Sessions im Throwaway-Projekt `~/throwaway-claudemem-verify` — **nicht agent-autonom durchlaufbar**, User-Hands-on. **Memory-Guard-Rail wird ab Phase 0b in `CLAUDE.md` aktiv** (Plan-Invariante: Live-State PORTFOLIO.md/STATE.md/INSTRUKTIONEN.md hat absolute Priorität über jeden Memory-Inject; aktuell noch NICHT in CLAUDE.md verankert — Phase-0b-Task). **Trigger:** „Phase 0b starten" — User-initiiert. **Bei Burn-in-Spät-FAIL** (hook-errors >5 / persistent slow nachträglich): STOP, Rollback via Tarball `~/.claude/helpers-pre-sunset-2026-05-14.tar.gz` + `~/.claude/settings.json.pre-plugin-integration-2026-05-14.bak` (intakt).
 
 2. **Pickup #B — Root `CLAUDE.md`-Review & Verbesserung** (Sekundär, deferred aus 13.05.). Audit auf Post-Ruflo-Residuals + Optimierungspotenzial + Lazy-Load-Disziplin. Read-only Audit + Verbesserungs-Diff + USER-Decision-Gate. Trigger: „Pickup #B CLAUDE.md-Review".
 
