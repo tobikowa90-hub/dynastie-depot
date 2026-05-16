@@ -1860,3 +1860,18 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event CLAUDE.md-Review; keine wiki/-Page-Mutation)
 
+## [2026-05-16] system | Karpathy-Plugin-Eval (Upstream-Watch-Anker) + ecc-Substrate-Reject (scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (§18 System-Event) — kein Score/FLAG/Sparraten-Touch
+
+**Was passiert ist:**
+1. **Frage-Cluster (3 User-Msgs):** (a) Karpathy-Regeln in CLAUDE.md verankert? (b) virales Plugin `andrej-karpathy-skills` Nutzen? (c) log+CORE-MEMORY Quartals-Archiv im `Verhalten`? Investigation statt Blind-Apply (§0.1).
+2. **Antwort (a):** Ja — CLAUDE.md L11 `Code-Verhalten`-Bullet (jede Session, normativ) + INSTRUKTIONEN §0 (§0.1–§0.6 + Bezugs-Tabelle + Konflikt-Auflösung) + Routing-Table-Zeile. Scope = Code/File-Edit, bewusster Carve-out Sync/Wiki (kein Loch).
+3. **Antwort (b) + USER-Decision-Gate:** Plugin v1.0.0 1:1 gegen §0 verglichen — §0 ist funktionale **Obermenge** (§0.1–§0.4 enge dt. Adaption + §0.5/§0.6 + Projekt-Tabellen), §0-Preamble zitiert sogar dasselbe Repo. Plugin = null neuer Verhaltens-Inhalt; Risiko = Doppel-SSoT. USER wählte „Upstream-Watch-Anker": §0-Preamble-Block (Plugin advisory/nie-Override-gegen-§0 analog Memory-Guard-Rail §17.1; versions-gepinnt v1.0.0; Versions-Bump → §0.1–§0.4-Freshness-Diff). §0 bleibt kanonisch.
+4. **Antwort (c) + USER-Decision-Gate:** log.md ist bereits via INSTRUKTIONEN §18.6 quartalsweise verankert (korrektes Tier-3-Zuhause, NICHT `Verhalten` — Re-Anchoring würde Pickup-#B-Lean-Trim konterkarieren). CORE-MEMORY NICHT verankert, §13 by-design kondensiert, Wuchs-Vektor = §12 Per-Ticker-Chronik. USER wählte „§18.6-Erweiterung" → **PIPELINE #67 NEU** (deferred scoped Work-Item, nicht jetzt implementiert; Re-Activation-Trigger CORE-MEMORY >900 Z. / messbare §18-Sync-Last / Konsolidierungstag).
+5. **Codex-Single-Pass (Foreground):** Background-Spawn 2× tot/nie gelaufen (TaskList leer, kein agentId) — User-Skepsis bestätigt, Foreground-Pflicht-Lehre. Sync-Verdikt **PASS-WITH-NITS**: 2 MEDIUM (Obermenge-Wortlaut „wortgetreu"→„funktionale Obermenge/enge dt. Adaption"; #67-Sync-Set §18-kohärent: +PIPELINE/+SYSTEM) + 1 LOW (Trigger-(b) operationalisiert) — alle 3 Fixes appliziert.
+6. **ecc-Substrate-Reject (User-Side-Quest):** User installierte virales `ecc@ecc` (affaan-m/everything-claude-code, v2.0.0-rc.1): 60 Agents / 230 Skills / 75 Command-Shims / **Live-PreToolUse-Bash+Write-Hooks** (obfuskierter Node-Dispatcher) / eigener **memory-MCP** + 5 weitere MCP. Substrate-Risiko-Eval: kollidiert mit §18-Atomic-Commit + HYBRID-Memory-Guard-Rail + Lazy-Load + ist Ruflo-Klasse-Bloat (gerade in Phase-0a entfernt). USER „alles löschen". Removal: Self-Mod-Guard blockte 2/3 Config-Edits → User-Explicit-Freigabe → chirurgisch entfernt aus `settings.json` enabledPlugins + extraKnownMarketplaces + `installed_plugins.json` + `known_marketplaces.json` + `rm -rf marketplaces/ecc cache/ecc`. Verifiziert clean (12 enabledPlugins, 0 Residual, JSON valid). Backup `~/.claude/settings.json.pre-ecc-removal-2026-05-16.bak`. Restart-Hinweis: laufende Session evtl. ecc-Hooks im RAM bis Neustart.
+7. Scoring-neutral: DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. Sync-Set 5 Files atomar: `00_Core/INSTRUKTIONEN.md` (§0-Preamble) + `00_Core/PIPELINE.md` (#67 + Footer) + `00_Core/STATE.md` + `00_Core/SESSION-HANDOVER.md` + Vault `log.md`. ecc-Removal = User-Env (~/.claude, kein Repo-File — nie adoptiertes Projekt-Substrate, daher kein SYSTEM.md-Doku-Bedarf, nur Decision/Lehre hier + Memory). Memory-Lehre separat (~/.claude).
+- Pages created: none
+- Pages updated: none (System-Event Plugin-Governance; keine wiki/-Page-Mutation)
+

@@ -24,6 +24,8 @@
 > Quelle: Adaptation der Karpathy-Beobachtungen zu LLM-Coding-Failure-Modes.
 > Beispiel-Diffs (Python): https://github.com/forrestchang/andrej-karpathy-skills/blob/main/EXAMPLES.md
 >
+> **Upstream-Watch (Plugin `andrej-karpathy-skills:karpathy-guidelines`, gepinnt v1.0.0, installiert 2026-05-16):** §0 ist die kanonische SSoT und funktionale **Obermenge** des Plugins — §0.1–§0.4 sind eine enge deutschsprachige Adaption der 4 Plugin-Regeln; §0.5/§0.6 + Bezugs-Tabelle + Konflikt-Auflösung + Sync/Wiki-Carve-out = projekt-spezifisch. Das Plugin-Skill ist **advisory, nie Override gegen §0** (analog Memory-Guard-Rail §17.1). Bei Plugin-Versions-Bump: §0.1–§0.4 gegen neuen Plugin-Wortlaut diff-prüfen (Freshness-Gate); §0-Wortlaut bleibt maßgeblich, Divergenz nur via bewussten §0-Edit auflösen, nicht durch stilles Plugin-Folgen.
+>
 > **Tradeoff:** Diese Regeln biasen zu Vorsicht über Geschwindigkeit. Bei
 > trivialen Edits (Tippfehler, ein-Zeilen-Konstanten) Urteil walten lassen.
 
