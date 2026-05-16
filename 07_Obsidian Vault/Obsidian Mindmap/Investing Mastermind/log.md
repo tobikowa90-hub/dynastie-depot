@@ -1788,3 +1788,11 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Plan `docs/superpowers/plans/2026-05-14-plugin-integration.md` Task 7 + Task 8 (gitignored)
 - SESSION-HANDOVER.md Pickup #A (jetzt resolved → Banner-Refresh ausstehend)
 
+## [2026-05-16] edit | System-Audit FAIL-Resolve — SESSION-HANDOVER:21 Dangling-Ref (Pickup-#D-Vorlauf)
+- Check-5 existence FAIL (13/15) im Pickup-#D-Baseline-Run entdeckt: `SESSION-HANDOVER.md:21` referenzierte die Pickup-#C-Spec als „voll ausgearbeitet", obwohl Pickup #C nie ausgeführt wurde (Commit `36deaa0` = „scheduled post-Gate-PASS"; PIPELINE #62 wurde dem Watchlist-Refresh SPGI+SNPS zugewiesen, nicht pre-commit-Substrate)
+- Wortlaut auf Realität korrigiert: Spec = noch zu erstellen bei Pickup-#C-Execution; harter Pfad-Token neutralisiert (Verzeichnis-Ref + Arbeitstitel als Prosa); #62-Fehlattribution korrigiert. Pickup #C bleibt legitimes Future-Item mit akkuratem Framing
+- Audit zurück auf 14/15 PASS, 0 FAIL, 1 WARN (WARN = bekannte portfolio_returns/benchmark-Staleness, deferred Track-4 — out of scope); scoring-neutral System-Event, kein §18-Score-Event, DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert
+- Sync-Set 3 Files atomar: 00_Core/SESSION-HANDOVER.md (Reword) + 00_Core/STATE.md (Last-Audit auto-write + Critical-Alert + Footer) + Vault log.md (dieser Eintrag)
+- Pages created: none
+- Pages updated: none (System-Event Audit-Fix; keine wiki/-Page-Mutation)
+
