@@ -1891,3 +1891,19 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
 
+## [2026-05-16] system | Pickup #C Execution-Vorbedingung FlagEvent-Schema ERFÜLLT-verifiziert + Doc-Drift-Fix (Unit 1/3)
+
+**Event-Typ:** Pipeline-Item (Status-Transition: Vorbedingung resolved) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
+
+**Was passiert ist:**
+1. **Trigger:** USER „Pickup #C Execution" (separate Session; stated Vorbedingung = FlagEvent-Schema-Extraktion nach `schemas.py`).
+2. **Empirischer Befund (Karpathy Pre-Refactor-Caller-Scan vor Edit):** Die Vorbedingung ist ein **No-op**. `FlagEvent` (+ `FlagMetrik`, Validatoren `_check_flag_id`/`_check_metrik_direction`) existiert bereits **voll kanonisch** in `03_Tools/backtest-ready/schemas.py` Z.581-654, in `__all__` (Z.721-722). `archive_flag.py:21` importiert es bereits (`from schemas import FLAG_RULES, FlagEvent`; Docstring Z.4 deklariert schemas.py als Single-SoT). `python schemas.py`-Smoke grün inkl. FlagEvent-Cases [5/7]+[6/7]. Die Codex-F4-Bedingung („falls KEIN FlagEvent-Symbol existiert") ist damit **FALSE** → keine Extraktion, kein SSoT-Refactor. Wahrscheinliche Quelle der Drift: FlagEvent wurde bereits im Zuge PIPELINE #34 (2026-05-09, schemas.py + archive_flag.py) extrahiert; Spec/Handover trugen die alte Annahme weiter (Memory-Präzedenz `feedback_plan_on_runtime_not_doc_assumption`).
+3. **USER-Scope-Entscheidung:** statt Marathon-Full-Execution → phasierter Pfad (Unit 1 Doc-Drift-Fix · Unit 2 non-mutierender Substrate-Build durch §5.6-Gate · Unit 3 CRLF-One-Shot mit User-Audit-Checkpoint). Begründung: Spec §8 plant ohnehin Multi-Session, §4.1 erzwingt User-Audit vor CRLF-Mutation, §5.6-Gate (Ruff→CodeRabbit-WSL→Codex) ist natürliche Phasengrenze.
+4. **Unit 1 ausgeführt (dieser Eintrag):** falsche Vorbedingungs-Prämisse auf Realität korrigiert. Spec-Artefakt §3.3 (Codex-F4-Block → RESOLVED-Notiz; falscher Python-Import `from 03_Tools.backtest_ready.schemas` → real funktionierender `from schemas import FlagEvent` analog archive_flag.py) + Spec-Status + Spec-Footer; PIPELINE.md #68-Vorbedingung + Footer (v2.39→v2.40, Status-Transition, kein Numbering-Change); SESSION-HANDOVER.md 3 Stellen (Banner + Resume + Pickup-#3); STATE.md Critical-Alert (neuer Pointer + stale Phrase im #C-DONE-Alert) + Footer. **Full-Execution-Blocker aufgehoben.**
+5. **Kein Codex-Gate für Unit 1** — reine scoring-neutrale Markdown-Wortlaut-auf-Realität-Korrektur (§0 laut CLAUDE.md nicht verbindlich für Markdown-Sync; Präzedenz STATE.md „SESSION-HANDOVER:21 Dangling-Ref-Fix" = analoge 3-File-atomare Korrektur ohne Gate). Codex-Single-Pass kommt bei Unit 2 (Code, §5.6-Gate). Kein advisor() (Memory `feedback_review_via_codex_not_advisor`).
+6. **§18-Sync (Pipeline-Item, atomar, scoring-neutral):** Spec-Artefakt (gitignored, nicht im Commit — nur via Pointer) + PIPELINE.md + STATE.md + SESSION-HANDOVER.md + Vault `log.md` (dieser Eintrag). DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
+7. **Next:** Unit 2 (3 `repo:local`-Validatoren + `.pre-commit-config.yaml` + Fixtures + `.gitattributes`, non-mutierend) durch Spec-§5.6-Gate, dann Unit 3 (CRLF-One-Shot §4.1 mit User-Audit-Tabelle).
+
+- Pages created: none
+- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
+
