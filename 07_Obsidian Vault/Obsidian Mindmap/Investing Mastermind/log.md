@@ -1760,3 +1760,31 @@ System-Event, scoring-neutral. Same-Day-Amendment zu Welle-1-Commit `48d5984`. U
 - KONTEXT §5 + §6 (IDXX-Zeile + Footer v1.3)
 - Memory `feedback_watchlist_xlsx_in_sync_set.md` (NEU — Sync-Set-Vertrag-Lesson)
 
+## 2026-05-16 (Sa) — Phase 0a Cleanup PASS-Gate (Plugin-Integration, System-Event)
+
+System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-integration.md` v1.3 R3-konvergent, Task 8 Phase-0a-PASS-Gate. Pickup #A „Phase 0a Gate-Check" User-initiiert via Burn-in-Verifikations-Frage.
+
+**Burn-in-Verifikation (Task 7):**
+- Step 2 hook-errors.log: `~/.claude/context-mode/hook-errors.log` nicht erzeugt → 0 Zeilen; Baseline (Task 1 Step 3) N/A=0 → **Δ=0**, Schwelle 0-5 ✅. `find ~/.claude ~/.claude-mem -name 'hook-*.log'` leer. context-mode produktiv aktiv (sessions/ frisch), kein Error-Log generiert.
+- Zeitfenster: Phase-0a Tasks 0-6 DONE 14.05. (Commit `25eb8a4`), Gate 16.05. → **~48h**, 24h-Soll doppelt erfüllt.
+- Step 3 Performance: subjektiv unauffällig, **User-bestätigt** (keine spürbaren Lags/Slowdowns).
+- Rollback-Artefakte intakt (`~/.claude/helpers-pre-sunset-2026-05-14.tar.gz` + `settings.json.pre-plugin-integration-2026-05-14.bak`) — FAIL-Pfad nicht getriggert.
+
+**Gate-Entscheidung: ✅ PASS.** Ruflo-Sunset-Cleanup abgeschlossen (Hook-Pfade entfernt, helpers/ archiviert, Marketplace gelöscht, claude-flow Skills/Agents + Slash-Commands in `_legacy_2026-05-14/`, Disk-Recovery ~279 MB). Latency-Mess-Quelle: **option-b** Skript `03_Tools/hook-latency-probe.py` (Task-0-Verdict: /ctx-stats kein p95-Feld → Option b). **→ Phase 0b freigegeben** (Tag-3 ~2026-05-16, Plan-konform).
+
+**Sync-Set (3 Files, atomar):** `00_Core/PIPELINE.md` (#64 Numbering-Convention-Removal + Footer v2.33→v2.34) + `00_Core/STATE.md` (Critical-Alert + Footer Stand 16.05.) + log.md (dieser Eintrag). Plan-Task-8-Trail-Scope = PIPELINE + STATE + Vault log + git-log-Body (analog PIPELINE-#56-Präzedenz; bewusst kein CORE-MEMORY §13 / kein 8-File-§18-Set).
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md, Faktortabelle.md, CORE-MEMORY §13, score_history.jsonl, flag_events.jsonl, config.yaml, xlsx-Tools, SKILL.md, INSTRUKTIONEN.md — kein Score/FLAG/Sparraten-Event (System-Event scoring-neutral). DEFCON v3.7 + 11 Satelliten-Scores + Sparraten 285€ unverändert.
+
+**Pickup #C (pre-commit-Substrate):** NICHT in dieses Commit-Set gebündelt — Spec-File `docs/superpowers/specs/2026-05-15-pre-commit-substrate.md` nicht present + Pickup-#C-Text verlangt Codex-Sparring + separate Session. Als eigenständige USER-Decision separiert (Anti-Scope-Creep, Lean-Discipline §feedback_core_folder_lean_discipline).
+
+**Lehre:**
+- Burn-in-„Erfolg" = objektives Error-Kriterium (Δ=0) + Zeitfenster + subjektive User-Bestätigung; nur Step 3 ist nicht agent-verifizierbar → explizite User-Rückfrage statt Annahme.
+- Plan-Task-8-Trail-Scope (3 Files) bewusst schmaler als §18-8-File-Set, weil scoring-neutral — Plan ist normativ für Gate-Trail, §18 greift nur bei Score/FLAG/Sparraten-Event.
+
+**Cross-Reference:**
+- STATE.md Critical-Alert 16.05. (Pointer-Triade git log + STATE + dieser Eintrag)
+- PIPELINE.md #64 (Numbering-Gap → SSoT git log + dieser Eintrag)
+- Plan `docs/superpowers/plans/2026-05-14-plugin-integration.md` Task 7 + Task 8 (gitignored)
+- SESSION-HANDOVER.md Pickup #A (jetzt resolved → Banner-Refresh ausstehend)
+

@@ -86,4 +86,4 @@
 
 ---
 
-*🦅 PIPELINE.md v2.33 | Dynasty-Depot | **Stand:** 14.05.2026 (#62/#63 NEU Watchlist-Refresh-v3.2-Folge — Re-Score-Batch SPGI+SNPS + DE-Eintrag post-Q2 ~21.05.; #61 DONE Retrospektive Top-5-Retry-Sessions; Numbering-Convention: Gap signalisiert Archive, CORE-MEMORY §13 + log.md SSoT). Aktive Items: #17/#19/#21/#25/#26/#27/#36-#41/#52/#53/#55/#58/#59/#60/#62/#63. Nächster Forward-Trigger: 15.05. (#37 BRK Form-13F).*
+*🦅 PIPELINE.md v2.34 | Dynasty-Depot | **Stand:** 16.05.2026 (#64 DONE Phase-0a Cleanup PASS — Plugin-Integration-Gate, System-Event scoring-neutral, per Numbering-Convention aus Aktiv-Liste entfernt; SSoT = git log + STATE Critical-Alert + Vault log.md. #62/#63 NEU Watchlist-Refresh-v3.2-Folge; #61 DONE Retrospektive Top-5-Retry-Sessions; Numbering-Convention: Gap signalisiert Archive, CORE-MEMORY §13 + log.md SSoT). Aktive Items: #17/#19/#21/#25/#26/#27/#36-#41/#52/#53/#55/#58/#59/#60/#62/#63. Nächster Forward-Trigger: 15.05. (#37 BRK Form-13F).*
