@@ -11,6 +11,7 @@
 
 > **Konvention (11.05.2026 Slim-Refactor):** Critical-Alerts sind 1-3-Zeilen-Pointer. Sub-Detail-Decomposition (A/B/C/D… + §18-Sync-Set + bewusst-NICHT-angefasst) gehört NICHT hierher — kanonische Archivquelle ist `git log` (Commit-Body) + `CORE-MEMORY.md §13` (Lifecycle) + PIPELINE-Item-Body bei aktiven Items.
 
+- **16.05. (Sa) ✅ Obsidian-Skills-Vault-Bindung DONE — Pickup #D** (System-Event, scoring-neutral). 5 obsidian-skills normativ unter Vault-Workflows gebunden via neue Sektion `## Obsidian-Skills-Bindung` in WIKI-SCHEMA.md (nach §Workflows): markdown=DEFAULT, cli=read-only opt-in, defuddle=opt-in mit Tavily-Prioritätsregel; **canvas+bases hart exkludiert** mit Reaktivierungs-Gate. obsidian-skills als 3. passives Substrate in SYSTEM.md §Plugin-Layer inventarisiert. 6-File-Footprint atomar (kein §18-Score-Event, kein CORE-MEMORY §13, kein CLAUDE.md-Change). `system_audit --core` 14/15 grün. PIPELINE #65 per Numbering-Convention angelegt+entfernt (Footer-Bump). DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. Detail → git log + Vault log.md + Spec `docs/superpowers/specs/2026-05-16-obsidian-skills-vault-integration-design.md`.
 - **16.05. (Sa) ✅ System-Audit FAIL-Resolve — SESSION-HANDOVER:21 Dangling-Ref** (System-Event, scoring-neutral). Check-5 existence FAIL (13/15) entdeckt im Pickup-#D-Vorlauf-Baseline-Run: `SESSION-HANDOVER.md:21` referenzierte die Pickup-#C-Spec als „voll ausgearbeitet", obwohl Pickup #C nie ausgeführt wurde (Commit `36deaa0` = „scheduled post-Gate-PASS"; #62 ging an Watchlist-Refresh). Wortlaut auf Realität korrigiert (Spec = noch zu erstellen bei #C-Execution, Pfad-Token neutralisiert); Pickup #C bleibt legitimes Future-Item mit akkuratem Framing. Audit zurück auf **14/15 PASS, 0 FAIL, 1 WARN** (WARN = bekannte portfolio_returns/benchmark-Staleness, deferred Track-4). Sync-Set 3 Files atomar. Detail → git log + Vault log.md.
 - **16.05. (Sa) ✅ Phase-0a Cleanup PASS — Plugin-Integration-Gate** (System-Event, scoring-neutral). Burn-in ~48h: `hook-errors.log` Δ=0 vs Baseline 0 (Schwelle 0-5 ✅), `find ~/.claude ~/.claude-mem -name 'hook-*.log'` leer, Performance subjektiv unauffällig (User-bestätigt). Ruflo-Hook-Pfade entfernt + helpers/ archiviert + Marketplace gelöscht + claude-flow Skills/Agents+Slash-Commands in `_legacy_2026-05-14/` (Disk-Recovery ~279 MB). Latency-Mess-Quelle: option-b `03_Tools/hook-latency-probe.py` (Task-0-Verdict: /ctx-stats kein p95). Rollback-Artefakte intakt (nicht getriggert). PIPELINE #64 per Numbering-Convention aus Aktiv-Liste entfernt. **→ Phase 0b freigegeben.** DEFCON v3.7 + 11 Scores + Sparraten unverändert. Detail → git log + Vault log.md.
 - **14.05. (Do) ✅ Watchlist-Ersatzbank-Refresh v3.2 DONE** (System-Event, scoring-neutral). KONTEXT §5+§6+§12 NEU + 5 Drops (GOOGL/EXPN/HON/SAP/FICO) + 3 Adds via In-Refresh-!QuickCheck 14.05. (ADBE/KLAC/MA 🟢 GRÜN); **TYL 🔴 ROT** (ROIC <12% mehrquellig konvergent) → VEEV-Ersatz-Slot OFFEN, Brainstorm pending. Rollen-Reassigns ZTS exklusiv TMO + SNPS Adjacent; §5 MRVL gestrichen. **KONTEXT §12 NEU** Watchlist-Eintritts-Disziplin (Schätz-Score-Verbot + Score-≥60/≥65/D3-Schwelle). 3× Codex-Spec + 1× Codex-Plan-RP2 96% + 2× User-Eskalation. Live-Scores 11 Satelliten + Sparraten unverändert. PIPELINE #62/#63 NEU als Folge-Phase. Detail → CORE-MEMORY §13.
@@ -57,11 +58,11 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-05-16T14:03:01Z
+**Timestamp (UTC):** 2026-05-16T14:12:40Z
 **Result:** 14/15 PASS (1 WARN)
 **Run:** `python 03_Tools/system_audit.py --core`
 **Full-Report:** stdout (kein Archiv-File)
 
 <!-- system-audit:last-audit:end -->
 
-*🦅 STATE.md Hub v2.4 | Dynasty-Depot | **Stand:** 16.05.2026 (System-Audit FAIL-Resolve SESSION-HANDOVER:21 Dangling-Ref — Audit 14/15 grün; Pickup-#D-Vorlauf).*
+*🦅 STATE.md Hub v2.4 | Dynasty-Depot | **Stand:** 16.05.2026 (Pickup #D Obsidian-Skills-Vault-Bindung DONE; davor System-Audit FAIL-Resolve SESSION-HANDOVER:21 Dangling-Ref — Audit 14/15 grün).*

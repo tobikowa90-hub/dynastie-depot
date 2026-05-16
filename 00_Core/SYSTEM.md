@@ -46,6 +46,8 @@
 
 Aktive Plugins (passive Substrate): context-mode v1.0.124 + claude-mem v6.5.0. SessionStart/End-Owner bleibt `briefing-sync-check.ps1`. AIDefence-Block im Morning-Briefing-Prompt unangetastet (FAIL-OPEN-Pfad in v3.2.0 fängt fehlende MCP-Tools ab — siehe §Briefing-Status).
 
+**2026-05-16:** `obsidian@obsidian-skills` (kepano) als drittes passives Substrate installiert — reine Tool-Wrapper (kein Hook, keine Memory-/Routing-Injektion), andere Risikoklasse als context-mode/claude-mem. Normativ unter Vault-Workflows gebunden via WIKI-SCHEMA §Obsidian-Skills-Bindung (markdown=DEFAULT, cli=read-only opt-in, defuddle=opt-in mit Tavily-Prioritätsregel; canvas+bases hart exkludiert mit Reaktivierungs-Gate). Scoring-neutral, kein §18-Score-Event.
+
 ---
 
 ## §Earnings-Calendar-Status (NEU 30.04.2026, PIPELINE #24 Stufe 1)
@@ -82,4 +84,4 @@ Aktive Plugins (passive Substrate): context-mode v1.0.124 + claude-mem v6.5.0. S
 
 ---
 
-*🦅 SYSTEM.md v1.2 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 13.05.2026 — **Plugin-Substrate-Refactor DONE** · Aktive Plugins: context-mode v1.0.124 + claude-mem v6.5.0 (passive Plugin-Layer); AIDefence im Morning-Briefing unangetastet aber strukturell FAIL-OPEN (siehe §Plugin-Layer + §Briefing-Status). Historie: git log + CORE-MEMORY §13.*
+*🦅 SYSTEM.md v1.2 | Dynasty-Depot | System-Zustand — on-demand via Routing-Table | Stand: 16.05.2026 — **obsidian-skills als 3. passives Substrate gebunden** (WIKI-SCHEMA §Obsidian-Skills-Bindung; scoring-neutral). Aktive Plugins: context-mode v1.0.124 + claude-mem v6.5.0 + obsidian-skills (passive Plugin-Layer); AIDefence im Morning-Briefing unangetastet aber strukturell FAIL-OPEN (siehe §Plugin-Layer + §Briefing-Status). Historie: git log + CORE-MEMORY §13.*

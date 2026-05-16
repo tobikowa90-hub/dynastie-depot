@@ -212,6 +212,26 @@ Triggered when the human says: *"lint"*.
 
 ---
 
+## Obsidian-Skills-Bindung
+
+> Diese Skills slotten **unter** die bestehenden Workflows (INGEST / INGEST-VIDEO / QUERY / LINT / edit) — sie ersetzen oder umgehen keinen Workflow-Schritt. `raw/`-Immutabilität und §18-Vault-`log.md`-Sync bleiben unberührt. Bei jedem Konflikt gewinnt WIKI-SCHEMA. Plugin `obsidian@obsidian-skills` (kepano) = passive Tool-Wrapper (kein Hook, keine Memory-/Routing-Injektion).
+
+| Skill | Status | Workflow-Bindung / Grenze |
+|---|---|---|
+| **obsidian-markdown** | 🟢 gebunden, **DEFAULT** | §Page Frontmatter + §Cross-Referencing + §Naming Conventions — schema-konforme Frontmatter / Wikilinks / `aliases:` bei *jedem* `wiki/`-Page-Write (INGEST 3–6, QUERY 4, edit). Automatisch angewandt, kein Judgment, kein Downside. |
+| **obsidian-cli** | 🟡 gebunden, opt-in, **read-only** | Nur **lesende** Ops: QUERY (`index.md`/Page-Suche), LINT (Orphan-/Property-*Scan*). **Verboten:** `create` / `manage` / jeglicher Write auf `raw/` oder audit-relevante Pfade. `vault_backlinks` + `system_audit --vault` bleiben die **alleinige** normative Audit-/Gate-Kette — cli ersetzt sie nicht. |
+| **defuddle** | 🟡 gebunden, opt-in | INGEST Schritt 1 für **referenzhafte/statische** Web-Artikel/Docs → `raw/` + `wiki/sources/`. **Prioritätsregel:** zeitkritische/news-artige Quellen → **immer Tavily**; referenzhaft/statisch → defuddle; bei Ambiguität gewinnt Tavily (kein Doppel-Ingest). Video → `video_ingest.py` / INGEST-VIDEO-SSoT (unberührt). |
+| **json-canvas** | 🔴 **hart exkludiert** | Visualisierungs-Veto (Memory `feedback_no_visualization_skills_dynastie` — DEFCON ist tabellen-/zahlenbasiert). |
+| **obsidian-bases** | 🔴 **hart exkludiert** | SSoT-Parallel-Surface-Risiko vs. `00_Core/Faktortabelle.md` + `Rebalancing_Tool` / `Satelliten_Monitor`.xlsx (operative Score-SSoT). |
+
+**Reaktivierungs-Gate (canvas / bases):** Aufhebung des Hart-Exkludes ausschließlich via expliziter WIKI-SCHEMA-Schema-Änderung **+ Design-Review gegen die bestehenden SSoTs** (Faktortabelle / xlsx bzw. Visualisierungs-Veto). Kein impliziter „Use-Case-Trigger".
+
+**Hybrid-Aktivierungsregel:**
+- **obsidian-markdown:** DEFAULT bei allen `wiki/`-Page-Writes — automatisch, kein Judgment.
+- **obsidian-cli / defuddle:** opt-in — nur wenn Use-Case passt UND die jeweilige Grenze (Tabelle oben) eingehalten ist. Im Zweifel gewinnt bestehendes Tooling/SSoT, kein Parallel-Pfad.
+
+---
+
 ## Log Entry Format
 
 ```

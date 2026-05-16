@@ -1796,3 +1796,12 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Audit-Fix; keine wiki/-Page-Mutation)
 
+## [2026-05-16] edit | Obsidian-Skills-Vault-Bindung — §Obsidian-Skills-Bindung in WIKI-SCHEMA (Pickup #D)
+- 5 obsidian-skills normativ unter Vault-Workflows gebunden: markdown=DEFAULT, cli=read-only opt-in, defuddle=opt-in (Tavily-Prioritätsregel), json-canvas+obsidian-bases hart exkludiert mit Reaktivierungs-Gate
+- Neue Sektion `## Obsidian-Skills-Bindung` nach `## Workflows`, vor `## Log Entry Format`; WIKI-SCHEMA bleibt Vault-SSoT, Bindung untergeordnet (Kern-Invariante: bei Konflikt gewinnt WIKI-SCHEMA, raw/-Immutabilität + §18-log-Sync unberührt)
+- Scoring-neutral System-Event; SYSTEM.md §Plugin-Layer inventarisiert obsidian-skills als 3. passives Substrate; kein §18-Score-Event, kein CORE-MEMORY §13, kein CLAUDE.md-Change; DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert
+- Plan via superpowers:writing-plans + Codex-Single-Pass-Rigor (FAIL→PASS: F-1/F-2 PIPELINE-Footer-Bump #64/#56-Präzedenz + F-4 log.md-EOF-Anchor) + Diff-Re-Review PASS, dann inline ausgeführt
+- Sync-Set 6 Files atomar: WIKI-SCHEMA.md + Vault log.md + 00_Core/PIPELINE.md (#65 Footer-Bump v2.34→v2.35) + STATE.md (Critical-Alert + Footer) + SYSTEM.md (§Plugin-Layer + Footer) + SESSION-HANDOVER.md (Banner + Pickup-#D-DONE)
+- Pages created: none
+- Pages updated: none (Schema-Sektion + System-Event; keine wiki/-Page-Mutation)
+
