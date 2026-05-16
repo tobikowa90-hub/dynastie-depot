@@ -1847,3 +1847,16 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Hybrid-Formalisierung; keine wiki/-Page-Mutation)
 
+## [2026-05-16] system | Pickup #B Root-CLAUDE.md-Review DONE (scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (§18 System-Event) — kein Score/FLAG/Sparraten-Touch
+
+**Was passiert ist:**
+1. **Trigger:** User „weiter mit Plugin-Integration-Plan" nach `/clear`. Befund: Plan `2026-05-14-plugin-integration.md` ist SUPERSEDED (Phase-0a/0b DONE via HYBRID), kein Rest-Work — Konflikt mit stale Post-`/clear`-Prämisse aufgedeckt statt blind fortgesetzt (Memory `feedback_plan_on_runtime_not_doc_assumption`). USER-Decision-Gate → designierter offener Track = **Pickup #B** (SESSION-HANDOVER Z.22).
+2. **Read-only Audit Root-CLAUDE.md** (Scope: Post-Ruflo-Residuals + Lazy-Load-Disziplin + Optimierungspotenzial). Empirisch: 24/25 referenzierte Pfade existieren; **1 toter Pfad** (Wiki-Modus L65 `07_Obsidian Vault/WIKI-SCHEMA.md`); Content-Level **Ruflo-clean** (§Plugin-Layer bereits standalone 13.05./16.05.); Lazy-Load-Mechanik korrekt, nur Begründungs-Duplikat. Findings F1–F6 → Audit-Doc `docs/superpowers/specs/2026-05-16-pickup-b-claudemd-review.md`.
+3. **USER-Decision-Gate → Bundle C.** 5 chirurgische Edits: F1 toter Pfad → `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/WIKI-SCHEMA.md` · F2 Pfad-Konsistenz · F3 Lazy-Load-Begründung trim → TOKEN-RULES-Pointer · F4 Sync-Pflicht/Earnings Versions-/Datums-Historie raus → §18/§19.1-Pointer (Mechanik invariant) · F5 Wiki-Note-Count genericisiert. Netto 1065→1021 Wörter (chirurgisch; Audit-Doc-Schätzung −250…−320 als zu optimistisch korrigiert).
+4. **Codex-Single-Pass** (normativ-File-Disziplin, `feedback_codex_sparring_heuristic` + `feedback_review_via_codex_not_advisor`): **PASS-WITH-NITS** — 0 HIGH/MEDIUM, normative Invarianz erhalten, Pointer (INSTRUKTIONEN §18 / TOKEN-RULES L28) deckend, F1 verifiziert. 3 LOW-Carryover: Remote-Control-Stale-TODO „Konsolidierungstag 24.04." + `!Briefing`/`!CAPEX-FCF-ANALYSIS` nicht in normativer Routing-Table + F2-Form-Inkonsistenz — out-of-Bundle-C-Scope, nicht-blockierend.
+5. Scoring-neutral: DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. Kein §18-Score-Sync-Set. Sync-Set 5 Files atomar: `CLAUDE.md` + `00_Core/STATE.md` + `00_Core/PIPELINE.md` (Footer-Bump, Pickup-Track) + `00_Core/SESSION-HANDOVER.md` (Banner+Resume) + Vault `log.md` (dieser Eintrag). Audit-Doc gitignored (`docs/superpowers/`).
+- Pages created: none
+- Pages updated: none (System-Event CLAUDE.md-Review; keine wiki/-Page-Mutation)
+
