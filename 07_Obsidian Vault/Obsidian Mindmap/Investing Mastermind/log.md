@@ -1817,3 +1817,19 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Pipeline-Hygiene; keine wiki/-Page-Mutation)
 
+## [2026-05-16] system | Phase-0b Task-9 Tiefendiagnose — claude-mem nie enabled (Doku-Drift-Korrektur, scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (§18 SYSTEM.md + log.md) — kein Score/FLAG/Sparraten-Touch
+
+**Was passiert ist:**
+1. Phase 0b gestartet (Pickup #A + PF-1/PF-2 DONE laut SESSION-HANDOVER). Task 9 (claude-mem Stop-Haiku Throwaway-Verify) ist designierter User-Hands-on-Blocker. Agent-autonome Steps 1-2 (Throwaway-Setup) ausgeführt, User fuhr Sessions 3-5.
+2. **Empirie nach 3 echten Throwaway-Sessions:** `~/.claude-mem/` Datadir komplett absent, 0 Logs, 0 Projekt-Records — auch bei Worker-Direktaufruf kein Capture. Erste (falsche) Diagnose: „claude-mem non-funktional auf Windows" → FAIL.
+3. **User-Entscheidung Repro-Tiefendiagnose zuerst** — verhinderte falschen Re-Scope. Root-Cause gefunden: `~/.claude/settings.json` `enabledPlugins` (10 Plugins) enthält **kein** `claude-mem@thedotmack`; der `thedotmack`-Eintrag steht nur im Marketplace-/Source-Block. → claude-mem-Hooks (Setup/SessionStart/UserPromptSubmit/Stop) feuern **nie**. Kein Windows-Defekt — Plugin schlicht nie aktiviert.
+4. **Korrigierter Task-9-Status:** INVALID/nicht durchgeführt (nicht FAIL, nicht PASS) — der Throwaway-Test maß natives autoMemory (deshalb funktionierten Dedup/Merge/Chrome→Edge-Konflikt-Resolution lehrbuchhaft). claude-mem lag durchgängig dormant.
+5. **Doku-Drift festgestellt + korrigiert:** `CLAUDE.md` Plugin-Layer-Block + `SYSTEM.md` §Plugin-Layer Z.47 + Footer Z.87 behaupteten „claude-mem aktiv v6.5.0" — beides falsch (nie enabled; Cache real v13.2.0). Wortlaut auf Realität korrigiert (registriert-aber-nicht-enabled, Cross-Session-Memory lief durchgängig via natives autoMemory).
+6. **Test-Pollution bereinigt:** Throwaway hatte kein eigenes `autoMemoryDirectory` → schrieb in Produktiv-Memory-Dir `~/.claude/projects/C--Users-tobia-Code/memory/`. 3 Test-Files (`project-plugin-verify.md`, `user-environment.md`, `user-browser-chrome.md`) + 2 MEMORY.md-Index-Zeilen entfernt; Index sauber. (`user-browser-chrome.md` war in Session 3 bereits korrekt vom autoMemory-Konflikt-Resolver gelöscht.)
+7. **Phase-0b-Konsequenz (pending):** Plan/Spec-Autoren-Prämisse „claude-mem koexistiert capture-only by-design" (SESSION-HANDOVER Z.14) ist defekt — claude-mem capturte nie. Nächste Schritte User-bestätigt: 2a Doku-Drift-Fix (dieser Commit) → 2b Spec/Plan-Re-Review read-only → 3 Codex-Single-Pass-Sparring auf Strategie-Frage (claude-mem aktivieren vs. autoMemory-only formalisieren) → 1 isoliertes kontrolliertes Task-9-Re-Run konditional. Kein Task 15 (autoMemory-disable) — autoMemory ist nachweislich einziges funktionierendes Memory-System.
+8. Scoring-neutral: DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. Kein §18-Score-Sync-Set. Sync-Set 3 Files atomar: `CLAUDE.md` + `00_Core/SYSTEM.md` + Vault `log.md`.
+- Pages created: none
+- Pages updated: none (System-Event Doku-Drift-Korrektur; keine wiki/-Page-Mutation)
+
