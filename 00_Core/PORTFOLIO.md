@@ -11,7 +11,7 @@
 
 ---
 
-## Portfolio-State (11 Satelliten)
+## Portfolio-State (12 Satelliten)
 
 | Ticker | Score | DEFCON | Rate | FLAG | Nächster Trigger |
 |--------|-------|--------|------|------|------------------|
@@ -26,8 +26,9 @@
 | **V** | **64** | **🟠 2** | **19,00€** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity + ROIC-Methodology-Verify** |
 | APH | **61** | 🟠 2 | **0€** | 🔴 Score-basiert (Score 61 < 65 D3-Threshold) | Q2 FY26 ~23.07. — China-Tax + CommScope-Net-Lev Methodology-Watch (Score 63→61 am 30.04., Detail §12.7) |
 | MSFT | **50** | 🟠 2 | **0€** | 🔴 CapEx/OCF aktiv (Trigger A ✅ 57,7% / B ❌ / C ✅✅ — UND nicht vollumfänglich) | Q4 FY26 ~Juli — CapEx-Plateau-Recheck + WACC-Methodology-Verify; Insider-Block-Re-Score 14.05. (PIPELINE #25-#27) |
+| **AMZN** | **42** | **🔴 1** | **0€** | 🔴 CapEx/OCF aktiv (TTM netto 99,2% / gross 101,7% ≫60% — Neuaufnahme 12. Satellit 15.05.) | **Q2 FY26 ~Ende Juli — CapEx/OCF-FLAG-Re-Eval + Vollanalyse** |
 
-**Sparraten-Nenner:** 7×1,0 + 1×0,5 + 3×0 = **7,5** → 38,00€ volle / 19,00€ D2 / 0€ FLAG. **Summe 285€** ✓ (7×38 + 1×19 + 3×0). FLAG-Override-Raten Score-unabhängig — Score-Moves bei AVGO/MSFT/APH wirken nicht auf Nenner solange FLAG aktiv.
+**Sparraten-Nenner:** 7×1,0 + 1×0,5 + 4×0 = **7,5** → 38,00€ volle / 19,00€ D2 / 0€ FLAG. **Summe 285€** ✓ (7×38 + 1×19 + 4×0). FLAG-Override-Raten Score-unabhängig — Score-Moves bei AVGO/MSFT/APH/AMZN wirken nicht auf Nenner solange FLAG aktiv. **AMZN-Neuaufnahme (12. Satellit, User-Direktive 18.05.) ist nenner-neutral:** FLAG=Gewicht 0,0 → Nenner unverändert 7,5, alle 11 bestehenden Einzelraten unverändert (38€/19€/0€).
 
 > **Chronik aller Score-/FLAG-/Sparraten-Moves seit 17.04.2026** → CORE-MEMORY §12.X (Per-Ticker) + git log + `score_history.jsonl`. PORTFOLIO.md hält nur den Live-State; Vorgeschichte-Quotes 17.04.→04.05. entfernt (Cleanup 11.05.) — kein Info-Loss, da §12 + jsonl SSoT sind.
 
@@ -44,6 +45,7 @@
 - **MSFT FLAG-Status (UPDATED 30.04.2026):** Trigger A ✅ 57,7% / B ❌ FAIL CY26 $190B +23% Surprise / C ✅✅ Azure +39% cc — UND nicht vollumfänglich → FLAG bleibt aktiv. Re-Eval Q4 FY26 ~Juli + Insider-Block-Re-Score post-14.05. (Skip-Window läuft).
 - **TMO Q2 Re-Check** (Q1 23.04. resolved): Organic-Akzeleration H2 3-4%-Guide + Clario-Integration-Execution — Q2 Ende Juli.
 - **AVGO Re-Eval Q3 FY26** (FLAG aktiv seit 27.04. $106,4M Diskr. 90d >> $20M-Resolve-Schwelle; Vollanalyse 30.04. Score 84→53 D4→D2; Detail §12.1).
+- **AMZN Neuaufnahme 12. Satellit (15.05.2026, User-Direktive 18.05.):** Score 42/D1, 🔴 CapEx/OCF-FLAG TTM 99,2% netto (≫60%, schärfer als GOOGL 74-79%). FCF TTM nur $1,2B (-95% YoY, FCF-Yield 0,04%). Sparrate **0€ regelkonform** (User-Entscheidung: kein Owner-Override, FLAG heilig). Slot-Erweiterung 11→12 nenner-neutral. **Resolve-Gate:** CapEx/OCF <60% — frühestens wenn Monetarisierung der KI-CapEx OCF überholt (Jassy: "early years FCF challenged", 6-24 Mt. Lag). Re-Eval Q2 FY26 ~Ende Juli. Detail §12.<amzn> + score_history.jsonl + flag_events.jsonl.
 
 ---
 
@@ -55,9 +57,10 @@
 | Mai | ZTS/PEGA/CPRT | B | Q-Earnings + Slot-16 |
 | 27.05. | VEEV | B | Q1 FY27 Earnings |
 | 28.05. | COST | B | Q3 FY26 Earnings (Membership-Yield-Watch) |
+| ~Ende Juli | AMZN | B/C | Q2 FY26 Earnings — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse (Score 42/D1, FLAG seit 15.05.) |
 
 *Earnings-Window 28.04.-04.05. (V Q2 / MSFT Q3 / APH Q1 / AVGO Forward / BRK.B Q1) komplett abgeschlossen — Detail-DONE-Stempel in CORE-MEMORY §12.X + git log.*
 
 ---
 
-*🦅 PORTFOLIO.md v1.1 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 11.05.2026 (Slim-Refactor — Vorgeschichte-Quotes 17.04.→04.05. + resolved Watches + DONE-Trigger-Zeilen entfernt; ~5k Token Save; Detail-Chronik in CORE-MEMORY §12 + git log + score_history.jsonl)*
+*🦅 PORTFOLIO.md v1.2 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-05-18 (AMZN Neuaufnahme 12. Satellit — Score 42/🔴 D1, CapEx/OCF-FLAG TTM 99,2%, Sparrate 0€ regelkonform; Slot-Erweiterung 11→12 per User-Direktive, Sparraten-Nenner unverändert 7,5, alle 11 bestehenden Raten unverändert. Detail-Chronik in CORE-MEMORY §12 + git log + score_history.jsonl)*

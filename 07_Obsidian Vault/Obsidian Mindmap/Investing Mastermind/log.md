@@ -1997,3 +1997,18 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event; keine wiki/-Page-Mutation)
 
+## [2026-05-18] portfolio | 🔴 AMZN Neuaufnahme 12. Satellit — DEFCON-v3.7-Vollanalyse + §18-Multi-Event-Sync
+
+**Event-Typ:** Score-Event + FLAG-Trigger + Slot-Struktur-Change (Multi-Event-Union §18.2) — User-Direktive „Mein Portfolio, mein Geld, meine Regeln"
+
+**Was passiert ist:**
+1. **Vollumfänglicher !Analysiere-AMZN-Workflow** als bewusster Systemtest. Primärquellen: Q1-2026-Earnings-Release-PDF (pypdf→txt-Extraktion, da Read-Tool-Renderer fehlte) + Earnings-Call-Transcript (user-bereitgestellt `02_Analysen/Earnings Reports/Amazon/`) + defeatbeta-MCP + Web (Yahoo/GuruFocus/OpenInsider/SEC-Form-4).
+2. **Score 42/100 → 🔴 DEFCON 1.** Fundamentals 8/50 (fwd_pe 0 + p_fcf 0 [QT B6 hart: Wide × Fwd P/E ~34>30 / P/FCF ~2305>35; v3.7.6-Drawdown-Modulator inaktiv da nur -5,2% <20%] + bilanz 8/9 + capex_ocf 0/9 + roic 0/8 + fcf_yield 0/8 + opm 0/2) · Moat 19/20 (Wide, GM-Trend +1,65pp/J Bonus) · Technicals 6/10 (ATH 3 · RelStärke 0 [6c-Disziplin: kein belastbarer SPX-6M-Rohwert] · Trend 3) · Insider 6/10 (Ownership 3 Bezos 8,2% · kein-20M 3 — Bezos 2026 nur Gifts/Jassy 10b5-1, kein FLAG) · Sentiment 3/10 (B11 Crowd-Malus).
+3. **🔴 CapEx/OCF-FLAG getriggert (`AMZN_capex_ocf_2026-05-15`):** TTM netto 99,2% (Press-Release Purchases-of-P&E-net $147,3B / OCF $148,5B) / gross 101,7% (defeatbeta). FCF TTM nur $1,23B (-95% YoY, FCF-Yield 0,04%). ≫60%, schärfer als GOOGL 74-79%. §410 N/A (GW 2,6% Assets, kein M&A-GW-Compounder → GAAP-ROIC 5,4% ≪ WACC 15,57%). Q1-NI $30,3B Anthropic-Gain-bereinigt (+$16,8B non-op).
+4. **User-Strukturentscheidungen (AskUserQuestion):** (a) „Neuer 12. Satellit" → Slot-Erweiterung 11→12 (`max_aktien_slots` 12, `aktuelle_slots` 17), keine Verdrängung; (b) „Regelkonform 0€ bis FLAG-Auflösung" → Sparrate 0€, KEIN Owner-Override (FLAG heilig). **Nenner-neutral:** FLAG=Gewicht 0,0 → Nenner unverändert 7,5, alle 11 bestehenden Raten unverändert (38€/19€/0€, Σ285€).
+5. **§18-Multi-Event-Sync-Set (atomar, 1 Commit):** Faktortabelle.md + PORTFOLIO.md (v1.1→v1.2) + config.yaml + KONTEXT.md (v1.3→v1.4) + CORE-MEMORY §12.12+§13 (v1.20→v1.21) + Vault log.md (dieser Eintrag) + score_history.jsonl (`2026-05-15_AMZN_vollanalyse` via backtest-ready-forward-verify-Skill) + flag_events.jsonl (`AMZN_capex_ocf_2026-05-15` via archive_flag.py) + Rebalancing_Tool_v3.4.xlsx + Satelliten_Monitor_v2.0.xlsx (+ §18.7-Smoke-Test) + STATE.md (Critical-Alert + Forward-Trigger). DEFCON v3.7 + 11 Bestands-Scores unverändert.
+6. **Reviews:** Codex-Single-Pass (prozeduraler REJECT vor Sync — Artefakte/Slot-Struktur erwartungsgemäß noch nicht im Repo; inhaltlich Algebra/FLAG/§410/QT/DEFCON-Level bestätigt, kein methodischer Fehler). **OFFEN → frische Session (User-Wunsch, Kontext-Schonung):** Codex-Diff-Re-Review + Gemini Cross-Sync der 12 angefassten Files. **Tooling-Nebenwin:** poppler 26.02.0 user-level installiert (User-PATH, künftige PDF-Reads via Read-Tool).
+
+- Pages created: none
+- Pages updated: none (Score-Event; Vault-Faktortabelle/Satelliten-Pages separat bei Wiki-Sync — out-of-scope dieser §18-Welle)
+

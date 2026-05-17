@@ -43,8 +43,8 @@
 | Wide-Moat-Satelliten | 30% | 285,00 € | Scalable Capital |
 | Gold | 5% | 47,50 € | Scalable Capital |
 
-**US-Hard-Cap:** max. 63% | **Ist:** ~46,41% | **Ziel:** ~49,51%
-**Slots:** 16 gesamt (4 ETFs + 11 Aktien + 1 Gold) — alle vergeben
+**US-Hard-Cap:** max. 63% | **Ist:** ~46,41% (AMZN nenner-neutral FLAG=0€ → kein US-Kapitalfluss bis FLAG-Resolve) | **Ziel:** ~49,51%
+**Slots:** 17 gesamt (4 ETFs + 12 Aktien + 1 Gold) — alle vergeben (AMZN-Slot-Erweiterung 11→12, User-Direktive 2026-05-18)
 
 ---
 
@@ -77,6 +77,9 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 | V | Visa Inc. | Zahlungs-Infrastruktur | MA |
 | TMO | Thermo Fisher Scientific | Life-Science-Monopol | ZTS |
 | APH | Amphenol Corp. | Verbindungstechnologie | — |
+| AMZN | Amazon.com | Hyperscaler (AWS+E-Commerce+Ads) | — |
+
+**12. Satellit AMZN (Neuaufnahme 2026-05-18, User-Direktive):** Slot-Erweiterung 11→12, keine Verdrängung. Score 42/🔴 D1, 🔴 CapEx/OCF-FLAG (TTM 99,2%) → Sparrate 0€ regelkonform (kein Owner-Override, FLAG heilig). Nenner-neutral (FLAG=Gewicht 0,0 → bestehende 11 Raten unverändert). Conviction-Position ohne definierten Ersatz. Bewusste Owner-Entscheidung trotz DEFCON-1/FLAG — DEFCON-System dokumentiert den Zustand faktentreu, die Aufnahme-Entscheidung ist Owner-Mandat (KONTEXT §1 „Mein Portfolio, meine Regeln").
 
 **Keine Hyper-Growth-Angreifer** — CRWD und PLTR wurden entfernt.
 
@@ -148,6 +151,7 @@ Physischer Notfall-Ordner für Laura:
 | 29.04.2026 | MSFT Q3 FY26 Earnings | DEFCON-3-Re-Check: FLAG CapEx/OCF — Auflösung oder Veto? |
 | Mai 2026 | TMO / ZTS / PEGA / FICO Earnings | TMO Re-Check + Slot-16-Entscheidung PEGA |
 | Juni 2026 | Bausparvertrag 9.500€ + Steuererstattung 2.000€ | Sparplan-Booster planen |
+| ~Ende Juli 2026 | AMZN Q2 FY26 Earnings | CapEx/OCF-FLAG-Re-Eval (Resolve <60%) + Vollanalyse (Score 42/🔴 D1, FLAG seit 15.05.) |
 
 ---
 
@@ -249,4 +253,4 @@ Bei !QuickCheck-Rot oder Score <60: kein §6-Eintrag, Slot bleibt offen oder Bra
 - V-Q2-Incident 28.04.2026 — Präzedenz „Score-Move auf unzureichender Evidenz"
 
 ---
-*🦅 KONTEXT.md v1.3 (§12 Watchlist-Eintritts-Disziplin NEU) | Dynastie-Depot | Stand: 14.05.2026*
+*🦅 KONTEXT.md v1.4 (§5 AMZN 12. Satellit Neuaufnahme — Slot 11→12 User-Direktive, Score 42/D1/🔴 CapEx-FLAG/0€ regelkonform) | Dynastie-Depot | Stand: 2026-05-18*

@@ -61,13 +61,16 @@
 | APH | 19,0% FY25 | 28% bereinigt §410 (CommScope-GW) vs WACC 14,30% | 36,9% FY25 | 1,6x Q1 FY26 (post-CommScope) | Wide | **61** | 🟠 2 | 🔴 FLAG (Score-basiert <65 D3) | **2026-04-30** | **Q2 FY26 ~23.07.** — China-Tax-ETR-27%-Verify + CommScope-Net-Lev-Verlauf + ROIC-GW-Bereinigung-Full-Year-Check |
 <!-- DATA:COST -->
 | COST | ~3% 5J | 5.6% GAAP (MY 15.2%) | ~12.7% | <1x | Wide | 69 | 🟡 3 | ✅ Clean (Screener-Exception) | 2026-04-17 | Q1 FY27 Earnings ~Dez 2026 |
+<!-- DATA:AMZN -->
+<!-- AMZN-Neuaufnahme 15.05.2026 (Score-Datum; Analyse 18.05.): 12. Satellit per User-Direktive — Slot-Erweiterung 11→12, keine Verdrängung. Score 42/D1, 🔴 CapEx/OCF-FLAG (TTM netto 99,2% / gross 101,7%, ≫60%). Sparrate 0€ regelkonform (User-Entscheidung: kein Override, FLAG heilig). AMZN FLAG=Gewicht 0,0 → Nenner bleibt 7,5, alle 11 bestehenden Raten unverändert (38€/19€/0€, Σ285€). §410 N/A (GW 2,6% Assets). Codex-Single-Pass-Review (prozeduraler REJECT vor Sync, inhaltlich bestätigt) + Re-Review post-Sync. ScoreRecord 2026-05-15_AMZN_vollanalyse. -->
+| AMZN | ~1% 5J (FCF TTM $1,2B, CapEx-Boom) | 5,4% 6Q-Ø GAAP vs WACC 15,57% (defeatbeta; §410 N/A GW 2,6%) | 50,3% FY25 (3J +1,65pp/J) | NetDebt/EBITDA ~0,4x | Wide | **42** | **🔴 1** | 🔴 CapEx/OCF TTM 99,2% netto (FLAG aktiv 2026-05-15 — Sparrate 0€, Resolve-Gate <60%) | **2026-05-15** | **Q2 FY26 ~Ende Juli — CapEx/OCF-FLAG-Re-Eval + Vollanalyse** |
 <!-- END_TABLE -->
 
-**Aktive FLAGs:** MSFT (CapEx/OCF >60%) | **AVGO (Insider-Selling 90d $106M+ — aktiviert 27.04.2026)** | APH (Score-basiert, DEFCON 2 seit Threshold-Alignment)
+**Aktive FLAGs:** MSFT (CapEx/OCF >60%) | **AVGO (Insider-Selling 90d $106M+ — aktiviert 27.04.2026)** | APH (Score-basiert, DEFCON 2 seit Threshold-Alignment) | **AMZN (CapEx/OCF TTM 99,2% netto — aktiviert 2026-05-15, Neuaufnahme 12. Satellit)**
 **Struktureller Disclosure (kein FLAG):** ~~TMO (fcf_trend_neg)~~ **Resolved 23.04.2026** (Q1 FY26 FCF $825M +121% YoY, WC-Unwind-These bestätigt)
 **Unter Review:** — (AVGO 27.04.2026 zu aktivem FLAG promotet)
-**Analysierte Positionen:** 11/11 ✅ ALLE SATELLITEN auf v3.7 rekalibriert (V 18.04. + TMO 18.04./23.04. Forward-Vollanalyse, Rest Algebra-Projektion)
-**Offene Scores:** 0/11
+**Analysierte Positionen:** 12/12 ✅ (AMZN Neuaufnahme 15.05.2026 Forward-Vollanalyse — 12. Satellit; V 18.04. + TMO 18.04./23.04. + AVGO/MSFT/APH 30.04. + BRK.B 04.05. Forward-Vollanalyse, Rest Algebra-Projektion)
+**Offene Scores:** 0/12
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
 **Sparraten-Nenner:** 7×1,0 + 1×0,5 + 3×0 = **7,5** → volle Rate **38,00€** / D2-Rate **19,00€** (V allein) / FLAG (APH, MSFT, AVGO) **0€**
 
@@ -127,4 +130,4 @@ Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · 
 
 ---
 
-*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 30.04.2026 (AVGO Forward-Vollanalyse Score 84→53 D4→D2 FLAG aktiv unverändert; MSFT 59→50; APH 63→61) | Nächste Vollaktualisierung: 17.07.2026*
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 2026-05-18 (AMZN Neuaufnahme 12. Satellit — Score 42/D1, 🔴 CapEx/OCF-FLAG TTM 99,2%, Sparrate 0€ regelkonform; Slot-Erweiterung 11→12 per User-Direktive, Nenner unverändert 7,5) | Nächste Vollaktualisierung: 17.07.2026*
