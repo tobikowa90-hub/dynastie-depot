@@ -1970,3 +1970,17 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
 
+## [2026-05-17] system | claude-mem Context-Injection-Tuning + Pre-Investigation-Recall-Check verankert (scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (Plugin-Layer-Tuning + neue Verhaltens-Disziplin) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
+
+**Was passiert ist:**
+1. **claude-mem „97%"-Analyse:** Beworbene SessionStart-„97% savings" = Vanity-Frame — Denominator = nie-neu-bezahlte kumulierte Gesamtarbeit (672k), nicht der reale Counterfactual (= ohnehin geladene STATE/PORTFOLIO + on-demand git-log). Netto-Token-Bilanz der ~20,7k-50-Obs-Startup-Injektion in diesem schon-schlanken SSoT-Projekt ≈ 0 bis leicht negativ (additiver Dauer-Tax, wächst mit Obs-Zahl).
+2. **Therapie `~/.claude-mem/settings.json`** (nicht-versioniert, außerhalb Repo; Backup `settings.json.bak-20260517`): `CLAUDE_MEM_CONTEXT_OBSERVATIONS 50→0` (pauschale Obs-Index-Injektion entfällt; Recall **voll erhalten**, on-demand via `mem-search`/`get_observations`), `CONTEXT_SESSION_COUNT 10→5` (Cross-Session-Orientierung schlank erhalten; `SHOW_LAST_SUMMARY=true` unberührt = eigentlicher Orientierungs-Block), `CONTEXT_SHOW_SAVINGS_PERCENT true→false`. Greift ab nächstem SessionStart (Hook liest settings frisch, kein Worker-Restart nötig).
+3. **Pre-Investigation-Recall-Check kodifiziert:** echte claude-mem-Ersparnis = vermiedene Re-Investigation (~5–15k/Dig, Präzedenz: heutiger `bad_score.jsonl`-Fehlalarm = 5 Tool-Calls für stat-dirty-False-Positive). War NICHT systeminhärent (kein Skill/Hook erzwingt es, semantisch nicht hookbar). Normativer Anker = **CLAUDE.md „Verhalten"-Bullet** (vor ≥3-Tool-Diagnose EIN gezielter Recall-Pass; Treffer = advisory Prior, billig gegen Live-State verifizieren — Guard-Rail/§17.1-Forward-Bindung gesetzt). Detail/Auslöser → Auto-Memory `feedback_pre_investigation_recall_check.md` (+ MEMORY.md-Index). Plugin-Layer-Verankerung/§17.1-Cross-Link bewusst **nicht** (Kategorie-Unterschied Nutzungs-Disziplin ≠ Autoritäts-Constraint; User-Entscheid „a").
+4. **§18-Sync (atomar, scoring-neutral):** CLAUDE.md (Verhalten-Bullet) + 00_Core/SYSTEM.md (§Plugin-Layer 2026-05-17-Absatz + Footer-Stand 16→17.05.) + Vault `log.md` (dieser Eintrag). Auto-Memory-File + MEMORY.md außerhalb Repo (autoMemory-Verzeichnis). KEIN PORTFOLIO/score_history/config.yaml/xlsx/flag_events-Touch. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. HYBRID-Final-State + autoMemory-Kanonizität + Live-State-Priorität unberührt. Pre-Commit-Diff-Inspektion vor Commit.
+5. **Substrate-erzwungener #69-Slice:** Pickup-#C crlf-guard (fail-close, Spec §4.3) blockte den Commit — `CLAUDE.md` + `00_Core/SYSTEM.md` lagen CRLF auf Platte (Teil des deferred #69-CRLF-Debt, 46 Files). Byte-level CRLF→LF normalisiert (binary-safe/idempotent, PowerShell `ReadAllBytes`→Filter→`WriteAllBytes`, keine Encoding-Mutation). 2 von 46 #69-CRLF-Files damit incidentell mit-bereinigt; #69 bleibt offen für Rest. Re-Commit nach Normalisierung.
+
+- Pages created: none
+- Pages updated: none (System-Event; keine wiki/-Page-Mutation)
+
