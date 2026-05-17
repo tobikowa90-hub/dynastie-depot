@@ -1922,3 +1922,20 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
 
+## [2026-05-17] system | Pickup #C Execution Unit 3/3 DONE — CRLF-One-Shot §4.1 (Pickup #C Execution KOMPLETT)
+
+**Event-Typ:** Pipeline-Item (Status-Transition #68 Execution KOMPLETT DONE) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
+
+**Was passiert ist:**
+1. **CRLF-Audit-Scan (Spec §4.1 User-Checkpoint, read-only):** `git ls-files *.jsonl *.patch` → 7 Files, 6 CRLF-kontaminiert: `score_history.jsonl` (33/34), `flag_events.jsonl` (3/3), `portfolio_returns.jsonl` (5/5), `benchmark-series.jsonl` (5/5), system_audit-Fixtures `bad_score.jsonl` (1) + `good_score.jsonl` (1); `empty.jsonl` 0-byte.
+2. **Nicht-antizipierter Scope-Fund + Verifikation (§0.5 Caller-Scan):** `git ls-files *.jsonl` fängt 2 Test-Fixtures. Geprüft: `jsonl_schema.py:76` liest `open("r", encoding="utf-8")` (Text-Mode, CRLF-agnostisch); `system_audit/_smoke_test.py:103-125` asserted Schema-Status + Zeilennummer (`bad_score.jsonl:1`), NICHT Bytes → LF-Rewrite bricht Tests nicht; CRLF = dieselbe versehentliche Kontamination, kein intentionaler Test.
+3. **User-Audit-Checkpoint (Spec §4.1, kein Blind-Rewrite):** Audit-Tabelle + fundierte Empfehlung via AskUserQuestion → **USER-Scope-Entscheidung „alle 6 normalisieren"** (Spec-§4.1-wörtlich, konsistent mit Unit-2-`.gitattributes`).
+4. **Binär-Rewrite + scoring-neutral-Beweis:** `rb`/`wb` (nie Text-Mode — Memory `feedback_windows_python_crlf_text_mode`), pro File `wt.replace(b'\\r\\n',b'\\n')`; Beweis = working-tree-LF == `git show HEAD:<f>` LF-normalisiert (0 content-Δ). Erster Lauf crashte an Windows-cp1252-Console-`Δ`-Print (write_bytes lief davor → `bad_score.jsonl` schon LF); ASCII-safe Re-Run idempotent. **Ergebnis: alle 5 rewritten YES 0-content-delta, SCORING-NEUTRAL VERIFIED True, RESIDUAL CRLF NONE.**
+5. **Befund — KEIN separater CRLF-Commit:** `git diff`/`git add --renormalize` zeigen 0 Diff; `git show HEAD:` der jsonl ist **bereits LF-clean**. Die Unit-2-`.gitattributes` (`c7a1355`, `*.jsonl text eol=lf`) hat die logische EOL-Normalisierung beim Commit vorweggenommen (git speichert intern LF; Working-Tree hatte nur physisch CRLF durch Windows-autocrlf-Checkout). Unit-3-Rewrite = physischer Working-Tree-Cleanup (eliminiert git-CRLF-Dauer-Warnung), kein commitbarer git-Diff. Spec-§4.1-Intent (Pre-Existing-CRLF eliminieren + Rückfall verhindern) **erfüllt** via `.gitattributes` + `crlf-guard`-Hook-Doppelschutz. Kein künstlicher Erzwingungs-Commit (§0.6 — gegen Realität = Over-Engineering).
+6. **Classifier-/Encoding-Lehren:** Auto-Mode-Classifier erkennt AskUserQuestion-Antworten nicht als Autorisierung → explizite verbale Freigabe nötig (2× diese Session: CR-Background + CRLF-Rewrite; Permission-Rule-Weg unsicher gegen semantischen Classifier). Windows cp1252-Console crasht bei Nicht-ASCII-Print (`Δ`) → ASCII-safe Output-Disziplin bei Inline-Python-Läufen. → 2 Memory-Kandidaten.
+7. **§18-Sync (Pipeline-Item, scoring-neutral, Session-Abschluss):** PIPELINE #68 (Unit-1+2+3-DONE + Footer v2.41→v2.42) + STATE.md (Critical-Alert + Footer) + SESSION-HANDOVER.md (finaler Banner + Resume-Anweisung, §18.1 Pflicht bei Session-Abschluss) + Vault `log.md` (dieser Eintrag). Reiner Doc-Sync (kein jsonl-Content-Commit — siehe Punkt 5). DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
+8. **Offener Verifikations-Rest (Folge-Session, Trigger „Pickup #C Akzeptanz-Verifikation"):** Spec-Akzeptanz #1 (`pre-commit install` + `pre-commit run --all-files` grün auf clean tree) + Ruff-Mirror-Pin `v0.15.12` (`.pre-commit-config.yaml`) gegen lokal verfügbare Ruff-Version verifizieren/justieren (pyproject `required-version >=0.15.12`); pre-commit-CLI-Verfügbarkeit in dieser Session nicht geprüft.
+
+- Pages created: none
+- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
+
