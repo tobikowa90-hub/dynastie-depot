@@ -2,7 +2,7 @@
 name: Applied Learning Log
 description: Kuratierte Arbeitsprinzipien für Dynasty-Depot-Sessions (Tier 2 des 3-Tier-Lernsystems). Enthält Pflege-Regeln und Versionshistorie.
 type: learning-log
-updated: 2026-05-07
+updated: 2026-05-18
 ---
 
 # Applied Learning — Kuratierte Arbeitsprinzipien
@@ -10,7 +10,7 @@ updated: 2026-05-07
 > Tier 2 des 3-Tier-Systems (Auto-Memory → Applied Learning → INSTRUKTIONEN.md).
 > <15 Wörter pro Bullet. Nur operativ relevante Arbeitsprinzipien — keine Tool-References (→ Auto-Memory) und keine systemischen Regeln (→ INSTRUKTIONEN.md §§).
 
-## Bullets (Stand: 16/20)
+## Bullets (Stand: 17/20)
 
 > **Proaktive Pflege (seit 18.04.2026):** Bei jedem Monats-Übergang: 5-Min-Scan — Tool-References identifizieren und evakuieren. Verhindert Buildup, billiger als reaktive Überlauf-Sanierung.
 >
@@ -34,6 +34,7 @@ updated: 2026-05-07
 - Cloud-Sync-Verify ist Pre-Phase-Pflicht für AgentDB-/Memory-DB-Tools — Path-Hash + DriveFS-Audit via WSL-sqlite3 (Cloud-Sync-Pitfall bei OneDrive/Google-Drive-Vaults; Präzedenz 02.05.2026)
 - Bridge-/Substrate-Layer DONE-Verdict erfordert end-to-end Search-Verify mit known-query (similarity ≥ Schwelle), NICHT Storage+Reporter-Verify allein (Präzedenz: 7-Wochen-„Bridge connected"-Illusion ohne semantischen Recall-Test)
 - Plugin-/Substrate-Layer ohne konkreten Workflow-Use-Case = Über-Engineering — Nutzen empirisch belegen vor Engineering-Welle (Sunset-Präzedenz 13.05.; analog quick-screener-Refresh-Verzicht 09.05.)
+- Deferred-Sub-Scope: vor Execution prüfen ob Substrate-fail-close-Gates ihn unabhängig committbar machen — sonst Kosten umsonst
 
 ## Promotion-Logik
 
@@ -53,3 +54,4 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 | v2.6 | 02.05.2026 | **Bridge-Coherence-Scan** post-Ruflo-Phase-1.2-1.7-DONE: −3 Bullets entfernt (Info-Loss-Aversion, Spec-§-Drift, Exhaustive-Drift-Check — alle als Auto-Memory bereits evakuiert; Doppel-Speicherung verzerrte Bridge-PageRank-Recall). +1 neu (Pre-Append-Audit-Klausel aus Provenance-Gate-Plan v3.1 + V/MSFT-Pre-Earnings-Klausel 28.04.). +1 Pflege-Regel-Erweiterung (Bridge-Coherence beim Monatsscan). Stand: **12/20**. |
 | v2.7 | 07.05.2026 | +1 (Tooling-Bulk-Edit + CR-Pass koppeln) — empirische Evidenz aus Ruff-Cleanup Cluster A+B: 96+ pre-existing CR-Findings (3 critical / 14 major union) durch zwei sukzessive `coderabbit review -t uncommitted --dir 03_Tools/`-Pässe surfacet, die Ruff allein nicht sieht (semantische Algo-Drift, hardcoded-Annahmen, missing cross-validators, Test-Fixture-Quality). Reaktiver Konsolidierungs-Backlog (PIPELINE #46 + #47) wäre durch periodische CR-Reviews während Authoring größtenteils vermieden worden. Stand: **13/20**. |
 | v2.8 | 13.05.2026 | +3 generelle Engineering-Hygiene-Bullets aus Ruflo-Sunset. Stand: **16/20**. |
+| v2.9 | 18.05.2026 | +1 (Deferred-Sub-Scope-Committbarkeit vor Execution prüfen) — aus #69-(c)-Reinfall: Autofix+Doppel-CR+Codex+3-Smokes liefen, bevor erkannt wurde dass fail-close ruff-format-Hook (b)↔(c) koppelt → (c) nicht allein committbar, Arbeit reverted. §0.1-Think-before-coding-Miss, Kopplung war aus bereits gelesener `.pre-commit-config` ableitbar. Tier-2-only (Bridge-Coherence, kein Auto-Memory-Duplikat). Stand: **17/20**. |
