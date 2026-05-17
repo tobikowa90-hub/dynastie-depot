@@ -1957,3 +1957,16 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
 
+## [2026-05-17] system | BRK Form-13F #37 RESOLVED + Voll-Clean/Slim (PIPELINE/STATE/PORTFOLIO)
+
+**Event-Typ:** Pipeline-Item (#37 Status-Transition RESOLVED + Doc-Slim-Refactor) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
+
+**Was passiert ist:**
+1. **BRK Form-13F #37 — Definitiv-Resolution:** SEC EDGAR submissions-API (CIK 0001067983, Pflicht-UA da ctx-fetch 403): Q1-26 13F-HR **gefiltert** (filed 2026-05-15, period 2026-03-31, acc `0001193125-26-226661`) — historisches BRK-Q1-15.05.-Pattern bestätigt. Apple-Holding aus Infotables beider Quartale (alle 12 Manager-Zeilen summiert): Q4-25 (acc `…054580`) = **227.917.808 Shares** / $61,96B · Q1-26 = **227.917.808 Shares** / $57,84B. **Share-Count Δ = 0 = KEIN Apple-Trim**; Value −$4,12B = reiner Kurs-Markdown (−6,65%). **Resolution:** Pre-Brief-§2-Hypothese (Apple-Anteil am Q1-Consumer-Cost-Basis-Trim −$3,05B, Range $0,6–3,05B) **definitiv = $0** — Move ist Non-Apple. Codex-HIGH-Anti #5 (Position-Sizing-nicht-Exit) maximal bestätigt (Full-Hold). Top-5 65→61% = Bank-getrieben (BoA-Trim + Bank-FV-Drop), nicht Apple. **KEIN Score-Move** (BRK.B 71/D3/FLAG ✅ Insurance-Exception/38€ unverändert; Konzentrations-Roll + Apple-Thesis Q2-FY26-Vollanalyse-gebunden ~02./03.08., #36/#38-#41 aktiv). #37 RESOLVED → PIPELINE-Removal per Numbering-Convention.
+2. **Voll-Clean/Slim (User-Direktive „Pipeline cleanen + State verschlanken"):** **PIPELINE.md** — #37 entfernt (2 Stellen: 🟠-Trigger-Bullet Z.24 + Item-Body; Z.22-Range #36-41 → #36/#38-#41 präzisiert; Footer v2.42→v2.43 slim). #69 NEU bereits im Vor-Commit (`c86aea3`). **STATE.md** — Critical-Alerts Slim-Refactor (11.05.-Präzedenz fortgeführt): 13 Mega-Bullets (3× 17.05. + 8× 16.05. + 14.05./13.05.) → 5 kondensierte 1-3-Zeilen-Pointer + 1 Archiv-Pointer „≤ 11.05. → git log + CORE-MEMORY §13 + PIPELINE-Item-Body" (non-lossy: jeder gerollte Bullet trug bereits SSoT-Pointer; Konvention Z.12); Forward-Triggers resolved-BRK-#37 raus, VEEV/COST/MSFT-Skip aktualisiert; Footer slim. **PORTFOLIO.md** — 2 DONE/resolved Trigger-Zeilen raus (~14.05. MSFT #26 DONE Δ=0, ~15.05. BRK #37 resolved); SNPS/SPGI-Zeile #62-Pointer ergänzt. **CORE-MEMORY §12.4** — BRK-#37-Definitiv-Resolution-Append (Vor-Edit dieser Welle).
+3. **Token-/Lean-Effekt:** STATE Critical-Alerts ~13 → 6 Bullets; PIPELINE #37-Body (~1 Mega-Zeile) + 2 Footer-Walls eliminiert. Kein Information-Loss — kanonische Detail-SSoT = git log + CORE-MEMORY §13/§12.4 + PIPELINE-Item-Body (Konvention STATE.md Z.12).
+4. **§18-Sync (atomar, scoring-neutral):** CORE-MEMORY.md §12.4 + PIPELINE.md (#37-Removal + Range + Footer) + STATE.md (Critical-Alerts-Slim + Forward-Triggers + Footer) + PORTFOLIO.md (Trigger-Tabelle) + SESSION-HANDOVER.md (Resume bereits im Vor-Commit aktuell) + Vault `log.md` (dieser Eintrag). KEIN PORTFOLIO-Score/FLAG/Sparraten-Touch, KEIN score_history/config.yaml/xlsx/flag_events. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. Pre-Commit-Diff-Inspektion: pre-existing `bad_score.jsonl` bleibt unstaged.
+
+- Pages created: none
+- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
+

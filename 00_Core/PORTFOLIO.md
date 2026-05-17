@@ -51,9 +51,7 @@
 
 | Datum | Ticker | Klasse | Aktion |
 |-------|--------|--------|--------|
-| 28.04. (overdue) | SNPS/SPGI | B | Watchlist-Review Q1 Earnings — Nachholbedarf |
-| ~14.05. ✅ DONE | MSFT | — | Insider-Block-Re-Score Path-#2 (Δ=0, Score 50/D2 unverändert) — PIPELINE #26 DONE 14.05., siehe CORE-MEMORY §12.6 |
-| ~15.05. | BRK | — | Form-13F Q1-26 Filing → Apple-Trim-Magnitude (PIPELINE #37) — *EDGAR-Check 14.05.: nicht gefiltert; BRK-Q1-Pattern 15.05. seit 2021* |
+| 28.04. (overdue) | SNPS/SPGI | B | Watchlist-Review Q1 Earnings — Nachholbedarf (PIPELINE #62) |
 | Mai | ZTS/PEGA/CPRT | B | Q-Earnings + Slot-16 |
 | 27.05. | VEEV | B | Q1 FY27 Earnings |
 | 28.05. | COST | B | Q3 FY26 Earnings (Membership-Yield-Watch) |
