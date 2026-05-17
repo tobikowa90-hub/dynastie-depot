@@ -1,0 +1,14 @@
+# Dynasty-Depot — strukturelle LF-Erzwingung (pre-commit-Substrate Spec §4.2).
+# Verhindert die dokumentierte Windows-CRLF-Text-Mode-Trap-Klasse (Memory
+# feedback_windows_python_crlf_text_mode): *.patch MUSS LF sein, sonst failt
+# git apply. Defense-in-depth zusammen mit dem crlf-guard pre-commit-Hook (§4.3)
+# und der einmaligen CRLF-Normalisierung (§4.1).
+*.jsonl   text eol=lf
+*.py      text eol=lf
+*.md      text eol=lf
+*.patch   text eol=lf
+
+# Test-Fixtures sind bewusst byte-exakt (enthalten absichtlich CRLF-Kontamination
+# als bad-Input) — KEINE EOL-Normalisierung, sonst geht die getestete Eigenschaft
+# verloren (Spec §5.2; Memory feedback_windows_python_crlf_text_mode).
+03_Tools/precommit/_fixtures/** -text

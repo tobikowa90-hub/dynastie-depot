@@ -1,0 +1,83 @@
+# pre-commit-Substrate (Spec docs/superpowers/specs/2026-05-15-pre-commit-substrate-design.md).
+# Drop-in zum bestehenden Ruff-Workflow; additiv zu CodeRabbit/Codex (versch.
+# Defect-Klassen). ALLE Hooks non-mutierend + fail-close (= §18.7-Doktrin).
+#
+# Plattformvertrag (Spec §1.1): lokale Hooks `language: system` — gebunden an
+# DENSELBEN Interpreter, der 03_Tools/ betreibt (openpyxl + 03_Tools/backtest-
+# ready/schemas.py importierbar). Primärweg = Git-Bash unter Windows; WSL =
+# best-effort (nicht v0.1-gate-blockierend). Der konkrete `python`-Pfad ist
+# beim `pre-commit install`-Smoke (Akzeptanz-Kriterium 1) zu pinnen/fixieren.
+#
+# Non-Mutations-Invariante (Spec §1, Codex-F1): Ruff hier check-only
+# (`--no-fix` / `--check`). Lint-/Format-Apply ist ein manueller Entwickler-
+# Schritt VOR dem Gate (§5 Kriterium 6), kein Hook-Verhalten. Einzige
+# designierte Mutation im Substrate = der einmalige CRLF-Normalisierungs-
+# Commit (§4.1), bewusst außerhalb der Hook-Laufzeit.
+
+minimum_pre_commit_version: "3.5.0"
+fail_fast: false
+
+# Test-Fixtures sind Validator-INPUTS (direkt via Test-Harness an die
+# Validator-main() übergeben), kein zu prüfender Repo-Inhalt. Global excluden
+# → kein Self-Trigger (CRLF-bad-Fixture würde sonst crlf-guard bei jedem
+# Commit blockieren). Spec §5.2.
+exclude: ^03_Tools/precommit/_fixtures/
+
+# Spec §2 Hook-Reihenfolge: crlf-guard → ruff/ruff-format → JSONL-Validatoren
+# → xlsx-smoke-test (billigste/strukturellste Checks zuerst, teuerster
+# openpyxl-Load zuletzt). pre-commit führt Repos UND Hooks in Listenreihenfolge
+# aus → die drei Blöcke unten sind exakt in dieser Reihenfolge sortiert
+# (Codex-M1-Fix: crlf-guard-Block VOR dem Ruff-Mirror, nicht danach).
+repos:
+  # ── Block 1: crlf-guard (repo:local, language:system, Spec §4.3) — MUSS
+  #    zuerst laufen (Spec §2): CRLF-Reject vor jedem Schema-/Lint-Parse.
+  - repo: local
+    hooks:
+      - id: crlf-guard
+        name: crlf-guard (Byte-Level LF-only, Spec §4.3)
+        entry: python 03_Tools/precommit/crlf_guard.py
+        language: system
+        files: \.(jsonl|patch|py|md)$
+        pass_filenames: true
+
+  # ── Block 2: Ruff offizieller Mirror, gepinnt (Spec §2). Eigene isolierte
+  #    Env ist hier robust (reine CLI, keine Projekt-Imports). rev gegen
+  #    pyproject `required-version = ">=0.15.12"` justiert; beim Akzeptanz-
+  #    Smoke gegen lokal verfügbare Ruff-Version verifizieren (§0.1).
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.12
+    hooks:
+      - id: ruff
+        name: ruff (check-only, --no-fix)
+        args: ["--no-fix"]
+        files: ^(03_Tools|01_Skills)/.*\.py$
+      - id: ruff-format
+        name: ruff-format (--check, non-mutierend)
+        args: ["--check"]
+        files: ^(03_Tools|01_Skills)/.*\.py$
+
+  # ── Block 3: JSONL-Validatoren → xlsx-smoke-test (repo:local,
+  #    language:system, Spec §1.1/§3.1-3.3). xlsx zuletzt (teuerster
+  #    openpyxl-Load).
+  - repo: local
+    hooks:
+      - id: validate-score-history
+        name: validate-score-history (ScoreRecord-Schema + append-only, Spec §3.2)
+        entry: python 03_Tools/precommit/validate_score_history.py
+        language: system
+        files: (^|/)score_history\.jsonl$
+        pass_filenames: true
+
+      - id: validate-flag-events
+        name: validate-flag-events (FlagEvent-Schema, Spec §3.3)
+        entry: python 03_Tools/precommit/validate_flag_events.py
+        language: system
+        files: (^|/)flag_events\.jsonl$
+        pass_filenames: true
+
+      - id: xlsx-smoke-test
+        name: xlsx-smoke-test (§18.7-Reproduktion fail-close, Spec §3.1)
+        entry: python 03_Tools/precommit/xlsx_smoke_test.py
+        language: system
+        files: ^03_Tools/.*\.xlsx$
+        pass_filenames: true

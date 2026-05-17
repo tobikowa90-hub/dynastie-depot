@@ -1907,3 +1907,18 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
 
+## [2026-05-17] system | Pickup #C Execution Unit 2/3 DONE — non-mutierender pre-commit-Substrate-Build (§5.6-Gate voll)
+
+**Event-Typ:** Pipeline-Item (Status-Transition Unit 2 DONE) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
+
+**Was passiert ist:**
+1. **Artefakte (uncommitted → committed):** `.gitattributes` (4× `text eol=lf` + `_fixtures/** -text`-Ausnahme), `.gitignore` (generierte Fixtures `*.input`/`*.xlsx` ignoriert — Generator+Harness = getrackte SSoT), `.pre-commit-config.yaml`, `03_Tools/precommit/`: `crlf_guard.py` (§4.3), `validate_score_history.py` (§3.2 ScoreRecord-Import + Byte-CRLF + git-cached Append-only-Hunk-Parser), `validate_flag_events.py` (§3.3 FlagEvent-Import + Schema/CRLF fail-close + Paarung WARN-only), `xlsx_smoke_test.py` (§3.1 Executor, SSoT bleibt `03_Tools/xlsx-smoke-test.md`), `_fixtures/_generate_fixtures.py` (deterministisch), `_smoke_test.py` (Harness). Schema-Import via sys.path-Bootstrap gespiegelt zu `archive_flag.py`.
+2. **§5.6-Execution-Gate voll durchlaufen:** Impl → Ruff-Lint-Apply (3 auto-fixed → „All checks passed") → CodeRabbit (`-t uncommitted --dir 03_Tools` via WSL, Background nach User-Direktive — Foreground vom Auto-Mode-Classifier als unautorisiertes Retry geblockt, User gab explizit frei) **„No findings"** → Codex-Single-Pass Foreground **PASS-WITH-NITS** (0 HIGH; M1 MED = Hook-Reihenfolge §2 nicht erzwungen [Ruff-Block vor crlf-guard] → 3-Block-Umbau gefixt; L1 LOW = Append-only-Parser-Robustheit → `_git_head_line_count` trailing-LF-robust + `new_start`-F5-Vertragscheck gehärtet; Assumption-Audit a=ROBUST/b=DOCUMENTED/c→gehärtet/d=ALIGNED) → Smoke-Harness 8/8 (je Validator good→rc0/bad→rc1). Kein Codex-Diff-Re-Review (Heuristik `feedback_codex_sparring_heuristic`: 0 HIGH → kein Sparring-Loop; Fixes deterministisch verifiziert).
+3. **Phasierung (USER-approved):** statt Marathon-Full-Execution → 3 Units. Unit 1 = Doc-Drift-Fix (commit `3401512`). Unit 2 = dieser non-mutierende Build. **Unit 3 = CRLF-One-Shot §4.1 = separater scoring-neutraler Commit MIT User-Audit-Tabelle VOR dem Byte-Rewrite** (Spec §4.1 erzwingt User-Checkpoint; touched Live-Scoring-jsonl → bewusst isoliert + separat revertierbar). Begründung Spec §8 (Multi-Session geplant) + §5.6-Gate als natürliche Phasengrenze.
+4. **Spec-Artefakt + CR-Output gitignored** (`docs/superpowers/` Z.21) — nicht im Commit, kein Leak. Pre-Commit-Diff-Inspektion (Memory `feedback_pre_commit_diff_inspection`): nur Unit-2-Artefakte + Doc-Sync dirty, kein pre-existing unrelated.
+5. **§18-Sync (Pipeline-Item, atomar, scoring-neutral):** Code-Artefakte + PIPELINE.md (#68 Status-Transition + Footer v2.40→v2.41) + STATE.md (Critical-Alert + Footer) + Vault `log.md` (dieser Eintrag). SESSION-HANDOVER mid-Session optional (§18.1) → finaler Banner bei Session-Abschluss. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
+6. **Next:** Unit 3 — CRLF-Audit-Scan (`git ls-files` *.jsonl/*.patch → CRLF-Report-Tabelle an User), nach User-Freigabe binär-Normalisierung (`rb`/`wb`, nie Text-Mode — Memory `feedback_windows_python_crlf_text_mode`) + `git diff --stat`-Inspektion + scoring-neutral-Attestierung + isolierter Commit. Dann `pre-commit install`-Smoke (Akzeptanz #1) + Ruff-Pin-Verifikation gegen lokale Version.
+
+- Pages created: none
+- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
+

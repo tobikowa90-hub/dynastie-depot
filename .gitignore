@@ -76,6 +76,13 @@ __pycache__/
 # Legacy Ruflo-MCP runtime side-effect (cwd-relativ vector-store; Ruflo sunset 2026-05-13)
 ruvector.db
 
+# pre-commit-Substrate Test-Fixtures (Spec §5.2): deterministisch regenerable
+# via 03_Tools/precommit/_fixtures/_generate_fixtures.py — Generator +
+# _smoke_test.py sind die getrackte SSoT. Binär-xlsx + CRLF-Inputs nicht
+# tracken (Diff-Noise + CRLF-im-Repo-Komplikation vermeiden).
+03_Tools/precommit/_fixtures/*.input
+03_Tools/precommit/_fixtures/*.xlsx
+
 # ── GSD baseline (auto-generated) ──
 .mcp.json
 .bg-shell/
