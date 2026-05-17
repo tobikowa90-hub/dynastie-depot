@@ -7,6 +7,11 @@
 *.py      text eol=lf
 *.md      text eol=lf
 *.patch   text eol=lf
+# *.yaml ergänzt 2026-05-17 (Akzeptanz-#1-Reconciliation, Codex-RECOMMENDED):
+# .pre-commit-config.yaml ist die Substrate-eigene Config — ohne LF-Erzwingung
+# würde git-autocrlf sie CRLF-korrumpieren (genau die Klasse die crlf-guard
+# bekämpft). crlf-guard prüft *.yaml NICHT (files-Pattern), daher hier strukturell.
+*.yaml    text eol=lf
 
 # Test-Fixtures sind bewusst byte-exakt (enthalten absichtlich CRLF-Kontamination
 # als bad-Input) — KEINE EOL-Normalisierung, sonst geht die getestete Eigenschaft

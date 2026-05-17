@@ -94,15 +94,25 @@ def validate_file(path: Path) -> int:
         return _fail(path, profil, f"openpyxl load failed (Punkt A): {e}")
 
     try:
-        first_ws = wb.worksheets[0]
-        if first_ws["A1"].value in (None, ""):
-            return _fail(path, profil, "A1 leer — Sheet-Existenz-Check (Punkt A)")
+        # Punkt A (Sheet-Existenz): Workbook geladen (oben) + hat >=1 Worksheet.
+        # Kanonische §18.7-Doktrin (xlsx-smoke-test.md Punkt A) = "Datei lesbar
+        # + erwartete Sheets vorhanden" — KEIN A1-non-empty-Constraint fürs
+        # Voll-Profil (Satelliten_Monitor hat legitim A1=None; Header/Daten
+        # beginnen tiefer). Der A1-Check bleibt Minimal-Profil-Proxy (siehe
+        # unten) — dort ist er die designierte Akzeptanz-#2-bad-Fixture.
+        if not wb.worksheets:
+            return _fail(path, profil, "Workbook hat keine Worksheets (Punkt A)")
 
         for sheet in prof["sheets"]:
             if sheet not in wb.sheetnames:
                 return _fail(path, profil, f"erwartetes Sheet '{sheet}' fehlt")
 
         if prof["scope"] == "minimal":
+            # Watchlist-Minimal-Annex: A1 als konkreter Lesbarkeits-/Nicht-
+            # Degeneriert-Proxy. Akzeptanz-#2-bad-Fixture = empty_a1 → FAIL,
+            # clean = A1 gesetzt → PASS (_smoke_test.py + _generate_fixtures.py).
+            if wb.worksheets[0]["A1"].value in (None, ""):
+                return _fail(path, profil, "A1 leer — Existenz-Proxy (Punkt A, minimal)")
             return 0  # Watchlist: nur A1 + Existenz (0 Formeln/CF)
 
         # Punkt B: Error-Token-Scan über alle Zellen aller Sheets.

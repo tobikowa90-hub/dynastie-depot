@@ -38,6 +38,15 @@ repos:
         entry: python 03_Tools/precommit/crlf_guard.py
         language: system
         files: \.(jsonl|patch|py|md)$
+        # Scope-Verengung (Akzeptanz-#1-Reconciliation 2026-05-17): crlf-guard
+        # schützt die operative Code-/Daten-Fläche, NICHT die Prosa-Doc-Bäume.
+        # 07_Obsidian Vault/ = Wiki-Prosa (in Obsidian editiert, nie git-apply'd);
+        # 05_Archiv/{skills-legacy,superpowers-pre-sunset}/ = historische
+        # Prosa-Artefakte. 05_Archiv/score_history.jsonl bleibt BEWUSST guarded
+        # (operative Backtest-SSoT) → kein 05_Archiv-Blanket-Exclude. Voll-Repo-
+        # Legacy-CRLF-Debt = eigenes Remediation-PIPELINE-Item (Spec §5/§1
+        # "manueller Dev-Schritt", nicht Substrate-Verhalten).
+        exclude: '^(07_Obsidian Vault/|05_Archiv/skills-legacy/|05_Archiv/superpowers-pre-sunset/)'
         pass_filenames: true
 
   # ── Block 2: Ruff offizieller Mirror, gepinnt (Spec §2). Eigene isolierte

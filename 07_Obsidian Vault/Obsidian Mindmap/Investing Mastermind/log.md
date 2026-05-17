@@ -1939,3 +1939,21 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
 
+## [2026-05-17] system | Pickup #C Akzeptanz-#1-Verifikation DONE — Substrate akzeptiert, #68 KOMPLETT geschlossen
+
+**Event-Typ:** Pipeline-Item (Status-Transition #68 Akzeptanz DONE + neues Remediation-Item) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
+
+**Was passiert ist:**
+1. **Ruff-Pin verifiziert:** lokal `ruff 0.15.12` == pyproject `required-version >=0.15.12` == `.pre-commit-config.yaml` `rev: v0.15.12`. pre-commit-CLI fehlte → `pre-commit 4.6.0` (Python-3.14, ≥ minimum 3.5.0), `pre-commit install` ✅.
+2. **`pre-commit run --all-files` deckte 3 distinkte Klassen auf:** (a) 135 CRLF-Files repo-weit (88 Vault-Prosa + 47 operativ); (b) 107 Ruff-Lint-Errors + 55 ruff-format-Files (pre-existing operativer `.py`-Legacy-Debt); (c) xlsx-smoke-test FAIL Satelliten_Monitor. NICHT trivial → User-Decision-Gates statt blindem Fixen.
+3. **② Echter Unit-2-Validator-Bug gefixt:** `xlsx_smoke_test.py:96-99` erzwang `worksheets[0]["A1"]` ≠ leer VOR der Profil-Verzweigung → traf fälschlich Voll-Profil. Empirisch: Satelliten_Monitor erstes Sheet hat legitim `A1=None` (Header tiefer); §18.7-Doktrin verlangt nie A1-non-empty. Fix = A1-Check chirurgisch in `minimal`-Zweig (= designierter Akzeptanz-#2-bad-Fixture-Trigger Watchlist). Pre-Refactor-Caller-Scan: `_smoke_test.py` `_expect` prüft nur rc → safe. Smoke 8/8 erhalten, alle 3 xlsx-Hooks rc0.
+4. **① Akzeptanz-#1-Reconciliation (USER „Hook-Scope verengen"):** Spec-intern inkonsistent (§4.3 *staged* vs §5.1-alt `--all-files`). crlf-guard `exclude: '^(07_Obsidian Vault/|05_Archiv/skills-legacy/|05_Archiv/superpowers-pre-sunset/)'` (Prosa raus; `05_Archiv/score_history.jsonl` bleibt bewusst guarded). 135→46 CRLF, 0 Vault/05_Archiv-Prosa. Spec §5 Akzeptanz-#1 neu formuliert, §4.3-vs-§5.1-Widerspruch aufgelöst.
+5. **`.gitattributes *.yaml text eol=lf`** (Codex-RECOMMENDED): crlf-guard prüft yaml nicht; schützt substrate-eigene `.pre-commit-config.yaml` vor autocrlf-Korruption. `git check-attr` bestätigt `eol: lf`.
+6. **§5.6-Gate voll:** Ruff-Apply (ruff format auf editierte Datei, check+format clean) → CodeRabbit `--dir 03_Tools` via WSL **„No findings"** → Codex-Single-Pass: code+config **PASS** (0 Findings, Fixture-Contract erhalten, kein Rebalancing-Regression, Regex korrekt, score_history guarded), Spec-Inhalt **PASS** („resolves contradiction cleanly"); Codex-„FAIL" rein prozedural (Spec konventionsgemäß gitignored, Pickup-#B/#C/#D-Konvention, kein Logik-Defekt). Kein Sparring-Loop (0 echte HIGH/MEDIUM).
+7. **Substrate-Verdikt:** korrekt gebaut (Unit 2 + ②-Fix). Staged-Modus-Gate empirisch grün auf echter Änderung = §4.3-staged-Intent. **#68 KOMPLETT geschlossen** (kein offener Rest mehr).
+8. **Pre-Existing-Debt deferred (USER-Decision):** 46 operative CRLF + 107 Ruff + 55 ruff-format = neues PIPELINE-Remediation-Item (= Spec §1/§5-Kriterium-6 „manueller Dev-Schritt", eigene CR+Codex-Session, Trigger-gebunden). Anti-Churn statt unilateralem Bulk-Reformat.
+9. **§18-Sync (atomar, scoring-neutral):** Code (`xlsx_smoke_test.py` + `.pre-commit-config.yaml` + `.gitattributes`) + PIPELINE.md (#68 entfernt per Numbering-Convention + Remediation-Item + Footer-Bump) + STATE.md (Critical-Alert + Footer) + SESSION-HANDOVER.md (Banner) + Vault `log.md` (dieser Eintrag). Spec + CR-Output gitignored. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
+
+- Pages created: none
+- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
+
