@@ -24,3 +24,4 @@ FLAG wird dauerhaft gehalten bis Auflösung dokumentiert ist.
 
 - [[CapEx-FLAG]]
 - [[MSFT]] — Position die GOOGL als Ersatz hätte
+- [[AMZN]] — Sibling CapEx/OCF-FLAG-Hyperscaler (12. Satellit, TTM 99,2% — schärfer als GOOGL ~75%)
