@@ -2012,3 +2012,5 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - Pages created: none
 - Pages updated: none (Score-Event; Vault-Faktortabelle/Satelliten-Pages separat bei Wiki-Sync — out-of-scope dieser §18-Welle)
 
+**Addendum (gleiche Session, Doc-Commit 2):** xlsx-Tools (`Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx`) **bewusst DEFERRED → PIPELINE #70** (frische Session, User-Direktive Kontext-Erschöpfung). Begründung: 12. Satellit = Zeilen-Insert + Formel-Range-Rewrite in 218-Formel-Sheet (openpyxl `insert_rows` adjustiert Formeln nicht) = strukturell/risikobehaftet, §18.7-Smoke fail-close iterativ — §0.1/§0.2/§0.6-Disziplin gegen Force unter Kontext-Druck. **§18.1-same-session-Pflicht bewusst abgewichen, dokumentiert (Präzedenz §13 Watchlist-xlsx-Same-Day-Amendment).** Operatives Risiko ≈ null: AMZN nenner-neutral + 0€ → kein Bestands-Satellit ändert xlsx-Sparplan-Wert; xlsx bleibt für 11-Satelliten-Lookup korrekt. Doc-Commit 2 = PIPELINE.md(#70+Footer) + STATE.md(Alert-Korrektur) + SESSION-HANDOVER.md(Banner+Resume) + CORE-MEMORY(§12.12-Korrektur) + dieses Addendum.
+
