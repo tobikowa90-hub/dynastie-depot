@@ -43,7 +43,7 @@
 | Wide-Moat-Satelliten | 30% | 285,00 € | Scalable Capital |
 | Gold | 5% | 47,50 € | Scalable Capital |
 
-**US-Hard-Cap:** max. 63% | **Ist:** ~46,41% (AMZN nenner-neutral FLAG=0€ → kein US-Kapitalfluss bis FLAG-Resolve) | **Ziel:** ~49,51%
+**US-Hard-Cap:** max. 63% | **Ist:** ~46,41% (unverändert — AMZN F=0€/Sparrate 0€, kein realer US-Kapitalfluss bis FLAG-Resolve) | **Ziel:** ~50,2% (AMZN trägt vollen US-Zielanteil wie alle Aktien — User-Direktive 18.05. „exakter Ziel-Anteil wie alle"; Rebalancing-Tool US-Exposure-Sheet B24 = 50,20%, <63% Hard-Cap)
 **Slots:** 17 gesamt (4 ETFs + 12 Aktien + 1 Gold) — alle vergeben (AMZN-Slot-Erweiterung 11→12, User-Direktive 2026-05-18)
 
 ---
@@ -253,4 +253,4 @@ Bei !QuickCheck-Rot oder Score <60: kein §6-Eintrag, Slot bleibt offen oder Bra
 - V-Q2-Incident 28.04.2026 — Präzedenz „Score-Move auf unzureichender Evidenz"
 
 ---
-*🦅 KONTEXT.md v1.4 (§5 AMZN 12. Satellit Neuaufnahme — Slot 11→12 User-Direktive, Score 42/D1/🔴 CapEx-FLAG/0€ regelkonform) | Dynastie-Depot | Stand: 2026-05-18*
+*🦅 KONTEXT.md v1.5 (§5 AMZN 12. Satellit Neuaufnahme — Slot 11→12 User-Direktive, Score 42/D1/🔴 CapEx-FLAG/0€ regelkonform; v1.5 PIPELINE #70 Doc-Sync: US-Ziel ~49,51%→~50,2% nachgezogen, da AMZN vollen US-Zielanteil trägt [User-Direktive „exakter Ziel-Anteil wie alle", Codex-LOW]) | Dynastie-Depot | Stand: 2026-05-18*
