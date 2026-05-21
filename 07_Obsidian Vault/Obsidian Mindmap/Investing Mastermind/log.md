@@ -2113,3 +2113,40 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 **Cross-Reference:** `01_Skills/session-closure/SKILL.md` v0.2.0 · Commit `42eca7c` · PIPELINE.md v2.49 #73 · Memory `feedback_review_via_codex_not_advisor` 2026-05-21-Update · OpenAI GitHub Issues #19654/#6603/#15648/#17642/#2051.
 
 **Nächste Tracks:** Rein termin-/trigger-getriggert (#73 Skill-Backlog deferred bis freie Session). VEEV Q1 FY27 ~27.05. · COST Q3 FY26 ~28.05. · AMZN Q2 FY26 ~Ende Juli CapEx/OCF-FLAG-Re-Eval. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert. **Codex-Smoke-Test bei nächster Session als Auftakt** — falls grün: Memory-Update-Section entfernen, Codex zurück als Default-Reviewer.
+
+---
+
+## [2026-05-21] system | PIPELINE #73a Spec-Phase DONE — `paragraph-18-sync` Skill (Brainstorming + Multi-Reviewer-Pass, Build deferred, scoring-neutral)
+
+**Event-Typ:** Pipeline-Item Status-Transition (PENDING → SPEC-COMPLETE für Sub-Item (a)) + Skill-Backlog-Spec-Persist (System-Event-Begleitartefakt). Scoring-neutral.
+
+**Was passiert ist (Spec-Phase-Workflow, ~3h):**
+
+1. **Brainstorming-Phase (superpowers:brainstorming Skill)** — 4 Klärungsfragen geklärt: Event-Scope (Voll-§18-Orchestrator alle 4 Event-Typen + Multi-Event-Union §18.2) · Activation (Hybrid: dominant User-Trigger `!ParaSync18` + Sub-Step-fähig) · Mode (Verify-First Checklist-Runner, KEIN Auto-Edit) · Failure-Mode (fail-close, kein `--force`-Bypass, analog §18.5/§18.7).
+2. **Architektur-Entscheidung Option B:** SKILL.md (Markdown-Orchestrator, P1-P7) + `validator.py` in `03_Tools/para18_sync/` + `event_typ_mapping.yaml` als SSoT-Mirror von §18.1 + `_smoke_test.py` (13 Tests). Bundle 7 Files total. Präzedenz: `backtest-ready-forward-verify` Skill+Tools-Pattern.
+3. **Self-Review-Loop (4 HIGH + 6 MEDIUM):** L1 Sub-Tool-Coupling-Sprache falsch (`archive_flag.py` + `backtest-ready-forward-verify` laufen VOR paragraph-18-sync, werden NUR verifiziert, nicht orchestriert — einzig xlsx-smoke-test-runner #73b ist echte Orchestrierung) · L2 Phase-6 Review-Slots gehören Build-Zeit nicht Run-Zeit · Z1 Workflow-Ordering-Guard (P1 Pre-Flight prüft `score_history.jsonl`/`flag_events.jsonl` HEAD-Timestamp ≤ heute, sonst REFUSE) · Z2 Doppel-SSoT (yaml als Mirror + Smoke-Test-Drift-Guard gegen §18.1) · L3 §18.1-Lücke "KONTEXT §6 Allokations-Edit" als separates PIPELINE-Item #73c deferred · L4 Test-Coverage (S9 Regression-Guard + S10 Pre-Existing-Dirty-Snapshot) · L5 Phasen-Count P1-P7 explizit · Z3 !SessionClose-Boundary (paragraph-18-sync = Mid-Session-Verify, !SessionClose = End-Session) · Z4 xlsx-smoke-test-runner #73b Soft-Dependency (v0.1 manual-confirm, v0.2 auto-call) · Z5 Multi-Event-Union-Tests S8a/b/c.
+4. **Codex-Cross-Sync (~22:00 GMT+2): BLOCKED** at attempt-time — HTTP 400 (`gpt-5.2-codex` rejected). Fallback zu Gemini.
+5. **Gemini-CLI-Cross-Sync via direct stdin pipe (Bridge umgangen per Memory `reference_gemini_agent_not_bridge_script`):** SUCCESS — 5 NEUE Findings: G-01 HIGH P4 leaky-atomic (Skill prüfte nur `git diff --cached`, fehlte unstaged-modified-Check — Fail-close-Loophole gegen §18.3 Atomarität) → P4 erweitert auf `git diff --name-only` + 4-stufige Klassifikation mit UNSTAGED_NEW als FAIL-Bucket · G-02 MEDIUM yaml-Hardcode-Versionen v3.4/v2.0 → Glob-Pattern `Rebalancing_Tool_v*.xlsx` etc. · G-03 MEDIUM §18.6 Quartals-Rollover-Awareness (P1 Temporal-Guard: bei 1.4./1.7./1.10./1.1. warn falls `archive/log/log-YYYY-Q<n-1>.md` fehlt) · G-04 LOW P5 `xlsx_verified`-Status-Field in Closure-Report · G-05 LOW Substrate-Bloat-Reminder Architektur-confirm. + 3 neue Tests: S12 Staged-vs-Unstaged-Collision (G-01-Coverage) · S13 Quartals-Transition (G-03-Coverage) · S7-Strengthening Exact-String-Set-Match. PROCEED-WITH-FIXES.
+6. **2 Selbst-Korrekturen post-Adopt:** (a) Klassifikation 4-stufig bleibt (semantisches WARN→FAIL Upgrade von UNSTAGED_NEW, nicht neues Bucket) — Wortlaut korrigiert · (b) Sync-Set reduziert (SYSTEM.md entfällt, pipeline-item-Event reicht; Spec-File ist Begleit-Artefakt, kein eigener System-Zustand-Event).
+7. **Codex-Errata (~23:30 GMT+2 Parallel-Session-Fix):** Root-Cause NICHT Account-Entitlement, sondern Codex-CLI-v0.121.0-Default-Model-Inkompatibilität. Fix: `~/.codex/config.toml` mit `model = "gpt-5.3-codex"` gepinnt (auch `gpt-5.4-mini` funktional). `codex exec` PASS verified ~10.798 tokens. Memory `feedback_review_via_codex_not_advisor` von Parallel-Session geupdated ("blocked" → "2026-05-21 Fix"). MEMORY.md Index entsprechend angepasst. **Build-Session-Implikation:** Codex Single-Pass auf `validator.py` + `_smoke_test.py` ist jetzt regulär möglich.
+8. **Spec-File persistiert** (untracked-on-disk per `05_Archiv/*`-gitignore, intentional historisch-Archiv-Konvention): `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` (476+ Z., post-Errata-Patch).
+
+**Confidence (Stand 22:00 GMT+2 + Codex-Errata):** ~97% nach allen Fix-Adoptions + Selbst-Korrekturen.
+
+**Pages created/updated (System-Event-Scope):**
+- `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` — NEW (untracked, gitignored per `.gitignore` Z.18 "Superpowers docs (nur lokal relevant)"; aktiver Spec-Pfad, NICHT `05_Archiv/superpowers-pre-sunset/` was nur historisch-Ruflo-Sunset-Archiv ist)
+- `00_Core/PIPELINE.md` — #73a Status PENDING → SPEC-COMPLETE Build-deferred, Footer v2.49 → v2.50
+- dieser log.md-Eintrag
+- User-globale Memory `feedback_review_via_codex_not_advisor.md` + `MEMORY.md` (Codex-Fix-Documentation, von Parallel-Session committed — kein Repo-Commit)
+
+**Sync-Set (§18 Pipeline-Item-Event, scoring-neutral):** PIPELINE.md + log.md (dieser Eintrag). Spec-File NICHT im Sync-Set wegen `05_Archiv/*` gitignored (intentional). **KEIN** SYSTEM.md (Selbst-Korrektur §8: Spec-File ist Begleit-Artefakt, kein eigener System-Zustand-Event). **KEIN** PORTFOLIO + Faktortabelle + score_history + config.yaml + xlsx + flag_events (kein Score/FLAG/Sparraten-Event). **KEIN** STATE.md-Edit (Critical-Alert-Window unverändert).
+
+**Lehre:**
+- **Gemini-direct-stdin-pipe ist empirisch validierter Cross-Sync-Pfad** (Bridge umgangen). Memory `reference_gemini_agent_not_bridge_script` bestätigt. 5 substantielle Findings inkl. 1 HIGH-Loophole das mir und Self-Review-Pass entging — externer Reviewer-Bias-Counter zahlt sich aus.
+- **Codex-Block-Forensik (22:00 → 23:30 GMT+2):** Block war NICHT Account-Entitlement, sondern CLI-Version-Pin-Issue. User-direktive "an anderer Stelle gefixt" → CLI-v0.121.0 Default-Model umgangen via `config.toml model="gpt-5.3-codex"`. Lehre: Codex-Block-Diagnose immer auch CLI-Version-Pin testen, nicht nur Account-Entitlement annehmen.
+- **Brainstorming-Skill-Disziplin auf Skill-Spec angewendet** (Pickup zum eigenen Tooling): 8 Sektionen sequenziell präsentiert mit Approval-Loop pro Sektion, Spec-Datei via Skill-Konvention in `05_Archiv/superpowers-pre-sunset/specs/`. Memory `feedback_brainstorming_terminal_override_dynastie` gehalten (Spec-Phase abgeschlossen, Execution separate Session).
+- **Spec-Pfad-Konvention klargestellt** (User-Korrektur Session-End): aktive Specs in `docs/superpowers/specs/`, NICHT `05_Archiv/superpowers-pre-sunset/specs/` (= Ruflo-Sunset-Historik-Archiv). Beide Pfade gitignored (`docs/superpowers/` per `.gitignore` Z.18, `05_Archiv/*` per Z.8). Spec-Files leben lokal, werden nicht ge-pushed — by-design "nur lokal relevant"-Konvention.
+
+**Cross-Reference:** `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` (untracked) · PIPELINE.md #73a SPEC-COMPLETE · Commit `<TBD>` · Memory `feedback_review_via_codex_not_advisor` 2026-05-21-Fix-Update · `reference_gemini_agent_not_bridge_script` empirisch validiert.
+
+**Nächste Tracks:** #73a Build-Session deferred (~2.5-3h, Codex jetzt verfügbar als Primär-Reviewer). #73b xlsx-smoke-test-runner danach (PIPELINE-#73-Reihenfolge a vor b). #73c §18.1 Event-Typ-Zeile 5 KONTEXT §6 als separates Sub-Item dokumentiert. Spec-Review durch User in neuer Session (User-Direktive: !SessionClose statt Mid-Session-Review-Gate). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert. **Codex-Smoke-Test bei nächster Session als Auftakt-Bestätigung des Fix.**
