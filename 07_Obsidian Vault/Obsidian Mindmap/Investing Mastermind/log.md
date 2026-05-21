@@ -2074,3 +2074,42 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 
 **Nächste Tracks:** Rein termin-/trigger-getriggert. VEEV Q1 FY27 ~27.05. · COST Q3 FY26 ~28.05. · AMZN Q2 FY26 ~Ende Juli CapEx/OCF-FLAG-Re-Eval. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
 
+
+
+## [2026-05-21] system | session-closure-Skill v0.2.0 + PIPELINE #73 Skill-Backlog (scoring-neutral)
+
+**Event-Typ:** Skill-Build (System-Event) + Pipeline-Persist (kein Score/FLAG/Sparraten-Touch — scoring-neutral)
+
+**Was passiert ist:**
+
+1. **Skill-Identifikation:** User-Frage „welche wiederkehrenden Tasks der letzten Sessions sollten Skills sein". Analyse identifizierte 8 Workflow-Pattern; nach Use-Case-/Reinfall-Filter qualifizieren 3 als echte Skills (Rest Memory-/Template-/Codex-Block-abhängig).
+2. **`session-closure`-Skill gebaut (Slot #1):** Strict-Trigger `!SessionClose`. Orchestriert git-State-Scan, File-Klassifikation (4 Sub-Kategorien), §18-Sync-Coupling-Check (8-File-Pflicht-Set), Commit-Bündelung + Banner-Wahl, Push-Plan + Verify, Closure-Report. Auto-Commit, Hard-Stop nur vor `git push`. **Ablage:** `01_Skills/session-closure/` (SKILL.md + 5 references/: file-classification, sync-coupling, commit-banners, push-safety, test-scenarios).
+3. **Skill-Creator-Tool eingesetzt:** Plugin `skill-creator` für YAML-Frontmatter + Progressive-Disclosure-Struktur + Trigger-Accuracy. Eval-Loop qualitativ statt subagent-driven (git-Mutationen am Repo sind nicht reproduzierbar ohne Sandbox).
+4. **Codex-Review BLOCKIERT (Forensik dokumentiert):** Versuch `codex:codex-rescue`-Subagent → server-side 400-Fehler („model not supported when using Codex with a ChatGPT account"). Empirische Tests: 13 Modelle (Codex-Spec + GPT-Familie + o-Serie), beide Auth-Flows (Default + `--device-auth`), beide nach `codex logout`/`codex login`-Re-Auth — ALLE identisch geblockt. WebSearch bestätigt aktive OpenAI-GitHub-Issues (`#19654, #6603, #15648, #17642, #2051`) seit November 2025, breit-deployed Welle der Sperre offenbar in den letzten ~5 Tagen (Letzter Codex-Erfolg im Repo: `e0d5d7a` 2026-05-16 „Codex-Gate PASS"; heute 2026-05-21 broken). Root-Cause: Entitlement-Sync-Bug zwischen ChatGPT-Pro-Account-Tier und Codex-Backend, OpenAI-unresolved.
+5. **Gemini-Single-Pass-Review als Workaround:** `cc-gemini-plugin:gemini-agent`-Subagent (NICHT advisor — per Memory `feedback_review_via_codex_not_advisor` weiterhin verboten; NICHT Bridge-Script — per Memory `reference_gemini_agent_not_bridge_script` Windows-broken). Output: 4 HIGH-Findings (H1-H4), 6 MEDIUM, paar LOW. Verdikt: 1 Iteration nötig vor Merge.
+6. **v0.2.0-Iteration (H1-H4 appliziert):**
+   - **H1+H2** xlsx-Coupling als §18.1-v2.4-Pflicht-Set (8 Files: 1-6 atomar in einem Commit, 7+8 xlsx-Tools in separatem Commit derselben Push-Welle). `sync-coupling.md` Hard-Coupling-Block korrigiert; `SKILL.md` Schritt 3 + `test-scenarios.md` S2 angeglichen, S2b INKOMPLETT-Refuse-Test ergänzt.
+   - **H3** §19.1 Tag-0-Refuse mit Issuer-Ausnahmen via `config.yaml`-Feld `earnings_trigger` (`quarterly_call` löst Refuse aus; `10q_filing` für BRK.B + `trading_update_q1`/`_q3` für Schneider/Hermès sind exempt). `SKILL.md` Schritt 0 erweitert; `test-scenarios.md` S4b (BRK.B) + S4c (Trading-Update-Quarter) ergänzt.
+   - **H4** Watchlist.xlsx-Klassifikations-Drift gefixt — `file-classification.md` Kategorie-1 aufgesplittet in Sub-Kategorien 1a Score-Event-coupled, 1b FLAG-Event-coupled, 1c KONTEXT-coupled, 1d Live-State-Edit. Watchlist.xlsx korrekt in 1c (Trigger KONTEXT §6, NICHT score_history).
+7. **`!SessionClose`-Dogfood-Test:** Skill auf sich selbst angewendet. State-Scan → 6 untracked Files, 0 modified, branch synced. Single-Commit-Plan, Banner `feat(skill): session-closure v0.2.0 — Session-End-Workflow-Orchestrator` via Bash-Heredoc (Memory `feedback_powershell_herestring_in_bash_tool` compliant). Pre-commit-Hooks (crlf-guard) PASS. Commit `42eca7c`, 6 Files / 799 Zeilen. Subject-Byte-Check `git log -1 --format='%s' | cat -A` sauber (em-dash UTF-8 korrekt, kein lone `@`, kein CRLF). Hard-Stop vor push, User-Go-Approval, push `103996f..42eca7c`. Working-Tree clean, origin synced.
+8. **PIPELINE #73 Skill-Backlog persistiert (dieses Event):** TOP-2-Kandidaten **(a) `paragraph-18-sync`** (8-File-Sync-Orchestrator, Strict-Trigger `!ParaSync18`-Vorschlag, ~2-3h Aufwand) + **(b) `xlsx-smoke-test-runner`** (§18.7-Post-`openpyxl`-Runner, Strict-Trigger `!XlsxSmokeTest <file>`-Vorschlag, ~1.5-2h Aufwand). DROP-Liste explizit dokumentiert (Subset / Memory-deckt-ab / Codex-Block-abhängig). TIER-2 `earnings-day-plus-one` + `pipeline-item-resolver` als evaluate-later. Reihenfolge bei Re-Activation: (a) vor (b).
+9. **Memory-Updates:** `feedback_review_via_codex_not_advisor.md` erweitert um datierten Codex-Block-Befund (2026-05-21 Update-Section) + Forensik-Window (2026-05-16 → 2026-05-21) + Gemini-Interim-Pfad (advisor weiterhin verboten). `MEMORY.md` Index-Zeile entsprechend angepasst.
+
+**Pages created/updated (System-Event-Scope):**
+- `01_Skills/session-closure/` (6 Files) — NEW
+- `00_Core/PIPELINE.md` — #73 added, Footer v2.48 → v2.49, Aktive-Items-Liste erweitert
+- dieser log.md-Eintrag
+- User-globale Memory: `feedback_review_via_codex_not_advisor.md` + `MEMORY.md` (kein Repo-Commit)
+
+**Sync-Set (§18 Pipeline-Event + Skill-Build-System-Event, scoring-neutral):** PIPELINE.md + log.md (dieser Eintrag) + `01_Skills/session-closure/` (Skill-Files). **KEIN** PORTFOLIO + Faktortabelle + score_history + config.yaml + xlsx + flag_events (kein Score/FLAG/Sparraten-Event). **KEIN** STATE.md-Edit (Critical-Alert-Window unverändert).
+
+**Lehre:**
+- **Skill-Creator-Plugin liefert sauberen YAML/Progressive-Disclosure-Skeleton**, spart ~30-60min Skeleton-Build-Aufwand. Trigger-Accuracy via eval-Mode wertvoll für Strict-Trigger-Skills (False-Positive-Risiko quantifizierbar).
+- **Codex-Block ist datiert (~16-21.05.2026), kein dauerhafter Policy-Change.** Memory-Update reflektiert das ehrlich — bei nächstem erfolgreichen Codex-Smoke-Test Update-Section entfernen, nicht stale-Diagnose tragen.
+- **Gemini-Agent (Subagent-Pfad, NICHT Bridge) ist verlässlicher Interim-Reviewer.** 4 HIGH-Findings im Single-Pass identifiziert, alle echte Korrektheits-Bugs (nicht stilistisch). Token-Kosten ~62k (Subagent total), vergleichbar zu Codex-Single-Pass.
+- **Skill-Workflow auf sich selbst anwenden (Dogfood) als initialer Smoke-Test funktioniert.** State-Scan + Hard-Stop + Push-Verify aller Schritte gingen durch ohne Skill-Code-Anpassung.
+- **User-Skepsis-Check „macht es nicht wieder den Gemini-Fehler" war heilsam:** Codex-Diagnose über 2 Auth-Flows + 13 Modelle + WebSearch-Confirmation hat Empirie gegen voreilige Schlussfolgerung gehärtet. Forensik-Befund (5-Tage-Fenster) belegt User-Recollection.
+
+**Cross-Reference:** `01_Skills/session-closure/SKILL.md` v0.2.0 · Commit `42eca7c` · PIPELINE.md v2.49 #73 · Memory `feedback_review_via_codex_not_advisor` 2026-05-21-Update · OpenAI GitHub Issues #19654/#6603/#15648/#17642/#2051.
+
+**Nächste Tracks:** Rein termin-/trigger-getriggert (#73 Skill-Backlog deferred bis freie Session). VEEV Q1 FY27 ~27.05. · COST Q3 FY26 ~28.05. · AMZN Q2 FY26 ~Ende Juli CapEx/OCF-FLAG-Re-Eval. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert. **Codex-Smoke-Test bei nächster Session als Auftakt** — falls grün: Memory-Update-Section entfernen, Codex zurück als Default-Reviewer.
