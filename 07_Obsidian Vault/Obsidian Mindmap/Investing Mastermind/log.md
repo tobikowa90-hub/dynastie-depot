@@ -2047,3 +2047,30 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 
 **Nächster Schritt:** User-Decision-Gate für **PIPELINE #71** (score_history GOOGL-Cross-Ref-Erratum, append-only-immutable, Codex-#70-MED): (a) bewusst akzeptieren = dokumentiertes Erratum, kein File-Change · (b) deliberater Errata-Mechanismus = Korrektur-Append-Record. Empfehlung (a) — Score/State korrekt, nur informativer Vergleichs-String falsch, **nicht scoring-relevant**. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
 
+## [2026-05-21] system | PIPELINE #71 KOMPLETT DONE-Item entfernt — Option (a) Erratum bewusst akzeptiert (scoring-neutral)
+
+**Event-Typ:** Pipeline-Housekeeping + Erratum-Closure (kein Score/FLAG/Sparraten-Touch — scoring-neutral)
+
+**Was passiert ist:**
+
+1. **USER-Decision Resolution-Gate #71:** Option (a) gewählt — **Erratum bewusst akzeptieren**, kein File-Change. Begründung: Append-only-Immutabilität (`validate-score-history`-Hook fail-close auf jede `-`-Zeile) > Soft-Pointer-Typo-Korrektur. Errata-Mechanismus-Schema (Option b) wäre Substrate-Bloat bei N=1; auf nächsten echten Konsolidierungstag mit Multi-Case-Bedarf verschoben.
+2. **Was war der Typo (User-Frage 21.05.):** Im AMZN-Score-Record `2026-05-15_AMZN_vollanalyse` zeigt `flags.bei_analyse_referenziert` auf `GOOGL_capex_ocf_2025-10-28` — diese FLAG-Event-ID existiert nicht. Kanonisch in `flag_events.jsonl` heißt der GOOGL-CapEx-FLAG-Trigger `GOOGL_capex_ocf_2026-03-15` (GOOGL-Q4-FY25-Vollanalyse). **Nur das Datum-Suffix ist falsch** — Ticker `GOOGL` ✅ + FLAG-Typ `capex_ocf` ✅ korrekt. Codex hatte das beim #70-Diff-Re-Review als MED geflaggt (nicht HIGH), weil aktive AMZN-FLAG (`AMZN_capex_ocf_2026-05-15`) + Score (42/D1) + §410 + Sparrate 0€ alle richtig sind — nur der Audit-Trail-Pointer auf den historischen Vergleichs-Trigger zeigt ins Leere.
+3. **PIPELINE #71** per **PIPELINE.md-Numbering-Convention (Z.16)** entfernt. Gap signalisiert entfernten Archiv-Kandidat; nicht renumbered. Präzedenz: #37, #68, #70.
+4. **Kontext-Erhalt:** Erratum-Beschreibung + Resolution bleibt in
+   - **CORE-MEMORY §12.12** (AMZN Per-Ticker-Chronik; sollte beim nächsten §12.12-Touch Erratum-Note bekommen)
+   - **git log** (Commit dieser Session + Vorgänger-Commit-Chronik)
+   - **Footer-Chronik PIPELINE.md v2.48** (vollständige Erratum-Beschreibung im Versions-Footer)
+   - dieser log.md-Eintrag
+5. **Sync-Set (§18 Pipeline-Event, scoring-neutral, Doc-Commit):** PIPELINE.md (#71-Item entfernt + Footer-Bump v2.47→v2.48 + Aktive-Items-Liste aktualisiert) + dieser log.md-Eintrag. **KEIN** PORTFOLIO + Faktortabelle + score_history.jsonl (Append-only-Doktrin!) + config.yaml + xlsx + flag_events.jsonl. **KEIN** STATE.md-Edit (Critical-Alert bleibt im ≤10-Tage-Window).
+
+**Pages created:** none
+**Pages updated:** none
+
+**Lehre:**
+- **Append-only-Immutabilität > Soft-Provenance-Korrektheit:** Bei N=1-Cases (single Soft-Pointer-Typo, nicht scoring-relevant) ist „bewusst akzeptieren + dokumentieren" wertvoller als ein Errata-Schema ad-hoc anzulegen. Schema-Aufwand wartet auf Konsolidierungstag mit Multi-Case-Bedarf.
+- **Numbering-Convention konsequent gehalten:** #70 entfernt (~5 min, Pipeline-Item), #71 entfernt (~5 min, Pipeline-Item), beide per Konvention nicht renumbered → Gap-Signal-Continuity sauber.
+
+**Cross-Reference:** PIPELINE.md v2.48 Footer (vollständige Erratum-Beschreibung) · CORE-MEMORY §12.12 AMZN-Chronik · git log (Commits `a6ed83b`/`9cde988`/`def0550` AMZN-Score-Event + `2134bd7` #70-Removal + dieser Commit #71-Closure).
+
+**Nächste Tracks:** Rein termin-/trigger-getriggert. VEEV Q1 FY27 ~27.05. · COST Q3 FY26 ~28.05. · AMZN Q2 FY26 ~Ende Juli CapEx/OCF-FLAG-Re-Eval. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
