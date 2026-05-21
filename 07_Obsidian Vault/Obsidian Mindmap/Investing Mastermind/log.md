@@ -2150,3 +2150,30 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 **Cross-Reference:** `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` (untracked) · PIPELINE.md #73a SPEC-COMPLETE · Commit `<TBD>` · Memory `feedback_review_via_codex_not_advisor` 2026-05-21-Fix-Update · `reference_gemini_agent_not_bridge_script` empirisch validiert.
 
 **Nächste Tracks:** #73a Build-Session deferred (~2.5-3h, Codex jetzt verfügbar als Primär-Reviewer). #73b xlsx-smoke-test-runner danach (PIPELINE-#73-Reihenfolge a vor b). #73c §18.1 Event-Typ-Zeile 5 KONTEXT §6 als separates Sub-Item dokumentiert. Spec-Review durch User in neuer Session (User-Direktive: !SessionClose statt Mid-Session-Review-Gate). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert. **Codex-Smoke-Test bei nächster Session als Auftakt-Bestätigung des Fix.**
+
+## [2026-05-22] system | #73a paragraph-18-sync Spec v0.1 → v0.3 — Codex-Spec-Review-3-Runden appliziert (scoring-neutral, Pipeline-Item-Event)
+
+**Event-Typ:** Pipeline-Item-Status-Refinement (SPEC-COMPLETE v0.1 → SPEC-COMPLETE v0.3 Build-ready, kein Score/FLAG/Sparraten-Touch)
+
+**Was passiert ist:**
+- Codex (jetzt funktional nach 2026-05-21-Fix `~/.codex/config.toml model="gpt-5.3-codex"`) führte unabhängigen Spec-Review für `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` durch
+- Sparring-Loop max-3-Runden-Heuristik (Memory `feedback_codex_sparring_heuristic`) durchlaufen:
+  - **Runde 1 (Single-Pass):** 3 HIGH + 4 MEDIUM + 2 LOW = 9 substantielle Architektur-Findings
+  - **Runde 2 (Diff-Re-Review):** 0 HIGH (alle 9 R1-Issues confirmed-closed) + 4 MEDIUM editorial/coverage-Propagation
+  - **Runde 3 (Diff-Re-Review):** 0 HIGH + 2 MEDIUM 1-Zeilen-Drift (`13/13`→`20/20` Step-6 + Revision-Label `v0.2`→`v0.3`) — beide self-verified gefixt statt R4
+- **Adoptierte Findings:** 30 Total = 10 Self-Review + 5 Gemini-Cross-Sync + 2 Selbst-Korrekturen (v0.1) + 9 Codex-R1 + 4 Codex-R2 + 0 net nach R3-Cleanup
+- **Spec-Wachstum:** 476 → 541 LOC (+65 net, +13.6%)
+- **Test-Suite:** S1-S13 (13) → S1-S20 (20)
+- **Architektur-Bausteine NEU durch Codex-R1:** Two-Commit-Same-Session-Protokoll mit Session-Marker (`.session_marker` JSON, 4h-Window, `commit_a_sha`-Match), exit=6 für Drift, `--verify-b`/`--reset-session`/`--allow-dirty <N>` CLI-Modifier, Ticker-Identity-Guard in P1, deterministische xlsx-Selektion via SYSTEM.md Active-xlsx-Block + Semver-Fallback, exakter Dirty-Tree-Predicate (`(unstaged ∪ untracked) \ expected_set ≥ 10`), Re-Validate-Before-Retry-Pflicht in P6
+
+**Sync-Set (§18 Pipeline-Item-Event, scoring-neutral):** PIPELINE.md (Sub-Item-(a)-Status + Footer v2.50 → v2.51) + log.md (dieser Eintrag). **KEIN** SYSTEM.md (Spec-File ist Begleit-Artefakt, kein System-Zustand-Event). **KEIN** PORTFOLIO + Faktortabelle + score_history + config.yaml + xlsx + flag_events (kein Score/FLAG/Sparraten-Event). Spec-File `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` (untracked-on-disk per `.gitignore` Z.18 by-design — Specs leben lokal).
+
+**Lehre:**
+- **Codex-Sparring-Heuristik empirisch validiert:** Diff-Re-Review-Loops konvergieren schnell. R1 = 9 substantielle Findings, R2 = 4 propagation-issues aus R1-Patches selbst, R3 = 2 1-Zeilen-editorial-Drift. APPLY-Rate fällt asymptotisch wie in Memory `feedback_cr_convergence_and_project_compat` prognostiziert (CodeRabbit-Konvergenz-Pattern). Max-3-Heuristik trifft den Sweet-Spot zwischen Vollständigkeit und Diminishing-Returns.
+- **Codex-Round-3 declined formal R4:** bei nur 2 1-Zeilen-editorial-Drift-Findings ist self-verify ehrlicher als noch eine 76s-Codex-Runde. Spec-Disziplin > Token-Konsum.
+- **Codex-Verfügbarkeit als Primär-Reviewer bestätigt** (v0.121.0 + `gpt-5.3-codex` Pin): 3 Runden hintereinander stabil, durchschnittlich ~20k Tokens/Runde, ~80-110s Latency. Memory `feedback_review_via_codex_not_advisor` 2026-05-21-Fix-Status confirmed.
+- **Spec-Phase-Disziplin (Brainstorming-Terminal-Override) gehalten:** Codex-Review ist Teil der Spec-Phase, nicht Build. writing-plans-Switch erst NACH >95%-Confidence-Gateway. User-Direktive 2026-05-21 weiterhin respektiert.
+
+**Cross-Reference:** `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` (untracked, v0.3) · PIPELINE.md #73a SPEC-COMPLETE v0.3 Build-ready · Commit `<TBD>` · Memory `feedback_codex_sparring_heuristic` empirisch validiert.
+
+**Nächste Tracks:** writing-plans-Switch (phased Implementation-Plan, Python-Validator P1-P7 + 20-Test-Smoke-Suite + Two-Commit-Marker-Mechanik + SKILL.md + 4 references/, letzte Phase = skill-creator-Aufruf). Aufwand-Schätzung post-Codex-Review: ~3-3.5h (+0.5h für Session-Marker + S14-S20 + SYSTEM.md Active-xlsx-Block). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
