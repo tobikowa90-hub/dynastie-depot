@@ -2026,3 +2026,24 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 
 **§18.7-E/F Sichttest-Closure (18.05., User-bestätigt):** Rebalancing-Tool CF-Farbgebung visuell in Excel-Desktop geprüft = passt. Satelliten-Monitor CF strukturell verifiziert (Count+Ranges asserted, gleicher openpyxl-Write-Pfad). §18.7-Smoke damit vollständig geschlossen (Python-Fallback PASS + Excel-Desktop-Sichttest PASS) — kein offener Vorbehalt mehr.
 
+## [2026-05-21] system | PIPELINE #70 KOMPLETT DONE-Item entfernt per Numbering-Convention (scoring-neutral)
+
+**Event-Typ:** Pipeline-Housekeeping (kein Score/FLAG/Sparraten-Touch — scoring-neutral)
+
+**Was passiert ist:**
+
+1. Nach 3-Tage-Pause (18.05.→21.05.) PIPELINE-Aufräumung: **PIPELINE #70** (AMZN-Neuaufnahme-Folge-Carryover: xlsx-Struktur-Erweiterung + Codex-Diff-Re-Review + Gemini Cross-Sync) per **PIPELINE.md-Numbering-Convention (Z.16)** entfernt. Item war seit 18.05. KOMPLETT DONE (Commits `9cde988`/`def0550` durable; §18.7-E/F-Sichttest User-bestätigt 18.05.).
+2. **Konvention:** DONE-Items werden bei Entfernung **nicht renumbered** — Gap signalisiert entfernten Archiv-Kandidat. Präzedenz: #37 (BRK Form-13F, 17.05.) + #68 (Pickup #C pre-commit-Substrate, 17.05.) gleich behandelt.
+3. **Kontext-Erhalt:** Voller Detail-Trail bleibt in
+   - **git log** Commits `a6ed83b` (Score-Event) / `9cde988` (xlsx) / `def0550` (Vault-Page)
+   - **CORE-MEMORY §12.12** (AMZN Per-Ticker-Chronik)
+   - **STATE.md Critical-Alert** (≤10-Tage-Window — rollt ab 28.05. automatisch raus)
+   - **SESSION-HANDOVER.md** Banner (Vorgänger-Historie)
+   - dieser log.md-Eintrag + AMZN-Closure-Block oben (18.05.)
+4. **Sync-Set (§18 Pipeline-Event, scoring-neutral, Doc-Commit):** PIPELINE.md (#70-Item entfernt + Footer-Bump v2.46→v2.47 + Aktive-Items-Liste aktualisiert) + dieser log.md-Eintrag. **KEIN** PORTFOLIO + Faktortabelle + score_history.jsonl + config.yaml + xlsx + flag_events.jsonl (kein Score-Event, kein FLAG-Trigger/Resolve). **KEIN** STATE.md-Edit (Critical-Alert bleibt im ≤10-Tage-Window).
+
+**Pages created:** none
+**Pages updated:** none
+
+**Nächster Schritt:** User-Decision-Gate für **PIPELINE #71** (score_history GOOGL-Cross-Ref-Erratum, append-only-immutable, Codex-#70-MED): (a) bewusst akzeptieren = dokumentiertes Erratum, kein File-Change · (b) deliberater Errata-Mechanismus = Korrektur-Append-Record. Empfehlung (a) — Score/State korrekt, nur informativer Vergleichs-String falsch, **nicht scoring-relevant**. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
