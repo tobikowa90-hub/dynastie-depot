@@ -84,6 +84,8 @@ def pull_metrics(symbol: str) -> dict[str, Any] | None:
         _METRIC_PULL_SCRIPT,
         symbol,
     ]
+    # wsl.exe -e passes all trailing tokens verbatim to the executable, so `symbol`
+    # lands in sys.argv[1] inside the inline Python script.
     try:
         result = subprocess.run(
             cmd,
@@ -93,7 +95,9 @@ def pull_metrics(symbol: str) -> dict[str, Any] | None:
             check=False,
         )
     except subprocess.TimeoutExpired:
-        log.exception("defeatbeta WSL-subprocess timeout for %s", symbol)
+        log.warning(
+            "defeatbeta WSL-subprocess timeout for %s after %ds", symbol, SUBPROCESS_TIMEOUT_SEC
+        )
         return None
     if result.returncode != 0:
         log.error("defeatbeta WSL-subprocess failed for %s: %s", symbol, result.stderr[:300])

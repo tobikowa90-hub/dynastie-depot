@@ -36,3 +36,22 @@ class TestDefeatbetaBridge:
             mock_run.side_effect = subprocess.TimeoutExpired(cmd="x", timeout=30)
             data = defeatbeta_subprocess.pull_metrics("MSFT")
         assert data is None
+
+    def test_pull_metrics_strips_banner_prefix(self) -> None:
+        """defeatbeta-api emits an INFO banner before the JSON line; rsplit must isolate the last line."""
+        banner = "defeatbeta-api v0.0.50\n[INFO] connecting\n"
+        payload = json.dumps({"roe": 1.0, "peTTM": 2.0, "roic": 3.0})
+        with patch("defeatbeta_subprocess.subprocess.run") as mock_run:
+            mock_run.return_value = MagicMock(returncode=0, stdout=banner + payload, stderr="")
+            data = defeatbeta_subprocess.pull_metrics("MSFT")
+        assert data == {"roe": 1.0, "peTTM": 2.0, "roic": 3.0}
+
+    def test_pull_metrics_passes_symbol_as_last_arg(self) -> None:
+        """Symbol must be the trailing positional so `sys.argv[1]` resolves correctly in WSL."""
+        sample_out = json.dumps({"roe": 1.0, "peTTM": 2.0, "roic": 3.0})
+        with patch("defeatbeta_subprocess.subprocess.run") as mock_run:
+            mock_run.return_value = MagicMock(returncode=0, stdout=sample_out, stderr="")
+            defeatbeta_subprocess.pull_metrics("MSFT")
+            cmd = mock_run.call_args.args[0]
+        assert cmd[-1] == "MSFT"
+        assert cmd[0] == "wsl.exe"
