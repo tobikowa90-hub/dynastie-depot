@@ -79,12 +79,12 @@ def _iter_existing_record_ids(archive_path: Path) -> list[str]:
         return []
     ids: list[str] = []
     with archive_path.open("r", encoding="utf-8") as fh:
-        for line_no, raw in enumerate(fh, start=1):
-            raw = raw.strip()
-            if not raw:
+        for line_no, raw_line in enumerate(fh, start=1):
+            stripped = raw_line.strip()
+            if not stripped:
                 continue
             try:
-                obj = json.loads(raw)
+                obj = json.loads(stripped)
             except json.JSONDecodeError as exc:
                 raise RuntimeError(
                     f"archive corrupt at line {line_no} of {archive_path}: {exc}"
@@ -149,6 +149,27 @@ def _append_record(record: ScoreRecord, archive_path: Path) -> int:
 
 
 # ---------------------------------------------------------------------------
+# R1-Guardrail (Spec §9): block FinnHub-Read-Only-Data from scoring pipeline
+# ---------------------------------------------------------------------------
+
+
+def _assert_metric_for_scoring(metric: dict) -> None:
+    """v0.1 R1-Guardrail (Spec §9): FinnHub-Metriken dürfen NICHT scoring-wirksam werden.
+
+    Legacy-Records ohne _meta-Block sind defeatbeta-implicit und passen durch.
+    Records mit _meta.for_scoring=False (FinnHub) → AssertionError.
+    """
+    meta = metric.get("_meta") if isinstance(metric, dict) else None
+    if meta is None:
+        return  # legacy defeatbeta-implicit
+    if meta.get("for_scoring") is False:
+        raise AssertionError(
+            "FinnHub-Metriken sind in v0.1 NICHT für Scoring zugelassen "
+            "(v0.2-Reklassifizierungs-Gate pflicht). Spec §9 R1-Guardrail."
+        )
+
+
+# ---------------------------------------------------------------------------
 # Core pipeline
 # ---------------------------------------------------------------------------
 
@@ -166,6 +187,10 @@ def run(
     is non-empty. stderr_msg drives exit_code != 0.
     """
     today = today or date.today()
+
+    # Spec §9 R1-Guardrail: prevent FinnHub-Read-Only-Data from entering scoring path
+    if isinstance(raw_json, dict):
+        _assert_metric_for_scoring(raw_json)
 
     # Step 2: Pydantic validation
     try:
@@ -200,7 +225,11 @@ def run(
     except OSError as exc:
         return 2, "", f"❌ IOError: {exc}"
 
-    rel = archive_path.relative_to(PROJECT_ROOT) if archive_path.is_relative_to(PROJECT_ROOT) else archive_path
+    rel = (
+        archive_path.relative_to(PROJECT_ROOT)
+        if archive_path.is_relative_to(PROJECT_ROOT)
+        else archive_path
+    )
     return (
         0,
         f"✅ APPENDED record_id={record.record_id} → {rel.as_posix()} (total records: {total})",
@@ -400,9 +429,7 @@ def _smoke_tests() -> None:
     # And ensure run() rejects a non-dict cleanly (pydantic ValidationError)
     with tempfile.TemporaryDirectory() as tmp:
         tmp_archive = Path(tmp) / "score_history.jsonl"
-        exit_code, out, err = run(
-            "not a dict", dry_run=True, archive_path=tmp_archive, today=today
-        )
+        exit_code, out, err = run("not a dict", dry_run=True, archive_path=tmp_archive, today=today)
         assert exit_code == 1, f"[2] expected 1, got {exit_code}"
         assert "SchemaError" in err, f"[2] unexpected stderr: {err!r}"
     print("  [2/5] invalid JSON / non-dict payload → SchemaError exit 1")
@@ -412,9 +439,7 @@ def _smoke_tests() -> None:
     bad_arith["score_gesamt"] = bad_arith["score_gesamt"] + 1  # off-by-one
     with tempfile.TemporaryDirectory() as tmp:
         tmp_archive = Path(tmp) / "score_history.jsonl"
-        exit_code, out, err = run(
-            bad_arith, dry_run=True, archive_path=tmp_archive, today=today
-        )
+        exit_code, out, err = run(bad_arith, dry_run=True, archive_path=tmp_archive, today=today)
         assert exit_code == 1, f"[3] expected 1, got {exit_code}"
         assert "SchemaError" in err and "arithmetic mismatch" in err, (
             f"[3] unexpected stderr: {err!r}"
@@ -425,9 +450,7 @@ def _smoke_tests() -> None:
     old_record = _build_valid_forward_record(today - timedelta(days=10))
     with tempfile.TemporaryDirectory() as tmp:
         tmp_archive = Path(tmp) / "score_history.jsonl"
-        exit_code, out, err = run(
-            old_record, dry_run=True, archive_path=tmp_archive, today=today
-        )
+        exit_code, out, err = run(old_record, dry_run=True, archive_path=tmp_archive, today=today)
         assert exit_code == 1, f"[4] expected 1, got {exit_code}"
         assert "ForwardWindowError" in err, f"[4] unexpected stderr: {err!r}"
     print("  [4/5] forward-window violation (10 days old) → ForwardWindowError exit 1")
@@ -438,9 +461,7 @@ def _smoke_tests() -> None:
         rec = _build_valid_forward_record(today)
         exit_code, out, err = run(rec, dry_run=False, archive_path=tmp_archive, today=today)
         assert exit_code == 0, f"[5a] expected 0, got {exit_code} (err={err})"
-        assert "APPENDED" in out and "total records: 1" in out, (
-            f"[5a] unexpected stdout: {out!r}"
-        )
+        assert "APPENDED" in out and "total records: 1" in out, f"[5a] unexpected stdout: {out!r}"
         assert tmp_archive.exists() and tmp_archive.stat().st_size > 0
 
         # verify JSONL shape: exactly one line, valid JSON, record_id matches
