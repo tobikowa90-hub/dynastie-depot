@@ -572,6 +572,154 @@ def verify_xlsx_smoke(
 
 
 # --------------------------------------------------------------------------- #
+# P6 — Two-Commit-Same-Session-Protokoll (Codex-H1, Spec §4 P6)               #
+# --------------------------------------------------------------------------- #
+#
+# Drift-Matrix (Plan-Task-11, Codex-M3 end-to-end Fidelity-Gate):
+#   commit_a_sha != HEAD          → session_valid False  ("commit_a_sha ... != HEAD ...")
+#   TTL > SESSION_TTL_SECONDS     → session_valid False  ("session TTL exceeded")
+#   Marker bereits 'committed'    → _run_verify_b REFUSE ("Marker bereits committed")
+#   Marker absent (--verify-b)    → _run_verify_b REFUSE ("kein Session-Marker")
+#   Marker JSON corrupt           → read_session_marker None → behandelt wie absent
+#   --reset-session (any state)   → silent delete, exit=0
+#   Re-Run ohne --verify-b        → main() schreibt neuen Marker (legitim für neuen Commit-A)
+
+
+def _session_id() -> str:
+    """16-Char-sha1-Hash aus host/user/time (Schutz vor cross-machine-Marker-Konflikt)."""
+    import hashlib
+    import os as _os
+
+    h = hashlib.sha1()
+    h.update(_os.environ.get("COMPUTERNAME", "host").encode())
+    h.update(_os.environ.get("USERNAME", _os.environ.get("USER", "user")).encode())
+    h.update(str(int(time.time())).encode())
+    return h.hexdigest()[:16]
+
+
+def write_session_marker(
+    *,
+    commit_a_sha: str,
+    expected_xlsx: list[str],
+    marker_path: Path | None = None,
+) -> dict:
+    """Schreibt Session-Marker (JSON) für Two-Commit-Tracking. `marker_path` für Test-Override."""
+    path = marker_path if marker_path is not None else SESSION_MARKER
+    marker = {
+        "session_id": _session_id(),
+        "started_at_iso": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime()),
+        "started_at_ts": int(time.time()),
+        "commit_a_sha": commit_a_sha,
+        "expected_xlsx": expected_xlsx,
+        "status": "pending",
+    }
+    path.write_text(json.dumps(marker, indent=2), encoding="utf-8")
+    return marker
+
+
+def read_session_marker(marker_path: Path | None = None) -> dict | None:
+    """Liest Session-Marker. None bei missing oder corrupt JSON."""
+    path = marker_path if marker_path is not None else SESSION_MARKER
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError, OSError:
+        return None
+
+
+def session_valid(marker: dict, *, cwd: Path | None = None) -> tuple[bool, str]:
+    """Prüft Drift gegen current HEAD + TTL.
+
+    Returns (True, "ok") oder (False, P6/B-Fail-Reason mit klarem Recovery-Hint).
+    """
+    if not marker:
+        return False, "P6/B: no marker"
+    cur_head = get_head_sha(cwd)
+    marker_sha = marker.get("commit_a_sha", "")
+    if marker_sha != cur_head:
+        return False, (
+            f"P6/B: commit_a_sha {marker_sha[:8]} != HEAD {cur_head[:8]} "
+            f"(anderer Commit zwischendrin). Recovery: --reset-session."
+        )
+    age = int(time.time()) - int(marker.get("started_at_ts", 0))
+    if age > SESSION_TTL_SECONDS:
+        return False, (
+            f"P6/B: session TTL exceeded ({age}s > {SESSION_TTL_SECONDS}s). "
+            f"Recovery: --reset-session."
+        )
+    return True, "ok"
+
+
+def _run_verify_b(args: argparse.Namespace) -> int:
+    """Two-Commit-Protokoll Re-Invocation für Commit-B xlsx-Bundle.
+
+    Normative Direktive (Codex-M2-Fix): Volle P1+P4+P5-Revalidation für
+    xlsx-Subset, keine Phase darf übersprungen werden. Bei jeglichem Sub-Fail
+    bleibt der Marker auf 'pending', Re-Run nötig.
+    """
+    marker = read_session_marker()
+    if marker is None:
+        sys.stderr.write(
+            "FAIL P6 — kein Session-Marker (keine pending Commit-A). "
+            "Recovery: ohne --verify-b starten.\n"
+        )
+        return EXIT_FAIL_P6
+    if marker.get("status") == "committed":
+        sys.stderr.write(
+            "FAIL P6 — Marker bereits committed; xlsx noch dirty? `git status` checken.\n"
+        )
+        return EXIT_FAIL_P6
+    ok, reason = session_valid(marker)
+    if not ok:
+        sys.stderr.write(f"FAIL P6 — {reason}\n")
+        return EXIT_FAIL_P6
+
+    expected_xlsx = set(marker.get("expected_xlsx", []))
+
+    # P1-Revalidation (Working-Tree-Sanity, kein Score-Ordering-Check für Commit-B)
+    pf = verify_pre_flight(
+        "score-flag-sparraten",
+        ticker=None,
+        flag_event=False,
+        allow_dirty=args.allow_dirty,
+        expected=expected_xlsx,
+        check_dirty=True,
+    )
+    if not pf.ok:
+        sys.stderr.write(f"FAIL P1 (verify-b) — {pf.reason}\n")
+        return EXIT_FAIL_P1
+
+    # P4-Revalidation: xlsx-Subset MUSS staged sein
+    p4 = verify_staging(expected_xlsx, pf.pre_existing_unstaged)
+    if not p4.ok:
+        sys.stderr.write(f"FAIL P4 (verify-b) — {p4.reason}\n")
+        return EXIT_FAIL_P4
+
+    # P5-Revalidation: xlsx-Smoke-Test
+    ok_p5, status = verify_xlsx_smoke(sorted(expected_xlsx))
+    if not ok_p5:
+        sys.stderr.write(f"FAIL P5 (verify-b) — {status}\n")
+        return EXIT_FAIL_P5
+
+    # PASS — Marker-Cleanup nach Commit-B-PASS (Heuristik: Marker hat seinen Zweck erfüllt)
+    SESSION_MARKER.unlink(missing_ok=True)
+    print(
+        json.dumps(
+            {
+                "verdict": "PASS",
+                "phase": "P6/B",
+                "xlsx_verified": status,
+                "expected_xlsx": sorted(expected_xlsx),
+                "session_id": marker.get("session_id", ""),
+            },
+            indent=2,
+        )
+    )
+    return EXIT_PASS
+
+
+# --------------------------------------------------------------------------- #
 # Closure-Report Emitter (Spec §4 P7 — preliminary, full schema in Task 12)   #
 # --------------------------------------------------------------------------- #
 
@@ -700,9 +848,7 @@ def main(argv: list[str] | None = None) -> int:
         return EXIT_PASS
 
     if args.verify_b:
-        # Two-Commit-Protokoll Re-Invocation wird in Task 11 (P6) implementiert.
-        sys.stderr.write("FAIL P6 — --verify-b nicht implementiert (Task 11)\n")
-        return EXIT_FAIL_P6
+        return _run_verify_b(args)
 
     if args.event_type == "__none__":
         sys.stderr.write(
@@ -835,8 +981,18 @@ def main(argv: list[str] | None = None) -> int:
         )
         return EXIT_FAIL_P4
 
-    # P5/P6/P7 folgen in Tasks 10-12. Preliminary PASS-Verdikt (kein BUILD_INCOMPLETE
-    # mehr) — Closure-Report-Schema wird in Task 12 voll ausgebaut.
+    # P6 Two-Commit-Setup (Codex-H1): wenn xlsx-Subset erwartet, Marker für Commit-B-
+    # Revalidation schreiben. xlsx-Files bleiben unstaged in Commit-A; nach Commit-A
+    # + openpyxl-Write + xlsx-Smoke ruft Analyst `validator.py --verify-b` für P5/P6/B.
+    if expected_xlsx:
+        cur_head = get_head_sha()
+        marker = write_session_marker(commit_a_sha=cur_head, expected_xlsx=expected_xlsx)
+        sys.stderr.write(
+            f"NOTE — Commit-A bereit ({len(p4.classification.staged)} Files staged, "
+            f"{len(expected_xlsx)} xlsx pending). Session-Marker: {marker['session_id']}.\n"
+            "Nach `git commit` → xlsx via openpyxl + smoke + `validator.py --verify-b`.\n"
+        )
+
     _emit_report(
         "PASS",
         "P7",

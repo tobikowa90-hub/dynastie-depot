@@ -470,3 +470,164 @@ def test_s20_p5_empty_xlsx_set_noop():
         assert status == "not-applicable"
     finally:
         sys.path.pop(0)
+
+
+# --------------------------------------------------------------------------- #
+# S16 — P6 Two-Commit-Protokoll (Codex-H1, Drift-Matrix)                      #
+# --------------------------------------------------------------------------- #
+
+
+def _load_validator():
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    import importlib
+
+    validator = importlib.import_module("validator")
+    importlib.reload(validator)
+    return validator
+
+
+def test_s16a_session_marker_write_read(tmp_path: Path):
+    """S16a: write_session_marker + read_session_marker roundtrip (marker_path-Override)."""
+    try:
+        validator = _load_validator()
+        marker_path = tmp_path / ".session_marker"
+        m = validator.write_session_marker(
+            commit_a_sha="abc123def4567890",
+            expected_xlsx=["03_Tools/foo.xlsx"],
+            marker_path=marker_path,
+        )
+        assert m["status"] == "pending"
+        assert m["commit_a_sha"] == "abc123def4567890"
+        rm = validator.read_session_marker(marker_path=marker_path)
+        assert rm is not None
+        assert rm["commit_a_sha"] == "abc123def4567890"
+        assert rm["expected_xlsx"] == ["03_Tools/foo.xlsx"]
+    finally:
+        sys.path.pop(0)
+
+
+def test_s16d_session_mismatch_commit_a_sha(tmp_path: Path):
+    """S16d: Marker-commit_a_sha != current HEAD → session_valid False (P6/B-Drift)."""
+    try:
+        validator = _load_validator()
+        marker = {
+            "commit_a_sha": "deadbeef00000000",
+            "started_at_ts": int(time.time()),
+        }
+        ok, reason = validator.session_valid(marker, cwd=ROOT)
+        assert ok is False
+        assert "P6/B" in reason
+        assert "deadbeef" in reason or "HEAD" in reason
+    finally:
+        sys.path.pop(0)
+
+
+def test_s16_session_ttl_exceeded(tmp_path: Path):
+    """S16-TTL: Marker started_at_ts > 4h alt → session_valid False (TTL exceeded)."""
+    try:
+        validator = _load_validator()
+        cur_head = validator.get_head_sha(cwd=ROOT)
+        marker = {
+            "commit_a_sha": cur_head,
+            "started_at_ts": int(time.time()) - (validator.SESSION_TTL_SECONDS + 100),
+        }
+        ok, reason = validator.session_valid(marker, cwd=ROOT)
+        assert ok is False
+        assert "TTL" in reason
+    finally:
+        sys.path.pop(0)
+
+
+def test_s16_corrupt_marker_treated_as_absent(tmp_path: Path):
+    """S16-corrupt: Marker mit invalid JSON → read_session_marker returnt None."""
+    try:
+        validator = _load_validator()
+        marker_path = tmp_path / ".session_marker"
+        marker_path.write_text("{not valid json", encoding="utf-8")
+        result = validator.read_session_marker(marker_path=marker_path)
+        assert result is None
+    finally:
+        sys.path.pop(0)
+
+
+def test_s16_verify_b_without_marker_refuses(tmp_path: Path, monkeypatch):
+    """S16-no-marker: --verify-b ohne pending Marker → FAIL P6 mit klarem Hint."""
+    try:
+        validator = _load_validator()
+        marker_path = tmp_path / ".no_marker_here"
+        monkeypatch.setattr(validator, "SESSION_MARKER", marker_path)
+        import argparse as _ap
+
+        args = _ap.Namespace(allow_dirty=10)
+        rc = validator._run_verify_b(args)
+        assert rc == validator.EXIT_FAIL_P6
+    finally:
+        sys.path.pop(0)
+
+
+def test_s16_verify_b_already_committed_refuses(tmp_path: Path, monkeypatch):
+    """S16-committed: Marker mit status='committed' → FAIL P6 (Re-Run-Guard)."""
+    try:
+        validator = _load_validator()
+        marker_path = tmp_path / ".session_marker"
+        marker_path.write_text(
+            json.dumps(
+                {
+                    "session_id": "abc",
+                    "commit_a_sha": "deadbeef",
+                    "started_at_ts": int(time.time()),
+                    "expected_xlsx": [],
+                    "status": "committed",
+                }
+            ),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(validator, "SESSION_MARKER", marker_path)
+        import argparse as _ap
+
+        args = _ap.Namespace(allow_dirty=10)
+        rc = validator._run_verify_b(args)
+        assert rc == validator.EXIT_FAIL_P6
+    finally:
+        sys.path.pop(0)
+
+
+def test_reset_session_clears_marker(tmp_path: Path, monkeypatch):
+    """S16-reset: --reset-session löscht Marker silently, exit=0."""
+    try:
+        validator = _load_validator()
+        marker_path = tmp_path / ".session_marker"
+        monkeypatch.setattr(validator, "SESSION_MARKER", marker_path)
+        validator.write_session_marker(
+            commit_a_sha="abc", expected_xlsx=[], marker_path=marker_path
+        )
+        assert marker_path.exists()
+        rc = validator.main(["--reset-session"])
+        assert rc == validator.EXIT_PASS
+        assert not marker_path.exists()
+    finally:
+        sys.path.pop(0)
+
+
+# --------------------------------------------------------------------------- #
+# S19 — retry_required_revalidation + session_marker im Schema (preliminary)  #
+# --------------------------------------------------------------------------- #
+
+
+def test_s19_session_marker_schema_field_present():
+    """S19a: PreFlightResult + Marker-Helpers haben das Schema das §4 P7 vorsieht.
+
+    Volle Closure-Report-Erweiterung (retry_required_revalidation Boolean,
+    nested session_marker-Dict) folgt in Task 12 — hier verifizieren wir die
+    Schema-Bausteine die Task 12 wiederverwendet.
+    """
+    try:
+        validator = _load_validator()
+        assert hasattr(validator, "PreFlightResult")
+        assert hasattr(validator, "write_session_marker")
+        assert hasattr(validator, "read_session_marker")
+        assert hasattr(validator, "session_valid")
+        assert hasattr(validator, "SESSION_TTL_SECONDS")
+        assert validator.SESSION_TTL_SECONDS == 4 * 3600
+    finally:
+        sys.path.pop(0)
