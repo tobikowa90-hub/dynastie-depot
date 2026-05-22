@@ -65,6 +65,9 @@ __pycache__/
 # FinnHub Crosswalk-Log (operational, append-only, regenerable via finnhub_crosswalk_trigger.py)
 03_Tools/finnhub_crosswalk_log.jsonl
 
+# paragraph-18-sync Session-Marker (Two-Commit-Protokoll, ephemeral, TTL 4h)
+03_Tools/para18_sync/.session_marker
+
 # Obsidian per-Session UI state (tabs, layout, pan/zoom) — ephemeral, not shared config
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/workspace.json
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/graph.json
