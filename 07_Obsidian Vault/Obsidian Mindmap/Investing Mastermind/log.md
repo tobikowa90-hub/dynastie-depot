@@ -2251,3 +2251,34 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - **Zwei-Stufen-Lean-Pass (User-Direktive → Codex) effektiv** — User-Hint „kein Bloat" appliziert hat §26.5-Draft von ~30 auf ~12 Zeilen geshrinkt VOR Codex-Review. Codex empfahl danach noch eine weitere Shrink-Stelle (Sicherheits-Boundary 2→1 Satz, MED-3).
 
 **Cross-Reference:** CLAUDE.md Z.50 · INSTRUKTIONEN §25.5 · SYSTEM.md Z.5+Z.43 · CORE-MEMORY.md §6 Z.256 + §13 (post-AMZN-18.05.-Eintrag) · `01_Skills/session-closure/SKILL.md` v0.2.0 (deploy `42eca7c`) · Memory `feedback_anchor_promotion_sync_gap` revalidiert · Commit `<TBD>`.
+
+---
+
+## [2026-05-22] system | FinnHub-Integration v0.1 Plan-Phase DONE + Codex-CP0 Plan-Review appliziert (PIPELINE #74 PLAN-READY, scoring-neutral)
+
+**Event-Typ:** Plan-Phase (System-Zustand-Change, chore-level — kein Score/FLAG/Sparraten-Touch)
+
+**Was passiert ist:**
+
+1. **Plan-File geschrieben** via `superpowers:writing-plans`-Skill: `docs/superpowers/plans/2026-05-22-finnhub-integration-build-v0.1.md` (15 Tasks TDD-strukturiert, ~4-6h Build-Estimate, Subagent-Driven empfohlen, Codex-CP1+CP2+CP3 als Atmungs-Punkte). Untracked-on-disk per `.gitignore` Z.21 (konsistent mit Spec-File-Pattern).
+2. **Pre-Plan Klärungs-Decisions (User-bestätigt):**
+   - **Skill-Wrap-Timing:** Nachgang (Spec-konform §10 v0.2-Roadmap, nach Reklassifizierungs-Gate). Build-Phase v0.1 liefert NUR die 4 Tools + WSL-Bridge + Persistenz-Assertion, kein Skill.
+   - **defeatbeta-Pull-Königsweg:** WSL-Subprocess gegen `/home/tobia/.defeatbeta-env/bin/python` + A12 Identity-Check WSL≡MCP als Build-Phase-Pflicht-Acceptance (Task 10). Alternative-Optionen (Claude-Session-Workflow, yfinance-Proxy) verworfen — WSL-Bridge ist semantisch äquivalent zur MCP-Pipeline (gleiches `defeatbeta-api`-Package), automatisierbar via Cron, Spec-konform.
+3. **Codex-CP0-Plan-Review** (Codex `gpt-5.3-codex` via `codex:codex-rescue`-Subagent, Memory `feedback_review_via_codex_not_advisor`): 2 HIGH + 4 MED + 1 LOW Findings. Per `feedback_codex_sparring_heuristic` Single-Pass-Apply (Findings konkret + actionable, kein Sparring-Loop nötig). Alle 6 inline appliziert:
+   - **HIGH-1 (Q4):** Task 13 Step 6 (SKILL.md-Edit `01_Skills/backtest-ready-forward-verify/SKILL.md`) entfernt — Spec §4 ZERO-Skill-Refactor invariant; nur Persistenz-Schicht-Code in `archive_score.py` bleibt. Guardrail-System-Doku stattdessen via Task 15 in SYSTEM.md §Passive Read-Only Data Layer.
+   - **HIGH-2 (Q2/Q8):** Task 9 Step 4a Decision-Gate ergänzt — Live-Probe gegen `defeatbeta-api`-Methoden-Verfügbarkeit für die 5 nicht-initial-abgedeckten Metriken (`grossMargin5Y`, `debtToEquity`, `epsGrowth5Y`, `capexCagr5Y`, `fcfPerShareTTM`). ≥3 vorhanden → Bridge-Script erweitern; <3 → 3/8-Minimal akzeptieren + neues PIPELINE #76 für v0.2-Methoden-Discovery anlegen.
+   - **MED-1 (Q1):** Spec-Pfad-Doppel-Spezifikation §2.1 (`~/.dynasty/finnhub_cache/`) vs §2.4 (`03_Tools/finnhub_cache/`) im Plan-Header dokumentiert — Plan folgt §2.1 + §11.2 + Codex-R1; Spec v0.3 invariant (LOCKED, nicht angefasst), Auflösung nur im Plan.
+   - **MED-2 (Q6):** Token-Bucket `_TokenBucket.acquire()` von Once-Sleep-Then-Decrement zu Re-Check-Loop refactored (Concurrency-Over-Admit-Hazard); Multi-Thread-Concurrency-Test in Task 2 ergänzt (10 Threads × 10 acquires bei capacity=10/rate=10 → ≥8,5s Pflicht).
+   - **MED-3 (Q7):** Token-Bucket-Policy bei 429-Retries dokumentiert — Retries verbrauchen KEINE extra Tokens (Server-Side-Limit, doppel-Acquire wäre nur Client-Budget-Verbrennung). Note im `_request()`-Docstring + Code-Kommentar.
+   - **MED-4 (Q10):** Bash-Execution-Context für alle Plan-Command-Blöcke im Plan-Header deklariert (here-docs, `<<'MSG'`, `mkdir -p`, `&&`/`||`) — Memory `feedback_powershell_herestring_in_bash_tool` konsistent (PowerShell `@'...'@` korrumpiert im Bash-Tool, daher durchgängig Bash-Pfad).
+   - **LOW-1 (Q9):** log.md-Pfad bereits korrekt im Plan referenziert (`07_Obsidian Vault/.../log.md`, NICHT `00_Core/log.md`) — Memory `reference_dynastie_log_location.md` invariant. Keine Action.
+4. **Self-Review-Status** (writing-plans-Skill-Pflicht-Checkliste): Spec-Coverage 17/17 §§ → Task-Mapping, Acceptance-Tests A1-A12 jeder einem Task mit Pass-Kriterium zugeordnet, Type-Consistency `_FinnHubClient`-Signaturen + `CrosswalkRecord`-Felder + `FINNHUB_KEY_MAP` konsistent, keine Placeholders.
+
+**Lehre:**
+- **Plan-Phase als eigene Disziplin nach Spec-LOCK** — Memory `feedback_brainstorming_terminal_override_dynastie` sagt im Dynastie-Depot: Spec-Pickups → Codex-Sparring → §18-Sync, Execution separate Session. Plan-Phase fügt sich genau dazwischen ein: Spec-LOCK → Plan-Phase + Codex-CP0 → §18-Sync der Plan-Transition → Execution next-Session. Vermeidet Confusion zwischen Brainstorming (offen) und Execution (bereit-zum-Code).
+- **Codex-CP0-Plan-Review fängt Spec-Plan-Drift früh** — HIGH-1 (SKILL.md-Edit) wäre erst in Build-Phase Task 13 als §4-Bruch sichtbar gewesen, hätte Task-15-§18-Sync gefährdet. HIGH-2 (3/8 vs 8/8 Metriken) hätte A6-Acceptance-Run undokumentiert N/A-Records produziert. Beide jetzt im Plan-Wortlaut adressiert vor Build-Start.
+- **WSL-Subprocess + A12 Identity-Check als Königsweg-Muster für MCP-vs-Standalone-Lücken** — wenn ein MCP-Server ein pip-Package wraps, ist Direct-Import via Subprocess semantisch äquivalent und automatisierbar. Pattern dokumentiert in Plan §Architecture + Task 9 + Task 10 als Build-Phase-Pflicht.
+
+**Sync-Set:** PIPELINE.md (#74 Status PLAN-READY + Build-Phase-Scope auf Plan-File + Footer v2.52→v2.53) + SYSTEM.md (§Passive Read-Only Data Layer FinnHub-Bullet um Plan-File + Königsweg-Reference + Footer v1.3→v1.4) + log.md (dieser Eintrag). **KEIN:** PORTFOLIO + CORE-MEMORY + Faktortabelle + score_history + flag_events + config.yaml + xlsx (Spec §7.1 State-Files NULL — Live-Score-Impact NULL, scoring-neutral). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Cross-Reference:** Plan-File `docs/superpowers/plans/2026-05-22-finnhub-integration-build-v0.1.md` · Spec-File `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` v0.3 (LOCKED, invariant) · PIPELINE.md #74 Z.79 + Footer v2.53 · SYSTEM.md §Passive Read-Only Data Layer + Footer v1.4 · Memory `feedback_codex_sparring_heuristic` (Single-Pass-Apply Heuristik) · Memory `feedback_review_via_codex_not_advisor` (Codex gepinnt) · Memory `feedback_brainstorming_terminal_override_dynastie` (Spec→Sparring→Sync→Execution-Trennung) · Commit `<TBD>`.
