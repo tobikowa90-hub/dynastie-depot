@@ -66,7 +66,7 @@ class CrosswalkRecord(BaseModel):
     # Spec §5.3 verlangt aber "_meta" als JSONL-Output-Key — daher Field alias
     meta: dict = Field(..., alias="_meta", serialization_alias="_meta")
 
-    model_config = {"populate_by_name": True, "serialize_by_alias": True}
+    model_config = {"populate_by_name": True, "serialize_by_alias": True, "strict": True}
 
 
 def compute_delta(
@@ -147,10 +147,10 @@ def main(argv: list[str] | None = None) -> int:
     record_counter = 0
 
     for sym in symbols:
-        defeatbeta_pulled_at = _now_iso()
         db_data = defeatbeta_subprocess.pull_metrics(sym)
-        finnhub_pulled_at = _now_iso()
+        defeatbeta_pulled_at = _now_iso()
         fh_data = finnhub_client.get_metrics(sym, force=args.force)
+        finnhub_pulled_at = _now_iso()
 
         for metric, tolerance in METRIC_TOLERANCES.items():
             db_val = db_data.get(metric) if db_data else None

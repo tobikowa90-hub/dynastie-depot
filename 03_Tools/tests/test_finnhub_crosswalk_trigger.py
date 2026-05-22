@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pydantic
 import pytest
 
 import finnhub_crosswalk_trigger as cwt
@@ -85,6 +86,30 @@ class TestCrosswalkRecord:
         delta, status = cwt.compute_delta(0.0, 5.0, "5%")
         assert delta is None
         assert status == "na"
+
+    def test_strict_mode_rejects_str_coercion_for_numeric_fields(self) -> None:
+        """Spec §5.3 says number|null — strict-mode prevents silent str-to-float coercion."""
+        with pytest.raises(pydantic.ValidationError):
+            cwt.CrosswalkRecord(
+                timestamp="2026-05-23T10:00:00Z",
+                run_id="x",
+                batch_id="y",
+                symbol="MSFT",
+                metric="roic",
+                defeatbeta_value="27.45",  # str instead of float — must be rejected
+                finnhub_value=26.91,
+                delta=-0.54,
+                delta_unit="pp",
+                tolerance_used="2pp",
+                tolerance_status="within",
+                _meta={
+                    "read_only": True,
+                    "for_scoring": False,
+                    "schema_version": "v1",
+                    "defeatbeta_pulled_at": "x",
+                    "finnhub_pulled_at": "y",
+                },
+            )
 
 
 class TestMainRun:
