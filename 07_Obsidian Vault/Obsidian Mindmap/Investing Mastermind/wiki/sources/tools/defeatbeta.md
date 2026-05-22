@@ -43,7 +43,12 @@ Version: 1.27.0 | 100+ Tools | Daten bis 03.04.2026
 
 AVGO: OCF $27.54B | CapEx $623M | FCF $26.91B ✅
 
+## Crosswalk mit FinnHub (seit 2026-05-22)
+
+Read-Only Crosswalk-Pipeline gegen [[finnhub]] (Real-Time-Layer) für **Stale-Detection** (defeatbeta 2-Wochen-Lag-Problem) und zukünftige v0.2-Reklassifizierung. Primary-Pull via WSL-Subprocess `03_Tools/defeatbeta_subprocess.py` gegen `/home/tobia/.defeatbeta-env/bin/python` — bit-perfect Identity zu MCP-Path verifiziert (A12 Δ=0.00 für [MSFT,V,TMO]×[roe,peTTM,roic]). Aktuelle 3/8-Coverage (peTTM/roe/roic Live + 5/8 systematisch N/A); 5/8-Folge-Recherche als PIPELINE #76 (v0.2-Methoden-Discovery).
+
 ## Verlinkungen
 
+- [[finnhub]] — Crosswalk-Real-Time-Quelle (Stale-Detection + v0.2-Reklassifizierungs-Gate 2026-07-06)
 - [[DEFCON-System]]
 - [[Shibui-SQL]]

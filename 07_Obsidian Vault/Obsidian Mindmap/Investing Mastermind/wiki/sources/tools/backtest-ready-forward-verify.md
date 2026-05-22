@@ -36,6 +36,7 @@ Persistence-Pipeline-Satellit für jede `!Analysiere`-Forward-Vollanalyse. Wird 
 
 ## Verwandte Pages
 
-- [[dynastie-depot-skill]] — Aufrufer
+- [[dynastie-depot-skill]] — Aufrufer (programmatisch Schritt 7)
+- [[session-closure]] — Session-Closure-Orchestrator (User-getriggert, §18-Sync-Komplement)
 - [[Backtest-Ready-Infrastructure]] — Konzept
 - [[DEFCON-System]] — Scoring-System dahinter
