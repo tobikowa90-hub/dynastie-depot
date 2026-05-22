@@ -1,0 +1,54 @@
+{
+  "schema_version": "v1",
+  "last_run": "2026-05-22T10:39:41.327722Z",
+  "status": "degraded",
+  "pass": 6,
+  "fail": 0,
+  "endpoints": [
+    {
+      "name": "1 /quote MSFT",
+      "status": "PASS",
+      "msg": "price=419.09 age=14.7h"
+    },
+    {
+      "name": "2 /quote V",
+      "status": "PASS",
+      "msg": "price=331.12 age=14.7h"
+    },
+    {
+      "name": "3 /calendar/earnings bulk",
+      "status": "EXPECTED-FAIL",
+      "msg": "EXPECTED-FAIL bulk-endpoint not used (per-symbol-iteration in test 4)"
+    },
+    {
+      "name": "4 /calendar/earnings per-symbol",
+      "status": "PASS",
+      "msg": "10/10 satellites with future-earnings"
+    },
+    {
+      "name": "5 BRK.B calendar",
+      "status": "EXPECTED-FAIL",
+      "msg": "EXPECTED-FAIL BRK.B liefert BRK.A-Werte (Memory feedback_brk_no_earnings_call)"
+    },
+    {
+      "name": "6 Europäer 403",
+      "status": "EXPECTED-FAIL",
+      "msg": "EXPECTED-FAIL Europäer Premium: rms=True su=True"
+    },
+    {
+      "name": "7 /company-news MSFT 7d",
+      "status": "PASS",
+      "msg": "249 news items"
+    },
+    {
+      "name": "8 /stock/profile2 MSFT",
+      "status": "PASS",
+      "msg": "name=Microsoft Corp"
+    },
+    {
+      "name": "9 /stock/metric MSFT",
+      "status": "PASS",
+      "msg": "metrics=11 for_scoring_guard=True"
+    }
+  ]
+}
