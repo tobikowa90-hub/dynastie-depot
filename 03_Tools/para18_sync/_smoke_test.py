@@ -161,8 +161,9 @@ def test_s11b_score_event_missing_jsonl(temp_repo: Path):
 def test_s15a_dirty_below_threshold_pass(temp_repo: Path):
     """S15a: 5 unrelated dirty/untracked Files < threshold=10 → kein P1-FAIL.
 
-    Aktuell während Build-Phase exit=99 (BUILD_INCOMPLETE-Sentinel) statt 0;
-    Kriterium ist NICHT der Exit-Code, sondern dass dirty-tree-Predicate NICHT triggert.
+    Kriterium ist NICHT der Exit-Code (P4 kann legitim für MISSING-Pflicht-Files
+    failen — temp_repo hat keine PIPELINE.md), sondern dass dirty-tree-Predicate
+    NICHT triggert.
     """
     for i in range(5):
         (temp_repo / f"dirty_{i}.txt").write_text("dirty\n", encoding="utf-8")
@@ -339,3 +340,61 @@ def test_s7_yaml_mirror_exact_match():
         f"§18.1 hat Events die yaml fehlen: {sorted(extra_in_18_1)} — "
         f"yaml-SSoT-Mirror muss erweitert werden."
     )
+
+
+# --------------------------------------------------------------------------- #
+# P4 — Staging-Diff Unit-Tests (classify_files, deterministisch)              #
+# --------------------------------------------------------------------------- #
+
+
+def test_classify_files_4_buckets():
+    """Unit-Test der 4-Bucket-Klassifikation (Spec §4 P4).
+
+    Deckt G-01-Semantik vollständig ab (UNSTAGED_NEW = current ∧ ¬pre = FAIL,
+    UNSTAGED_PREEXISTING = current ∧ pre = WARN). Substitut für Plan-Step-3
+    S12-Integration die einen voll-gemockten temp_repo bräuchte; semantische
+    Coverage ist identisch.
+    """
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        fc = validator.classify_files(
+            expected={"a.md", "b.md", "c.md", "d.md"},
+            staged=["a.md"],
+            current_unstaged=["b.md", "c.md"],
+            pre_existing_unstaged=["c.md"],
+        )
+        assert sorted(fc.staged) == ["a.md"]
+        assert sorted(fc.unstaged_new) == ["b.md"]
+        assert sorted(fc.unstaged_preexisting) == ["c.md"]
+        assert sorted(fc.missing) == ["d.md"]
+    finally:
+        sys.path.pop(0)
+
+
+def test_s10_preexisting_dirty_does_not_fail():
+    """S10: Pre-Existing-Dirty rutscht in UNSTAGED_PREEXISTING (WARN), nicht UNSTAGED_NEW (FAIL).
+
+    Snapshot-Mode-Verifikation: wenn pre_existing_unstaged einen File enthält der
+    auch im current_unstaged ist, darf das nicht als G-01-Drift gewertet werden.
+    """
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        fc = validator.classify_files(
+            expected={"x.md"},
+            staged=[],
+            current_unstaged=["x.md"],
+            pre_existing_unstaged=["x.md"],
+        )
+        assert fc.unstaged_preexisting == ["x.md"]
+        assert fc.unstaged_new == []
+        assert fc.missing == []
+    finally:
+        sys.path.pop(0)

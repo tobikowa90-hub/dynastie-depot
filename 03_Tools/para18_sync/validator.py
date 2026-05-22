@@ -21,8 +21,6 @@ Exit-Codes (Spec §7):
   4  = P4 fail
   5  = P5 fail
   6  = P6/B drift
-  99 = BUILD-INCOMPLETE-Sentinel (P2-P7 noch nicht implementiert, Build-Phase)
-       — fail-close gegen false-positive PASS während Build (Codex-CP1-P1 2026-05-22).
 """
 
 from __future__ import annotations
@@ -46,7 +44,6 @@ EXIT_FAIL_P3 = 3
 EXIT_FAIL_P4 = 4
 EXIT_FAIL_P5 = 5
 EXIT_FAIL_P6 = 6
-EXIT_BUILD_INCOMPLETE = 99  # Sentinel: P2-P7 noch nicht implementiert (Build-Phase)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SESSION_MARKER = Path(__file__).parent / ".session_marker"
@@ -461,6 +458,107 @@ def resolve_active_xlsx(tool_stems: list[str]) -> tuple[list[str], list[str], st
 
 
 # --------------------------------------------------------------------------- #
+# P4 — Staging-Diff (4-Bucket-Klassifikation, Spec §4 P4)                     #
+# --------------------------------------------------------------------------- #
+
+
+@dataclass
+class P4Result:
+    ok: bool
+    classification: FileClassification
+    spot_greps: dict[str, dict[str, int]] = field(default_factory=dict)
+    reason: str = ""
+
+
+def verify_staging(
+    expected: set[str],
+    pre_existing_unstaged: list[str],
+    ticker: str | None = None,
+    *,
+    cwd: Path | None = None,
+) -> P4Result:
+    """P4 — Staging-Diff gegen Expected-Set + 4-Bucket (Spec §4).
+
+    FAIL-Trigger:
+      - MISSING (weder staged noch unstaged) → exit=4
+      - UNSTAGED_NEW (G-01: dirty jetzt, sauber im Pre-Snapshot) → exit=4
+        Hint: `git add <file>` Recovery.
+    WARN-only:
+      - UNSTAGED_PREEXISTING (Pre-existing-Dirty, Refactor-Drift-Schutz §18.4)
+    Spot-Greps (non-blocking, nur wenn ticker gesetzt):
+      - cached-diff -G<ticker> Hit-Count pro staged md/yaml → Plausibilitäts-Signal
+        für Score-Move (kein Hard-Assert; Detektion-Hilfe für Reviewer).
+    """
+    staged = get_staged_files(cwd)
+    cur_unstaged = get_unstaged_modified_files(cwd)
+    fc = classify_files(expected, staged, cur_unstaged, pre_existing_unstaged)
+
+    if fc.missing or fc.unstaged_new:
+        parts = []
+        if fc.missing:
+            parts.append(f"MISSING: {sorted(fc.missing)}")
+        if fc.unstaged_new:
+            parts.append(f"UNSTAGED_NEW (G-01, run `git add`): {sorted(fc.unstaged_new)}")
+        return P4Result(False, fc, reason="; ".join(parts))
+
+    spot: dict[str, dict[str, int]] = {}
+    if ticker:
+        for f in fc.staged:
+            if not (f.endswith(".md") or f.endswith(".yaml")):
+                continue
+            rc, out, _err = _run_git(["diff", "--cached", "-G", re.escape(ticker), "--", f], cwd)
+            if rc != 0:
+                continue
+            hits = sum(
+                1
+                for ln in out.splitlines()
+                if ln.startswith("+") and not ln.startswith("+++") and ticker in ln
+            )
+            spot[f] = {"symbol": ticker, "hits": hits}
+    return P4Result(True, fc, spot_greps=spot)
+
+
+# --------------------------------------------------------------------------- #
+# Closure-Report Emitter (Spec §4 P7 — preliminary, full schema in Task 12)   #
+# --------------------------------------------------------------------------- #
+
+
+def _emit_report(
+    verdict: str,
+    phase: str,
+    events: list[str],
+    expected: set[str],
+    p4: P4Result,
+    pf: PreFlightResult,
+    xlsx_warnings: list[str],
+    args: argparse.Namespace,
+    *,
+    expected_xlsx: list[str] | None = None,
+    cwd: Path | None = None,
+) -> None:
+    """JSON-Closure-Report (Spec §4 P7). Full retry/session-marker-Schema folgt in Task 12."""
+    payload = {
+        "verdict": verdict,
+        "phase": phase,
+        "events": events,
+        "expected_files": sorted(expected),
+        "staged_files": p4.classification.staged,
+        "unstaged_modified_files": get_unstaged_modified_files(cwd),
+        "missing": p4.classification.missing,
+        "unstaged_new": p4.classification.unstaged_new,
+        "pre_existing_unstaged": pf.pre_existing_unstaged,
+        "spot_grep_results": p4.spot_greps,
+        "xlsx_warnings": xlsx_warnings,
+        "expected_xlsx": expected_xlsx or [],
+        "quarterly_rollover_warn": pf.quarterly_rollover_warn,
+        "ticker": args.ticker,
+        "flag_event": args.flag_event,
+        "dirty_threshold": args.allow_dirty,
+    }
+    print(json.dumps(payload, indent=None if args.json_output else 2))
+
+
+# --------------------------------------------------------------------------- #
 # CLI (argparse, Spec §3)                                                     #
 # --------------------------------------------------------------------------- #
 
@@ -662,15 +760,42 @@ def main(argv: list[str] | None = None) -> int:
         )
         return EXIT_PASS
 
-    # ---- BUILD-PHASE SENTINEL (Codex-CP1-P1) ----
-    # P4-P7 sind in Tasks 9-12 des Implementation-Plans verdrahtet. Bis dahin
-    # returnt validator EXIT_BUILD_INCOMPLETE für non-dry-run, non-critical-alert —
-    # verhindert false-positive PASS-Verdikt für unsynced Bundles (Spec §7 fail-close).
-    sys.stderr.write(
-        "WARN — paragraph-18-sync Build-Phase: P4-P7 nicht implementiert (exit=99). "
-        "P1-P3 PASS, aber Staging-Diff/xlsx-Confirm/Two-Commit/Closure folgen in Tasks 9-12.\n"
+    # P4 — Staging-Diff (Spec §4). Two-Commit-Protokoll (Codex-H1): xlsx-Subset
+    # gehört NICHT in Commit-A; verify_staging prüft daher das md/jsonl/yaml-Set.
+    # xlsx-Bundle wird in Commit-B via `--verify-b` revalidiert (Task 11).
+    expected_for_a = {f for f in expected if not f.endswith(".xlsx")}
+    expected_xlsx = sorted({f for f in expected if f.endswith(".xlsx")})
+
+    p4 = verify_staging(expected_for_a, pf.pre_existing_unstaged, ticker=args.ticker)
+    if not p4.ok:
+        sys.stderr.write(f"FAIL P4 — {p4.reason}\n")
+        _emit_report(
+            "FAIL",
+            "P4",
+            events_dedup,
+            expected,
+            p4,
+            pf,
+            xlsx_warnings,
+            args,
+            expected_xlsx=expected_xlsx,
+        )
+        return EXIT_FAIL_P4
+
+    # P5/P6/P7 folgen in Tasks 10-12. Preliminary PASS-Verdikt (kein BUILD_INCOMPLETE
+    # mehr) — Closure-Report-Schema wird in Task 12 voll ausgebaut.
+    _emit_report(
+        "PASS",
+        "P7",
+        events_dedup,
+        expected,
+        p4,
+        pf,
+        xlsx_warnings,
+        args,
+        expected_xlsx=expected_xlsx,
     )
-    return EXIT_BUILD_INCOMPLETE
+    return EXIT_PASS
 
 
 if __name__ == "__main__":
