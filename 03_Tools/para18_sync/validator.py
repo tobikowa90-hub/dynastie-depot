@@ -236,6 +236,7 @@ def verify_pre_flight(
     allow_dirty: int = 10,
     expected: set[str] | None = None,
     cwd: Path | None = None,
+    check_dirty: bool = True,
 ) -> PreFlightResult:
     """P1 — Working-Tree-Sanity + Ordering-Guard + Ticker-Identity (Codex-H3) + Dirty-Predicate (M5) + Quartal (G-03).
 
@@ -252,6 +253,10 @@ def verify_pre_flight(
 
     cwd=None: nutze Process-cwd (test-isoliert via subprocess.cwd-Override).
     expected=None: kein Set-Vergleich → dirty-Predicate vergleicht gegen ∅.
+    check_dirty=False: skip dirty-predicate (für Pre-P3-Pass nötig, da expected
+        dort noch ∅ ist und dirty-FAIL legitime Sync-States maskieren würde —
+        Codex-CP2-HIGH-2 false-negative-Fix). Pre-existing-Unstaged-Snapshot
+        wird trotzdem für P4 erfasst.
     """
     if cwd is None:
         cwd = Path.cwd()
@@ -310,23 +315,26 @@ def verify_pre_flight(
                         f"P1: flag_events HEAD-Ticker `{fhead_ticker}` != --ticker `{ticker}`.",
                     )
 
-    # Dirty-Tree-Predicate (Codex-M5): (unstaged ∪ untracked) \ expected ≥ allow_dirty → FAIL
-    if allow_dirty > 100:
-        return PreFlightResult(
-            False,
-            "P1: --allow-dirty > 100 ist Refused (WIP zu groß, bitte git stash oder commit).",
-        )
+    # Pre-existing-Unstaged-Snapshot (für P4-Bucket-Klassifikation) — immer erfassen
     cur_unstaged = set(get_unstaged_modified_files(cwd))
     untracked = set(get_untracked_files(cwd))
     pre_existing = sorted(cur_unstaged | untracked)
-    excess = (cur_unstaged | untracked) - expected
-    if len(excess) >= max(allow_dirty, 1):
-        return PreFlightResult(
-            False,
-            f"P1: dirty-tree predicate triggered — {len(excess)} unrelated dirty/untracked files "
-            f"(threshold={allow_dirty}). Cleanup oder --allow-dirty <N>.",
-            pre_existing_unstaged=pre_existing,
-        )
+
+    # Dirty-Tree-Predicate (Codex-M5): nur wenn check_dirty=True (Codex-CP2-HIGH-2 fix)
+    if check_dirty:
+        if allow_dirty > 100:
+            return PreFlightResult(
+                False,
+                "P1: --allow-dirty > 100 ist Refused (WIP zu groß, bitte git stash oder commit).",
+            )
+        excess = (cur_unstaged | untracked) - expected
+        if len(excess) >= max(allow_dirty, 1):
+            return PreFlightResult(
+                False,
+                f"P1: dirty-tree predicate triggered — {len(excess)} unrelated dirty/untracked files "
+                f"(threshold={allow_dirty}). Cleanup oder --allow-dirty <N>.",
+                pre_existing_unstaged=pre_existing,
+            )
 
     # Quartals-Rollover (G-03, §18.6) — non-blocking WARN
     rollover_warn = _check_quarterly_rollover(_resolve_project_root(cwd))
@@ -557,14 +565,15 @@ def main(argv: list[str] | None = None) -> int:
         sys.stderr.write("FAIL P2 — --flag-event nur bei score-flag-sparraten erlaubt\n")
         return EXIT_FAIL_P2
 
-    # P1 — Pre-Flight (Ordering + Ticker-Identity + Dirty-Predicate + Quartal-Rollover-WARN)
-    # Erster P1-Pass ohne expected-Set (vor P2/P3). Task 7 reicht expected nach,
-    # falls Dirty-Predicate mit echter Union getunt werden muss.
+    # P1 (Pre-P3) — Ordering + Ticker-Identity + Quartal-Rollover-WARN nur (kein dirty-check).
+    # Dirty-Predicate ist expected-abhängig und läuft erst nach P3 (Codex-CP2-HIGH-2 fix:
+    # erster Pass mit expected=∅ würde legitime Sync-States als dirty-FAIL maskieren).
     pf = verify_pre_flight(
         args.event_type,
         ticker=args.ticker,
         flag_event=args.flag_event,
         allow_dirty=args.allow_dirty,
+        check_dirty=False,
     )
     if not pf.ok:
         sys.stderr.write(f"FAIL P1 — {pf.reason}\n")
@@ -589,7 +598,13 @@ def main(argv: list[str] | None = None) -> int:
     active_xlsx: list[str] = []
     xlsx_warnings: list[str] = []
     if "score-flag-sparraten" in events_dedup:
-        node = mapping["event_types"]["score-flag-sparraten"]
+        node = (mapping.get("event_types") or {}).get("score-flag-sparraten")
+        if not isinstance(node, dict):
+            sys.stderr.write(
+                "FAIL P3 — yaml-schema-drift: event_types.score-flag-sparraten "
+                "fehlt oder ist kein dict.\n"
+            )
+            return EXIT_FAIL_P3
         stems = node.get("required_xlsx_tools", [])
         active_xlsx, xlsx_warnings, fail = resolve_active_xlsx(stems)
         if fail:

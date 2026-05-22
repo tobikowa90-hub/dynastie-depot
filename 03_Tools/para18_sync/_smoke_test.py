@@ -264,9 +264,13 @@ def test_s8a_multi_event_union_dedupe():
         ],
         cwd=ROOT,
     )
-    if r.returncode != 0:
-        # P1 score_history-Check failed (HEAD-date != heute oder Ticker-Mismatch) → akzeptiert.
-        return
+    if r.returncode == 1:
+        # P1 score_history-Check failed (HEAD-date != heute oder Ticker-Mismatch).
+        # Erwarteter Live-State-Fall, Kern-Assertion nicht erreichbar. (Codex-CP2-MED-2)
+        pytest.skip("P1 score-history-check fail (live-state, exit=1)")
+    assert r.returncode == 0, (
+        f"unexpected exit={r.returncode} (nur 0 oder 1 erwartet); stderr={r.stderr!r}"
+    )
     payload = json.loads(r.stdout)
     files = payload["expected_files"]
     log_path = "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
@@ -328,6 +332,10 @@ def test_s7_yaml_mirror_exact_match():
         )
     yaml_events = set(yaml_doc["event_types"].keys()) - {"critical-alert"}
     parsed_events = set(parsed.keys())
-    assert parsed_events.issubset(yaml_events | parsed_events), (
-        f"Symmetric diff yaml/18.1 events: {yaml_events ^ parsed_events}"
+    # Drift-Guard (Codex-CP2-HIGH-1 fix): §18.1-Events müssen Teilmenge von yaml sein
+    # (yaml darf MEHR Events haben, z.B. critical-alert NO-OP — bereits ausgeschlossen).
+    extra_in_18_1 = parsed_events - yaml_events
+    assert not extra_in_18_1, (
+        f"§18.1 hat Events die yaml fehlen: {sorted(extra_in_18_1)} — "
+        f"yaml-SSoT-Mirror muss erweitert werden."
     )
