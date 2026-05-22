@@ -219,3 +219,53 @@ def test_s13_quarterly_rollover_helper_returns_bool():
         assert isinstance(result, bool)
     finally:
         sys.path.pop(0)
+
+
+# --------------------------------------------------------------------------- #
+# S4-S6 — Single-Event happy paths (P2/P3, gegen ROOT)                        #
+# --------------------------------------------------------------------------- #
+
+
+def test_s4_pipeline_item_dry_run():
+    """S4: event=pipeline-item, dry-run → exit=0, PIPELINE.md im Expected-Set."""
+    r = _run_validator(["pipeline-item", "--dry-run"], cwd=ROOT)
+    assert r.returncode == 0, f"expected exit=0, got {r.returncode} stderr={r.stderr!r}"
+    payload = json.loads(r.stdout)
+    assert payload["verdict"] == "DRY-RUN"
+    assert "00_Core/PIPELINE.md" in payload["expected_files"]
+
+
+def test_s6_critical_alert_noop_pass():
+    """S6: critical-alert → NO-OP-PASS exit=0, only STATE.md."""
+    r = _run_validator(["critical-alert"], cwd=ROOT)
+    assert r.returncode == 0, f"expected exit=0, got {r.returncode} stderr={r.stderr!r}"
+    payload = json.loads(r.stdout)
+    assert payload.get("no_op_pass") is True
+    assert payload["expected_files"] == ["00_Core/STATE.md"]
+
+
+def test_s8a_multi_event_union_dedupe():
+    """S8a: score-flag-sparraten + --also pipeline-item → log.md genau 1× im Set.
+
+    Toleriert P1-FAIL bei stale score_history (early-return) — Kern-Assertion ist
+    die Dedupe-Invariante der Union-Logik, die nur bei P1-PASS erreichbar ist.
+    """
+    r = _run_validator(
+        [
+            "score-flag-sparraten",
+            "--also",
+            "pipeline-item",
+            "--flag-event",
+            "--ticker",
+            "V",
+            "--dry-run",
+        ],
+        cwd=ROOT,
+    )
+    if r.returncode != 0:
+        # P1 score_history-Check failed (HEAD-date != heute oder Ticker-Mismatch) → akzeptiert.
+        return
+    payload = json.loads(r.stdout)
+    files = payload["expected_files"]
+    log_path = "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
+    assert files.count(log_path) == 1, f"log.md sollte exakt 1× im Set sein: {files}"

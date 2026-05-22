@@ -29,11 +29,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
+
+import yaml
 
 # Exit-Codes (Spec §7)
 EXIT_PASS = 0
@@ -336,6 +339,120 @@ def verify_pre_flight(
 
 
 # --------------------------------------------------------------------------- #
+# P2/P3 — Event-Klassifikation + Expected-Set-Compute (Spec §4 P2/P3)         #
+# --------------------------------------------------------------------------- #
+
+
+YAML_PATH = (
+    PROJECT_ROOT / "01_Skills" / "paragraph-18-sync" / "references" / "event_typ_mapping.yaml"
+)
+
+
+def load_event_mapping() -> dict:
+    """Lädt SSoT-Mirror yaml (§18.1). Raises FileNotFoundError / yaml.YAMLError."""
+    if not YAML_PATH.exists():
+        raise FileNotFoundError(f"event_typ_mapping.yaml fehlt: {YAML_PATH}")
+    with YAML_PATH.open("r", encoding="utf-8") as fh:
+        return yaml.safe_load(fh)
+
+
+def compute_union_set(
+    events: list[str],
+    *,
+    flag_event: bool,
+    mapping: dict,
+    active_xlsx: list[str] | None = None,
+) -> set[str]:
+    """§18.2 Union — dedupe, Conditionals applizieren."""
+    result: set[str] = set()
+    for ev in events:
+        node = mapping["event_types"].get(ev)
+        if node is None:
+            continue
+        for f in node.get("required_files", []):
+            result.add(f)
+        if flag_event and ev == "score-flag-sparraten":
+            cond = node.get("conditional", {}).get("flag_event", {})
+            for f in cond.get("adds", []):
+                result.add(f)
+        if ev == "score-flag-sparraten" and active_xlsx:
+            for x in active_xlsx:
+                result.add(x)
+    return result
+
+
+ACTIVE_XLSX_BLOCK_HEADING = "## Active xlsx-Filenames"
+
+
+def parse_active_xlsx_block(system_md: Path) -> dict[str, str]:
+    """Parst `## Active xlsx-Filenames`-Block aus SYSTEM.md. Format: `- ToolName: Filename.xlsx`."""
+    if not system_md.exists():
+        return {}
+    text = system_md.read_text(encoding="utf-8", errors="replace")
+    result: dict[str, str] = {}
+    in_block = False
+    for line in text.splitlines():
+        if line.strip().startswith(ACTIVE_XLSX_BLOCK_HEADING):
+            in_block = True
+            continue
+        if in_block:
+            if line.startswith("## ") and not line.startswith(ACTIVE_XLSX_BLOCK_HEADING):
+                break
+            m = re.match(
+                r"^\s*[-*]\s*([A-Za-z0-9_]+)\s*:\s*([A-Za-z0-9_.+-]+\.xlsx)\s*$",
+                line,
+            )
+            if m:
+                result[m.group(1)] = m.group(2)
+    return result
+
+
+def resolve_active_xlsx(tool_stems: list[str]) -> tuple[list[str], list[str], str | None]:
+    """Resolve xlsx-Files für gegebene Tool-Stems (Codex-M4 deterministisch).
+
+    Reihenfolge: (1) SYSTEM.md Active-xlsx-Pin → (2) Glob+Semver-Pick → (3) Ambiguity-FAIL.
+
+    Returns (resolved_paths, warnings, fail_reason). fail_reason ≠ None → P3-FAIL exit=3.
+    """
+    system_md = PROJECT_ROOT / "00_Core" / "SYSTEM.md"
+    pin = parse_active_xlsx_block(system_md)
+    resolved: list[str] = []
+    warnings: list[str] = []
+    tools_dir = PROJECT_ROOT / "03_Tools"
+    for stem in tool_stems:
+        if stem in pin:
+            resolved.append(f"03_Tools/{pin[stem]}")
+            continue
+        matches = sorted(tools_dir.glob(f"{stem}_v*.xlsx"))
+        if not matches:
+            warnings.append(f"xlsx-Tool `{stem}` nicht in SYSTEM.md-Pin und kein Glob-Match")
+            continue
+
+        def _semver(p: Path) -> tuple[int, int]:
+            m = re.search(r"_v(\d+)\.(\d+)", p.name)
+            return (int(m.group(1)), int(m.group(2))) if m else (-1, -1)
+
+        matches.sort(key=_semver, reverse=True)
+        top = _semver(matches[0])
+        tied = [m for m in matches if _semver(m) == top]
+        if len(tied) > 1:
+            return (
+                [],
+                warnings,
+                (
+                    f"P3: xlsx-Selektion ambiguous für `{stem}` — "
+                    f"{len(tied)} Files mit gleicher Semver: {[m.name for m in tied]}. "
+                    "Setze SYSTEM.md Active-xlsx-Block."
+                ),
+            )
+        resolved.append(f"03_Tools/{matches[0].name}")
+        warnings.append(
+            f"SYSTEM.md Active-xlsx-Block fehlt für `{stem}`, Fallback Semver-Pick: {matches[0].name}"
+        )
+    return resolved, warnings, None
+
+
+# --------------------------------------------------------------------------- #
 # CLI (argparse, Spec §3)                                                     #
 # --------------------------------------------------------------------------- #
 
@@ -453,16 +570,90 @@ def main(argv: list[str] | None = None) -> int:
         sys.stderr.write(f"FAIL P1 — {pf.reason}\n")
         return EXIT_FAIL_P1
 
-    # ---- BUILD-PHASE SENTINEL (Codex-CP1-P1, 2026-05-22) ----
-    # P2-P7 sind in Tasks 7-12 des Implementation-Plans verdrahtet.
-    # Bis Task 12 abgeschlossen ist, returnt validator EXIT_BUILD_INCOMPLETE statt
-    # EXIT_PASS — verhindert false-positive PASS-Verdikt für unsynced Bundles
-    # (fail-close-Contract gemäß Spec §7). Bei produktivem Aufruf vor Phase-7-Done
-    # ist exit=99 das richtige Verdikt: „Skill noch nicht einsatzbereit".
+    # P2 — Event-Klassifikation (parse + dedupe)
+    events = [args.event_type, *(args.also or [])]
+    seen: set[str] = set()
+    events_dedup: list[str] = []
+    for e in events:
+        if e not in seen:
+            seen.add(e)
+            events_dedup.append(e)
+
+    # P3 — yaml + Expected-Set + xlsx
+    try:
+        mapping = load_event_mapping()
+    except (FileNotFoundError, yaml.YAMLError) as ex:
+        sys.stderr.write(f"FAIL P3 — yaml-load: {ex}\n")
+        return EXIT_FAIL_P3
+
+    active_xlsx: list[str] = []
+    xlsx_warnings: list[str] = []
+    if "score-flag-sparraten" in events_dedup:
+        node = mapping["event_types"]["score-flag-sparraten"]
+        stems = node.get("required_xlsx_tools", [])
+        active_xlsx, xlsx_warnings, fail = resolve_active_xlsx(stems)
+        if fail:
+            sys.stderr.write(f"FAIL P3 — {fail}\n")
+            return EXIT_FAIL_P3
+
+    expected = compute_union_set(
+        events_dedup,
+        flag_event=args.flag_event,
+        mapping=mapping,
+        active_xlsx=active_xlsx,
+    )
+
+    # Critical-Alert NO-OP-PASS (Spec §4 P3 + yaml-Node `no_op_pass: true`)
+    if events_dedup == ["critical-alert"]:
+        print(
+            json.dumps(
+                {
+                    "verdict": "PASS",
+                    "phase": "P7",
+                    "events": events_dedup,
+                    "no_op_pass": True,
+                    "expected_files": sorted(expected),
+                }
+            )
+        )
+        return EXIT_PASS
+
+    # Re-run P1 jetzt mit echtem expected-Set (Dirty-Predicate-Exempt: erwartete Files
+    # zählen nicht gegen `--allow-dirty`-Schwelle).
+    pf = verify_pre_flight(
+        args.event_type,
+        ticker=args.ticker,
+        flag_event=args.flag_event,
+        allow_dirty=args.allow_dirty,
+        expected=expected,
+    )
+    if not pf.ok:
+        sys.stderr.write(f"FAIL P1 — {pf.reason}\n")
+        return EXIT_FAIL_P1
+
+    # Dry-Run: informational Expected-Set-Snapshot, kein Bundle-Verify-Claim.
+    if args.dry_run:
+        print(
+            json.dumps(
+                {
+                    "verdict": "DRY-RUN",
+                    "events": events_dedup,
+                    "expected_files": sorted(expected),
+                    "xlsx_warnings": xlsx_warnings,
+                    "quarterly_rollover_warn": pf.quarterly_rollover_warn,
+                },
+                indent=2,
+            )
+        )
+        return EXIT_PASS
+
+    # ---- BUILD-PHASE SENTINEL (Codex-CP1-P1) ----
+    # P4-P7 sind in Tasks 9-12 des Implementation-Plans verdrahtet. Bis dahin
+    # returnt validator EXIT_BUILD_INCOMPLETE für non-dry-run, non-critical-alert —
+    # verhindert false-positive PASS-Verdikt für unsynced Bundles (Spec §7 fail-close).
     sys.stderr.write(
-        "WARN — paragraph-18-sync Build-Phase: P2-P7 nicht implementiert (exit=99). "
-        "P1 Pre-Flight PASS, aber Expected-Set/Staging-Diff/xlsx-Confirm/Two-Commit/Closure "
-        "folgen in Tasks 7-12. Skill aktuell nicht für §18-Sync produktiv nutzbar.\n"
+        "WARN — paragraph-18-sync Build-Phase: P4-P7 nicht implementiert (exit=99). "
+        "P1-P3 PASS, aber Staging-Diff/xlsx-Confirm/Two-Commit/Closure folgen in Tasks 9-12.\n"
     )
     return EXIT_BUILD_INCOMPLETE
 

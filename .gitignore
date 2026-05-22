@@ -20,6 +20,9 @@
 # Superpowers docs (nur lokal relevant)
 docs/superpowers/
 
+# Code-Review-Artefakte (lokal: Codex/CodeRabbit/Gemini-Logs pro CP-Checkpoint)
+.reviews/
+
 # Lock files (LibreOffice/Excel)
 .~lock.*
 
