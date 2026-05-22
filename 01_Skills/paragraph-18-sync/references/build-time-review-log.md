@@ -31,7 +31,12 @@ Append-only Versions-Historie. Eintrag pro Skill-Version + Review-Pass.
 - **MED-1 Doku `commit_a_sha` Wortlaut "HEAD-Vorgänger":** FIXED — SKILL.md + failure-recovery.md auf "marker.commit_a_sha == aktuelles HEAD vor Commit-B" korrigiert.
 - **LOW-1 Comment-Typo "n/n":** FIXED — validator.py:12 docstring auf "(y/n)".
 
-**Codex-Sparring-Loop R2:** PENDING — Diff-Re-Review der Fixes (Heuristik `feedback_codex_sparring_heuristic`: HIGH ≥2 → R2 zwingend). Wird vor Promotion final ausgeführt.
+**Codex-Sparring-Loop R2 (Diff-Re-Review von f096600):** **PASS-WITH-NITS** (0 HIGH neu, 1 MED test-härte, 1 LOW PROJECT_ROOT-Bindung). R1-Residual-Check: H1+H2+H3 alle korrekt umgesetzt; Marker-Backwards-Compat OK; Doc-Konsistenz OK. R2-Nits adressiert:
+
+- **R2-MED Drift-Guard-Negativtest:** FIXED — `test_h2_verify_b_xlsx_set_match_no_drift` mit aktiver `capsys`-Assertion auf NICHT-Vorkommen von "xlsx-set-mismatch" in stderr.
+- **R2-LOW PROJECT_ROOT-Bindung in H2-Tests:** FIXED — beide H2-Tests `monkeypatch.setattr(validator, "PROJECT_ROOT", tmp_path)`; resolve_active_xlsx läuft jetzt sauber gegen tmp-repo statt echtes Repo.
+
+Promotion-ready ohne R3-Loop (Memory `feedback_codex_sparring_heuristic`: PASS-WITH-NITS = ship). Carryover: keine.
 
 **Gemini Cross-Sync (SKILL.md ↔ INSTRUKTIONEN §18):** **3 DRIFT + 5 INKONSISTENZ + 4 NIT.**
 
@@ -56,10 +61,10 @@ Append-only Versions-Historie. Eintrag pro Skill-Version + Review-Pass.
 
 ## Dogfood-Test — 2026-05-23 (Task 17, gegen Live-State ROOT)
 
-Engineer trägt nach Live-Run pro Zeile den tatsächlichen Exit-Code + Verdict ein:
+Live-Run (Working-Dir = `C:\Users\tobia\OneDrive\Desktop\Claude Stuff`, branch `main`, post-commit f096600):
 
-- **Test 1** (`pipeline-item --dry-run`): exit=`<N>`, Verdict=`<PASS/FAIL>`.
-- **Test 2** (`critical-alert` NO-OP-PASS): exit=`<N>`, Verdict=`<PASS/FAIL>`.
-- **Test 3** (`score-flag-sparraten --no-flag-event --ticker V --dry-run`): exit=`<N>`, Verdict=`<PASS/FAIL>` (P1-FAIL legitim wenn kein heute-Append in `score_history.jsonl`).
-- **Test 4** (`score-flag-sparraten --also pipeline-item --no-flag-event --ticker V --dry-run`): exit=`<N>`, Verdict=`<PASS/FAIL>`.
-- **Verdict gesamt:** v0.1.0 Promotion-ready WENN ≥3/4 PASS UND kein Crash/Traceback.
+- **Test 1** (`pipeline-item --dry-run`): **exit=0**, Verdict=**PASS**. Expected-Set: PIPELINE.md + log.md, `xlsx_warnings=[]`, `quarterly_rollover_warn=false`.
+- **Test 2** (`critical-alert` NO-OP-PASS): **exit=0**, Verdict=**PASS**. JSON: `verdict=PASS, phase=P7, no_op_pass=true, expected_files=["00_Core/STATE.md"]`.
+- **Test 3** (`score-flag-sparraten --no-flag-event --ticker V --dry-run`): **exit=1**, Verdict=**PASS** (legitime P1-FAIL — `score_history.jsonl` HEAD nicht heute, kein `!Analysiere`-Lauf gelaufen seit 04.05.). Klarer Recovery-Hint im stderr. Kein Traceback.
+- **Test 4** (`score-flag-sparraten --also pipeline-item --no-flag-event --ticker V --dry-run`): **exit=1**, Verdict=**PASS** (gleicher legitime P1-FAIL wie Test 3, Multi-Event-Union-Pfad). Kein Traceback.
+- **Verdict gesamt:** **4/4 PASS** (≥3/4-Schwelle erreicht; alle Exit-Codes deterministisch, Recovery-Hints aussagekräftig, keine Crashes). v0.1.0 Dogfood-Acceptance ✅ erfüllt.

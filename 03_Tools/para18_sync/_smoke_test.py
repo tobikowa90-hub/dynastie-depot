@@ -1182,6 +1182,9 @@ def test_h2_verify_b_xlsx_set_mismatch_after_pin_change(tmp_path: Path, monkeypa
             encoding="utf-8",
         )
         monkeypatch.setattr(validator, "SESSION_MARKER", marker_path)
+        # Codex-R2-LOW: PROJECT_ROOT auf tmp_path patchen, damit resolve_active_xlsx
+        # gegen das Test-SYSTEM.md/Glob läuft (nicht echtes Claude-Stuff-Repo).
+        monkeypatch.setattr(validator, "PROJECT_ROOT", tmp_path)
         old_cwd = Path.cwd()
         _os.chdir(tmp_path)
         try:
@@ -1200,11 +1203,12 @@ def test_h2_verify_b_xlsx_set_mismatch_after_pin_change(tmp_path: Path, monkeypa
         sys.path.pop(0)
 
 
-def test_h2_verify_b_xlsx_set_match_no_drift(tmp_path: Path, monkeypatch):
+def test_h2_verify_b_xlsx_set_match_no_drift(tmp_path: Path, monkeypatch, capsys):
     """H2 negative: Marker.expected_xlsx == aktuell resolved Set → kein drift-guard-Fail.
 
     Wir verifizieren NICHT P1+P4+P5 (kommt danach), nur dass H2-drift-guard nicht
-    fälschlich greift wenn SYSTEM.md konsistent ist.
+    fälschlich greift wenn SYSTEM.md konsistent ist (Codex-R2-MED: aktive stderr-
+    Assertion auf NICHT-Vorkommen der drift-guard-Fail-Signature).
     """
     import os as _os
 
@@ -1245,6 +1249,9 @@ def test_h2_verify_b_xlsx_set_match_no_drift(tmp_path: Path, monkeypatch):
             encoding="utf-8",
         )
         monkeypatch.setattr(validator, "SESSION_MARKER", marker_path)
+        # Codex-R2-LOW: PROJECT_ROOT auf tmp_path patchen, damit resolve_active_xlsx
+        # gegen das Test-SYSTEM.md/Glob läuft (nicht echtes Claude-Stuff-Repo).
+        monkeypatch.setattr(validator, "PROJECT_ROOT", tmp_path)
         old_cwd = Path.cwd()
         _os.chdir(tmp_path)
         try:
@@ -1254,15 +1261,14 @@ def test_h2_verify_b_xlsx_set_match_no_drift(tmp_path: Path, monkeypatch):
             _os.chdir(old_cwd)
         # Erwartung: drift-guard greift NICHT (Sets match); danach läuft P1+P4+P5 weiter
         # und failt vermutlich an P4 (xlsx unstaged) → EXIT_FAIL_P6 wegen H3-Mapping.
-        # Wir verifizieren NUR, dass drift-guard NICHT der Trigger ist:
-        # also kein "xlsx-set-mismatch" im stderr.
-        # Falls test überhaupt durchläuft: rc darf nicht das drift-guard-spezifische
-        # Mismatch-Pattern liefern.
-        # (Test schaut auf NICHT-Vorkommen — robust gegen P4-Down-Stream-Fail.)
-        import sys as _sys
-
-        _ = _sys  # keep import-effect (capsys not used here, no readouterr)
-        assert rc != validator.EXIT_PASS  # xlsx ist unstaged → kein PASS
+        captured = capsys.readouterr()
+        assert "xlsx-set-mismatch" not in captured.err, (
+            "drift-guard greift FÄLSCHLICH obwohl Marker- und aktuelles xlsx-Set identisch sind. "
+            f"stderr={captured.err!r}"
+        )
+        assert rc != validator.EXIT_PASS, (
+            "xlsx ist unstaged → P4/P6-Stage-Check muss failen (nicht drift-guard)"
+        )
     finally:
         sys.path.pop(0)
 
