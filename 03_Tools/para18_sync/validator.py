@@ -196,25 +196,61 @@ def _resolve_project_root(cwd: Path | None = None) -> Path:
     return cwd
 
 
+def _check_quarterly_rollover(root: Path) -> bool:
+    """G-03: WARN wenn current-date Quartals-Wechsel-Monat ≤14d UND prev-Quartals-archive fehlt.
+
+    §18.6 sieht quartalsweisen log.md-Roll-over vor. Bei Quartals-Wechsel ohne archive
+    emittiert P1 einen non-blocking WARN-Flag.
+    """
+    now = time.localtime()
+    if now.tm_mon not in (1, 4, 7, 10):
+        return False
+    if now.tm_mday > 14:
+        return False
+    cur_q = (now.tm_mon - 1) // 3 + 1
+    prev_q = 4 if cur_q == 1 else cur_q - 1
+    prev_year = now.tm_year - 1 if cur_q == 1 else now.tm_year
+    archive_path = (
+        root
+        / "07_Obsidian Vault"
+        / "Obsidian Mindmap"
+        / "Investing Mastermind"
+        / "archive"
+        / "log"
+        / f"log-{prev_year}-Q{prev_q}.md"
+    )
+    return not archive_path.exists()
+
+
 def verify_pre_flight(
     event_type: str,
     *,
     ticker: str | None,
     flag_event: bool,
+    allow_dirty: int = 10,
+    expected: set[str] | None = None,
     cwd: Path | None = None,
 ) -> PreFlightResult:
-    """P1 — Working-Tree-Sanity + Ordering-Guard + Ticker-Identity (Codex-H3).
+    """P1 — Working-Tree-Sanity + Ordering-Guard + Ticker-Identity (Codex-H3) + Dirty-Predicate (M5) + Quartal (G-03).
 
     Score-Event-Pflichten:
       - score_history.jsonl HEAD-Append heute (sonst FAIL)
       - HEAD-Ticker == --ticker (Codex-H3 wrong-ticker-Drift-Schutz)
       - --flag-event: flag_events.jsonl HEAD-Append heute + Ticker-Match
 
-    cwd=None: nutze Process-cwd (test-isoliert via subprocess.cwd-Override),
-    sonst explizite Path-Override.
+    Dirty-Tree-Predicate (Codex-M5):
+      |(unstaged ∪ untracked) \\ expected| ≥ allow_dirty → FAIL (Refactor-Drift-Schutz)
+      allow_dirty > 100 → refuse (WIP zu groß)
+
+    Quartals-Rollover (G-03): non-blocking WARN-Flag bei Quartals-Wechsel ≤14d ohne archive.
+
+    cwd=None: nutze Process-cwd (test-isoliert via subprocess.cwd-Override).
+    expected=None: kein Set-Vergleich → dirty-Predicate vergleicht gegen ∅.
     """
     if cwd is None:
         cwd = Path.cwd()
+    if expected is None:
+        expected = set()
     if not _is_git_repo(cwd):
         return PreFlightResult(False, "P1: not inside a git repo")
 
@@ -268,7 +304,32 @@ def verify_pre_flight(
                         f"P1: flag_events HEAD-Ticker `{fhead_ticker}` != --ticker `{ticker}`.",
                     )
 
-    return PreFlightResult(True)
+    # Dirty-Tree-Predicate (Codex-M5): (unstaged ∪ untracked) \ expected ≥ allow_dirty → FAIL
+    if allow_dirty > 100:
+        return PreFlightResult(
+            False,
+            "P1: --allow-dirty > 100 ist Refused (WIP zu groß, bitte git stash oder commit).",
+        )
+    cur_unstaged = set(get_unstaged_modified_files(cwd))
+    untracked = set(get_untracked_files(cwd))
+    pre_existing = sorted(cur_unstaged | untracked)
+    excess = (cur_unstaged | untracked) - expected
+    if len(excess) >= max(allow_dirty, 1):
+        return PreFlightResult(
+            False,
+            f"P1: dirty-tree predicate triggered — {len(excess)} unrelated dirty/untracked files "
+            f"(threshold={allow_dirty}). Cleanup oder --allow-dirty <N>.",
+            pre_existing_unstaged=pre_existing,
+        )
+
+    # Quartals-Rollover (G-03, §18.6) — non-blocking WARN
+    rollover_warn = _check_quarterly_rollover(_resolve_project_root(cwd))
+
+    return PreFlightResult(
+        True,
+        quarterly_rollover_warn=rollover_warn,
+        pre_existing_unstaged=pre_existing,
+    )
 
 
 # --------------------------------------------------------------------------- #
@@ -376,11 +437,14 @@ def main(argv: list[str] | None = None) -> int:
         sys.stderr.write("FAIL P2 — --flag-event nur bei score-flag-sparraten erlaubt\n")
         return EXIT_FAIL_P2
 
-    # P1 — Pre-Flight (Ordering + Ticker-Identity, M5/G-03 in Task 6)
+    # P1 — Pre-Flight (Ordering + Ticker-Identity + Dirty-Predicate + Quartal-Rollover-WARN)
+    # Erster P1-Pass ohne expected-Set (vor P2/P3). Task 7 reicht expected nach,
+    # falls Dirty-Predicate mit echter Union getunt werden muss.
     pf = verify_pre_flight(
         args.event_type,
         ticker=args.ticker,
         flag_event=args.flag_event,
+        allow_dirty=args.allow_dirty,
     )
     if not pf.ok:
         sys.stderr.write(f"FAIL P1 — {pf.reason}\n")

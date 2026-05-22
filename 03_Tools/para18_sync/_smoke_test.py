@@ -149,3 +149,66 @@ def test_s11b_score_event_missing_jsonl(temp_repo: Path):
     assert r.returncode == 1
     assert "Traceback" not in r.stderr + r.stdout
     assert "leer/fehlt" in r.stderr or "Pflicht" in r.stderr
+
+
+# --------------------------------------------------------------------------- #
+# S15 — Dirty-Tree-Predicate (Codex-M5)                                       #
+# --------------------------------------------------------------------------- #
+
+
+def test_s15a_dirty_below_threshold_pass(temp_repo: Path):
+    """S15a: 5 unrelated dirty/untracked Files < threshold=10 → kein P1-FAIL."""
+    for i in range(5):
+        (temp_repo / f"dirty_{i}.txt").write_text("dirty\n", encoding="utf-8")
+    r = _run_validator(["pipeline-item"], cwd=temp_repo)
+    assert "dirty-tree" not in (r.stdout + r.stderr).lower(), (
+        f"unexpected dirty-tree fail: stdout={r.stdout!r} stderr={r.stderr!r}"
+    )
+
+
+def test_s15b_dirty_above_threshold_fail(temp_repo: Path):
+    """S15b: 12 unrelated dirty Files ≥ threshold=10 → FAIL P1 exit=1."""
+    for i in range(12):
+        (temp_repo / f"dirty_{i}.txt").write_text("dirty\n", encoding="utf-8")
+    r = _run_validator(["pipeline-item"], cwd=temp_repo)
+    assert r.returncode == 1, f"expected exit=1, got {r.returncode}"
+    assert "dirty-tree" in (r.stdout + r.stderr).lower()
+
+
+def test_s15c_dirty_below_with_custom_threshold(temp_repo: Path):
+    """S15c: --allow-dirty 3 mit 5 dirty → FAIL (custom threshold)."""
+    for i in range(5):
+        (temp_repo / f"dirty_{i}.txt").write_text("dirty\n", encoding="utf-8")
+    r = _run_validator(["pipeline-item", "--allow-dirty", "3"], cwd=temp_repo)
+    assert r.returncode == 1
+    assert "dirty-tree" in (r.stdout + r.stderr).lower()
+
+
+def test_s15d_allow_dirty_hard_cap_refuse(temp_repo: Path):
+    """S15d: --allow-dirty 200 > 100 hard-cap → Refused."""
+    r = _run_validator(["pipeline-item", "--allow-dirty", "200"], cwd=temp_repo)
+    assert r.returncode == 1
+    assert "Refused" in r.stderr or "100" in r.stderr
+
+
+# --------------------------------------------------------------------------- #
+# S13 — Quartals-Rollover (G-03)                                              #
+# --------------------------------------------------------------------------- #
+
+
+def test_s13_quarterly_rollover_helper_returns_bool():
+    """S13: _check_quarterly_rollover helper liefert bool ohne Crash.
+
+    Date-Mock cross-process ist nicht ergiebig — wir testen den Helper direkt
+    auf seine Robustheits-Invariante (kein Crash, bool-Return).
+    """
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        result = validator._check_quarterly_rollover(ROOT)
+        assert isinstance(result, bool)
+    finally:
+        sys.path.pop(0)
