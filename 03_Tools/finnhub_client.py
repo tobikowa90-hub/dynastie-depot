@@ -117,7 +117,9 @@ class _FileCache:
 
 
 class _FinnHubClient:
-    def __init__(self, cache_root: Path = _DEFAULT_CACHE_ROOT) -> None:
+    def __init__(self, cache_root: Path | None = None) -> None:
+        if cache_root is None:
+            cache_root = _DEFAULT_CACHE_ROOT
         self._api_key = _load_env_key()
         self._cache_root = cache_root
         self._lock = threading.Lock()
@@ -250,6 +252,49 @@ class _FinnHubClient:
         self._caches["news"].set("news", cache_key, data)
         return data
 
+    def get_metrics(self, symbol: str, force: bool = False) -> dict | None:
+        """TTM-Snapshot + 5Y-CAGRs Subset (Spec §2.2).
+
+        WICHTIG: Return-Dict enthält IMMER `_meta.for_scoring=False` als technische
+        Guardrail (Spec §9 R1-Mitigation). backtest-ready-forward-verify Schritt 7
+        assertet `_meta.for_scoring=True` und failed bei FinnHub-Daten hard.
+        """
+        if not force:
+            cached = self._caches["metric"].get("metric", symbol)
+            if cached is not None:
+                return cached
+        raw = self._request("/stock/metric", {"symbol": symbol, "metric": "all"})
+        if raw is None:
+            return None
+        m = raw.get("metric", {}) if isinstance(raw, dict) else {}
+        # Subset der DEFCON-relevanten Metriken (§3.1 Smoke-Test Erkenntnis: 21/26 Free)
+        keep_keys = {
+            "peTTM",
+            "roeTTM",
+            "roiTTM",
+            "grossMarginTTM",
+            "grossMargin5Y",
+            "totalDebt/totalEquityQuarterly",
+            "epsGrowth5Y",
+            "capexCagr5Y",
+            "fcfPerShareTTM",
+            "beta",
+            "52WeekHigh",
+            "52WeekLow",
+        }
+        metrics = {k: m.get(k) for k in keep_keys if k in m}
+        result = {
+            "metrics": metrics,
+            "_meta": {
+                "read_only": True,
+                "for_scoring": False,
+                "source": "finnhub",
+                "fetched_at": time.time(),
+            },
+        }
+        self._caches["metric"].set("metric", symbol, result)
+        return result
+
 
 # Module-level singleton + public-API
 _singleton: _FinnHubClient | None = None
@@ -274,3 +319,7 @@ def get_earnings(
 
 def get_news(symbol: str, from_date: str, to_date: str, force: bool = False) -> list[dict] | None:
     return _client().get_news(symbol, from_date, to_date, force=force)
+
+
+def get_metrics(symbol: str, force: bool = False) -> dict | None:
+    return _client().get_metrics(symbol, force=force)
