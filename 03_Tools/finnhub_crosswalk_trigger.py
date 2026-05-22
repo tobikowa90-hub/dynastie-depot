@@ -117,8 +117,6 @@ def _delta_unit_for(tolerance: str) -> str:
 
 def _na_reason(defeatbeta_value, finnhub_value, finnhub_data) -> str | None:
     if defeatbeta_value is None and finnhub_value is None:
-        if finnhub_data is None:
-            return "both_missing"
         return "both_missing"
     if defeatbeta_value is None:
         return "defeatbeta_missing"
