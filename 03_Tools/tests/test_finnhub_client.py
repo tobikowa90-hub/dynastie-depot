@@ -182,6 +182,17 @@ class TestHttpRetry:
         assert data is None
         assert any("403" in r.message for r in caplog.records)
 
+    def test_connection_error_returns_none(self, tmp_path: Path, monkeypatch) -> None:
+        """CP1-MED-3: ConnectionError -> fail-soft None (no retry, kein Crash)."""
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        monkeypatch.setattr(finnhub_client.time, "sleep", lambda s: None)
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        with patch(
+            "finnhub_client.requests.get", side_effect=requests.ConnectionError("dns failure")
+        ):
+            data = client._request("/quote", {"symbol": "MSFT"})
+        assert data is None
+
 
 class TestPublicApi:
     def test_a10_force_bypass(self, tmp_path: Path, monkeypatch) -> None:

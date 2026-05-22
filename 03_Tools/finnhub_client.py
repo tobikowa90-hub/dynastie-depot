@@ -165,6 +165,9 @@ class _FinnHubClient:
                     return None
                 timeout_attempts += 1
                 continue
+            except requests.RequestException:
+                log.exception("FinnHub request failed for %s %s — fail-soft None", endpoint, params)
+                return None
 
             if resp.status_code == 401:
                 raise RuntimeError(
