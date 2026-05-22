@@ -40,8 +40,12 @@ def main(argv: list[str] | None = None) -> int:
         "\n# A12 Identity-Check — Next Steps\n"
         "1. Aus Claude-Session: für jedes Symbol die mcp__defeatbeta-api__get_stock_quarterly_roe,\n"
         "   get_stock_ttm_pe, get_stock_quarterly_roic aufrufen und Werte hier eintragen.\n"
+        "   WICHTIG für get_stock_ttm_pe: start_date='<heute-60d>' setzen (z.B. '2026-03-01').\n"
+        "   Ohne start_date liefert MCP 1000 Daily-Rows (~170k chars) → token-truncated zu File-Dump.\n"
+        "   Nur die letzte Row (max report_date) wird für A12 verglichen; date-range ändert das Ergebnis nicht.\n"
         "2. Pass-Kriterium: max abs(wsl_value - mcp_value) < 0.01 für numerische Felder,\n"
-        "   None == None für strukturell-fehlende Werte.\n"
+        "   None == None für strukturell-fehlende Werte. MCP roe/roic sind decimal-ratio,\n"
+        "   WSL-Werte sind ×100 (Prozent); für direkten Vergleich mcp_value*100 anwenden.\n"
         "3. Bei Pass: A12-Status in 00_Core/SYSTEM.md §Passive Read-Only Data Layer dokumentieren.\n"
     )
     return 0
