@@ -88,3 +88,36 @@ class TestRateLimiter:
         # (10 sofort, 90 verbleibende benoetigen >= 9s bei 10/s refill)
         assert len(admit_times) == 100, f"expected 100 admits, got {len(admit_times)}"
         assert elapsed >= 8.5, f"over-admitted: 100 in {elapsed:.2f}s (expected >=8.5s @ rate=10/s)"
+
+
+class TestFileCache:
+    def test_cache_miss_returns_none(self, tmp_path: Path) -> None:
+        cache = finnhub_client._FileCache(root=tmp_path, ttl_seconds=60)
+        assert cache.get("quotes", "MSFT") is None
+
+    def test_cache_hit_returns_value_within_ttl(self, tmp_path: Path) -> None:
+        cache = finnhub_client._FileCache(root=tmp_path, ttl_seconds=60)
+        cache.set("quotes", "MSFT", {"c": 419.09})
+        assert cache.get("quotes", "MSFT") == {"c": 419.09}
+
+    def test_cache_expired_returns_none(self, tmp_path: Path) -> None:
+        import os as _os
+
+        cache = finnhub_client._FileCache(root=tmp_path, ttl_seconds=60)
+        cache.set("quotes", "MSFT", {"c": 419.09})
+        # Backdate the file's mtime to 61 seconds ago to trigger TTL expiry
+        p = cache._path("quotes", "MSFT")
+        past = time.time() - 61
+        _os.utime(p, (past, past))
+        assert cache.get("quotes", "MSFT") is None
+
+    def test_a11_corrupted_json_returns_none_no_crash(self, tmp_path: Path) -> None:
+        """A11: Cache-Read-Failure → bypass, kein Crash."""
+        cache = finnhub_client._FileCache(root=tmp_path, ttl_seconds=60)
+        target = tmp_path / "quotes" / "MSFT.json"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("{ this is not json", encoding="utf-8")
+        assert cache.get("quotes", "MSFT") is None  # bypass, kein Crash
+        # And: set() must successfully overwrite the corrupted file
+        cache.set("quotes", "MSFT", {"c": 419.09})
+        assert cache.get("quotes", "MSFT") == {"c": 419.09}

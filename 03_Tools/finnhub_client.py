@@ -12,11 +12,13 @@ Fail-Soft: 403 → None+WARN; 429 → Exp-Backoff (3 retries, 2/4/8s); Timeout 1
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 import threading
 import time
 from pathlib import Path
+from typing import Any
 
 import requests
 
@@ -73,6 +75,45 @@ class _TokenBucket:
         elapsed = now - self._last_refill
         self._last_refill = now
         self._tokens = min(self._capacity, self._tokens + elapsed * self._refill_per_sec)
+
+
+class _FileCache:
+    """File-based JSON cache mit endpoint-spezifischer TTL (Spec §2.4).
+
+    Layout: <root>/<endpoint>/<key>.json
+    Schreib-Atomicity: write-temp + os.replace (verhindert kaputten File bei Crash).
+    Read-Resilience: kaputter JSON → return None, kein Crash (Spec §2.5 A11).
+    """
+
+    def __init__(self, root: Path, ttl_seconds: int) -> None:
+        self._root = root
+        self._ttl = ttl_seconds
+
+    def _path(self, endpoint: str, key: str) -> Path:
+        # Key safe for filesystem (replace path separators)
+        safe_key = key.replace("/", "_").replace("\\", "_")
+        return self._root / endpoint / f"{safe_key}.json"
+
+    def get(self, endpoint: str, key: str) -> Any | None:
+        p = self._path(endpoint, key)
+        if not p.exists():
+            return None
+        try:
+            mtime = p.stat().st_mtime
+            if time.time() - mtime > self._ttl:
+                return None
+            payload = json.loads(p.read_text(encoding="utf-8"))
+            return payload
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError) as e:
+            log.warning("Cache read failure for %s/%s: %s — bypassing", endpoint, key, e)
+            return None
+
+    def set(self, endpoint: str, key: str, value: Any) -> None:
+        p = self._path(endpoint, key)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        tmp = p.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+        tmp.replace(p)
 
 
 class _FinnHubClient:
