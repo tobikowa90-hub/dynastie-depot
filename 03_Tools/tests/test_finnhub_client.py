@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -24,3 +25,66 @@ class TestAuth:
         monkeypatch.delenv("FINNHUB_API_KEY", raising=False)
         with pytest.raises(RuntimeError, match=r"FINNHUB_API_KEY not set"):
             finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+
+
+class TestRateLimiter:
+    def test_acquire_within_capacity_no_block(self) -> None:
+        bucket = finnhub_client._TokenBucket(capacity=60, refill_per_sec=1.0)
+        start = time.monotonic()
+        for _ in range(60):
+            bucket.acquire()
+        elapsed = time.monotonic() - start
+        assert elapsed < 0.5, f"first 60 calls must not block, got {elapsed:.3f}s"
+
+    def test_acquire_beyond_capacity_blocks(self, monkeypatch) -> None:
+        """A3: 70 calls in 60s — calls 61-70 block; total wait < 12s."""
+        sleep_calls: list[float] = []
+        # Fake monotonic clock so refill happens deterministically
+        clock = [0.0]
+
+        # sleep advances the simulated clock — sonst kann das Re-Check-Loop nicht konvergieren
+        def fake_sleep(s: float) -> None:
+            sleep_calls.append(s)
+            clock[0] += s
+
+        monkeypatch.setattr(finnhub_client.time, "sleep", fake_sleep)
+        monkeypatch.setattr(finnhub_client.time, "monotonic", lambda: clock[0])
+        # Bucket MUST be created after patching so __init__ gets clock[0]=0.0 for _last_refill
+        bucket = finnhub_client._TokenBucket(capacity=60, refill_per_sec=1.0)
+        for i in range(70):
+            bucket.acquire()
+            clock[0] += 0.05  # 50ms per call simulated
+        total_sleep = sum(sleep_calls)
+        assert total_sleep < 12.0, f"total wait {total_sleep:.2f}s exceeded 12s budget"
+        assert len(sleep_calls) > 0, "calls beyond capacity must trigger sleep"
+
+    def test_concurrency_no_overadmit(self) -> None:
+        """Codex-CP0-MED-2: Multi-Thread-Burst darf nicht > capacity admitten in window.
+
+        10 Threads x 10 acquires each = 100 total acquires. Mit capacity=10 + refill=1/s
+        muss Gesamtdauer >= 9s sein (10 sofort, 90 müssen warten ~9s einschl. refill).
+        Akzeptiert effektiver Durchsatz <= bucket-rate.
+        """
+        import threading
+
+        bucket = finnhub_client._TokenBucket(capacity=10, refill_per_sec=10.0)
+        admit_times: list[float] = []
+        lock = threading.Lock()
+
+        def worker() -> None:
+            for _ in range(10):
+                bucket.acquire()
+                with lock:
+                    admit_times.append(time.monotonic())
+
+        start = time.monotonic()
+        threads = [threading.Thread(target=worker) for _ in range(10)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        elapsed = time.monotonic() - start
+        # 100 acquires bei rate=10/s + capacity=10 -> mindestens ~9s
+        # (10 sofort, 90 verbleibende benoetigen >= 9s bei 10/s refill)
+        assert len(admit_times) == 100, f"expected 100 admits, got {len(admit_times)}"
+        assert elapsed >= 8.5, f"over-admitted: 100 in {elapsed:.2f}s (expected >=8.5s @ rate=10/s)"

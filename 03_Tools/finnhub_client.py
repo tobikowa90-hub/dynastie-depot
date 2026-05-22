@@ -15,6 +15,7 @@ from __future__ import annotations
 import logging
 import os
 import threading
+import time
 from pathlib import Path
 
 import requests
@@ -38,6 +39,40 @@ def _load_env_key() -> str:
             if line.startswith("FINNHUB_API_KEY="):
                 return line.split("=", 1)[1].strip()
     raise RuntimeError("FINNHUB_API_KEY not set (neither env nor .env.finnhub)")
+
+
+class _TokenBucket:
+    """Token-Bucket Rate-Limiter -- 60 tokens, 1 token/sec refill (Spec §2.3).
+
+    Verhalten bei Erschoepfung: block bis Token verfuegbar (kein Crash).
+    Thread-safe via threading.Lock.
+    """
+
+    def __init__(self, capacity: int = 60, refill_per_sec: float = 1.0) -> None:
+        self._capacity = capacity
+        self._refill_per_sec = refill_per_sec
+        self._tokens = float(capacity)
+        self._last_refill = time.monotonic()
+        self._lock = threading.Lock()
+
+    def acquire(self) -> None:
+        # Re-Check-Loop: nach Sleep MUSS erneut refill+check passieren, sonst
+        # over-admit unter Concurrency (Codex-CP0-MED-2-Fix).
+        while True:
+            with self._lock:
+                self._refill_locked()
+                if self._tokens >= 1.0:
+                    self._tokens -= 1.0
+                    return
+                wait_for = (1.0 - self._tokens) / self._refill_per_sec
+            # Release lock during sleep -- other threads can attempt acquire
+            time.sleep(wait_for)
+
+    def _refill_locked(self) -> None:
+        now = time.monotonic()
+        elapsed = now - self._last_refill
+        self._last_refill = now
+        self._tokens = min(self._capacity, self._tokens + elapsed * self._refill_per_sec)
 
 
 class _FinnHubClient:
