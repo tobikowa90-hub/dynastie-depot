@@ -1,6 +1,6 @@
 ---
 name: paragraph-18-sync
-description: §18-Sync-Pflicht-Verify-Orchestrator (fail-close). Prüft das §18-File-Bundle BEVOR `git commit`, mit Multi-Event-Union §18.2 + Two-Commit-Same-Session-Protokoll für xlsx-Tools. Trigger `!ParaSync18 <event-type>`. KEIN Auto-Edit, KEIN --force-Bypass.
+description: §18-Sync-Pflicht-Verify-Orchestrator (fail-close). Prüft das §18-File-Set BEVOR `git commit`, mit Multi-Event-Union §18.2 + Two-Commit-Same-Session-Protokoll für xlsx-Tools. Trigger `!ParaSync18 <event-type>`. KEIN Auto-Edit, KEIN --force-Bypass. Nutze diesen Skill IMMER wenn der User §18-Sync, Sync-Pflicht-Bundle, Pre-Commit-Bundle-Verify, score-flag-sparraten/pipeline-item/system-zustand/critical-alert-Events erwähnt — oder wenn ein §18-relevanter File-Touch (PIPELINE/PORTFOLIO/CORE-MEMORY/Faktortabelle/log.md/score_history.jsonl/SYSTEM.md/xlsx-Tools) vor einem `git commit` ansteht. Auch bei "verify §18", "check sync before commit", "pre-commit-Bundle prüfen", "Pflicht-Set verifizieren" oder Versions-Bump-Conditional (`--version-bump`) aktivieren.
 version: v0.1.0
 event_types:
   - score-flag-sparraten
@@ -22,18 +22,20 @@ event_types:
 
 ```
 !ParaSync18 <event-type> [--also <event-type>]* [--flag-event|--no-flag-event]
-            [--ticker <SYMBOL>] [--allow-dirty <N>] [--verify-b]
-            [--reset-session] [--dry-run] [--json]
+            [--version-bump] [--ticker <SYMBOL>] [--allow-dirty <N>]
+            [--verify-b] [--reset-session] [--dry-run] [--json]
 ```
 
 **Event-Typen (gemäß §18.1):**
 
-| Event | Trigger-Beispiel | Pflicht-Set (Auszug) |
-|-------|------------------|----------------------|
-| `score-flag-sparraten` | Post-`!Analysiere` · `archive_flag.py` · Sparraten-Edit | PORTFOLIO + Faktortabelle + CORE-MEMORY + log + score_history + config.yaml + 2 xlsx (+ flag_events bei `--flag-event`) |
-| `pipeline-item` | Plan-Commit · Gate-Passage · Status-Transition | PIPELINE.md + log.md |
-| `system-zustand` | DEFCON-Bump · MCP-Change · Briefing · Backlog | SYSTEM.md + log.md (+ CORE-MEMORY bei Version-Bump-Conditional) |
+| Event | Trigger-Beispiel | Expected-Set (Auszug) |
+|-------|------------------|------------------------|
+| `score-flag-sparraten` | Post-`!Analysiere` · `archive_flag.py` · Sparraten-Edit | PORTFOLIO + Faktortabelle + CORE-MEMORY + log + score_history + config.yaml + 2 xlsx (Rebalancing + Satelliten_Monitor) (+ flag_events.jsonl bei `--flag-event` = FLAG-Trigger/Resolve) |
+| `pipeline-item` | Plan-Commit · Gate-Passage · Status-Transition | PIPELINE.md + log.md (+ SESSION-HANDOVER.md bei Session-Abschluss; mid-Session optional) |
+| `system-zustand` | DEFCON-Bump · MCP-Change · Briefing · Backlog | SYSTEM.md + log.md (+ CORE-MEMORY.md bei `--version-bump` Conditional, §6-relevanter Versions-Inkrement) |
 | `critical-alert` | STATE.md Hub-Edit (Alert-Slot only) | STATE.md (NO-OP-PASS — kein Bi-Sync) |
+
+> **xlsx-Tools-Hinweis:** Default-Set v0.1 = 2 xlsx (Rebalancing + Satelliten_Monitor) gemäß §18.1. `Watchlist_Ersatzbank_Monitor_v1.1.xlsx` ist bei KONTEXT §6-Refactor (Drop/Add/Reassign) zusätzlich §18.7-Smoke-relevant (Memory `feedback_watchlist_xlsx_in_sync_set`); v0.1 hat dafür noch keinen automatischen Trigger — manuelle Aufnahme nötig. Voll-Auto in v0.2 (PIPELINE #73c).
 
 **Multi-Event-Union (§18.2):** `--also` mehrfach erlaubt; Pflicht-Sets werden dedupliziert (z.B. log.md erscheint nur 1× im Expected-Set bei Score+Pipeline+System).
 
@@ -53,7 +55,7 @@ event_types:
 
 ### P3 — Expected-Set-Resolve
 - Load `references/event_typ_mapping.yaml`.
-- Compute Union pro Event-Set; `--flag-event`-Conditional appliziert.
+- Compute Union pro Event-Set; `--flag-event`-Conditional appliziert (score-flag-sparraten → +flag_events.jsonl); `--version-bump`-Conditional (system-zustand → +CORE-MEMORY.md).
 - **xlsx-Selektion (Codex-M4 deterministisch):** Lookup via `00_Core/SYSTEM.md ## Active xlsx-Filenames`-Pin. Fallback: Glob `<Stem>_v*.xlsx` + Semver-Pick (WARN-only). Ambiguity → FAIL exit=3.
 
 ### P4 — Staging-Diff (4-Bucket)
@@ -69,9 +71,9 @@ Pro File im Expected-Set:
 - v0.2 (post-PIPELINE #73b): Sub-Skill-Auto-Call `!XlsxSmokeTest <file>`.
 
 ### P6 — Two-Commit-Same-Session-Protokoll
-- **Commit-A:** md/jsonl/yaml-Bundle (xlsx **nicht** staged); validator schreibt `.session_marker` (gitignored, JSON: `{session_id, commit_a_sha, expected_xlsx, started_at_*, status}`).
+- **Commit-A:** md/jsonl/yaml-Set (xlsx **nicht** staged); validator schreibt `.session_marker` (gitignored, JSON: `{session_id, commit_a_sha, expected_xlsx, xlsx_tool_stems, started_at_*, status}`).
 - **Commit-B:** xlsx via `!ParaSync18 --verify-b`. Zweiter Verify-Pass (P1+P4+P5-Subset-Revalidation) gegen Marker.
-- **Drift-Detection:** Marker-TTL >4h ODER commit_a_sha ≠ HEAD-Vorgänger ODER xlsx-Set-Mismatch → FAIL exit=6. Recovery: `--reset-session`.
+- **Drift-Detection:** Marker-TTL >4h (Skill-spezifisch, nicht §18-Doktrin) ODER `marker.commit_a_sha ≠ aktuelles HEAD` (= HEAD vor Commit-B) ODER xlsx-Set-Mismatch (Marker vs aktuelles SYSTEM.md re-resolve) → FAIL exit=6. Recovery: `--reset-session`.
 
 ### P7 — Closure-Report
 JSON-Output mit Feldern: `verdict` · `phase` · `events` · `expected_files` · `staged_files` · `missing` · `unstaged_new` · `unstaged_preexisting` · `xlsx_verified` · `session_marker` · `retry_required_revalidation` · `quarterly_rollover_warn` · `recovery_hints`.

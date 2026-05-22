@@ -8,7 +8,10 @@ spec_anchor: "INSTRUKTIONEN.md §18.1 (v2.4)"
 
 event_types:
   score-flag-sparraten:
-    description: "Post-!Analysiere / archive_flag.py / Sparraten-Edit / KONTEXT §6-Reassign"
+    # v0.1 strict — KONTEXT §6-Reassign ist out-of-scope (Memory feedback_watchlist_xlsx_in_sync_set
+    # + PIPELINE #73c) und wird in v0.2 als eigenes Event-Mapping ergänzt. Wenn der User §6-Refactor
+    # macht, muss er die Watchlist-xlsx aktuell manuell ins Bundle ziehen.
+    description: "Post-!Analysiere / archive_flag.py / Sparraten-Edit"
     required_files:
       - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
       - "00_Core/CORE-MEMORY.md"

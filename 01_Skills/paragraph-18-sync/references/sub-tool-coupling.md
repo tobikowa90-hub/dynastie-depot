@@ -18,10 +18,10 @@
 3. **`git commit` läuft DANACH** (Analyst-Verantwortung).
    - Bei Two-Commit-Protokoll (P6, score-flag-sparraten mit xlsx): Commit-A nur md/jsonl, dann `!ParaSync18 --verify-b` vor Commit-B (xlsx).
 
-## Boundary zu session-closure (Z3)
+## Boundary zu session-closure (Z3, SSoT: INSTRUKTIONEN §25.5)
 
 - **`paragraph-18-sync`** = §18-Sync-Pflicht-Bundle-Verify (anytime mid-session, jederzeit re-callable).
-- **`session-closure`** (v0.2.0) = End-of-Session-Orchestrator (Briefing-Sync §25, log-Closure, Push-Gate).
+- **`session-closure`** (v0.2.0, INSTRUKTIONEN §25.5 verankert Trigger-Strictness + Sicherheits-Boundary) = End-of-Session-Orchestrator (Briefing-Sync §25, log-Closure, Push-Gate).
 - session-closure v0.2.0 hält **eigene** §18-Coupling-Schritte (Memory-Stand 2026-05-23 v0.1.0-Promotion). Ein Refactor-Opportunity ab paragraph-18-sync v0.2.0: session-closure delegiert seinen §18-Check an `validator.py`. **NICHT v0.1-Scope** — beide Skills laufen v0.1 noch unabhängig parallel.
 
 ## xlsx-Sub-Skill-Delegation (Z4)

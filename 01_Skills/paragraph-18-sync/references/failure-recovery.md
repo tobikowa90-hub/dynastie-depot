@@ -12,7 +12,7 @@ Tabelle aller Fail-Klassen mit konkretem Recovery-Pfad. Exit-Codes 0-6 wie in SK
 | P1 | 1 | Dirty-Tree-Predicate ≥ `--allow-dirty` (Codex-M5) | `git stash` unrelated Files ODER `--allow-dirty <N>` (Hard-Cap 100, WIP-Schutz) |
 | P1 | 1 | `--allow-dirty > 100` Hard-Cap-Refused | WIP zu groß; `git stash` / commit zuerst |
 | P1 | 1 | Nicht inside-git-work-tree | `cd` ins Repo |
-| P1 | – | Quartals-Rollover ausstehend (G-03) | **non-blocking WARN** — `quarterly_rollover_warn=true` im Report; §18.6 manueller Roll-over im 14-Tage-Karenz-Fenster |
+| P1 | – | Quartals-Rollover ausstehend (G-03) | **non-blocking WARN** — `quarterly_rollover_warn=true` im Report. Roll-over manuell durchführen (§18.6 Sync-Set umfasst 5 Files: log.md + archive-log + INSTRUKTIONEN §18.6 + CORE-MEMORY §13 + SYSTEM.md), dann `!ParaSync18 system-zustand --also pipeline-item` für den Sync. WARN verschwindet bei nächstem Lauf. |
 | P2 | 2 | Tippfehler / ungültiger event-type | Help-Output: 4 zulässige Werte — `score-flag-sparraten` · `pipeline-item` · `system-zustand` · `critical-alert` |
 | P2 | 2 | `--flag-event` ohne `score-flag-sparraten` | Modifier weglassen ODER primary-event korrigieren |
 | P2 | 2 | event-type fehlt komplett | event-type als positional argument setzen |
@@ -21,16 +21,17 @@ Tabelle aller Fail-Klassen mit konkretem Recovery-Pfad. Exit-Codes 0-6 wie in SK
 | P3 | 3 | SSoT-Drift gegen §18.1 (S7) | yaml updaten ODER §18.1-Bump in INSTRUKTIONEN.md nachvollziehen |
 | P3 | 3 | xlsx-Selektion ambiguous (Codex-M4) | `00_Core/SYSTEM.md ## Active xlsx-Filenames`-Block setzen mit aktuellem Filename |
 | P3 | 3 | xlsx-Stem ohne Glob-Match | xlsx-File-Existenz prüfen ODER SYSTEM.md-Pin manuell |
+| (info) | – | KONTEXT §6-Refactor (Drop/Add/Reassign) | v0.1 hat KEIN Auto-Event. `Watchlist_Ersatzbank_Monitor_v1.1.xlsx` muss bei §6-Refactor manuell mit-synced werden (Memory `feedback_watchlist_xlsx_in_sync_set`); Voll-Auto v0.2 via PIPELINE #73c. |
 | P4 | 4 | MISSING (File nicht touched + nicht staged) | File touchen + `git add <file>`; Expected-Set in `--dry-run` ansehen |
 | P4 | 4 | UNSTAGED_NEW (G-01: modifiziert aber nicht staged) | `git add <file>` — File wurde geändert aber Staging vergessen |
 | P5 | 5 | User-Confirm `n` | `03_Tools/xlsx-smoke-test.md`-Checklist durchgehen + xlsx neu schreiben |
 | P5 | 5 | User-Confirm `skip` (Codex-H2 Hard-Fail) | **NICHT erlaubt** — Smoke korrekt durchführen ODER `--dry-run` für Trockenlauf |
 | P5 | 5 | xlsx-Sub-Skill-Fail (v0.2) | Sub-Skill-Output prüfen; xlsx-Schreib-Fehler reparieren |
-| P6/B | 6 | Marker-Mismatch (`commit_a_sha` ≠ HEAD-Vorgänger) | `--reset-session` + Two-Commit-Sequenz von vorn |
-| P6/B | 6 | Marker-TTL überschritten (>4h) | `--reset-session` (Session-Abbruch + Restart) |
-| P6/B | 6 | xlsx-Set-Mismatch zwischen Marker & jetzt | xlsx-Liste in SYSTEM.md prüfen + ggf. `--reset-session` |
+| P6/B | 6 | Marker-Mismatch (`marker.commit_a_sha ≠ aktuelles HEAD` vor Commit-B) | `--reset-session` + Two-Commit-Sequenz von vorn |
+| P6/B | 6 | Marker-TTL überschritten (>4h; Skill-spezifisch, nicht §18-Doktrin) | `--reset-session` (Session-Abbruch + Restart) |
+| P6/B | 6 | xlsx-Set-Mismatch zwischen Marker und aktuellem SYSTEM.md-Pin (Drift-Guard) | SYSTEM.md `## Active xlsx-Filenames`-Block prüfen + `--reset-session` |
 | P6/B | 6 | `--verify-b` ohne Marker | Commit-A muss zuerst laufen (Marker wird dort geschrieben) |
-| P6/B | 6 | xlsx UNSTAGED bei `--verify-b` (Strict-Stage-Check) | `git add <xlsx>` — Commit-B benötigt xlsx als staged |
+| P6/B | 6 | xlsx UNSTAGED bei `--verify-b` (Strict-Stage-Check, H3-Fix: P6/B nicht P4) | `git add <xlsx>` — Commit-B benötigt xlsx als staged |
 | P6 | – | Commit-Failure-Retry (Codex-M6) | **Re-Validate-Before-Retry:** `!ParaSync18 <event>` erneut laufen lassen vor `git commit`-Retry; State kann sich zwischen Versuchen geändert haben |
 
 ## Recovery-Workflow bei P6/B-Drift

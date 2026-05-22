@@ -9,7 +9,7 @@ P1-P7 Phases-Pipeline (siehe SKILL.md):
   P2  Event-Klassifikation (parse + dedupe, Tippfehler-Reject)
   P3  Expected-Set-Compute (yaml-load + Union + xlsx-Selektion via SYSTEM.md)
   P4  Staging-Diff (4-Bucket: staged/unstaged_new/unstaged_preexisting/missing)
-  P5  xlsx-Confirm (n/n Smoke-Test, skip = HARD FAIL exit=5)
+  P5  xlsx-Confirm (y/n Smoke-Test, skip = HARD FAIL exit=5)
   P6  Two-Commit-Same-Session-Protokoll (session_marker, TTL 4h)
   P7  Closure-Report (JSON + human)
 
@@ -367,8 +367,19 @@ def compute_union_set(
     flag_event: bool,
     mapping: dict,
     active_xlsx: list[str] | None = None,
+    version_bump: bool = False,
 ) -> set[str]:
-    """§18.2 Union — dedupe, Conditionals applizieren."""
+    """§18.2 Union — dedupe, Conditionals applizieren.
+
+    Conditionals (yaml `conditional.<name>.adds`):
+      - `flag_event`     → wenn `--flag-event` UND event=score-flag-sparraten → +flag_events.jsonl
+      - `version_bump`   → wenn `--version-bump` UND event=system-zustand    → +CORE-MEMORY.md
+                           (Codex-CP-Final-H1: yaml-conditional war definiert aber nie
+                           applied → Spec-Drift §18.2 behoben.)
+      - `session_close`  → yaml-Schema vorhanden für pipeline-item; v0.1 wird der
+                           Session-Handover-Add manuell via `--also` getriggert,
+                           kein eigener CLI-Flag (Gemini-D3-Carryover für v0.2).
+    """
     result: set[str] = set()
     for ev in events:
         node = mapping["event_types"].get(ev)
@@ -378,6 +389,10 @@ def compute_union_set(
             result.add(f)
         if flag_event and ev == "score-flag-sparraten":
             cond = node.get("conditional", {}).get("flag_event", {})
+            for f in cond.get("adds", []):
+                result.add(f)
+        if version_bump and ev == "system-zustand":
+            cond = node.get("conditional", {}).get("version_bump", {})
             for f in cond.get("adds", []):
                 result.add(f)
         if ev == "score-flag-sparraten" and active_xlsx:
@@ -601,9 +616,15 @@ def write_session_marker(
     *,
     commit_a_sha: str,
     expected_xlsx: list[str],
+    xlsx_tool_stems: list[str] | None = None,
     marker_path: Path | None = None,
 ) -> dict:
-    """Schreibt Session-Marker (JSON) für Two-Commit-Tracking. `marker_path` für Test-Override."""
+    """Schreibt Session-Marker (JSON) für Two-Commit-Tracking.
+
+    `xlsx_tool_stems` persistiert die Tool-Stems (z.B. ['Rebalancing_Tool', 'Satelliten_Monitor'])
+    damit `_run_verify_b()` die xlsx-Files gegen aktuelles SYSTEM.md re-resolven kann
+    (Codex-CP-Final-H2 xlsx-set-match drift-guard). `marker_path` für Test-Override.
+    """
     path = marker_path if marker_path is not None else SESSION_MARKER
     marker = {
         "session_id": _session_id(),
@@ -611,6 +632,7 @@ def write_session_marker(
         "started_at_ts": int(time.time()),
         "commit_a_sha": commit_a_sha,
         "expected_xlsx": expected_xlsx,
+        "xlsx_tool_stems": list(xlsx_tool_stems or []),
         "status": "pending",
     }
     path.write_text(json.dumps(marker, indent=2), encoding="utf-8")
@@ -682,6 +704,32 @@ def _run_verify_b(args: argparse.Namespace) -> int:
 
     expected_xlsx = set(marker.get("expected_xlsx", []))
 
+    # H2 — xlsx-set-match drift-guard (Codex-CP-Final): re-resolve marker.xlsx_tool_stems
+    # gegen aktuelles SYSTEM.md/Glob. Mismatch zwischen marker.expected_xlsx und aktuell
+    # resolved Set bedeutet: SYSTEM.md wurde zwischen Commit-A und --verify-b geändert
+    # (Pin-Update oder Version-Bump) → P6/B drift, --reset-session required.
+    marker_stems = marker.get("xlsx_tool_stems", [])
+    if marker_stems:
+        try:
+            current_xlsx, _xlsx_warn, fail = resolve_active_xlsx(marker_stems)
+        except Exception as ex:  # noqa: BLE001 — keep verify-b fail-close
+            sys.stderr.write(f"FAIL P6 (verify-b) — xlsx-set-resolve error: {ex}\n")
+            return EXIT_FAIL_P6
+        if fail:
+            sys.stderr.write(f"FAIL P6 (verify-b) — xlsx-set-resolve: {fail}\n")
+            return EXIT_FAIL_P6
+        current_set = set(current_xlsx)
+        if current_set != expected_xlsx:
+            added = sorted(current_set - expected_xlsx)
+            removed = sorted(expected_xlsx - current_set)
+            sys.stderr.write(
+                "FAIL P6 (verify-b) — xlsx-set-mismatch zwischen Marker und aktuellem "
+                f"SYSTEM.md: added={added} removed={removed}. SYSTEM.md-Pin wurde zwischen "
+                "Commit-A und --verify-b geändert. Recovery: --reset-session + Two-Commit "
+                "neu starten.\n"
+            )
+            return EXIT_FAIL_P6
+
     # P1-Revalidation (Working-Tree-Sanity, kein Score-Ordering-Check für Commit-B)
     pf = verify_pre_flight(
         "score-flag-sparraten",
@@ -706,11 +754,14 @@ def _run_verify_b(args: argparse.Namespace) -> int:
         return EXIT_FAIL_P4
     not_staged = expected_xlsx - set(p4.classification.staged)
     if not_staged:
+        # H3 (Codex-CP-Final): xlsx-unstaged im verify-b ist ein P6/B drift (Two-Commit-
+        # Contract verletzt), kein generischer P4-Staging-Fail. Exit-Code auf 6 gemappt
+        # für Konsistenz mit Spec §7 + SKILL.md Exit-Tabelle + failure-recovery.md.
         sys.stderr.write(
-            f"FAIL P4 (verify-b) — xlsx-Subset nicht vollständig staged: {sorted(not_staged)}. "
+            f"FAIL P6 (verify-b) — xlsx-Subset nicht vollständig staged: {sorted(not_staged)}. "
             "Run `git add` für jede xlsx vor --verify-b.\n"
         )
-        return EXIT_FAIL_P4
+        return EXIT_FAIL_P6
 
     # P5-Revalidation: xlsx-Smoke-Test
     ok_p5, status = verify_xlsx_smoke(sorted(expected_xlsx))
@@ -888,6 +939,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="Dirty-Tree-Predicate-Schwelle (Default 10, Hard-Cap 100)",
     )
     p.add_argument(
+        "--version-bump",
+        action="store_true",
+        help=(
+            "Aktiviert version_bump-Conditional für system-zustand "
+            "(+ CORE-MEMORY.md ins Expected-Set; nur bei §6-relevanter Versions-Inkrement)"
+        ),
+    )
+    p.add_argument(
         "--verify-b",
         action="store_true",
         help="Two-Commit-Protokoll Re-Invocation für Commit-B xlsx-Bundle (Codex-H1)",
@@ -994,6 +1053,7 @@ def main(argv: list[str] | None = None) -> int:
         flag_event=args.flag_event,
         mapping=mapping,
         active_xlsx=active_xlsx,
+        version_bump=args.version_bump,
     )
 
     # Critical-Alert NO-OP-PASS (Spec §4 P3 + yaml-Node `no_op_pass: true`)
@@ -1067,7 +1127,16 @@ def main(argv: list[str] | None = None) -> int:
     # + openpyxl-Write + xlsx-Smoke ruft Analyst `validator.py --verify-b` für P5/P6/B.
     if expected_xlsx:
         cur_head = get_head_sha()
-        marker = write_session_marker(commit_a_sha=cur_head, expected_xlsx=expected_xlsx)
+        # Tool-Stems für H2 drift-guard persistieren (re-resolve via SYSTEM.md im verify-b-Pfad).
+        tool_stems = []
+        if "score-flag-sparraten" in events_dedup:
+            sf_node = (mapping.get("event_types") or {}).get("score-flag-sparraten") or {}
+            tool_stems = list(sf_node.get("required_xlsx_tools", []))
+        marker = write_session_marker(
+            commit_a_sha=cur_head,
+            expected_xlsx=expected_xlsx,
+            xlsx_tool_stems=tool_stems,
+        )
         sys.stderr.write(
             f"NOTE — Commit-A bereit ({len(p4.classification.staged)} Files staged, "
             f"{len(expected_xlsx)} xlsx pending). Session-Marker: {marker['session_id']}.\n"
