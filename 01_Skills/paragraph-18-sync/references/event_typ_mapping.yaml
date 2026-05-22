@@ -1,0 +1,60 @@
+# SSoT-Mirror von INSTRUKTIONEN.md §18.1 (Sync-Pflicht-Doktrin, v2.4).
+# Drift gegen §18.1 wirft _smoke_test::test_s7_ssot_drift_guard() FAIL (Spec §5/§6).
+# Keine hardcoded xlsx-Versionen — Active-Filename via 00_Core/SYSTEM.md "## Active xlsx-Filenames"-Block
+# (Codex-M4 deterministische Selektion; Fallback Glob + Semver-Pick mit Ambiguity-FAIL).
+
+version: "v0.1.0"
+spec_anchor: "INSTRUKTIONEN.md §18.1 (v2.4)"
+
+event_types:
+  score-flag-sparraten:
+    description: "Post-!Analysiere / archive_flag.py / Sparraten-Edit / KONTEXT §6-Reassign"
+    required_files:
+      - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
+      - "00_Core/CORE-MEMORY.md"
+      - "00_Core/Faktortabelle.md"
+      - "00_Core/PORTFOLIO.md"
+      - "00_Core/score_history.jsonl"
+      - "01_Skills/dynastie-depot/config.yaml"
+    required_xlsx_tools:
+      - "Rebalancing_Tool"
+      - "Satelliten_Monitor"
+    conditional:
+      flag_event:
+        when: "--flag-event"
+        adds:
+          - "00_Core/flag_events.jsonl"
+
+  pipeline-item:
+    description: "Plan-Commit / Gate-Passage / Status-Transition (ready→in-progress→done / deferred→active)"
+    required_files:
+      - "00_Core/PIPELINE.md"
+      - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
+    conditional:
+      session_close:
+        when: "session-handover-context"
+        adds:
+          - "00_Core/SESSION-HANDOVER.md"
+
+  system-zustand:
+    description: "DEFCON-Version-Bump / MCP-Change / Briefing-Status / Backlog / Infra-Deploy"
+    required_files:
+      - "00_Core/SYSTEM.md"
+      - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
+    conditional:
+      version_bump:
+        when: "core-memory-§6-relevant"
+        adds:
+          - "00_Core/CORE-MEMORY.md"
+
+  critical-alert:
+    description: "STATE.md Hub-Edit (Alert-Slot only) — NO-OP-PASS, kein Bi-Sync zu PORTFOLIO/PIPELINE"
+    required_files:
+      - "00_Core/STATE.md"
+    no_op_pass: true
+
+# Active xlsx-Filenames-Resolution (Codex-M4):
+#   1. Primary: parse `## Active xlsx-Filenames`-Block in 00_Core/SYSTEM.md
+#      Format: `- ToolStem: ActualFilename_vX.Y.xlsx`
+#   2. Fallback: Glob `03_Tools/<stem>_v*.xlsx` + Semver-Pick (höchstes _vX.Y)
+#   3. Ambiguity bei Glob (≥2 Files mit gleicher Top-Semver) → P3-FAIL exit=3
