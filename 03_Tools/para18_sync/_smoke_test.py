@@ -5,9 +5,11 @@ Run: python -m pytest 03_Tools/para18_sync/_smoke_test.py -v
 
 from __future__ import annotations
 
+import json
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import pytest
@@ -57,20 +59,12 @@ def temp_repo(tmp_path: Path) -> Path:
 # --------------------------------------------------------------------------- #
 
 
-@pytest.mark.xfail(
-    reason="P1 _is_git_repo()-Gate in main() noch nicht verdrahtet — fixt in Task 5 (Phase 4 P1)",
-    strict=False,
-)
 def test_s18b_non_git_repo_clean_fail(tmp_path: Path):
-    """S18b: cwd ist kein git-Repo → sauberer FAIL, kein Python-Traceback.
-
-    TDD-Interleave: dieser Test ist Test-first für Task 5 P1-Verdrahtung.
-    Wichtige Robustheits-Invariante (auch in Skeleton-State): kein Traceback.
-    """
+    """S18b: cwd ist kein git-Repo → sauberer FAIL P1, kein Python-Traceback."""
     r = _run_validator(["pipeline-item"], cwd=tmp_path)
     assert "Traceback" not in r.stderr, f"unexpected traceback in stderr: {r.stderr}"
     assert "Traceback" not in r.stdout, f"unexpected traceback in stdout: {r.stdout}"
-    assert r.returncode != 0, f"expected non-zero exit (P1 missing), got {r.returncode}"
+    assert r.returncode == 1, f"expected exit=1 (P1), got {r.returncode}"
 
 
 def test_s18d_missing_yaml_no_traceback(tmp_path: Path):
@@ -98,3 +92,60 @@ def test_validator_no_args_exit_p2():
     r = _run_validator([])
     assert r.returncode == 2, f"expected exit=2 (P2), got {r.returncode}"
     assert "P2" in r.stderr
+
+
+def test_flag_event_only_on_score_event():
+    """Sanity: --flag-event auf pipeline-item → FAIL P2."""
+    r = _run_validator(["pipeline-item", "--flag-event"])
+    assert r.returncode == 2
+    assert "P2" in r.stderr
+
+
+# --------------------------------------------------------------------------- #
+# S11 + S17 — P1 Ordering-Guard + Ticker-Identity (Codex-H3)                  #
+# --------------------------------------------------------------------------- #
+
+
+def _today() -> str:
+    return time.strftime("%Y-%m-%d", time.localtime())
+
+
+def _seed_score_history(repo: Path, *, ticker: str, date_iso: str) -> None:
+    """Helper: lege minimal-valid score_history.jsonl mit date_iso + ticker an."""
+    (repo / "00_Core").mkdir(exist_ok=True)
+    (repo / "00_Core" / "score_history.jsonl").write_text(
+        json.dumps({"timestamp": f"{date_iso}T11:00:00", "ticker": ticker}) + "\n",
+        encoding="utf-8",
+    )
+
+
+def test_s11_score_event_stale_head(temp_repo: Path):
+    """S11: score_history HEAD = gestern → FAIL P1 exit=1."""
+    _seed_score_history(temp_repo, ticker="V", date_iso="2020-01-01")
+    r = _run_validator(["score-flag-sparraten", "--ticker", "V"], cwd=temp_repo)
+    assert r.returncode == 1, (
+        f"expected exit=1 (P1 stale-HEAD), got {r.returncode} "
+        f"stdout={r.stdout!r} stderr={r.stderr!r}"
+    )
+    assert "P1" in r.stderr
+    assert "nicht heute" in r.stderr or "HEAD-date" in r.stderr
+
+
+def test_s17_wrong_ticker_same_day(temp_repo: Path):
+    """S17 (Codex-H3): HEAD-Append heute aber HEAD-Ticker != --ticker → FAIL P1."""
+    _seed_score_history(temp_repo, ticker="TMO", date_iso=_today())
+    r = _run_validator(["score-flag-sparraten", "--ticker", "V"], cwd=temp_repo)
+    assert r.returncode == 1, (
+        f"expected exit=1 (P1 wrong-ticker H3), got {r.returncode} "
+        f"stdout={r.stdout!r} stderr={r.stderr!r}"
+    )
+    assert "P1" in r.stderr
+    assert "H3" in r.stderr or "Ticker" in r.stderr
+
+
+def test_s11b_score_event_missing_jsonl(temp_repo: Path):
+    """S11b: score_history.jsonl fehlt komplett → FAIL P1 ohne Traceback."""
+    r = _run_validator(["score-flag-sparraten", "--ticker", "V"], cwd=temp_repo)
+    assert r.returncode == 1
+    assert "Traceback" not in r.stderr + r.stdout
+    assert "leer/fehlt" in r.stderr or "Pflicht" in r.stderr

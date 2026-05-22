@@ -26,8 +26,10 @@ Exit-Codes (Spec §7):
 from __future__ import annotations
 
 import argparse
+import json
 import subprocess
 import sys
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -149,6 +151,127 @@ def classify_files(
 
 
 # --------------------------------------------------------------------------- #
+# P1 Pre-Flight (Ordering + Ticker-Identity-Guard, Spec §4)                   #
+# --------------------------------------------------------------------------- #
+
+
+def _read_last_jsonl_record(path: Path) -> dict | None:
+    """Liest letzte non-empty JSONL-Zeile. None wenn Datei fehlt, leer oder malformed."""
+    if not path.exists():
+        return None
+    try:
+        with path.open("r", encoding="utf-8", errors="replace") as fh:
+            lines = [ln for ln in fh if ln.strip()]
+        if not lines:
+            return None
+        return json.loads(lines[-1])
+    except json.JSONDecodeError, UnicodeDecodeError, OSError:
+        return None
+
+
+def _today_iso() -> str:
+    return time.strftime("%Y-%m-%d", time.localtime())
+
+
+@dataclass
+class PreFlightResult:
+    ok: bool
+    reason: str = ""
+    quarterly_rollover_warn: bool = False
+    pre_existing_unstaged: list[str] = field(default_factory=list)
+
+
+def _resolve_project_root(cwd: Path | None = None) -> Path:
+    """Auflösung der Repo-Wurzel relativ zu cwd via git rev-parse.
+
+    Tests laufen in temp_repo (tmp_path) — die statische PROJECT_ROOT-Konstante würde
+    immer auf das echte Projekt zeigen. cwd-aware Resolution macht den Validator
+    test-isoliert (Plan-Hinweis Phase 4 / Task 5 Step 2).
+    """
+    if cwd is None:
+        return PROJECT_ROOT
+    rc, out, _err = _run_git(["rev-parse", "--show-toplevel"], cwd)
+    if rc == 0 and out.strip():
+        return Path(out.strip())
+    return cwd
+
+
+def verify_pre_flight(
+    event_type: str,
+    *,
+    ticker: str | None,
+    flag_event: bool,
+    cwd: Path | None = None,
+) -> PreFlightResult:
+    """P1 — Working-Tree-Sanity + Ordering-Guard + Ticker-Identity (Codex-H3).
+
+    Score-Event-Pflichten:
+      - score_history.jsonl HEAD-Append heute (sonst FAIL)
+      - HEAD-Ticker == --ticker (Codex-H3 wrong-ticker-Drift-Schutz)
+      - --flag-event: flag_events.jsonl HEAD-Append heute + Ticker-Match
+
+    cwd=None: nutze Process-cwd (test-isoliert via subprocess.cwd-Override),
+    sonst explizite Path-Override.
+    """
+    if cwd is None:
+        cwd = Path.cwd()
+    if not _is_git_repo(cwd):
+        return PreFlightResult(False, "P1: not inside a git repo")
+
+    root = _resolve_project_root(cwd)
+
+    if event_type == "score-flag-sparraten":
+        score_log = root / "00_Core" / "score_history.jsonl"
+        rec = _read_last_jsonl_record(score_log)
+        if rec is None:
+            return PreFlightResult(
+                False,
+                "P1: score_history.jsonl leer/fehlt/malformed — "
+                "`!Analysiere <ticker>` zuerst (HEAD-Append Pflicht).",
+            )
+        ts_field = rec.get("timestamp") or rec.get("date") or ""
+        if not ts_field.startswith(_today_iso()):
+            return PreFlightResult(
+                False,
+                f"P1: score_history HEAD-Append nicht heute (HEAD-date={ts_field}). "
+                "`!Analysiere <ticker>` zuerst.",
+            )
+        if ticker:
+            head_ticker = rec.get("ticker") or rec.get("symbol") or ""
+            if head_ticker != ticker:
+                return PreFlightResult(
+                    False,
+                    f"P1: score_history HEAD-Ticker `{head_ticker}` != --ticker `{ticker}` "
+                    "(Codex-H3 wrong-ticker-Drift).",
+                )
+
+        if flag_event:
+            flag_log = root / "00_Core" / "flag_events.jsonl"
+            frec = _read_last_jsonl_record(flag_log)
+            if frec is None:
+                return PreFlightResult(
+                    False,
+                    "P1: --flag-event aber flag_events.jsonl leer/fehlt — "
+                    "`archive_flag.py` zuerst.",
+                )
+            fts = frec.get("timestamp") or frec.get("date") or ""
+            if not fts.startswith(_today_iso()):
+                return PreFlightResult(
+                    False,
+                    f"P1: flag_events HEAD-Append nicht heute (HEAD-date={fts}).",
+                )
+            if ticker:
+                fhead_ticker = frec.get("ticker") or frec.get("symbol") or ""
+                if fhead_ticker != ticker:
+                    return PreFlightResult(
+                        False,
+                        f"P1: flag_events HEAD-Ticker `{fhead_ticker}` != --ticker `{ticker}`.",
+                    )
+
+    return PreFlightResult(True)
+
+
+# --------------------------------------------------------------------------- #
 # CLI (argparse, Spec §3)                                                     #
 # --------------------------------------------------------------------------- #
 
@@ -226,14 +349,44 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    if args.event_type == "__none__" and not args.verify_b and not args.reset_session:
+
+    if args.reset_session:
+        if SESSION_MARKER.exists():
+            SESSION_MARKER.unlink()
+        sys.stdout.write(
+            json.dumps({"verdict": "PASS", "phase": "reset", "action": "session_marker_deleted"})
+            + "\n"
+        )
+        return EXIT_PASS
+
+    if args.verify_b:
+        # Two-Commit-Protokoll Re-Invocation wird in Task 11 (P6) implementiert.
+        sys.stderr.write("FAIL P6 — --verify-b nicht implementiert (Task 11)\n")
+        return EXIT_FAIL_P6
+
+    if args.event_type == "__none__":
         sys.stderr.write(
             "FAIL P2 — event-type required. Zulässig: "
             + ", ".join(sorted(VALID_EVENT_TYPES))
             + "\n"
         )
         return EXIT_FAIL_P2
-    # Phasen-Dispatch wird in nachfolgenden Tasks ergänzt.
+
+    if args.flag_event and args.event_type != "score-flag-sparraten":
+        sys.stderr.write("FAIL P2 — --flag-event nur bei score-flag-sparraten erlaubt\n")
+        return EXIT_FAIL_P2
+
+    # P1 — Pre-Flight (Ordering + Ticker-Identity, M5/G-03 in Task 6)
+    pf = verify_pre_flight(
+        args.event_type,
+        ticker=args.ticker,
+        flag_event=args.flag_event,
+    )
+    if not pf.ok:
+        sys.stderr.write(f"FAIL P1 — {pf.reason}\n")
+        return EXIT_FAIL_P1
+
+    # Weitere Phasen (P2/P3/P4/P5/P6/P7) folgen in Tasks 6-12.
     return EXIT_PASS
 
 
