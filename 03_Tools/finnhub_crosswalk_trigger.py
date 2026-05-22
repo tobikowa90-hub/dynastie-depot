@@ -121,8 +121,10 @@ def _na_reason(defeatbeta_value, finnhub_value, finnhub_data) -> str | None:
     if defeatbeta_value is None:
         return "defeatbeta_missing"
     if finnhub_value is None:
+        # finnhub_data is None means get_metrics() failed (401/403/429-exhausted/timeout/network);
+        # finnhub_data is dict but metric absent means upstream returned partial payload
         if finnhub_data is None:
-            return "finnhub_403"
+            return "finnhub_unavailable"
         return "finnhub_missing"
     return None
 

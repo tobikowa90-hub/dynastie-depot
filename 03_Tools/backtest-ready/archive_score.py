@@ -158,10 +158,14 @@ def _assert_metric_for_scoring(metric: dict) -> None:
 
     Legacy-Records ohne _meta-Block sind defeatbeta-implicit und passen durch.
     Records mit _meta.for_scoring=False (FinnHub) → AssertionError.
+    Malformed _meta (non-dict) wird als legacy-implicit behandelt (passt durch);
+    pydantic ScoreRecord.model_validate fängt das Typ-Mismatch danach.
     """
     meta = metric.get("_meta") if isinstance(metric, dict) else None
     if meta is None:
         return  # legacy defeatbeta-implicit
+    if not isinstance(meta, dict):
+        return  # malformed _meta — defer to pydantic ValidationError downstream
     if meta.get("for_scoring") is False:
         raise AssertionError(
             "FinnHub-Metriken sind in v0.1 NICHT für Scoring zugelassen "

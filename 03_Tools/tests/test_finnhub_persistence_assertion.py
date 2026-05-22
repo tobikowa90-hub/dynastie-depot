@@ -31,3 +31,10 @@ class TestForScoringAssertion:
             match=r"FinnHub-Metriken sind in v0.1 NICHT für Scoring zugelassen",
         ):
             _assert_metric_for_scoring(metric)
+
+    def test_non_dict_meta_passes_through_for_pydantic_to_catch(self) -> None:
+        """Malformed _meta (non-dict) does NOT crash — defers to pydantic ValidationError."""
+        metric = {"value": 27.45, "_meta": "garbage-string-not-a-dict"}
+        _assert_metric_for_scoring(metric)  # must not raise AttributeError
+        metric_list = {"value": 27.45, "_meta": ["also", "not", "a", "dict"]}
+        _assert_metric_for_scoring(metric_list)  # must not raise either
