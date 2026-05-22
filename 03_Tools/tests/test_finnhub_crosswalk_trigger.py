@@ -77,3 +77,8 @@ class TestCrosswalkRecord:
         delta, status = cwt.compute_delta(None, 27.0, "2pp")
         assert delta is None
         assert status == "na"
+
+    def test_compute_delta_pct_rel_zero_divisor_returns_none(self) -> None:
+        delta, status = cwt.compute_delta(0.0, 5.0, "5%")
+        assert delta is None
+        assert status == "na"

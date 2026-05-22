@@ -75,13 +75,14 @@ def compute_delta(
     if defeatbeta_value is None or finnhub_value is None:
         return None, "na"
     delta = finnhub_value - defeatbeta_value
+    # 'crit' status is produced by the Task-12 multi-tier comparator, not here.
     if tolerance.endswith("pp"):
         thresh = float(tolerance[:-2])
         status: ToleranceStatus = "within" if abs(delta) <= thresh else "warn"
     elif tolerance.endswith("%"):
         thresh = float(tolerance[:-1]) / 100.0
         if defeatbeta_value == 0:
-            return delta, "na"
+            return None, "na"
         rel = abs(delta) / abs(defeatbeta_value)
         status = "within" if rel <= thresh else "warn"
     else:
