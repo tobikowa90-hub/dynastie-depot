@@ -624,7 +624,7 @@ def read_session_marker(marker_path: Path | None = None) -> dict | None:
         return None
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError, OSError:
+    except (json.JSONDecodeError, OSError):  # fmt: skip
         return None
 
 
@@ -690,10 +690,20 @@ def _run_verify_b(args: argparse.Namespace) -> int:
         sys.stderr.write(f"FAIL P1 (verify-b) — {pf.reason}\n")
         return EXIT_FAIL_P1
 
-    # P4-Revalidation: xlsx-Subset MUSS staged sein
+    # P4-Revalidation: xlsx-Subset MUSS staged sein (kein WARN-Toleranz für
+    # unstaged_preexisting im verify-b-Pfad — Codex-CP3-HIGH-2). In Commit-B
+    # wäre jede xlsx-Änderung nach Commit-A neu und MUSS via `git add` staged
+    # sein bevor `--verify-b` PASS-en darf.
     p4 = verify_staging(expected_xlsx, pf.pre_existing_unstaged)
     if not p4.ok:
         sys.stderr.write(f"FAIL P4 (verify-b) — {p4.reason}\n")
+        return EXIT_FAIL_P4
+    not_staged = expected_xlsx - set(p4.classification.staged)
+    if not_staged:
+        sys.stderr.write(
+            f"FAIL P4 (verify-b) — xlsx-Subset nicht vollständig staged: {sorted(not_staged)}. "
+            "Run `git add` für jede xlsx vor --verify-b.\n"
+        )
         return EXIT_FAIL_P4
 
     # P5-Revalidation: xlsx-Smoke-Test

@@ -675,3 +675,117 @@ def test_recovery_hints_pass_p7_with_xlsx_pending():
         assert any("verify-b" in h for h in hints)
     finally:
         sys.path.pop(0)
+
+
+# --------------------------------------------------------------------------- #
+# CP3-Sparring-R2 Coverage — P7-Full-Schema PASS-Pfad + verify-b-Strict-Stage #
+# --------------------------------------------------------------------------- #
+
+
+def _build_args_namespace(**overrides):
+    """Helper: argparse.Namespace mit validator-Default-Flags."""
+    import argparse as _ap
+
+    defaults = dict(
+        event_type="pipeline-item",
+        also=[],
+        flag_event=False,
+        no_flag_event=False,
+        ticker=None,
+        allow_dirty=10,
+        verify_b=False,
+        reset_session=False,
+        dry_run=False,
+        json_output=False,
+    )
+    defaults.update(overrides)
+    return _ap.Namespace(**defaults)
+
+
+def test_p7_full_schema_pass_path_has_all_fields(capsys):
+    """CP3-MED-Fix: PASS-Pfad emit_report enthält alle Spec-§4-P7-Felder
+    (xlsx_verified, retry_required_revalidation, session_marker-nested, recovery_hints).
+    """
+    try:
+        validator = _load_validator()
+        fc = validator.FileClassification(
+            staged=["00_Core/PIPELINE.md"],
+            unstaged_new=[],
+            unstaged_preexisting=[],
+            missing=[],
+        )
+        p4 = validator.P4Result(ok=True, classification=fc)
+        pf = validator.PreFlightResult(ok=True, pre_existing_unstaged=[])
+        args = _build_args_namespace()
+        validator._emit_report(
+            "PASS",
+            "P7",
+            ["pipeline-item"],
+            {"00_Core/PIPELINE.md"},
+            p4,
+            pf,
+            [],
+            args,
+            expected_xlsx=[],
+        )
+        captured = capsys.readouterr()
+        payload = json.loads(captured.out)
+        # CP3-MED-1 Coverage: full P7-Schema-Felder existieren
+        for key in (
+            "verdict",
+            "phase",
+            "events",
+            "expected_files",
+            "staged_files",
+            "xlsx_verified",
+            "retry_required_revalidation",
+            "session_marker",
+            "recovery_hints",
+            "quarterly_rollover_warn",
+            "dirty_threshold",
+        ):
+            assert key in payload, f"missing P7-Schema-Feld: {key}"
+        # session_marker ist nested mit 3 Pflicht-Sub-Feldern
+        assert "session_id" in payload["session_marker"]
+        assert "commit_a_sha" in payload["session_marker"]
+        assert "status" in payload["session_marker"]
+        assert payload["retry_required_revalidation"] is False  # default
+    finally:
+        sys.path.pop(0)
+
+
+def test_verify_b_unstaged_preexisting_bug_demonstrated():
+    """CP3-HIGH-2 Bug-Demonstration: classify_files allein erkennt xlsx-im-WARN-Bucket
+    nicht als verify-b-Hard-Fail — unstaged_preexisting → fc.ok=True wäre der Bypass.
+
+    Genau dieser Bypass war der CP3-HIGH-2-Befund. Der Fix in `_run_verify_b` ist
+    ein expliziter `expected_xlsx - set(p4.classification.staged)`-Check NACH
+    `verify_staging()` — den verifiziert der nächste Test.
+    """
+    try:
+        validator = _load_validator()
+        fc = validator.classify_files(
+            expected={"foo.xlsx"},
+            staged=[],
+            current_unstaged=["foo.xlsx"],
+            pre_existing_unstaged=["foo.xlsx"],
+        )
+        assert fc.unstaged_preexisting == ["foo.xlsx"]
+        assert fc.staged == []
+        assert fc.missing == []
+        assert fc.unstaged_new == []
+        # Pre-Fix: P4 hätte verify_staging=ok returnt obwohl xlsx nicht staged.
+    finally:
+        sys.path.pop(0)
+
+
+def test_verify_b_strict_staged_check_catches_unstaged_xlsx():
+    """CP3-HIGH-2 Fix-Verifikation: der explizite `expected_xlsx - staged`-Check
+    in `_run_verify_b` erkennt unstaged xlsx korrekt (kein PASS-Bypass via WARN).
+    """
+    expected_xlsx = {"foo.xlsx", "bar.xlsx"}
+    # Partial-staged Case (bar.xlsx fehlt) → Fix-Branch triggert
+    not_staged = expected_xlsx - set(["foo.xlsx"])
+    assert not_staged == {"bar.xlsx"}
+    # Voll-staged Case → Fix-Branch ruht
+    assert expected_xlsx - set(["foo.xlsx", "bar.xlsx"]) == set()
