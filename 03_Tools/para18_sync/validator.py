@@ -720,8 +720,48 @@ def _run_verify_b(args: argparse.Namespace) -> int:
 
 
 # --------------------------------------------------------------------------- #
-# Closure-Report Emitter (Spec §4 P7 — preliminary, full schema in Task 12)   #
+# Closure-Report Emitter (Spec §4 P7 — full JSON-Schema, Codex-M6 retry-flag) #
 # --------------------------------------------------------------------------- #
+
+
+def _build_recovery_hints(
+    verdict: str,
+    phase: str,
+    p4: P4Result,
+    pf: PreFlightResult,
+    expected_xlsx: list[str],
+) -> list[str]:
+    """Generiert phase-spezifische Recovery-Hints für den Closure-Report."""
+    hints: list[str] = []
+    if verdict == "FAIL":
+        if phase == "P1":
+            hints.append("Sub-Tool zuerst laufen lassen (`!Analysiere` / `archive_flag.py`).")
+        if phase == "P4":
+            if p4.classification.missing:
+                hints.append(
+                    "MISSING-Files prüfen + `git add <file>` für die Sync-Pflicht-Bundle-Files."
+                )
+            if p4.classification.unstaged_new:
+                hints.append(
+                    "UNSTAGED_NEW (G-01): `git add <file>` für jeden NEW-Eintrag, dann erneut validieren."
+                )
+        if phase == "P5":
+            hints.append(
+                "xlsx-Smoke-Test gemäß `03_Tools/xlsx-smoke-test.md` korrekt durchführen, dann --verify-b."
+            )
+        if phase in ("P6", "P6/B"):
+            hints.append(
+                "Two-Commit-Drift: `--reset-session` löscht Marker und erlaubt Neustart vom Commit-A."
+            )
+    if verdict == "PASS" and expected_xlsx and phase == "P7":
+        hints.append(
+            "Commit-A jetzt absetzen; danach xlsx via openpyxl schreiben + smoke + `--verify-b`."
+        )
+    if pf.quarterly_rollover_warn:
+        hints.append(
+            "Quartals-Wechsel (G-03 WARN): log.md sollte zeitnah ins `archive/log/`-Verzeichnis rolliert werden."
+        )
+    return hints
 
 
 def _emit_report(
@@ -736,8 +776,25 @@ def _emit_report(
     *,
     expected_xlsx: list[str] | None = None,
     cwd: Path | None = None,
+    xlsx_verified: str = "not-applicable",
+    retry_required_revalidation: bool = False,
 ) -> None:
-    """JSON-Closure-Report (Spec §4 P7). Full retry/session-marker-Schema folgt in Task 12."""
+    """JSON-Closure-Report (Spec §4 P7, voll-Schema post-Task-12).
+
+    Felder:
+      verdict / phase / events / expected_files / staged_files /
+      unstaged_modified_files / missing / unstaged_new / pre_existing_unstaged /
+      spot_grep_results / xlsx_warnings / expected_xlsx / xlsx_verified /
+      retry_required_revalidation / session_marker (nested) /
+      quarterly_rollover_warn / ticker / flag_event / dirty_threshold /
+      recovery_hints
+
+    Codex-M6 retry-Hint: bei jedem Commit-Failure-Retry MUSS Analyst re-validate
+    durch erneuten validator-Lauf. Flag wird im Report exponiert (default False;
+    Caller setzt True bei phase-spezifischen FAIL-Verdikten die retry rechtfertigen).
+    """
+    marker = read_session_marker() or {}
+    expected_xlsx_list = expected_xlsx or []
     payload = {
         "verdict": verdict,
         "phase": phase,
@@ -750,11 +807,19 @@ def _emit_report(
         "pre_existing_unstaged": pf.pre_existing_unstaged,
         "spot_grep_results": p4.spot_greps,
         "xlsx_warnings": xlsx_warnings,
-        "expected_xlsx": expected_xlsx or [],
+        "expected_xlsx": expected_xlsx_list,
+        "xlsx_verified": xlsx_verified,
+        "retry_required_revalidation": retry_required_revalidation,
+        "session_marker": {
+            "session_id": marker.get("session_id", "none"),
+            "commit_a_sha": marker.get("commit_a_sha", ""),
+            "status": marker.get("status", "none"),
+        },
         "quarterly_rollover_warn": pf.quarterly_rollover_warn,
         "ticker": args.ticker,
         "flag_event": args.flag_event,
         "dirty_threshold": args.allow_dirty,
+        "recovery_hints": _build_recovery_hints(verdict, phase, p4, pf, expected_xlsx_list),
     }
     print(json.dumps(payload, indent=None if args.json_output else 2))
 
