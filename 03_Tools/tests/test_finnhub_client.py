@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
+import requests
 
 import finnhub_client
 
@@ -121,3 +122,62 @@ class TestFileCache:
         # And: set() must successfully overwrite the corrupted file
         cache.set("quotes", "MSFT", {"c": 419.09})
         assert cache.get("quotes", "MSFT") == {"c": 419.09}
+
+
+class TestHttpRetry:
+    def test_a8_rate_limit_exp_backoff(self, tmp_path: Path, monkeypatch) -> None:
+        """A8: HTTP 429 → 3 retries with 2/4/8s waits; success at retry-3 returns data."""
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        sleeps: list[float] = []
+        monkeypatch.setattr(finnhub_client.time, "sleep", lambda s: sleeps.append(s))  # noqa: PLW0108
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        responses = [
+            MagicMock(status_code=429),
+            MagicMock(status_code=429),
+            MagicMock(status_code=429),
+            MagicMock(status_code=200, json=lambda: {"c": 419.09}),
+        ]
+        with patch("finnhub_client.requests.get", side_effect=responses):
+            data = client._request("/quote", {"symbol": "MSFT"})
+        assert data == {"c": 419.09}
+        assert sleeps == [2.0, 4.0, 8.0]
+
+    def test_a8_rate_limit_exhausted_returns_none(self, tmp_path: Path, monkeypatch) -> None:
+        """A8: 4 consecutive 429 → return None + log.error."""
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        monkeypatch.setattr(finnhub_client.time, "sleep", lambda s: None)
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        with patch("finnhub_client.requests.get", return_value=MagicMock(status_code=429)):
+            data = client._request("/quote", {"symbol": "MSFT"})
+        assert data is None
+
+    def test_a9_timeout_retry_once(self, tmp_path: Path, monkeypatch) -> None:
+        """A9: Timeout → 1 retry, then success returns data."""
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        monkeypatch.setattr(finnhub_client.time, "sleep", lambda s: None)
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        side_effects = [
+            requests.Timeout("simulated timeout"),
+            MagicMock(status_code=200, json=lambda: {"c": 419.09}),
+        ]
+        with patch("finnhub_client.requests.get", side_effect=side_effects):
+            data = client._request("/quote", {"symbol": "MSFT"})
+        assert data == {"c": 419.09}
+
+    def test_a9_double_timeout_returns_none(self, tmp_path: Path, monkeypatch) -> None:
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        monkeypatch.setattr(finnhub_client.time, "sleep", lambda s: None)
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        with patch("finnhub_client.requests.get", side_effect=requests.Timeout("x")):
+            data = client._request("/quote", {"symbol": "MSFT"})
+        assert data is None
+
+    def test_403_returns_none_with_warn(self, tmp_path: Path, monkeypatch, caplog) -> None:
+        """A5-Vorgriff: 403 (Europäer Premium) → None + WARN."""
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        with patch("finnhub_client.requests.get", return_value=MagicMock(status_code=403)):
+            with caplog.at_level("WARNING"):
+                data = client._request("/quote", {"symbol": "RMS.PA"})
+        assert data is None
+        assert any("403" in r.message for r in caplog.records)

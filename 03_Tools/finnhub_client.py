@@ -120,14 +120,88 @@ class _FinnHubClient:
     def __init__(self, cache_root: Path = _DEFAULT_CACHE_ROOT) -> None:
         self._api_key = _load_env_key()
         self._cache_root = cache_root
-        # Rate-limiter + cache initialized in later tasks
         self._lock = threading.Lock()
+        self._rate_limiter = _TokenBucket(capacity=60, refill_per_sec=1.0)
+        # Per-endpoint TTL (Spec §2.4)
+        self._caches = {
+            "quote": _FileCache(cache_root / "quotes", ttl_seconds=60),
+            "earnings": _FileCache(cache_root / "earnings", ttl_seconds=3600),
+            "news": _FileCache(cache_root / "news", ttl_seconds=300),
+            "metric": _FileCache(cache_root / "metrics", ttl_seconds=6 * 3600),
+        }
+
+    def _request(self, endpoint: str, params: dict) -> Any | None:
+        """HTTP-Call mit Retry-Logik (Spec §2.5).
+
+        - 401 → RuntimeError (hard-crash, A7)
+        - 403 → None + log.warning (fail-soft, A5)
+        - 429 → exp-backoff 2/4/8s, 3 retries (A8), dann None
+        - Timeout → 1 retry (A9), dann None
+        - 200 → resp.json()
+
+        Token-Bucket-Policy (Codex-CP0-MED-3): Retries verbrauchen KEINE zusätzlichen
+        Tokens — der Bucket-acquire passiert einmalig vor der ersten Request. 429-Retries
+        sind Server-Side-Rate-Limit-Reaktion, NICHT Client-Side-Quota-Ereignis; doppelte
+        Token-Consumption würde nur das Client-Budget verbrennen ohne Effekt.
+        """
+        self._rate_limiter.acquire()
+        url = f"{_BASE_URL}{endpoint}"
+        full_params = {**params, "token": self._api_key}
+
+        # Timeout-Retry (1×, A9)
+        timeout_attempts = 0
+        # Rate-Limit-Retry (3×, A8)
+        backoff_attempts = 0
+        backoff_waits = [2.0, 4.0, 8.0]
+
+        while True:
+            try:
+                resp = requests.get(url, params=full_params, timeout=10)
+            except requests.Timeout:
+                if timeout_attempts >= 1:
+                    log.exception("FinnHub timeout exhausted for %s %s", endpoint, params)
+                    return None
+                timeout_attempts += 1
+                continue
+
+            if resp.status_code == 401:
+                raise RuntimeError(
+                    f"FinnHub auth failed: HTTP 401 — check .env.finnhub (response: {resp.text[:200]})"
+                )
+            if resp.status_code == 403:
+                log.warning(
+                    "FinnHub 403 for %s %s — Europäer Premium oder Endpoint restricted",
+                    endpoint,
+                    params,
+                )
+                return None
+            if resp.status_code == 429:
+                if backoff_attempts >= 3:
+                    log.error("FinnHub 429 retries exhausted for %s %s", endpoint, params)
+                    return None
+                wait = backoff_waits[backoff_attempts]
+                backoff_attempts += 1
+                log.warning("FinnHub 429 — backoff %ss (retry %d/3)", wait, backoff_attempts)
+                time.sleep(wait)
+                continue
+            if resp.status_code == 200:
+                return resp.json()
+            log.error(
+                "FinnHub unexpected status %d for %s %s: %s",
+                resp.status_code,
+                endpoint,
+                params,
+                resp.text[:200],
+            )
+            return None
 
     def get_quote(self, symbol: str, force: bool = False) -> dict | None:
-        # Skeleton — full impl in Task 5
-        url = f"{_BASE_URL}/quote"
-        params = {"symbol": symbol, "token": self._api_key}
-        resp = requests.get(url, params=params, timeout=10)
-        if resp.status_code == 401:
-            raise RuntimeError(f"FinnHub auth failed: HTTP 401 — check .env.finnhub")  # noqa: F541
-        return None  # Placeholder, full logic later
+        if not force:
+            cached = self._caches["quote"].get("quote", symbol)
+            if cached is not None:
+                return cached
+        data = self._request("/quote", {"symbol": symbol})
+        if data is not None:
+            data["_fetched_at"] = time.time()
+            self._caches["quote"].set("quote", symbol, data)
+        return data
