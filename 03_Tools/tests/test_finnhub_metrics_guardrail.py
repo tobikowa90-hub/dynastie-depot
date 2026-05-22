@@ -64,3 +64,45 @@ class TestMetricsGuardrail:
             data = finnhub_client.get_metrics("MSFT")
         assert data is not None
         assert data["_meta"]["for_scoring"] is False
+
+    def test_cache_poisoning_invalid_meta_triggers_refetch(
+        self, tmp_path: Path, monkeypatch
+    ) -> None:
+        """CP1-MED-2: Cache mit manipuliertem _meta.for_scoring=True -> discard + refetch."""
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        # Poison cache: for_scoring=True (forbidden in v0.1)
+        poisoned = {
+            "metrics": {"peTTM": 99.9},
+            "_meta": {
+                "read_only": True,
+                "for_scoring": True,
+                "source": "finnhub",
+                "fetched_at": 0.0,
+            },
+        }
+        client._caches["metric"].set("metric", "MSFT", poisoned)
+        # Network returns clean data
+        clean = {"metric": {"peTTM": 35.2}}
+        with patch(
+            "finnhub_client.requests.get",
+            return_value=MagicMock(status_code=200, json=lambda: clean),
+        ):
+            data = client.get_metrics("MSFT")
+        assert data is not None
+        assert data["_meta"]["for_scoring"] is False
+        assert data["metrics"]["peTTM"] == 35.2  # from network, not cache
+
+    def test_cache_missing_meta_triggers_refetch(self, tmp_path: Path, monkeypatch) -> None:
+        """CP1-MED-2: Cache ohne _meta-Block -> discard + refetch."""
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        client._caches["metric"].set("metric", "MSFT", {"metrics": {"peTTM": 99.9}})  # no _meta
+        clean = {"metric": {"peTTM": 35.2}}
+        with patch(
+            "finnhub_client.requests.get",
+            return_value=MagicMock(status_code=200, json=lambda: clean),
+        ):
+            data = client.get_metrics("MSFT")
+        assert data["_meta"]["for_scoring"] is False
+        assert data["metrics"]["peTTM"] == 35.2

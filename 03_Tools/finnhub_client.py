@@ -252,6 +252,16 @@ class _FinnHubClient:
         self._caches["news"].set("news", cache_key, data)
         return data
 
+    @staticmethod
+    def _is_valid_meta_envelope(payload: dict) -> bool:
+        """CP1-MED-2 Guardrail: cache-hits must carry intact _meta with for_scoring=False."""
+        meta = payload.get("_meta") if isinstance(payload, dict) else None
+        return (
+            isinstance(meta, dict)
+            and meta.get("read_only") is True
+            and meta.get("for_scoring") is False
+        )
+
     def get_metrics(self, symbol: str, force: bool = False) -> dict | None:
         """TTM-Snapshot + 5Y-CAGRs Subset (Spec §2.2).
 
@@ -261,8 +271,13 @@ class _FinnHubClient:
         """
         if not force:
             cached = self._caches["metric"].get("metric", symbol)
-            if cached is not None:
+            if cached is not None and self._is_valid_meta_envelope(cached):
                 return cached
+            if cached is not None:
+                log.warning(
+                    "FinnHub metrics cache for %s has invalid _meta — discarding (CP1-MED-2 guard)",
+                    symbol,
+                )
         raw = self._request("/stock/metric", {"symbol": symbol, "metric": "all"})
         if raw is None:
             return None
