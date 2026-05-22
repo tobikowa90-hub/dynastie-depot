@@ -2314,3 +2314,33 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 **Sync-Set:** SYSTEM.md (§Passive Read-Only Data Layer BUILD-PHASE-DONE + Deliverables + A1-A12-Manifest + Footer v1.4→v1.5) + PIPELINE.md (#74 BUILD-DONE + Build-Summary-Block + neu #75 Shadow-Run-Tracker Hard-Deadline 2026-07-06 + neu #76 v0.2-Methoden-Discovery + Footer v2.53→v2.54) + log.md (dieser Eintrag). **KEIN:** PORTFOLIO + CORE-MEMORY + Faktortabelle + score_history + flag_events + config.yaml + xlsx (Spec §7.1 State-Files NULL — Live-Score-Impact NULL, scoring-neutral). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
 
 **Cross-Reference:** Build-Plan `docs/superpowers/plans/2026-05-22-finnhub-integration-build-v0.1.md` · Spec-File `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` v0.3 (LOCKED, invariant) · Build-Commits seit Spec-LOCK 1a71f0f: 8f427f1c/27d0102/f9bbc43/f56081c/d74d6e4/9f795ca + Task-15-Sync-Commit `<TBD>` · PIPELINE.md #74/#75/#76 + Footer v2.54 · SYSTEM.md §Passive Read-Only Data Layer + Footer v1.5 · Memory `feedback_skill_methodology_drift_v_q2` (V Q2 28.04. Drift-Präzedenz) · Memory `reference_dynastie_log_location` (Vault-log-SSoT) · Memory `feedback_codex_sparring_heuristic` (Single-Pass-Apply Heuristik).
+
+## [2026-05-22] system | Block-A/B Doc-Sync Welle — PIPELINE #74 Slim-Refactor + Vault-Tool-Pages (System-Event, scoring-neutral)
+
+**Befund:** Post-FinnHub-BUILD-PHASE-DONE-Task-15-§18-Sync (Eintrag oben) blieben (a) PIPELINE #74-Body mit ~3000W Build-History (Codex-3-Runden + Build-Phase-Summary + CP-2-Followups) als statischer Substrate-Bloat; (b) SESSION-HANDOVER.md mit letztem Banner 18.05. AMZN ohne FinnHub-Bezug; (c) STATE.md Critical-Alerts ohne 22.05.-Eintrag; (d) CORE-MEMORY §13 ohne FinnHub-Integration-Lifecycle-Eintrag; (e) Vault-Konventions-Gap zu `wiki/sources/tools/` ohne `finnhub.md` (Datenquelle parallel zu defeatbeta.md) und `session-closure.md` (Skill parallel zu backtest-ready-forward-verify.md, gestern 21.05. deployed via `42eca7c`).
+
+**Aktion (2 atomare Commits):**
+
+**Block A — 00_Core-Doc-Sync (Commit `1e2947a`):**
+- PIPELINE.md #74 massiv geslimmt (~3000W → ~190W Pointer): Numbering-Convention-Sub-Pattern für „BUILD-DONE-aber-Forward-aktiv"-Items (Pure-Removal wie #70/#71 inappropriate solange Forward-Work-Pointer benötigt). Detail-Trail verlagert nach SYSTEM.md §Passive Read-Only Data Layer (Footer v1.5) + Vault log.md 3 FinnHub-Einträge (Spec/Plan/Build) + git log + Spec/Plan-Files. P-3..I-2-CP-2-Followups in #75-Body gefolded.
+- PIPELINE-Footer v2.54→v2.55.
+- SESSION-HANDOVER.md: neuer 22.05.-Banner (FinnHub-Integration v0.1 SPEC→PLAN→BUILD + paragraph-18-sync SPEC v0.3 Build-ready + session-closure-Skill v0.2.0 zusammengefasst) + Resume-Anweisung Shadow-Run Day-1-Trigger als Primär-Track.
+- STATE.md: neuer 22.05.-Critical-Alert FinnHub-DONE + Footer Stand 18.05.→22.05.
+- CORE-MEMORY §13 Lifecycle: 2 neue Einträge (FinnHub-Integration v0.1 SPEC→PLAN→BUILD Vollumfang + paragraph-18-sync SPEC v0.3 30 Codex-Befunde adoptiert). Footer v1.22→v1.23.
+
+**Block B — Vault-Tool-Pages (Commit `02866b5`):**
+- `wiki/sources/tools/finnhub.md` NEU (Datenquelle parallel zu defeatbeta.md): Coverage Quote/Earnings-Calendar/Company-News/Stock-Metric + Artefakte-Manifest + Shadow-Run-Coverage-Ziele + Day-1-Trigger-Command + v0.2-Roadmap-Pointer + Step-4a-Decision (3/8-Minimal) + Methodology-Drift-Schutz-Sektion (technische Guardrails).
+- `wiki/sources/tools/session-closure.md` NEU (Skill parallel zu backtest-ready-forward-verify.md): v0.2.0 deployed `42eca7c`, Strict-Trigger `!SessionClose`, fail-close-Boundary, INSTRUKTIONEN §25.5 SSoT, Sync-Set typisch Score-/System-Event dokumentiert.
+- `wiki/sources/tools/defeatbeta.md` Cross-Backlink: neue §Crosswalk-FinnHub-Sektion (Primary-Pull WSL-Subprocess + A12 Identity-Check + aktuelle 3/8-Coverage + PIPELINE #76 Pointer) + [[finnhub]]-Verlinkung.
+- `wiki/sources/tools/backtest-ready-forward-verify.md` Cross-Backlink: [[session-closure]] als §18-Sync-Komplement (User-getriggert vs programmatisch).
+- `paragraph-18-sync.md` bewusst DEFERRED bis Build-DONE (derzeit nur SPEC-COMPLETE PIPELINE #73a).
+
+**Bewusst NICHT (Block C verworfen):**
+- Ticker-Entity-Pages (MSFT/V/ASML/TMO/COST) bekommen KEINE FinnHub-Crosswalk-Coverage-Footer — Geräusch-Kosten höher als Hebel, Vault-Tool-Page `finnhub.md` ist self-contained, Crosswalk-Records leben in `03_Tools/finnhub_crosswalk_log.jsonl`.
+- Vault `index.md` ist Research-Paper-Anker-Doc (B1-B30), nicht Tool-Index — Tool-Backlinks bleiben in `wiki/sources/tools/` lokal.
+
+**Sync-Set (System-Event):** PIPELINE.md + SESSION-HANDOVER.md + STATE.md + CORE-MEMORY.md (Block A) + 4 Vault-Files (Block B) + log.md (dieser Eintrag). **KEIN:** PORTFOLIO + Faktortabelle + score_history + flag_events + config.yaml + xlsx + SKILL.md — kein Score/FLAG/Sparraten-Event, kein Skill-Refactor (FinnHub-v0.1-Invariante). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Lessons:** (a) PIPELINE-Body-Slim als Numbering-Convention-Sub-Pattern für „BUILD-DONE-aber-Forward-aktiv"-Items — Detail-Trail wandert zu SYSTEM/log/git, Pointer bleibt aktiv (#70/#71 Pure-Removal wäre hier Info-Loss für Forward-Work-Pointer wie #75-Coverage-Ziele und v0.2-Roadmap-Reihenfolge); (b) Vault-Tool-Page-Konvention (1 Page pro aktive Datenquelle/Skill in `wiki/sources/tools/`) verlangt proaktiven Page-Build bei jeder neuen Tool-Klasse — Lücke war 22h alt für session-closure und 6h für finnhub; (c) Cross-Backlink-Disziplin (defeatbeta↔finnhub bidirektional + skill-skill) macht den semantischen Graph traversierbar ohne dass Tool-Index zentral gepflegt werden muss.
+
+**Cross-Reference:** Commits `1e2947a` (Block A) + `02866b5` (Block B) + dieser log-Eintrag-Commit · PIPELINE.md Footer v2.55 · SESSION-HANDOVER.md 22.05.-Banner · STATE.md Critical-Alert 22.05. · CORE-MEMORY §13 v1.23 · Vault `wiki/sources/tools/finnhub.md` + `session-closure.md` (NEU) + defeatbeta.md + backtest-ready-forward-verify.md (Backlinks).
