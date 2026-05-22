@@ -123,6 +123,33 @@ class TestFileCache:
         cache.set("quotes", "MSFT", {"c": 419.09})
         assert cache.get("quotes", "MSFT") == {"c": 419.09}
 
+    def test_concurrent_set_no_corruption(self, tmp_path: Path) -> None:
+        """CP1-MED-1: 5 threads x 20 sets each on same key -> final file is one valid JSON."""
+        import threading as _threading
+
+        cache = finnhub_client._FileCache(root=tmp_path, ttl_seconds=3600)
+        errors: list[Exception] = []
+
+        def worker(idx: int) -> None:
+            try:
+                for i in range(20):
+                    cache.set("quotes", "MSFT", {"thread": idx, "iter": i})
+            except Exception as e:
+                errors.append(e)
+
+        threads = [_threading.Thread(target=worker, args=(t,)) for t in range(5)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        assert errors == [], f"concurrent set raised: {errors!r}"
+        final = cache.get("quotes", "MSFT")
+        assert final is not None, "final cache value must be a valid JSON dict"
+        assert "thread" in final and "iter" in final
+        # No leftover *.json.tmp.* files
+        leftovers = list((tmp_path / "quotes").glob("*.tmp.*"))
+        assert leftovers == [], f"orphaned tmp files: {leftovers!r}"
+
 
 class TestHttpRetry:
     def test_a8_rate_limit_exp_backoff(self, tmp_path: Path, monkeypatch) -> None:

@@ -17,6 +17,7 @@ import logging
 import os
 import threading
 import time
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -111,9 +112,25 @@ class _FileCache:
     def set(self, endpoint: str, key: str, value: Any) -> None:
         p = self._path(endpoint, key)
         p.parent.mkdir(parents=True, exist_ok=True)
-        tmp = p.with_suffix(".json.tmp")
-        tmp.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
-        tmp.replace(p)
+        # CP1-MED-1: per-call unique tmp suffix to avoid concurrent-write race
+        tmp = p.with_suffix(f".json.tmp.{os.getpid()}.{uuid.uuid4().hex[:8]}")
+        try:
+            tmp.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+            # Windows: os.replace can raise PermissionError if destination is
+            # transiently locked by a concurrent replace — retry once, then give up
+            # (best-effort cache write, non-fatal).
+            try:
+                tmp.replace(p)
+            except PermissionError:
+                time.sleep(0.01)
+                try:
+                    tmp.replace(p)
+                except PermissionError:
+                    tmp.unlink(missing_ok=True)
+        except OSError:
+            # Best-effort cleanup of orphaned tmp on failure
+            tmp.unlink(missing_ok=True)
+            raise
 
 
 class _FinnHubClient:
