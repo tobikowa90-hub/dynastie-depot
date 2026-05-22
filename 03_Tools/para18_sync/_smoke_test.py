@@ -157,12 +157,19 @@ def test_s11b_score_event_missing_jsonl(temp_repo: Path):
 
 
 def test_s15a_dirty_below_threshold_pass(temp_repo: Path):
-    """S15a: 5 unrelated dirty/untracked Files < threshold=10 → kein P1-FAIL."""
+    """S15a: 5 unrelated dirty/untracked Files < threshold=10 → kein P1-FAIL.
+
+    Aktuell während Build-Phase exit=99 (BUILD_INCOMPLETE-Sentinel) statt 0;
+    Kriterium ist NICHT der Exit-Code, sondern dass dirty-tree-Predicate NICHT triggert.
+    """
     for i in range(5):
         (temp_repo / f"dirty_{i}.txt").write_text("dirty\n", encoding="utf-8")
     r = _run_validator(["pipeline-item"], cwd=temp_repo)
     assert "dirty-tree" not in (r.stdout + r.stderr).lower(), (
         f"unexpected dirty-tree fail: stdout={r.stdout!r} stderr={r.stderr!r}"
+    )
+    assert r.returncode != 1, (
+        f"P1 should not fail (only dirty-predicate is tested here), got exit={r.returncode}"
     )
 
 

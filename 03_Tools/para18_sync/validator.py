@@ -14,13 +14,15 @@ P1-P7 Phases-Pipeline (siehe SKILL.md):
   P7  Closure-Report (JSON + human)
 
 Exit-Codes (Spec §7):
-  0 = PASS
-  1 = P1 fail
-  2 = P2 fail
-  3 = P3 fail
-  4 = P4 fail
-  5 = P5 fail
-  6 = P6/B drift
+  0  = PASS
+  1  = P1 fail
+  2  = P2 fail
+  3  = P3 fail
+  4  = P4 fail
+  5  = P5 fail
+  6  = P6/B drift
+  99 = BUILD-INCOMPLETE-Sentinel (P2-P7 noch nicht implementiert, Build-Phase)
+       — fail-close gegen false-positive PASS während Build (Codex-CP1-P1 2026-05-22).
 """
 
 from __future__ import annotations
@@ -41,6 +43,7 @@ EXIT_FAIL_P3 = 3
 EXIT_FAIL_P4 = 4
 EXIT_FAIL_P5 = 5
 EXIT_FAIL_P6 = 6
+EXIT_BUILD_INCOMPLETE = 99  # Sentinel: P2-P7 noch nicht implementiert (Build-Phase)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SESSION_MARKER = Path(__file__).parent / ".session_marker"
@@ -165,7 +168,7 @@ def _read_last_jsonl_record(path: Path) -> dict | None:
         if not lines:
             return None
         return json.loads(lines[-1])
-    except json.JSONDecodeError, UnicodeDecodeError, OSError:
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError):  # fmt: skip
         return None
 
 
@@ -450,8 +453,18 @@ def main(argv: list[str] | None = None) -> int:
         sys.stderr.write(f"FAIL P1 — {pf.reason}\n")
         return EXIT_FAIL_P1
 
-    # Weitere Phasen (P2/P3/P4/P5/P6/P7) folgen in Tasks 6-12.
-    return EXIT_PASS
+    # ---- BUILD-PHASE SENTINEL (Codex-CP1-P1, 2026-05-22) ----
+    # P2-P7 sind in Tasks 7-12 des Implementation-Plans verdrahtet.
+    # Bis Task 12 abgeschlossen ist, returnt validator EXIT_BUILD_INCOMPLETE statt
+    # EXIT_PASS — verhindert false-positive PASS-Verdikt für unsynced Bundles
+    # (fail-close-Contract gemäß Spec §7). Bei produktivem Aufruf vor Phase-7-Done
+    # ist exit=99 das richtige Verdikt: „Skill noch nicht einsatzbereit".
+    sys.stderr.write(
+        "WARN — paragraph-18-sync Build-Phase: P2-P7 nicht implementiert (exit=99). "
+        "P1 Pre-Flight PASS, aber Expected-Set/Staging-Diff/xlsx-Confirm/Two-Commit/Closure "
+        "folgen in Tasks 7-12. Skill aktuell nicht für §18-Sync produktiv nutzbar.\n"
+    )
+    return EXIT_BUILD_INCOMPLETE
 
 
 if __name__ == "__main__":
