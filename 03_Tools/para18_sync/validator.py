@@ -519,6 +519,59 @@ def verify_staging(
 
 
 # --------------------------------------------------------------------------- #
+# P5 — xlsx-Smoke-Confirm (Spec §4 P5, manual-confirm v0.1)                   #
+# --------------------------------------------------------------------------- #
+
+
+def verify_xlsx_smoke(
+    expected_xlsx: list[str],
+    *,
+    non_interactive_input: str | None = None,
+) -> tuple[bool, str]:
+    """P5 — User-Confirm-Prompt für xlsx-Smoke-Test gemäß `03_Tools/xlsx-smoke-test.md`.
+
+    v0.1 = manual-confirm. v0.2 (post-#73b) ersetzt durch Sub-Skill-Auto-Call.
+
+    Codex-H2-Fix: `skip`-Eingabe ist Hard-Fail (kein Bypass des xlsx-Smoke-Test
+    bei xlsx-Pflicht-Set). User MUSS Smoke-Test korrekt durchführen (`y`),
+    abbrechen (`n`) oder via `--dry-run` neu starten.
+
+    Returns:
+      (True, "manual-confirm")  — User-Confirm `y`
+      (True, "not-applicable")  — Kein xlsx erwartet (no-op-PASS)
+      (False, <reason>)         — `n`, `skip`, EOF, oder anderer Input
+    """
+    if not expected_xlsx:
+        return True, "not-applicable"
+    prompt = (
+        f"P5 xlsx-Smoke-Test: {len(expected_xlsx)} File(s) → {expected_xlsx}\n"
+        "Smoke-Test gemäß `03_Tools/xlsx-smoke-test.md` gelaufen + PASS? (y/n): "
+    )
+    if non_interactive_input is not None:
+        ans = non_interactive_input.strip().lower()
+    else:
+        try:
+            ans = input(prompt).strip().lower()
+        except EOFError:
+            return (
+                False,
+                "P5: EOF auf Confirm-Prompt — non-interactive ohne --dry-run nicht erlaubt",
+            )
+    if ans == "y":
+        return True, "manual-confirm"
+    if ans == "skip":
+        return (
+            False,
+            "P5: 'skip' nicht erlaubt im Required-xlsx-Pfad (Codex-H2). "
+            "Nutze --dry-run oder Smoke-Test korrekt durchführen.",
+        )
+    return (
+        False,
+        "P5: User-Confirm n — Smoke-Test ausstehend. Recovery: `03_Tools/xlsx-smoke-test.md`.",
+    )
+
+
+# --------------------------------------------------------------------------- #
 # Closure-Report Emitter (Spec §4 P7 — preliminary, full schema in Task 12)   #
 # --------------------------------------------------------------------------- #
 

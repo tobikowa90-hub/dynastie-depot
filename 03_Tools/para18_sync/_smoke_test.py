@@ -398,3 +398,75 @@ def test_s10_preexisting_dirty_does_not_fail():
         assert fc.missing == []
     finally:
         sys.path.pop(0)
+
+
+# --------------------------------------------------------------------------- #
+# S20 — P5 xlsx-Confirm skip-Hard-Fail (Codex-H2 mechanical guard)            #
+# --------------------------------------------------------------------------- #
+
+
+def test_s20_p5_skip_hard_fail():
+    """S20a: Confirm-Input 'skip' → ok=False, klare H2-Begründung.
+
+    Codex-H2-Fix: skip darf den xlsx-Smoke-Test NICHT bypassen wenn xlsx im
+    Required-Set steht. Smoke-Test ist Pflicht für Score-FLAG-Sync-Events.
+    """
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        ok, reason = validator.verify_xlsx_smoke(
+            ["03_Tools/foo.xlsx"], non_interactive_input="skip"
+        )
+        assert ok is False
+        assert "skip" in reason.lower()
+        assert "H2" in reason or "nicht erlaubt" in reason.lower()
+    finally:
+        sys.path.pop(0)
+
+
+def test_s20_p5_y_passes():
+    """S20b: Confirm-Input 'y' → ok=True, status='manual-confirm'."""
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        ok, status = validator.verify_xlsx_smoke(["03_Tools/foo.xlsx"], non_interactive_input="y")
+        assert ok is True
+        assert status == "manual-confirm"
+    finally:
+        sys.path.pop(0)
+
+
+def test_s20_p5_n_fails():
+    """S20c: Confirm-Input 'n' → ok=False, recovery-hint im Reason."""
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        ok, reason = validator.verify_xlsx_smoke(["03_Tools/foo.xlsx"], non_interactive_input="n")
+        assert ok is False
+        assert "xlsx-smoke-test.md" in reason
+    finally:
+        sys.path.pop(0)
+
+
+def test_s20_p5_empty_xlsx_set_noop():
+    """S20d: leeres xlsx-Set → ok=True ohne Prompt (no-op-PASS)."""
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        ok, status = validator.verify_xlsx_smoke([], non_interactive_input=None)
+        assert ok is True
+        assert status == "not-applicable"
+    finally:
+        sys.path.pop(0)
