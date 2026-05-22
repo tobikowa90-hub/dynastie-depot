@@ -2222,3 +2222,32 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 **Cross-Reference:** `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` (untracked, v0.3 SPEC-LOCKED) · PIPELINE.md #74 SPEC-LOCKED Build-ready · SYSTEM.md §Passive Read-Only Data Layer · Commit `<TBD>` · Memory `feedback_codex_sparring_heuristic` repliziert (2. Datenpunkt nach #73a) · Memory `feedback_skill_methodology_drift_v_q2` als V-Q2-Präzedenz-Schutz technisch verankert · Memory `feedback_brk_no_earnings_call` validiert (BRK.B-Calendar-Behavior konsistent) · Memory `feedback_viral_plugin_substrate_risk_eval` respektiert (kein neuer MCP-Server, dünner Python-Wrapper).
 
 **Nächste Tracks:** Build-Phase separate Session (writing-plans-Switch, ~150 LOC `finnhub_client.py` + ~80 LOC `finnhub_smoke_test.py` + ~60 LOC `finnhub_crosswalk_trigger.py` + ~20 LOC Assertion-Hook in `03_Tools/backtest-ready/` Persistenz-Schicht + `.env.finnhub.example` Template + `.gitignore`-Sicherheits-Check). Aufwand-Schätzung: ~2.5-3h (kein Skill-Refactor, reines additives Tool-Layer). Nach Build-Commit: Hard-Deadline Deployment+45d als neues PIPELINE-Item eröffnen für v0.2-Reklassifizierungs-Review (Shadow-Run-Auswertung). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+## [2026-05-22] system | session-closure Skill v0.2.0 — 4-File-Verankerung in 00_Core SSoT
+
+**Event-Typ:** System-Zustand-Change (Skill-Promotion-Sync, scoring-neutral) — §18-Sync-Lücke nach Skill-Deploy `42eca7c` 21.05. geschlossen.
+
+**Befund:** `session-closure` v0.2.0 war deployed (Commit `42eca7c`) aber nicht in den normativen SSoT-Files verankert (CLAUDE.md Routing-Table / INSTRUKTIONEN.md §17 + neuer § / SYSTEM.md Verweise + System-Zustand / CORE-MEMORY.md §6 + §13). Pattern identisch zu `feedback_anchor_promotion_sync_gap.md` (4-Achsen-Sync-Lücke nach Skill-Promotion). Template-Präzedenz: `system_audit.py` v1.0 (22.04.2026, INSTRUKTIONEN §27.5 + SYSTEM Z.5+Z.30 + CORE-MEMORY §6 Z.250 + §13 Z.553).
+
+**Mutations (8 surgische Edits across 4 Files):**
+1. `CLAUDE.md` — Routing-Table Zeile `!SessionClose → INSTRUKTIONEN §25.5 → session-closure` + Edge-Case-Trigger-Liste abstrahiert (statt Enumeration: „z.B. `!Analysiere`, `!SessionClose`")
+2. `00_Core/INSTRUKTIONEN.md` — §17 Aktivierungs-Tabelle Zeile + NEUER §25.5 als Sibling zu §25 Briefing-Sync (semantisch korrekte Parent-§ — beide Session-Hygiene/Sync, nicht §26 Archiv-Sync wie initial geplant)
+3. `00_Core/SYSTEM.md` — Verweise-Header `[INSTRUKTIONEN §25.5]`-Pointer + System-Zustand-Bullet (Strict-Trigger + Hard-Stop-vor-push Boundary)
+4. `00_Core/CORE-MEMORY.md` — §6 Versions-Tabelle (2026-05-21) + §13 Lifecycle (chronologisch nach 18.05. AMZN, vor Footer)
+
+**Karpathy-Lean-Pass appliziert:** §26.5-Draft initial ~30 Zeilen → §25.5 finale ~12 Zeilen (Workflow-Schritte 1-8 + Refusal-Conditions + Präzedenz-Memory-Liste gestrichen — leben in `01_Skills/session-closure/SKILL.md`/`references/` als SSoT). SYSTEM.md-Bullet ~9 → ~3 Zeilen. CLAUDE.md bleibt strikt minimal (1 Tabellenzeile + 1 abstraktes Trigger-Beispiel).
+
+**Semantik-Korrektur mid-flight:** Initial-Plan §26.5 (Archiv-Sync-Parent) als Mismatch erkannt nach Karpathy-Reflektion → Pivot zu §25.5 (Briefing-Sync-Parent) als Sibling. Cross-Refs in allen 4 Files entsprechend angepasst (Slug `#255-session-closure-workflow-21052026-session-closure-v020`).
+
+**Reviews:**
+- **Codex (gpt-5.3-codex via codex:rescue-Subagent):** 1 HIGH + 3 MED + 1 LOW. HIGH 1 = faktischer Fehler korrigiert (Codex-Review entfiel — Auth-Bug, nicht „Codex+Gemini reviewed" wie initial-draft). MED 2/3/4 = Cross-Ref-Loop-Closure in Drafts 3/7/8 + Workflow-Detail-Inflation §26.5 + statische Trigger-Aufzählung skaliert schlecht. Alle 5 chirurgisch gefixt, kein Sparring-Loop nötig.
+- **Gemini (cc-gemini-plugin:gemini-agent-Subagent, Bridge-defekt per Memory `reference_gemini_agent_not_bridge_script`):** 0 HIGH / 0 MED / 0 LOW über 7 Cross-Sync-Checks (Slug-Reproduktion + Closed-Loop-Cross-Refs + stale-§26.5-Scan + Datum-Konsistenz + Trigger-Wording + Tabellen-Pipe-Count + Markdown-Lint). APPROVE.
+
+**Sync-Set (§18 System-Zustand-Change, scoring-neutral):** CLAUDE.md + INSTRUKTIONEN.md + SYSTEM.md + CORE-MEMORY.md (§6+§13) + log.md (dieser Eintrag). **KEIN:** PORTFOLIO + Faktortabelle + score_history + flag_events + config.yaml + xlsx + PIPELINE.md (keine Verankerungs-Track-Item; #73 Skill-Backlog-Item ist separater Track). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Lehre:**
+- **Skill-Verankerung ist eigene Achse neben Skill-Deploy** — Commit `42eca7c` deployed nur den Skill-Body; Routing/Aktivierung/Lifecycle-Tracking sind separate Achse, leicht zu übersehen wenn der Skill „funktional fertig" wirkt. Memory `feedback_anchor_promotion_sync_gap.md` empirisch revalidiert.
+- **Semantische §-Parent-Wahl > Subsection-Nummer-Pattern** — initiale Annahme „analog §27.5 → §26.5" war mechanisch korrekt aber semantisch falsch (Session-Closure ≠ Archiv-Sync). §25.5 als Sibling zu Briefing-Sync ist die korrekte Hierarchie. Karpathy-Think-Before-Coding fängt sowas mid-flight noch ab.
+- **Zwei-Stufen-Lean-Pass (User-Direktive → Codex) effektiv** — User-Hint „kein Bloat" appliziert hat §26.5-Draft von ~30 auf ~12 Zeilen geshrinkt VOR Codex-Review. Codex empfahl danach noch eine weitere Shrink-Stelle (Sicherheits-Boundary 2→1 Satz, MED-3).
+
+**Cross-Reference:** CLAUDE.md Z.50 · INSTRUKTIONEN §25.5 · SYSTEM.md Z.5+Z.43 · CORE-MEMORY.md §6 Z.256 + §13 (post-AMZN-18.05.-Eintrag) · `01_Skills/session-closure/SKILL.md` v0.2.0 (deploy `42eca7c`) · Memory `feedback_anchor_promotion_sync_gap` revalidiert · Commit `<TBD>`.

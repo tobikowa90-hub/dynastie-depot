@@ -348,6 +348,7 @@ Trigger: nur bei Score ≥ 80 aus Stufe 2
 | `!EarningsCalendar` | `earnings-calendar` | Manuell (wöchentlicher Überblick) |
 | `!InsiderScan` | `insider-intelligence` | Manuell (Standalone-Scan ohne !Analysiere) |
 | `!Analysiere` Schritt 7 | **`backtest-ready-forward-verify`** | **⚙️ Programmatisch** (aus dynastie-depot SKILL.md Schritt 7, jsonl-Write-Pflicht) |
+| `!SessionClose` | `session-closure` | Manuell (Session-Ende, Strict-Trigger; siehe §25.5) |
 | Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` | Quartalsweise manuell (Python-Tool, kein Skill) |
 | Dokument-Konflikt / 10-K-Text | `sec-edgar-skill` | Eskalations-Fallback (manuell) |
 
@@ -615,6 +616,16 @@ Nach DEFCON-Analyse (Score/FLAG-Änderung) / CORE-MEMORY-Eintrag / Sparraten-Än
 
 ### Wann **kein** Push nötig
 Reine Skill-/Tool-/Vault-Änderungen (`01_Skills/`, `03_Tools/`, `07_Obsidian Vault/`) — Briefing liest diese nicht. WIP-Analysen erst nach Abschluss pushen.
+
+### 25.5 Session-Closure-Workflow (21.05.2026, session-closure v0.2.0)
+
+**Strict-Trigger:** `!SessionClose` (deutsch, PascalCase, kein Fuzzy-Match). Phrasen-Varianten („Session beenden", „push & weg") → Rückfrage statt Auto-Activation (analog `!Analysiere`-Disziplin).
+
+**Sicherheits-Boundary (normativ):** Skill darf lokale Commits autonom ausführen; `git push` ausschließlich nach expliziter User-Freigabe.
+
+**SSoT:** Workflow, Refuse-Conditions, Banner-Konventionen, Push-Safety-Checks in `01_Skills/session-closure/SKILL.md` v0.2.0 + `references/`. §25.5 verankert nur Trigger-Strictness + Sicherheits-Boundary — keine Workflow-Duplikation.
+
+**Cross-Refs:** CLAUDE.md Routing-Table · SYSTEM.md §System-Zustand · CORE-MEMORY.md §6 + §13.
 
 ---
 
