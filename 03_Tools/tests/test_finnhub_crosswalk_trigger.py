@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 
 import finnhub_crosswalk_trigger as cwt
@@ -82,3 +85,70 @@ class TestCrosswalkRecord:
         delta, status = cwt.compute_delta(0.0, 5.0, "5%")
         assert delta is None
         assert status == "na"
+
+
+class TestMainRun:
+    def test_a6_24_records_3_symbols_8_metrics(self, tmp_path: Path, monkeypatch) -> None:
+        """A6: 3 symbols × 8 metrics = 24 records in JSONL, schema-conform."""
+        log_path = tmp_path / "crosswalk_log.jsonl"
+        monkeypatch.setattr(cwt, "LOG_FILE", log_path)
+
+        def fake_defeatbeta(sym):
+            return {
+                "peTTM": 35.0,
+                "roe": 27.0,
+                "roic": 25.0,
+                "grossMargin5Y": 65.0,
+                "debtToEquity": 1.5,
+                "epsGrowth5Y": 12.0,
+                "capexCagr5Y": 8.0,
+                "fcfPerShareTTM": 10.0,
+            }
+
+        def fake_finnhub(sym, force=False):
+            return {
+                "metrics": {
+                    "peTTM": 35.5,
+                    "roeTTM": 27.2,
+                    "roiTTM": 25.1,
+                    "grossMargin5Y": 65.3,
+                    "totalDebt/totalEquityQuarterly": 1.45,
+                    "epsGrowth5Y": 12.5,
+                    "capexCagr5Y": 8.3,
+                    "fcfPerShareTTM": 10.1,
+                },
+                "_meta": {
+                    "read_only": True,
+                    "for_scoring": False,
+                    "source": "finnhub",
+                    "fetched_at": 0.0,
+                },
+            }
+
+        monkeypatch.setattr(cwt.defeatbeta_subprocess, "pull_metrics", fake_defeatbeta)
+        monkeypatch.setattr(cwt.finnhub_client, "get_metrics", fake_finnhub)
+
+        cwt.main(["--symbols", "MSFT,V,ASML"])
+
+        lines = log_path.read_text(encoding="utf-8").splitlines()
+        assert len(lines) == 24, f"expected 24 records, got {len(lines)}"
+        records = [json.loads(line) for line in lines]
+        # Common batch_id
+        batch_ids = {r["batch_id"] for r in records}
+        assert len(batch_ids) == 1, f"all records must share batch_id, got {batch_ids}"
+        # Unique run_ids
+        run_ids = [r["run_id"] for r in records]
+        assert len(set(run_ids)) == 24, "run_ids must be unique"
+        # Schema-Conform _meta
+        for r in records:
+            assert r["_meta"]["for_scoring"] is False
+            assert r["_meta"]["read_only"] is True
+            assert r["_meta"]["schema_version"] == "v1"
+            assert "defeatbeta_pulled_at" in r["_meta"]
+            assert "finnhub_pulled_at" in r["_meta"]
+        # Symbol-Coverage
+        symbols_in = {r["symbol"] for r in records}
+        assert symbols_in == {"MSFT", "V", "ASML"}
+        # Metric-Coverage
+        metrics_in = {r["metric"] for r in records}
+        assert metrics_in == set(cwt.METRIC_TOLERANCES.keys())

@@ -14,8 +14,11 @@ Spec: docs/superpowers/specs/2026-05-22-finnhub-integration-design.md v0.3.
 
 from __future__ import annotations
 
+import argparse
+import contextlib
 import logging
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal
 
@@ -24,9 +27,9 @@ from pydantic import BaseModel, Field
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "03_Tools"))
 
-import defeatbeta_subprocess  # noqa: E402, F401
-import finnhub_client  # noqa: E402, F401
-from _atomic_io import atomic_jsonl_append  # noqa: E402, F401
+import defeatbeta_subprocess  # noqa: E402
+import finnhub_client  # noqa: E402
+from _atomic_io import atomic_jsonl_append  # noqa: E402
 
 LOG_FILE = ROOT / "03_Tools" / "finnhub_crosswalk_log.jsonl"
 log = logging.getLogger(__name__)
@@ -88,3 +91,105 @@ def compute_delta(
     else:
         raise ValueError(f"unknown tolerance format: {tolerance}")
     return delta, status
+
+
+# FinnHub-Key-Mapping Spec §5.1 → finnhub_client-Subset-Keys (Task 6 keep_keys)
+# defeatbeta-Keys sind die Klar-Namen, FinnHub-Keys können abweichen (z.B. roeTTM vs roe)
+FINNHUB_KEY_MAP: dict[str, str] = {
+    "peTTM": "peTTM",
+    "roe": "roeTTM",
+    "roic": "roiTTM",
+    "grossMargin5Y": "grossMargin5Y",
+    "debtToEquity": "totalDebt/totalEquityQuarterly",
+    "epsGrowth5Y": "epsGrowth5Y",
+    "capexCagr5Y": "capexCagr5Y",
+    "fcfPerShareTTM": "fcfPerShareTTM",
+}
+
+
+def _now_iso() -> str:
+    return datetime.now(UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+
+
+def _delta_unit_for(tolerance: str) -> str:
+    return "pp" if tolerance.endswith("pp") else "pct_rel"
+
+
+def _na_reason(defeatbeta_value, finnhub_value, finnhub_data) -> str | None:
+    if defeatbeta_value is None and finnhub_value is None:
+        if finnhub_data is None:
+            return "both_missing"
+        return "both_missing"
+    if defeatbeta_value is None:
+        return "defeatbeta_missing"
+    if finnhub_value is None:
+        if finnhub_data is None:
+            return "finnhub_403"
+        return "finnhub_missing"
+    return None
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="FinnHub Crosswalk-Trigger (Spec §5)")
+    ap.add_argument("--symbols", required=True, help="comma-sep ticker list, e.g. MSFT,V,ASML")
+    ap.add_argument("--force", action="store_true", help="bypass FinnHub-cache for fresh-pull")
+    ap.add_argument("--batch-tag", default="daily-crosswalk")
+    args = ap.parse_args(argv)
+
+    with contextlib.suppress(Exception):
+        sys.stdout.reconfigure(encoding="utf-8")
+
+    symbols = [s.strip() for s in args.symbols.split(",") if s.strip()]
+    if not symbols:
+        print("ERROR no symbols", file=sys.stderr)
+        return 1
+
+    today = datetime.now(UTC).strftime("%Y%m%d")
+    batch_id = f"{today}-{args.batch_tag}"
+    record_counter = 0
+
+    for sym in symbols:
+        defeatbeta_pulled_at = _now_iso()
+        db_data = defeatbeta_subprocess.pull_metrics(sym)
+        finnhub_pulled_at = _now_iso()
+        fh_data = finnhub_client.get_metrics(sym, force=args.force)
+
+        for metric, tolerance in METRIC_TOLERANCES.items():
+            db_val = db_data.get(metric) if db_data else None
+            fh_key = FINNHUB_KEY_MAP.get(metric, metric)
+            fh_val = fh_data.get("metrics", {}).get(fh_key) if fh_data else None
+            delta, status = compute_delta(db_val, fh_val, tolerance)
+            na_reason = _na_reason(db_val, fh_val, fh_data)
+
+            record_counter += 1
+            rec = CrosswalkRecord(
+                timestamp=_now_iso(),
+                run_id=f"{today}-{sym}-{metric}-{record_counter:03d}",
+                batch_id=batch_id,
+                symbol=sym,
+                metric=metric,
+                defeatbeta_value=db_val,
+                finnhub_value=fh_val,
+                delta=delta,
+                delta_unit=_delta_unit_for(tolerance),
+                tolerance_used=tolerance,
+                tolerance_status=status,
+                na_reason=na_reason,
+                _meta={
+                    "read_only": True,
+                    "for_scoring": False,
+                    "schema_version": "v1",
+                    "defeatbeta_pulled_at": defeatbeta_pulled_at,
+                    "finnhub_pulled_at": finnhub_pulled_at,
+                },
+            )
+            atomic_jsonl_append(LOG_FILE, rec)
+            if status == "warn":
+                log.warning("Crosswalk WARN %s/%s: delta=%s tol=%s", sym, metric, delta, tolerance)
+
+    print(f"OK {record_counter} records written → {LOG_FILE}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

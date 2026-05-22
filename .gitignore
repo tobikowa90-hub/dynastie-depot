@@ -62,6 +62,9 @@ __pycache__/
 # Hook-Latency-Probe-History (ephemeral JSONL — regenerable via 03_Tools/hook-latency-probe.py)
 03_Tools/hook-latency-history/
 
+# FinnHub Crosswalk-Log (operational, append-only, regenerable via finnhub_crosswalk_trigger.py)
+03_Tools/finnhub_crosswalk_log.jsonl
+
 # Obsidian per-Session UI state (tabs, layout, pan/zoom) — ephemeral, not shared config
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/workspace.json
 07_Obsidian Vault/Obsidian Mindmap/.obsidian/graph.json
