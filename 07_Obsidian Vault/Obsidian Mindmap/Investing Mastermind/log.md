@@ -2177,3 +2177,48 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 **Cross-Reference:** `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` (untracked, v0.3) · PIPELINE.md #73a SPEC-COMPLETE v0.3 Build-ready · Commit `<TBD>` · Memory `feedback_codex_sparring_heuristic` empirisch validiert.
 
 **Nächste Tracks:** writing-plans-Switch (phased Implementation-Plan, Python-Validator P1-P7 + 20-Test-Smoke-Suite + Two-Commit-Marker-Mechanik + SKILL.md + 4 references/, letzte Phase = skill-creator-Aufruf). Aufwand-Schätzung post-Codex-Review: ~3-3.5h (+0.5h für Session-Marker + S14-S20 + SYSTEM.md Active-xlsx-Block). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+---
+
+## 2026-05-22 — System-Event: FinnHub-Integration v0.1 SPEC-LOCKED v0.3 (PIPELINE #74 NEU + Codex-Spec-Review-3-Runden)
+
+**Event-Typ:** Pipeline-Item-Event NEU + System-Zustand-Change (neue §-Kategorie "Passive Read-Only Data Layer" in SYSTEM.md), scoring-neutral (kein Score/FLAG/Sparraten-Touch)
+
+**Was passiert ist:**
+- defeatbeta-MCP empirisch 2-Wochen-Lag bei Quartals-Daten → blockiert §19.1 Tag-0-Trigger-Confirms + FLAG-Quick-Checks. FinnHub Free-Tier (60 calls/min) als Real-Time-Layer evaluiert.
+- **Smoke-Test-Verifikation (5+Folge-Endpoints, alle HTTP 200):** `/quote` 2.2h alt = letzter US-Close (löst defeatbeta-Stale), `/calendar/earnings` per-symbol 10/12 + ASML, `/company-news` 249/7d MSFT, `/stock/profile2` Schema-vollständig, `/stock/metric` **21/26 DEFCON-critical TTM-Metriken Free** (Bonus-Finding gegen Pessimismus-Bias). Europäer (RMS.PA/SU.PA) 403 Premium-only → bleibt yfinance-non-us-fundamentals. BRK.B-Calendar liefert BRK.A-EPS (matched Memory `feedback_brk_no_earnings_call`).
+- **Codex Scope-Phase R1+R2:** R1 Empfehlung Option C (Minimal + Read-Only Fundamentals-Surface) @ 89% Confidence. User-Direktive >95%-Gate → R2 Confidence-Floor-Differenzierung: Pkt 1 (30-60d Crosswalk-Logs) strukturell-Post-Implementation, Pkt 2+3 (Divergenzgrenzen + Rollback-Test-Klausel) Pre-Implementation-Spec-Artefakte → max-Pre-Impl-Confidence ~94% → **2-Stufen-Gate beschlossen** (Pre ~94% + Post >95% nach Shadow-Run).
+- **Spec v0.1 geschrieben:** `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` (413 LOC, 12 Sektionen + 5 §11-Offene-Fragen) als untracked-on-disk per `.gitignore` Z.21 by-design (Specs leben lokal, konsistent zu `2026-05-21-paragraph-18-sync-design`).
+- **Codex Spec-Review-Sparring-Loop max-3-Runden-Heuristik (Memory `feedback_codex_sparring_heuristic`):**
+  - **Runde 1 (Single-Pass):** 2 HIGH + 5 MEDIUM + 1 LOW + 5 §11-Resolutions = 13 Findings.
+    - HIGH-1: Zero-Skill-Refactor-Claim widersprüchlich zu A6 Crosswalk-Hook → Hook entfernt, separates Script `finnhub_crosswalk_trigger.py`
+    - HIGH-2: Acceptance-Tests A7-A11 fehlten (401-Hard-Crash / 429-Backoff / Timeout-Retry / force-Cache-Bypass / Cache-Corruption-Resilienz)
+    - MEDIUM-1-5: ROIC zweistufig (WARN >2pp / CRIT >4pp ODER >2pp×3 in Folge) · grossMargin5Y ±1pp→±2pp + epsGrowth5Y ±2pp→±3pp + N/A-Handling · §7 NULL/MINOR-Split · Sampling 25→≥50 + Coverage + Auto-Extension · technische Guardrails statt nur Policy (`_meta.for_scoring`-Marker + Assertion + finnhub_health.json)
+    - LOW-1: §10 v0.2-Roadmap Dependency-Regel präzisiert
+    - §11: Cache-Pfad `~/.dynasty/`, SYSTEM.md "Passive Read-Only Data Layer"-Kategorie eigenständig (nicht unter §Plugin-Layer-Substrate)
+  - **Runde 2 (Diff-Re-Review):** 0 HIGH + 2 MEDIUM editorial — §5 Mess-Design Restwiderspruch ("bei jedem dynastie-depot-Lauf" vs Script-Pattern §4) + JSONL-Schema-Contract Coverage-Gap (timestamp/run_id/batch_id/symbol/metric/tolerance_used/na_reason fehlten als Top-Level)
+  - **Runde 3 (Diff-Re-Review):** 0 HIGH + 0 MEDIUM + 2 LOW 1-Zeilen-Drift — `run_id`-Semantik intern uneindeutig (§5.3 "Trigger-Run" vs A6 "unique pro Record") + `_meta.*_pulled_at`-Felder im Beispiel-Record aber nicht in Feld-Definitions-Tabelle. Beide self-verified gefixt statt R4 (analog #73a-R3-Disziplin)
+- **Adoptierte Findings:** 17 Total = 13 R1-Findings + 5 §11-Resolutions + 2 R2-MED + 2 R3-LOW (R1+R2+R3 = 13+5+2+2 = 22 inkl. cross-counted Resolutions; 13 neue Codex-Findings + 2 R2 + 2 R3 = 17 net)
+- **Spec-Wachstum:** 413 → 475 → 536 → 541 LOC (v0.1 → v0.2 → v0.3 + R3-Drift-Fixes belassen in v0.3)
+- **Acceptance-Tests:** A1-A11 (vollständige Edge-Case-Coverage: Rollback-Invarianz + 5 Endpoint-Tests + Crosswalk-Log-Init + 5 Edge-Cases)
+- **Architektur-Bausteine NEU durch Codex-R1:** separates Crosswalk-Trigger-Script (statt Hook) → Zero-Skill-Refactor-Footprint v0.1 invariant gehalten; technische Guardrail-Layer (`_meta.for_scoring=False`-Marker + Assertion in `backtest-ready-forward-verify` Persistenz-Schicht) gegen V-Q2-Methodology-Drift-Wiederholung; formaler JSONL-Schema-Contract (§5.3) mit Append-Only + Atomic-Write-Garantien; Cache außerhalb Repo (`~/.dynasty/finnhub_cache/`); maschinenlesbares Health-Status-File (`finnhub_health.json`) als PIPELINE-Gate-Input
+- **Pre-Implementation-Confidence:** ~96% (über Original-Gate >95% pre-impl)
+
+**Sync-Set (§18 Pipeline-Item-Event + System-Zustand-Change, scoring-neutral):** PIPELINE.md (#74 NEU + Footer v2.51 → v2.52) + SYSTEM.md (neue §-Kategorie "Passive Read-Only Data Layer" + Footer v1.2 → v1.3) + log.md (dieser Eintrag). **KEIN** PORTFOLIO + Faktortabelle + score_history + config.yaml + xlsx + flag_events (kein Score/FLAG/Sparraten-Event — Read-Only-Surface v0.1 hat strukturell keine Score-Mutationen). **KEIN** CORE-MEMORY §12 (kein Per-Ticker-Analyse-Move). Spec-File `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` (untracked-on-disk per `.gitignore` Z.21 by-design — Specs leben lokal, konsistent mit `2026-05-21-paragraph-18-sync-design`).
+
+**Lehre:**
+- **Codex-Sparring-Heuristik repliziert:** Konvergenz-Pattern identisch zu #73a 22.05.: R1 = 13 substantielle Findings (HIGH-Architektur + MEDIUM-Calibration + LOW-Editorial), R2 = 2 MEDIUM-Propagation aus R1-Patches selbst, R3 = 2 LOW 1-Zeilen-Drift self-verified. Max-3-Heuristik trifft Sweet-Spot — 2 Datenpunkte (#73a + #74) bestätigen Memory `feedback_codex_sparring_heuristic`.
+- **2-Stufen-Gate-Methodik etabliert** als Standard-Pattern für Live-Daten-abhängige Entscheidungen wo Pre-Impl-Confidence-Cap strukturell unter striktem Gate liegt. User-Direktive ">95%-Gate halten oder vertagen?" beantwortet sich durch Codex-R2-Differenzierung selbst: max-Pre-Impl ~94% ⇒ Pre-Gate akzeptieren + Post-Gate nach Shadow-Run. Vermeidet 30-60d Vertagung ohne Confidence-Verlust.
+- **Methodology-Drift-Schutz technisch hart statt nur policy:** V-Q2-Präzedenz (Score 1→7 wegen Methodology-Switch, Codex-Revert-Kosten) lehrt dass Banner + SKILL.md-Hinweis + manuelles Review umgehbar sind. Codex-R1-MED-5 verlangte zu Recht technische Guardrails: Wrapper-Return-Marker `_meta.for_scoring=False` + Assertion in Persistenz-Schicht failed Score-Move-Attempts mit FinnHub-Daten hart. Pattern übertragbar auf v0.2-Reklassifizierung und alle künftigen Multi-Source-Daten-Layer.
+- **Zero-Skill-Refactor-Footprint in v0.1 ist verifizierbar via Acceptance-A1** (Rollback-Invarianz byte-identisch zur Baseline auf 3 Satelliten DRY-RUN). Spec-Methodik-Disziplin: behauptete Eigenschaften bekommen testable Acceptance-Klausel, nicht nur Behauptung im Text.
+- **Spec-Phase-Disziplin (Brainstorming-Terminal-Override, Memory `feedback_brainstorming_terminal_override_dynastie`) gehalten:** writing-plans/Build = separate Session. Diese Session liefert Spec + Codex-3-Runden + §18-Sync. Build-Phase wird in nächster Session geplant + ausgeführt.
+
+**Pages created/updated (System-Event-Scope):**
+- `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` — NEW (untracked per `.gitignore` Z.21, v0.3 SPEC-LOCKED 541 LOC)
+- `00_Core/PIPELINE.md` — #74 NEU added (FinnHub-Integration v0.1 SPEC-LOCKED), Footer v2.51 → v2.52, Aktive-Items-Liste erweitert (+#74), neue Sub-Items-Status-Zeile für #74
+- `00_Core/SYSTEM.md` — Neue §-Sektion "Passive Read-Only Data Layer" (zwischen §Plugin-Layer und §Earnings-Calendar-Status), Footer v1.2 → v1.3
+- dieser log.md-Eintrag
+
+**Cross-Reference:** `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` (untracked, v0.3 SPEC-LOCKED) · PIPELINE.md #74 SPEC-LOCKED Build-ready · SYSTEM.md §Passive Read-Only Data Layer · Commit `<TBD>` · Memory `feedback_codex_sparring_heuristic` repliziert (2. Datenpunkt nach #73a) · Memory `feedback_skill_methodology_drift_v_q2` als V-Q2-Präzedenz-Schutz technisch verankert · Memory `feedback_brk_no_earnings_call` validiert (BRK.B-Calendar-Behavior konsistent) · Memory `feedback_viral_plugin_substrate_risk_eval` respektiert (kein neuer MCP-Server, dünner Python-Wrapper).
+
+**Nächste Tracks:** Build-Phase separate Session (writing-plans-Switch, ~150 LOC `finnhub_client.py` + ~80 LOC `finnhub_smoke_test.py` + ~60 LOC `finnhub_crosswalk_trigger.py` + ~20 LOC Assertion-Hook in `03_Tools/backtest-ready/` Persistenz-Schicht + `.env.finnhub.example` Template + `.gitignore`-Sicherheits-Check). Aufwand-Schätzung: ~2.5-3h (kein Skill-Refactor, reines additives Tool-Layer). Nach Build-Commit: Hard-Deadline Deployment+45d als neues PIPELINE-Item eröffnen für v0.2-Reklassifizierungs-Review (Shadow-Run-Auswertung). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
