@@ -872,3 +872,247 @@ def test_verify_b_hard_fails_on_unstaged_xlsx_integration(tmp_path: Path, monkey
         assert marker_after["status"] == "pending"
     finally:
         sys.path.pop(0)
+
+
+# --------------------------------------------------------------------------- #
+# Task 13 — Phase 8 erweiterte Tests (Plan v0.2 §Phase 8)                     #
+# --------------------------------------------------------------------------- #
+
+
+def _seed_score_history_today(repo: Path, ticker: str = "V") -> None:
+    """Helper: lege minimal-valid score_history.jsonl mit heute+ticker an."""
+    (repo / "00_Core").mkdir(exist_ok=True)
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    (repo / "00_Core" / "score_history.jsonl").write_text(
+        json.dumps({"timestamp": f"{today}T11:00:00", "ticker": ticker}) + "\n",
+        encoding="utf-8",
+    )
+
+
+# -------- S14 — xlsx-Selektion deterministisch (Codex-M4) ----------------- #
+
+
+def test_s14a_active_block_pin(tmp_path: Path):
+    """S14a: SYSTEM.md `## Active xlsx-Filenames`-Block korrekt geparsed (Codex-M4)."""
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        sysmd = tmp_path / "SYSTEM.md"
+        sysmd.write_text(
+            "## Active xlsx-Filenames\n"
+            "- Rebalancing_Tool: Rebalancing_Tool_v3.4.xlsx\n"
+            "- Satelliten_Monitor: Satelliten_Monitor_v2.0.xlsx\n"
+            "\n"
+            "## Anderer Block\n",
+            encoding="utf-8",
+        )
+        pin = validator.parse_active_xlsx_block(sysmd)
+        assert pin == {
+            "Rebalancing_Tool": "Rebalancing_Tool_v3.4.xlsx",
+            "Satelliten_Monitor": "Satelliten_Monitor_v2.0.xlsx",
+        }
+    finally:
+        sys.path.pop(0)
+
+
+def test_s14b_block_missing_glob_fallback(tmp_path: Path):
+    """S14b: SYSTEM.md ohne Active-xlsx-Block → parse-Result {} (Fallback ist Glob)."""
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        sysmd = tmp_path / "SYSTEM.md"
+        sysmd.write_text("# no block here\n## Other\n- foo: bar\n", encoding="utf-8")
+        pin = validator.parse_active_xlsx_block(sysmd)
+        assert pin == {}, f"expected empty dict, got {pin}"
+    finally:
+        sys.path.pop(0)
+
+
+# -------- S3/S5 — Single-Event happy paths via dry-run -------------------- #
+
+
+def test_s3_score_no_flag_dry_run():
+    """S3: score-flag-sparraten --no-flag-event → expected-set ohne flag_events.jsonl."""
+    r = _run_validator(
+        ["score-flag-sparraten", "--no-flag-event", "--ticker", "V", "--dry-run"],
+        cwd=ROOT,
+    )
+    if r.returncode != 0:
+        pytest.skip(f"P1 blockt im live-repo (kein heute-Append): {r.stderr.strip()}")
+    payload = json.loads(r.stdout)
+    assert "00_Core/flag_events.jsonl" not in payload["expected_files"]
+    assert "00_Core/PORTFOLIO.md" in payload["expected_files"]
+
+
+def test_s5_system_zustand_dry_run():
+    """S5: system-zustand dry-run → SYSTEM.md + log.md im Expected-Set, exit=0."""
+    r = _run_validator(["system-zustand", "--dry-run"], cwd=ROOT)
+    assert r.returncode == 0, f"expected exit=0, got {r.returncode} stderr={r.stderr!r}"
+    payload = json.loads(r.stdout)
+    assert "00_Core/SYSTEM.md" in payload["expected_files"]
+    log_path = "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
+    assert log_path in payload["expected_files"]
+
+
+def test_s5b_system_zustand_with_version_bump():
+    """S5b (Spec §6 named): system-zustand mit Versionsprung-Conditional.
+
+    yaml hat `conditional.version_bump.adds: ["00_Core/CORE-MEMORY.md"]`. v0.1 hat noch
+    keinen CLI-Trigger für die Variante — wir verifizieren das Schema und dass das
+    Default-Set CORE-MEMORY nicht enthält (Trigger-Pfad v0.2).
+    """
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        mapping = validator.load_event_mapping()
+        sysz = mapping["event_types"]["system-zustand"]
+        cond_files = sysz.get("conditional", {}).get("version_bump", {}).get("adds", [])
+        assert "00_Core/CORE-MEMORY.md" in cond_files, (
+            "yaml-conditional `version_bump.adds` muss CORE-MEMORY.md enthalten (§18.1)"
+        )
+        es = validator.compute_union_set(
+            ["system-zustand"], flag_event=False, mapping=mapping, active_xlsx=[]
+        )
+        assert "00_Core/SYSTEM.md" in es
+        assert "00_Core/CORE-MEMORY.md" not in es, "v0.1 conditional-Trigger inaktiv im Default-Set"
+    finally:
+        sys.path.pop(0)
+
+
+# -------- S8b/S8c — Multi-Event-Union (named, Codex-H1-Fix Spec-Fidelity) -- #
+
+
+def test_s8b_score_plus_system_union():
+    """S8b (Spec §6 named): score-flag-sparraten + system-zustand → Union komplett, log.md dedup."""
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        mapping = validator.load_event_mapping()
+        es = validator.compute_union_set(
+            ["score-flag-sparraten", "system-zustand"],
+            flag_event=False,
+            mapping=mapping,
+            active_xlsx=[],
+        )
+        log_path = "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
+        assert log_path in es  # 1× dedupe (Set-Semantik)
+        assert "00_Core/SYSTEM.md" in es  # system-zustand
+        assert "00_Core/PORTFOLIO.md" in es  # score-flag-sparraten
+        assert "00_Core/flag_events.jsonl" not in es  # --no-flag-event
+    finally:
+        sys.path.pop(0)
+
+
+def test_s8c_triple_union_dedupe():
+    """S8c: score + pipeline + system Union → log.md exakt 1× (Set-Dedupe)."""
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        mapping = validator.load_event_mapping()
+        es = validator.compute_union_set(
+            ["score-flag-sparraten", "pipeline-item", "system-zustand"],
+            flag_event=True,
+            mapping=mapping,
+            active_xlsx=[],
+        )
+        log_path = "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
+        assert log_path in es
+        assert "00_Core/PIPELINE.md" in es
+        assert "00_Core/SYSTEM.md" in es
+        assert "00_Core/PORTFOLIO.md" in es
+        assert "00_Core/flag_events.jsonl" in es  # --flag-event aktiv
+    finally:
+        sys.path.pop(0)
+
+
+# -------- S9 — Regression-Guard --------------------------------------------- #
+
+
+def test_s9_no_flag_event_regression_guard():
+    """S9: flag_event=False NIE flag_events.jsonl ins Set; flag_event=True schon."""
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        mapping = validator.load_event_mapping()
+        es_no = validator.compute_union_set(
+            ["score-flag-sparraten"], flag_event=False, mapping=mapping, active_xlsx=[]
+        )
+        assert "00_Core/flag_events.jsonl" not in es_no
+        es_yes = validator.compute_union_set(
+            ["score-flag-sparraten"], flag_event=True, mapping=mapping, active_xlsx=[]
+        )
+        assert "00_Core/flag_events.jsonl" in es_yes
+    finally:
+        sys.path.pop(0)
+
+
+# -------- S12 — UNSTAGED_NEW integration smoke (G-01) --------------------- #
+
+
+def test_s12_unstaged_new_integration_smoke(temp_repo: Path):
+    """S12 (Spec §6 named, integration smoke): PORTFOLIO staged, Faktortabelle unstaged.
+
+    Voll-Integration mit yaml-Stub im temp_repo; xlsx-Resolve via score-Event ist
+    out-of-scope (würde xlsx-Stubs brauchen). Wir verifizieren die UNSTAGED_NEW-
+    Erkennung via classify_files + dass git-diff den unstaged file korrekt sieht.
+    """
+    sys.path.insert(0, str(ROOT / "03_Tools" / "para18_sync"))
+    try:
+        import importlib
+
+        validator = importlib.import_module("validator")
+        importlib.reload(validator)
+        # Core-Skelett seeden
+        _seed_score_history_today(temp_repo, "V")
+        core = temp_repo / "00_Core"
+        core.mkdir(exist_ok=True)
+        for f in ["PORTFOLIO.md", "Faktortabelle.md", "CORE-MEMORY.md", "SYSTEM.md", "PIPELINE.md"]:
+            (core / f).write_text("v1\n", encoding="utf-8")
+        vault = temp_repo / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind"
+        vault.mkdir(parents=True)
+        (vault / "log.md").write_text("v1\n", encoding="utf-8")
+        dyn = temp_repo / "01_Skills" / "dynastie-depot"
+        dyn.mkdir(parents=True)
+        (dyn / "config.yaml").write_text("v1\n", encoding="utf-8")
+        subprocess.run(["git", "add", "."], cwd=str(temp_repo), check=True)
+        subprocess.run(["git", "commit", "-q", "-m", "seed core"], cwd=str(temp_repo), check=True)
+        # Faktortabelle modify (unstaged), PORTFOLIO modify+stage
+        (core / "Faktortabelle.md").write_text("v2\n", encoding="utf-8")
+        (core / "PORTFOLIO.md").write_text("v2\n", encoding="utf-8")
+        subprocess.run(["git", "add", "00_Core/PORTFOLIO.md"], cwd=str(temp_repo), check=True)
+        # git diff sieht Faktortabelle als unstaged
+        diff_out = subprocess.check_output(
+            ["git", "diff", "--name-only"], cwd=str(temp_repo)
+        ).decode()
+        assert "Faktortabelle.md" in diff_out
+        # classify_files: PORTFOLIO im staged, Faktortabelle in UNSTAGED_NEW (G-01)
+        fc = validator.classify_files(
+            expected={"00_Core/PORTFOLIO.md", "00_Core/Faktortabelle.md"},
+            staged=["00_Core/PORTFOLIO.md"],
+            current_unstaged=["00_Core/Faktortabelle.md"],
+            pre_existing_unstaged=[],
+        )
+        assert fc.staged == ["00_Core/PORTFOLIO.md"]
+        assert fc.unstaged_new == ["00_Core/Faktortabelle.md"]
+        assert fc.missing == []
+        assert fc.unstaged_preexisting == []
+    finally:
+        sys.path.pop(0)
