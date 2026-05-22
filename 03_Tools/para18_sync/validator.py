@@ -657,7 +657,12 @@ def _run_verify_b(args: argparse.Namespace) -> int:
     Normative Direktive (Codex-M2-Fix): Volle P1+P4+P5-Revalidation für
     xlsx-Subset, keine Phase darf übersprungen werden. Bei jeglichem Sub-Fail
     bleibt der Marker auf 'pending', Re-Run nötig.
+
+    cwd-Disziplin: alle Sub-Phasen nutzen Path.cwd() statt PROJECT_ROOT-
+    Konstante, damit verify-b aus jedem Repo-Subdirectory oder Test-tmp_path
+    konsistent läuft (Codex-CP3-Sparring-R2 Integration-Coverage).
     """
+    cwd = Path.cwd()
     marker = read_session_marker()
     if marker is None:
         sys.stderr.write(
@@ -670,7 +675,7 @@ def _run_verify_b(args: argparse.Namespace) -> int:
             "FAIL P6 — Marker bereits committed; xlsx noch dirty? `git status` checken.\n"
         )
         return EXIT_FAIL_P6
-    ok, reason = session_valid(marker)
+    ok, reason = session_valid(marker, cwd=cwd)
     if not ok:
         sys.stderr.write(f"FAIL P6 — {reason}\n")
         return EXIT_FAIL_P6
@@ -685,6 +690,7 @@ def _run_verify_b(args: argparse.Namespace) -> int:
         allow_dirty=args.allow_dirty,
         expected=expected_xlsx,
         check_dirty=True,
+        cwd=cwd,
     )
     if not pf.ok:
         sys.stderr.write(f"FAIL P1 (verify-b) — {pf.reason}\n")
@@ -694,7 +700,7 @@ def _run_verify_b(args: argparse.Namespace) -> int:
     # unstaged_preexisting im verify-b-Pfad — Codex-CP3-HIGH-2). In Commit-B
     # wäre jede xlsx-Änderung nach Commit-A neu und MUSS via `git add` staged
     # sein bevor `--verify-b` PASS-en darf.
-    p4 = verify_staging(expected_xlsx, pf.pre_existing_unstaged)
+    p4 = verify_staging(expected_xlsx, pf.pre_existing_unstaged, cwd=cwd)
     if not p4.ok:
         sys.stderr.write(f"FAIL P4 (verify-b) — {p4.reason}\n")
         return EXIT_FAIL_P4

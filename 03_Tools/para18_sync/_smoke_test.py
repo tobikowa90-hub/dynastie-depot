@@ -780,7 +780,7 @@ def test_verify_b_unstaged_preexisting_bug_demonstrated():
 
 
 def test_verify_b_strict_staged_check_catches_unstaged_xlsx():
-    """CP3-HIGH-2 Fix-Verifikation: der explizite `expected_xlsx - staged`-Check
+    """CP3-HIGH-2 Fix-Verifikation (unit): der explizite `expected_xlsx - staged`-Check
     in `_run_verify_b` erkennt unstaged xlsx korrekt (kein PASS-Bypass via WARN).
     """
     expected_xlsx = {"foo.xlsx", "bar.xlsx"}
@@ -789,3 +789,86 @@ def test_verify_b_strict_staged_check_catches_unstaged_xlsx():
     assert not_staged == {"bar.xlsx"}
     # Voll-staged Case → Fix-Branch ruht
     assert expected_xlsx - set(["foo.xlsx", "bar.xlsx"]) == set()
+
+
+def test_verify_b_hard_fails_on_unstaged_xlsx_integration(tmp_path: Path, monkeypatch, capsys):
+    """CP3-Sparring-R2-MED Fix: End-to-End-Integration des HIGH-2-Branches.
+
+    Setup: tmp_path = mini-git-repo mit foo.xlsx + score_history.jsonl (heute),
+    Commit-A staged + committed. Dann xlsx modifizieren OHNE staging. Marker mit
+    pending-status + correct commit_a_sha schreiben. `_run_verify_b()` aufrufen
+    und EXIT_FAIL_P4 + 'nicht vollständig staged'-Hint im stderr verifizieren.
+    """
+    import os as _os
+
+    try:
+        validator = _load_validator()
+
+        # Mini git-repo seeden
+        subprocess.run(["git", "init", "-q"], cwd=str(tmp_path), check=True)
+        subprocess.run(["git", "config", "user.email", "t@t"], cwd=str(tmp_path), check=True)
+        subprocess.run(["git", "config", "user.name", "T"], cwd=str(tmp_path), check=True)
+
+        # score_history.jsonl mit heute-Append (für verify_pre_flight P1)
+        (tmp_path / "00_Core").mkdir(exist_ok=True)
+        today = _today()
+        (tmp_path / "00_Core" / "score_history.jsonl").write_text(
+            json.dumps({"timestamp": f"{today}T11:00:00", "ticker": "V"}) + "\n",
+            encoding="utf-8",
+        )
+
+        # foo.xlsx initialer Commit-A-Inhalt
+        (tmp_path / "foo.xlsx").write_bytes(b"v1-commit-a-content")
+        subprocess.run(["git", "add", "."], cwd=str(tmp_path), check=True)
+        subprocess.run(
+            ["git", "commit", "-q", "-m", "seed commit-A"], cwd=str(tmp_path), check=True
+        )
+        head = (
+            subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=str(tmp_path))
+            .decode()
+            .strip()
+        )
+
+        # Commit-B-Phase: xlsx modifizieren OHNE staging (= G-01-ähnlicher Drift)
+        (tmp_path / "foo.xlsx").write_bytes(b"v2-modified-not-staged")
+
+        # Marker mit pending-status + correct commit_a_sha
+        marker_path = tmp_path / ".session_marker"
+        marker_path.write_text(
+            json.dumps(
+                {
+                    "session_id": "test-cp3-r2",
+                    "started_at_iso": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                    "started_at_ts": int(time.time()),
+                    "commit_a_sha": head,
+                    "expected_xlsx": ["foo.xlsx"],
+                    "status": "pending",
+                }
+            ),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(validator, "SESSION_MARKER", marker_path)
+
+        # cwd-Override für git-Helpers + _resolve_project_root
+        old_cwd = Path.cwd()
+        _os.chdir(tmp_path)
+        try:
+            args = _build_args_namespace(verify_b=True, allow_dirty=100)
+            rc = validator._run_verify_b(args)
+        finally:
+            _os.chdir(old_cwd)
+
+        captured = capsys.readouterr()
+        assert rc == validator.EXIT_FAIL_P4, (
+            f"expected EXIT_FAIL_P4=4 for unstaged-xlsx-in-verify-b, got {rc}; "
+            f"stderr={captured.err!r}"
+        )
+        assert "nicht vollständig staged" in captured.err, (
+            f"expected hint-string in stderr, got: {captured.err!r}"
+        )
+        assert "git add" in captured.err, f"expected `git add`-recovery-hint, got: {captured.err!r}"
+        # Marker bleibt auf 'pending' (kein status-update bei Fail)
+        marker_after = json.loads(marker_path.read_text(encoding="utf-8"))
+        assert marker_after["status"] == "pending"
+    finally:
+        sys.path.pop(0)
