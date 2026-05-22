@@ -205,3 +205,72 @@ class _FinnHubClient:
             data["_fetched_at"] = time.time()
             self._caches["quote"].set("quote", symbol, data)
         return data
+
+    def get_earnings(
+        self, symbol: str, from_date: str, to_date: str, force: bool = False
+    ) -> list[dict] | None:
+        cache_key = f"{symbol}_{from_date}_{to_date}"
+        if not force:
+            cached = self._caches["earnings"].get("earnings", cache_key)
+            if cached is not None:
+                return cached
+        data = self._request(
+            "/calendar/earnings",
+            {
+                "symbol": symbol,
+                "from": from_date,
+                "to": to_date,
+            },
+        )
+        if data is None:
+            return None
+        # FinnHub wraps in {"earningsCalendar": [...]}
+        events = data.get("earningsCalendar", []) if isinstance(data, dict) else data
+        self._caches["earnings"].set("earnings", cache_key, events)
+        return events
+
+    def get_news(
+        self, symbol: str, from_date: str, to_date: str, force: bool = False
+    ) -> list[dict] | None:
+        cache_key = f"{symbol}_{from_date}_{to_date}"
+        if not force:
+            cached = self._caches["news"].get("news", cache_key)
+            if cached is not None:
+                return cached
+        data = self._request(
+            "/company-news",
+            {
+                "symbol": symbol,
+                "from": from_date,
+                "to": to_date,
+            },
+        )
+        if data is None:
+            return None
+        self._caches["news"].set("news", cache_key, data)
+        return data
+
+
+# Module-level singleton + public-API
+_singleton: _FinnHubClient | None = None
+
+
+def _client() -> _FinnHubClient:
+    global _singleton  # noqa: PLW0603
+    if _singleton is None:
+        _singleton = _FinnHubClient()
+    return _singleton
+
+
+def get_quote(symbol: str, force: bool = False) -> dict | None:
+    return _client().get_quote(symbol, force=force)
+
+
+def get_earnings(
+    symbol: str, from_date: str, to_date: str, force: bool = False
+) -> list[dict] | None:
+    return _client().get_earnings(symbol, from_date, to_date, force=force)
+
+
+def get_news(symbol: str, from_date: str, to_date: str, force: bool = False) -> list[dict] | None:
+    return _client().get_news(symbol, from_date, to_date, force=force)

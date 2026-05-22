@@ -181,3 +181,51 @@ class TestHttpRetry:
                 data = client._request("/quote", {"symbol": "RMS.PA"})
         assert data is None
         assert any("403" in r.message for r in caplog.records)
+
+
+class TestPublicApi:
+    def test_a10_force_bypass(self, tmp_path: Path, monkeypatch) -> None:
+        """A10: force=True bypasses cache → triggers network-hit even when cached."""
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        # Seed cache
+        client._caches["quote"].set("quote", "MSFT", {"c": 100.0, "_fetched_at": 0.0})
+        call_count = {"n": 0}
+
+        def _track(*args, **kw):
+            call_count["n"] += 1
+            return MagicMock(status_code=200, json=lambda: {"c": 200.0})
+
+        with patch("finnhub_client.requests.get", side_effect=_track):
+            data1 = client.get_quote("MSFT")  # cache-hit
+            data2 = client.get_quote("MSFT", force=True)  # bypass
+        assert data1["c"] == 100.0
+        assert data2["c"] == 200.0
+        assert call_count["n"] == 1
+
+    def test_get_earnings_uses_earnings_cache(self, tmp_path: Path, monkeypatch) -> None:
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        with patch(
+            "finnhub_client.requests.get",
+            return_value=MagicMock(
+                status_code=200, json=lambda: [{"date": "2026-05-23", "epsActual": 3.5}]
+            ),
+        ):
+            data = client.get_earnings("MSFT", "2026-05-01", "2026-07-01")
+        assert data == [{"date": "2026-05-23", "epsActual": 3.5}]
+        # Second call within TTL = cache-hit (no network)
+        with patch("finnhub_client.requests.get", side_effect=AssertionError("must not call")):
+            cached = client.get_earnings("MSFT", "2026-05-01", "2026-07-01")
+        assert cached == data
+
+    def test_get_news_uses_news_cache(self, tmp_path: Path, monkeypatch) -> None:
+        monkeypatch.setenv("FINNHUB_API_KEY", "test-key")
+        client = finnhub_client._FinnHubClient(cache_root=tmp_path / "cache")
+        items = [{"headline": "MSFT beats", "datetime": 1716000000}]
+        with patch(
+            "finnhub_client.requests.get",
+            return_value=MagicMock(status_code=200, json=lambda: items),
+        ):
+            data = client.get_news("MSFT", "2026-05-15", "2026-05-22")
+        assert data == items
