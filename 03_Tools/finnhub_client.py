@@ -139,7 +139,6 @@ class _FinnHubClient:
             cache_root = _DEFAULT_CACHE_ROOT
         self._api_key = _load_env_key()
         self._cache_root = cache_root
-        self._lock = threading.Lock()
         self._rate_limiter = _TokenBucket(capacity=60, refill_per_sec=1.0)
         # Per-endpoint TTL (Spec §2.4)
         self._caches = {
