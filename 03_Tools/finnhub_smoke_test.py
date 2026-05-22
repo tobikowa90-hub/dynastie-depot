@@ -126,6 +126,11 @@ TESTS = [
     ("9 /stock/metric MSFT", test_metric_msft, True),
 ]
 
+# Königsweg-Threshold (Plan-Errata Task 7 finding):
+# Hartcoded `>= 7` war strukturell unerreichbar (TESTS hat 6 expected_pass=True).
+# Self-adjusting via TESTS-Registry — überlebt Test-Matrix-Edits in v0.2.
+EXPECTED_PASS_COUNT = sum(1 for _, _, exp in TESTS if exp)
+
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="FinnHub Smoke-Test (Spec §3)")
@@ -158,9 +163,9 @@ def main(argv: list[str] | None = None) -> int:
 
     overall = (
         "healthy"
-        if fail_count == 0 and pass_count >= 7
+        if fail_count == 0 and pass_count == EXPECTED_PASS_COUNT
         else "degraded"
-        if pass_count >= 5
+        if pass_count >= EXPECTED_PASS_COUNT - 1
         else "failed"
     )
     exit_code = 0 if overall == "healthy" else 1
