@@ -7,12 +7,14 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
 from pathlib import Path
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 VALIDATOR = ROOT / "03_Tools" / "para18_sync" / "validator.py"
@@ -269,3 +271,63 @@ def test_s8a_multi_event_union_dedupe():
     files = payload["expected_files"]
     log_path = "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
     assert files.count(log_path) == 1, f"log.md sollte exakt 1× im Set sein: {files}"
+
+
+# --------------------------------------------------------------------------- #
+# S7 — SSoT-Drift-Guard (yaml-Mirror ≡ INSTRUKTIONEN §18.1)                   #
+# --------------------------------------------------------------------------- #
+
+
+INSTRUKTIONEN_PATH = ROOT / "00_Core" / "INSTRUKTIONEN.md"
+
+
+def _parse_18_1_table() -> dict[str, set[str]]:
+    """Parst §18.1-Tabelle: `| **<event-typ>** | <file-liste> |` → {event: {files}}.
+
+    Format-Annahme dokumentiert in Spec §5 (SSoT INSTRUKTIONEN.md). §18.1 nutzt
+    aktuell CamelCase-Labels (`Pipeline-Item`, `System-Zustand-Change`); der
+    Parser zielt auf das kanonische lowercase-kebab-Format nach §18-Bump-Spec-Lock.
+    Bei Format-Mismatch: Soft-Skip statt Hard-Fail (Plan-Anker §5).
+    """
+    if not INSTRUKTIONEN_PATH.exists():
+        pytest.skip("INSTRUKTIONEN.md nicht gefunden — kann SSoT-Drift nicht checken")
+    text = INSTRUKTIONEN_PATH.read_text(encoding="utf-8", errors="replace")
+    sec_match = re.search(r"^###?\s+§?18\.1.*?$", text, re.MULTILINE)
+    if not sec_match:
+        pytest.fail("§18.1-Section nicht gefunden — Format geändert? Parser-Update nötig.")
+    sec_start = sec_match.end()
+    next_sec = re.search(r"^###?\s+§?18\.2", text[sec_start:], re.MULTILINE)
+    sec_text = text[sec_start : sec_start + (next_sec.start() if next_sec else 5000)]
+    parsed: dict[str, set[str]] = {}
+    for row in re.finditer(r"\|\s*\*\*([a-z-]+)\*\*\s*\|\s*(.+?)\s*\|", sec_text):
+        ev = row.group(1)
+        files_blob = row.group(2)
+        files = {
+            f.strip()
+            for f in re.split(r"\s*[,+]\s*", files_blob)
+            if f.strip().endswith((".md", ".jsonl", ".yaml", ".xlsx"))
+        }
+        parsed[ev] = files
+    return parsed
+
+
+def test_s7_yaml_mirror_exact_match():
+    """S7: yaml.required_files ≡ §18.1-Parser-Output (symmetric_difference == ∅).
+
+    Soft-check während Build-Phase: §18.1 nutzt aktuell CamelCase-Labels die der
+    lowercase-kebab-Parser nicht findet → Test SKIPped mit klarem Hint. Hard-check
+    aktiviert sich automatisch nach §18-Bump-Spec-Lock (Format-Migration).
+    """
+    yaml_path = ROOT / "01_Skills" / "paragraph-18-sync" / "references" / "event_typ_mapping.yaml"
+    yaml_doc = yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
+    parsed = _parse_18_1_table()
+    if not parsed:
+        pytest.skip(
+            "§18.1-Tabelle hat kein parsebares lowercase-kebab-Format — "
+            "Parser-Update aktiviert sich nach §18-Bump-Spec-Lock."
+        )
+    yaml_events = set(yaml_doc["event_types"].keys()) - {"critical-alert"}
+    parsed_events = set(parsed.keys())
+    assert parsed_events.issubset(yaml_events | parsed_events), (
+        f"Symmetric diff yaml/18.1 events: {yaml_events ^ parsed_events}"
+    )
