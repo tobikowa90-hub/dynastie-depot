@@ -126,6 +126,10 @@ def test_worked_example_reproduces_empirical_archive(cfg_name, tmp_path):
         return  # SHA-256 byte-match — Gate-3 fully satisfied
 
     rowset_sig = _row_set_signature(tmp_archive.read_text(encoding="utf-8"))
+    # NOTE (CodeRabbit-CP16 minor): ref_sha is the full archive SHA-256, not a
+    # row-set hash, so rowset_sig == ref_sha will never match in practice. The
+    # branch stays for v0.1.1 when config schema gets a dedicated
+    # reference_rowset_sha field (Plan OQ3 fallback strategy).
     if rowset_sig == ref_sha:
         return  # Row-Set fallback match
 
