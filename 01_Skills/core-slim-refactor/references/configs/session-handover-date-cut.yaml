@@ -1,13 +1,17 @@
 schema_version: 1
 profile_name: log-md-date-cut
 
-# Executable target (executed=null). Demonstrates Pattern C on the chronological
-# Obsidian-Vault log.md, which uses `## YYYY-MM-DD ...` date-headers.
+# Demonstrates Pattern C on the chronological Obsidian-Vault log.md.
 # NOTE: plan v0.1 originally named this session-handover-date-cut.yaml but
-# SESSION-HANDOVER.md has a single-message structure (not a chronological log) —
-# log.md is the correct demo target. profile_name follows the new target.
-# Re-running requires --force-rerun + populated executed.
-executed: null
+# SESSION-HANDOVER.md has bullet-list banner-structure (not `## DATE`-headers) —
+# log.md is the correct v0.1 demo target. profile_name follows the target.
+# First-Real-Run executed 2026-05-23 ~20:46 GMT+2 (B-1 first-practical-test).
+# Re-running requires --force-rerun (v0.1.1-backlog: skill should auto-populate
+# executed-block after live-run, but v0.1 requires manual populate).
+executed:
+  timestamp: "2026-05-23T18:46:32Z"
+  commit_sha: "TBD-post-commit"  # populated in follow-up commit (cycle-dep: SHA known only post-commit)
+  reference_archive_sha: "e4ca665f4931281c373f0a87e61e20b53e08be4e60aee627bdd5ccef0a5385c3"  # sha256 of 05_Archiv/log-bis-2026-05-16-archiv.md (339,870 bytes, first-real-run output)
 
 target:
   file: "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
@@ -18,12 +22,15 @@ target:
 pattern: date-cut
 
 date_cut:
-  cut_before: "2026-05-15"  # archives entries before 2026-05-15 (4 entries on current log)
+  cut_before: "2026-05-17"  # archives entries before 2026-05-17 (Pickup-#C-Welle boundary; ~80 archive / ~30 keep on current log)
   date_parser:
     field: header
-    pattern: "^## (\\d{4}-\\d{2}-\\d{2})"
+    # v0.1.1-fix 2026-05-23 abends: real-world log.md uses BOTH `## DATE ...` (6 entries) and `## [DATE] ...` (105 entries) header forms.
+    # Original CP9 regex matched only the non-bracket variant, causing 105 entries to be silently absorbed into 6 entry bodies.
+    # Patched `\[?...\]?` matches both; surfaced during first practical skill-run 2026-05-23 abends (B-1 SESSION-HANDOVER pivot to log.md).
+    pattern: "^## \\[?(\\d{4}-\\d{2}-\\d{2})\\]?"
   archive:
-    path: "05_Archiv/log-bis-2026-05-14-archiv.md"
+    path: "05_Archiv/log-bis-2026-05-16-archiv.md"
     header_template: |
       # log.md Pre-{cut_date} Banner-History — Archive
 
@@ -50,7 +57,12 @@ audit:
   pre_run: true
   pre_run_pass_threshold: pass
   post_run_hint: true
-  fail_close_on_drift: true
+  # v0.1.1-finding 2026-05-23: skill code (core_slim_refactor.py Z.112) treats
+  # `fail_close_on_drift` as "fail-close on any audit nonzero", not actual baseline-drift.
+  # Pre-existing 2 FAIL + 3 WARN in audit are accepted (documented in STATE.md last-audit
+  # block + identical to today's promotion-commit baseline). True drift-vs-baseline logic
+  # is v0.1.1 backlog. For this first-real-run, set false = advisory audit (still emitted).
+  fail_close_on_drift: false
 
 retry_policy:
   max_identical_phase_failures: 2

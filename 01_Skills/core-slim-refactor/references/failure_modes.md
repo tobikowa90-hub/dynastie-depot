@@ -187,9 +187,86 @@ Codex-Tabelle bemängelte uncovered Codes 3/4/6/8/10/99. CP18 schließt 8 (test_
 
 ---
 
+## First-Practical-Test 2026-05-23 abends (B-1 log.md Date-Cut)
+
+Erster echter Praxistest des promoted v0.1.0 Skills gegen Vault `log.md` (Pattern C Date-Cut, cut_before=2026-05-17, 86 entries archived / 29 keep, 507K → 167K). Exit 0, P0-P7 clean durchgelaufen. **7 v0.1.1-Backlog-Items aufgedeckt** durch Real-World-Anwendung — genau wofür Praxistests da sind.
+
+### MEDIUM-9: Pattern C Bullet-List-Variante fehlt (deferred v0.1.1)
+
+`SESSION-HANDOVER.md` hat Banner-Chronik als `- **Datum:** YYYY-MM-DD ...`-Bullet-Liste, nicht als `## YYYY-MM-DD`-Header. Aktuelle `classify_date_cut`-Mechanik (Z.284-307) baut Entries via Header-Regex-Split (`_split_into_entries`), unterstützt nur Header-Form. Bei naivem Pattern-Edit auf `- \*\*Datum:` würde Trailing-Content (Resume-Anweisung Z.16+) in den letzten Datum-Body kollabieren und mit-archiviert.
+
+- **Mitigation v0.1:** Pattern C nur auf `## DATE`-Header-Files anwenden (log.md, sec-edgar-skill-history-style); SESSION-HANDOVER bleibt unrefactored bis v0.1.1.
+- **v0.1.1 TODO:** Entweder `date_parser.mode: bullet` mit trailing-boundary-stop-pattern, oder neuer `Pattern D — banner-list-cut`.
+
+### MEDIUM-10: Worked-Example-Real-State-Drift silent-failure (deferred v0.1.1)
+
+`session-handover-date-cut.yaml` (CP9 7:08p) hatte Date-Regex `^## (\d{4}-\d{2}-\d{2})` — matched nur 6/111 Entries weil log.md zwischen Build-Time und First-Real-Run (24h später) neue `## [DATE]`-Bracket-Entries dazu bekam. P2-Classify klassifizierte 105 Bracket-Entries silent als pre-header-keep-Body, 86 archive-Entries enthielten falsche Trailing-Bracket-Bodies. **Kein Test detected** weil Build-Gates gegen frozen Build-Time-State liefen.
+
+- **Mitigation v0.1.1 (Edit applied here, 2026-05-23):** Regex auf `^## \[?(\d{4}-\d{2}-\d{2})\]?` erweitert (covered beide Format-Varianten).
+- **v0.1.1 TODO:** First-Class Date-Parser-Format-Flexibility — `\[?...\]?` als Default-Pattern statt Hand-Patch; oder empirischer Header-Count-Pre-Check (Codex-Vorschlag: parsed headers vs expected structure) der drift-Signal vor Mutation surfaced.
+
+### MEDIUM-11: `fail_close_on_drift` semantischer Misnomer (deferred v0.1.1)
+
+`core_slim_refactor.py` Z.112: `if r.returncode != 0 and cfg.audit.get("fail_close_on_drift", True)` — Code-Verhalten ist **any-nonzero-audit-fail-close**, nicht echte baseline-drift-vs-P8. Echte Drift-vs-Baseline-Logik (snapshot P0 vs snapshot P8 vergleichen, fail nur bei delta) ist nicht implementiert.
+
+- **Mitigation v0.1 (Edit applied here, 2026-05-23):** Worked-Example-Config setzt `fail_close_on_drift: false` mit inline-Comment-Rationale; pre-existing audit-FAILs (in STATE.md last-audit-block dokumentiert) werden advisory akzeptiert.
+- **v0.1.1 TODO:** Entweder Variable umbenennen auf `fail_close_on_any_nonzero` (ehrlicher), oder echte Baseline-Drift-Logik implementieren (snapshot-compare zwischen P0 + P8) und Variable behalten.
+
+### MEDIUM-12: Pointer-Template `archive_link` zeigt absoluten Windows-Pfad als Display-Text (deferred v0.1.1)
+
+Im Live-Run-Output (mutated log.md Z.6) lautet der Pointer-Header:
+```
+> **Pre-2026-05-17 Banner-History archived** -> [C:\Users\tobia\OneDrive\Desktop\Claude Stuff\05_Archiv\log-bis-2026-05-16-archiv.md](../../../05_Archiv/log-bis-2026-05-16-archiv.md)
+```
+URL-Teil (relativer Pfad) ist korrekt — Markdown-Reader öffnet ihn richtig. Display-Text-Teil (absoluter Windows-Pfad) ist visuell hässlich + nicht portable.
+
+- **Mitigation v0.1:** Skill v0.1 funktional korrekt, nur visueller Display-Bug. Akzeptabel für First-Run.
+- **v0.1.1 TODO:** Pointer-Template `{archive_link}`-Resolution sollte basename ODER relative-from-target-path liefern, nicht absolute path. Hotfix-Priorität HIGH (Vault-UX-Defect).
+
+### MEDIUM-13: Backup-File `.pre-refactor.bak` nicht geschrieben (deferred v0.1.1)
+
+SKILL.md L48 + `failure_modes.md` Z.37 dokumentieren explizit: `phase_p0` schreibt `shutil.copy(target, target.pre-refactor.bak)` als Atomicity-Guarantee-Foundation. Im Live-Run 2026-05-23 18:46:32Z **kein** Backup-File gefunden (verifiziert via `find . -name "log.md.pre-refactor.bak"`). Entweder Code-Path silent-skipped oder Cleanup zu früh.
+
+- **Mitigation v0.1:** Run erfolgreich abgeschlossen (Exit 0), kein Rollback nötig — Backup-Fehlen kam nicht zum Tragen. Aber dokumentierte Atomicity-Garantie war faktisch broken.
+- **v0.1.1 TODO:** Code-Pfad-Tracing: warum `_run_p0` Backup nicht erzeugte (vermutet: `--skip-audit`-Pfad oder Bedingungs-Logik-Bug). Hotfix-Priorität HIGH (broken-contract).
+
+### MEDIUM-14: `executed:`-Block nicht auto-populated post-live-run (deferred v0.1.1)
+
+Pattern-Specs L52-56 implizit-Erwartung: Post-Live-Run wird `executed: {timestamp, commit_sha, reference_archive_sha}` auto-geschrieben in Config (analog zu retro-doc-archived A+B configs). Empirisch im First-Live-Run **nicht passiert** — Config blieb `executed: null`. Re-Run ohne `--force-rerun` hätte naiv das Skill nochmal ausgeführt (kein Re-Run-Lock).
+
+- **Mitigation v0.1 (Edit applied here, 2026-05-23):** `executed:`-Block manuell befüllt mit timestamp (aus archive-header) + sha256 (empirisch berechnet) + commit_sha=`TBD-post-commit` als follow-up-placeholder.
+- **v0.1.1 TODO:** Skill schreibt Config-Update als post-P7-step (vor Skill-Exit), inkl. `commit_sha: pending` (User updated post-commit via follow-up-edit).
+
+### MEDIUM-15: P3 Backlink-Scan ist term-only, semantischer Vault-Backlink-Graph fehlt (deferred v0.1.1)
+
+`backlink_scan.search_terms` ist schmaler Termin-Set (z.B. `["log.md", "Banner-Entry"]`). Greift File-Pointer-Refs sauber, aber **semantische Cross-Links** auf archivierte Bodies (z.B. PIPELINE-#-Numbers, Anchor-Refs, Embed-Includes) werden nicht detected. Im 86-archive-Bodies-Bundle waren >100 PIPELINE-#-Refs (#26/#37/#42 etc.) die teils von anderen 00_Core-Files referenziert sein könnten — Risk silent broken backlinks.
+
+- **Mitigation v0.1:** Vault-Konvention `[[wikilink]]` + Pipeline-`#`-Refs sind via git-grep auch nach Archive auffindbar (archive-files bleiben lokal). Akzeptiert für First-Run.
+- **v0.1.1 TODO:** Breiterer `vault-backlink-graph-scan` als Option in `backlink_scan.mode: graph`; nutzt obsidian-bases oder regex-Graph-Build über alle `[[…]]` und `§\d+` und `#\d+`-Refs in scan_paths.
+
+### LOW-3: Archived bodies enthalten Wikilinks → orphan-risk (akzeptiert)
+
+Codex-Diff-Re-Review-Befund: Im Archive `log-bis-2026-05-16-archiv.md` sind `[[…]]`-Wikilinks (z.B. zu Vault-Entities AMZN/MSFT/etc.) enthalten. Nach Archive-Verschiebung sind Sources der Links (im post-mutated log.md) entfernt — orphan-Wikilink-Risiko in Obsidian-Graph-Layer.
+
+- **Mitigation v0.1:** Archive bleibt local-only readable via direct-file-open; Wikilink-Targets selbst existieren weiter im Vault. Obsidian Graph-View zeigt evtl. orphan-cluster im Archive-File aber Links auflösen sauber zu existierenden Targets.
+- **Akzeptierter Tradeoff:** Cost-Benefit klar pro Retention-Slim, contra Graph-Visual-Coherence — letzteres ist sekundär.
+
+---
+
+## v0.1.1 Hotfix-Priorisierung (Codex-Single-Pass-Vorschlag 2026-05-23 abends-spät)
+
+1. **HIGH — Pointer-Display-Text-Bug** (MEDIUM-12) — Vault-UX-Defect, portable across all future runs
+2. **HIGH — Empirischer Header-Count-Pre-Check** (MEDIUM-10) — fängt silent worked-example-drift
+3. **HIGH — Backup-Contract-Fix** (MEDIUM-13) — dokumentierte Atomicity-Garantie ist broken
+
+MEDIUM-9 (Bullet-List Pattern), MEDIUM-11 (Variable-Rename oder Drift-Logic), MEDIUM-14 (Auto-Populate), MEDIUM-15 (Backlink-Graph) sind Feature-Erweiterungen, nicht Hotfixes.
+
+---
+
 ## Cross-Reference
 
 - Spec §4 Error-Handling (full text): `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` lines 372-454
 - Codex-R1 Review (Wave-5-Break-2): commit a0dc16d log + R1-result transcript
 - Codex-CP18-Review (Wave-7-Break-4, 2026-05-23): 3 HIGH (all CLOSED via diff-bundle) + 5 MEDIUM (2 CLOSED inline / 3 deferred v0.1.1) + 2 LOW (deferred v0.1.1)
+- Codex-First-Practical-Test-Review (2026-05-23 abends, agent a22827a45aff160a0): 7 v0.1.1 backlog items confirmed, 0 HIGH blockers post-edit
 - Karpathy Approach-Reset: `00_Core/INSTRUKTIONEN.md §0`
