@@ -2606,3 +2606,41 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - **3 Archive-Files cumulative in Phase 2** (4 in Teil 1 + 3 in Teil 2 = 7 archive files in `05_Archiv/` local-only). Konvention konsistent: gitignored, Recovery via `git show <pre-commit>:00_Core/CORE-MEMORY.md` oder direct local file. Single-User-Workflow akzeptiert Cloud/Cron-Runtime-Limitation.
 
 **Cross-Reference:** CORE-MEMORY §13 2026-05-23-Eintrag (Phase 2 Sub-Refactor #1 Teil 2) · CORE-MEMORY Footer v1.25→v1.26 · SYSTEM.md Footer v1.7→v1.8 · 3 Archive-Files in `05_Archiv/` (`CORE-MEMORY-§13-pre-2026-04-23-archiv.md` + `CORE-MEMORY-§13-Ruflo-Lifecycle-archiv.md` + `CORE-MEMORY-§13-fat-entries-fulltext-archiv.md`) · §18-Skill `paragraph-18-sync v0.1.0` 2. Live-Anwendung als `system-zustand --version-bump` Pre-Commit-Gate · Codex `gpt-5.3-codex` Single-Pass Diff-Re-Review · Memory `feedback_viral_plugin_substrate_risk_eval` (Ruflo-Lessons-Pointer) · Memory `feedback_codeburn_retry_metric_calibration` (PIPELINE #61 Retro-Pointer) · Memory `feedback_windows_console_ascii_safe_inline_python` (sys.stdout.reconfigure-Fix einmalig getriggert) · Memory `feedback_windows_python_crlf_text_mode` (open newline='' preservation) · `.gitignore` L8 `05_Archiv/*` (Local-only-Konvention) · Phase-2-Teil-1 Commit `1b75364` (Vorlauf-Foundation).
+
+## [2026-05-23] system | PIPELINE #78 + #79 NEU — Markdown-Refactor-Tools Snapshot + Skill `core-slim-refactor` v0.1 Build-Pending
+
+**Event-Typ:** pipeline-item (NEU 2× deferred), scoring-neutral. Follow-up zu Phase-2-Teil-2-Commit `4c8d8ea` (heute mittag).
+
+**Was passiert ist:**
+
+Nach Abschluss der Phase 2 Sub-Refactor #1 Teil 2 hat der User auf die 2 self-deleting Python-Scripts (`ruflo_sweep.py` + `slim_sweep.py`) hingewiesen und das Pattern-Lineage offengelegt: 4 Iterationen über ~30 Tage (24.04. 00_Core Perfect-Organization 9-Phasen-Reorganisation → 23.05. Phase 1 Quick-Wins → 23.05. Phase 2 Sub-Refactor Teil 1 → 23.05. Phase 2 Sub-Refactor Teil 2). User-Direktive: „Saven und künftig immer nutzen."
+
+**Step 1 (diese Session, ~15 min):**
+
+1. Snapshot der 2 Scripts + Pattern-Lineage-README angelegt in `05_Archiv/refactor-tools/2026-05-23/`:
+   - `ruflo_sweep.py` — Bucket-Archive-Pattern (keyword-basiert, mit Exclude-Sets + Consolidated-Pointer-Insertion)
+   - `slim_sweep.py` — Slim-Convention-Pattern (Threshold-basiert, Bold-Title + Outcome + Pointer-Tail)
+   - `README.md` — Pattern-Lineage 4 Iterationen + Known-Pitfalls + geplanter 8-Phasen-Skill-Skizze + Build-Substrate-Hinweise
+   Files sind `.gitignore`d per Konvention `05_Archiv/*` (Whitelist-Exceptions nur JSONL).
+
+2. **PIPELINE #78 NEU** 👁 — Skill `core-slim-refactor` v0.1 Bau als 8-Phasen-Pipeline analog `session-closure` v0.2.0 + `paragraph-18-sync` v0.1.0. P0 Pre-Audit-Baseline (SystemAudit) → P1 Bucket-Classification (User-Direktive einholen wenn ambig) → P2 Migrate-before-Strip Differential-Check → P3 Backlink-Scan → P4 Bucket-Archive-Tool → P5 Slim-Convention-Tool → P6 Pointer-Stub + Header-Prose-Updates → P7 Pre-Commit-Gates (§18-Skill + Codex Single-Pass) → P8 Atomic-Commit + Post-Audit-Verify. Aufwand: ~90-120 min (Spec → Plan → Build → skill-creator-Gegencheck → Codex-Sparring → §18-Promotion-Sync). Komplementär zu SystemAudit (read-only diagnostic) — Skill ruft SystemAudit als P0/P8-Gate, nicht merge.
+
+3. **PIPELINE #79 NEU** 👁 — CORE-MEMORY §13 L420 PIPELINE #34 DCF-Malus Slim-Defect (niedrig-Priorität): `slim_sweep.py` hat L420 trotz >3500b NICHT geslimmt (vermutet Regex-Non-Match wegen Backtick-eingeschlossener `|`-Chars in Python-Optional-Syntax). Gekoppelt mit #78 als Diagnostic-Assertion-Build-Requirement.
+
+4. **Auto-Memory:** `reference_markdown_refactor_tools_snapshot.md` mit Pfad-Pointer + Pattern-Lineage + Known-Pitfalls + Cross-References. MEMORY.md Index aktualisiert.
+
+**Step 2 (fresh Session):** Skill-Bau in eigener Session mit frischem Kontext per User-Direktive 23.05. „Wir brauchen frischen Kontext."
+
+**Sync-Set §18 (pipeline-item, scoring-neutral):**
+- `00_Core/PIPELINE.md` (#78 + #79 NEU + Footer v2.59→v2.60)
+- `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md` (dieser Eintrag)
+
+**Bewusst NICHT angefasst:** CORE-MEMORY.md (kein neuer §13-Eintrag — Lifecycle-Marker schon im Phase-2-Teil-2-Commit-Body) · SYSTEM.md (keine Skill-Registry-Bullet — Skill nicht promoviert sondern PENDING) · CLAUDE.md (keine Routing-Table-Eintrag — Skill noch nicht existent) · PORTFOLIO/Faktortabelle/config/xlsx/jsonl (kein Score/FLAG-Event). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Lessons:**
+
+- **User-Pattern-Recognition als Skill-Build-Trigger:** Nach mehrfacher Anwendung eines Workflow-Patterns ist Skill-Promotion empirisch validiert. Pattern-Lineage in README + Memory verankert, damit fresh-Session-Self-recall reibungslos läuft.
+- **Snapshot vor Generalisierung:** Self-deleting Tools werden NICHT als Production-Tools nutzbar, müssen aber als Build-Substrate konserviert werden — sonst Re-Build-Aufwand bei nächster Anwendung. `05_Archiv/refactor-tools/` als Konvention etabliert (parallel zu `05_Archiv/superpowers-pre-sunset/plans/` für Plan-Historie).
+- **Skill-Build-Aufwand vs Snapshot-Aufwand:** ~90-120 min (Skill) vs ~15 min (Snapshot). 2-Step-Pattern (Snapshot jetzt + Skill in fresh Session) konserviert Empirie ohne Token-Druck-Risiko.
+
+**Cross-Reference:** Phase-2-Teil-2-Commit `4c8d8ea` (Vorlauf-Foundation, gleicher Tag mittags) · `05_Archiv/refactor-tools/2026-05-23/README.md` (Pattern-Lineage + Build-Substrate) · 24.04.-Präzedenz `05_Archiv/superpowers-pre-sunset/plans/2026-04-24-00core-perfect-organization.md` · Memory `reference_markdown_refactor_tools_snapshot.md` (NEU) · Memory `feedback_core_folder_lean_discipline` (Lean-Disziplin-Anker) · Skill-Build-Präzedenzen `session-closure` v0.2.0 + `paragraph-18-sync` v0.1.0 (8-Phasen-Pipeline-Konvention).
