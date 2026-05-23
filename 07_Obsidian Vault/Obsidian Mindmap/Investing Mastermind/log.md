@@ -868,3 +868,53 @@ HIGH-3 Codex-Claim raises TypeError at runtime ist auf Python 3.14.3 (Project-En
 **Cross-Reference:** 97d582a Commit-Message (n=1-Empirie-Substrate, Z.814 Hypothese) · `.pre-commit-config.yaml` Z.~63 (`verbose: true`-Block) · INSTRUKTIONEN §18.0 (v2.5.1) · Memory `feedback_paragraph18_skill_auto_invoke_on_sync_files` (n=2 + Pre-Edit-Reflex) · pre-commit-Framework-Doku: passing-Hook-stderr-Suppression-Default.
 
 **Next:** PIPELINE #81 v0.2.0 Spec-Phase (separate Session); n=3-Empirie-Watch über kommende §18-File-Edits zur Defense-in-Depth-Validierung.
+
+---
+
+## 2026-05-24 — Pipeline-Item-Event: #81 Re-Defer + Trigger-Schärfung + Scope-Pre-Lock (scoring-neutral)
+
+**Event-Typ:** Pipeline-Item-Refinement (kein Status-Move auf DONE, kein neues #-Item, kein Score/FLAG/Sparraten-Touch) — `core-slim-refactor v0.2.0` Feature-Release Re-Defer-Decision nach Karpathy-Brainstorm; Trigger-Spec geschärft (a/b/c → T1/T2/T3); Scope-Pre-Lock 9+10+14 (15 → v0.3) damit nächster Brainstorm direkt in Spec-Phase springt.
+
+**Was passiert ist:**
+- User triggered Spec-Phase per Dynastie-Override-Discipline (Brainstorm → Spec → Codex-Sparring → STOP, Memory `feedback_brainstorming_terminal_override_dynastie`).
+- **Brainstorming-Skill aktiviert** (`superpowers:brainstorming`), Substrate-Investigation parallel zu Karpathy-konformen Clarifying-Questions:
+  - **Trigger-T1 empirisch geprüft:** SH = 44.5K (45562 Bytes) < 60K-Threshold; Banner-History minimal (1 Date-Ref, 6 Headers, 27 Bullet-Lines insgesamt) → **T1 inaktiv**.
+  - **Skill-Maturity-Check:** v0.1.1 ist 24h-frisch (commit `d78095d`), nur 1× Real-Run gegen `log.md` 2026-05-23 ~20:46. Alle v0.1.1-HIGH-Befunde (HIGH-1 pointer-relative-Path / HIGH-3 fail-close-Default / HIGH-4 cp1252-Subprocess) kamen aus First-Run-Empirie, nicht aus Pre-Spec.
+  - **Pattern-Match-Inferenz:** v0.2.0-Spec-jetzt würde post-Anwendung material drehen → Re-Spec-Verschwendungs-Risiko > Spec-jetzt-Vorteil.
+- **Scope-Investigation trotzdem durchgeführt** (failure_modes.md MEDIUM-9/10/14/15 pro Item nach Pain-Substrate klassifiziert), damit nächster Brainstorm nicht von Null neu starten muss:
+  - **MEDIUM-9 Bullet-Adapter** = GO (SH-Bullet-Format strukturell blockiert, Voraussetzung für SH-Slim)
+  - **MEDIUM-10 Header-Pre-Check** = GO (empirisch 105 silent mis-classifications im First-Run, strukturelle Härtung gegen Item-#79-Klasse)
+  - **MEDIUM-14 executed-Auto-Pop** = GO (Re-Run-Lock-Hazard operational, nicht nur Convenience)
+  - **MEDIUM-15 Backlink-Graph** = DEFER → v0.3 (failure_modes-Status "akzeptiert", Null-Coupling zu 9/10/14, spekulativ ohne Trigger)
+- **Karpathy-Konsistenz-Check (CLAUDE.md §0 + Auto-Memory):** 9+10+14 = simplicity-first ✓, surgical-additive ✓, no premature abstraction ✓, no design-for-hypothetical ✓; Pre-Build-Gate-Disziplin (Caller-Scan + separater Helper + acceptance-Test pro Item) in Spec-Phase verankert.
+- **User-Decision:** Re-Defer empfohlen + approved. Plus User-Frage "Skill erstmal ausprobieren, anhand Resultates entscheiden?" — exakt der Karpathy-Empirie-Pfad, der das Brainstorm-Substrate stützte.
+
+**Trigger-Schärfung (a/b/c → T1/T2/T3):**
+- **alt (a)** "SH > 60K oder Banner-History > 14 Tage" → **T1** unverändert in der Definition, plus dritte ODER-Bedingung "Resume-Block strukturell beeinträchtigt" (explizit machen).
+- **alt (b)** "accumulating Feature-Backlog (3+ Items)" → **T2** geschärft: nicht "Backlog-Größe", sondern "≥1 weitere echte v0.1.1-Anwendung gegen anderes 00_Core-File (z.B. CORE-MEMORY.md Date-Header-Slim) liefert zweite Empirie-Schicht" (Karpathy YAGNI: Backlog-Größe ist kein Pain, Empirie-Schicht-Knappheit schon).
+- **alt (c)** "Konsolidierungstag-Slot mit Skill-Bau-Kapazität" → **T3** geschärft: "Slot **UND** explizit-konkreter Use-Case der Bullet-Adapter erzwingt" (kein generic-Slot-Trigger mehr — verhindert "wir bauen weil Slot frei").
+
+**Scope-Pre-Lock-Wert:** Nächster Brainstorm (sobald T1/T2/T3 feuert) springt direkt in Spec-Phase ohne Scope-Re-Negotiation. Karpathy "surface assumptions" → Investigation-Ergebnis durable verankert statt verloren.
+
+**Sync-Set (§18 Pipeline-Item-Event, scoring-neutral, atomar):**
+- `00_Core/PIPELINE.md` (Footer v2.69 → v2.70 + Item #81 Re-Defer-Note + Trigger-Schärfung + Scope-Pre-Lock)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+- **NEU** Auto-Memory `feedback_redefer_over_prespec_dynastie.md` (Karpathy-Lesson-Anker: "v0.x Re-Defer bei fehlendem empirischen Pain-Substrate" für Re-Use bei späteren Feature-Bundle-Triggern)
+- **KEIN** STATE.md (kein Critical-Alert), **KEIN** SYSTEM.md (kein DEFCON/MCP/Skill-Version-Change — v0.1.1 unverändert), **KEIN** PORTFOLIO / Faktortabelle / CORE-MEMORY / score_history / flag_events / config.yaml / xlsx (kein Score/FLAG/Sparraten-Touch).
+- **KEIN** Spec-File geschrieben (Dynastie-Override: Spec-Phase nicht gestartet) — failure_modes.md bleibt einziger Item-Backlog-Anker neben PIPELINE #81.
+
+**Skills used (Disziplin-Gates):**
+- `superpowers:brainstorming` — Skill aktiviert, aber Terminal-Override gehalten (kein writing-plans-Switch, kein design-doc-Write).
+- Memory `feedback_brainstorming_terminal_override_dynastie` — Pickup endete bei Spec-Substrate-Investigation; Build separate Session.
+- Memory `feedback_plan_on_runtime_not_doc_assumption` — Empirie-Primat als Substrate für Re-Defer-Entscheidung.
+- Memory `feedback_codex_sparring_heuristic` — Codex-Single-Pass für Pipeline-Item-Edit nicht-zwingend; User opted-out → konsistent.
+
+**Lehre:**
+- **Karpathy "Runtime > Doku-Annahme" als entscheidungs-tragendes Substrat:** Brainstorm-Investigation deckte auf, dass die scheinbar logische Sequenz "v0.1.1 → v0.2.0 sofort" empirisch nicht gestützt ist; v0.1.1 ist 24h alt, alle Bugfixes kamen aus 1× Real-Run, zweiter Real-Run würde voraussichtlich weitere v0.2.0-formgebende Befunde liefern. User-Frage "Skill erstmal benutzen?" war kongruent zur Karpathy-Logik — Pre-Spec wäre Doku-Annahme statt Runtime-Empirie.
+- **Brainstorming-Substrate ist nicht verschwendet wenn Re-Defer entschieden wird:** Investigation hat (a) Trigger-Schärfung und (b) Scope-Pre-Lock produziert — beides durable in PIPELINE verankert. Nächster Brainstorm springt direkt in Spec-Phase. Karpathy "surface assumptions" auch in Re-Defer-Form werthaltig.
+- **Trigger-Definition-Schärfe als YAGNI-Verstärker:** alt-(b) "Backlog-Größe ≥3 Items" war zu weicher Container-Trigger — formal aktiviert ohne Pain. Neue T2 "echte 2. Empirie-Schicht" ist pain-grounded; T3 "konkreter Use-Case" verhindert "wir bauen weil Slot frei". Trigger-Honesty als Karpathy-Reflex.
+- **Codex-Sparring scoping:** Pipeline-Item-Edit textuell-knapp, kein Code-Mechanismus, kein Score-Move → Single-Pass-Default nicht-zwingend; User opted-out konsistent zur Heuristik.
+
+**Cross-Reference:** PIPELINE #81 v0.2.0-Body (Re-Defer-Note + T1/T2/T3 + Scope-Pre-Lock 9+10+14) · `01_Skills/core-slim-refactor/references/failure_modes.md` (MEDIUM-9/10/14 Pain-Substrate, MEDIUM-15 "akzeptiert"-Status) · `00_Core/SESSION-HANDOVER.md` (44.5K Substrate-Beleg) · Auto-Memory `feedback_redefer_over_prespec_dynastie.md` (neue Lesson-Anker) · Memory `feedback_plan_on_runtime_not_doc_assumption` + `feedback_brainstorming_terminal_override_dynastie` (entscheidungs-tragend) · Commit `<TBD>`.
+
+**Next:** PIPELINE #81 bleibt DEFERRED bis T1/T2/T3 feuert. Wahrscheinlichster Re-Activation-Pfad: nächste konkrete Slim-Anwendung des v0.1.1-Skills gegen ein anderes 00_Core-File (T2) oder organische SH-Größe → 60K-Threshold (T1). Bis dahin: failure_modes.md MEDIUM-9/10/14 als Backlog-Anker; MEDIUM-15 ohne PIPELINE-Item bis Use-Case konkret.
