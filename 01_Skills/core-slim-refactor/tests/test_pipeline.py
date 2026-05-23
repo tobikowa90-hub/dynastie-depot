@@ -121,3 +121,46 @@ def test_backup_restored_on_p5_simulated_fail(tmp_path):
     )
     assert result.returncode == 7
     assert target.read_text(encoding="utf-8") == original
+
+
+def test_dry_run_matches_live_for_bucket_archive(tmp_path):
+    """AK2 (Spec section 5.4): dry-run output describes the same delta as live run."""
+    import re
+
+    target_live = tmp_path / "live.md"
+    target_dry = tmp_path / "dry.md"
+    shutil.copy(FIXTURES / "bucket_archive_sample.md", target_live)
+    shutil.copy(FIXTURES / "bucket_archive_sample.md", target_dry)
+
+    cfg_live = _write_throwaway_config(tmp_path, str(target_live))
+    cfg_dry = tmp_path / "cfg_dry.yaml"
+    cfg_dry.write_text(
+        cfg_live.read_text(encoding="utf-8")
+        .replace(str(target_live), str(target_dry))
+        .replace(str(tmp_path / "arch.md"), str(tmp_path / "arch_dry.md")),
+        encoding="utf-8",
+        newline="",
+    )
+
+    r_live = _run([str(cfg_live), "--skip-audit"])
+    assert r_live.returncode == 0, f"live: {r_live.stderr}"
+    live_archive = (tmp_path / "arch.md").read_text(encoding="utf-8")
+
+    r_dry = _run([str(cfg_dry), "--skip-audit", "--dry-run"])
+    assert r_dry.returncode == 0, f"dry: {r_dry.stderr}"
+    # Dry-run must NOT have written files
+    assert not (tmp_path / "arch_dry.md").exists()
+    assert target_dry.read_text(encoding="utf-8") == (
+        FIXTURES / "bucket_archive_sample.md"
+    ).read_text(encoding="utf-8")
+    # Dry-run stdout MUST report row-count + bytes that match the live archive
+    m = re.search(r"would write .* \((\d+) bytes, (\d+) rows\)", r_dry.stdout)
+    assert m, f"dry-run output missing 'would write ...': {r_dry.stdout}"
+    dry_bytes = int(m.group(1))
+    dry_rows = int(m.group(2))
+    live_rows = len([ln for ln in live_archive.splitlines() if ln.startswith("|")])
+    assert dry_rows == live_rows, f"row-count mismatch: dry={dry_rows} live={live_rows}"
+    # Timestamp + computed-relative-path differ between dry/live; tolerate ±200 bytes
+    assert abs(dry_bytes - len(live_archive.encode("utf-8"))) <= 200, (
+        f"byte-count drift >200: dry={dry_bytes} live={len(live_archive.encode('utf-8'))}"
+    )
