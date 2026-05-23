@@ -60,6 +60,13 @@ repos:
         language: system
         files: ^(00_Core/(PIPELINE|PORTFOLIO|CORE-MEMORY|Faktortabelle|SYSTEM|STATE)\.md|07_Obsidian Vault/.+/log\.md|05_Archiv/(score_history|flag_events)\.jsonl|01_Skills/dynastie-depot/config\.yaml|01_Skills/[^/]+/SKILL\.md|03_Tools/(Rebalancing_Tool|Satelliten_Monitor|Watchlist_Ersatzbank_Monitor)_v[0-9.]+\.xlsx)$
         pass_filenames: true
+        # verbose:true (Defense-in-Depth Nachschärfung 2026-05-24, n=2 Empirie):
+        # pre-commit-Framework unterdrückt stderr von passing Hooks (exit 0) per
+        # Default. 97d582a-Build + 97d582a-Pre-Flight zeigten beide Silent-L3
+        # trotz korrekt feuerndem Hook (T2-Triangulation 2026-05-24). verbose
+        # macht advisory-WARN für User sichtbar (T3-Verify), scoped nur auf
+        # diesen Hook — andere passing Hooks (crlf-guard/ruff) bleiben silent.
+        verbose: true
 
   # ── Block 2: Ruff offizieller Mirror, gepinnt (Spec §2). Eigene isolierte
   #    Env ist hier robust (reine CLI, keine Projekt-Imports). rev gegen

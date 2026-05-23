@@ -829,3 +829,42 @@ HIGH-3 Codex-Claim raises TypeError at runtime ist auf Python 3.14.3 (Project-En
 **Next:** (a) `_tmp_preflight/` Cleanup separat. (b) Layer-1+2 Nachschärfung als eigene Session mit n=2-Empirie aus Layer-3-Hook-Live-Test. (c) PIPELINE #81 v0.2.0 Spec-Phase (separate Session, brainstorming-terminal-override).
 
 **Cross-Reference:** PIPELINE #80 (DONE-Body, Battle-Tested-Annotation pending) · `03_Tools/precommit/para18_sync_reminder.py` (Layer-3-Live-Test diesen Commit) · INSTRUKTIONEN §18.0 (Auto-Invoke-Verankerung, Layer-2) · Memory `feedback_classifier_not_recognize_askuserquestion` · Memory `feedback_brainstorming_terminal_override_dynastie`.
+
+---
+
+## 2026-05-24 — Pipeline-Item-Event: #80 Defense-in-Depth Nachschärfung n=2 + L3-verbose-Quick-Fix (scoring-neutral)
+
+**Event-Typ:** Pipeline-Item-Annotation (kein Status-Move, kein neues #-Item) — Robustheits-Erhöhung an allen 3 Defense-Layern auf Basis n=2 Lapsus-Empirie post-97d582a.
+
+**Was passiert ist:**
+- **Root-Cause-Triangulation L3-Silent-Befund** vor jeder Mutation (3-Punkt-Empirie):
+  - **T1** Hook direkt (`python 03_Tools/precommit/para18_sync_reminder.py 00_Core/PIPELINE.md`) → stderr-Output voll sichtbar, Hook funktioniert.
+  - **T2** Framework default (`pre-commit run paragraph-18-sync-reminder --files …`) → nur `…Passed`, kein Output. **Reproduziert das 97d582a-Silent-Behavior**.
+  - **T3** Framework mit `--verbose` CLI-Flag → Output wieder sichtbar.
+  - Schluss: pre-commit-Framework unterdrückt stderr von passing Hooks (exit 0) per Default; `verbose: true` ist der scoped Quick-Fix.
+- **L3-Quick-Fix (Priorität):** `verbose: true` zu `paragraph-18-sync-reminder` in `.pre-commit-config.yaml` mit Inline-Kommentar (n=2-Empirie + T-Triangulation-Refs). Smoke-Test post-edit: Framework default verbosity zeigt jetzt vollen advisory-WARN-Block.
+- **L1-Nachschärfung (Memory):** `feedback_paragraph18_skill_auto_invoke_on_sync_files.md` — Why-Block n=1→n=2 (Skip #1 v0.1.1-Build 23.05. + Skip #2 97d582a-Pre-Flight 24.05. ~00:08); How-to-apply um **Pre-Edit-Reflex** ergänzt: user-facing `!ParaSync18 ... --dry-run` als ERSTER Output bei §18-File-Edit-Intention, nicht internal (internal-only-Reflex war der n=2-Failure-Mode).
+- **L2-Nachschärfung (INSTRUKTIONEN §18.0):** v2.5 → v2.5.1 — Lapsus-Empirie-Block dokumentiert beide Skips + L3-Silent-Triangulation; Defense-in-Depth-Layer-Hierarchie neu sortiert: **L3 = primary safeguard (deterministisch via file-pattern-Match), L1+L2 = backup (empirisch nicht selbst-tragend bei n=2)**.
+- **CLAUDE.md-Routing-Table:** unverändert — file-pattern-Trigger-Row `§18-File-Touch (auto)` existiert bereits seit v0.1.1.
+
+**Hypothese aus 97d582a-Eintrag (Z.814) bestätigt:** "Memory + INSTRUKTIONEN §18.0 unter regulären Bedingungen NICHT stark genug für Autonom-Emission" — n=2 Substrate macht die These belastbar; L3 als deterministischer Layer übernimmt die Garantie, L1+L2 bleiben backup.
+
+**Sync-Set (§18 Pipeline-Item-Event, scoring-neutral, atomar):**
+- `00_Core/PIPELINE.md` (Footer v2.68 → v2.69 + #80 Defense-in-Depth-Nachschärfung-Annotation)
+- `00_Core/INSTRUKTIONEN.md` (§18.0 v2.5 → v2.5.1, Defense-in-Depth-Block neu)
+- `.pre-commit-config.yaml` (`verbose: true` zu `paragraph-18-sync-reminder`)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+- **KEIN** SYSTEM.md (kein DEFCON/MCP/Briefing-Change, keine Skill-Version-Bump — Hook-Config + §18.0-Sub-Versions-Bump ist Doktrin-Refinement, kein System-Zustand-Change)
+- **KEIN** STATE.md (Nachschärfung ist <10-Tage-Critical-Alert-würdig nicht, Trail über git log + log.md + PIPELINE-Footer)
+- **KEIN** PORTFOLIO / Faktortabelle / CORE-MEMORY / score_history / flag_events / config.yaml / xlsx (kein Score/FLAG/Sparraten-Touch).
+
+**Validator-Lauf:** `paragraph-18-sync` pipeline-item-Event non-dry vor commit; `PARA18_VERIFIED=1` für eigentlichen Commit.
+
+**Lehre:**
+- **Karpathy „Pre-Refactor-Caller-Scan"** rechtfertigt sich erneut: Vor Mutation des Memory + INSTRUKTIONEN-Wortlauts wurde die L3-Silent-Hypothese empirisch trianguliert. Hätte ich blind „Nachschärfung" geschrieben ohne T1/T2/T3, wäre die L1+L2-Mutation auf falscher Annahme aufgebaut (Hook würde nach „Nachschärfung" weiterhin silent bleiben — `verbose: true` ist der eigentliche User-Sichtbarkeit-Hebel).
+- **Defense-in-Depth-Hierarchie ist empirisch kalibriert, nicht symmetrisch:** L3 (Hook = deterministisch) trägt das Safeguard, L1+L2 (Memory + INSTRUKTIONEN = Modell-Disziplin-Layer) sind backup. Bei n=2 Skip ist L3-Promotion zu primary erforderlich, sonst falsche False-Security.
+- **Verbose-Scope-Disziplin:** `verbose: true` per-Hook, NICHT global per `--verbose` CLI-Flag oder Framework-Setting — andere passing Hooks (crlf-guard, ruff) bleiben silent. Scope-Hygiene wahrt CR-Konvergenz aus Memory `feedback_cr_convergence_and_project_compat`.
+
+**Cross-Reference:** 97d582a Commit-Message (n=1-Empirie-Substrate, Z.814 Hypothese) · `.pre-commit-config.yaml` Z.~63 (`verbose: true`-Block) · INSTRUKTIONEN §18.0 (v2.5.1) · Memory `feedback_paragraph18_skill_auto_invoke_on_sync_files` (n=2 + Pre-Edit-Reflex) · pre-commit-Framework-Doku: passing-Hook-stderr-Suppression-Default.
+
+**Next:** PIPELINE #81 v0.2.0 Spec-Phase (separate Session); n=3-Empirie-Watch über kommende §18-File-Edits zur Defense-in-Depth-Validierung.

@@ -384,7 +384,7 @@ Ein Ad-hoc-Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 8 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill + 2 xlsx-Tools) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.1: +2 xlsx-Tools (`Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx`) — User-Direktive 28.04.2026 spätabends: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte und Depot-Übersicht (Zero-Token-Lookup-Pflicht). Seit v2.4 (11.05.2026): jeder xlsx-Sync löst verpflichtenden Post-Write-Smoke-Test §18.7 aus (fail-close vor `git add`).
 
-### §18.0 Auto-Invoke-Disziplin `paragraph-18-sync` (NEU 2026-05-23 spätabends, v2.5)
+### §18.0 Auto-Invoke-Disziplin `paragraph-18-sync` (NEU 2026-05-23 spätabends, v2.5 → v2.5.1 2026-05-24)
 
 **Normativ verbindlich:** Sobald ein Working-Tree-Diff (Pre-Edit oder Pre-Commit) **EINES** der folgenden Files berührt, MUSS der Skill `paragraph-18-sync` via `!ParaSync18 <event-type> [--also …]` aufgerufen werden — vor `git commit`, kein Edit-only-Pfad, kein silent Sync via Hand-Edit.
 
@@ -403,12 +403,16 @@ Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Sc
 - STATE.md-Alert-Slot → `critical-alert`
 - Multi-Event-Aktion → Multi-Event-Union via `--also` (§18.2)
 
-**Defense-in-Depth (3 Layer):**
-1. **Tier-1 Memory** `feedback_paragraph18_skill_auto_invoke_on_sync_files.md` — Session-übergreifender advisory Prior.
-2. **Tier-3 INSTRUKTIONEN §18.0** (dieser Eintrag) — normative SSoT.
-3. **Pre-Commit-Hook** `paragraph-18-sync-reminder` (`.pre-commit-config.yaml`) — advisory WARN bei staged §18-Files; Bypass nur via ENV `PARA18_VERIFIED=1` nach manuellem `!ParaSync18`-Validator-Pass.
+**Defense-in-Depth (3 Layer — empirische Stärke-Ordnung seit v2.5.1):**
+1. **L3 = primary safeguard:** Pre-Commit-Hook `paragraph-18-sync-reminder` (`.pre-commit-config.yaml`, `verbose: true` seit 2026-05-24) — advisory WARN bei staged §18-Files; Bypass nur via ENV `PARA18_VERIFIED=1` nach manuellem `!ParaSync18`-Validator-Pass. **Wirkt deterministisch** (file-pattern-Match → stderr), unabhängig von Modell-Disziplin.
+2. **L2 = backup:** Tier-3 INSTRUKTIONEN §18.0 (dieser Eintrag) + CLAUDE.md Routing-Table-Row "§18-File-Touch (auto)" — normative SSoT, aber empirisch nicht selbst-tragend bei n=2.
+3. **L1 = backup:** Tier-1 Memory `feedback_paragraph18_skill_auto_invoke_on_sync_files.md` — Session-übergreifender advisory Prior, ebenfalls empirisch nicht selbst-tragend bei n=2.
 
-**Lapsus-Empirie:** core-slim-refactor v0.1.1 Build-Session 2026-05-23 abends-spät hat den ersten dokumentierten Skip durch das Modell produziert (Edit-only-Pfad statt `!ParaSync18`-Vorlauf) — User-Direktive 23:48 GMT+2: "Skill ja umsonst gebaut sonst". v2.5-Bump = Königsweg-Verankerung ≥95%-Confidence.
+**Lapsus-Empirie (n=2 Reinfälle, dokumentiert):**
+- **Skip #1:** core-slim-refactor v0.1.1 Build-Session 2026-05-23 abends-spät — Edit-only-Pfad statt `!ParaSync18`-Vorlauf. User-Direktive 23:48 GMT+2: "Skill ja umsonst gebaut sonst". v2.5-Bump = Königsweg-Verankerung.
+- **Skip #2:** 97d582a Pre-Flight-Session 2026-05-24 ~00:08 GMT+2 — beim ersten log.md-Touch (P5/P6) wurde `!ParaSync18` NICHT autonom emittiert; Sync-Reflex blieb intern. Befund 97d582a-Commit-Message wörtlich: "Memory + INSTRUKTIONEN §18.0 unter regulären Bedingungen NICHT stark genug für Autonom-Emission ohne expliziten Prompt-Anker".
+- **L3-Silent-Befund 24.05.:** Hook lief, war aber unsichtbar — pre-commit-Framework unterdrückt stderr von passing Hooks (exit 0) per Default. Triangulation T1 (Hook direkt = Output), T2 (Framework default = `Passed` only), T3 (`--verbose` = Output sichtbar). Fix: `verbose: true` im YAML-Block (persistent, scoped).
+- **v2.5.1-Bump = L3-Promotion zu primary safeguard** + n=2-Empirie + Pre-Edit-Reflex-Verschärfung (siehe L1 Memory: user-facing `!ParaSync18 ... --dry-run` als ERSTER output bei §18-File-Edit-Intention, nicht intern).
 
 **Routing-Table Spiegel (CLAUDE.md):** Eigene Row "§18-File-Touch (auto, file-pattern-driven)" zusätzlich zur expliziten `!ParaSync18`-Row — file-pattern-Match triggert IDENTISCHEN Skill-Call.
 
