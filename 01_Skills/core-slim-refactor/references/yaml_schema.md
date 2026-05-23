@@ -98,3 +98,25 @@ Skill validiert NICHT automatisch (Karpathy Surgical-Changes — no auto-expand 
 - **Archive-Path-Boundary fehlt:** Skill akzeptiert beliebige absolute oder relative `archive.path`-Werte (z.B. `C:/tmp/somewhere/foo.md` oder `../../outside-repo/x.md`). Discipline-Pflicht (SKILL.md §4 "Archive-Local-Only") wird NICHT erzwungen — nur per Config-Author-Disziplin.
 - **Mitigation v0.1:** Pre-Commit-Review der Config + P7-Hand-Off-Bundle zeigt absolute Archive-Pfad.
 - **v0.1.1 TODO:** Erzwingen dass resolved archive-path unter `repo_root / "05_Archiv/"` liegt.
+
+---
+
+## Skill-Creator OK-Format (v0.1 observed — OQ4 resolution)
+
+**CP16 / Build-Gate-2 Validation-Befund (2026-05-23):** Das `skill-creator:skill-creator`-Plugin ist ein **Workflow-Guide** (full eval-loop / iteration-cycle / description-optimization), KEIN one-shot CLI-Linter. Es produziert keinen literal OK-Marker-String wie ursprünglich in Plan CP16 erwartet — es startet stattdessen eine interaktive Skill-Entwicklungs-Schleife.
+
+**v0.1-Validation-Substanz (manual, durchgeführt im CP16-Lauf):**
+
+| Check | Methode | Ergebnis v0.1.0 |
+|---|---|---|
+| YAML-Frontmatter parseable | `yaml.safe_load` auf Block zwischen `---`-Markern | PASS |
+| Required-Keys (`name`, `description`) vorhanden | dict-key presence | PASS |
+| Optional-Key (`version`) folgt SemVer | regex `^\d+\.\d+\.\d+$` | PASS (0.1.0) |
+| Name-Eindeutigkeit innerhalb `01_Skills/` | Grep `^name:` über alle `SKILL.md` | PASS (kein Duplikat) |
+| Description-Länge angemessen | 100-600 chars Heuristik (Anthropic-Guide) | PASS (347 chars / 33 words) |
+| Trigger-Phrasen ohne Konflikt | Cross-Check vs. `!Analysiere`, `!QuickCheck`, `!Rebalancing`, `!Briefing`, `!CAPEX-FCF-ANALYSIS`, `!ParaSync18`, `!SessionClose`, `!InsiderScan`, `!FlagCheck`, `!InsiderDetail`, `!NonUSScan`, `!NonUSDetail`, `!NonUSPrices`, `Screen`/`Screener` | PASS (`!SlimRefactor` unique) |
+| Description enthält konkrete When-to-Use-Kontexte | manual-read | PASS (3 Pattern explizit benannt) |
+
+**v0.1-OK-Marker-Konvention:** Bei manueller Validierung — Pass-Befund dokumentieren als `Build-Gate-2 PASS` Eintrag in `tests/.gate3-pass`-Format (Gate-2-Pass wird als ein Element des CP17-Marker-Files dokumentiert, kein separates Gate-2-Marker-File). Bei v0.1.1+ falls automatisierter Linter verfügbar wird, wird OK-Format hier nachgetragen.
+
+**Re-Validation-Bedingung:** Bei Description-/Name-/Trigger-Edit in SKILL.md die obige Tabelle erneut prüfen.
