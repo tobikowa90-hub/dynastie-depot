@@ -1,0 +1,67 @@
+schema_version: 1
+profile_name: ruflo-sunset-bucket
+
+# Retroactive post-hoc documentation of the empirical Ruflo-Sunset bucket-archive
+# (executed 2026-05-23 via the one-shot script in 05_Archiv/refactor-tools/2026-05-23/).
+# This config is non-rerunnable (executed is populated). Use --force-rerun only for
+# reference-archive byte-match testing (Build-Gate-3 / AK3).
+executed:
+  timestamp: "2026-05-23T11:30:00Z"
+  commit_sha: "4c8d8ea"
+  reference_archive_sha: "f044144dcecfa7ec1901056cad96f919419c4da505a7eed41eb5f248645f3493"
+
+target:
+  file: "00_Core/CORE-MEMORY.md"
+  section: "## 13. System-Lifecycle-History"
+  section_anchor_alt: null
+  append_only_immutable: false
+
+pattern: bucket-archive
+
+bucket_archive:
+  classify:
+    by: keyword
+    keywords:
+      - "Ruflo Sunset"
+      - "Ruflo Promotion"
+      - "Ruflo Hard-Rollback"
+    keep_keywords:
+      - "claude-mem v13.2.0"
+      - "additive read-only"
+      - "HYBRID kanonisch"
+    case_sensitive: true
+  archive:
+    path: "05_Archiv/CORE-MEMORY-§13-Ruflo-Lifecycle-archiv.md"
+    header_template: |
+      # Ruflo Sunset Rows — Verbatim Archive (post-13.05.2026)
+
+      Cut: {timestamp}
+      Source: {target_file} {section}
+      Total Rows: {n_rows}
+  pointer:
+    insert_at: chronological
+    template: "| 2026-05-13 | **RUFLO SUNSET archived** | konsolidiert {n_rows} Rows (Verbatim-Archiv) | [Archive]({archive_link}) |"
+
+backlink_scan:
+  scan_paths:
+    - "00_Core/"
+    - "CLAUDE.md"
+    - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/"
+    - "03_Tools/"
+  search_terms:
+    - "§13"
+    - "§ 13"
+    - "§13.X"
+    - "section 13"
+  on_match: fail_close
+  skip_override_allowed: false
+
+audit:
+  pre_run: true
+  pre_run_pass_threshold: pass
+  post_run_hint: true
+  fail_close_on_drift: true
+
+retry_policy:
+  max_identical_phase_failures: 2
+  identity_key: ["phase", "exception_class"]

@@ -1,0 +1,57 @@
+schema_version: 1
+profile_name: log-md-date-cut
+
+# Executable target (executed=null). Demonstrates Pattern C on the chronological
+# Obsidian-Vault log.md, which uses `## YYYY-MM-DD ...` date-headers.
+# NOTE: plan v0.1 originally named this session-handover-date-cut.yaml but
+# SESSION-HANDOVER.md has a single-message structure (not a chronological log) —
+# log.md is the correct demo target. profile_name follows the new target.
+# Re-running requires --force-rerun + populated executed.
+executed: null
+
+target:
+  file: "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md"
+  section: null  # whole-file (Pattern C wholesale archive — HIGH-2 Codex-R1 guard)
+  section_anchor_alt: null
+  append_only_immutable: false
+
+pattern: date-cut
+
+date_cut:
+  cut_before: "2026-05-15"  # archives entries before 2026-05-15 (4 entries on current log)
+  date_parser:
+    field: header
+    pattern: "^## (\\d{4}-\\d{2}-\\d{2})"
+  archive:
+    path: "05_Archiv/log-bis-2026-05-14-archiv.md"
+    header_template: |
+      # log.md Pre-{cut_date} Banner-History — Archive
+
+      Cut: {timestamp}
+      Source: {target_file}
+      Entries: {n_rows}
+  pointer:
+    insert_at: section_top
+    template: |
+      > **Pre-{cut_date} Banner-History archived** -> [{archive_path}]({archive_link})
+      > Reason: rolling retention; archive contains verbatim history.
+
+backlink_scan:
+  scan_paths:
+    - "00_Core/"
+    - "CLAUDE.md"
+  search_terms:
+    - "log.md"
+    - "Banner-Entry"
+  on_match: warn_continue
+  skip_override_allowed: true
+
+audit:
+  pre_run: true
+  pre_run_pass_threshold: pass
+  post_run_hint: true
+  fail_close_on_drift: true
+
+retry_policy:
+  max_identical_phase_failures: 2
+  identity_key: ["phase", "exception_class"]

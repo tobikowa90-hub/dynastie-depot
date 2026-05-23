@@ -1,0 +1,67 @@
+schema_version: 1
+profile_name: defcon-fat-rows-slim
+
+# Retroactive post-hoc documentation of the empirical DEFCON fat-row slim-convention
+# (executed 2026-05-23 via the one-shot script in 05_Archiv/refactor-tools/2026-05-23/).
+# Same re-run constraints as ruflo-sunset-bucket.
+executed:
+  timestamp: "2026-05-23T11:30:00Z"
+  commit_sha: "4c8d8ea"
+  reference_archive_sha: "a79727bdbcf1a71f97222e7ff25ec4e8c72709eb96ac07c818870b64ea1fd50b"
+
+target:
+  file: "00_Core/CORE-MEMORY.md"
+  section: "## 13. System-Lifecycle-History"
+  section_anchor_alt: null
+  append_only_immutable: false
+
+pattern: slim-convention
+
+slim_convention:
+  fat_threshold_bytes: 3500
+  exclude_keywords:
+    - "AMZN-Neuaufnahme"
+    - "core slim-refactor"
+    - "RUFLO SUNSET archived"
+  exclude_dates:
+    - "2026-05-23"
+    - "2026-05-18"
+    - "2026-05-13"
+  archive:
+    path: "05_Archiv/CORE-MEMORY-§13-fat-entries-fulltext-archiv.md"
+    header_template: |
+      # DEFCON Fat-Rows — Pre-Slim Verbatim Archive
+
+      Cut: {timestamp}
+      Source: {target_file} {section}
+      Original Rows: {n_rows}, Combined Size: {n_bytes} bytes
+  slim:
+    outcome_max_chars: 280
+    pointer_tail_format: "[Archive]({archive_link}), PIPELINE {pipeline_ids}, git {short_shas}"
+    extract_bold_title: true
+    extract_pipeline_ids: true
+    extract_short_shas: true
+
+backlink_scan:
+  scan_paths:
+    - "00_Core/"
+    - "CLAUDE.md"
+    - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/"
+    - "03_Tools/"
+  search_terms:
+    - "§13"
+    - "§ 13"
+    - "§13.X"
+    - "section 13"
+  on_match: fail_close
+  skip_override_allowed: false
+
+audit:
+  pre_run: true
+  pre_run_pass_threshold: pass
+  post_run_hint: true
+  fail_close_on_drift: true
+
+retry_policy:
+  max_identical_phase_failures: 2
+  identity_key: ["phase", "exception_class"]
