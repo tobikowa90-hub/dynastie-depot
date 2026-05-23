@@ -113,3 +113,20 @@ def test_append_only_immutable_blocks_non_date_cut(tmp_path):
     cfg_path = _write_yaml(tmp_path, "immutable.yaml", data)
     with pytest.raises(ConfigError, match=r"append_only_immutable.*date-cut"):
         load_config(cfg_path)
+
+
+def test_date_cut_requires_null_section(tmp_path):
+    """HIGH-2 Codex-R1: pattern=date-cut + non-null section must fail-close."""
+    data = _minimal_bucket_archive_config()
+    data["pattern"] = "date-cut"
+    del data["bucket_archive"]
+    data["date_cut"] = {
+        "cut_before": "2026-04-01",
+        "date_parser": {"field": "header", "pattern": r"^## (\d{4}-\d{2}-\d{2}) "},
+        "archive": {"path": "05_Archiv/x.md", "header_template": "# x\n"},
+        "pointer": {"insert_at": "section_top", "template": "> x\n"},
+    }
+    # section is "## §13" (non-null) from _minimal — should reject
+    cfg_path = _write_yaml(tmp_path, "datecut_section.yaml", data)
+    with pytest.raises(ConfigError, match=r"date-cut.*target\.section=null"):
+        load_config(cfg_path)

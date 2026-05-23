@@ -458,7 +458,13 @@ def main(argv: list[str] | None = None) -> int:
             _restore_backup(baseline)
             raise
 
-        phase_p7(cfg, repo_root, args, baseline)
+        try:
+            phase_p7(cfg, repo_root, args, baseline)
+        except Exception:
+            # HIGH-1 Codex-R1: P7 gate-fail must trigger same atomicity-rollback as P5/P6.
+            _restore_backup(baseline)
+            _cleanup_archive_on_fail(archive_path)
+            raise
 
         if not args.dry_run:
             _cleanup_backup_on_success(baseline)

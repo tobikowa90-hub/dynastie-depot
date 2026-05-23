@@ -83,6 +83,7 @@ def load_config(path: Path | str) -> ConfigObject:
     _check_mutual_exclusion(raw)
     _check_executed_field(raw)
     _check_append_only_immutable(raw)
+    _check_date_cut_section_wholesale(raw)
 
     pattern = raw["pattern"]
     return ConfigObject(
@@ -151,6 +152,18 @@ def _check_append_only_immutable(raw: dict) -> None:
     if flag is True and raw["pattern"] != "date-cut":
         raise ConfigError(
             f"target.append_only_immutable=true requires pattern=date-cut, got {raw['pattern']!r}"
+        )
+
+
+def _check_date_cut_section_wholesale(raw: dict) -> None:
+    """HIGH-2 Codex-R1: Pattern C operates wholesale; section-scope would silently drop entries."""
+    if raw["pattern"] != "date-cut":
+        return
+    section = raw["target"].get("section")
+    if section not in (None, "", "null"):
+        raise ConfigError(
+            f"pattern=date-cut requires target.section=null (wholesale archive); "
+            f"got section={section!r}. Section-scoped date-cut is not supported in v0.1."
         )
 
 
