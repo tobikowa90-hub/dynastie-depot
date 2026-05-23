@@ -271,8 +271,19 @@ Codex-Diff-Re-Review-Befund: Im Archive `log-bis-2026-05-16-archiv.md` sind `[[�
    - **Fix-Optionen:** (a) Default auf `false` (advisory) — schnellste Fix, oder (b) Variable-Rename auf `fail_close_on_any_nonzero` + Default `false` + Doku-Update — semantisch ehrlicher.
 5. **MEDIUM-NEW (NEU promoted aus LOW-1)** **Diagnostic-Output bei P2 Classify-Fail.** Pattern A+B mit `--skip-audit` liefern nur `=== P2 Classify FAIL ===` ohne irgendeine Reason. By-design EXIT 4 (CORE-MEMORY §13 bereits geslimmt), aber User sieht das nicht.
    - **Fix-Empfehlung:** stderr-Hint mit Classify-Statistik (n_rows scanned, n_matches found, threshold/anchor used) bei Exit 4 + separater Exit-Code `EXIT_ANCHOR_NOT_FOUND` (5) vs `EXIT_CLASSIFY_EMPTY` (4).
+6. **HIGH-4 (NEU promoted 2026-05-23 ~22:25 via Cross-Check-Discovery + Codex-Re-Audit ~22:38, agent `ae2e863dc1869630a`)** **Subprocess-Capture UTF-8-Crash an P0 (L104-111) UND P7 (L349-357) — selber Patch, 2 Sites.** `subprocess.run([...], capture_output=True, text=True)` ohne explizites `encoding` → Windows-Default cp1252 → Reader-Thread `UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d` bei UTF-8-Bytes (system_audit-Output enthält z.B. `§`-Pfade aus PIPELINE.md:75). Folge-Crash: `r.stdout=None` aber Zeile 111/357 macht `sys.stdout.write(r.stdout)` ohne None-Guard → `TypeError: write() argument must be str, not None`.
+   - **Reproduktion (deterministisch):** `python 01_Skills/core-slim-refactor/scripts/core_slim_refactor.py 01_Skills/core-slim-refactor/references/configs/session-handover-date-cut.yaml --dry-run --force-rerun` — auf jedem realen 00_Core-Refactor mit non-ASCII-Findings im Audit-Output.
+   - **Konsequenz:** Skill-Adoption-Blocker für jeden 00_Core-Slim-Refactor — standalone `system_audit.py --core` läuft sauber, aber Skill-P0-Pfad crasht im Reader-Thread.
+   - **Fix-Empfehlung:** `encoding='utf-8', errors='replace', timeout=30` + `sys.stdout.write(r.stdout or '')` + `sys.stderr.write(r.stderr or '')` an beiden Sites identisch.
+   - **Memory-Reinfall-Klasse:** `feedback_windows_console_ascii_safe_inline_python` + `feedback_windows_python_crlf_text_mode` — beide warnen vor genau diesem Anti-Pattern.
+   - **TDD-Tests für v0.1.1 (Codex Q5):** (1) None-Guard Mock `subprocess.run` mit `stdout=None` in P0/P7 → kein TypeError, (2) Windows-Locale-Sim mit cp1252-failing-aber-UTF-8-valid Bytes-Fixture → Phase crasht nicht, (3) Integration-Test P0 mit non-ASCII (`§`, Umlaute) → stabiler Exit-Code.
+   - **First-Real-Run-Gap-Diagnose:** Vault `log.md`-Scope hatte vermutlich ASCII-only Audit-Output ODER `cfg.audit.pre_run=false` umgangen P0-Capture-Pfad — Locale-Decode-Failure nie ausgelöst.
 
-**Updated v0.1.1 Bundle (5 Items, ~2-3h Aufwand):** HIGH-1 MED-12 + HIGH-2 MED-13 + HIGH-3 MED-11 + MEDIUM-NEW LOW-1-Promoted + optional MED-11-Variable-Rename (separat oder mit HIGH-3 gebundled).
+**Codex-FALSE-POSITIVE 2026-05-23 ~22:38 (Reinfall-Doku, NICHT in v0.1.1 reagieren):** Codex flagte `except A, B:` (L65/491/498/504) als "Python-2-Syntax-Bug" — **falsch**, valide Python 3.14 per **PEP 758** (akzeptiert für 3.14, klammerlose Tuple-Form), `ast.parse` bestätigt SyntaxValid:OK. Identischer Reinfall wie CP3 paragraph-18-sync 2026-05-22 (Memory `feedback_pre_commit_diff_inspection` PEP-758-Codex-Misread). v0.1.1-Build überspringt diese 4 Findings explizit.
+
+**Codex-MEDIUMs defer v0.1.2/v0.2.0 (Karpathy 2-Phase Bugfix-only):** (a) `_repo_root()` text=True ohne encoding (L58-63) — latent, nur bei non-ASCII Repo-Pfad; (b) Direct-Write statt `os.replace()`-atomic (L238-239 P4 + L298-299 P5) — architektural-Improvement, Backup-Logik schützt bereits.
+
+**Updated v0.1.1 Bundle (6 Items, ~2.5-3.5h Aufwand):** HIGH-1 MED-12 + HIGH-2 MED-13 + HIGH-3 MED-11 + HIGH-4 NEU-Subprocess-UTF-8 (P0+P7 1 Patch 2 Sites) + MEDIUM-NEW LOW-1-Promoted + optional MED-11-Variable-Rename (separat oder mit HIGH-3 gebundled).
 
 **v0.2.0 Feature-Items (unverändert):** MEDIUM-9 SH-Bullet-Adapter, MEDIUM-10 Header-Count-Pre-Check, MEDIUM-14 executed-Auto-Populate, MEDIUM-15 Backlink-Graph.
 
@@ -286,4 +297,6 @@ Codex-Diff-Re-Review-Befund: Im Archive `log-bis-2026-05-16-archiv.md` sind `[[�
 - Codex-R1 Review (Wave-5-Break-2): commit a0dc16d log + R1-result transcript
 - Codex-CP18-Review (Wave-7-Break-4, 2026-05-23): 3 HIGH (all CLOSED via diff-bundle) + 5 MEDIUM (2 CLOSED inline / 3 deferred v0.1.1) + 2 LOW (deferred v0.1.1)
 - Codex-First-Practical-Test-Review (2026-05-23 abends, agent a22827a45aff160a0): 7 v0.1.1 backlog items confirmed, 0 HIGH blockers post-edit
+- Codex-Re-Audit (2026-05-23 ~22:38 post-Cross-Check-Discovery, agent ae2e863dc1869630a, gpt-5.3-codex single-pass): 4 HIGH reported → final 3 valide (HIGH-1 confirmed L264-276, HIGH-4 NEU P0+P7 Subprocess-UTF-8) + 1 PEP-758-FP (Memory `feedback_pre_commit_diff_inspection`) + 2 MEDIUM defer v0.2.0
+- Memory-Reinfall-Klassen für HIGH-4: `feedback_windows_console_ascii_safe_inline_python` + `feedback_windows_python_crlf_text_mode`
 - Karpathy Approach-Reset: `00_Core/INSTRUKTIONEN.md §0`

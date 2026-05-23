@@ -959,3 +959,31 @@ HIGH-3 Codex-Claim raises TypeError at runtime ist auf Python 3.14.3 (Project-En
 - **Snapshot-Substrate-Lineage SUPERSEDED-Mechanism:** `05_Archiv/refactor-tools/2026-05-23/` README.md bekommt SUPERSEDED-Header (statt Delete) — historical reference + empirical baseline für Build-Gate-3 reference-match testing erhalten, operative Pfade umgeleitet auf Skill.
 
 **Cross-Reference:** Plan-File `docs/superpowers/plans/2026-05-23-core-slim-refactor-build.md` (~1600 LOC, 18 Build-CPs) · Spec-File `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` (46,7 KB) · PIPELINE #78 ✅ DONE-Header · CORE-MEMORY §13 (PROMOTED-Eintrag) · SYSTEM.md §Skill-Registry · `01_Skills/core-slim-refactor/` (SKILL.md + 4 references/ + 3 worked-example YAMLs + 31 PASS + 2 XFAIL Test-Suite) · `05_Archiv/refactor-tools/2026-05-23/README.md` (SUPERSEDED-Lineage) · git log `cd1148a..HEAD` (13 Build-Commits) · Skill-Build-Präzedenzen `session-closure` v0.2.0 + `paragraph-18-sync` v0.1.0 (8-Phasen-Pipeline-Konvention).
+
+## [2026-05-23] system | core-slim-refactor v0.1.1 Scope-Hardening: HIGH-4 P0+P7 Subprocess-UTF-8-Crash entdeckt via Cross-Check + Codex-Re-Audit (scoring-neutral, Pipeline-Event)
+
+**Trigger:** Post-`/clear` Continuation-Session nach v0.1.0-Promotion 21:54. User-Frage: "Pipeline 80/81 angehen?" → Empfehlung #80 v0.1.1 Bugfix per Karpathy 2-Phase. Vor PIPELINE-Write: User-Direktive "etwas paranoid, aber Empirie schlägt Vermutung" → Cross-Check Standalone-SystemAudit vs Skill-P0-Pfad.
+
+**Was passierte (empirie-getrieben):**
+- Lauf 1: `python 03_Tools/system_audit.py --core -v` standalone → 10/15 PASS, 2 FAIL, 3 WARN, deterministisch reproducible (identisch zum 19:13-Lauf).
+- Lauf 2: `python 01_Skills/core-slim-refactor/scripts/core_slim_refactor.py session-handover-date-cut.yaml --dry-run --force-rerun` → **CRASH** in P0-Phase: `UnicodeDecodeError: 'charmap' codec can't decode byte 0x8d` im Reader-Thread + Folge-Crash `TypeError: write() argument must be str, not None` an L111.
+- Root-Cause: `subprocess.run([...], capture_output=True, text=True)` an L104-110 ohne explizites `encoding=` → Windows-Default cp1252 statt UTF-8 → Reader-Thread crashed bei `§`-Zeichen im system_audit-Output (z.B. PIPELINE.md:75 `05_Archiv/CORE-MEMORY-§12-Chronik…`-Pfad). Bei Thread-Crash ist `r.stdout=None` aber L111 macht `sys.stdout.write(r.stdout)` ohne None-Guard.
+
+**Codex-Re-Audit (gpt-5.3-codex single-pass, agent `ae2e863dc1869630a`, 22:38):**
+- 4 HIGH gemeldet → nach Verify final **3 HIGH valide** (HIGH-1 confirmed L264-276 `target_file`+`archive_path` absolute Windows-Pfade in pointer_context, HIGH-4 P0 confirmed, NEW-HIGH P7 confirmed sibling L349-357 selber Patch) + **1 FALSE-POSITIVE** (PEP 758-Misread: `except A, B:` L65/491/498/504 als "Python-2-Bug" → valide Python 3.14, `ast.parse` SyntaxValid:OK, identischer CP3-Reinfall paragraph-18-sync 22.05.).
+- 2 MEDIUM defer v0.1.2/v0.2.0 (`_repo_root()` encoding L58-63 latent + Direct-Write-vs-atomic-replace L238/298 architektural).
+- Sparring-Escalation-Threshold (NEW HIGH ≥2) NICHT erreicht — Single-Pass reicht.
+
+**Lessons-Learned:**
+- **Cross-Check Skill-Pfad vs Standalone bei Subprocess-Wrapping** — neue Memory `feedback_cross_check_skill_vs_standalone.md`. Standalone-PASS+Skill-CRASH = Subprocess-Capture-Layer-Bug, NICHT Tool-Bug. Spart Stunden falscher Diagnose-Pfade.
+- **First-Real-Run-Test-Gap:** Vault `log.md`-Scope hatte ASCII-only Audit-Output ODER `pre_run=false` → Bug systematisch unsichtbar. v0.1.1-TDD muss non-ASCII-Fixture testen (Codex Q5: cp1252-failing-aber-UTF-8-valid Bytes).
+- **PEP-758-Codex-Misread = wiederkehrendes False-Positive-Pattern** — Memory `feedback_pre_commit_diff_inspection` ist Schutz; bei `except A, B:`-Flag immer `ast.parse` als Verify, nicht Codex-Authority folgen.
+- **Karpathy 2-Phase strikt halten:** Codex-MEDIUMs (atomic-write, encoding-helper) sind architektural-Improvements, NICHT Bugfix — explizit defer v0.1.2/v0.2.0 statt mit v0.1.1 bundlen. Sonst "Mülleimer-v2"-Risiko (User-Direktive).
+
+**Persistenz:**
+- `00_Core/PIPELINE.md` #80 mit HIGH-4 + NEW-P7-Sibling + Codex-Re-Audit-Block + PEP-758-FP-Doku + MEDIUMs-Defer + Re-Estimate ~2.5-3.5h.
+- `01_Skills/core-slim-refactor/references/failure_modes.md` mit HIGH-4-Eintrag #6 + Reproduktion + Codex-FP-Block + Cross-Reference-Append.
+- Memory: `feedback_cross_check_skill_vs_standalone.md` + MEMORY.md-Index-Eintrag.
+- Vault log.md: dieser Eintrag.
+
+**Cross-Reference:** PIPELINE #80 (Updated-Scope) · failure_modes.md MEDIUM-12/13/11/HIGH-4/MEDIUM-NEW · Codex-Re-Audit agent `ae2e863dc1869630a` · Memory `feedback_cross_check_skill_vs_standalone` (NEU) + `feedback_windows_console_ascii_safe_inline_python` + `feedback_windows_python_crlf_text_mode` + `feedback_pre_commit_diff_inspection` (PEP-758-Disziplin) + `feedback_codex_sparring_heuristic` + `feedback_brainstorming_terminal_override_dynastie` (Spec/Build-Session-Trennung als Begründung für /clear vor v0.1.1-Build) · Karpathy §0 (INSTRUKTIONEN) · v0.1.1-Build-Session geplant fresh post-`/clear` mit `systematic-debugging` (HIGH-2) + `test-driven-development` (HIGH-4 TDD-Prevention) + `verification-before-completion` (Pre-Commit-Gate) Skills.
