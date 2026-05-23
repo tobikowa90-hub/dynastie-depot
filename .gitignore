@@ -31,6 +31,9 @@ Thumbs.db
 .DS_Store
 desktop.ini
 
+# core-slim-refactor skill backup files (transient, P0-created, P7-cleaned)
+*.pre-refactor.bak
+
 # Claude Code personal settings (per-user permissions, not for remote agents)
 .claude/settings.local.json
 
