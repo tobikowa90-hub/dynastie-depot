@@ -5,250 +5,8 @@
 
 > **Pre-2026-05-17 Banner-History archived** -> [C:\Users\tobia\OneDrive\Desktop\Claude Stuff\05_Archiv\log-bis-2026-05-16-archiv.md](../../../05_Archiv/log-bis-2026-05-16-archiv.md)
 > Reason: rolling retention; archive contains verbatim history.
-## [2026-05-17] system | Pickup #C Execution Unit 2/3 DONE — non-mutierender pre-commit-Substrate-Build (§5.6-Gate voll)
-
-**Event-Typ:** Pipeline-Item (Status-Transition Unit 2 DONE) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
-
-**Was passiert ist:**
-1. **Artefakte (uncommitted → committed):** `.gitattributes` (4× `text eol=lf` + `_fixtures/** -text`-Ausnahme), `.gitignore` (generierte Fixtures `*.input`/`*.xlsx` ignoriert — Generator+Harness = getrackte SSoT), `.pre-commit-config.yaml`, `03_Tools/precommit/`: `crlf_guard.py` (§4.3), `validate_score_history.py` (§3.2 ScoreRecord-Import + Byte-CRLF + git-cached Append-only-Hunk-Parser), `validate_flag_events.py` (§3.3 FlagEvent-Import + Schema/CRLF fail-close + Paarung WARN-only), `xlsx_smoke_test.py` (§3.1 Executor, SSoT bleibt `03_Tools/xlsx-smoke-test.md`), `_fixtures/_generate_fixtures.py` (deterministisch), `_smoke_test.py` (Harness). Schema-Import via sys.path-Bootstrap gespiegelt zu `archive_flag.py`.
-2. **§5.6-Execution-Gate voll durchlaufen:** Impl → Ruff-Lint-Apply (3 auto-fixed → „All checks passed") → CodeRabbit (`-t uncommitted --dir 03_Tools` via WSL, Background nach User-Direktive — Foreground vom Auto-Mode-Classifier als unautorisiertes Retry geblockt, User gab explizit frei) **„No findings"** → Codex-Single-Pass Foreground **PASS-WITH-NITS** (0 HIGH; M1 MED = Hook-Reihenfolge §2 nicht erzwungen [Ruff-Block vor crlf-guard] → 3-Block-Umbau gefixt; L1 LOW = Append-only-Parser-Robustheit → `_git_head_line_count` trailing-LF-robust + `new_start`-F5-Vertragscheck gehärtet; Assumption-Audit a=ROBUST/b=DOCUMENTED/c→gehärtet/d=ALIGNED) → Smoke-Harness 8/8 (je Validator good→rc0/bad→rc1). Kein Codex-Diff-Re-Review (Heuristik `feedback_codex_sparring_heuristic`: 0 HIGH → kein Sparring-Loop; Fixes deterministisch verifiziert).
-3. **Phasierung (USER-approved):** statt Marathon-Full-Execution → 3 Units. Unit 1 = Doc-Drift-Fix (commit `3401512`). Unit 2 = dieser non-mutierende Build. **Unit 3 = CRLF-One-Shot §4.1 = separater scoring-neutraler Commit MIT User-Audit-Tabelle VOR dem Byte-Rewrite** (Spec §4.1 erzwingt User-Checkpoint; touched Live-Scoring-jsonl → bewusst isoliert + separat revertierbar). Begründung Spec §8 (Multi-Session geplant) + §5.6-Gate als natürliche Phasengrenze.
-4. **Spec-Artefakt + CR-Output gitignored** (`docs/superpowers/` Z.21) — nicht im Commit, kein Leak. Pre-Commit-Diff-Inspektion (Memory `feedback_pre_commit_diff_inspection`): nur Unit-2-Artefakte + Doc-Sync dirty, kein pre-existing unrelated.
-5. **§18-Sync (Pipeline-Item, atomar, scoring-neutral):** Code-Artefakte + PIPELINE.md (#68 Status-Transition + Footer v2.40→v2.41) + STATE.md (Critical-Alert + Footer) + Vault `log.md` (dieser Eintrag). SESSION-HANDOVER mid-Session optional (§18.1) → finaler Banner bei Session-Abschluss. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
-6. **Next:** Unit 3 — CRLF-Audit-Scan (`git ls-files` *.jsonl/*.patch → CRLF-Report-Tabelle an User), nach User-Freigabe binär-Normalisierung (`rb`/`wb`, nie Text-Mode — Memory `feedback_windows_python_crlf_text_mode`) + `git diff --stat`-Inspektion + scoring-neutral-Attestierung + isolierter Commit. Dann `pre-commit install`-Smoke (Akzeptanz #1) + Ruff-Pin-Verifikation gegen lokale Version.
-
-- Pages created: none
-- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
-
-## [2026-05-17] system | Pickup #C Execution Unit 3/3 DONE — CRLF-One-Shot §4.1 (Pickup #C Execution KOMPLETT)
-
-**Event-Typ:** Pipeline-Item (Status-Transition #68 Execution KOMPLETT DONE) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
-
-**Was passiert ist:**
-1. **CRLF-Audit-Scan (Spec §4.1 User-Checkpoint, read-only):** `git ls-files *.jsonl *.patch` → 7 Files, 6 CRLF-kontaminiert: `score_history.jsonl` (33/34), `flag_events.jsonl` (3/3), `portfolio_returns.jsonl` (5/5), `benchmark-series.jsonl` (5/5), system_audit-Fixtures `bad_score.jsonl` (1) + `good_score.jsonl` (1); `empty.jsonl` 0-byte.
-2. **Nicht-antizipierter Scope-Fund + Verifikation (§0.5 Caller-Scan):** `git ls-files *.jsonl` fängt 2 Test-Fixtures. Geprüft: `jsonl_schema.py:76` liest `open("r", encoding="utf-8")` (Text-Mode, CRLF-agnostisch); `system_audit/_smoke_test.py:103-125` asserted Schema-Status + Zeilennummer (`bad_score.jsonl:1`), NICHT Bytes → LF-Rewrite bricht Tests nicht; CRLF = dieselbe versehentliche Kontamination, kein intentionaler Test.
-3. **User-Audit-Checkpoint (Spec §4.1, kein Blind-Rewrite):** Audit-Tabelle + fundierte Empfehlung via AskUserQuestion → **USER-Scope-Entscheidung „alle 6 normalisieren"** (Spec-§4.1-wörtlich, konsistent mit Unit-2-`.gitattributes`).
-4. **Binär-Rewrite + scoring-neutral-Beweis:** `rb`/`wb` (nie Text-Mode — Memory `feedback_windows_python_crlf_text_mode`), pro File `wt.replace(b'\\r\\n',b'\\n')`; Beweis = working-tree-LF == `git show HEAD:<f>` LF-normalisiert (0 content-Δ). Erster Lauf crashte an Windows-cp1252-Console-`Δ`-Print (write_bytes lief davor → `bad_score.jsonl` schon LF); ASCII-safe Re-Run idempotent. **Ergebnis: alle 5 rewritten YES 0-content-delta, SCORING-NEUTRAL VERIFIED True, RESIDUAL CRLF NONE.**
-5. **Befund — KEIN separater CRLF-Commit:** `git diff`/`git add --renormalize` zeigen 0 Diff; `git show HEAD:` der jsonl ist **bereits LF-clean**. Die Unit-2-`.gitattributes` (`c7a1355`, `*.jsonl text eol=lf`) hat die logische EOL-Normalisierung beim Commit vorweggenommen (git speichert intern LF; Working-Tree hatte nur physisch CRLF durch Windows-autocrlf-Checkout). Unit-3-Rewrite = physischer Working-Tree-Cleanup (eliminiert git-CRLF-Dauer-Warnung), kein commitbarer git-Diff. Spec-§4.1-Intent (Pre-Existing-CRLF eliminieren + Rückfall verhindern) **erfüllt** via `.gitattributes` + `crlf-guard`-Hook-Doppelschutz. Kein künstlicher Erzwingungs-Commit (§0.6 — gegen Realität = Over-Engineering).
-6. **Classifier-/Encoding-Lehren:** Auto-Mode-Classifier erkennt AskUserQuestion-Antworten nicht als Autorisierung → explizite verbale Freigabe nötig (2× diese Session: CR-Background + CRLF-Rewrite; Permission-Rule-Weg unsicher gegen semantischen Classifier). Windows cp1252-Console crasht bei Nicht-ASCII-Print (`Δ`) → ASCII-safe Output-Disziplin bei Inline-Python-Läufen. → 2 Memory-Kandidaten.
-7. **§18-Sync (Pipeline-Item, scoring-neutral, Session-Abschluss):** PIPELINE #68 (Unit-1+2+3-DONE + Footer v2.41→v2.42) + STATE.md (Critical-Alert + Footer) + SESSION-HANDOVER.md (finaler Banner + Resume-Anweisung, §18.1 Pflicht bei Session-Abschluss) + Vault `log.md` (dieser Eintrag). Reiner Doc-Sync (kein jsonl-Content-Commit — siehe Punkt 5). DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
-8. **Offener Verifikations-Rest (Folge-Session, Trigger „Pickup #C Akzeptanz-Verifikation"):** Spec-Akzeptanz #1 (`pre-commit install` + `pre-commit run --all-files` grün auf clean tree) + Ruff-Mirror-Pin `v0.15.12` (`.pre-commit-config.yaml`) gegen lokal verfügbare Ruff-Version verifizieren/justieren (pyproject `required-version >=0.15.12`); pre-commit-CLI-Verfügbarkeit in dieser Session nicht geprüft.
-
-- Pages created: none
-- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
-
-## [2026-05-17] system | Pickup #C Akzeptanz-#1-Verifikation DONE — Substrate akzeptiert, #68 KOMPLETT geschlossen
-
-**Event-Typ:** Pipeline-Item (Status-Transition #68 Akzeptanz DONE + neues Remediation-Item) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
-
-**Was passiert ist:**
-1. **Ruff-Pin verifiziert:** lokal `ruff 0.15.12` == pyproject `required-version >=0.15.12` == `.pre-commit-config.yaml` `rev: v0.15.12`. pre-commit-CLI fehlte → `pre-commit 4.6.0` (Python-3.14, ≥ minimum 3.5.0), `pre-commit install` ✅.
-2. **`pre-commit run --all-files` deckte 3 distinkte Klassen auf:** (a) 135 CRLF-Files repo-weit (88 Vault-Prosa + 47 operativ); (b) 107 Ruff-Lint-Errors + 55 ruff-format-Files (pre-existing operativer `.py`-Legacy-Debt); (c) xlsx-smoke-test FAIL Satelliten_Monitor. NICHT trivial → User-Decision-Gates statt blindem Fixen.
-3. **② Echter Unit-2-Validator-Bug gefixt:** `xlsx_smoke_test.py:96-99` erzwang `worksheets[0]["A1"]` ≠ leer VOR der Profil-Verzweigung → traf fälschlich Voll-Profil. Empirisch: Satelliten_Monitor erstes Sheet hat legitim `A1=None` (Header tiefer); §18.7-Doktrin verlangt nie A1-non-empty. Fix = A1-Check chirurgisch in `minimal`-Zweig (= designierter Akzeptanz-#2-bad-Fixture-Trigger Watchlist). Pre-Refactor-Caller-Scan: `_smoke_test.py` `_expect` prüft nur rc → safe. Smoke 8/8 erhalten, alle 3 xlsx-Hooks rc0.
-4. **① Akzeptanz-#1-Reconciliation (USER „Hook-Scope verengen"):** Spec-intern inkonsistent (§4.3 *staged* vs §5.1-alt `--all-files`). crlf-guard `exclude: '^(07_Obsidian Vault/|05_Archiv/skills-legacy/|05_Archiv/superpowers-pre-sunset/)'` (Prosa raus; `05_Archiv/score_history.jsonl` bleibt bewusst guarded). 135→46 CRLF, 0 Vault/05_Archiv-Prosa. Spec §5 Akzeptanz-#1 neu formuliert, §4.3-vs-§5.1-Widerspruch aufgelöst.
-5. **`.gitattributes *.yaml text eol=lf`** (Codex-RECOMMENDED): crlf-guard prüft yaml nicht; schützt substrate-eigene `.pre-commit-config.yaml` vor autocrlf-Korruption. `git check-attr` bestätigt `eol: lf`.
-6. **§5.6-Gate voll:** Ruff-Apply (ruff format auf editierte Datei, check+format clean) → CodeRabbit `--dir 03_Tools` via WSL **„No findings"** → Codex-Single-Pass: code+config **PASS** (0 Findings, Fixture-Contract erhalten, kein Rebalancing-Regression, Regex korrekt, score_history guarded), Spec-Inhalt **PASS** („resolves contradiction cleanly"); Codex-„FAIL" rein prozedural (Spec konventionsgemäß gitignored, Pickup-#B/#C/#D-Konvention, kein Logik-Defekt). Kein Sparring-Loop (0 echte HIGH/MEDIUM).
-7. **Substrate-Verdikt:** korrekt gebaut (Unit 2 + ②-Fix). Staged-Modus-Gate empirisch grün auf echter Änderung = §4.3-staged-Intent. **#68 KOMPLETT geschlossen** (kein offener Rest mehr).
-8. **Pre-Existing-Debt deferred (USER-Decision):** 46 operative CRLF + 107 Ruff + 55 ruff-format = neues PIPELINE-Remediation-Item (= Spec §1/§5-Kriterium-6 „manueller Dev-Schritt", eigene CR+Codex-Session, Trigger-gebunden). Anti-Churn statt unilateralem Bulk-Reformat.
-9. **§18-Sync (atomar, scoring-neutral):** Code (`xlsx_smoke_test.py` + `.pre-commit-config.yaml` + `.gitattributes`) + PIPELINE.md (#68 entfernt per Numbering-Convention + Remediation-Item + Footer-Bump) + STATE.md (Critical-Alert + Footer) + SESSION-HANDOVER.md (Banner) + Vault `log.md` (dieser Eintrag). Spec + CR-Output gitignored. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert.
-
-- Pages created: none
-- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
-
-## [2026-05-17] system | BRK Form-13F #37 RESOLVED + Voll-Clean/Slim (PIPELINE/STATE/PORTFOLIO)
-
-**Event-Typ:** Pipeline-Item (#37 Status-Transition RESOLVED + Doc-Slim-Refactor) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
-
-**Was passiert ist:**
-1. **BRK Form-13F #37 — Definitiv-Resolution:** SEC EDGAR submissions-API (CIK 0001067983, Pflicht-UA da ctx-fetch 403): Q1-26 13F-HR **gefiltert** (filed 2026-05-15, period 2026-03-31, acc `0001193125-26-226661`) — historisches BRK-Q1-15.05.-Pattern bestätigt. Apple-Holding aus Infotables beider Quartale (alle 12 Manager-Zeilen summiert): Q4-25 (acc `…054580`) = **227.917.808 Shares** / $61,96B · Q1-26 = **227.917.808 Shares** / $57,84B. **Share-Count Δ = 0 = KEIN Apple-Trim**; Value −$4,12B = reiner Kurs-Markdown (−6,65%). **Resolution:** Pre-Brief-§2-Hypothese (Apple-Anteil am Q1-Consumer-Cost-Basis-Trim −$3,05B, Range $0,6–3,05B) **definitiv = $0** — Move ist Non-Apple. Codex-HIGH-Anti #5 (Position-Sizing-nicht-Exit) maximal bestätigt (Full-Hold). Top-5 65→61% = Bank-getrieben (BoA-Trim + Bank-FV-Drop), nicht Apple. **KEIN Score-Move** (BRK.B 71/D3/FLAG ✅ Insurance-Exception/38€ unverändert; Konzentrations-Roll + Apple-Thesis Q2-FY26-Vollanalyse-gebunden ~02./03.08., #36/#38-#41 aktiv). #37 RESOLVED → PIPELINE-Removal per Numbering-Convention.
-2. **Voll-Clean/Slim (User-Direktive „Pipeline cleanen + State verschlanken"):** **PIPELINE.md** — #37 entfernt (2 Stellen: 🟠-Trigger-Bullet Z.24 + Item-Body; Z.22-Range #36-41 → #36/#38-#41 präzisiert; Footer v2.42→v2.43 slim). #69 NEU bereits im Vor-Commit (`c86aea3`). **STATE.md** — Critical-Alerts Slim-Refactor (11.05.-Präzedenz fortgeführt): 13 Mega-Bullets (3× 17.05. + 8× 16.05. + 14.05./13.05.) → 5 kondensierte 1-3-Zeilen-Pointer + 1 Archiv-Pointer „≤ 11.05. → git log + CORE-MEMORY §13 + PIPELINE-Item-Body" (non-lossy: jeder gerollte Bullet trug bereits SSoT-Pointer; Konvention Z.12); Forward-Triggers resolved-BRK-#37 raus, VEEV/COST/MSFT-Skip aktualisiert; Footer slim. **PORTFOLIO.md** — 2 DONE/resolved Trigger-Zeilen raus (~14.05. MSFT #26 DONE Δ=0, ~15.05. BRK #37 resolved); SNPS/SPGI-Zeile #62-Pointer ergänzt. **CORE-MEMORY §12.4** — BRK-#37-Definitiv-Resolution-Append (Vor-Edit dieser Welle).
-3. **Token-/Lean-Effekt:** STATE Critical-Alerts ~13 → 6 Bullets; PIPELINE #37-Body (~1 Mega-Zeile) + 2 Footer-Walls eliminiert. Kein Information-Loss — kanonische Detail-SSoT = git log + CORE-MEMORY §13/§12.4 + PIPELINE-Item-Body (Konvention STATE.md Z.12).
-4. **§18-Sync (atomar, scoring-neutral):** CORE-MEMORY.md §12.4 + PIPELINE.md (#37-Removal + Range + Footer) + STATE.md (Critical-Alerts-Slim + Forward-Triggers + Footer) + PORTFOLIO.md (Trigger-Tabelle) + SESSION-HANDOVER.md (Resume bereits im Vor-Commit aktuell) + Vault `log.md` (dieser Eintrag). KEIN PORTFOLIO-Score/FLAG/Sparraten-Touch, KEIN score_history/config.yaml/xlsx/flag_events. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. Pre-Commit-Diff-Inspektion: pre-existing `bad_score.jsonl` bleibt unstaged.
-
-- Pages created: none
-- Pages updated: none (System-Event Pipeline-Item; keine wiki/-Page-Mutation)
-
-## [2026-05-17] system | claude-mem Context-Injection-Tuning + Pre-Investigation-Recall-Check verankert (scoring-neutral)
-
-**Event-Typ:** System-Zustand-Change (Plugin-Layer-Tuning + neue Verhaltens-Disziplin) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
-
-**Was passiert ist:**
-1. **claude-mem „97%"-Analyse:** Beworbene SessionStart-„97% savings" = Vanity-Frame — Denominator = nie-neu-bezahlte kumulierte Gesamtarbeit (672k), nicht der reale Counterfactual (= ohnehin geladene STATE/PORTFOLIO + on-demand git-log). Netto-Token-Bilanz der ~20,7k-50-Obs-Startup-Injektion in diesem schon-schlanken SSoT-Projekt ≈ 0 bis leicht negativ (additiver Dauer-Tax, wächst mit Obs-Zahl).
-2. **Therapie `~/.claude-mem/settings.json`** (nicht-versioniert, außerhalb Repo; Backup `settings.json.bak-20260517`): `CLAUDE_MEM_CONTEXT_OBSERVATIONS 50→0` (pauschale Obs-Index-Injektion entfällt; Recall **voll erhalten**, on-demand via `mem-search`/`get_observations`), `CONTEXT_SESSION_COUNT 10→5` (Cross-Session-Orientierung schlank erhalten; `SHOW_LAST_SUMMARY=true` unberührt = eigentlicher Orientierungs-Block), `CONTEXT_SHOW_SAVINGS_PERCENT true→false`. Greift ab nächstem SessionStart (Hook liest settings frisch, kein Worker-Restart nötig).
-3. **Pre-Investigation-Recall-Check kodifiziert:** echte claude-mem-Ersparnis = vermiedene Re-Investigation (~5–15k/Dig, Präzedenz: heutiger `bad_score.jsonl`-Fehlalarm = 5 Tool-Calls für stat-dirty-False-Positive). War NICHT systeminhärent (kein Skill/Hook erzwingt es, semantisch nicht hookbar). Normativer Anker = **CLAUDE.md „Verhalten"-Bullet** (vor ≥3-Tool-Diagnose EIN gezielter Recall-Pass; Treffer = advisory Prior, billig gegen Live-State verifizieren — Guard-Rail/§17.1-Forward-Bindung gesetzt). Detail/Auslöser → Auto-Memory `feedback_pre_investigation_recall_check.md` (+ MEMORY.md-Index). Plugin-Layer-Verankerung/§17.1-Cross-Link bewusst **nicht** (Kategorie-Unterschied Nutzungs-Disziplin ≠ Autoritäts-Constraint; User-Entscheid „a").
-4. **§18-Sync (atomar, scoring-neutral):** CLAUDE.md (Verhalten-Bullet) + 00_Core/SYSTEM.md (§Plugin-Layer 2026-05-17-Absatz + Footer-Stand 16→17.05.) + Vault `log.md` (dieser Eintrag). Auto-Memory-File + MEMORY.md außerhalb Repo (autoMemory-Verzeichnis). KEIN PORTFOLIO/score_history/config.yaml/xlsx/flag_events-Touch. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. HYBRID-Final-State + autoMemory-Kanonizität + Live-State-Priorität unberührt. Pre-Commit-Diff-Inspektion vor Commit.
-5. **Substrate-erzwungener #69-Slice:** Pickup-#C crlf-guard (fail-close, Spec §4.3) blockte den Commit — `CLAUDE.md` + `00_Core/SYSTEM.md` lagen CRLF auf Platte (Teil des deferred #69-CRLF-Debt, 46 Files). Byte-level CRLF→LF normalisiert (binary-safe/idempotent, PowerShell `ReadAllBytes`→Filter→`WriteAllBytes`, keine Encoding-Mutation). 2 von 46 #69-CRLF-Files damit incidentell mit-bereinigt; #69 bleibt offen für Rest. Re-Commit nach Normalisierung.
-
-- Pages created: none
-- Pages updated: none (System-Event; keine wiki/-Page-Mutation)
-
-## [2026-05-18] system | PIPELINE #69 — (a) CRLF OBSOLET geschlossen + Architektur-Erkenntnis (b)↔(c)-Kopplung, beide deferred (scoring-neutral)
-
-**Event-Typ:** Pipeline-Item (Status-Transition #69: a geschlossen + b/c deferred-kombiniert) — kein Score/FLAG/Sparraten-Touch, scoring-neutral
-
-**Was passiert ist:**
-1. **#69 (a) CRLF als Non-Task verifiziert + geschlossen:** Live-Verifikation (runtime > Plan-Prämisse, Memory `feedback_plan_on_runtime_not_doc_assumption`) belegte: die als „46 operative CRLF-Files committed Debt" geframte (a)-Aktion ist **kein git-Debt**. `.gitattributes` erzwingt bereits `*.{jsonl,py,md,patch} text eol=lf`; `git ls-files --eol` = `i/lf` durchgängig; **0** `i/crlf`-Blobs im Operativ-Scope; `git diff --numstat` aller geflaggten Files = `0\t0`; `git add` = vollständiger No-Op. Die CRLF sind reine **Working-Tree-Artefakte** aus Pre-`.gitattributes`-Checkout-Altstand. Einmal-Worktree-LF-Normalisierung durchgeführt (binär `rb`/`wb`, idempotent, Throwaway-Script außerhalb Repo, danach gelöscht) → git-No-Op, nichts zu committen, `pre-commit run crlf-guard --all-files` jetzt **Passed**. **Kein Rezidiv:** kein Cloud-Sync (OneDrive/Google-Drive systemseitig inaktiv — User-Korrektur, neue Memory `reference_no_cloud_sync_onedrive_inactive`; Pfad heißt nur noch so). Akzeptanz-#1-Lauf 17.05. + voriger Log-Eintrag Punkt 5 hatten dasselbe Worktree-Artefakt als „committed debt" mis-gelesen. → **(a) erledigt, keine Re-Activation.**
-2. **#69 (b)/(c) als echter committeter Content-Debt live-verifiziert** (ruff EOL-agnostisch → spiegelt Blobs direkt; ruff 0.15.12 == gepinnt v0.15.12; pyproject `requires-python >= 3.14`): (b) `ruff format --check` = **46 Files** (war 55 — Drift). (c) `ruff check` = **100 Errors** (war 107 — Drift; 28 safe-autofixbar / 19 unsafe-hidden / ~53 manuell).
-3. **Architektur-Erkenntnis (Plan-Korrektur, normativ): (b)↔(c) pro File gekoppelt — nicht unabhängig committbar.** Der fail-close `ruff-format --check`-Hook (Spec §2/§3, Scope `^(03_Tools|01_Skills)/.*\.py$`) macht „ruff-format-clean" zur Commit-Vorbedingung *jedes* in-scope `.py`. (c)-Safe-Autofix-Subset auf 6 Files wurde verifiziert (28 Fixes: F401 `Path`/`date`/`os`/`subprocess` · I001 · UP015 · UP045 · F541 · RUF021; grep-Verifikation 4 F401-Removals 0 echte Refs · `py_compile` 6/6 · Smokes backtest-forward-verify 8/8 + system_audit + fwd_helpers_test 14/14+6/6 grün · CodeRabbit `01_Skills`+`03_Tools` „No findings ✔" · Codex-Single-Pass „SAFE") — **aber bewusst reverted/NICHT committet**, da dieselben 6 Files den ruff-format-Gate (~700-Zeilen-Reformat-Delta) ohne (b) nicht passieren und `SKIP`/`--force`-Bypass die fail-close-Doktrin (§18.7) verletzt. ⇒ **(b)+(c) müssen gemeinsam in EINER file-weise gegateten Session laufen**; #69 entsprechend re-skoped. Methodisch: das war ein **§0.1-Think-before-coding-Miss** — die Kopplung war aus der bereits gelesenen `.pre-commit-config` (Block 2 fail-close) vor Ausführung ableitbar; Autofix+Doppel-CR+Codex+3-Smoke-Suites liefen, bevor die Nicht-Committbarkeit erkannt wurde (Kosten/Nutzen schwach). Lesson → APPLIED-LEARNING.md Tier-2-Bullet v2.9 (Tier-2-only, kein Auto-Memory-Duplikat — Bridge-Coherence-Pflegeregel).
-4. **§18-Sync (nur Doc, scoring-neutral):** 00_Core/PIPELINE.md (#69 Status + Footer v2.43→v2.44) + Vault `log.md` (dieser Eintrag), ein Commit. **KEIN `.py`-Commit** (28 Autofixes auf HEAD revertet). Pre-Commit-Diff-Inspektion: staged = exakt PIPELINE.md + log.md. KEIN PORTFOLIO/score_history/config.yaml/xlsx/flag_events-Touch. DEFCON v3.7 + 11 Scores + Sparraten 285€ unverändert. **Pre-existing flag (nicht drive-by-gefixt, §0.3):** PIPELINE-Footer-Zeile „Nächster Forward-Trigger #37" stale (Z.22 = #37 RESOLVED 17.05.) — separat zu bereinigen.
-
-- Pages created: none
-- Pages updated: none (System-Event; keine wiki/-Page-Mutation)
-
-## [2026-05-18] portfolio | 🔴 AMZN Neuaufnahme 12. Satellit — DEFCON-v3.7-Vollanalyse + §18-Multi-Event-Sync
-
-**Event-Typ:** Score-Event + FLAG-Trigger + Slot-Struktur-Change (Multi-Event-Union §18.2) — User-Direktive „Mein Portfolio, mein Geld, meine Regeln"
-
-**Was passiert ist:**
-1. **Vollumfänglicher !Analysiere-AMZN-Workflow** als bewusster Systemtest. Primärquellen: Q1-2026-Earnings-Release-PDF (pypdf→txt-Extraktion, da Read-Tool-Renderer fehlte) + Earnings-Call-Transcript (user-bereitgestellt `02_Analysen/Earnings Reports/Amazon/`) + defeatbeta-MCP + Web (Yahoo/GuruFocus/OpenInsider/SEC-Form-4).
-2. **Score 42/100 → 🔴 DEFCON 1.** Fundamentals 8/50 (fwd_pe 0 + p_fcf 0 [QT B6 hart: Wide × Fwd P/E ~34>30 / P/FCF ~2305>35; v3.7.6-Drawdown-Modulator inaktiv da nur -5,2% <20%] + bilanz 8/9 + capex_ocf 0/9 + roic 0/8 + fcf_yield 0/8 + opm 0/2) · Moat 19/20 (Wide, GM-Trend +1,65pp/J Bonus) · Technicals 6/10 (ATH 3 · RelStärke 0 [6c-Disziplin: kein belastbarer SPX-6M-Rohwert] · Trend 3) · Insider 6/10 (Ownership 3 Bezos 8,2% · kein-20M 3 — Bezos 2026 nur Gifts/Jassy 10b5-1, kein FLAG) · Sentiment 3/10 (B11 Crowd-Malus).
-3. **🔴 CapEx/OCF-FLAG getriggert (`AMZN_capex_ocf_2026-05-15`):** TTM netto 99,2% (Press-Release Purchases-of-P&E-net $147,3B / OCF $148,5B) / gross 101,7% (defeatbeta). FCF TTM nur $1,23B (-95% YoY, FCF-Yield 0,04%). ≫60%, schärfer als GOOGL 74-79%. §410 N/A (GW 2,6% Assets, kein M&A-GW-Compounder → GAAP-ROIC 5,4% ≪ WACC 15,57%). Q1-NI $30,3B Anthropic-Gain-bereinigt (+$16,8B non-op).
-4. **User-Strukturentscheidungen (AskUserQuestion):** (a) „Neuer 12. Satellit" → Slot-Erweiterung 11→12 (`max_aktien_slots` 12, `aktuelle_slots` 17), keine Verdrängung; (b) „Regelkonform 0€ bis FLAG-Auflösung" → Sparrate 0€, KEIN Owner-Override (FLAG heilig). **Nenner-neutral:** FLAG=Gewicht 0,0 → Nenner unverändert 7,5, alle 11 bestehenden Raten unverändert (38€/19€/0€, Σ285€).
-5. **§18-Multi-Event-Sync-Set (atomar, 1 Commit):** Faktortabelle.md + PORTFOLIO.md (v1.1→v1.2) + config.yaml + KONTEXT.md (v1.3→v1.4) + CORE-MEMORY §12.12+§13 (v1.20→v1.21) + Vault log.md (dieser Eintrag) + score_history.jsonl (`2026-05-15_AMZN_vollanalyse` via backtest-ready-forward-verify-Skill) + flag_events.jsonl (`AMZN_capex_ocf_2026-05-15` via archive_flag.py) + Rebalancing_Tool_v3.4.xlsx + Satelliten_Monitor_v2.0.xlsx (+ §18.7-Smoke-Test) + STATE.md (Critical-Alert + Forward-Trigger). DEFCON v3.7 + 11 Bestands-Scores unverändert.
-6. **Reviews:** Codex-Single-Pass (prozeduraler REJECT vor Sync — Artefakte/Slot-Struktur erwartungsgemäß noch nicht im Repo; inhaltlich Algebra/FLAG/§410/QT/DEFCON-Level bestätigt, kein methodischer Fehler). **OFFEN → frische Session (User-Wunsch, Kontext-Schonung):** Codex-Diff-Re-Review + Gemini Cross-Sync der 12 angefassten Files. **Tooling-Nebenwin:** poppler 26.02.0 user-level installiert (User-PATH, künftige PDF-Reads via Read-Tool).
-
-- Pages created: none
-- Pages updated: none (Score-Event; Vault-Faktortabelle/Satelliten-Pages separat bei Wiki-Sync — out-of-scope dieser §18-Welle)
-
-**Addendum (gleiche Session, Doc-Commit 2):** xlsx-Tools (`Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx`) **bewusst DEFERRED → PIPELINE #70** (frische Session, User-Direktive Kontext-Erschöpfung). Begründung: 12. Satellit = Zeilen-Insert + Formel-Range-Rewrite in 218-Formel-Sheet (openpyxl `insert_rows` adjustiert Formeln nicht) = strukturell/risikobehaftet, §18.7-Smoke fail-close iterativ — §0.1/§0.2/§0.6-Disziplin gegen Force unter Kontext-Druck. **§18.1-same-session-Pflicht bewusst abgewichen, dokumentiert (Präzedenz §13 Watchlist-xlsx-Same-Day-Amendment).** Operatives Risiko ≈ null: AMZN nenner-neutral + 0€ → kein Bestands-Satellit ändert xlsx-Sparplan-Wert; xlsx bleibt für 11-Satelliten-Lookup korrekt. Doc-Commit 2 = PIPELINE.md(#70+Footer) + STATE.md(Alert-Korrektur) + SESSION-HANDOVER.md(Banner+Resume) + CORE-MEMORY(§12.12-Korrektur) + dieses Addendum.
-
-## [2026-05-18] edit | AMZN-Satelliten-Page-Anlage + xlsx-Struktur-Erweiterung (PIPELINE #70 a+Wiki)
-
-- Folge-Carryover zum AMZN-Score-Event `a6ed83b` (12. Satellit, Score 42/🔴 D1, 🔴 CapEx/OCF-FLAG, Sparrate 0€ regelkonform). Vault-Entity-Page war explizit out-of-scope der §18-Welle (siehe Eintrag oben „Pages updated: none") — jetzt nachgezogen.
-- **Vault:** Neue Entity-Page [[AMZN]] in `wiki/entities/satelliten/` (Muster: [[AVGO]]/[[MSFT]] — gleicher CapEx/OCF-FLAG-Typ; volles Frontmatter inkl. `aliases:` Amazon/Amazon.com). Sibling-Backlink in [[GOOGL]] ergänzt (CapEx/OCF-FLAG-Hyperscaler-Cluster, AMZN 99,2% schärfer als GOOGL ~75%). `index.md` Satelliten-Block 11→12 + Last-updated-Zeile. Auto-Lint: keine Orphans (Page von index.md + GOOGL.md verlinkt), Verlinkungen auf existierende Concept-Pages ([[DEFCON-System]]/[[CapEx-FLAG]]/[[Quality-Trap]]/[[ROIC-vs-WACC]]/[[MSFT]]).
-- **xlsx-Struktur-Erweiterung (PIPELINE #70 a):** `Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx` um AMZN als 12. Satellit-Zeile erweitert. User-Direktive: AMZN bekommt exakten Ziel-Anteil wie alle Aktien → 30%-Satelliten-Block /12 = 2,50% je Position (vorher /11 = 2,73%), ΣH = exakt 100%. Alle Bereichs-Formeln 5:20→5:21 (Rebalancing) bzw. O7:O17→O7:O18 (Monitor), GESAMT/Footer-Zellref-Shifts, CF-Ranges + Merged-Cells deterministisch neu aufgebaut, US-Exposure-Sheet +1 Zeile, Parameter B12 11→12. **Sparraten nenner-neutral verifiziert** (P-Spalte FLAG/DEFCON-getrieben, H-unabhängig; AMZN P=0 → Nenner 7,5 / Σ285€ unverändert). §18.7-Smoke (Python-Fallback, kein Excel/LO im CLI): nach 2 gefundenen+gefixten Bugs ALLE PASS (US-B27-Replace-Kollision + Monitor-Merge blockierte AMZN-Schreibung). Voller Excel-Desktop-Sichttest (CF-Rendering E/F) bei nächstem Zugriff nachzuziehen (US-Anteil-Ziel steigt ~49,5%→50,2%, unter Hard-Cap 63%).
-- Pages created: [[AMZN]]
-- Pages updated: [[GOOGL]], index.md
-
-**Closure (gleiche Session, PIPELINE #70 KOMPLETT DONE):** (b) Codex-Diff-Re-Review Single-Pass 0 HIGH / 1 MED / 2 LOW — MED = #71 NEU (score_history `2026-05-15_AMZN_vollanalyse`.`bei_analyse_referenziert` referenziert nicht-existentes `GOOGL_capex_ocf_2025-10-28` statt `GOOGL_capex_ocf_2026-03-15`; **append-only-immutable** → dokumentiertes Erratum, nicht-blockierend, Score/State korrekt). 2 LOW (KONTEXT US-Ziel ~49,51%→~50,2%, config-Header 11→12) im Doc-Sync gefixt. (c) Gemini Cross-Sync = Self-Verify-Fallback (cc-gemini-Bridge defekt: Node v20.20.2, `globSync` ab Node 22 — SESSION-HANDOVER-dokumentiert; SESSION-HANDOVER-sanktioniert) — alle 9 §18-Files + xlsx + Vault cross-konsistent, keine neue Drift. Doc-Sync-Commit: PIPELINE #70→DONE/#71 NEU + STATE + SESSION-HANDOVER + KONTEXT(v1.5) + config + CORE-MEMORY(§12.12/v1.22) + dieses Closure. scoring-neutral, DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
-
-**§18.7-E/F Sichttest-Closure (18.05., User-bestätigt):** Rebalancing-Tool CF-Farbgebung visuell in Excel-Desktop geprüft = passt. Satelliten-Monitor CF strukturell verifiziert (Count+Ranges asserted, gleicher openpyxl-Write-Pfad). §18.7-Smoke damit vollständig geschlossen (Python-Fallback PASS + Excel-Desktop-Sichttest PASS) — kein offener Vorbehalt mehr.
-
-## [2026-05-21] system | PIPELINE #70 KOMPLETT DONE-Item entfernt per Numbering-Convention (scoring-neutral)
-
-**Event-Typ:** Pipeline-Housekeeping (kein Score/FLAG/Sparraten-Touch — scoring-neutral)
-
-**Was passiert ist:**
-
-1. Nach 3-Tage-Pause (18.05.→21.05.) PIPELINE-Aufräumung: **PIPELINE #70** (AMZN-Neuaufnahme-Folge-Carryover: xlsx-Struktur-Erweiterung + Codex-Diff-Re-Review + Gemini Cross-Sync) per **PIPELINE.md-Numbering-Convention (Z.16)** entfernt. Item war seit 18.05. KOMPLETT DONE (Commits `9cde988`/`def0550` durable; §18.7-E/F-Sichttest User-bestätigt 18.05.).
-2. **Konvention:** DONE-Items werden bei Entfernung **nicht renumbered** — Gap signalisiert entfernten Archiv-Kandidat. Präzedenz: #37 (BRK Form-13F, 17.05.) + #68 (Pickup #C pre-commit-Substrate, 17.05.) gleich behandelt.
-3. **Kontext-Erhalt:** Voller Detail-Trail bleibt in
-   - **git log** Commits `a6ed83b` (Score-Event) / `9cde988` (xlsx) / `def0550` (Vault-Page)
-   - **CORE-MEMORY §12.12** (AMZN Per-Ticker-Chronik)
-   - **STATE.md Critical-Alert** (≤10-Tage-Window — rollt ab 28.05. automatisch raus)
-   - **SESSION-HANDOVER.md** Banner (Vorgänger-Historie)
-   - dieser log.md-Eintrag + AMZN-Closure-Block oben (18.05.)
-4. **Sync-Set (§18 Pipeline-Event, scoring-neutral, Doc-Commit):** PIPELINE.md (#70-Item entfernt + Footer-Bump v2.46→v2.47 + Aktive-Items-Liste aktualisiert) + dieser log.md-Eintrag. **KEIN** PORTFOLIO + Faktortabelle + score_history.jsonl + config.yaml + xlsx + flag_events.jsonl (kein Score-Event, kein FLAG-Trigger/Resolve). **KEIN** STATE.md-Edit (Critical-Alert bleibt im ≤10-Tage-Window).
-
-**Pages created:** none
-**Pages updated:** none
-
-**Nächster Schritt:** User-Decision-Gate für **PIPELINE #71** (score_history GOOGL-Cross-Ref-Erratum, append-only-immutable, Codex-#70-MED): (a) bewusst akzeptieren = dokumentiertes Erratum, kein File-Change · (b) deliberater Errata-Mechanismus = Korrektur-Append-Record. Empfehlung (a) — Score/State korrekt, nur informativer Vergleichs-String falsch, **nicht scoring-relevant**. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
-
-## [2026-05-21] system | PIPELINE #71 KOMPLETT DONE-Item entfernt — Option (a) Erratum bewusst akzeptiert (scoring-neutral)
-
-**Event-Typ:** Pipeline-Housekeeping + Erratum-Closure (kein Score/FLAG/Sparraten-Touch — scoring-neutral)
-
-**Was passiert ist:**
-
-1. **USER-Decision Resolution-Gate #71:** Option (a) gewählt — **Erratum bewusst akzeptieren**, kein File-Change. Begründung: Append-only-Immutabilität (`validate-score-history`-Hook fail-close auf jede `-`-Zeile) > Soft-Pointer-Typo-Korrektur. Errata-Mechanismus-Schema (Option b) wäre Substrate-Bloat bei N=1; auf nächsten echten Konsolidierungstag mit Multi-Case-Bedarf verschoben.
-2. **Was war der Typo (User-Frage 21.05.):** Im AMZN-Score-Record `2026-05-15_AMZN_vollanalyse` zeigt `flags.bei_analyse_referenziert` auf `GOOGL_capex_ocf_2025-10-28` — diese FLAG-Event-ID existiert nicht. Kanonisch in `flag_events.jsonl` heißt der GOOGL-CapEx-FLAG-Trigger `GOOGL_capex_ocf_2026-03-15` (GOOGL-Q4-FY25-Vollanalyse). **Nur das Datum-Suffix ist falsch** — Ticker `GOOGL` ✅ + FLAG-Typ `capex_ocf` ✅ korrekt. Codex hatte das beim #70-Diff-Re-Review als MED geflaggt (nicht HIGH), weil aktive AMZN-FLAG (`AMZN_capex_ocf_2026-05-15`) + Score (42/D1) + §410 + Sparrate 0€ alle richtig sind — nur der Audit-Trail-Pointer auf den historischen Vergleichs-Trigger zeigt ins Leere.
-3. **PIPELINE #71** per **PIPELINE.md-Numbering-Convention (Z.16)** entfernt. Gap signalisiert entfernten Archiv-Kandidat; nicht renumbered. Präzedenz: #37, #68, #70.
-4. **Kontext-Erhalt:** Erratum-Beschreibung + Resolution bleibt in
-   - **CORE-MEMORY §12.12** (AMZN Per-Ticker-Chronik; sollte beim nächsten §12.12-Touch Erratum-Note bekommen)
-   - **git log** (Commit dieser Session + Vorgänger-Commit-Chronik)
-   - **Footer-Chronik PIPELINE.md v2.48** (vollständige Erratum-Beschreibung im Versions-Footer)
-   - dieser log.md-Eintrag
-5. **Sync-Set (§18 Pipeline-Event, scoring-neutral, Doc-Commit):** PIPELINE.md (#71-Item entfernt + Footer-Bump v2.47→v2.48 + Aktive-Items-Liste aktualisiert) + dieser log.md-Eintrag. **KEIN** PORTFOLIO + Faktortabelle + score_history.jsonl (Append-only-Doktrin!) + config.yaml + xlsx + flag_events.jsonl. **KEIN** STATE.md-Edit (Critical-Alert bleibt im ≤10-Tage-Window).
-
-**Pages created:** none
-**Pages updated:** none
-
-**Lehre:**
-- **Append-only-Immutabilität > Soft-Provenance-Korrektheit:** Bei N=1-Cases (single Soft-Pointer-Typo, nicht scoring-relevant) ist „bewusst akzeptieren + dokumentieren" wertvoller als ein Errata-Schema ad-hoc anzulegen. Schema-Aufwand wartet auf Konsolidierungstag mit Multi-Case-Bedarf.
-- **Numbering-Convention konsequent gehalten:** #70 entfernt (~5 min, Pipeline-Item), #71 entfernt (~5 min, Pipeline-Item), beide per Konvention nicht renumbered → Gap-Signal-Continuity sauber.
-
-**Cross-Reference:** PIPELINE.md v2.48 Footer (vollständige Erratum-Beschreibung) · CORE-MEMORY §12.12 AMZN-Chronik · git log (Commits `a6ed83b`/`9cde988`/`def0550` AMZN-Score-Event + `2134bd7` #70-Removal + dieser Commit #71-Closure).
-
-**Nächste Tracks:** Rein termin-/trigger-getriggert. VEEV Q1 FY27 ~27.05. · COST Q3 FY26 ~28.05. · AMZN Q2 FY26 ~Ende Juli CapEx/OCF-FLAG-Re-Eval. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
-
-
-
-## [2026-05-21] system | session-closure-Skill v0.2.0 + PIPELINE #73 Skill-Backlog (scoring-neutral)
-
-**Event-Typ:** Skill-Build (System-Event) + Pipeline-Persist (kein Score/FLAG/Sparraten-Touch — scoring-neutral)
-
-**Was passiert ist:**
-
-1. **Skill-Identifikation:** User-Frage „welche wiederkehrenden Tasks der letzten Sessions sollten Skills sein". Analyse identifizierte 8 Workflow-Pattern; nach Use-Case-/Reinfall-Filter qualifizieren 3 als echte Skills (Rest Memory-/Template-/Codex-Block-abhängig).
-2. **`session-closure`-Skill gebaut (Slot #1):** Strict-Trigger `!SessionClose`. Orchestriert git-State-Scan, File-Klassifikation (4 Sub-Kategorien), §18-Sync-Coupling-Check (8-File-Pflicht-Set), Commit-Bündelung + Banner-Wahl, Push-Plan + Verify, Closure-Report. Auto-Commit, Hard-Stop nur vor `git push`. **Ablage:** `01_Skills/session-closure/` (SKILL.md + 5 references/: file-classification, sync-coupling, commit-banners, push-safety, test-scenarios).
-3. **Skill-Creator-Tool eingesetzt:** Plugin `skill-creator` für YAML-Frontmatter + Progressive-Disclosure-Struktur + Trigger-Accuracy. Eval-Loop qualitativ statt subagent-driven (git-Mutationen am Repo sind nicht reproduzierbar ohne Sandbox).
-4. **Codex-Review BLOCKIERT (Forensik dokumentiert):** Versuch `codex:codex-rescue`-Subagent → server-side 400-Fehler („model not supported when using Codex with a ChatGPT account"). Empirische Tests: 13 Modelle (Codex-Spec + GPT-Familie + o-Serie), beide Auth-Flows (Default + `--device-auth`), beide nach `codex logout`/`codex login`-Re-Auth — ALLE identisch geblockt. WebSearch bestätigt aktive OpenAI-GitHub-Issues (`#19654, #6603, #15648, #17642, #2051`) seit November 2025, breit-deployed Welle der Sperre offenbar in den letzten ~5 Tagen (Letzter Codex-Erfolg im Repo: `e0d5d7a` 2026-05-16 „Codex-Gate PASS"; heute 2026-05-21 broken). Root-Cause: Entitlement-Sync-Bug zwischen ChatGPT-Pro-Account-Tier und Codex-Backend, OpenAI-unresolved.
-5. **Gemini-Single-Pass-Review als Workaround:** `cc-gemini-plugin:gemini-agent`-Subagent (NICHT advisor — per Memory `feedback_review_via_codex_not_advisor` weiterhin verboten; NICHT Bridge-Script — per Memory `reference_gemini_agent_not_bridge_script` Windows-broken). Output: 4 HIGH-Findings (H1-H4), 6 MEDIUM, paar LOW. Verdikt: 1 Iteration nötig vor Merge.
-6. **v0.2.0-Iteration (H1-H4 appliziert):**
-   - **H1+H2** xlsx-Coupling als §18.1-v2.4-Pflicht-Set (8 Files: 1-6 atomar in einem Commit, 7+8 xlsx-Tools in separatem Commit derselben Push-Welle). `sync-coupling.md` Hard-Coupling-Block korrigiert; `SKILL.md` Schritt 3 + `test-scenarios.md` S2 angeglichen, S2b INKOMPLETT-Refuse-Test ergänzt.
-   - **H3** §19.1 Tag-0-Refuse mit Issuer-Ausnahmen via `config.yaml`-Feld `earnings_trigger` (`quarterly_call` löst Refuse aus; `10q_filing` für BRK.B + `trading_update_q1`/`_q3` für Schneider/Hermès sind exempt). `SKILL.md` Schritt 0 erweitert; `test-scenarios.md` S4b (BRK.B) + S4c (Trading-Update-Quarter) ergänzt.
-   - **H4** Watchlist.xlsx-Klassifikations-Drift gefixt — `file-classification.md` Kategorie-1 aufgesplittet in Sub-Kategorien 1a Score-Event-coupled, 1b FLAG-Event-coupled, 1c KONTEXT-coupled, 1d Live-State-Edit. Watchlist.xlsx korrekt in 1c (Trigger KONTEXT §6, NICHT score_history).
-7. **`!SessionClose`-Dogfood-Test:** Skill auf sich selbst angewendet. State-Scan → 6 untracked Files, 0 modified, branch synced. Single-Commit-Plan, Banner `feat(skill): session-closure v0.2.0 — Session-End-Workflow-Orchestrator` via Bash-Heredoc (Memory `feedback_powershell_herestring_in_bash_tool` compliant). Pre-commit-Hooks (crlf-guard) PASS. Commit `42eca7c`, 6 Files / 799 Zeilen. Subject-Byte-Check `git log -1 --format='%s' | cat -A` sauber (em-dash UTF-8 korrekt, kein lone `@`, kein CRLF). Hard-Stop vor push, User-Go-Approval, push `103996f..42eca7c`. Working-Tree clean, origin synced.
-8. **PIPELINE #73 Skill-Backlog persistiert (dieses Event):** TOP-2-Kandidaten **(a) `paragraph-18-sync`** (8-File-Sync-Orchestrator, Strict-Trigger `!ParaSync18`-Vorschlag, ~2-3h Aufwand) + **(b) `xlsx-smoke-test-runner`** (§18.7-Post-`openpyxl`-Runner, Strict-Trigger `!XlsxSmokeTest <file>`-Vorschlag, ~1.5-2h Aufwand). DROP-Liste explizit dokumentiert (Subset / Memory-deckt-ab / Codex-Block-abhängig). TIER-2 `earnings-day-plus-one` + `pipeline-item-resolver` als evaluate-later. Reihenfolge bei Re-Activation: (a) vor (b).
-9. **Memory-Updates:** `feedback_review_via_codex_not_advisor.md` erweitert um datierten Codex-Block-Befund (2026-05-21 Update-Section) + Forensik-Window (2026-05-16 → 2026-05-21) + Gemini-Interim-Pfad (advisor weiterhin verboten). `MEMORY.md` Index-Zeile entsprechend angepasst.
-
-**Pages created/updated (System-Event-Scope):**
-- `01_Skills/session-closure/` (6 Files) — NEW
-- `00_Core/PIPELINE.md` — #73 added, Footer v2.48 → v2.49, Aktive-Items-Liste erweitert
-- dieser log.md-Eintrag
-- User-globale Memory: `feedback_review_via_codex_not_advisor.md` + `MEMORY.md` (kein Repo-Commit)
-
-**Sync-Set (§18 Pipeline-Event + Skill-Build-System-Event, scoring-neutral):** PIPELINE.md + log.md (dieser Eintrag) + `01_Skills/session-closure/` (Skill-Files). **KEIN** PORTFOLIO + Faktortabelle + score_history + config.yaml + xlsx + flag_events (kein Score/FLAG/Sparraten-Event). **KEIN** STATE.md-Edit (Critical-Alert-Window unverändert).
-
-**Lehre:**
-- **Skill-Creator-Plugin liefert sauberen YAML/Progressive-Disclosure-Skeleton**, spart ~30-60min Skeleton-Build-Aufwand. Trigger-Accuracy via eval-Mode wertvoll für Strict-Trigger-Skills (False-Positive-Risiko quantifizierbar).
-- **Codex-Block ist datiert (~16-21.05.2026), kein dauerhafter Policy-Change.** Memory-Update reflektiert das ehrlich — bei nächstem erfolgreichen Codex-Smoke-Test Update-Section entfernen, nicht stale-Diagnose tragen.
-- **Gemini-Agent (Subagent-Pfad, NICHT Bridge) ist verlässlicher Interim-Reviewer.** 4 HIGH-Findings im Single-Pass identifiziert, alle echte Korrektheits-Bugs (nicht stilistisch). Token-Kosten ~62k (Subagent total), vergleichbar zu Codex-Single-Pass.
-- **Skill-Workflow auf sich selbst anwenden (Dogfood) als initialer Smoke-Test funktioniert.** State-Scan + Hard-Stop + Push-Verify aller Schritte gingen durch ohne Skill-Code-Anpassung.
-- **User-Skepsis-Check „macht es nicht wieder den Gemini-Fehler" war heilsam:** Codex-Diagnose über 2 Auth-Flows + 13 Modelle + WebSearch-Confirmation hat Empirie gegen voreilige Schlussfolgerung gehärtet. Forensik-Befund (5-Tage-Fenster) belegt User-Recollection.
-
-**Cross-Reference:** `01_Skills/session-closure/SKILL.md` v0.2.0 · Commit `42eca7c` · PIPELINE.md v2.49 #73 · Memory `feedback_review_via_codex_not_advisor` 2026-05-21-Update · OpenAI GitHub Issues #19654/#6603/#15648/#17642/#2051.
-
-**Nächste Tracks:** Rein termin-/trigger-getriggert (#73 Skill-Backlog deferred bis freie Session). VEEV Q1 FY27 ~27.05. · COST Q3 FY26 ~28.05. · AMZN Q2 FY26 ~Ende Juli CapEx/OCF-FLAG-Re-Eval. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert. **Codex-Smoke-Test bei nächster Session als Auftakt** — falls grün: Memory-Update-Section entfernen, Codex zurück als Default-Reviewer.
-
----
-
-## [2026-05-21] system | PIPELINE #73a Spec-Phase DONE — `paragraph-18-sync` Skill (Brainstorming + Multi-Reviewer-Pass, Build deferred, scoring-neutral)
-
-**Event-Typ:** Pipeline-Item Status-Transition (PENDING → SPEC-COMPLETE für Sub-Item (a)) + Skill-Backlog-Spec-Persist (System-Event-Begleitartefakt). Scoring-neutral.
-
-**Was passiert ist (Spec-Phase-Workflow, ~3h):**
-
-1. **Brainstorming-Phase (superpowers:brainstorming Skill)** — 4 Klärungsfragen geklärt: Event-Scope (Voll-§18-Orchestrator alle 4 Event-Typen + Multi-Event-Union §18.2) · Activation (Hybrid: dominant User-Trigger `!ParaSync18` + Sub-Step-fähig) · Mode (Verify-First Checklist-Runner, KEIN Auto-Edit) · Failure-Mode (fail-close, kein `--force`-Bypass, analog §18.5/§18.7).
-2. **Architektur-Entscheidung Option B:** SKILL.md (Markdown-Orchestrator, P1-P7) + `validator.py` in `03_Tools/para18_sync/` + `event_typ_mapping.yaml` als SSoT-Mirror von §18.1 + `_smoke_test.py` (13 Tests). Bundle 7 Files total. Präzedenz: `backtest-ready-forward-verify` Skill+Tools-Pattern.
-3. **Self-Review-Loop (4 HIGH + 6 MEDIUM):** L1 Sub-Tool-Coupling-Sprache falsch (`archive_flag.py` + `backtest-ready-forward-verify` laufen VOR paragraph-18-sync, werden NUR verifiziert, nicht orchestriert — einzig xlsx-smoke-test-runner #73b ist echte Orchestrierung) · L2 Phase-6 Review-Slots gehören Build-Zeit nicht Run-Zeit · Z1 Workflow-Ordering-Guard (P1 Pre-Flight prüft `score_history.jsonl`/`flag_events.jsonl` HEAD-Timestamp ≤ heute, sonst REFUSE) · Z2 Doppel-SSoT (yaml als Mirror + Smoke-Test-Drift-Guard gegen §18.1) · L3 §18.1-Lücke "KONTEXT §6 Allokations-Edit" als separates PIPELINE-Item #73c deferred · L4 Test-Coverage (S9 Regression-Guard + S10 Pre-Existing-Dirty-Snapshot) · L5 Phasen-Count P1-P7 explizit · Z3 !SessionClose-Boundary (paragraph-18-sync = Mid-Session-Verify, !SessionClose = End-Session) · Z4 xlsx-smoke-test-runner #73b Soft-Dependency (v0.1 manual-confirm, v0.2 auto-call) · Z5 Multi-Event-Union-Tests S8a/b/c.
-4. **Codex-Cross-Sync (~22:00 GMT+2): BLOCKED** at attempt-time — HTTP 400 (`gpt-5.2-codex` rejected). Fallback zu Gemini.
-5. **Gemini-CLI-Cross-Sync via direct stdin pipe (Bridge umgangen per Memory `reference_gemini_agent_not_bridge_script`):** SUCCESS — 5 NEUE Findings: G-01 HIGH P4 leaky-atomic (Skill prüfte nur `git diff --cached`, fehlte unstaged-modified-Check — Fail-close-Loophole gegen §18.3 Atomarität) → P4 erweitert auf `git diff --name-only` + 4-stufige Klassifikation mit UNSTAGED_NEW als FAIL-Bucket · G-02 MEDIUM yaml-Hardcode-Versionen v3.4/v2.0 → Glob-Pattern `Rebalancing_Tool_v*.xlsx` etc. · G-03 MEDIUM §18.6 Quartals-Rollover-Awareness (P1 Temporal-Guard: bei 1.4./1.7./1.10./1.1. warn falls `archive/log/log-YYYY-Q<n-1>.md` fehlt) · G-04 LOW P5 `xlsx_verified`-Status-Field in Closure-Report · G-05 LOW Substrate-Bloat-Reminder Architektur-confirm. + 3 neue Tests: S12 Staged-vs-Unstaged-Collision (G-01-Coverage) · S13 Quartals-Transition (G-03-Coverage) · S7-Strengthening Exact-String-Set-Match. PROCEED-WITH-FIXES.
-6. **2 Selbst-Korrekturen post-Adopt:** (a) Klassifikation 4-stufig bleibt (semantisches WARN→FAIL Upgrade von UNSTAGED_NEW, nicht neues Bucket) — Wortlaut korrigiert · (b) Sync-Set reduziert (SYSTEM.md entfällt, pipeline-item-Event reicht; Spec-File ist Begleit-Artefakt, kein eigener System-Zustand-Event).
-7. **Codex-Errata (~23:30 GMT+2 Parallel-Session-Fix):** Root-Cause NICHT Account-Entitlement, sondern Codex-CLI-v0.121.0-Default-Model-Inkompatibilität. Fix: `~/.codex/config.toml` mit `model = "gpt-5.3-codex"` gepinnt (auch `gpt-5.4-mini` funktional). `codex exec` PASS verified ~10.798 tokens. Memory `feedback_review_via_codex_not_advisor` von Parallel-Session geupdated ("blocked" → "2026-05-21 Fix"). MEMORY.md Index entsprechend angepasst. **Build-Session-Implikation:** Codex Single-Pass auf `validator.py` + `_smoke_test.py` ist jetzt regulär möglich.
-8. **Spec-File persistiert** (untracked-on-disk per `05_Archiv/*`-gitignore, intentional historisch-Archiv-Konvention): `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` (476+ Z., post-Errata-Patch).
-
-**Confidence (Stand 22:00 GMT+2 + Codex-Errata):** ~97% nach allen Fix-Adoptions + Selbst-Korrekturen.
-
-**Pages created/updated (System-Event-Scope):**
-- `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` — NEW (untracked, gitignored per `.gitignore` Z.18 "Superpowers docs (nur lokal relevant)"; aktiver Spec-Pfad, NICHT `05_Archiv/superpowers-pre-sunset/` was nur historisch-Ruflo-Sunset-Archiv ist)
-- `00_Core/PIPELINE.md` — #73a Status PENDING → SPEC-COMPLETE Build-deferred, Footer v2.49 → v2.50
-- dieser log.md-Eintrag
-- User-globale Memory `feedback_review_via_codex_not_advisor.md` + `MEMORY.md` (Codex-Fix-Documentation, von Parallel-Session committed — kein Repo-Commit)
-
-**Sync-Set (§18 Pipeline-Item-Event, scoring-neutral):** PIPELINE.md + log.md (dieser Eintrag). Spec-File NICHT im Sync-Set wegen `05_Archiv/*` gitignored (intentional). **KEIN** SYSTEM.md (Selbst-Korrektur §8: Spec-File ist Begleit-Artefakt, kein eigener System-Zustand-Event). **KEIN** PORTFOLIO + Faktortabelle + score_history + config.yaml + xlsx + flag_events (kein Score/FLAG/Sparraten-Event). **KEIN** STATE.md-Edit (Critical-Alert-Window unverändert).
-
-**Lehre:**
-- **Gemini-direct-stdin-pipe ist empirisch validierter Cross-Sync-Pfad** (Bridge umgangen). Memory `reference_gemini_agent_not_bridge_script` bestätigt. 5 substantielle Findings inkl. 1 HIGH-Loophole das mir und Self-Review-Pass entging — externer Reviewer-Bias-Counter zahlt sich aus.
-- **Codex-Block-Forensik (22:00 → 23:30 GMT+2):** Block war NICHT Account-Entitlement, sondern CLI-Version-Pin-Issue. User-direktive "an anderer Stelle gefixt" → CLI-v0.121.0 Default-Model umgangen via `config.toml model="gpt-5.3-codex"`. Lehre: Codex-Block-Diagnose immer auch CLI-Version-Pin testen, nicht nur Account-Entitlement annehmen.
-- **Brainstorming-Skill-Disziplin auf Skill-Spec angewendet** (Pickup zum eigenen Tooling): 8 Sektionen sequenziell präsentiert mit Approval-Loop pro Sektion, Spec-Datei via Skill-Konvention in `05_Archiv/superpowers-pre-sunset/specs/`. Memory `feedback_brainstorming_terminal_override_dynastie` gehalten (Spec-Phase abgeschlossen, Execution separate Session).
-- **Spec-Pfad-Konvention klargestellt** (User-Korrektur Session-End): aktive Specs in `docs/superpowers/specs/`, NICHT `05_Archiv/superpowers-pre-sunset/specs/` (= Ruflo-Sunset-Historik-Archiv). Beide Pfade gitignored (`docs/superpowers/` per `.gitignore` Z.18, `05_Archiv/*` per Z.8). Spec-Files leben lokal, werden nicht ge-pushed — by-design "nur lokal relevant"-Konvention.
-
-**Cross-Reference:** `docs/superpowers/specs/2026-05-21-paragraph-18-sync-design.md` (untracked) · PIPELINE.md #73a SPEC-COMPLETE · Commit `<TBD>` · Memory `feedback_review_via_codex_not_advisor` 2026-05-21-Fix-Update · `reference_gemini_agent_not_bridge_script` empirisch validiert.
-
-**Nächste Tracks:** #73a Build-Session deferred (~2.5-3h, Codex jetzt verfügbar als Primär-Reviewer). #73b xlsx-smoke-test-runner danach (PIPELINE-#73-Reihenfolge a vor b). #73c §18.1 Event-Typ-Zeile 5 KONTEXT §6 als separates Sub-Item dokumentiert. Spec-Review durch User in neuer Session (User-Direktive: !SessionClose statt Mid-Session-Review-Gate). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert. **Codex-Smoke-Test bei nächster Session als Auftakt-Bestätigung des Fix.**
-
+> **Pre-2026-05-22 Banner-History archived** -> [../../../05_Archiv/log-bis-2026-05-21-archiv.md](../../../05_Archiv/log-bis-2026-05-21-archiv.md)
+> Reason: rolling retention; archive contains verbatim history.
 ## [2026-05-22] system | #73a paragraph-18-sync Spec v0.1 → v0.3 — Codex-Spec-Review-3-Runden appliziert (scoring-neutral, Pipeline-Item-Event)
 
 **Event-Typ:** Pipeline-Item-Status-Refinement (SPEC-COMPLETE v0.1 → SPEC-COMPLETE v0.3 Build-ready, kein Score/FLAG/Sparraten-Touch)
@@ -1027,3 +785,47 @@ HIGH-3 Codex-Claim raises TypeError at runtime ist auf Python 3.14.3 (Project-En
 - Vault `log.md` (dieser Eintrag)
 
 **Cross-Reference:** PIPELINE #80 (DONE-Body) · SYSTEM.md §Skill-Registry · failure_modes.md MED-13 · PIPELINE #81 (v0.2.0 Roadmap, unverändert) · Memory `feedback_cross_check_skill_vs_standalone` (Bug-Klasse 22:25-Discovery) · Karpathy §0 (Bugfix-only-Disziplin) · Codex-Re-Audit `ae2e863dc1869630a` (3 HIGH + 1 FP + 2 MED-defer).
+
+## [2026-05-24] system | core-slim-refactor v0.1.1 Pre-Flight non-dry Validation DONE — HIGH-1/3/4 in der Wildnis verifiziert (PIPELINE #80 Battle-Tested)
+
+**Event-Typ:** System-Zustand-Refinement (Skill-Validation, scoring-neutral). Erweitert PIPELINE #80 DONE-Status um empirischen "battle-tested"-Beweis. Kein neuer System-State (Skill bereits seit 23.05. v0.1.1), nur Wildness-Empirie.
+
+**Was passiert ist:**
+- Pre-Flight non-dry-Run von core-slim-refactor v0.1.1 gegen Vault `log.md` (Pattern C Date-Cut, `cut_before=2026-05-22`).
+- Config: `_tmp_preflight/log-md-date-cut-2026-05-22.yaml` (ephemer, post-Run cleanup; nicht in Skill-Verzeichnis).
+- Run-Resultat: Exit 0, P0→P7 alle clean, ~5s Laufzeit.
+- Archive geschrieben: `05_Archiv/log-bis-2026-05-21-archiv.md` (48.618 b, 12 Einträge: 5×2026-05-17 + 3×2026-05-18 + 4×2026-05-21). `.gitignored` (`05_Archiv/*`).
+- log.md: 187.619 → 139.424 b (–48.195 b), 22 Einträge behalten (14×2026-05-23 + 8×2026-05-22).
+
+**Verifizierte Fixes (n=1 in der Wildnis):**
+- **HIGH-4** P0+P7 cp1252-Fix ✅ — Audit-Subprocess gegen 00_Core (PIPELINE/STATE/INSTRUKTIONEN voll mit `§`/`→`/Umlauten) lief vollständig durch ohne `TypeError: write() argument must be str, not None`. Reinfall der 22:25-Klasse ist behoben.
+- **HIGH-1** Pointer-Relative-POSIX ✅ — neuer Pointer log.md Z.8: `[../../../05_Archiv/log-bis-2026-05-21-archiv.md]` (relativer POSIX-Pfad als Display-Text). Cross-Check: alter v0.1.0-Pointer Z.6 zeigt noch absoluten Windows-Pfad als Display-Text (Bug-Beweis daneben sichtbar).
+- **HIGH-3** `fail_close_on_drift` default `false` ✅ — P0 Audit returned rc=1 (2 FAIL + 3 WARN baseline-State): stderr `WARNING: P0 audit returned rc=1 (advisory; set audit.fail_close_on_drift=true to enforce)`, Run weiterlief regelkonform.
+- **MED-NEW** P2 Classify Diagnostic ⚠️ N/A — P2 classifyte erfolgreich (12+22), Diagnostic-Pfad nicht getriggert. Bleibt v0.1.2-Verify-TODO (Edge-Case-Run mit z.B. `cut_before=1970-01-01` für `EXIT_CLASSIFY_EMPTY=4`).
+
+**Side-Findings (Carryover für v0.1.2/v0.2):**
+- **LOW-NEW (cosmetic)** Archive-Header (`{target_file}` Template) zeigt absoluten Windows-Pfad in "Source:"-Zeile: `Source: C:\Users\tobia\OneDrive\Desktop\Claude Stuff\07_Obsidian Vault\Obsidian Mindmap\Investing Mastermind\log.md`. HIGH-1 `_build_pointer_context`-Helper deckt nur Pointer-Context ab, nicht Archive-Header-Context. Vault-Portabilität-Lücke, nicht funktional-blockierend.
+
+**Layer-1+2 Autonomous-Emission Verify (empirisch, n=1):**
+- Beim ersten §18-File-Touch (log.md-Mutation in P5/P6 des Skill-Runs) habe ich **NICHT** spontan in user-facing Output autonom `!ParaSync18`-Empfehlung emittiert. Sync-Bewusstsein war nur im internen Reasoning vorhanden (durch User-Prompt-Anker gepriment), nicht in proaktiver Suggestion.
+- Konkret beobachtbar: lineare Verifikation (HIGH-1/3/4-Check) ohne autonome Sync-Pause-Suggestion bis User explizit nachfragte/erlaubte.
+- Empirischer Befund: **Layer-1 (Memory) + Layer-2 (INSTRUKTIONEN §18.0 + Routing-Table §18-File-Touch-Zeile) sind unter regulären Bedingungen nicht stark genug für autonome `!ParaSync18`-Emission ohne expliziten Aufgaben-Prompt-Anker.** Selbst mit kognitiver Präsenz durch User-Prompt nicht in user-facing Output sichtbar gemacht.
+- **Layer-3 (Pre-Commit-Hook `03_Tools/precommit/para18_sync_reminder.py`) wird durch diesen Commit live-getestet** — die noch unbewiesene Schicht. Erwartung: Hook erkennt `log.md` im staged-set, emittiert advisory WARN mit inferred event-type + `!ParaSync18`-Recovery-Hint. Bei OK = `PARA18_VERIFIED=1`-Bypass-Protokoll für diesen Sync-Run.
+- **Nachschärfungs-Hypothese (für separate Session):** Layer-1-Memory-Bullet zu §18 ist abstrakt; ein konkreter Trigger-Sentinel ("vor jedem Edit/Write auf §18-File-Set: STOP, suggestiere `!ParaSync18`") wäre wirksamer. Routing-Table §18-File-Touch-Zeile ist normativ aber wird passiv am Session-Start gelesen, nicht in aktives Reasoning-Loop überführt. → Memory + INSTRUKTIONEN-Wortlaut-Refinement, n=2-Empirie nach Layer-3-Test in diesem Commit als Substrate.
+
+**Sync-Set executed (§18 system-zustand-Event, scoring-neutral, atomar):**
+- Vault `log.md` (dieser Eintrag + Pattern-C-Mutation aus Pre-Flight-Run, 1 commit).
+- Archive `05_Archiv/log-bis-2026-05-21-archiv.md` (`.gitignored`, kein commit-relevant).
+- **KEIN** STATE.md / PIPELINE.md / SYSTEM.md / CORE-MEMORY / Faktortabelle / config.yaml / xlsx / jsonl Change — reine Validation-Empirie, kein neuer System-State, kein Score/FLAG/Sparraten-Touch.
+- `_tmp_preflight/` Cleanup separat (keine Commit-Berührung).
+
+**Skills used (Disziplin-Gates):**
+- `core-slim-refactor` v0.1.1 — first non-dry post-promotion Run.
+- `paragraph-18-sync` Validator (`03_Tools/para18_sync/validator.py system-zustand --dry-run --json`) — Bundle-Verify vor Commit.
+- `superpowers:verification-before-completion` — Pre-State-Hash + Post-State-Hash + Fix-Verify pro HIGH-Item vor Sync.
+- Memory `feedback_pre_commit_diff_inspection` — surgical `git add` (nur log.md), 55+ andere dirty Files draußen gehalten.
+- Memory `feedback_brainstorming_terminal_override_dynastie` — Pre-Flight ist Execution, kein Spec-Spawn; #81 Spec-Phase in separater Session.
+
+**Next:** (a) `_tmp_preflight/` Cleanup separat. (b) Layer-1+2 Nachschärfung als eigene Session mit n=2-Empirie aus Layer-3-Hook-Live-Test. (c) PIPELINE #81 v0.2.0 Spec-Phase (separate Session, brainstorming-terminal-override).
+
+**Cross-Reference:** PIPELINE #80 (DONE-Body, Battle-Tested-Annotation pending) · `03_Tools/precommit/para18_sync_reminder.py` (Layer-3-Live-Test diesen Commit) · INSTRUKTIONEN §18.0 (Auto-Invoke-Verankerung, Layer-2) · Memory `feedback_classifier_not_recognize_askuserquestion` · Memory `feedback_brainstorming_terminal_override_dynastie`.
