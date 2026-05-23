@@ -614,6 +614,25 @@
 
 **Cross-Reference:** Skill `core-slim-refactor` v0.1.0 First-Practical-Test · PIPELINE #78 Body-Update v2.63→v2.64 · SYSTEM.md §Skill-Registry + Footer v1.9→v1.10 · `01_Skills/core-slim-refactor/references/configs/session-handover-date-cut.yaml` (post-edit-state mit executed-Block) · `01_Skills/core-slim-refactor/references/failure_modes.md` v0.1.1-Backlog-Section · `05_Archiv/log-bis-2026-05-16-archiv.md` (Local-only Archive, 339.870 bytes, sha256 e4ca665f) · Codex `gpt-5.3-codex` agent a22827a45aff160a0 Diff-Re-Review.
 
+## [2026-05-23] system | PIPELINE #80 + #81 NEU — core-slim-refactor v0.1.1/v0.2.0 Roadmap (Karpathy 2-Phase-Brainstorm)
+
+**Event-Typ:** Pipeline-Item (NEU 2× DEFERRED, scoring-neutral). Direkter Follow-up zu First-Practical-Test (vorheriger Banner, Commit `6e7985e`).
+
+**Was:** Karpathy 2-Phase-Brainstorm-Output formal in PIPELINE.md verankert nach kritischem Pass „ist Option-1-Bundle wirklich optimal?" (Confidence-Selbsteinschätzung 75% → 92% nach Refinement):
+
+- **#80 v0.1.1 Bugfix-Release** (~1.5-2h, eigene Session): MEDIUM-12 Pointer-Template Display-Text-Fix + MEDIUM-13 Backup-Contract-Fix (broken `.pre-refactor.bak`) + optional MEDIUM-11 fail_close_on_drift Variable-Rename. **Sollte v0.2.0 first.**
+- **#81 v0.2.0 Feature-Release inkl. SH-Bullet-Adapter** (~3-4h, eigene Session, nach v0.1.1): MEDIUM-9 Pattern-C `date_parser.field: bullet` (Option A aus Brainstorm — neues Enum-Value + `bullet_pattern` + `trailing_stop_pattern`) + MEDIUM-10 Empirischer Header-Count-Pre-Check + MEDIUM-14 executed-Block Auto-Population + MEDIUM-15 Backlink-Scan graph-mode. Erstes Anwendungsziel: SESSION-HANDOVER.md Banner-Slim.
+
+**Karpathy-Begründung 2-Phase statt Bundle:** v0.1.1 = Bugfix-only-Release ist semantisch sauber (atomar reviewbar, easy rollback). v0.2.0 = Feature-Release mit klarem Scope. Bundle hätte „Feature + Bugfix" in 1 Release gemischt = Release-Hygiene-Verletzung. Trade-off: 2 Sessions bis SH-Slim möglich (gegen 1 bei Bundle), aber SH-Slim ist nice-to-have nicht critical-path (SH aktuell 42K, wächst ~3-5 Banner/Woche).
+
+**Sync-Set (pipeline-item, scoring-neutral):**
+- `00_Core/PIPELINE.md` (#80 + #81 NEU + Footer v2.64→v2.65)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+
+**Bewusst NICHT angefasst:** kein System-Event-Touch, kein Score/FLAG-Event, kein Skill-Substrate-Change.
+
+**Cross-Reference:** Brainstorm-Output Karpathy-Kritik-Pass 2026-05-23 abends-spät · PIPELINE #80 v0.1.1 Bugfix-Roadmap · PIPELINE #81 v0.2.0 Feature-Roadmap · `01_Skills/core-slim-refactor/references/failure_modes.md` MEDIUM-9..15 + LOW-3 + Hotfix-Priorisierung-Section · Vorheriger Banner heute First-Practical-Test (Commit `6e7985e`).
+
 ---
 
 ## [2026-05-23] system | 00_Core Slim-Refactor Phase 1 (Quick-Wins) + §18-Skill-Erstanwendung als Pre-Commit-Gate
