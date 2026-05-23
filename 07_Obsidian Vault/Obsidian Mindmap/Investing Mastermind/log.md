@@ -633,6 +633,31 @@
 
 **Cross-Reference:** Brainstorm-Output Karpathy-Kritik-Pass 2026-05-23 abends-spät · PIPELINE #80 v0.1.1 Bugfix-Roadmap · PIPELINE #81 v0.2.0 Feature-Roadmap · `01_Skills/core-slim-refactor/references/failure_modes.md` MEDIUM-9..15 + LOW-3 + Hotfix-Priorisierung-Section · Vorheriger Banner heute First-Practical-Test (Commit `6e7985e`).
 
+## [2026-05-23] system | PIPELINE #80 Scope-Update post-Test-Empirie (Pattern A+B Dry-Runs)
+
+**Event-Typ:** Pipeline-Item (Body-Update, scoring-neutral). Follow-up zu #80/#81-Roadmap-Commit `def3435` nach User-Direktive „weitere Tests" auf v0.1.0.
+
+**Was:** 15 min Test-Coverage-Erweiterung (Pattern A + B Dry-Runs auf retro-doc Worked-Examples + Vault-Survey) lieferte 3 substantielle neue Befunde, die v0.1.1-Scope materiell ändern:
+
+1. **MED-11 → HIGH-3 Promotion (Skill-Adoption-Blocker):** alle 3 Worked-Examples haben `fail_close_on_drift: true` Default. Pattern A+B mit `--force-rerun` beide **Exit 3 (EXIT_AUDIT)** auf aktuellem 10/15-PASS Repo-State. Bedeutet: jedes Repo mit imperfekter Audit-State blockt Skill komplett ohne Config-Patch. → v0.1.1 HIGH-Hotfix statt optional-Variable-Rename.
+2. **LOW-1 → MEDIUM-NEW Promotion (Diagnostic-Output):** Pattern A+B `--skip-audit --dry-run` liefern nur `=== P2 Classify FAIL ===` ohne Reason. User-Self-Debugging nicht möglich. → v0.1.1 MEDIUM mit stderr-Hint + separater Exit-Code für ANCHOR_NOT_FOUND vs CLASSIFY_EMPTY.
+3. **Vault-Survey: 0 weitere `## DATE`-Chronicles im Vault.** log.md war wirklich einziger Pattern-C-Live-Use-Case im aktuellen System → bestätigt strategische Priorität für v0.2.0 Bullet-Adapter, aber Karpathy 'Bugfix-First' bleibt: v0.1.1 vor v0.2.0.
+
+**Updated v0.1.1 Scope (5 Items, ~2-3h von ~1.5-2h):** HIGH-1 MED-12 Pointer-Display + HIGH-2 MED-13 Backup-Contract + HIGH-3 MED-11 fail_close_on_drift Adoption-Blocker + MEDIUM-NEW LOW-1-Promoted Diagnostic + optional Variable-Rename.
+
+**Karpathy-Lehre:** User-Vorschlag „mehr Tests" hat sich gelohnt — 15 min lieferten 3 Befunde davon 2 die Scope materiell ändern. Empirie > Annahme. **Take-away:** Pattern-Coverage-Tests (alle 3 Pattern in 1 Session retrospektiv durchlaufen) sollten in v0.1.1 Build-Gate-3 als standard worked-example-coverage-Test in Test-Suite.
+
+**Re-Prio v0.2.0 vor v0.1.1 explizit ABGELEHNT:** Karpathy 'Bugfix-first'-Disziplin streng — v0.2.0-Features auf buggy v0.1-Foundation = building on sand. MED-11 als Adoption-Blocker macht v0.1.1 DRINGENDER, nicht weniger dringend.
+
+**Sync-Set (pipeline-item, scoring-neutral):**
+- `00_Core/PIPELINE.md` (#80 Body-Update mit 5-Item-Scope + Footer v2.65→v2.66)
+- `01_Skills/core-slim-refactor/references/failure_modes.md` (Hotfix-Priorisierung-Section mit Test-Empirie-Update + 5-Item-Bundle-Aufstellung)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+
+**Bewusst NICHT angefasst:** kein System-Event-Touch (Skill bleibt v0.1.0 unverändert), kein Score/FLAG-Event, SYSTEM.md nicht angefasst (kein Skill-Registry-Bump).
+
+**Cross-Reference:** PIPELINE #80 Body-Update (v0.1.1 5-Item-Scope) · failure_modes.md Hotfix-Priorisierung-Section (Test-Empirie-Update) · vorheriger Banner #80/#81-Roadmap (Commit `def3435`) · Test-Empirie 2026-05-23 abends-spät: Pattern A `ruflo-sunset-bucket.yaml --dry-run --force-rerun` Exit 3 + Pattern B `defcon-fat-rows-slim.yaml --dry-run --force-rerun` Exit 3 + Vault-Survey `find ... -exec grep ...` 0 Treffer.
+
 ---
 
 ## [2026-05-23] system | 00_Core Slim-Refactor Phase 1 (Quick-Wins) + §18-Skill-Erstanwendung als Pre-Commit-Gate

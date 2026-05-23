@@ -253,13 +253,30 @@ Codex-Diff-Re-Review-Befund: Im Archive `log-bis-2026-05-16-archiv.md` sind `[[�
 
 ---
 
-## v0.1.1 Hotfix-Priorisierung (Codex-Single-Pass-Vorschlag 2026-05-23 abends-spät)
+## v0.1.1 Hotfix-Priorisierung (Codex-Single-Pass-Vorschlag 2026-05-23 abends-spät + Test-Empirie-Update)
+
+**Original-Codex-Empfehlung (3 Items):**
 
 1. **HIGH — Pointer-Display-Text-Bug** (MEDIUM-12) — Vault-UX-Defect, portable across all future runs
-2. **HIGH — Empirischer Header-Count-Pre-Check** (MEDIUM-10) — fängt silent worked-example-drift
+2. **HIGH — Empirischer Header-Count-Pre-Check** (MEDIUM-10) — fängt silent worked-example-drift (Re-Klassifiziert zu v0.2.0 als Feature siehe PIPELINE #81)
 3. **HIGH — Backup-Contract-Fix** (MEDIUM-13) — dokumentierte Atomicity-Garantie ist broken
 
-MEDIUM-9 (Bullet-List Pattern), MEDIUM-11 (Variable-Rename oder Drift-Logic), MEDIUM-14 (Auto-Populate), MEDIUM-15 (Backlink-Graph) sind Feature-Erweiterungen, nicht Hotfixes.
+**Test-Empirie-Update 2026-05-23 abends-spät (nach Pattern A+B `--dry-run --force-rerun` auf retro-doc Worked-Examples):**
+
+4. **HIGH-3 (NEU promoted aus MEDIUM-11)** **MEDIUM-11 ist Skill-Adoption-Blocker**, nicht nur Misnomer. Empirische Bestätigung:
+   - Pattern A `ruflo-sunset-bucket.yaml --dry-run --force-rerun` → **Exit 3 (EXIT_AUDIT)** (P0 blocked)
+   - Pattern B `defcon-fat-rows-slim.yaml --dry-run --force-rerun` → **Exit 3 (EXIT_AUDIT)** (P0 blocked)
+   - **Root-Cause:** alle 3 Worked-Examples haben `fail_close_on_drift: true` (Default), Code Z.112 prüft any-nonzero → auf jedem real Repo mit imperfekter Audit-State (dynastie-depot heute: 10/15 PASS — normal, nicht außergewöhnlich) failt P0 hart.
+   - **Konsequenz:** Skill in v0.1.0 effektiv nicht nutzbar ohne Config-Patch. Adoption-Blocker für jeden New-User.
+   - **Fix-Optionen:** (a) Default auf `false` (advisory) — schnellste Fix, oder (b) Variable-Rename auf `fail_close_on_any_nonzero` + Default `false` + Doku-Update — semantisch ehrlicher.
+5. **MEDIUM-NEW (NEU promoted aus LOW-1)** **Diagnostic-Output bei P2 Classify-Fail.** Pattern A+B mit `--skip-audit` liefern nur `=== P2 Classify FAIL ===` ohne irgendeine Reason. By-design EXIT 4 (CORE-MEMORY §13 bereits geslimmt), aber User sieht das nicht.
+   - **Fix-Empfehlung:** stderr-Hint mit Classify-Statistik (n_rows scanned, n_matches found, threshold/anchor used) bei Exit 4 + separater Exit-Code `EXIT_ANCHOR_NOT_FOUND` (5) vs `EXIT_CLASSIFY_EMPTY` (4).
+
+**Updated v0.1.1 Bundle (5 Items, ~2-3h Aufwand):** HIGH-1 MED-12 + HIGH-2 MED-13 + HIGH-3 MED-11 + MEDIUM-NEW LOW-1-Promoted + optional MED-11-Variable-Rename (separat oder mit HIGH-3 gebundled).
+
+**v0.2.0 Feature-Items (unverändert):** MEDIUM-9 SH-Bullet-Adapter, MEDIUM-10 Header-Count-Pre-Check, MEDIUM-14 executed-Auto-Populate, MEDIUM-15 Backlink-Graph.
+
+**Karpathy-Reflection (Test-Empirie):** User-Vorschlag "weitere Tests" hat 3 substantielle neue Befunde geliefert in 15 min Aufwand: (a) Vault-Survey 0 weitere Pattern-C-Targets → strategischer Befund v0.2.0-Bedarf, (b) MED-11 ist Adoption-Blocker → HIGH-Promote, (c) LOW-1 ist HIGH-Promote-Kandidat → MEDIUM-Promote. Empirie > Annahme bestätigt.
 
 ---
 
