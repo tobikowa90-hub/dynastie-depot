@@ -71,8 +71,13 @@ def _force_fail_phase() -> str | None:
 
 
 def _maybe_force_fail(phase: str) -> None:
-    if _force_fail_phase() == phase:
+    target = _force_fail_phase()
+    if target == phase:
         raise RuntimeError(f"forced fail at {phase} (test sentinel)")
+    if target == f"{phase}_SYSEXIT":
+        # Test-sentinel for CP18 HIGH-1 regression: ensure rollback catches
+        # SystemExit (BaseException subclass) as well as Exception.
+        raise SystemExit(EXIT_GATE_FAIL)
 
 
 # P0: Pre-Audit-Baseline
@@ -312,6 +317,23 @@ def phase_p6(cfg: ConfigObject, args: argparse.Namespace) -> None:
 # P7: Hybrid-Gate
 
 
+def _evaluate_p18_result(returncode: int, stdout: str) -> tuple[bool, str]:
+    """Decide §18-gate pass/fail from a paragraph-18-sync subprocess result.
+
+    Returns (passed, reason). Extracted as a pure function so HIGH-2 + HIGH-3
+    (rc==0 + status=FAIL  /  rc!=0 + status=PASS) are unit-testable without
+    subprocess infrastructure.
+    """
+    try:
+        data = json.loads(stdout) if stdout.strip() else {}
+    except json.JSONDecodeError:
+        return False, f"json-parse-error (rc={returncode})"
+    status = data.get("status")
+    if returncode != 0 or status != "PASS":
+        return False, f"rc={returncode} status={status}"
+    return True, "rc=0 status=PASS"
+
+
 def phase_p7(cfg: ConfigObject, repo_root: Path, args: argparse.Namespace, baseline: dict) -> None:
     _emit_phase("P7 Hybrid-Gate", "START")
     p18_script = repo_root / "01_Skills" / "paragraph-18-sync" / "scripts" / "p18_sync.py"
@@ -325,19 +347,31 @@ def phase_p7(cfg: ConfigObject, repo_root: Path, args: argparse.Namespace, basel
     else:
         try:
             r = subprocess.run(
-                p18_cmd, capture_output=True, text=True, cwd=str(repo_root), check=False
+                p18_cmd,
+                capture_output=True,
+                text=True,
+                cwd=str(repo_root),
+                check=False,
+                timeout=30,
             )
             sys.stdout.write(r.stdout)
-            if r.returncode != 0:
-                try:
-                    data = json.loads(r.stdout)
-                    if data.get("status") != "PASS":
-                        _emit_phase("P7 Hybrid-Gate", "FAIL")
-                        raise SystemExit(EXIT_GATE_FAIL)
-                except (json.JSONDecodeError, KeyError) as parse_err:
-                    sys.stderr.write(f"§18-Skill returned {r.returncode}; treating as FAIL\n")
-                    _emit_phase("P7 Hybrid-Gate", "FAIL")
-                    raise SystemExit(EXIT_GATE_FAIL) from parse_err
+            # CP18 HIGH-2 + HIGH-3 fix: require BOTH rc==0 AND status=="PASS".
+            # rc-only or status-only acceptance creates two false-PASS branches:
+            #   rc==0  + status=FAIL  → previously passed (no JSON check)
+            #   rc!=0  + status=PASS  → previously passed (inverted condition)
+            passed, reason = _evaluate_p18_result(r.returncode, r.stdout)
+            if not passed:
+                if r.stderr:
+                    sys.stderr.write(r.stderr[-2000:] + "\n")
+                sys.stderr.write(f"§18-Skill {reason}; treating as FAIL\n")
+                _emit_phase("P7 Hybrid-Gate", "FAIL")
+                raise SystemExit(EXIT_GATE_FAIL)
+        except subprocess.TimeoutExpired as t_err:
+            sys.stderr.write(
+                f"§18-Skill subprocess timeout after {t_err.timeout}s; treating as FAIL\n"
+            )
+            _emit_phase("P7 Hybrid-Gate", "FAIL")
+            raise SystemExit(EXIT_GATE_FAIL) from t_err
         except FileNotFoundError:
             sys.stderr.write(
                 "WARNING: paragraph-18-sync not found; skipping §18-gate (operative runs MUST resolve)\n"
@@ -445,23 +479,29 @@ def main(argv: list[str] | None = None) -> int:
 
         archive_path = phase_p4(cfg, rowset, repo_root, timestamp, args, baseline)
 
+        # CP18 HIGH-1 fix: rollback sites must catch (Exception, SystemExit).
+        # phase_p7 signals gate-fail via SystemExit(EXIT_GATE_FAIL) which inherits
+        # from BaseException, not Exception — the previous `except Exception` would
+        # bypass rollback and the documented P7-atomicity-guarantee would silently
+        # break. (Re)-applied to P5/P6 for symmetry though they currently raise
+        # only regular Exceptions; if a future _maybe_force_fail or subprocess
+        # adds SystemExit, atomicity stays intact.
         try:
             phase_p5(cfg, target_md, rowset, archive_path, timestamp, args, baseline)
-        except Exception:
+        except Exception, SystemExit:
             _restore_backup(baseline)
             _cleanup_archive_on_fail(archive_path)
             raise
 
         try:
             phase_p6(cfg, args)
-        except Exception:
+        except Exception, SystemExit:
             _restore_backup(baseline)
             raise
 
         try:
             phase_p7(cfg, repo_root, args, baseline)
-        except Exception:
-            # HIGH-1 Codex-R1: P7 gate-fail must trigger same atomicity-rollback as P5/P6.
+        except Exception, SystemExit:
             _restore_backup(baseline)
             _cleanup_archive_on_fail(archive_path)
             raise

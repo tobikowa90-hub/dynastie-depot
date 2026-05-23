@@ -123,6 +123,26 @@ def test_backup_restored_on_p5_simulated_fail(tmp_path):
     assert target.read_text(encoding="utf-8") == original
 
 
+def test_backup_restored_on_p7_sysexit(tmp_path):
+    """CP18 HIGH-1 regression: P7 gate-fail signals via SystemExit (BaseException),
+    not Exception. Rollback site must catch BOTH for atomicity to hold."""
+    target = tmp_path / "target.md"
+    shutil.copy(FIXTURES / "bucket_archive_sample.md", target)
+    original = target.read_text(encoding="utf-8")
+    cfg = _write_throwaway_config(tmp_path, str(target))
+    result = _run(
+        [str(cfg), "--skip-audit"],
+        env={"CORE_SLIM_REFACTOR_FORCE_FAIL_PHASE": "P7_SYSEXIT"},
+    )
+    assert result.returncode == 8, (
+        f"expected exit 8 (gate-fail), got {result.returncode}\n{result.stderr}"
+    )
+    assert target.read_text(encoding="utf-8") == original, (
+        "P7 SystemExit must trigger rollback — target was not restored"
+    )
+    assert not (tmp_path / "arch.md").exists(), "P7 rollback must cleanup partial archive"
+
+
 def test_dry_run_matches_live_for_bucket_archive(tmp_path):
     """AK2 (Spec section 5.4): dry-run output describes the same delta as live run."""
     import re

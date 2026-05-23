@@ -110,8 +110,86 @@ Siehe `yaml_schema.md` Path-Safety-Gap. Symptom: `archive.path` kann beliebige a
 
 ---
 
+## CP18 Codex-Review Befunde (2026-05-23, Wave-7-Break-4)
+
+### HIGH-1: P7 SystemExit umging Rollback (CLOSED)
+
+`phase_p7` signalisiert Gate-Fail via `SystemExit(EXIT_GATE_FAIL)`. `SystemExit`
+erbt von `BaseException`, NICHT von `Exception` — das ursprüngliche
+`except Exception` am P7-Call-Site (eingeführt für Break-2 HIGH-1) hat den
+Atomicity-Rollback **stillschweigend übersprungen**. Die dokumentierte
+P7-Atomicity-Garantie war faktisch broken.
+
+- **Fix Commit:** Diff CP18-HIGH-Fix-Bundle. Alle Rollback-Sites (P5/P6/P7) catchen jetzt `(Exception, SystemExit)`.
+- **Regression-Test:** `tests/test_pipeline.py::test_backup_restored_on_p7_sysexit` (env-sentinel `P7_SYSEXIT` → SystemExit; asserts target+archive cleanup).
+
+### HIGH-2: §18-Gate akzeptierte rc==0 mit status=FAIL (CLOSED)
+
+`phase_p7` prüfte den JSON-`status` nur innerhalb `if r.returncode != 0`.
+rc==0-Antworten mit `{"status": "FAIL"}` wurden silent als Gate-PASS interpretiert.
+
+- **Fix:** Refactor zu pure-function `_evaluate_p18_result(rc, stdout)` → require BOTH rc==0 AND status=="PASS".
+- **Regression-Test:** `tests/test_p18_gate_parser.py::test_rc0_status_fail_blocks_high2`.
+
+### HIGH-3: §18-Gate akzeptierte rc!=0 mit status=PASS (CLOSED)
+
+Innerer Check `if data.get("status") != "PASS"` short-circuitete den Fail-Branch
+auch wenn rc Failure signalisierte. Subprocess-Failures mit hängengebliebenem
+JSON-PASS-Body bestanden den Gate.
+
+- **Fix:** Selbe Logik wie HIGH-2 — beide Konditionen müssen erfüllt sein.
+- **Regression-Test:** `tests/test_p18_gate_parser.py::test_rc_nonzero_status_pass_blocks_high3`.
+
+### MEDIUM-4: §18-Subprocess Timeout (CLOSED inline)
+
+Vorher kein `timeout=`-Parameter → hängender p18-Prozess hätte Skill unbegrenzt blockiert. `subprocess.run(..., timeout=30)` + `TimeoutExpired` → EXIT_GATE_FAIL.
+
+### MEDIUM-5: §18-stderr Surfacing (CLOSED inline)
+
+Vorher wurde nur stdout geschrieben; stderr-Diagnostics gingen verloren. Jetzt: `r.stderr[-2000:]` auf jedem Fail-Branch.
+
+### MEDIUM-6: classify_date_cut `section_anchor`-Parameter unused (deferred v0.1.1)
+
+`patterns.py::classify_date_cut` akzeptiert `section_anchor`-Parameter aber
+ignoriert ihn — die Klassifikation scant immer das gesamte Dokument.
+Config-Schema erzwingt `target.section: null` für date-cut (siehe `config.py`
+`test_date_cut_requires_null_section`), daher kein Verhaltens-Bug — nur
+Signatur-Klarheits-Gap.
+
+- **Mitigation v0.1:** Schema-Block sorgt für consistent wholesale-only-Semantik.
+- **v0.1.1 TODO:** Entweder Parameter entfernen, oder anchor-scoped date-cut implementieren (Spec-Erweiterung nötig).
+
+### MEDIUM-7: Duplicate Section-Anchors silent-ambiguous (deferred v0.1.1)
+
+`patterns.py::_find_section_indices` nimmt den **ersten** Match ohne Duplicate-Detection. Bei wiederholten Headings (z.B. zwei `## 13. System-Lifecycle-History`) wird der falsche Block mutiert, ohne Warnung.
+
+- **Likelihood:** LOW — Dynastie-Depot-Convention sind Section-Headings unique pro File.
+- **v0.1.1 TODO:** Duplicate-Detection bei Classify-Phase + fail-close mit Diagnostic.
+
+### MEDIUM-8: Backup-Overwrite ohne Integrity-Check (deferred v0.1.1)
+
+`phase_p0` schreibt Backup an feste `<target>.pre-refactor.bak`-Pfad ohne Hash/Size-Verifikation. Bei aufeinanderfolgenden Skill-Runs ohne success-cleanup wird der vorherige Backup-Inhalt überschrieben.
+
+- **Mitigation v0.1:** `_cleanup_backup_on_success` löscht Backup nach erfolgreichem Run; Karpathy-Disziplin: nie zwei Skill-Runs ohne Commit dazwischen.
+- **v0.1.1 TODO:** Unique-Path-Suffix (timestamp) ODER refuse-overwrite + post-write-Hash-Verify.
+
+### LOW-1: Missing-Anchor kollabiert in EXIT_CLASSIFY_EMPTY (deferred v0.1.1)
+
+Anchor-not-found → leere Section → generic exit 4. Diagnose weniger präzise als `failure_modes.md`-Tabelle suggeriert ("Adjust keywords/cut_before/fat_threshold" hilft nicht bei tippfehler im section-anchor).
+
+- **v0.1.1 TODO:** Separater EXIT_ANCHOR_NOT_FOUND oder explicit stderr-Hint bei leerer Section + section_anchor set.
+
+### LOW-2: Exit-Code-Test-Coverage-Gaps (partial-CLOSED)
+
+Codex-Tabelle bemängelte uncovered Codes 3/4/6/8/10/99. CP18 schließt 8 (test_backup_restored_on_p7_sysexit). 4 ist bereits durch worked-example-A/B-EXIT-4-Verhalten covered (siehe `.gate3-pass`). Verbleibend für v0.1.1: 3 (audit-drift), 6 (backlink-hit fail-close), 10 (reference-mismatch — bereits XFAIL covered für AK3), 99 (Approach-Reset).
+
+- **v0.1.1 TODO:** Dedicated Tests für 3/6/99 mit Force-Audit-Drift-Sentinel + Force-Backlink-Hit-Fixture + Force-Approach-Reset-Trigger.
+
+---
+
 ## Cross-Reference
 
 - Spec §4 Error-Handling (full text): `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` lines 372-454
 - Codex-R1 Review (Wave-5-Break-2): commit a0dc16d log + R1-result transcript
+- Codex-CP18-Review (Wave-7-Break-4, 2026-05-23): 3 HIGH (all CLOSED via diff-bundle) + 5 MEDIUM (2 CLOSED inline / 3 deferred v0.1.1) + 2 LOW (deferred v0.1.1)
 - Karpathy Approach-Reset: `00_Core/INSTRUKTIONEN.md §0`
