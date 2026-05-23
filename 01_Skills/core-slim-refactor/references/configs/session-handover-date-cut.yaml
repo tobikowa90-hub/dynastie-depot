@@ -10,7 +10,7 @@ profile_name: log-md-date-cut
 # executed-block after live-run, but v0.1 requires manual populate).
 executed:
   timestamp: "2026-05-23T18:46:32Z"
-  commit_sha: "TBD-post-commit"  # populated in follow-up commit (cycle-dep: SHA known only post-commit)
+  commit_sha: "6e7985e"  # commit that contains the first-real-run refactor (this field populated in follow-up commit per cycle-dep)
   reference_archive_sha: "e4ca665f4931281c373f0a87e61e20b53e08be4e60aee627bdd5ccef0a5385c3"  # sha256 of 05_Archiv/log-bis-2026-05-16-archiv.md (339,870 bytes, first-real-run output)
 
 target:
