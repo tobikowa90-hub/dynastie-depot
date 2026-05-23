@@ -2496,3 +2496,64 @@ System-Event, scoring-neutral. Plan `docs/superpowers/plans/2026-05-14-plugin-in
 - **Lean-Discipline-Pflege als systematischer Workflow:** 13 KB netto in Phase 1 (Quick-Wins). Phase 2 (Big Files: CORE-MEMORY 244 KB / INSTRUKTIONEN 84 KB / PIPELINE-DONE-Strip 68 KB / SESSION-HANDOVER 39 KB / SYSTEM 40 KB inhouse) deferred — schätzungsweise 50-100 KB Einsparpotenzial dort. Per-File-Review-Plan mit Codex-Diff-Re-Review pro Commit vorgesehen wegen höherer Cross-Ref-Risk.
 
 **Cross-Reference:** Conversation-Context 2026-05-23 02:00-03:00 MESZ Lint-Session · Codex-Subagent-Report `52298 total_tokens, 24 tool_uses, 728606 duration_ms` PASS-clean · PIPELINE #77 (NEU 🔵 Deferred SU-Ersatz Re-Eval) · CORE-MEMORY §13 2026-05-23-Eintrag · SYSTEM.md Footer v1.5→v1.6 · paragraph-18-sync v0.1.0 SKILL.md + `03_Tools/para18_sync/validator.py` + references/ (§18-Skill SSoT) · Memory `feedback_core_folder_lean_discipline` (Lean-Disziplin-Anker) · Memory `feedback_review_via_codex_not_advisor` (Codex canonical für Markdown-Lint) · Memory `reference_dynastie_log_location` (Vault-log.md-Pfad-Anker).
+
+## [2026-05-23] system | 00_Core Slim-Refactor Phase 2 Sub-Refactor #1 Teil 1 (CORE-MEMORY)
+
+**Event-Typ:** Meta-Refactor / System-Lifecycle (scoring-neutral, kein FLAG/Score-Move, kein Sparrate-Touch)
+
+**Was passiert ist:**
+
+5 Sub-§-Cuts in `00_Core/CORE-MEMORY.md` mit Migrate-before-Strip-Disziplin + Pointer-Stub-Architektur:
+
+1. **§3 Pre-v3.7-Positions-Entscheidungen** (5,0K MSFT/TMO/APH-Narrative + APH Q1 Tag-0-Snippet 29.04.) → `05_Archiv/CORE-MEMORY-§3-pre-v3.7-archiv.md`. **Migrate-Check:** APH Tag-0-Snippet schon redundant in §12.2 L454+ (Tag-0 Press-Release-Recap + Tag-+1-Vollanalyse Score 63→61) → kein Re-Migrate. §3 wird 1-Zeilen-Stub mit Pointer auf PORTFOLIO + Faktortabelle + §12 (−4,6K).
+
+2. **§6 Versions-Verlauf** — 5 Pre-v3.7-Rows (31.03.2026 Rebalancing v3.1, 01.04. config.md, 03.04. DEFCON v3.1, 15.04. Rebalancing v3.4, 16.04. DEFCON v3.5) → `05_Archiv/CORE-MEMORY-§6-pre-v3.7-versions-archiv.md`. Live-Tabelle ab v3.7 (17.04.2026 System-Gap-Release) + Header-Pointer (−0,3K).
+
+3. **§10 API-Audit-Log** — 4 April-Sub-§ (21.04. Drift-Audit-Sweep · 22.04. System-Audit-Tool v1.0 Deployment Phase E 18/19 · 22.04. Spät Task 19 + Fix-Welle E · 22.04. Spät-Nacht Phase E 19/19 DONE + Pfad-2-Entscheidung · 28.04. Provenance-Gate Go-Live) → `05_Archiv/CORE-MEMORY-§10-april-2026-archiv.md`. **IFRS-vs-ASC bleibt live** als zeitloses Non-US-Pflicht-Wissen. Live-Tool-Status (System-Audit + Provenance-Gate) SSoT bleibt SYSTEM.md §System-Zustand (−10,2K).
+
+4. **§11 Backtest-Ready Infrastructure** (7,2K) → kompakter Pointer-Stub auf SYSTEM.md §System-Zustand (Live-SSoT: 27 Score-Records, Forward-Verify-Pipeline, Provenance-Gate) + Live-Triggers 2026-10-17 (6M Delta-Pattern-Review) + 2028-04-01 (Gesamt-Backtest) + Dokumentations-Pfade (Spec/Plan/README). **Migrate-before-Strip:**
+   - **Befund 1** (Delta-Pattern braucht Vollanalyse-Baseline) + **Befund 2** (DEFCON-Threshold-Drift v3.x 80/65/50) + Backfill-Stand 2026-04-17 (24 Records aus §4-Rekonstruktion, 2 FLAG-Records MSFT+GOOGL) → `05_Archiv/CORE-MEMORY-§11-backtest-ready-history-archiv.md` (Backtest-Schema-Historie, weniger Live-Scoring-relevant)
+   - **Befund 3** (V Sub-Score-Korrekturen: Pricing-Power-Bonus nur mit Transcript-Belegung / Ownership-Threshold statt Gradient / Goodwill-Ausnahme Regel-4-Gating GW/Assets ≥30%) + **Befund 4** (Schema-Trigger ≠ SKILL-Regel-Semantik: TMO `fcf_trend_neg` mechanisch ≠ strukturell, WC-Delta + Multi-Year-Trajectory + OpInc-Parallelität vor FLAG-Aktivierung prüfen) → CORE-MEMORY.md §5 als Live-Scoring-Lektionen (−6,0K)
+
+5. **§5 Scoring-Lektionen** — 2 neue Lektionen aus §11-Befunde-Migrate: „V-Rescoring (18.04.2026) — Sub-Score-Strenge bei Validity-Mismatches" + „Schema-Trigger ≠ SKILL-Regel-Semantik (18.04.2026, TMO-Präzedenz)" (+1,7K).
+
+**Netto-Effekt:** CORE-MEMORY.md 235,4K → 216,8K (**−18,6K / −7,9%**).
+
+**Pointer-Stub-Architektur:** Pro Archiv-Cut bleibt 1-Zeilen-Pointer am Ursprungsort (`## 3. Aktive Positions-Entscheidungen (archiviert 2026-05-23)`, dann `**Voll-Archiv:** [...]`). §-Nummerierung stabil (kein §1→§2-Shift), keine externen Anchor-Broken-Links. **Backlink-Scan ergab:** aktive Refs nur auf §5/§6/§12/§13 in CLAUDE.md, STATE.md, INSTRUKTIONEN.md (§18-Sync-Set), SYSTEM.md L8-9 (Anchor-Links auf §6/§13), KONTEXT.md, PIPELINE.md (Numbering-Convention), SESSION-HANDOVER.md, paragraph-18-sync SKILL.md, Faktortabelle.md — alle Anchor-stabil. **Kein extern referenzierter §3/§10/§11** (Inhalte längst absorbiert in PORTFOLIO/Faktortabelle/§12 bzw. SYSTEM.md).
+
+**Stale Refs ignoriert** per User-Direktive: `02_Analysen/flag_event_study_2026-04-17.md` referenziert „§1"/„§3/§4" (historische Analyse-Datei, §1/§4 existieren in aktueller Struktur eh nicht mehr); Vault `log.md` ~30 historische §13-Refs in alten Sync-Einträgen (Log-Snapshots, kein Update nötig).
+
+**Archive-Files (4 neue) local-only** per Konvention `05_Archiv/*` gitignored (Whitelist-Exceptions in `.gitignore` nur für JSONL: `score_history.jsonl`/`flag_events.jsonl`/`portfolio_returns.jsonl`/`benchmark-series.jsonl`/`schema-portfolio-returns.md`); konsistent mit Präzedenzfall `CORE-MEMORY-Meilensteine-bis-14.04.2026.md` (auch nicht git-tracked seit 17.04.2026). Pointer funktionieren lokal in Editor/Obsidian — Remote/Cloud-Cron-Runtime hat keinen Archiv-Zugriff (akzeptiert per Single-User-Workflow-Konvention).
+
+**§13/§12 DEFERRED zu fresh Session:**
+- §13 Ruflo-Sweep (16 Entries, 60,5K — Ruflo Hard-Rollback 13.05. Sunset, Lehre lebt in Memory `feedback_viral_plugin_substrate_risk_eval` + git log + PIPELINE-Items #49/#50/#57 retro-stempled FAILED-RETRO) + Slim-Convention auf 7 fat Non-Ruflo (35,2K: FinnHub-Build · Watchlist-Refresh · PIPELINE #55 Phase-1 · Phase-D-1-Confidence-Upgrade · 3 weitere [Meta]/[Tools] Mai-9-Welle) + pre-23.04. Cut (20 Entries, 5,6K, 15.-22.04.) + §12 Quartals-Rollover-Check (PIPELINE #67 §18.6-Convention falls Ticker-Sub-§ >900 Z. — vermutlich noch nicht aktiv)
+- **Grund für Defer:** §13-Dichte (143K / 99 Z., 4-7K-Entries) sprengt Read-Token-Limit (62K Tokens für 55 Zeilen) → sichere atomare Replacement-Operation nicht im laufenden Session-Budget machbar. Per-Entry-Approach mit `ctx_execute_file`-Extract + targeted Block-Edits braucht eigenes Token-Budget.
+- **User-Direktive (Eckpfeiler heutige Session):** „Lint UND Memory-Erhalt" — Pause-Punkt statt Memory-Substanz unter Token-Druck zu verlieren. Disziplin > Vollständigkeit-im-einen-Sprint.
+
+**Pre-Commit-Gates:**
+- **§18-Skill `paragraph-18-sync v0.1.0`:** `python 03_Tools/para18_sync/validator.py system-zustand --version-bump --dry-run --json` → Expected-Set = `00_Core/CORE-MEMORY.md` + `00_Core/SYSTEM.md` + `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md` (alle 3 angefasst, kein xlsx-Warning, kein Quartals-Rollover-Warn).
+- **Codex Single-Pass Diff-Re-Review (gpt-5.3-codex)** pre-Commit.
+
+**Sync-Set §18 (System-Event, version-bump, scoring-neutral):**
+- `00_Core/CORE-MEMORY.md` (§3/§5/§6/§10/§11-Cuts + §13-Entry für Phase-2-Teil-1 + Footer v1.24→v1.25)
+- `00_Core/SYSTEM.md` (Footer v1.6→v1.7 + Stand-Bump auf Phase-2-Teil-1)
+- `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md` (dieser Eintrag)
+- 4 Archive-Files in `05_Archiv/` (untracked per Konvention, lokal persistent)
+
+**Bewusst NICHT angefasst:** PORTFOLIO.md / Faktortabelle.md / `01_Skills/dynastie-depot/config.yaml` / `03_Tools/Rebalancing_Tool_v3.4.xlsx` / `03_Tools/Satelliten_Monitor_v2.0.xlsx` / `05_Archiv/score_history.jsonl` / `05_Archiv/flag_events.jsonl` — **kein Score/FLAG/Sparraten-Event.** STATE.md Critical-Alert separat möglich falls gewünscht (nicht in Validator-Expected-Set). PIPELINE.md unverändert (kein neues Item, §13/§12-Defer ist Session-intern dokumentiert via CORE-MEMORY §13 + dieser log-Eintrag).
+
+**Lessons:**
+
+- **Migrate-before-Strip systematisch (User-Königsweg, verstetigt):** vor jedem SSoT-Strip Differential-Check vs Ziel-Quelle pflicht. **§3 APH-Tag-0** wäre redundant dupliziert ohne Check (Snippet schon in §12.2 — kein Re-Migrate gespart Edit-Aufwand). **§11 Befunde 3+4** wären verloren ohne Migrate nach §5 — ohne Check hätte Strip wertvolle V-Rescoring + TMO-fcf_trend_neg-Lektionen ins Archiv-File begraben (Live-Scoring-Decisions würden Disclosure-Knowledge benötigen).
+
+- **Pointer-Stub-Pattern bewährt:** 1-Zeile mit Archive-Link am Ursprungsort hält §-Nummerierung stabil. Externe Anchor-Links bleiben gültig (`SYSTEM.md L8-9 → CORE-MEMORY.md#6-system-upgrades-versionsverlauf`, `SYSTEM.md L9 → CORE-MEMORY.md#13-system-lifecycle-history` — beide post-Refactor noch valide). **Konsequenz:** Phase-2-Refactor-Pattern reusable für nachfolgende §-Slim-Refactors (INSTRUKTIONEN.md §29, PIPELINE.md DONE-Strip, SESSION-HANDOVER.md Banner-History).
+
+- **Backlink-Scan Vorab obligatorisch:** Grep-basierter Scan auf `CORE-MEMORY §X`-Pattern vor Cut zeigte aktive vs stale Refs. **Aktive Refs** (Live-SSoT-Files) → Pointer-Stub pflicht. **Stale Refs** (alte log.md-Einträge, historische Analyse-Files) → ignorieren per User-Direktive „nur was wir wirklich aktiv brauchen". Vermeidet sowohl Memory-Schwächung als auch unnötige Update-Welle.
+
+- **Token-Limit-Schwelle bei dichten Sections:** §13 143K / 99 Z. = 1,4K/Z. Avg, einzelne Einträge 5-7K. Read mit limit=55 → 62K Tokens-Hit (über 25K-Max-per-Read). **Per-Entry-Approach via `ctx_execute_file`** (Volltext bleibt Sandbox, nur Print indexiert) ist notwendige Strategie für Mega-Sections statt One-Big-Read+Edit. Lektion für nachfolgende Phase-2-Files mit ähnlicher Dichte.
+
+- **Disziplinärer Pause-Punkt:** „Lint UND Memory-Erhalt" sind Gleichrang-Direktive — wenn Token-Druck Memory-Substanz gefährdet, ist Pause + Commit + fresh-Session-Resume die korrekte Antwort. 5 saubere Sub-§-Cuts (lock-in −18,6K) > 7 Sub-§-Cuts unter Druck (Memory-Risk).
+
+- **Archive-Files local-only akzeptiert:** Konvention seit §1-Meilensteine-Archiv (17.04.2026) konsistent gehalten. Implikation für nachfolgende Phase-2-Refactors (Phase-2-Files #8 PIPELINE / #9 INSTRUKTIONEN / #10 SESSION-HANDOVER / #11 SYSTEM): Archive-Files ebenfalls in `05_Archiv/`, ebenfalls gitignored, ebenfalls Pointer-Stubs am Ursprungsort.
+
+**Cross-Reference:** CORE-MEMORY §13 2026-05-23-Eintrag (Phase 2 Sub-Refactor #1 Teil 1) · SYSTEM.md Footer v1.6→v1.7 · 4 Archive-Files in `05_Archiv/` (CORE-MEMORY-§3/§6/§10/§11-archiv.md) · §18-Skill `paragraph-18-sync v0.1.0` validator-Dry-Run + Final-Run · Codex `gpt-5.3-codex` Single-Pass Diff-Re-Review · Conversation-Context 2026-05-23 09:53-11:30 MESZ Phase-2-Teil-1-Session · Memory `feedback_core_folder_lean_discipline` (Lean-Disziplin-Anker) · `.gitignore` L8 `05_Archiv/*` (Local-only-Konvention).
