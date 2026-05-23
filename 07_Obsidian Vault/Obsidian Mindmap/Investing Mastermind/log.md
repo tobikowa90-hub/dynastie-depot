@@ -2644,3 +2644,54 @@ Nach Abschluss der Phase 2 Sub-Refactor #1 Teil 2 hat der User auf die 2 self-de
 - **Skill-Build-Aufwand vs Snapshot-Aufwand:** ~90-120 min (Skill) vs ~15 min (Snapshot). 2-Step-Pattern (Snapshot jetzt + Skill in fresh Session) konserviert Empirie ohne Token-Druck-Risiko.
 
 **Cross-Reference:** Phase-2-Teil-2-Commit `4c8d8ea` (Vorlauf-Foundation, gleicher Tag mittags) · `05_Archiv/refactor-tools/2026-05-23/README.md` (Pattern-Lineage + Build-Substrate) · 24.04.-Präzedenz `05_Archiv/superpowers-pre-sunset/plans/2026-04-24-00core-perfect-organization.md` · Memory `reference_markdown_refactor_tools_snapshot.md` (NEU) · Memory `feedback_core_folder_lean_discipline` (Lean-Disziplin-Anker) · Skill-Build-Präzedenzen `session-closure` v0.2.0 + `paragraph-18-sync` v0.1.0 (8-Phasen-Pipeline-Konvention).
+
+## [2026-05-23] system | PIPELINE #78 SPEC-READY — `core-slim-refactor` v0.1 Brainstorming + Codex R1+R2 GREEN
+
+**Event-Typ:** pipeline-item (Status-Transition #78 DEFERRED → SPEC-READY), scoring-neutral. Follow-up zu heute mittag #78-Anlegung + Substrate-Snapshot.
+
+**Was passiert ist:**
+
+User-Direktive bei Session-Start: Pfad (A) "Skill `core-slim-refactor` v0.1 zuerst bauen" gewählt aus Decision-Tree (A/B/C) zwischen Skill-Build vs Direkt-Continue mit 00_Core-Restbestand vs Stop. Brainstorming-Skill aktiviert per Memory `feedback_brainstorming_terminal_override_dynastie` (Spec-Pickup endet bei Codex + §18-Sync, NICHT bei writing-plans — Plan/Build separate Sessions).
+
+**Brainstorming-Workflow (6 Section-Approval-Gates):**
+
+1. **Scope-Entscheidung:** Pattern-canonical (3 Pattern A/B/C statt tight-file-bound oder universal). 4× empirisch validiert (24.04. + 3× 23.05.).
+2. **Gemini-Cross-Sync-Survey (User-Direktive vor Spec):** gemini-agent-Subagent (Memory `reference_gemini_agent_not_bridge_script`) enumerierte 7 Slim-Refactor-Candidates außerhalb 00_Core. Top-Tier: log.md (472 KB, Pattern C+A, vault-link-graph-Risk), tavily-spec (70 KB), dynastie-depot SKILL.md (70 KB, template-risk), Wiss-Fundierung-DEFCON (58 KB), morning-briefing-prompt-v3 (45 KB, template-risk), Vault index.md (39 KB, write-collision), Beispiele.md (28 KB, anchor-promotion-coupled). Sequenzielle Filterung mit Karpathy-Simplicity-First: SKILL.md + morning-briefing + index.md + Beispiele.md = auto-EXCLUDE wegen Risiko-Bias. v0.1-Scope finalisiert auf 00_Core Restbestand + 3 worked-example-configs (Ruflo-Sunset + Fat-Rows retroaktiv + SESSION-HANDOVER-Date-Cut executable). log.md → v0.2-deferred wegen vault-link-graph-Preservation-Logic-Komplexität.
+3. **Gate-Modus:** Hybrid (§18-Skill `paragraph-18-sync` inline, Codex hand-off). Pro: §18-Skill ist stable validated API; Codex-Pass bleibt User-Workflow per Memory `feedback_codex_sparring_heuristic`.
+4. **Architektur-Approach:** Monolithic-Pipeline + `--dry-run` (statt Phase-Subcommands oder Two-Stage-Plan/Execute). 4× empirisch single-pass validated. ~700 LOC, 4-File-Module-Split (statt 7-Modul-Speculation).
+5. **Karpathy-Regeln (User-Direktive):** explicit verankert in Foundation-Tabelle (§0): Think-Before-Coding / Simplicity-First (≤700 LOC, kein Auto-Detect, keine Resume) / Surgical-Changes (kein Workspace-Wide-Refactor) / Pre-Refactor-Caller-Scan (P3 Backlink-Scan PFLICHT, fail-close) / Approach-Reset-Schwelle (2-Fail-Stop intra-run) / Goal-Driven-Execution (Acceptance-Kriterien first-class).
+6. **Skill-Creator als festes Building Tool (User-Direktive):** 3 First-Class Build-Gates verankert (Stations 8/9/10): Gate-1 Scaffold via `/skill-creator:skill-creator`, Gate-2 Description-Push Lint via `/skill-creator validate-and-optimize-existing-skill`, Gate-3 Functional Smoke-Test (pytest + dry-run-reference-match). Section 6 Build-Process-DAG (13 Stations, 5 Gates G0-G4, 3 Session-Boundaries) als deklarativer Anker für Plan-Stage.
+
+**Codex-Sparring-Verlauf (gpt-5.3-codex via Memory `feedback_review_via_codex_not_advisor` Pin):**
+
+- **R1 Single-Pass:** 3 HIGH + 3 MEDIUM + 1 LOW.
+  - HIGH-1 §6.2 Caveat-1 ohne Gate-Enforcement → Fix Gate G0 (post-Station-1) + §6.2.1 Self-Review-Tabelle mit 4 expliziten Checks (alle ✅).
+  - HIGH-2 §2.2 `executed:`-Guard unpräzise "populated" → Fix YAML-Schema-Wortlaut "null OR fully populated 3 sub-fields non-null", partial = ABORT.
+  - HIGH-3 §5.4 AK5 "sinnvolles dry-run" schwammig → Fix AK5a-5d (exit-code 0 + ≥3 entries classified + struktur-komplett + User-Approval-Gate).
+  - MEDIUM-1 AK6 vage → Fix messbare PASS-Signale (exit-code 0 + JSON status=PASS + expected-set-diff empty + live-commit-without-hook-fail).
+  - MEDIUM-2 §6.3 Station-3 prozedural → Fix deklarativer Wortlaut.
+  - MEDIUM-3 §1.2 --skip-audit + P3-Bypass-Verteilung → Fix --skip-audit ONLY P0; P3 nicht via CLI bypassable, nur zweistufig via YAML mit WARNING.
+  - LOW-1 §7 search_terms-Coverage-Gap → Fix Open-Question #7 mit 3-Option-Outline (a/b/c) für Plan-Stage.
+- **R2 Diff-Re-Review (billigster Sparring-Schritt per Memory-Heuristik):** **R2 GREEN** alle 7 ✅ closed, keine neuen HIGHs, keine Widersprüche zwischen Sections. Spec ist Build-ready.
+- **Total:** 7 Befunde adoptiert, Spec 42,0 → 46,7 KB. Confidence ~97% post-R2.
+
+**Sync-Set §18 (pipeline-item, scoring-neutral):**
+- `00_Core/PIPELINE.md` (#78 Status-Body massiv erweitert mit Spec-Ready-Block + Codex-Verlauf-Detail + Open-Questions; Footer v2.60→v2.61)
+- `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md` (dieser Eintrag)
+- `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` (NEU, 46,7 KB; per `.gitignore` Z.18 "Superpowers docs nur lokal relevant" untracked — konsistent mit anderen aktiven Specs)
+
+**Bewusst NICHT angefasst:** CORE-MEMORY.md (kein neuer §13-Eintrag — Spec-Stage ist pipeline-item nicht system-zustand) · SYSTEM.md (keine Skill-Registry-Bullet — Skill noch nicht promoted, weiterhin SPEC-Stand) · CLAUDE.md (keine Routing-Table-Eintrag — Skill noch nicht existent) · STATE.md (kein Critical-Alert-Slot-Hit für pure Spec-Stage-Anlage) · PORTFOLIO/Faktortabelle/config/xlsx/jsonl (kein Score/FLAG-Event). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Lessons:**
+
+- **Gemini-Cross-Sync vor Spec-Lock validiert Scope empirisch breiter:** User-Direktive (B) "Gemini-Pass jetzt vor Spec für broader discovery" lieferte 7 Candidates außerhalb 00_Core in ~25k Token. Ohne Pass wäre v0.1-Scope speculativ "00_Core-only" geblieben, log.md (472 KB Single-File-Payoff) unentdeckt. **Take-away:** Cross-Sync-Pass mit gemini-agent vor Spec-Lock kostet 1 Roundtrip, verbreitert Scope-Foundation empirisch — Standard-Workflow für künftige Skill-Specs mit Cross-File-Implikationen.
+
+- **Codex R2 Diff-Re-Review = billigster Sparring-Schritt-Verifikation:** R2 nutzte nur ~21k Token (vs R1 ~21k Token) und schloss alle 7 R1-Findings ✅. Sparring-Heuristik per Memory `feedback_codex_sparring_heuristic` (HIGH ≥2 triggert R2) ROI-positiv bestätigt: ohne R2 hätte Drift bei Fix-Applikation unentdeckt bleiben können (z.B. neue Widersprüche zwischen Sections nach 7 Edits).
+
+- **User-Mandate "Skill-Creator als festes Building Tool" erfordert First-Class-DAG-Anchoring:** Initiale Skill-Creator-Erwähnung als "optional Gegencheck" wäre im Plan-Stage als bypassable interpretierbar gewesen. Section 6 Build-Process-DAG (deklarativ) mit Stations 8/9/10 als drei separate Build-Gates macht Skill-Creator-Verankerung **unverhandelbar visible** — strukturell statt deklarativ.
+
+- **Section-Boundary-Disziplin (S2/S5 ref-only vs S6 DAG) durch Self-Review-Tabelle hart enforced:** Gate G0 + §6.2.1 4-Check-Tabelle (S2.3/S5.4 nicht DAG-redefining, keine Task-Detail, keine Time-Estimates) konvertiert Caveat-1 von deklarativ zu enforce-bar. Pattern reusable für künftige Specs mit Multi-Section-Cross-References (anti-Duplikation).
+
+- **Karpathy Simplicity-First in Module-Split:** 7-Modul-Split (cli/config/3-patterns/backlink/gates) war Optimization for Re-Use mit exakt 0 v0.1-Re-Use-Cases. Empirie-Baseline (2 working scripts ~470 LOC) + Generalisierung-Overhead ~50% → 4-File-Split ~700 LOC ist YAGNI-clean. **Take-away:** Empirische LOC-Baseline ist besserer Spec-Anchor als a-priori-Modul-Architektur.
+
+**Cross-Reference:** Spec-File `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` (46,7 KB, 11 Sections, Build-ready) · PIPELINE #78 Body (Spec-Ready-Block + Codex-Verlauf-Detail + 7 Open-Questions für Plan-Stage) · Phase-2-Teil-2-Commit `4c8d8ea` + `f6041b6` (Vorlauf-Substrate gleicher Tag mittags) · `05_Archiv/refactor-tools/2026-05-23/README.md` (Pattern-Lineage + Build-Substrate, im Spec referenziert) · Memory `feedback_brainstorming_terminal_override_dynastie` (Spec-Pickup-Endpoint) · Memory `feedback_review_via_codex_not_advisor` (Codex Default + gpt-5.3-codex Pin) · Memory `feedback_codex_sparring_heuristic` (R2 Diff-Re-Review ROI-positive bei HIGH ≥2) · Memory `reference_gemini_agent_not_bridge_script` (Cross-Sync-Subagent-Pfad) · Skill-Build-Präzedenzen `session-closure` v0.2.0 + `paragraph-18-sync` v0.1.0 (8-Phasen-Pipeline-Konvention) · §18-Skill `paragraph-18-sync v0.1.0` (Hybrid-Gate Architektur-Anchor in Spec §1.3 + §3.1 P7).
