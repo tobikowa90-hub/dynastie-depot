@@ -35,7 +35,7 @@ from patterns import (  # noqa: E402
     mutate_slim_convention,
 )
 
-# Exit codes per spec §4.1
+# Exit codes per spec §4.1 (v0.1.1: + EXIT_ANCHOR_NOT_FOUND=11)
 EXIT_OK = 0
 EXIT_CONFIG = 2
 EXIT_AUDIT = 3
@@ -45,6 +45,7 @@ EXIT_BACKLINK_HIT = 6
 EXIT_WRITE_ERROR = 7
 EXIT_GATE_FAIL = 8
 EXIT_REFERENCE_MISMATCH = 10
+EXIT_ANCHOR_NOT_FOUND = 11
 EXIT_APPROACH_RESET = 99
 
 
@@ -101,17 +102,30 @@ def phase_p0(cfg: ConfigObject, args: argparse.Namespace, repo_root: Path) -> di
     if cfg.audit["pre_run"] and not args.skip_audit:
         audit_path = repo_root / "03_Tools" / "system_audit.py"
         if audit_path.exists():
+            # HIGH-4 (v0.1.1): explicit encoding+errors prevents Windows cp1252
+            # decode-crash on UTF-8 subprocess output (e.g. PIPELINE.md "§" paths).
+            # None-guard protects against decode-fail returning stdout=None.
             r = subprocess.run(
                 [sys.executable, str(audit_path), "--core"],
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 cwd=str(repo_root),
                 check=False,
+                timeout=120,
             )
-            sys.stdout.write(r.stdout)
-            if r.returncode != 0 and cfg.audit.get("fail_close_on_drift", True):
+            sys.stdout.write(r.stdout or "")
+            sys.stderr.write(r.stderr or "")
+            # HIGH-3 (v0.1.1): advisory by default; opt-in via fail_close_on_drift: true.
+            if r.returncode != 0 and cfg.audit.get("fail_close_on_drift", False):
                 _emit_phase("P0 Pre-Audit-Baseline", "FAIL")
                 raise SystemExit(EXIT_AUDIT)
+            if r.returncode != 0:
+                sys.stderr.write(
+                    f"WARNING: P0 audit returned rc={r.returncode} (advisory; "
+                    f"set audit.fail_close_on_drift=true to enforce)\n"
+                )
 
     _maybe_force_fail("P0")
     _emit_phase("P0 Pre-Audit-Baseline", "OK")
@@ -142,6 +156,20 @@ def phase_p2(cfg: ConfigObject, target_md: str) -> RowSet:
     block = cfg.pattern_block
     anchor = cfg.target.get("section")
 
+    # MED-NEW (v0.1.1): EXIT_ANCHOR_NOT_FOUND (11) split from EXIT_CLASSIFY_EMPTY (4).
+    # Anchor configured but missing in target is a config/file-state mismatch,
+    # not an empty classify result; surface separately so users can diagnose.
+    if anchor:
+        anchor_present = any(line.strip() == anchor.strip() for line in target_md.split("\n"))
+        if not anchor_present:
+            sys.stderr.write(
+                f"P2 anchor not found in target: anchor={anchor!r}, "
+                f"pattern={pattern}, target_lines={len(target_md.splitlines())}. "
+                f"Check cfg.target.section spelling and target file state.\n"
+            )
+            _emit_phase("P2 Classify", "FAIL")
+            raise SystemExit(EXIT_ANCHOR_NOT_FOUND)
+
     if pattern == "bucket-archive":
         rs = classify_bucket_archive(target_md, anchor, block)
     elif pattern == "slim-convention":
@@ -150,6 +178,24 @@ def phase_p2(cfg: ConfigObject, target_md: str) -> RowSet:
         rs = classify_date_cut(target_md, anchor, block)
 
     if not rs.archive and not rs.slim_targets:
+        # MED-NEW (v0.1.1): diagnostic with classify statistics (anchor, pattern, counts, keywords).
+        keywords = (
+            block.get("classify", {}).get("keywords", [])
+            if isinstance(block.get("classify"), dict)
+            else []
+        )
+        threshold = (
+            block.get("classify", {}).get("threshold_bytes")
+            if isinstance(block.get("classify"), dict)
+            else None
+        )
+        sys.stderr.write(
+            f"P2 classify empty: pattern={pattern} anchor={anchor!r} "
+            f"n_archive={len(rs.archive)} n_slim={len(rs.slim_targets)} n_keep={len(rs.keep)} "
+            f"keywords={keywords!r} threshold_bytes={threshold!r}. "
+            f"Likely causes: (a) keywords/threshold misconfigured, (b) target file "
+            f"already slimmed, (c) cut_date in the future.\n"
+        )
         _emit_phase("P2 Classify", "FAIL")
         raise SystemExit(EXIT_CLASSIFY_EMPTY)
 
@@ -249,6 +295,39 @@ def phase_p4(
 # P5: Source-Mutation
 
 
+def _build_pointer_context(
+    cfg: ConfigObject,
+    rowset: RowSet,
+    archive_path: Path | None,
+    timestamp: str,
+    baseline: dict,
+) -> dict:
+    """Build pointer-template context dict with vault-portable relative paths.
+
+    HIGH-1 (v0.1.1): archive_path, archive_link and target_file are normalized to
+    POSIX-style relative paths (anchored to the target file's parent dir). The
+    earlier implementation emitted absolute Windows paths into pointer prose,
+    which made the Vault non-portable and leaked the maintainer's local path.
+    """
+    target_parent = baseline["target_path"].parent
+    if archive_path is not None:
+        archive_rel = os.path.relpath(archive_path, target_parent).replace("\\", "/")
+    else:
+        archive_rel = ""
+    target_rel = baseline["target_path"].name  # basename only; portable
+    block = cfg.pattern_block
+    return {
+        "pointer_date": timestamp[:10],
+        "n_rows": len(rowset.archive),
+        "archive_size_kb": f"{sum(len(r.encode('utf-8')) for r in rowset.archive) / 1024:.1f}",
+        "archive_link": archive_rel,
+        "archive_path": archive_rel,
+        "cut_date": block.get("cut_before", timestamp[:10]),
+        "timestamp": timestamp,
+        "target_file": target_rel,
+    }
+
+
 def phase_p5(
     cfg: ConfigObject,
     target_md: str,
@@ -261,19 +340,7 @@ def phase_p5(
     _emit_phase("P5 Source-Mutation", "START")
     block = cfg.pattern_block
     anchor = cfg.target.get("section")
-    archive_link = (
-        os.path.relpath(archive_path, baseline["target_path"].parent) if archive_path else ""
-    )
-    pointer_context = {
-        "pointer_date": timestamp[:10],
-        "n_rows": len(rowset.archive),
-        "archive_size_kb": f"{sum(len(r.encode('utf-8')) for r in rowset.archive) / 1024:.1f}",
-        "archive_link": archive_link.replace("\\", "/"),
-        "archive_path": str(archive_path),
-        "cut_date": block.get("cut_before", timestamp[:10]),
-        "timestamp": timestamp,
-        "target_file": str(baseline["target_path"]),
-    }
+    pointer_context = _build_pointer_context(cfg, rowset, archive_path, timestamp, baseline)
 
     try:
         if cfg.pattern == "bucket-archive":
@@ -346,23 +413,27 @@ def phase_p7(cfg: ConfigObject, repo_root: Path, args: argparse.Namespace, basel
         sys.stdout.write(f"[dry-run] would run: {' '.join(p18_cmd)}\n")
     else:
         try:
+            # HIGH-4 (v0.1.1): explicit encoding+errors prevents Windows cp1252
+            # decode-crash on UTF-8 subprocess output. None-guard on r.stdout / r.stderr.
             r = subprocess.run(
                 p18_cmd,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="replace",
                 cwd=str(repo_root),
                 check=False,
                 timeout=30,
             )
-            sys.stdout.write(r.stdout)
+            sys.stdout.write(r.stdout or "")
             # CP18 HIGH-2 + HIGH-3 fix: require BOTH rc==0 AND status=="PASS".
             # rc-only or status-only acceptance creates two false-PASS branches:
             #   rc==0  + status=FAIL  → previously passed (no JSON check)
             #   rc!=0  + status=PASS  → previously passed (inverted condition)
-            passed, reason = _evaluate_p18_result(r.returncode, r.stdout)
+            passed, reason = _evaluate_p18_result(r.returncode, r.stdout or "")
             if not passed:
                 if r.stderr:
-                    sys.stderr.write(r.stderr[-2000:] + "\n")
+                    sys.stderr.write((r.stderr or "")[-2000:] + "\n")
                 sys.stderr.write(f"§18-Skill {reason}; treating as FAIL\n")
                 _emit_phase("P7 Hybrid-Gate", "FAIL")
                 raise SystemExit(EXIT_GATE_FAIL)

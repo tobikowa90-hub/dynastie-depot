@@ -49,6 +49,18 @@ repos:
         exclude: '^(07_Obsidian Vault/|05_Archiv/skills-legacy/|05_Archiv/superpowers-pre-sunset/)'
         pass_filenames: true
 
+      # paragraph-18-sync-reminder (Layer-3 Defense-in-Depth gegen Edit-only-Lapsus,
+      # INSTRUKTIONEN §18.0, NEU 2026-05-23 spätabends/2026-05-24). Scant staged-files
+      # gegen §18-Pattern-Set; emittiert advisory WARN mit inferred event-type +
+      # !ParaSync18-Recovery-Hint. Non-blocking (exit 0); Bypass via ENV
+      # PARA18_VERIFIED=1 NACH manuellem `!ParaSync18 <event>`-Validator-Pass.
+      - id: paragraph-18-sync-reminder
+        name: paragraph-18-sync-reminder (§18.0 auto-invoke advisory)
+        entry: python 03_Tools/precommit/para18_sync_reminder.py
+        language: system
+        files: ^(00_Core/(PIPELINE|PORTFOLIO|CORE-MEMORY|Faktortabelle|SYSTEM|STATE)\.md|07_Obsidian Vault/.+/log\.md|05_Archiv/(score_history|flag_events)\.jsonl|01_Skills/dynastie-depot/config\.yaml|01_Skills/[^/]+/SKILL\.md|03_Tools/(Rebalancing_Tool|Satelliten_Monitor|Watchlist_Ersatzbank_Monitor)_v[0-9.]+\.xlsx)$
+        pass_filenames: true
+
   # ── Block 2: Ruff offizieller Mirror, gepinnt (Spec §2). Eigene isolierte
   #    Env ist hier robust (reine CLI, keine Projekt-Imports). rev gegen
   #    pyproject `required-version = ">=0.15.12"` justiert; beim Akzeptanz-

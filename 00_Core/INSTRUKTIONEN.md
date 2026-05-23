@@ -384,6 +384,34 @@ Ein Ad-hoc-Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 8 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill + 2 xlsx-Tools) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.1: +2 xlsx-Tools (`Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx`) — User-Direktive 28.04.2026 spätabends: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte und Depot-Übersicht (Zero-Token-Lookup-Pflicht). Seit v2.4 (11.05.2026): jeder xlsx-Sync löst verpflichtenden Post-Write-Smoke-Test §18.7 aus (fail-close vor `git add`).
 
+### §18.0 Auto-Invoke-Disziplin `paragraph-18-sync` (NEU 2026-05-23 spätabends, v2.5)
+
+**Normativ verbindlich:** Sobald ein Working-Tree-Diff (Pre-Edit oder Pre-Commit) **EINES** der folgenden Files berührt, MUSS der Skill `paragraph-18-sync` via `!ParaSync18 <event-type> [--also …]` aufgerufen werden — vor `git commit`, kein Edit-only-Pfad, kein silent Sync via Hand-Edit.
+
+**Trigger-File-Set:**
+- `00_Core/PIPELINE.md` · `PORTFOLIO.md` · `CORE-MEMORY.md` · `Faktortabelle.md` · `SYSTEM.md` · `STATE.md` (Critical-Alert-Slot)
+- `07_Obsidian Vault/**/log.md`
+- `05_Archiv/score_history.jsonl` · `flag_events.jsonl`
+- `01_Skills/dynastie-depot/config.yaml`
+- `01_Skills/*/SKILL.md` (jede Version-Edit = system-zustand-Event)
+- `03_Tools/Rebalancing_Tool_v*.xlsx` · `Satelliten_Monitor_v*.xlsx` · `Watchlist_Ersatzbank_Monitor_v*.xlsx`
+
+**Event-Type-Inferenz aus Datei-Pattern:**
+- Score/FLAG/Sparraten-spezifische Files (PORTFOLIO/Faktortabelle/score_history/flag_events/config.yaml/2 xlsx) → `score-flag-sparraten`
+- PIPELINE.md-Edit → `pipeline-item`
+- SYSTEM.md-Edit oder SKILL.md-Version-Bump → `system-zustand` (+`--version-bump` falls CORE-MEMORY §6 betroffen)
+- STATE.md-Alert-Slot → `critical-alert`
+- Multi-Event-Aktion → Multi-Event-Union via `--also` (§18.2)
+
+**Defense-in-Depth (3 Layer):**
+1. **Tier-1 Memory** `feedback_paragraph18_skill_auto_invoke_on_sync_files.md` — Session-übergreifender advisory Prior.
+2. **Tier-3 INSTRUKTIONEN §18.0** (dieser Eintrag) — normative SSoT.
+3. **Pre-Commit-Hook** `paragraph-18-sync-reminder` (`.pre-commit-config.yaml`) — advisory WARN bei staged §18-Files; Bypass nur via ENV `PARA18_VERIFIED=1` nach manuellem `!ParaSync18`-Validator-Pass.
+
+**Lapsus-Empirie:** core-slim-refactor v0.1.1 Build-Session 2026-05-23 abends-spät hat den ersten dokumentierten Skip durch das Modell produziert (Edit-only-Pfad statt `!ParaSync18`-Vorlauf) — User-Direktive 23:48 GMT+2: "Skill ja umsonst gebaut sonst". v2.5-Bump = Königsweg-Verankerung ≥95%-Confidence.
+
+**Routing-Table Spiegel (CLAUDE.md):** Eigene Row "§18-File-Touch (auto, file-pattern-driven)" zusätzlich zur expliziten `!ParaSync18`-Row — file-pattern-Match triggert IDENTISCHEN Skill-Call.
+
 ### 18.1 Event-Typ-Mapping
 
 | Event-Typ | Pflicht-Files |

@@ -987,3 +987,43 @@ HIGH-3 Codex-Claim raises TypeError at runtime ist auf Python 3.14.3 (Project-En
 - Vault log.md: dieser Eintrag.
 
 **Cross-Reference:** PIPELINE #80 (Updated-Scope) · failure_modes.md MEDIUM-12/13/11/HIGH-4/MEDIUM-NEW · Codex-Re-Audit agent `ae2e863dc1869630a` · Memory `feedback_cross_check_skill_vs_standalone` (NEU) + `feedback_windows_console_ascii_safe_inline_python` + `feedback_windows_python_crlf_text_mode` + `feedback_pre_commit_diff_inspection` (PEP-758-Disziplin) + `feedback_codex_sparring_heuristic` + `feedback_brainstorming_terminal_override_dynastie` (Spec/Build-Session-Trennung als Begründung für /clear vor v0.1.1-Build) · Karpathy §0 (INSTRUKTIONEN) · v0.1.1-Build-Session geplant fresh post-`/clear` mit `systematic-debugging` (HIGH-2) + `test-driven-development` (HIGH-4 TDD-Prevention) + `verification-before-completion` (Pre-Commit-Gate) Skills.
+
+---
+
+## 2026-05-23 23:55 GMT+2 — PIPELINE #80 ✅ core-slim-refactor v0.1.1 Bugfix-Release DONE (scoring-neutral)
+
+**Event-Klasse:** pipeline-item + system-zustand (Multi-Event Union §18.2). Skill-Version-Bump v0.1.0 → v0.1.1. Live-Score-Impact NULL — DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Delivered (TDD-Red→Green vollständig per Karpathy 2-Phase Bugfix-only):**
+- **HIGH-1** — Pointer-Context absolute-Path-Leak gefixt via neuem `_build_pointer_context`-Helper (P5). `archive_path` + `archive_link` + `target_file` jetzt alle relative POSIX-Paths (basename für `target_file`), nicht mehr `str(absolute Path)`. L264-276 alt → Helper L249-281 neu.
+- **HIGH-3** — `audit.fail_close_on_drift` Default-Flip `true` → `false` (advisory, opt-in via YAML). Stderr-WARNING bei rc!=0. Skill auf real-Repos mit imperfekter Audit-State (10/15 PASS) wieder nutzbar — vorher harter Exit 3 in P0.
+- **HIGH-4** — P0 (L104-119) + P7 (L348-360) subprocess `encoding="utf-8", errors="replace"` + None-Guard `r.stdout or ""` / `r.stderr or ""` an beiden Sites identisch. cp1252-Reader-Thread-Crash bei UTF-8-Audit-Output ausgeschlossen. `_evaluate_p18_result(r.returncode, r.stdout or "")` für None-Safety.
+- **MED-NEW** — P2 Classify stderr-Diagnostic (pattern/anchor/n_archive/n_slim/n_keep/keywords/threshold + Likely-Cause-Hints) + neuer `EXIT_ANCHOR_NOT_FOUND = 11` (User-Decision Konflikt-Auflösung gegen Item-80-Vorschlag-`5` — 5 ist seit v0.1.0 `EXIT_MIGRATE_VIOLATION`, Re-Numbering wäre Breaking-Change).
+- **HIGH-2 reklassifiziert via Phase-1-Diagnose** (kein Code-Bug): Backup-Lifecycle ist by-design — `--dry-run` skipt `shutil.copy2` (L98), `_cleanup_backup_on_success` löscht nach erfolgreichem P7-OK (L510). `Path.with_suffix(".md.pre-refactor.bak")` empirisch validiert auf Python 3.14.3 für alle Live-Targets. `.gitignore` L35 `*.pre-refactor.bak` vorhanden. Action: `failure_modes.md` MED-13 RESOLVED-Block + 2 Lifecycle-Regression-Tests (`test_high2_backup_skipped_in_dry_run` + `test_high2_backup_created_in_non_dry_run`). Spart ~30min vs Code-Touch-Versuch.
+
+**Verification:**
+- pytest 43 PASS + 2 XFAIL (vorbestehend); **+12 neue Tests** in `tests/test_v0_1_1_bugfixes.py` (alle waren initial RED, jetzt GREEN nach Fixes).
+- 3× Worked-Example dry-run re-smoke: Pattern A (`ruflo-sunset-bucket.yaml`), Pattern B (`defcon-fat-rows-slim.yaml`), Pattern C (`session-handover-date-cut.yaml`) — alle laufen durch bis P2 mit klarer Diagnostic. **Pattern C ohne --skip-audit:** P0 jetzt clean durch (vorher P0-cp1252-Crash), Audit advisory rc=1, P2 EXIT 4 mit Stats — empirischer Beweis für HIGH-3 + HIGH-4 Wirksamkeit.
+- Standalone audit cross-check (`/SystemAudit --core`) identisch zum Skill-Subprocess-Capture (10/15 PASS) — Bug-Klasse von 23.05. ~22:25 (Standalone-PASS + Skill-CRASH-cp1252) ist behoben.
+
+**Out-of-Scope (Karpathy 2-Phase, defer v0.1.2):**
+- Codex-MED (a): `_repo_root()` L58-63 text=True ohne encoding — latent, nur bei non-ASCII Repo-Pfad.
+- Codex-MED (b): P4/P5 direct-write (L238-239, L298-299) statt `os.replace()`-atomic — architektural-Improvement, Backup-Logik schützt.
+- PEP 758 False-Positive `except A, B:` (L65/491/498/504) — Codex-Misread, gültig auf Python 3.14, NICHT angefasst.
+
+**Skills used (Disziplin-Gates):**
+- `superpowers:systematic-debugging` — HIGH-2 Phase-1-Root-Cause-Walk (kein Code-Bug aufgedeckt, ~30min gespart).
+- `superpowers:test-driven-development` — 12 failing Tests RED, dann GREEN nach Fixes; keine production-code-vor-test.
+- `superpowers:verification-before-completion` — pytest full-run + 3× worked-example re-smoke + standalone cross-check vor Commit.
+- `paragraph-18-sync` — User-Reminder 23:48 (Lapsus aufgedeckt — Skill hätte schon **vor** dem Sync-Edit invoked werden sollen, nicht erst zum Commit-Gate). Memory-Lücke: kein Auto-Invoke-Trigger bei §18-relevanten File-Touches dokumentiert; v0.1.2-Backlog-Item für Memory `feedback_paragraph18_skill_auto_invoke_on_sync_files.md`.
+
+**Sync-Set executed (§18.2 Multi-Event Union pipeline-item + system-zustand):**
+- `01_Skills/core-slim-refactor/scripts/core_slim_refactor.py` (HIGH-1/3/4 + MED-NEW Code-Patches + Exit-Code-Konstante)
+- `01_Skills/core-slim-refactor/SKILL.md` (v0.1.0 → v0.1.1, Exit-Code-Tabelle, §5 encoding-Hinweis, `fail_close_on_drift` Default-Doc)
+- `01_Skills/core-slim-refactor/references/failure_modes.md` (MED-13 RESOLVED-Block)
+- `01_Skills/core-slim-refactor/tests/test_v0_1_1_bugfixes.py` (+12 Tests, NEU)
+- `00_Core/PIPELINE.md` (Item #80 Status 👁→✅ + Footer v2.66→v2.67)
+- `00_Core/SYSTEM.md` (§Skill-Registry v0.1.0→v0.1.1)
+- Vault `log.md` (dieser Eintrag)
+
+**Cross-Reference:** PIPELINE #80 (DONE-Body) · SYSTEM.md §Skill-Registry · failure_modes.md MED-13 · PIPELINE #81 (v0.2.0 Roadmap, unverändert) · Memory `feedback_cross_check_skill_vs_standalone` (Bug-Klasse 22:25-Discovery) · Karpathy §0 (Bugfix-only-Disziplin) · Codex-Re-Audit `ae2e863dc1869630a` (3 HIGH + 1 FP + 2 MED-defer).

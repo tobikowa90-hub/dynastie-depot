@@ -1,7 +1,7 @@
 ---
 name: core-slim-refactor
 description: YAML-driven 8-Phase Markdown-Section-Refactor pipeline. Use when slimming SSoT-Files via Bucket-Archive (semantic row-cluster archival), Slim-Convention (fat-row compression with verbatim archive), or Date-Cut (banner/chronicle pre-cut archival). Activates on triggers !SlimRefactor <config>, "core-slim-refactor", or explicit config-path-mention.
-version: 0.1.0
+version: 0.1.1
 ---
 
 # core-slim-refactor v0.1 — Markdown-Section-Refactor Skill
@@ -35,7 +35,9 @@ python 01_Skills/core-slim-refactor/scripts/core_slim_refactor.py <config.yaml> 
 2. **Pointer-Stub** (P5/P6): jede Mutation hinterlässt mindestens 1 Pointer-Eintrag (chronologisch oder boundary-header).
 3. **Backlink-Scan** (P3): grep `search_terms` in `scan_paths`, fail-close default; bypass nur via 2-stufige YAML-Override (`on_match` + `skip_override_allowed`).
 4. **Archive-Local-Only**: archives in `05_Archiv/`, niemals cloud-synced (Memory `reference_no_cloud_sync_onedrive_inactive`).
-5. **§18-Skill-Gate** (P7): inline `paragraph-18-sync system-zustand --dry-run --json` subprocess; fail-close on PASS!=PASS.
+5. **§18-Skill-Gate** (P7): inline `paragraph-18-sync system-zustand --dry-run --json` subprocess; fail-close on PASS!=PASS. **P0/P7 subprocess calls pin `encoding="utf-8", errors="replace"`** (v0.1.1 HIGH-4) — Windows-cp1252 decode-crash auf UTF-8-Audit-Output ist damit ausgeschlossen.
+
+**`audit.fail_close_on_drift` Default (v0.1.1):** `false` (advisory). Audit-Drift wird auf stderr emittiert, P0 läuft weiter. Opt-in via YAML `audit.fail_close_on_drift: true` für strict-mode (z.B. CI-Pipeline). Default-Flip war HIGH-3 Adoption-Blocker — auf real-Repos mit 10/15-PASS-Audit-State würde true-Default jeden Run abbrechen.
 6. **Codex-Pass** (P7-out-of-skill): Skill druckt Pre-Commit-Bundle (diff-path + commit-msg-template + post-audit-cmd); User triggert Codex Single-Pass manuell per `/codex:codex-rescue` mit diff (Memory `feedback_review_via_codex_not_advisor`).
 7. **CRLF/UTF-8-Hygiene**: ALL file-IO `open(..., newline="")`; `sys.stdout.reconfigure(encoding="utf-8", errors="replace")` als Header (Memory `feedback_windows_python_crlf_text_mode` + `feedback_windows_console_ascii_safe_inline_python`).
 8. **Atomic-Commit**: target + archive + (.gitignore-updated *.pre-refactor.bak excluded from commit) in 1 git-Commit; pre-commit-Hooks bestehen (Karpathy: never skip).
@@ -68,6 +70,8 @@ Skill-internes exec endet bei P7. P8 ist User-Post-Action; Skill druckt cmd-temp
 | 6 | Backlink-Hit (P3) |
 | 7 | File-Write-Error (P4/P5/P6) |
 | 8 | §18-Skill-Gate-Fail (P7) |
+| 10 | Reference-Archive-Mismatch (CP14 gate) |
+| 11 | Anchor-Not-Found (P2) — `cfg.target.section` configured but absent in target |
 | 99 | Approach-Reset-Triggered (Karpathy 2-Fail-Stop) |
 
 ## Reference-Files

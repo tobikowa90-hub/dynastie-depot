@@ -223,12 +223,19 @@ URL-Teil (relativer Pfad) ist korrekt — Markdown-Reader öffnet ihn richtig. D
 - **Mitigation v0.1:** Skill v0.1 funktional korrekt, nur visueller Display-Bug. Akzeptabel für First-Run.
 - **v0.1.1 TODO:** Pointer-Template `{archive_link}`-Resolution sollte basename ODER relative-from-target-path liefern, nicht absolute path. Hotfix-Priorität HIGH (Vault-UX-Defect).
 
-### MEDIUM-13: Backup-File `.pre-refactor.bak` nicht geschrieben (deferred v0.1.1)
+### MEDIUM-13: Backup-File `.pre-refactor.bak` Lifecycle (RESOLVED v0.1.1 — kein Code-Bug)
 
-SKILL.md L48 + `failure_modes.md` Z.37 dokumentieren explizit: `phase_p0` schreibt `shutil.copy(target, target.pre-refactor.bak)` als Atomicity-Guarantee-Foundation. Im Live-Run 2026-05-23 18:46:32Z **kein** Backup-File gefunden (verifiziert via `find . -name "log.md.pre-refactor.bak"`). Entweder Code-Path silent-skipped oder Cleanup zu früh.
+**Ursprüngliche Beobachtung (2026-05-23 18:46:32Z):** Post-Run `find . -name "log.md.pre-refactor.bak"` ergab leer; vermutet als broken Atomicity-Contract.
 
-- **Mitigation v0.1:** Run erfolgreich abgeschlossen (Exit 0), kein Rollback nötig — Backup-Fehlen kam nicht zum Tragen. Aber dokumentierte Atomicity-Garantie war faktisch broken.
-- **v0.1.1 TODO:** Code-Pfad-Tracing: warum `_run_p0` Backup nicht erzeugte (vermutet: `--skip-audit`-Pfad oder Bedingungs-Logik-Bug). Hotfix-Priorität HIGH (broken-contract).
+**Phase-1-Diagnose (v0.1.1, 2026-05-23 spätabends):** Kein Code-Bug. Backup-Lifecycle ist by-design:
+
+1. `phase_p0` L98-99: `if not args.dry_run: shutil.copy2(target, backup_path)` — `--dry-run` skipt Backup-Erstellung by-design (dokumentiert in SKILL.md "P0 simulated, no file-writes").
+2. `main` L510: `_cleanup_backup_on_success(baseline)` — bei erfolgreichem Run (P7-OK + exit 0) wird Backup gelöscht. Atomicity gilt nur während Run-Window P0→P7-OK; nach erfolgreichem Exit ist Backup gewollt weg (kein orphan-File neben target.md, kein commit-pollution).
+3. Bei Failure ab P5 wird via `_restore_backup` aus Backup re-instantiated, dann re-raise — Backup bleibt für post-mortem stehen (NICHT cleanup'd on failure-path).
+
+**Empirisch validiert via Python 3.14.3:** `Path("X.md").with_suffix(".md.pre-refactor.bak")` → `X.md.pre-refactor.bak` (korrekt). `.gitignore` L35 `*.pre-refactor.bak` filtert vom commit (verifiziert).
+
+**v0.1.1 Action:** Doku-Klarstellung (dieser Eintrag) + Lifecycle-Regression-Tests in `tests/test_v0_1_1_bugfixes.py` (`test_high2_backup_skipped_in_dry_run`, `test_high2_backup_created_in_non_dry_run`). **Kein Code-Touch.**
 
 ### MEDIUM-14: `executed:`-Block nicht auto-populated post-live-run (deferred v0.1.1)
 
