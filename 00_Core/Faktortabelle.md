@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 04.05.2026 abends post-US-Close (BRK.B Q1 FY26 Tag-+1 Vollanalyse + Codex-R1-REJECT-Korrektur — Score **75→71 (Δ-4)** post-R1-Sparring; Schritt 7 backtest-ready ScoreRecord-Append `2026-05-04_BRK.B_vollanalyse` DONE mit kurs.referenz=close_of_score_datum yfinance-Close $468,52 USD; D3/Sparrate 38€/FLAG ✅ Clean Insurance-Exception unverändert, keine Kaskade; korrigierte Sub-Karte F=35/M=19/T=1/I=10/S=6 — T-Block 200MA-Skala SKILL Z.603 strict 0/3, Sentiment +2 Annual-Meeting-Color V-Q2-Methodology-Drift entfernt, F-Block Forbes=Secondary kein +1-Lift; 15/15 Codex-HIGH-Antis pre-empted; 6 Q2-Methodology-Watches PIPELINE #36-#41)
+**Stand:** 2026-05-23 (Live-State; letzter Score-Move BRK.B 75→71 am 04.05.; AMZN-Neuaufnahme 12. Satellit 18.05. Score 42/D1. Detail-Move-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -28,25 +28,10 @@
 | ASML | 33,8% | 26,48% | 52,8% | 0,21x | Wide | 68 | 🟡 3 | ✅ Clean | 2026-04-17 | Q2 2026 Earnings — FY27 Fwd P/E Watch (30,30 → D4-Kandidat <30) |
 <!-- DATA:AVGO -->
 | AVGO | ~30% | **3,98% GAAP / 45,7% §410-Goodwill-bereinigt (M&A-Compounder VMware/CA/Symantec/Brocade GW 57,2% Assets) vs WACC defeatbeta 15,96%** | ~65% | 1,41x | Wide | **53** | **🟠 2** | 🔴 Insider-Selling 90d $106,4M (FLAG aktiv 27.04.2026 — Sparrate 0€, Resolve-Gate ≤$20M) | **2026-04-30** | **Q3 FY26 — !Analysiere Re-Eval; FLAG-Resolve-Check** |
-<!-- DEFCON-Label-Drift-Fix 18.04.: BRK.B/VEEV/SU/COST/RMS D4→D3, APH D3→D2 (Schema-Thresholds auf SKILL.md aligned). Sparraten unverändert bei D3/D4-Übergängen. -->
-<!-- V-Score-Update 18.04.: 86 (Backfill) → 63 (Forward-Vollanalyse + Rescoring nach Advisor-Review). D4→D2, Sparrate 33,53€→17,81€. -->
-<!-- Nenner 8.5→8.0, volle Rate 33,53€→35,63€. -->
-<!-- DATA:V_OLD_BACKFILL -->
-<!-- | V | ~54% 5J | ~9.9% Q TTM | ~80% | 0.31x | Wide | 86 | 🟢 4 | ✅ Clean | 2026-04-17 | Q2 FY26 Earnings ~22.04. | -->
 <!-- DATA:V -->
-<!-- V-Score-Update 28.04. mittags: 63 → 68 (Q2 FY26 Forward-Vollanalyse, Beat-Cascade). D2→D3, Sparrate 19,00€→35,63€. -->
-<!-- V-Rescoring-Revert 28.04. spätabends nach Codex-HIGH-1+HIGH-2-Review: 68 → 64, D3→D2, Sparrate 35,63€→19,00€. HIGH-1: ROIC 1→7 via SKILL absolute alt-scale war regelwidrig (WACC vorhanden 10,48%); HIGH-2: kurs.referenz close_of_score_datum verletzt (27.04.-Proxy statt 28.04.-Close $309,30). ROIC-Carryover (1/8) + WACC-Carryover (10,48%) + Sentiment-Δ +1 (EPS-Rev post-beat) bleibt legitim. Nenner 8,0→7,5, volle Rate 35,63€→38,00€. defeatbeta-ROIC-Methodology-Watch in PIPELINE #21 für Q3 FY26 ~Ende Juli. -->
 | V | ~54% 5J | **9,89% defeatbeta vs WACC 10,48% [carryover 18.04.; Q3-Verify-Watch PIPELINE #21]** | 80,4% | 0,31x | Wide | **64** | **🟠 2** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **2026-04-28** | **Q3 FY26 ~Ende Juli** — Cross-Border-Velocity + ROIC-Methodology-Verify |
 <!-- DATA:MSFT -->
-<!-- MSFT-Score-Update 30.04.: 59 → 50 (Q3 FY26 Tag-+1 Vollanalyse, V-Q2-Mittelweg-Pfad). D2 unverändert, FLAG aktiv unverändert (Bull-Case Trigger A ✅ / B ❌ FAIL CY26 $190B vs Konsens $154,6B / C ✅✅ — UND nicht erfüllt). Sparrate 0€ unverändert (keine Kaskade). Codex-R1+R2-Doppel-Review (R1 strict 48 D1, R2 V-Q2-Mittelweg 50 D2 via Insider-Skip-Window-Carryover Backfill 6/10). Quality-Trap aktiv: Wide × Fwd P/E 22,44 → max 1; Wide × P/FCF 39,7x >35 → hart 0. ROIC 7,68% < WACC defeatbeta 13,64% (Methodology-Watch FRED-Baseline-Verify Q4). 4 PIPELINE-Items aktiv. -->
-<!-- MSFT-Insider-Re-Score 14.05.: PIPELINE #26-Path-#2 DONE — Live-Scan via insider_intel.py: Diskr.-90d $5,05M (<<$20M ✅), Sub-Score 6/10 = identisch zu 30.04.-Carryover 6/10 (Net 0→1, No-FLAG 3→2, Ownership 3 Carryover). Score 50/D2 unverändert, FLAG unverändert, Sparrate unverändert. §18-Sync nicht getriggert (Δ=0). Skip-Window-Reset: 14.05.+14d = 28.05. nächstes Expiry. -->
 | MSFT | ~58% (9M FY26 bereinigt 57,7%) | **7,68% defeatbeta vs WACC 13,64% [Methodology-Watch FRED-Baseline-Verify Q4 PIPELINE]** | ~69% | ~0,5x (Net-Cash) | Wide | **50** | 🟠 2 | 🔴 CapEx/OCF aktiv (Trigger A erfüllt 9M-bereinigt 57,7%, B FAIL CY26 $190B Surprise, C ✅✅ Azure +39%cc — UND nicht vollumfänglich) | **2026-04-30** | **Q4 FY26 ~Juli** — CapEx-Plateau-Recheck + WACC-Methodology-Verify (Insider-Re-Score 14.05. DONE, Δ=0) |
-<!-- TMO-Score-Update 18.04.: 63 (Backfill) → 64 (Forward-Vollanalyse). fcf_trend_neg schema-getriggert (FCF FY25 -13,4% YoY), NICHT aktiviert (WC-Noise-Erklärung, 4J-Plateau). Q1 23.04. = Resolve-Gate. -->
-<!-- TMO-Score-Update 23.04.: 64 → 67 (Q1 FY26 Forward-Vollanalyse). Beat + Guidance-Raise. FCF $825M +121% YoY, OCF +65%, ΔWC -313M besser → fcf_trend_neg Resolve-Gate CLEAR, Schema-Watch deaktiviert. D2→D3, Sparrate 17,81€→33,53€. Nenner 8,0→8,5, volle Rate 35,63€→33,53€. -->
-<!-- DATA:TMO_OLD_BACKFILL -->
-<!-- | TMO | ~15% | 2.6% | ~42% | 2.57x | Wide | 63 | 🟠 2 | — | 2026-04-17 | 2026-04-23 Q1 Earnings | -->
-<!-- DATA:TMO_PRE_Q1 -->
-<!-- | TMO | ~15% 5J | 8,04% GAAP / 17,18% bereinigt | 40,9% | 2.57x | Wide | 64 | 🟠 2 | ✅ (fcf_trend_neg schema-trigger, nicht aktiviert) | 2026-04-18 | 23.04. Q1 FY26 Earnings | -->
 <!-- DATA:TMO -->
 | TMO | ~15% 5J | 8,04% GAAP / 17,18% bereinigt (GW-Ausnahme) vs WACC 10,44% | 40,9% | 2.57x (Pre-Clario) | Wide | **67** | **🟡 3** | ✅ Clean (fcf_trend_neg Resolve-Gate CLEAR — Q1 FCF $825M +121% YoY, WC-Unwind bestätigt) | **2026-04-23** | **Q2 FY26 ~Ende Juli** — Organic-Akzeleration + Clario-Integration-Check |
 <!-- DATA:RMS -->
@@ -62,7 +47,6 @@
 <!-- DATA:COST -->
 | COST | ~3% 5J | 5.6% GAAP (MY 15.2%) | ~12.7% | <1x | Wide | 69 | 🟡 3 | ✅ Clean (Screener-Exception) | 2026-04-17 | Q1 FY27 Earnings ~Dez 2026 |
 <!-- DATA:AMZN -->
-<!-- AMZN-Neuaufnahme 15.05.2026 (Score-Datum; Analyse 18.05.): 12. Satellit per User-Direktive — Slot-Erweiterung 11→12, keine Verdrängung. Score 42/D1, 🔴 CapEx/OCF-FLAG (TTM netto 99,2% / gross 101,7%, ≫60%). Sparrate 0€ regelkonform (User-Entscheidung: kein Override, FLAG heilig). AMZN FLAG=Gewicht 0,0 → Nenner bleibt 7,5, alle 11 bestehenden Raten unverändert (38€/19€/0€, Σ285€). §410 N/A (GW 2,6% Assets). Codex-Single-Pass-Review (prozeduraler REJECT vor Sync, inhaltlich bestätigt) + Re-Review post-Sync. ScoreRecord 2026-05-15_AMZN_vollanalyse. -->
 | AMZN | ~1% 5J (FCF TTM $1,2B, CapEx-Boom) | 5,4% 6Q-Ø GAAP vs WACC 15,57% (defeatbeta; §410 N/A GW 2,6%) | 50,3% FY25 (3J +1,65pp/J) | NetDebt/EBITDA ~0,4x | Wide | **42** | **🔴 1** | 🔴 CapEx/OCF TTM 99,2% netto (FLAG aktiv 2026-05-15 — Sparrate 0€, Resolve-Gate <60%) | **2026-05-15** | **Q2 FY26 ~Ende Juli — CapEx/OCF-FLAG-Re-Eval + Vollanalyse** |
 <!-- END_TABLE -->
 
@@ -86,39 +70,21 @@
 
 | Datum | Position | Klasse | Trigger |
 |-------|----------|--------|---------|
-| ~~2026-04-28~~ | ~~V~~ | — | **DONE (mittags)** Q2 FY26 Beat-Cascade — D2→D3 (Score 63→68). **REVERTED (spätabends)** nach Codex-HIGH-1+HIGH-2: Score 68→64, D3→D2, Sparrate 35,63€→19,00€. ROIC-Methodology-Verify Q3 FY26 in PIPELINE #21. |
-| 2026-04-23 | TMO | B | Q1 2026 Earnings — FCF >$7.3B nötig für FCF-Yield >4% |
-| 2026-04-28 | SNPS | B | Q1 Earnings — Watchlist (Score 76, Ersatz ASML) |
-| 2026-04-28 | SPGI | B | Q1 Earnings — Watchlist (Score 74) |
-| ~~2026-04-29~~ | ~~MSFT~~ | — | **DONE Tag-0** 10-Q-Read 29.04. (CapEx/OCF 9M-bereinigt 57,7% Trigger A ✅) + **Tag-+1 Vollanalyse 30.04.**: Score 59→**50** (Δ-9), D2 unverändert, FLAG aktiv unverändert. Bull-Case nicht vollumfänglich (Trigger B FAIL CY26 $190B vs Konsens $154,6B Surprise +23%). Codex-R1+R2-Doppel-Review (V-Q2-Mittelweg via Insider-Carryover). Sparrate 0€ unverändert. 4 PIPELINE-Items aktiv. |
+| 2026-04-28 (overdue) | SNPS | B | Q1 Earnings — Watchlist-Review (PIPELINE #62) |
+| 2026-04-28 (overdue) | SPGI | B | Q1 Earnings — Watchlist-Review (PIPELINE #62) |
+| 2026-05-27 | VEEV | B | Q1 FY27 Earnings |
+| 2026-05-28 | COST | B | Q3 FY26 Earnings (Membership-Yield-Watch) |
 | Mai 2026 | CPRT/ZTS/PEGA | B | Earnings → Watchlist-Review |
 | Juni 2026 | — | — | Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung |
 | Q2 2026 | GOOGL | C | FLAG-Review nach Earnings |
-| ~~2026-04-30~~ | ~~AVGO~~ | — | **DONE** Forward-Vollanalyse Score 84→53 (Δ-31), D4→D2, FLAG aktiv unverändert. Codex R1+R2-Pass 74% Confidence. Quality-Trap voll aktiv + §410-Goodwill-bereinigt ROIC 45,7%. Sparrate 0€ unverändert (keine Kaskade). 5 PIPELINE-Methodology-Watches #30-34. |
-| Q3 FY26 | AVGO | C | !Analysiere — FLAG-Re-Eval (insider_selling_20m) + voller DEFCON-Refresh + Methodology-Watches-Resolve |
-
----
-
-## Offene Scores
-
-> Status aller 11 Satelliten siehe Haupttabelle oben + [PORTFOLIO.md](PORTFOLIO.md) (Live-SSoT). Diese Sektion war historisch redundant (100% Subset der Haupttabelle, Drift-Surface) und wurde am 02.05.2026 entfernt (PIPELINE #29 Kat. A).
+| ~Ende Juli | AMZN | B/C | Q2 FY26 — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse |
+| Q3 FY26 | AVGO | C | !Analysiere — FLAG-Re-Eval + DEFCON-Refresh + Methodology-Watches |
 
 ---
 
 ## Ersatzbank
 
-| Satellit | Ersatz | Score | Status |
-|----------|--------|-------|--------|
-| ASML | SNPS | 76 (D3) | v3.5 Ankerwert |
-| AVGO | NVDA / MRVL | — | Kein Score |
-| MSFT | GOOGL → ZTS/VEEV | 72 (D3, FLAG!) | GOOGL selbst FLAG — Alternativ: ZTS oder VEEV |
-| RMS | RACE | — | Kein Score |
-| VEEV | ZTS / SAP | — | Kein Score |
-| SU | DE | — | Kein Score |
-| BRK.B | MKL / FFH.TO | 82 (D4) | MKL bereit — bester Ersatz im Portfolio |
-| TMO | ZTS | — | Vorbereitung aktiv bei D3 |
-| APH | — | — | Kein Ersatz definiert |
-| COST | — | — | Strukturell einzigartig — kein direkter Ersatz |
+→ SSoT: [KONTEXT.md §6 Ersatzbank & Watchlist](KONTEXT.md#6-ersatzbank--watchlist). Faktortabelle-Ersatzbank am 2026-05-23 zu Pointer-only umgestellt (Drift-Surface-Cleanup; KONTEXT §6 ist Refresh-getrieben SSoT, hier hatten wir stale-Snapshot von pre-April). **SU-Ersatz-Brainstorm offen** (DE/Legrand/Siemens) → PIPELINE #77.
 
 ---
 
@@ -130,4 +96,4 @@ Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · 
 
 ---
 
-*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 2026-05-18 (AMZN Neuaufnahme 12. Satellit — Score 42/D1, 🔴 CapEx/OCF-FLAG TTM 99,2%, Sparrate 0€ regelkonform; Slot-Erweiterung 11→12 per User-Direktive, Nenner unverändert 7,5) | Nächste Vollaktualisierung: 17.07.2026*
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 2026-05-23 (00_Core Slim-Refactor — historische Score-Move-Comments + dead-Row-Backfill-Anchors gestrippt, Offene-Scores-Stub entfernt, Ersatzbank zu Pointer auf KONTEXT §6; alle Live-DATA-Anker erhalten)*

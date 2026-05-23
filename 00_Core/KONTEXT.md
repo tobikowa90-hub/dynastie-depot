@@ -85,7 +85,9 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 
 ---
 
-## 6. Ersatzbank & Watchlist (Stand: 14.05.2026 — Refresh v3.2)
+## 6. Ersatzbank & Watchlist
+
+**Stand:** 14.05.2026 — Refresh v3.2
 
 | Ticker | Rolle/Slot | Score | DEFCON | Notiz |
 |---|---|---|---|---|
@@ -142,16 +144,17 @@ Physischer Notfall-Ordner für Laura:
 
 ---
 
-## 10. Anstehende Termine (April–Juni 2026)
+## 10. Anstehende Termine (Mai–Juli 2026)
 
 | Datum | Event | Aktion |
 |-------|-------|--------|
-| 23.04.2026 | TMO Q1 Earnings | FCF-Yield >4% + Net Debt/EBITDA <3.0x → DEFCON 4 möglich |
-| 28.04.2026 | SPGI Q1 Earnings | Re-Analyse Katalysator |
-| 29.04.2026 | MSFT Q3 FY26 Earnings | DEFCON-3-Re-Check: FLAG CapEx/OCF — Auflösung oder Veto? |
-| Mai 2026 | TMO / ZTS / PEGA / FICO Earnings | TMO Re-Check + Slot-16-Entscheidung PEGA |
+| 27.05.2026 | VEEV Q1 FY27 Earnings | Klasse-B Vollanalyse |
+| 28.05.2026 | COST Q3 FY26 Earnings | Membership-Yield-Watch |
+| Mai 2026 | ZTS / PEGA / FICO Earnings | Slot-16-Entscheidung PEGA |
 | Juni 2026 | Bausparvertrag 9.500€ + Steuererstattung 2.000€ | Sparplan-Booster planen |
 | ~Ende Juli 2026 | AMZN Q2 FY26 Earnings | CapEx/OCF-FLAG-Re-Eval (Resolve <60%) + Vollanalyse (Score 42/🔴 D1, FLAG seit 15.05.) |
+
+> April-Earnings-Termine (TMO 23.04., SPGI 28.04. overdue, MSFT 29.04.) entfernt im 00_Core Slim-Refactor 23.05.2026. Detail → CORE-MEMORY §12 + git log + score_history.jsonl.
 
 ---
 
@@ -253,4 +256,4 @@ Bei !QuickCheck-Rot oder Score <60: kein §6-Eintrag, Slot bleibt offen oder Bra
 - V-Q2-Incident 28.04.2026 — Präzedenz „Score-Move auf unzureichender Evidenz"
 
 ---
-*🦅 KONTEXT.md v1.5 (§5 AMZN 12. Satellit Neuaufnahme — Slot 11→12 User-Direktive, Score 42/D1/🔴 CapEx-FLAG/0€ regelkonform; v1.5 PIPELINE #70 Doc-Sync: US-Ziel ~49,51%→~50,2% nachgezogen, da AMZN vollen US-Zielanteil trägt [User-Direktive „exakter Ziel-Anteil wie alle", Codex-LOW]) | Dynastie-Depot | Stand: 2026-05-18*
+*🦅 KONTEXT.md v1.5 | Dynastie-Depot | Stand: 2026-05-23 (§10 Anstehende Termine: April-Earnings-DONE-Strip im 00_Core Slim-Refactor; Forward-Triggers 27./28.05./Juli aktualisiert)*

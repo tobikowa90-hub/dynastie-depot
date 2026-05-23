@@ -2,7 +2,7 @@
 name: Applied Learning Log
 description: Kuratierte Arbeitsprinzipien für Dynasty-Depot-Sessions (Tier 2 des 3-Tier-Lernsystems). Enthält Pflege-Regeln und Versionshistorie.
 type: learning-log
-updated: 2026-05-18
+updated: 2026-05-23
 ---
 
 # Applied Learning — Kuratierte Arbeitsprinzipien
@@ -44,14 +44,9 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 
 | Version | Datum | Änderung |
 |---------|-------|----------|
-| v1.0 | 17.04.2026 | 19 Bullets gemischt. |
-| v2.0 | 18.04.2026 | Evakuierung: 6 Tool-Refs → Auto-Memory, 4 systemische Regeln → INSTRUKTIONEN §27, auf **9 Kern-Arbeitsprinzipien** reduziert. Neues +1 (Option B FLAG-Entscheidung). |
-| v2.1 | 18.04.2026 | Bullet „Scoring-Version-Bump re-verify" → INSTRUKTIONEN §28.2 promoted. |
-| v2.2 | 20.04.2026 | +1 (Spec-§-Drift-Handling, aus Track-5-Plan-Writing). |
-| v2.3 | 20.04.2026 Nacht-Spät | +1 (Anti-Hallucination-Datenpfad-Vollständigkeit, aus v3.0.3-Incident). |
-| v2.4 | 21.04.2026 | +1 (Exhaustive-Drift-Check, aus Pre-Provenance-Plan-Compat-Check 12/27 silent v3.7-Threshold-Drift). |
-| v2.5 | 24.04.2026 | +2 (Plan-Self-Review-Blindspot, Migrations-Invariante-vs-Meta-Logging — beide aus 3-fach-Review CLAUDE.md-Routing-Refactor, nach Tier-1-Deploy). Stand: **14/20**. |
-| v2.6 | 02.05.2026 | **Bridge-Coherence-Scan** post-Ruflo-Phase-1.2-1.7-DONE: −3 Bullets entfernt (Info-Loss-Aversion, Spec-§-Drift, Exhaustive-Drift-Check — alle als Auto-Memory bereits evakuiert; Doppel-Speicherung verzerrte Bridge-PageRank-Recall). +1 neu (Pre-Append-Audit-Klausel aus Provenance-Gate-Plan v3.1 + V/MSFT-Pre-Earnings-Klausel 28.04.). +1 Pflege-Regel-Erweiterung (Bridge-Coherence beim Monatsscan). Stand: **12/20**. |
-| v2.7 | 07.05.2026 | +1 (Tooling-Bulk-Edit + CR-Pass koppeln) — empirische Evidenz aus Ruff-Cleanup Cluster A+B: 96+ pre-existing CR-Findings (3 critical / 14 major union) durch zwei sukzessive `coderabbit review -t uncommitted --dir 03_Tools/`-Pässe surfacet, die Ruff allein nicht sieht (semantische Algo-Drift, hardcoded-Annahmen, missing cross-validators, Test-Fixture-Quality). Reaktiver Konsolidierungs-Backlog (PIPELINE #46 + #47) wäre durch periodische CR-Reviews während Authoring größtenteils vermieden worden. Stand: **13/20**. |
+| v2.6 | 02.05.2026 | **Bridge-Coherence-Scan** post-Ruflo-Phase-1.2-1.7-DONE: −3 Bullets entfernt (Doppel-Speicherung mit Auto-Memory verzerrte Bridge-PageRank-Recall). +1 neu (Pre-Append-Audit-Klausel). +1 Pflege-Regel-Erweiterung. Stand: **12/20**. |
+| v2.7 | 07.05.2026 | +1 (Tooling-Bulk-Edit + CR-Pass koppeln) — empirische Evidenz aus Ruff-Cleanup. Stand: **13/20**. |
 | v2.8 | 13.05.2026 | +3 generelle Engineering-Hygiene-Bullets aus Ruflo-Sunset. Stand: **16/20**. |
-| v2.9 | 18.05.2026 | +1 (Deferred-Sub-Scope-Committbarkeit vor Execution prüfen) — aus #69-(c)-Reinfall: Autofix+Doppel-CR+Codex+3-Smokes liefen, bevor erkannt wurde dass fail-close ruff-format-Hook (b)↔(c) koppelt → (c) nicht allein committbar, Arbeit reverted. §0.1-Think-before-coding-Miss, Kopplung war aus bereits gelesener `.pre-commit-config` ableitbar. Tier-2-only (Bridge-Coherence, kein Auto-Memory-Duplikat). Stand: **17/20**. |
+| v2.9 | 18.05.2026 | +1 (Deferred-Sub-Scope-Committbarkeit vor Execution prüfen). Tier-2-only (Bridge-Coherence). Stand: **17/20**. |
+
+> Versionen v1.0-v2.5 (17.-24.04.2026) → git log (Datei-Historie). Pre-v2.6 im 00_Core Slim-Refactor 23.05.2026 entfernt (Lean-Pflicht-Lese-Pfad-Disziplin, Memory `feedback_core_folder_lean_discipline`). Promotion-Events alle in git log + Auto-Memory abgedeckt.

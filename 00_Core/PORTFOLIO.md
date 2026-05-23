@@ -59,8 +59,7 @@
 | 28.05. | COST | B | Q3 FY26 Earnings (Membership-Yield-Watch) |
 | ~Ende Juli | AMZN | B/C | Q2 FY26 Earnings — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse (Score 42/D1, FLAG seit 15.05.) |
 
-*Earnings-Window 28.04.-04.05. (V Q2 / MSFT Q3 / APH Q1 / AVGO Forward / BRK.B Q1) komplett abgeschlossen — Detail-DONE-Stempel in CORE-MEMORY §12.X + git log.*
 
 ---
 
-*🦅 PORTFOLIO.md v1.2 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-05-18 (AMZN Neuaufnahme 12. Satellit — Score 42/🔴 D1, CapEx/OCF-FLAG TTM 99,2%, Sparrate 0€ regelkonform; Slot-Erweiterung 11→12 per User-Direktive, Sparraten-Nenner unverändert 7,5, alle 11 bestehenden Raten unverändert. Detail-Chronik in CORE-MEMORY §12 + git log + score_history.jsonl)*
+*🦅 PORTFOLIO.md v1.2 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-05-23 (Live-State stabil seit AMZN-Neuaufnahme 18.05.; 00_Core Slim-Refactor 23.05. — stale Earnings-Window-Note entfernt. Detail-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)*
