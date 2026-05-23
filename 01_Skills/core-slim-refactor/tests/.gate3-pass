@@ -1,0 +1,48 @@
+Build-Gate-3 PASS: 2026-05-23
+
+== CP16 Build-Gate-2 (Skill-Creator Description-Push Lint) ==
+PASS — manual substantive validation per OQ4 (skill-creator plugin is workflow-guide not one-shot linter):
+  - YAML frontmatter parseable
+  - name=core-slim-refactor (unique within 01_Skills/)
+  - version=0.1.0 (SemVer)
+  - description=347ch / 33 words (within heuristic)
+  - Trigger !SlimRefactor + "core-slim-refactor" non-colliding with 14 existing skill triggers
+  - Full validation matrix: references/yaml_schema.md "Skill-Creator OK-Format (v0.1 observed)"
+
+== CP17 Build-Gate-3 (Functional Smoke-Test) ==
+pytest: 23 PASS + 2 XFAIL (AK3 OQ3-deferred reference-archive byte-match)
+  - tests/test_backlink.py: 3 PASS
+  - tests/test_config.py: 7 PASS
+  - tests/test_patterns.py: 8 PASS
+  - tests/test_pipeline.py: 5 PASS (incl. AK2 test_dry_run_matches_live_for_bucket_archive)
+  - tests/test_reference_archive_match.py: 2 XFAIL (AK3, by-design v0.1 OQ3)
+runtime: 1.47s (< 5s budget)
+
+Worked-Example dry-run smoke (live-state):
+  - A ruflo-sunset-bucket.yaml: EXIT 4 P2-Classification-Empty
+    Expected behavior: retro-doc config against already-archived live CORE-MEMORY §13
+    (Ruflo content gone from live state, classify finds 0 to archive).
+    Documented in references/failure_modes.md:14.
+  - B defcon-fat-rows-slim.yaml: EXIT 4 P2-Classification-Empty
+    Expected behavior: retro-doc config against already-slimmed live state (fat rows compressed).
+  - C session-handover-date-cut.yaml: EXIT 0
+    AK5a: exit-code 0 PASS
+    AK5b: "would write" line with 4 rows (>=3) PASS
+    AK5c: === P0..P7 OK === all 7 markers PASS
+    AK5d: user-explicit-OK 2026-05-23 19:35 PASS
+
+Backlink-Term-Enumeration-Checklist doc-test (OQ7):
+  "OK: checklist present" — references/yaml_schema.md contains checklist section.
+
+== Plan-vs-Reality Reconcile (CP17 Step 2-3 expectation drift) ==
+Plan CP17 Steps 2-3 expected "exit-code 0, P0-P7 all OK" for A+B dry-runs. This
+expectation was incompatible with the executed: block semantics — A and B are
+retroactive post-hoc documentation of completed refactors (Ruflo-Sunset 2026-05-13,
+DEFCON fat-row slim 2026-05-23 phase-1). Their live-state classification is
+correctly empty because their work was already done. The empirical-reproduction
+angle is covered by test_reference_archive_match.py XFAILs (AK3, deferred to v0.1.1
+per Spec OQ3). C dry-run on session-handover-date-cut still has fresh content above
+the cut-date and demonstrates full P0-P7 pipeline.
+
+Gate-3 substantive criteria met: pytest green + 1/3 worked-example full-pipeline
+demonstration + retro-doc-EXIT-4-by-design documented + AK5a-d on C all PASS.
