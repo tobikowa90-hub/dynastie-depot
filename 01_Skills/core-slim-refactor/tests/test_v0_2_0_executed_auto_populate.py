@@ -180,14 +180,15 @@ def test_bookkeeping_fail_exit13_and_sidecar_lock(tmp_path, monkeypatch):
     import importlib
     import os as _os
 
-    import core_slim_refactor as csr
-
     cfg, _, _archive = _make_minimal_setup(tmp_path)
 
-    # Import the module under test (direct import, not subprocess)
+    # sys.path must be set BEFORE import (import executes at parse-time in CPython)
     script_dir = str(ROOT / "scripts")
     if script_dir not in sys.path:
         sys.path.insert(0, script_dir)
+
+    import core_slim_refactor as csr
+
     importlib.reload(csr)  # ensure fresh state
 
     def _raise_oserror(*a, **kw):
@@ -214,6 +215,37 @@ def test_bookkeeping_fail_exit13_and_sidecar_lock(tmp_path, monkeypatch):
 # ---------------------------------------------------------------------------
 # AC4e -- PyYAML Comment-Loss documented behavior (Q1-Verdict)
 # ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# AC4g -- Sidecar-Lock cleared after successful --force-rerun (Lifecycle)
+# ---------------------------------------------------------------------------
+
+
+def test_sidecar_cleared_after_successful_force_rerun(tmp_path):
+    """Advisor-Gap: stale .executed-pending must be cleaned up on successful write.
+    --force-rerun scenario: prior F-03 left sidecar, operator re-runs with --force-rerun.
+    After successful P7b write-back the sidecar must be unlinked.
+    """
+    cfg, _, _ = _make_minimal_setup(tmp_path)
+    # Pre-populate executed block so --force-rerun is needed (guard at P1 rejects re-run)
+    data = yaml.safe_load(cfg.read_text(encoding="utf-8"))
+    data["executed"] = {
+        "timestamp": "2026-01-01T00:00:00Z",
+        "reference_archive_sha": "0" * 64,
+        "commit_sha": "pending",
+    }
+    cfg.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8", newline="\n")
+    # Simulate a stale sidecar from a prior F-03 bookkeeping failure
+    sidecar = cfg.with_suffix(cfg.suffix + ".executed-pending")
+    sidecar.write_text("# stale sidecar from prior F-03\n", encoding="utf-8", newline="\n")
+    assert sidecar.exists(), "precondition: stale sidecar must exist before run"
+    res = _run(cfg, "--force-rerun")
+    assert res.returncode == 0, f"stderr={res.stderr!r}\nstdout={res.stdout!r}"
+    assert not sidecar.exists(), "sidecar must be unlinked after successful P7b write-back"
+    # Config must have refreshed executed block
+    data2 = yaml.safe_load(cfg.read_text(encoding="utf-8"))
+    assert data2["executed"]["timestamp"] != "2026-01-01T00:00:00Z"
 
 
 def test_pyyaml_comment_loss_accepted(tmp_path):

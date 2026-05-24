@@ -605,6 +605,14 @@ def _phase_p7b_writeback_executed(cfg_path: Path, meta: dict) -> None:
         with tmp.open("w", encoding="utf-8", newline="") as f:
             _yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
         tmp.replace(cfg_path)
+        # Sidecar-Cleanup: successful write clears any stale .executed-pending lock.
+        # (--force-rerun Lifecycle: stale sidecar from prior F-03 must not survive success.)
+        sidecar = cfg_path.with_suffix(cfg_path.suffix + ".executed-pending")
+        if sidecar.exists():
+            import contextlib as _contextlib
+
+            with _contextlib.suppress(OSError):
+                sidecar.unlink()
     except Exception as e:
         # Sidecar-Lock: best-effort record for Operator recovery
         sidecar = cfg_path.with_suffix(cfg_path.suffix + ".executed-pending")
