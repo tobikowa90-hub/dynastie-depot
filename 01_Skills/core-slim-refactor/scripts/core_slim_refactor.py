@@ -575,12 +575,72 @@ def _cleanup_backup_on_success(baseline: dict) -> None:
             bak.unlink()
 
 
+# P7b: Executed-Write-Back (Spec SS3.3, MEDIUM-14)
+
+
+def _phase_p7b_writeback_executed(cfg_path: Path, meta: dict) -> None:
+    """Spec SS3.3 MEDIUM-14. Auto-populates executed-Block post-P7-success.
+
+    Writes timestamp + reference_archive_sha + commit_sha=pending into config YAML.
+    Uses atomic rename via Path.replace (no partial-write hazard on POSIX/Windows).
+
+    F-03 Bookkeeping-Fail: If YAML-write fails POST-mutation (target+archive already
+    on-disk), writes Sidecar-Lock <cfg>.executed-pending and exits with
+    EXIT_BOOKKEEPING_FAILED=13. Operator must manually reconcile.
+
+    Call only when: not args.dry_run AND not args.skip_executed_writeback.
+    """
+    import yaml as _yaml
+
+    _emit_phase("P7b Executed-Write-Back", "START")
+    try:
+        data = _yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
+        data["executed"] = {
+            "timestamp": meta["timestamp"],
+            "reference_archive_sha": meta["reference_archive_sha"],
+            "commit_sha": "pending",
+        }
+        tmp = cfg_path.with_suffix(cfg_path.suffix + ".tmp")
+        # newline='' -> CRLF-Trap-Schutz (Memory feedback_windows_python_crlf_text_mode)
+        with tmp.open("w", encoding="utf-8", newline="") as f:
+            _yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
+        tmp.replace(cfg_path)
+    except Exception as e:
+        # Sidecar-Lock: best-effort record for Operator recovery
+        sidecar = cfg_path.with_suffix(cfg_path.suffix + ".executed-pending")
+        try:
+            with sidecar.open("w", encoding="utf-8", newline="") as f:
+                _yaml.safe_dump(
+                    {
+                        "timestamp": meta["timestamp"],
+                        "reference_archive_sha": meta["reference_archive_sha"],
+                        "commit_sha": "pending",
+                        "_error": str(e),
+                    },
+                    f,
+                    sort_keys=False,
+                    allow_unicode=True,
+                )
+        except Exception:  # noqa: BLE001
+            sys.stderr.write("WARN: MANUAL EXECUTED-BLOCK REQUIRED (sidecar write also failed)\n")
+        sys.stderr.write(f"WARN: EXIT_BOOKKEEPING_FAILED: {e}\n")
+        _emit_phase("P7b Executed-Write-Back", "FAIL")
+        raise SystemExit(EXIT_BOOKKEEPING_FAILED) from e
+    _emit_phase("P7b Executed-Write-Back", "OK")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="core-slim-refactor", description="v0.1")
     parser.add_argument("config", help="path to YAML config")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--skip-audit", action="store_true")
     parser.add_argument("--force-rerun", action="store_true")
+    parser.add_argument(
+        "--skip-executed-writeback",
+        action="store_true",
+        default=False,
+        help="Skip P7b auto-populate (v0.1.x-1:1-compat; Spec SS3.3 R3-3)",
+    )
     args = parser.parse_args(argv)
 
     timestamp = _dt.datetime.now(_dt.UTC).isoformat(timespec="seconds")
@@ -643,6 +703,20 @@ def main(argv: list[str] | None = None) -> int:
             _restore_backup(baseline)
             _cleanup_archive_on_fail(archive_path)
             raise
+
+        # P7b: Executed-Write-Back (Spec SS3.3, MEDIUM-14)
+        # F-01 Invariant: --dry-run wins over all other flags (never writes config).
+        # Advisor-Drift #5: use cfg.path + archive_path (real variables in scope).
+        # No rollback here: target+archive are committed work product at this point.
+        if not args.dry_run and not args.skip_executed_writeback:
+            _archive_bytes = (
+                archive_path.read_bytes() if archive_path and archive_path.exists() else b""
+            )
+            _meta = {
+                "timestamp": _dt.datetime.now(_dt.UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "reference_archive_sha": hashlib.sha256(_archive_bytes).hexdigest(),
+            }
+            _phase_p7b_writeback_executed(cfg.path, _meta)
 
         if not args.dry_run:
             _cleanup_backup_on_success(baseline)
