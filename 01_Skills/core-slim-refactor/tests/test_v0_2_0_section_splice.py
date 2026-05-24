@@ -96,7 +96,7 @@ def test_splice_replaces_section_content():
 
 def test_splice_boundary_assert_on_non_line_aligned():
     md = "line1\nline2\nline3\n"
-    with pytest.raises(AssertionError, match="splice_boundary_not_line_aligned"):
+    with pytest.raises(ValueError, match="splice_boundary_not_line_aligned"):
         _splice_section(md, start_byte=3, end_byte=10, new_section_text="X\n")
 
 
@@ -105,7 +105,7 @@ def test_splice_boundary_start_ok_end_bad():
     offsets = _build_line_byte_offsets(md)
     good_start = offsets[0]  # 0 is always valid
     bad_end = offsets[1] + 1  # mid-line
-    with pytest.raises(AssertionError, match="splice_boundary_not_line_aligned"):
+    with pytest.raises(ValueError, match="splice_boundary_not_line_aligned"):
         _splice_section(md, start_byte=good_start, end_byte=bad_end, new_section_text="X\n")
 
 

@@ -57,7 +57,12 @@ def _splice_section(
     """
     md_bytes = md.encode("utf-8")
     offsets_set = set(_build_line_byte_offsets(md))
-    assert start_byte in offsets_set and end_byte in offsets_set, "splice_boundary_not_line_aligned"
+    # ValueError statt assert (python -O wuerde assert deaktivieren -> Mid-Codepoint-Split moeglich;
+    # Codex P4 Review MEDIUM-1).
+    if start_byte not in offsets_set or end_byte not in offsets_set:
+        raise ValueError(
+            f"splice_boundary_not_line_aligned: start_byte={start_byte} end_byte={end_byte}"
+        )
     new_bytes = new_section_text.encode("utf-8")
     result_bytes = md_bytes[:start_byte] + new_bytes + md_bytes[end_byte:]
     return result_bytes.decode("utf-8")
