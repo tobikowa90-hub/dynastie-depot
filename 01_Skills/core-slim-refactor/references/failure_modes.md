@@ -342,3 +342,59 @@ PASS-WITH-NOTES. 0 HIGH, 0 MEDIUM-blockers. 2 LOW Findings: (1) SKIP-Mode Bundle
 - Codex-Re-Audit (2026-05-23 ~22:38 post-Cross-Check-Discovery, agent ae2e863dc1869630a, gpt-5.3-codex single-pass): 4 HIGH reported → final 3 valide (HIGH-1 confirmed L264-276, HIGH-4 NEU P0+P7 Subprocess-UTF-8) + 1 PEP-758-FP (Memory `feedback_pre_commit_diff_inspection`) + 2 MEDIUM defer v0.2.0
 - Memory-Reinfall-Klassen für HIGH-4: `feedback_windows_console_ascii_safe_inline_python` + `feedback_windows_python_crlf_text_mode`
 - Karpathy Approach-Reset: `00_Core/INSTRUKTIONEN.md §0`
+
+---
+
+## v0.2.0 Feature-Release (2026-05-24) - CLOSED Items
+
+### MEDIUM-9 - CLOSED v0.2.0
+
+Resolution: Pattern-C `_split_bullet_block`-Helper + `classify_date_cut` field-branching.
+Worked-Example: `references/configs/session-handover-banner-list-cut.yaml`.
+
+### MEDIUM-10 - CLOSED v0.2.0
+
+Resolution: P2a Drift-Pre-Check zwischen P2 und P3 (`expected_entry_count` + `on_drift`).
+Default `warn_continue` (Q3-Verdict); Structured stderr-Code `DRIFT_COUNT_OUT_OF_RANGE`.
+Exit-Code 12 `EXIT_DRIFT_DETECTED` bei `on_drift: fail_close`.
+
+### MEDIUM-14 - CLOSED v0.2.0
+
+Resolution: P7b Auto-Populate-Phase post-P7-success. Atomic-Rename via `os.replace`.
+Bei IO-Failure: Sidecar-Lock `<cfg>.executed-pending` + Exit-Code 13 `EXIT_BOOKKEEPING_FAILED`.
+CLI-Flag `--skip-executed-writeback` fur v0.1.x-1:1-Compat (R3-3 Spec).
+**v0.2.0-Limitation:** PyYAML strippt Comments (Q1-Verdict accepted; ruamel.yaml v0.3-TODO).
+
+### MEDIUM-16 - CLOSED v0.2.0
+
+Resolution: `_splice_section` + `_build_line_byte_offsets` Helper; `mutate_bucket_archive`
+refactored auf splice statt list-rebuild. Line-Alignment-Invariante eliminiert intra-grapheme-split.
+Diff-Stabilitat: T2-§13-Replay liefert EXACT -26/+1 (vs v0.1.2 -32/+7).
+**v0.2.0-Limitation:** Intra-line-Edits sind explizit out-of-scope (wurden `unicodedata.normalize`
++ grapheme-iterator brauchen; v0.3-Item falls Bedarf entsteht).
+**AC5-Note:** Replay-Diff ist -26/+1 byte-identisch zu v0.1.1-Expected; MEDIUM-16-Bug war
+Pointer-Placement (post-Footer vs pre-Footer), nicht Line-Count-Delta.
+
+### Exit-Codes v0.2.0 (Erganzung)
+
+| Code | Phase | Symptom | Recovery |
+|---|---|---|---|
+| 12 | P2a | EXIT_DRIFT_DETECTED - count mismatch bei `on_drift: fail_close` | regex-Update, Worked-Example refreshen, ODER `on_drift: warn_continue` setzen |
+| 13 | P7b | EXIT_BOOKKEEPING_FAILED - YAML-Write-Back IO-Error | Sidecar-Lock-Inhalt manuell in YAML ubernehmen + Sidecar loschen, ODER `--force-rerun` mit existing Sidecar als explicit Operator-Ack |
+
+### Unicode-Boundary-Garantie (F-05)
+
+`_splice_section` aborted via `AssertionError("splice_boundary_not_line_aligned")` bei
+non-line-aligned start/end-Bytes. Markdown-Mutationen operieren NIE intra-line in v0.2.0.
+Grapheme-Cluster (ZWJ-Emoji, combining marks, Flag-Pair) bleiben intakt.
+
+### Q1 PyYAML-Comment-Loss bei executed-Write-Back
+
+Akzeptiert fur v0.2.0. Workaround: User-Konfigs mit Inline-Comments sollten `executed:`-Block
+am File-Ende halten (keine Comments unterhalb). v0.3-Item: ruamel.yaml-Migration fur Comment-Preservation.
+
+### Q4 Header-Mode-Regression-Test
+
+Header-Mode-Configs (`field: header` oder field weglassen) liefern byte-identische Output
+gegen v0.1.x - verifiziert via AC1d + Worked-Example-Regression-Suite (`ruflo-sunset-bucket.yaml`,
+`defcon-fat-rows-slim.yaml`, log.md historische Date-Cuts).

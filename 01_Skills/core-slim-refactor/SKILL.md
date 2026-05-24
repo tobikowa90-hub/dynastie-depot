@@ -1,10 +1,10 @@
 ---
 name: core-slim-refactor
 description: YAML-driven 8-Phase Markdown-Section-Refactor pipeline. Use when slimming SSoT-Files via Bucket-Archive (semantic row-cluster archival), Slim-Convention (fat-row compression with verbatim archive), or Date-Cut (banner/chronicle pre-cut archival). Activates on triggers !SlimRefactor <config>, "core-slim-refactor", or explicit config-path-mention.
-version: 0.1.2
+version: 0.2.0
 ---
 
-# core-slim-refactor v0.1 — Markdown-Section-Refactor Skill
+# core-slim-refactor v0.2.0 — Markdown-Section-Refactor Skill
 
 ## When to use
 
@@ -16,6 +16,14 @@ Activate when slimming a single SSoT-Markdown file via one of 3 empirisch-validi
 | **B — Slim-Convention** | Fat-Rows > threshold (default 3500b) in-place compressed to Bold-Title + ~280-char-Outcome + pointer-tail | `references/configs/defcon-fat-rows-slim.yaml` |
 | **C — Date-Cut** | Banner/Chronicle pre-cut wholesale archive + date-boundary-header | `references/configs/session-handover-date-cut.yaml` |
 
+### Pattern-C: Date-Cut Modi (v0.2.0)
+
+- `field: header` (Default, backward-compat zu v0.1.x) — Entries via `^## DATE`-Header-Split
+- `field: bullet` (NEU v0.2.0) — Entries via `^- **Datum:** DATE`-Bullet-Liste; benoetigt `trailing_boundary` (z.B. `^## `) um Boundary zur Trailing-Content zu definieren
+
+Siehe `references/configs/session-handover-banner-list-cut.yaml` fur Bullet-Worked-Example.
+Compat-Matrix (v0.1.x vs v0.2.0): `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` §11.
+
 ## Invocation
 
 ```bash
@@ -26,6 +34,7 @@ python 01_Skills/core-slim-refactor/scripts/core_slim_refactor.py <config.yaml> 
 - `--dry-run` — P0-P7 simuliert (no file-writes). Output byte-genau dem live-run-delta.
 - `--skip-audit` — Skip P0 audit ONLY. NEVER skips P3 Backlink-Scan. NOT erlaubt in operativen Runs (Karpathy).
 - `--force-rerun` — Override `executed:` field guard (re-run post-hoc-documentation configs).
+- `--skip-executed-writeback` (NEU v0.2.0) — Skippt P7b executed-Block-Auto-Populate komplett; Config bleibt unveraendert. Verwendung: v0.1.x-Config-1:1-Compat (§11.3) + CI-Pipelines die executed-Block manuell verwalten. Dry-run-Interaktion: `--dry-run` skippt Write-Back ohnehin (F-01-Invariante); `--skip-executed-writeback` ist expliziter Opt-out auch bei live-runs. NICHT kombinieren mit operativer Nutzung — Re-Run-Lock greift nicht wenn executed-Block null bleibt.
 
 **P3 Backlink-Scan ist NICHT CLI-bypassable** — Bypass nur via YAML (`on_match != fail_close` AND `skip_override_allowed: true`), wird in stdout als WARNING geloggt.
 
@@ -72,11 +81,15 @@ Skill-internes exec endet bei P7. P8 ist User-Post-Action; Skill druckt cmd-temp
 | 8 | §18-Skill-Gate-Fail (P7) |
 | 10 | Reference-Archive-Mismatch (CP14 gate) |
 | 11 | Anchor-Not-Found (P2) — `cfg.target.section` configured but absent in target |
+| 12 | Drift-Detected (P2a) — `expected_entry_count` mismatch bei `on_drift: fail_close` (NEU v0.2.0) |
+| 13 | Bookkeeping-Failed (P7b) — executed-Block YAML-Write-Back IO-Error; Sidecar-Lock geschrieben (NEU v0.2.0) |
 | 99 | Approach-Reset-Triggered (Karpathy 2-Fail-Stop) |
 
 ## Reference-Files
 
 - `references/pattern_specs.md` — 3 Pattern-Definitionen + Known-Pitfalls
 - `references/yaml_schema.md` — Full config-schema + Backlink-Term-Enumeration-Checklist
-- `references/failure_modes.md` — Phase-Failure-Klassifikation + Recovery
-- `references/configs/*.yaml` — 3 worked-examples (A retro, B retro, C executable)
+- `references/failure_modes.md` — Phase-Failure-Klassifikation + Recovery (inkl. v0.2.0 CLOSED-Items + Exit-Codes 12/13)
+- `references/configs/*.yaml` — Worked-Examples: A (Bucket-Archive retro), B (Slim-Convention retro), C header-mode (executable), C bullet-mode (session-handover-banner-list-cut.yaml NEU v0.2.0)
+- `tests/test_v0_2_0_compat_matrix.py` — v0.1.x vs v0.2.0 Compat-Matrix-Tests (Spec SS11)
+- Compat-Matrix Spec §11: `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` §11
