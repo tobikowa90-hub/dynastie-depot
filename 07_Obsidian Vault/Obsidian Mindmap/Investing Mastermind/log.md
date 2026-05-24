@@ -1073,7 +1073,7 @@ KEIN PORTFOLIO/Faktortabelle/config.yaml/xlsx/jsonl-Touch (kein Score/FLAG/Sparr
 | 9 | `8673e39` | fix P5b Sidecar-Lifecycle + AC4g test |
 | 10 | `380e456` | feat P6 SH Worked-Example + Integration-Test (Pattern-C-Bullet end-to-end) |
 | 11 | `2f82045` | docs P7 Doc-Sync (failure_modes + SKILL v0.2.0) |
-| 12 | `ceb8833` | chore(meta) Build-Wave §18-Sync (dieser Commit) |
+| 12 | `98a3eb7` | chore(meta) Build-Wave §18-Sync (dieser Commit) |
 
 **Closed MEDIUMs (alle 4 v0.2.0-Scope):**
 - **MEDIUM-9 Pattern-C Bullet-Variante** — `date_parser.field: bullet` + Helper `_split_bullet_block` + Hard-ConfigError für mode-mismatch
@@ -1123,7 +1123,7 @@ MEDIUM-15 bleibt v0.3 (Null-Coupling, kein Use-Case).
 - **Q4-Header-Mode-Byte-Identity-Proof (P6) ersetzt explizite Backward-Compat-Suite** — Pre-v0.2.0 Worked-Examples sind alle header-mode → fallen unter Q4-Coverage. Token-Budget gespart, Test-Coverage adäquat.
 - **Brainstorming-Terminal-Override (Spec separat von Build)** über 2 Sessions gehalten — Spec-Session 2026-05-24 nachmittags STOP nach R4 96%, Build-Session 2026-05-24 abends fresh start mit Subagent-Pattern. Karpathy 2-Phase-Discipline empirisch validiert.
 
-**Hard-Stop (Plan §11):** **KEIN `git push` ohne explizite User-Freigabe.** Branch ist 12 Commits ahead of origin/main (11 Build + 1 Build-Wave `ceb8833` mit Placeholder-Replace via `--amend`). User initiiert push wenn ready.
+**Hard-Stop (Plan §11):** **KEIN `git push` ohne explizite User-Freigabe.** Branch ist 12 Commits ahead of origin/main (11 Build + 1 Build-Wave `98a3eb7` mit Placeholder-Replace via `--amend`). User initiiert push wenn ready.
 
 **Cross-Reference:** PIPELINE #81 (v0.2.0 CLOSED) · SYSTEM.md §Skill-Registry v0.2.0 · failure_modes.md v0.2.0-Sektion · Spec-File `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` (96% Confidence post-R4) · v0.1.2-Hotfix-Commit `82af9ac` · v0.1-Spec `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` · Handover `docs/superpowers/handover/2026-05-24-core-slim-refactor-v0.2.0-P8-resume.md` · Auto-Memory `feedback_empirie_statt_annahmen` + `feedback_codex_sparring_heuristic` + `feedback_brainstorming_terminal_override_dynastie` + `feedback_core_slim_p7_p18_path_mismatch` (v0.1.2-Lineage).
 
