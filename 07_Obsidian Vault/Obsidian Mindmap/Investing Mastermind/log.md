@@ -1128,3 +1128,29 @@ MEDIUM-15 bleibt v0.3 (Null-Coupling, kein Use-Case).
 **Cross-Reference:** PIPELINE #81 (v0.2.0 CLOSED) · SYSTEM.md §Skill-Registry v0.2.0 · failure_modes.md v0.2.0-Sektion · Spec-File `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` (96% Confidence post-R4) · v0.1.2-Hotfix-Commit `82af9ac` · v0.1-Spec `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` · Handover `docs/superpowers/handover/2026-05-24-core-slim-refactor-v0.2.0-P8-resume.md` · Auto-Memory `feedback_empirie_statt_annahmen` + `feedback_codex_sparring_heuristic` + `feedback_brainstorming_terminal_override_dynastie` + `feedback_core_slim_p7_p18_path_mismatch` (v0.1.2-Lineage).
 
 **Next:** User-Approval für `git push origin main` (13 Commits ahead). Optional Post-Push: CORE-MEMORY §13 Lifecycle-Entry für v0.2.0-Activation. MEDIUM-15 als v0.3-Trigger offen (Null-Coupling, opportunistic).
+
+## 2026-05-25 — Doku-Event: CORE-MEMORY §13 v0.2.0 Lifecycle-Entry post-Push (scoring-neutral, system-zustand-Lifecycle-Doku)
+
+**Event-Typ:** Lifecycle-Doku-Append post-Release. Kein System-Zustand-Change (Skill-Version v0.2.0 bereits im Build-Wave-Commit `98a3eb7` bumped). Kein neuer Score/FLAG/Sparraten-Touch.
+
+**Trigger:** User-Freigabe nach Build-Wave-Push (`eda5b25..78c8597` zu origin/main) für optionale Post-Push-Disziplin-Schritte: (1) CORE-MEMORY §13 Lifecycle-Entry, (2) Memory `feedback_git_amend_sha_churn_trap` neu, (3) Memory `feedback_claude_default_english_in_dynastie` neu.
+
+**Was geändert:**
+- `00_Core/CORE-MEMORY.md` §13 — neuer v0.2.0-Entry (volle Build-Wave-Chronik: 13 Commits + 4 MEDIUMs CLOSED + 14 Plan-Drifts + Codex-Trail + P8-Disziplin-Befunde) + Footer v1.29→v1.30
+- `~/.claude/.../memory/feedback_git_amend_sha_churn_trap.md` neu — `--amend` Fixed-Point-Problem bei Self-Referential-SHA-Commits, Follow-Up statt amend
+- `~/.claude/.../memory/feedback_claude_default_english_in_dynastie.md` neu — Claude defaultet auf Englisch trotz deutschem Repo-Kontext (Tool-Descriptions besonders anfällig), Wiederholungs-Klasse zu Codex-Variante
+- `~/.claude/.../memory/MEMORY.md` Index — 2 neue Bullets
+
+**Sync-Set §18 (system-zustand-Lifecycle, Expected-Set 2):**
+- `00_Core/CORE-MEMORY.md` (§13-Entry + Footer-Bump)
+- `07_Obsidian Vault/.../log.md` (dieser Entry)
+
+KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98a3eb7` aktualisiert). Memory-Files leben außerhalb Repo (`~/.claude/...`), nicht §18-relevant.
+
+**Lessons:**
+- Post-Push-Lifecycle-Doku ist legitimer Disziplin-Schritt (Audit-Trail-Vollständigkeit), aber NICHT in Atomic-Build-Wave-Commit aufnehmen — separate Commit-Welle erlaubt fokussierte SHA-Reference + saubere Build-Wave-Atomicity.
+- 2 neue Memories aus P8-Empirie: `feedback_git_amend_sha_churn_trap` (technical-process) + `feedback_claude_default_english_in_dynastie` (behavioral). Beide Wiederholungs-Klasse-würdig.
+
+**Cross-Reference:** Build-Wave-Commit `98a3eb7` (P8) · SHA-Fix-Commit `78c8597` · CORE-MEMORY §13 v0.2.0-Entry · Auto-Memory `feedback_git_amend_sha_churn_trap` + `feedback_claude_default_english_in_dynastie` (beide neu).
+
+**Next:** MEDIUM-15 v0.3-Trigger offen (Null-Coupling, opportunistic). Session-Close möglich.
