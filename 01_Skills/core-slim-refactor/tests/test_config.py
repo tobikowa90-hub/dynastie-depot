@@ -5,8 +5,11 @@ import pytest
 import yaml
 
 SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
+TESTS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPTS_DIR))
+sys.path.insert(0, str(TESTS_DIR))
 
+from _helpers import make_minimal_valid_cfg_yaml  # noqa: E402  Disziplin-Regel #4
 from config import ConfigError, load_config  # noqa: E402
 
 
@@ -130,3 +133,72 @@ def test_date_cut_requires_null_section(tmp_path):
     cfg_path = _write_yaml(tmp_path, "datecut_section.yaml", data)
     with pytest.raises(ConfigError, match=r"date-cut.*target\.section=null"):
         load_config(cfg_path)
+
+
+# ===== v0.2.0 Schema-Erweiterungen (Task 1.1 Step 2 - Disziplin-Regel #4: helper-Pflicht) =====
+
+
+def test_field_header_with_trailing_boundary_rejected(tmp_path):
+    """F-04: field=header + trailing_boundary gesetzt -> ConfigError: trailing_boundary_only_in_bullet_mode."""
+    # _force_invalid_combo injects trailing_boundary under date_parser despite field=header.
+    cfg = make_minimal_valid_cfg_yaml(
+        tmp_path,
+        target_path=tmp_path / "x.md",
+        archive_path=tmp_path / "a.md",
+        schema_version=2,
+        field="header",
+        _force_invalid_combo={"date_parser_trailing_boundary": "^## "},
+    )
+    with pytest.raises(ConfigError, match="trailing_boundary_only_in_bullet_mode"):
+        load_config(cfg)
+
+
+def test_field_bullet_without_trailing_boundary_rejected(tmp_path):
+    """F-04: field=bullet ohne trailing_boundary -> ConfigError: bullet_mode_requires_trailing_boundary."""
+    # Build helper with bullet field but omit trailing_boundary via _force_invalid_combo.
+    # We write YAML manually here via _force_invalid_combo=None but pass no trailing_boundary.
+    # Strategy: use _force_invalid_combo={} to bypass helper pre-check, pass bullet_regex but
+    # no trailing_boundary in lines (helper only appends trailing_boundary when provided).
+    cfg = make_minimal_valid_cfg_yaml(
+        tmp_path,
+        target_path=tmp_path / "x.md",
+        archive_path=tmp_path / "a.md",
+        schema_version=2,
+        field="bullet",
+        bullet_regex=r"^- \*\*Datum:\*\*\s+(\d{4}-\d{2}-\d{2})",
+        trailing_boundary=None,  # intentionally missing
+        _force_invalid_combo={},  # bypass helper pre-check, trailing_boundary not emitted
+    )
+    with pytest.raises(ConfigError, match="bullet_mode_requires_trailing_boundary"):
+        load_config(cfg)
+
+
+def test_invalid_field_value_rejected(tmp_path):
+    """F-04: field=footer -> ConfigError: invalid_date_parser_field."""
+    cfg = make_minimal_valid_cfg_yaml(
+        tmp_path,
+        target_path=tmp_path / "x.md",
+        archive_path=tmp_path / "a.md",
+        schema_version=2,
+        field="footer",  # invalid value - triggers else-branch in helper + gate in config
+    )
+    with pytest.raises(ConfigError, match="invalid_date_parser_field"):
+        load_config(cfg)
+
+
+def test_commit_sha_regex_validation(tmp_path):
+    """AC3b: commit_sha muss ^(pending|[0-9a-f]{7,40})$ matchen."""
+    cfg = make_minimal_valid_cfg_yaml(
+        tmp_path,
+        target_path=tmp_path / "x.md",
+        archive_path=tmp_path / "a.md",
+        schema_version=2,
+        executed={
+            "timestamp": "2026-05-24T12:00:00Z",
+            "reference_archive_sha": "a" * 64,
+            "commit_sha": "NOTAVALIDHEX",
+        },
+        commit_sha="NOTAVALIDHEX",
+    )
+    with pytest.raises(ConfigError, match="invalid_commit_sha"):
+        load_config(cfg)
