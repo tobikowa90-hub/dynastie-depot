@@ -256,7 +256,9 @@ def _validate_executed_block(raw: dict) -> None:
     if not isinstance(ex, dict):
         return  # _check_executed_field already raised for non-dict; defensive guard
     csha = ex.get("commit_sha")
-    if csha is not None and not _COMMIT_SHA_RE.match(str(csha)):
+    if csha is None:
+        return
+    if not isinstance(csha, str) or not _COMMIT_SHA_RE.match(csha):
         raise ConfigError(f"invalid_commit_sha: got={csha!r} expected=^(pending|[0-9a-f]{{7,40}})$")
 
 

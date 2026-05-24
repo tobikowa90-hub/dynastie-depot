@@ -155,10 +155,9 @@ def test_field_header_with_trailing_boundary_rejected(tmp_path):
 
 def test_field_bullet_without_trailing_boundary_rejected(tmp_path):
     """F-04: field=bullet ohne trailing_boundary -> ConfigError: bullet_mode_requires_trailing_boundary."""
-    # Build helper with bullet field but omit trailing_boundary via _force_invalid_combo.
-    # We write YAML manually here via _force_invalid_combo=None but pass no trailing_boundary.
-    # Strategy: use _force_invalid_combo={} to bypass helper pre-check, pass bullet_regex but
-    # no trailing_boundary in lines (helper only appends trailing_boundary when provided).
+    # Helper via _force_invalid_combo={} bypasst die Pre-Check-Validation; bullet_regex wird
+    # emittiert, trailing_boundary aber NICHT (Helper appendet trailing_boundary nur wenn gesetzt).
+    # So entsteht das intentional-broken Fixture fuer den Validation-Error-Test (Disziplin-Regel #4).
     cfg = make_minimal_valid_cfg_yaml(
         tmp_path,
         target_path=tmp_path / "x.md",

@@ -75,6 +75,17 @@ def test_v0_1_x_runtime_silent_accept_documentation(tmp_path):
     Dieser Test ist eine Regression-Boundary: wenn jemand in der Zukunft eine schema_version-
     Validation in v0.1.x-Runtime rueckportiert, soll der Test darauf aufmerksam machen, dass die
     Compat-Story neu bewertet werden muss.
+
+    Wir verwenden hier expected_entry_count (anderes v0.2.0-Key als der bullet-Test darueber),
+    um den Boundary zu dokumentieren OHNE redundant zu sein: v0.2.0-Runtime lehnt den Misuse
+    ab, v0.1.x-Runtime (legacy) wuerde das gleiche Fixture silent akzeptieren (Spec SS11.2).
     """
-    # Smoke ist hier intentional pass-through; assert in SS11.2-Doku verankert.
-    pass
+    cfg = make_minimal_valid_cfg_yaml(
+        tmp_path,
+        target_path=tmp_path / "x.md",
+        archive_path=tmp_path / "a.md",
+        schema_version=1,
+        expected_entry_count={"min": 1, "max": 5, "on_drift": "warn_continue"},
+    )
+    with pytest.raises(ConfigError, match="schema_version_required_for_v2_keys"):
+        load_config(cfg)
