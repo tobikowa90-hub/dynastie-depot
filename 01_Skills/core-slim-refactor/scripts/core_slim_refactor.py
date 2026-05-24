@@ -401,13 +401,42 @@ def _evaluate_p18_result(returncode: int, stdout: str) -> tuple[bool, str]:
     return True, "rc=0 status=PASS"
 
 
+def _resolve_p18_command(repo_root: Path) -> list[str]:
+    """v0.1.2 HIGH-1: probe §18-validator in priority order, return subprocess argv.
+
+    Real validator since 2026-05-22 lives at `03_Tools/para18_sync/validator.py`.
+    The legacy probe path `01_Skills/paragraph-18-sync/scripts/p18_sync.py` was a
+    spec-stub that never landed, so probing it first caused P7 to silently fall
+    through to bare `paragraph-18-sync` (not on PATH) → FileNotFoundError →
+    WARNING-skip (T2-Empirie 2026-05-24 / `feedback_core_slim_p7_p18_path_mismatch`).
+    Order: real path → legacy alias (preserved for forward-compat if validator
+    relocates) → PATH-bare fallback (raises FileNotFoundError → fail-close).
+    """
+    candidates = (
+        repo_root / "03_Tools" / "para18_sync" / "validator.py",
+        repo_root / "01_Skills" / "paragraph-18-sync" / "scripts" / "p18_sync.py",
+    )
+    for candidate in candidates:
+        if candidate.exists():
+            return [sys.executable, str(candidate), "system-zustand", "--dry-run", "--json"]
+    return ["paragraph-18-sync", "system-zustand", "--dry-run", "--json"]
+
+
 def phase_p7(cfg: ConfigObject, repo_root: Path, args: argparse.Namespace, baseline: dict) -> None:
     _emit_phase("P7 Hybrid-Gate", "START")
-    p18_script = repo_root / "01_Skills" / "paragraph-18-sync" / "scripts" / "p18_sync.py"
-    if not p18_script.exists():
-        p18_cmd = ["paragraph-18-sync", "system-zustand", "--dry-run", "--json"]
-    else:
-        p18_cmd = [sys.executable, str(p18_script), "system-zustand", "--dry-run", "--json"]
+    # v0.1.2 test/dev escape-hatch (mirrors CORE_SLIM_REFACTOR_FORCE_FAIL_PHASE
+    # convention). Operative runs never set this — env-var unset = full §18-gate.
+    # Tests use it because the live validator probes the host repo via
+    # `git rev-parse`, which sees pre-existing dirty/untracked files from the
+    # working session that are irrelevant to a fixture-only test mutation.
+    if os.environ.get("CORE_SLIM_REFACTOR_SKIP_GATE") == "1":
+        sys.stdout.write(
+            "[skip-gate] CORE_SLIM_REFACTOR_SKIP_GATE=1 → P7 §18-gate bypassed (test/dev only)\n"
+        )
+        _emit_phase("P7 Hybrid-Gate", "SKIP")
+        return
+
+    p18_cmd = _resolve_p18_command(repo_root)
 
     if args.dry_run:
         sys.stdout.write(f"[dry-run] would run: {' '.join(p18_cmd)}\n")
@@ -443,10 +472,20 @@ def phase_p7(cfg: ConfigObject, repo_root: Path, args: argparse.Namespace, basel
             )
             _emit_phase("P7 Hybrid-Gate", "FAIL")
             raise SystemExit(EXIT_GATE_FAIL) from t_err
-        except FileNotFoundError:
+        except FileNotFoundError as fnf_err:
+            # v0.1.2 HIGH-1 fix: previously emitted WARNING + silent skip, which violated
+            # SKILL.md §4-Discipline-#5 "fail-close on any §18-gate failure". A missing
+            # validator binary on operative runs is indistinguishable from a real PASS,
+            # so we now fail-close with EXIT_GATE_FAIL — same exit-code as a FAIL result
+            # from the validator itself.
             sys.stderr.write(
-                "WARNING: paragraph-18-sync not found; skipping §18-gate (operative runs MUST resolve)\n"
+                "§18-Skill validator not found "
+                "(probed: 03_Tools/para18_sync/validator.py, "
+                "01_Skills/paragraph-18-sync/scripts/p18_sync.py, "
+                "PATH-bare 'paragraph-18-sync'); fail-close\n"
             )
+            _emit_phase("P7 Hybrid-Gate", "FAIL")
+            raise SystemExit(EXIT_GATE_FAIL) from fnf_err
 
     sys.stdout.write(
         f"\n=== CODEX HAND-OFF BUNDLE ===\n"

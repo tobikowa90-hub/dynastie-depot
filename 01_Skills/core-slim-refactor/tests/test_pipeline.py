@@ -85,7 +85,10 @@ def test_live_run_mutates_target_and_writes_archive(tmp_path):
     target = tmp_path / "target.md"
     shutil.copy(FIXTURES / "bucket_archive_sample.md", target)
     cfg = _write_throwaway_config(tmp_path, str(target))
-    result = _run([str(cfg), "--skip-audit"])
+    # SKIP_GATE: v0.1.2 — validator resolves via host repo `git rev-parse`,
+    # not tmp_path, so it sees pre-existing dirty files from the working session.
+    # P7 path-resolution itself is regression-tested in test_v0_1_2_bugfixes.py.
+    result = _run([str(cfg), "--skip-audit"], env={"CORE_SLIM_REFACTOR_SKIP_GATE": "1"})
     assert result.returncode == 0, f"stderr: {result.stderr}\nstdout: {result.stdout}"
     assert (tmp_path / "arch.md").exists()
     new_content = target.read_text(encoding="utf-8")
@@ -162,11 +165,12 @@ def test_dry_run_matches_live_for_bucket_archive(tmp_path):
         newline="",
     )
 
-    r_live = _run([str(cfg_live), "--skip-audit"])
+    skip_gate = {"CORE_SLIM_REFACTOR_SKIP_GATE": "1"}
+    r_live = _run([str(cfg_live), "--skip-audit"], env=skip_gate)
     assert r_live.returncode == 0, f"live: {r_live.stderr}"
     live_archive = (tmp_path / "arch.md").read_text(encoding="utf-8")
 
-    r_dry = _run([str(cfg_dry), "--skip-audit", "--dry-run"])
+    r_dry = _run([str(cfg_dry), "--skip-audit", "--dry-run"], env=skip_gate)
     assert r_dry.returncode == 0, f"dry: {r_dry.stderr}"
     # Dry-run must NOT have written files
     assert not (tmp_path / "arch_dry.md").exists()

@@ -982,3 +982,39 @@ KEIN PORTFOLIO/Faktortabelle/config.yaml/xlsx/jsonl-Touch (kein Score/FLAG/Sparr
 **Sync-Set §18 pipeline-item:** PIPELINE.md (#81 + Footer) + log.md (dieser Entry). KEIN weiterer Touch nötig — Detail-Empirie liegt in `359c296`.
 
 **Next:** Neue Session für v0.1.2-Hotfix-Spec (Karpathy 1-Phase, minimal Scope).
+
+## 2026-05-24 — System-Event: core-slim-refactor v0.1.2 Hotfix DONE (PIPELINE #81 v0.1.2-Sub ACTIVATABLE→DONE, scoring-neutral, system-zustand + pipeline-item Multi-Event Union §18-Sync)
+
+**Event-Typ:** System-Zustand-Change (Skill Version-Bump v0.1.1→v0.1.2) + Pipeline-Item-Status-Transition (PIPELINE #81 v0.1.2-Sub).
+
+**Karpathy 1-Phase Bugfix-Bump** auf Basis T2-Empirie commit `359c296` (24.05. ~02:14 GMT+2). Kein voller Spec, kein Codex-Sparring nötig per `feedback_codex_sparring_heuristic`. Pre-Build Mini-Plan + Acceptance-Kriterien als Karpathy-§0.4-Substitut.
+
+**Fix-Scope:**
+- **HIGH-1 P7 §18-Skill-Gate Path-Mismatch RESOLVED** — neue Pure-Function `_resolve_p18_command(repo_root)` in `core_slim_refactor.py` mit 3-Step-Probe: `03_Tools/para18_sync/validator.py` PRIMARY → legacy `01_Skills/paragraph-18-sync/scripts/p18_sync.py` (forward-compat) → PATH-bare `paragraph-18-sync`. FileNotFoundError-Branch ersetzt: pre-fix silent-WARNING-skip → `raise SystemExit(EXIT_GATE_FAIL=8) from fnf_err` (fail-close gemäß SKILL.md §4-Discipline-#5).
+- **MEDIUM-2 Pointer-Placement footer-blind Fallback RESOLVED** — neuer Helper `_insert_after_last_table_row(lines, pointer_row)` in `patterns.py` walks backwards, findet last `_is_table_row` index, inseriert immediately after. 2 Call-Sites refactored (chronological-fallback + section_bottom; pre-fix landete Pointer POST-Footer-Bullet, sichtbar `00_Core/CORE-MEMORY.md` L425 als historische Evidenz). Pre-Fix-Trailing-Blank-Pop/Append-Logik entfernt (trug auch zur Reflow-Noise bei).
+- **NEU env-var `CORE_SLIM_REFACTOR_SKIP_GATE=1`** — test/dev escape-hatch analog `CORE_SLIM_REFACTOR_FORCE_FAIL_PHASE`; bypasst P7 vor Validator-Probe; emittiert kein Codex-Hand-off-Bundle (intentional). Operative Runs setzen das niemals.
+- **MEDIUM-16 Section-Reflow selective splice deferred v0.2.0** per Karpathy §0.6 Pre-Implementation-Abort — algorithmischer Refactor `mutate_bucket_archive` (split-rebuild → position-based-splice) violates Bugfix-Surgical-Scope; MEDIUM-2-Fix hat bereits Teil der Reflow-Noise eliminiert; verbleibende Noise = `split("\n")/"\n".join(...)`-Normalisierung, mathematisch korrekt kein Datenverlust.
+
+**Tests:** +6 v0.1.2 regression in neuem File `tests/test_v0_1_2_bugfixes.py` (4 HIGH-1 path-resolution + 4 MEDIUM-2 footer-aware insertion); 2 pre-existing pipeline-tests (`test_live_run_mutates_target_and_writes_archive` + `test_dry_run_matches_live_for_bucket_archive`) bekommen SKIP_GATE env — pre-fix hatten sie nur passed weil P7 silent-skipped war (FileNotFoundError → WARNING). Total: 51 PASS, 2 SKIP.
+
+**Codex Single-Pass Review (gpt-5.3-codex, agent `a2d27dc2184b4ae56`):** PASS-WITH-NOTES — 0 HIGH, 0 MEDIUM-blockers, 2 LOW Findings: (a) SKIP-Mode Bundle-Print intentional, in SKILL.md P7-Doku klargestellt; (b) `repo_root`-Defensive-Type-Guard skipped per Karpathy §0.2 (`_repo_root()` returnt immer Path, Defensive für unmögliches Szenario). Kein Sparring nötig per `feedback_codex_sparring_heuristic` (HIGH-Count <2).
+
+**Sync-Set §18 (system-zustand --version-bump --also pipeline-item, Expected-Set 4):**
+- 00_Core/SYSTEM.md (§Skill-Registry v0.1.1→v0.1.2 + Footer v1.11→v1.12)
+- 00_Core/CORE-MEMORY.md (§13 v1.28→v1.29 + neuer 2026-05-24 Eintrag)
+- 00_Core/PIPELINE.md (#81 Status v0.1.2 ACTIVATABLE→DONE; v0.2.0 bleibt ACTIVATABLE)
+- 07_Obsidian Vault/.../log.md (dieser Entry)
+- + Skill-Internal (out-of-validator-scope, im selben Commit): SKILL.md frontmatter + scripts/core_slim_refactor.py + scripts/patterns.py + tests/test_v0_1_2_bugfixes.py (untracked→add) + tests/test_pipeline.py + references/failure_modes.md (v0.1.2-Sektion)
+
+**§18-Skill Pre-Commit-Gate:** `paragraph-18-sync` Validator `03_Tools/para18_sync/validator.py system-zustand --version-bump --also pipeline-item --dry-run --json --allow-dirty 80` — Expected-Set bestätigt 4 Files, vor finalem Commit verifiziert (User-Catch: ich hatte den Skill initial NICHT verwendet trotz §18-File-Touch-Routing-Trigger, korrigiert nach User-Hinweis).
+
+**Lessons:**
+- **(Meta) §18-Skill MUSS bei §18-File-Touch verwendet werden, nicht via Memory-Sync-Set-Rekonstruktion** — Routing-Table-Trigger ist normativ; Memory ist advisory. User-Hinweis war Karpathy §0.1-Catch ("aktive Push für Simplicity-Pfad statt erster Idee").
+- T2-Empirie-Befunde sind oft Skill-Internal-Bugs die nur unter Real-Run-Pressure sichtbar werden — Tests, die durch silent-skip "passed", sind False-PASS-Artefakt (`feedback_cross_check_skill_vs_standalone`-Klasse).
+- Pre-Fix-Tests müssen nach Fix evtl. ENV-Setup bekommen wenn der Bug die Test-Isolation maskiert hat.
+- Karpathy §0.6 Approach-Reset Pre-Implementation > Post-Implementation-Rollback — MEDIUM-3 wurde NIE angefangen, weil Scope-Assessment vor Code-Touch ergab dass es out-of-scope ist.
+- Codex-Bundle-Klarstellung via SKILL.md-Doku-Edit ist billiger als Code-Refactor — LOW-Finding adressiert ohne neuen Bug-Surface.
+
+**Cross-Reference:** PIPELINE #81 (v0.1.2-Sub Status-Transition) · CORE-MEMORY §13 2026-05-24-Eintrag · SYSTEM.md §Skill-Registry · failure_modes.md v0.1.2-Sektion · Auto-Memory `feedback_core_slim_p7_p18_path_mismatch` + `feedback_codex_sparring_heuristic` · Commit `<TBD-Hotfix>`.
+
+**Next:** v0.2.0 Feature-Release ACTIVATABLE für separate Session (Pre-Lock 9/10/14 + NEU MEDIUM-16 Section-Reflow); Karpathy 2-Phase-Discipline.

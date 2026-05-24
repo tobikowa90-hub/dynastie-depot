@@ -298,6 +298,41 @@ Codex-Diff-Re-Review-Befund: Im Archive `log-bis-2026-05-16-archiv.md` sind `[[�
 
 ---
 
+## v0.1.2 Hotfix (2026-05-24, post-T2-Empirie)
+
+### HIGH-1 v0.1.2: P7 §18-Skill-Gate Path-Mismatch (CLOSED)
+
+T2-Empirie 2026-05-24 (commit `359c296`) hat aufgedeckt: P7 sondiert nur `01_Skills/paragraph-18-sync/scripts/p18_sync.py` (Spec-Stub, nie gelandet) und PATH-bare `paragraph-18-sync` (nicht installiert). Real-Validator lebt seit 2026-05-22 unter `03_Tools/para18_sync/validator.py` — beide pre-fix Sondierungs-Pfade missen ihn. FileNotFoundError-Branch loggte nur `WARNING: ... skipping §18-gate` und kehrte zurück → silent-skip-by-design-violation gegen SKILL.md §4-Discipline-#5 ("fail-close on any §18-gate failure"). Operative Runs hätten gegen broken Sync-State commiten können.
+
+- **Fix:** Pure-Function `_resolve_p18_command(repo_root)` mit 3-Step-Probe (real path PRIMARY, legacy alias forward-compat, PATH-bare fallback). FileNotFoundError → `SystemExit(EXIT_GATE_FAIL=8)` (kein silent-skip mehr).
+- **Test:** `tests/test_v0_1_2_bugfixes.py::test_real_validator_picked_when_present` + `test_legacy_alias_used_when_only_legacy_present` + `test_real_validator_preferred_over_legacy` + `test_bare_path_fallback_when_neither_present`.
+- **Memory:** `feedback_core_slim_p7_p18_path_mismatch.md`.
+
+### MEDIUM-2 v0.1.2: Pointer-Placement footer-blind Fallback (CLOSED)
+
+T2-Empirie sichtbar in CORE-MEMORY.md L425 — Pointer landete POST-Footer-Bullet statt davor. Root-Cause: chronological-Fallback (line 139-147) und section_bottom-Mode (line 156-161) appendeten Pointer unbedingt am Section-Ende ohne Footer-Erkennung. `dt > pointer_date` Bedingung im Main-Loop firet selten (alle kept-rows pre-today) → Fallback ist Default-Path.
+
+- **Fix:** Neuer Helper `_insert_after_last_table_row(lines, pointer_row)` in `patterns.py` walks backwards, findet last `_is_table_row` Index, inseriert Pointer immediately after. 2 Call-Sites refactored. Pre-Fix-Trailing-Blank-Pop/Append-Logik entfernt (auch Beitrag zur Reflow-Noise).
+- **Test:** `tests/test_v0_1_2_bugfixes.py::test_pointer_inserted_before_footer_bullet` + 3 weitere edge-case tests.
+- **Sentinel-Note:** `pointer_context.get("pointer_date", "9999-99-99")` Fallback in `patterns.py:120` bleibt unverändert — `_build_pointer_context` setzt pointer_date immer, Sentinel würde nur bei externem caller-Bug feuern.
+
+### Test/Dev Escape-Hatch: `CORE_SLIM_REFACTOR_SKIP_GATE` (NEU)
+
+Hinzugefügt analog `CORE_SLIM_REFACTOR_FORCE_FAIL_PHASE`. Bypasst P7 vor Validator-Probe (`_emit_phase("P7 Hybrid-Gate", "SKIP")`) für Test-Isolation und Dev-Iteration. Operative Runs setzen das nie. **Side-Effect:** SKIP-Mode emittiert KEIN Codex-Hand-off-Bundle auf stdout (Skill kehrt vor Bundle-Print zurück) — intentional, Tests/Dev brauchen es nicht.
+
+### MEDIUM-16 v0.1.2: Section-Reflow selective splice (deferred v0.2.0)
+
+T2-Empirie-Test #2 §13 Lifecycle produzierte Diff -32/+7 vs erwartet -26/+1. Extra +6 = Whitespace/Footer-Re-Layout-Noise aus `_iter_section_rows` + `split("\n")/"\n".join(...)`-Mutation-Pipeline. Mathematisch korrekt, kein Datenverlust — reine Diff-Optik. MEDIUM-2-Fix entfernte einen Teil (Trailing-Blank-Pop/Append). Rest wäre algorithmischer Refactor von `mutate_bucket_archive` (split-rebuild → position-based-splice). Out-of-Scope für v0.1.2-Bugfix per Karpathy §0.6 Approach-Reset (Pre-Implementation-Abort).
+
+- **Defer:** v0.2.0 Build-Phase, additiv zu MEDIUM-9/10/14 Pre-Lock.
+- **Risk:** Diff-Optic-Only — kein Operational-Impact.
+
+### Codex Single-Pass Review v0.1.2 (2026-05-24 ~15:40)
+
+PASS-WITH-NOTES. 0 HIGH, 0 MEDIUM-blockers. 2 LOW Findings: (1) SKIP-Mode Bundle-Print intentional, in SKILL.md klargestellt (commit dieser Welle); (2) `repo_root` Defensive-Type-Guard nicht implementiert per Karpathy §0.2 (`_repo_root()` returnt immer Path, Defensive für unmögliches Szenario). Single-Pass war ausreichend per `feedback_codex_sparring_heuristic.md` (kein Sparring-Trigger).
+
+---
+
 ## Cross-Reference
 
 - Spec §4 Error-Handling (full text): `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` lines 372-454

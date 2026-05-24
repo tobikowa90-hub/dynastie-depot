@@ -59,6 +59,22 @@ def _is_table_row(line: str) -> bool:
     return s.startswith("|") and s.endswith("|")
 
 
+def _insert_after_last_table_row(lines: list[str], pointer_row: str) -> list[str]:
+    """v0.1.2 MEDIUM-2: footer-aware pointer-insert. Walk backwards, find last
+    `_is_table_row` index, insert pointer immediately after it (= before any
+    trailing footer bullets, prose notes, or blanks). Falls back to plain
+    append if section has no table rows.
+
+    Pre-fix: chronological-fallback and section_bottom both appended
+    unconditionally, placing pointer POST-footer (observed CORE-MEMORY.md L425
+    after T2-Empirie 2026-05-24).
+    """
+    for i in range(len(lines) - 1, -1, -1):
+        if _is_table_row(lines[i]):
+            return [*lines[: i + 1], pointer_row, *lines[i + 1 :]]
+    return [*lines, pointer_row]
+
+
 def _extract_row_date(row: str) -> str | None:
     """Extract first ISO-8601 date YYYY-MM-DD from row."""
     m = re.search(r"(\d{4}-\d{2}-\d{2})", row)
@@ -137,14 +153,10 @@ def mutate_bucket_archive(
                 pointer_inserted = True
             new_section_lines.append(line)
         if not pointer_inserted:
-            while new_section_lines and new_section_lines[-1].strip() == "":
-                trailing_blank = new_section_lines.pop()
-                new_section_lines.append(pointer_row)
-                new_section_lines.append(trailing_blank)
-                pointer_inserted = True
-                break
-            if not pointer_inserted:
-                new_section_lines.append(pointer_row)
+            # v0.1.2 MEDIUM-2: footer-aware fallback. Previously stripped only
+            # trailing blanks, leaving footer bullets/prose AFTER the pointer.
+            new_section_lines = _insert_after_last_table_row(new_section_lines, pointer_row)
+            pointer_inserted = True
     elif insert_at == "section_top":
         for line in section_lines:
             if not pointer_inserted and _is_table_row(line) and "---" not in line:
@@ -158,7 +170,9 @@ def mutate_bucket_archive(
             if line in archive_set:
                 continue
             new_section_lines.append(line)
-        new_section_lines.append(pointer_row)
+        # v0.1.2 MEDIUM-2: same footer-aware insertion as chronological fallback —
+        # appending unconditionally placed pointer POST-footer-bullet.
+        new_section_lines = _insert_after_last_table_row(new_section_lines, pointer_row)
 
     return "\n".join(lines[:sec_start] + new_section_lines + lines[sec_end:])
 
