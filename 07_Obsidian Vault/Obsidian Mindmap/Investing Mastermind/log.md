@@ -968,3 +968,17 @@ KEIN PORTFOLIO/Faktortabelle/config.yaml/xlsx/jsonl-Touch (kein Score/FLAG/Sparr
 **Cross-Reference:** PIPELINE #81 v0.2.0-Body (T2-FIRED + 3 v0.1.2-HOTFIX-Items hinzufügen) · CORE-MEMORY §13 (Pointer L425 post-footer als Empirie-Beleg für MEDIUM-3-Bug) · SYSTEM.md §System-Zustand (core-slim-refactor v0.1.1 Bullet bleibt bestehen + v0.1.2-Hotfix-Annahme) · Auto-Memory `feedback_redefer_over_prespec_dynastie` (T2-Fire = Re-Defer korrekt) · `feedback_core_slim_p7_p18_path_mismatch` (3 Findings konsolidiert) · Commit `<TBD>`.
 
 **Next:** v0.1.2-Hotfix-Spec (Karpathy 1-Phase Bugfix-Bump: 3 HIGH/MEDIUM fixes, minimal Scope, Build separate Session). Danach v0.2.0 mit Pre-Lock 9+10+14 wie ratifiziert.
+
+## [2026-05-24] system | PIPELINE #81 Status-Transition DEFERRED → ACTIVATABLE post-T2-Empirie (Pipeline-Item-Event, scoring-neutral)
+
+**Event-Typ:** Pipeline-Item-Status-Transition (Status-Bump nach Trigger-Fire, kein Score/FLAG/Sparraten-Touch).
+
+**Status-Change:** PIPELINE #81 von 👁 DEFERRED → 🔴 ACTIVATABLE für v0.1.2-Hotfix + v0.2.0 Feature-Release. T2-Trigger erfüllt durch Commit `359c296` (T2-Empirie-Welle 2 Live-Runs §6+§13).
+
+**Body-Updates in PIPELINE.md #81:** (a) v0.1.2-HOTFIX-Scope vorgezogen (3 Findings: HIGH P7-§18-Path-Mismatch + MEDIUM Section-Reflow + MEDIUM Pointer-Placement). (b) v0.2.0 Pre-Lock 9/10/14 unverändert, chronologisch NACH v0.1.2 empfohlen. (c) Aufwand v0.1.2 ~2-3h Bugfix-Bump separate Session.
+
+**Footer:** PIPELINE.md v2.70 → v2.71.
+
+**Sync-Set §18 pipeline-item:** PIPELINE.md (#81 + Footer) + log.md (dieser Entry). KEIN weiterer Touch nötig — Detail-Empirie liegt in `359c296`.
+
+**Next:** Neue Session für v0.1.2-Hotfix-Spec (Karpathy 1-Phase, minimal Scope).
