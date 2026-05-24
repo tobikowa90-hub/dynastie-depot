@@ -1,0 +1,77 @@
+schema_version: 1
+profile_name: core-memory-s13-lifecycle-pre-2026-05-10-bucket
+
+# T2-Empirie-Test #2 (2026-05-24) für PIPELINE #81 v0.2.0 Re-Defer-Gate.
+# Live-Run Pattern A bucket-archive gegen CORE-MEMORY §13 System-Lifecycle-History.
+# Archiviert 23.04.-09.05.2026-Einträge (Cut: ≥14d alt today=24.05.).
+# 23.05.-Welle "Pre-23.04 + Ruflo" archivierte ältere Layer; dieser Cut ist 4. Layer.
+# Erwartung: ~24 Rows archive, ~13 Rows keep, +1 Pointer-Row.
+
+target:
+  file: "00_Core/CORE-MEMORY.md"
+  section: "## 13. System-Lifecycle-History"
+  section_anchor_alt: null
+  append_only_immutable: false
+
+pattern: bucket-archive
+
+bucket_archive:
+  classify:
+    by: keyword
+    keywords:
+      - "23.04.2026"
+      - "24.04.2026"
+      - "25.04.2026"
+      - "26.04.2026"
+      - "27.04.2026"
+      - "30.04.2026"
+      - "02.05.2026"
+      - "07.05.2026"
+      - "2026-05-08"
+      - "2026-05-09"
+    keep_keywords:
+      - "2026-05-10"
+      - "2026-05-11"
+      - "2026-05-13"
+      - "2026-05-14"
+      - "2026-05-18"
+      - "2026-05-21"
+      - "2026-05-22"
+      - "2026-05-23"
+    case_sensitive: true
+  archive:
+    path: "05_Archiv/CORE-MEMORY-§13-Lifecycle-23.04.-09.05.2026-archiv.md"
+    header_template: |
+      # System-Lifecycle-History 23.04.-09.05.2026 — Verbatim Archive
+
+      Cut: {timestamp}
+      Source: {target_file} {section}
+      Total Rows: {n_rows}
+      Trigger: T2-Empirie-Test #2 für PIPELINE #81 v0.2.0 Re-Defer-Gate (Cut ≥14d alt).
+  pointer:
+    insert_at: chronological
+    template: "| 2026-05-10 | [Meta] | **Pre-2026-05-10 Lifecycle-Cut** — konsolidiert {n_rows} Rows 23.04.-09.05.2026 (Verbatim-Archiv, T2-Empirie-Test #2 2026-05-24) → [Archive]({archive_link}) |"
+
+backlink_scan:
+  scan_paths:
+    - "00_Core/"
+    - "CLAUDE.md"
+    - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/"
+    - "03_Tools/"
+  search_terms:
+    - "§13"
+    - "§ 13"
+    - "section 13"
+    - "System-Lifecycle-History"
+  on_match: warn_continue
+  skip_override_allowed: false
+
+audit:
+  pre_run: true
+  pre_run_pass_threshold: pass
+  post_run_hint: true
+  fail_close_on_drift: false
+
+retry_policy:
+  max_identical_phase_failures: 2
+  identity_key: ["phase", "exception_class"]

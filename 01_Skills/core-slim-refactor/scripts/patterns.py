@@ -23,6 +23,46 @@ class RowSet:
 # ───────────────── Shared helpers ─────────────────
 
 
+def _build_line_byte_offsets(md_text: str) -> list[int]:
+    """Spec 3.4 F-06. Return byte-offsets of line-starts in md_text.encode('utf-8').
+
+    Invariants:
+      - offsets[0] == 0
+      - offsets[-1] == len(md_bytes)  (EOF sentinel)
+      - len(offsets) == md_text.count('\\n') + 2
+      - md_text is encoded once; offsets are valid for those exact bytes.
+    """
+    md_bytes = md_text.encode("utf-8")
+    offsets = [0]
+    for i, b in enumerate(md_bytes):
+        if b == 0x0A:  # '\n'
+            offsets.append(i + 1)
+    offsets.append(len(md_bytes))
+    return offsets
+
+
+def _splice_section(
+    md: str,
+    start_byte: int,
+    end_byte: int,
+    new_section_text: str,
+) -> str:
+    """Spec 3.4 F-05. Byte-precise section replacement.
+
+    Replaces md_bytes[start_byte:end_byte] with new_section_text.encode('utf-8').
+    Both start_byte and end_byte MUST be line-aligned (i.e. present in
+    _build_line_byte_offsets output). Raises AssertionError otherwise.
+
+    Pre/post bytes outside [start_byte, end_byte) are untouched (byte-identical).
+    """
+    md_bytes = md.encode("utf-8")
+    offsets_set = set(_build_line_byte_offsets(md))
+    assert start_byte in offsets_set and end_byte in offsets_set, "splice_boundary_not_line_aligned"
+    new_bytes = new_section_text.encode("utf-8")
+    result_bytes = md_bytes[:start_byte] + new_bytes + md_bytes[end_byte:]
+    return result_bytes.decode("utf-8")
+
+
 def _iter_section_rows(md: str, section_anchor: str | None) -> tuple[list[str], int, int]:
     """Return (lines_in_section, start_index, end_index_exclusive).
 
@@ -120,14 +160,17 @@ def mutate_bucket_archive(
     cfg: dict,
     pointer_context: dict,
 ) -> str:
-    """Replace archived rows with 1 chronological pointer-row. Returns new md."""
+    """Replace archived rows with 1 chronological pointer-row. Returns new md.
+
+    v0.2.0 MEDIUM-16: uses _splice_section (byte-precise) instead of
+    list-rebuild to eliminate reflow-noise outside the mutated section.
+    """
     if not rowset.archive:
         return md
 
     pointer_row = cfg["pointer"]["template"].format(**pointer_context).rstrip("\n")
     archive_set = set(rowset.archive)
 
-    lines = md.split("\n")
     section_lines, sec_start, sec_end = _iter_section_rows(md, section_anchor)
 
     new_section_lines: list[str] = []
@@ -174,7 +217,17 @@ def mutate_bucket_archive(
         # appending unconditionally placed pointer POST-footer-bullet.
         new_section_lines = _insert_after_last_table_row(new_section_lines, pointer_row)
 
-    return "\n".join(lines[:sec_start] + new_section_lines + lines[sec_end:])
+    # v0.2.0 MEDIUM-16: splice instead of list-rebuild.
+    # _iter_section_rows returns half-open [sec_start, sec_end) — sec_end is exclusive.
+    new_section_text = "\n".join(new_section_lines)
+    # Trailing-newline discipline: if original md ends with \n, the last split("\\n")
+    # element is "", which join() preserves. Ensure new_section_text matches.
+    if md.endswith("\n") and not new_section_text.endswith("\n"):
+        new_section_text += "\n"
+    offsets = _build_line_byte_offsets(md)
+    start_byte = offsets[sec_start]
+    end_byte = offsets[sec_end]  # already exclusive — no +1
+    return _splice_section(md, start_byte, end_byte, new_section_text)
 
 
 # ───────────────── Pattern B: Slim-Convention ─────────────────
