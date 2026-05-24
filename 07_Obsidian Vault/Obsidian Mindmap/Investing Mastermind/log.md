@@ -1018,3 +1018,37 @@ KEIN PORTFOLIO/Faktortabelle/config.yaml/xlsx/jsonl-Touch (kein Score/FLAG/Sparr
 **Cross-Reference:** PIPELINE #81 (v0.1.2-Sub Status-Transition) · CORE-MEMORY §13 2026-05-24-Eintrag · SYSTEM.md §Skill-Registry · failure_modes.md v0.1.2-Sektion · Auto-Memory `feedback_core_slim_p7_p18_path_mismatch` + `feedback_codex_sparring_heuristic` · Commit `<TBD-Hotfix>`.
 
 **Next:** v0.2.0 Feature-Release ACTIVATABLE für separate Session (Pre-Lock 9/10/14 + NEU MEDIUM-16 Section-Reflow); Karpathy 2-Phase-Discipline.
+
+## 2026-05-24 — Pipeline-Item-Event: core-slim-refactor v0.2.0 SPEC-LOCKED v0.5 post-Codex-Sparring-4-Runden (PIPELINE #81 ACTIVATABLE → SPEC-LOCKED, scoring-neutral, pipeline-item)
+
+**Event-Typ:** Pipeline-Item-Status-Transition (PIPELINE #81 v0.2.0 Status-Bump ACTIVATABLE → SPEC-LOCKED, kein Score/FLAG/Sparraten-Touch, kein Skill-Version-Bump da Spec gitignored).
+
+**Karpathy 2-Phase Spec-Phase only** (Brainstorming-Terminal-Override per Memory `feedback_brainstorming_terminal_override_dynastie` — Spec → Codex-Sparring → STOP; Build separate Session). **KEIN Code-Touch in dieser Session.**
+
+**Spec-Artifact:** `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` (gitignored per Convention, ~530 Z., 13 Sektionen).
+
+**Codex-Sparring-Trajektorie (4 Runden via `codex:codex-rescue` Subagent, gpt-5.3-codex):**
+- **R1 Single-Pass** (agent `a7310e09124b95c72`, ~16:15 GMT+2): 3 HIGH (F-01 AC4/AC8/§3.3 Dry-Run-Mutation-Contradiction + F-02 Drift-Default-Inconsistency Schema-vs-Risk-vs-Q3 + F-03 executed-Write-Back Soft-Warn-Idempotency-Lock-Bypass) + 4 MED (F-04 MEDIUM-9 Validation-TBD + F-05 Section-Splice Unicode-Boundary under-specified + F-06 Byte-Index-Conversion deferred-not-designed + F-07 Backward-Compat-Claim too-broad) + 1 LOW (F-08 AC5-±1-Toleranz) + Q1-Q10 Sparring-Verdicts adopted. ALLE 8 Findings + 10 Q-Verdicts eingearbeitet.
+- **R2 Diff-Re-Review** (agent `a6cf3bdbef047a3cd`, ~16:23 GMT+2, deutsche Sprach-Direktive nach User-Hinweis "Warum wieder Englisch?"): **89% Confidence**, 3 Findings — R2-F01 alte Q6-Q10-Tabelle Reststand widersprach aktuellen Q7/Q9-Verdicts + R2-F02 `schema_version`-Hint in §11 vs Unknown-Key-Disziplin inkonsistent + R2-F03 AC-Zähl-/Abdeckung uneinheitlich (24 vs aktuelle Liste). ALLE 3 eingearbeitet.
+- **R3 Reconcile-Pass** (agent `aa84daabbc492f437`, ~16:38 GMT+2, via SendMessage): **93% Confidence**, 4 R3-Aktionen — AC-Counts 27 stimmig (23 Testable + 4 Doc-/Review-Gates) + AC11 6-Zellen-Formulierung + §11.2 v0.1.x-Zeile präzisiert ("`expected_entry_count`-Check fehlt weil Key fehlt") + CLI-Flag `--skip-executed-writeback` normativ in §3.3 (Default `false`, Constraint No-Op bei dry-run, Priorität schlägt P7b). ALLE 4 eingearbeitet.
+- **R4 Final-Reconcile** (agent `a3bc6109ea942de11`, ~16:48 GMT+2, via SendMessage): **96% Confidence — SPEC-LOCK-OK** (Ziel ≥95% übertroffen). 1 LOW Nachzieh-Fix §10 R2-F03-Zeile "24/3" → "23/4" appliziert.
+
+**Spec-Inhalt-Konfirmation:** Scope Pre-Lock unverändert wie PIPELINE #81-Body: MEDIUM-9 (Pattern-C `date_parser.field: bullet` + Helper `_split_bullet_block` + Hard-ConfigError für mode-mismatch) · MEDIUM-10 (P2a Pre-Mutation-Drift-Check + Exit-Code 11 + Structured-Stderr-Code `DRIFT_COUNT_OUT_OF_RANGE` + Default `warn_continue` mit fail_close opt-in) · MEDIUM-14 (P7b executed-Block Auto-Population + Exit-12 `EXIT_BOOKKEEPING_FAILED` + Sidecar-Lock `.executed-pending` + CLI-Flag `--skip-executed-writeback`) · MEDIUM-16 (Section-Reflow selective splice via `_splice_section` byte-based + Line-Alignment-Invariante mit `AssertionError("splice_boundary_not_line_aligned")` + Byte-Offset-Map `_build_line_byte_offsets`). MEDIUM-15 → v0.3.
+
+**Karpathy-Pre-Build-Gates in Spec verankert:** (a) Pre-Refactor-Caller-Scan via Grep auf `_split_into_entries` + `classify_date_cut` + `mutate_bucket_archive` vor Edit. (b) `_split_bullet_block` + `_splice_section` als SEPARATE Helper (Three-similar-lines-Threshold, keine premature Abstraction). (c) Acceptance-Test pro Item + neuer Worked-Example `session-handover-banner-list-cut.yaml`.
+
+**NEU §11 Compatibility-Matrix (R2-F02 Fix):** explizite Trennung `SKILL.md frontmatter version` vs `Config YAML schema_version: 2`. Producer/Consumer-Matrix mit 4 Zeilen + 2 Edge-Cases. Regel: Config mit v0.2.0-Keys ohne `schema_version` → `ConfigError: schema_version_required_for_v2_keys` (kein silent-ignore möglich). v0.1.x-Config + v0.2.0-Runtime erlaubt (executed-Auto-Populate läuft trotzdem, `--skip-executed-writeback` honors v0.1.x-1:1-Verhalten).
+
+**Sync-Set §18 (pipeline-item-Event, scoring-neutral, atomar):** PIPELINE.md (#81 v0.2.0 Status-Edit + Footer v2.71→v2.72) + Vault log.md (dieser Entry). **KEIN** System-Zustand-Touch (Spec gitignored, kein Skill-Version-Bump, keine SKILL.md-Frontmatter-Edits, kein SYSTEM.md Registry-Bump). **KEIN** PORTFOLIO/Faktortabelle/score_history/config.yaml/xlsx/flag_events/CORE-MEMORY (kein Score/FLAG/Sparraten-Event, keine §13-Lifecycle-Eintragung da Spec-Phase nicht Promotion). SESSION-HANDOVER.md ist Banner-Resume-Trail (Plus, nicht §18-Pflicht).
+
+**Memory neu angelegt:** `feedback_codex_default_english_in_dynastie.md` — Codex (gpt-5.3-codex) defaultet auf Englisch trotz 100% deutschem Prompt-Kontext; explizite Sprach-Direktive 'Antworte auf Deutsch' im Prompt Pflicht. User-Catch "Warum wieder Englisch?" deutet Reinfall-Klasse. Funktioniert retroaktiv via SendMessage. Linked: `feedback_review_via_codex_not_advisor` + `feedback_codex_sparring_heuristic`.
+
+**Lessons:**
+- **Codex-Sparring-Loop konvergent über 4 Runden** (R1 → R2 89% → R3 93% → R4 96%). Heuristik per `feedback_codex_sparring_heuristic`: R1 3 HIGH justified Sparring-Loop; R2-R4 Diff-Re-Reviews jeweils ~5-10k Tokens/Pass billiger als R-Spec-Verschwendung — Total ~30-40k Token, Spec-Quality 96% Confidence vs R1-only-Stand ~70-75%.
+- Brainstorming-Terminal-Override hält: Spec → Codex-Sparring → STOP; KEIN writing-plans-Switch, KEIN Code-Touch in Spec-Phase. Build separate Session.
+- §18-Skill `paragraph-18-sync` Validator vor Edits aufgerufen (Lessons-Anker aus v0.1.2-Hotfix-Welle): Expected-Set 2 Files (PIPELINE.md + log.md), pipeline-item-Event nicht system-zustand, kein Multi-Event Union.
+- Spec-Artifact bleibt gitignored per Convention (analog v0.1-Spec, paragraph-18-sync-Spec, finnhub-Spec): Specs leben lokal, PIPELINE-Item ist SSoT-Pointer.
+
+**Cross-Reference:** PIPELINE #81 v0.2.0-Body (Spec-LOCK-Stand) · Spec-File `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` · v0.1.2-Hotfix-Commit `82af9ac` · v0.1-Spec-Anker `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` · failure_modes.md MEDIUM-9..16 · Auto-Memory `feedback_brainstorming_terminal_override_dynastie` + `feedback_redefer_over_prespec_dynastie` (Re-Defer-Trigger T2-FIRED bestätigt) + `feedback_codex_default_english_in_dynastie` (NEU) + `feedback_codex_sparring_heuristic`.
+
+**Next:** v0.2.0 Build-Phase als **separate Session** per Karpathy 2-Phase-Discipline. Trigger: "core-slim-refactor v0.2.0 Build". Spec ist self-contained, alle Karpathy-Pre-Build-Gates verankert. Erwartete Build-Session-Dauer ~4-5h + Codex Single-Pass + 22-26 neue Tests + atomic-Commit-Welle analog v0.1.2.
