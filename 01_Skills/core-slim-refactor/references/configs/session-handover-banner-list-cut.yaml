@@ -1,0 +1,74 @@
+# Worked-Example D: SESSION-HANDOVER.md Banner-List Date-Cut (Pattern C Bullet-Variante)
+#
+# v0.2.0 Demonstration-Config fuer Pattern-C-Bullet-Mode (Spec SS3.1, AC8/AC8b).
+# Zeigt date_parser.field: bullet + trailing_boundary fuer SESSION-HANDOVER.md.
+#
+# SESSION-HANDOVER.md enthaelt Eintraege der Form:
+#   - **Datum:** YYYY-MM-DD -- Session-Titel
+#     Banner-Body-Zeilen...
+#   ## Trailing-Section (z.B. Resume-Anweisung)
+#
+# trailing_boundary: '^## ' stoppt den letzten Bullet-Body vor Trailing-Sections.
+# Ohne trailing_boundary wuerde die Resume-Anweisung in den letzten Bullet-Body
+# kollabieren (MEDIUM-9 Risk-Mitigation, Spec SS3.1).
+#
+# Dieses Config ist ausfuehrbar (executed: null) -- First-Run via P7b auto-populated.
+# Re-Run ohne --force-rerun wird durch executed-Block blockiert.
+
+schema_version: 2
+profile_name: session-handover-banner-list-cut
+
+target:
+  file: "00_Core/SESSION-HANDOVER.md"
+  section: null  # Pattern-C wholesale-archive (HIGH-2 Codex-R1: section muss null sein)
+  section_anchor_alt: null
+  append_only_immutable: false
+
+pattern: date-cut
+
+date_cut:
+  cut_before: "2026-05-17"  # archiviert Banner vor 2026-05-17; gleiche Boundary wie log.md-Praezedenz
+  date_parser:
+    field: bullet  # v0.2.0 NEU: Bullet-List-Variante (MEDIUM-9)
+    pattern: '^- \*\*Datum:\*\*\s+(\d{4}-\d{2}-\d{2})'
+    trailing_boundary: '^## '  # Pflicht bei field=bullet; stoppt letzten Body vor Trailing-Sections
+  expected_entry_count:
+    min: 5
+    max: 15
+    on_drift: fail_close  # fail-close: SESSION-HANDOVER Banner-Count ist stabil
+  archive:
+    path: "05_Archiv/session-handover-bis-2026-05-16-archiv.md"
+    header_template: |
+      # SESSION-HANDOVER Pre-{cut_date} Banner-History -- Archive
+
+      Cut: {timestamp}
+      Source: {target_file}
+      Entries: {n_rows}
+  pointer:
+    insert_at: section_top
+    template: |
+      > **Pre-{cut_date} Banner-History archived** -> [{archive_path}]({archive_link})
+      > Reason: rolling retention; archive contains verbatim history.
+
+backlink_scan:
+  scan_paths:
+    - "00_Core/"
+    - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/"
+  search_terms:
+    - "SESSION-HANDOVER.md"
+    - "session-handover"
+    - "Banner-Historie"
+  on_match: warn_continue
+  skip_override_allowed: true
+
+audit:
+  pre_run: true
+  pre_run_pass_threshold: pass
+  post_run_hint: true
+  fail_close_on_drift: false
+
+retry_policy:
+  max_identical_phase_failures: 2
+  identity_key: ["phase", "exception_class"]
+
+executed: null
