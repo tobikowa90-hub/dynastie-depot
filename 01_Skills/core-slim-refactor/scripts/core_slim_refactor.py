@@ -46,6 +46,8 @@ EXIT_WRITE_ERROR = 7
 EXIT_GATE_FAIL = 8
 EXIT_REFERENCE_MISMATCH = 10
 EXIT_ANCHOR_NOT_FOUND = 11
+EXIT_DRIFT_DETECTED = 12  # NEU v0.2.0 MEDIUM-10 (Code 11 belegt durch v0.1.1 EXIT_ANCHOR_NOT_FOUND)
+EXIT_BOOKKEEPING_FAILED = 13  # NEU v0.2.0 MEDIUM-14
 EXIT_APPROACH_RESET = 99
 
 
@@ -202,6 +204,29 @@ def phase_p2(cfg: ConfigObject, target_md: str) -> RowSet:
     _maybe_force_fail("P2")
     _emit_phase("P2 Classify", "OK")
     return rs
+
+
+# P2a: Drift-Pre-Check (Spec SS3.2 MEDIUM-10)
+
+
+def _phase_p2a_drift_check(rs: RowSet, pc_cfg: dict) -> None:
+    """Compare classified entry count against expected_entry_count range.
+
+    pc_cfg is the date_cut pattern subblock (cfg.pattern_block).
+    ASCII-only stderr output (Memory feedback_windows_console_ascii_safe_inline_python).
+    """
+    eec = pc_cfg.get("expected_entry_count")
+    if eec is None:
+        return
+    n_actual = len(rs.archive) + len(rs.keep)
+    mn, mx = eec["min"], eec["max"]
+    if mn <= n_actual <= mx:
+        return
+    on_drift = eec.get("on_drift", "warn_continue")
+    msg = f"DRIFT_COUNT_OUT_OF_RANGE: classified={n_actual} range=[{mn},{mx}]"
+    sys.stderr.write(f"WARN: {msg}\n")
+    if on_drift == "fail_close":
+        sys.exit(EXIT_DRIFT_DETECTED)
 
 
 # P3: Backlink-Scan
@@ -584,6 +609,9 @@ def main(argv: list[str] | None = None) -> int:
             target_md = _f.read()
 
         rowset = phase_p2(cfg, target_md)
+
+        # === P2a Drift-Pre-Check (Spec SS3.2 MEDIUM-10) ===
+        _phase_p2a_drift_check(rowset, cfg.pattern_block)
 
         phase_p3(cfg, repo_root)
 
