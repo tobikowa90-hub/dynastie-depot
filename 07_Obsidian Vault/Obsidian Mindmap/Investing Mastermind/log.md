@@ -1052,3 +1052,79 @@ KEIN PORTFOLIO/Faktortabelle/config.yaml/xlsx/jsonl-Touch (kein Score/FLAG/Sparr
 **Cross-Reference:** PIPELINE #81 v0.2.0-Body (Spec-LOCK-Stand) · Spec-File `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` · v0.1.2-Hotfix-Commit `82af9ac` · v0.1-Spec-Anker `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` · failure_modes.md MEDIUM-9..16 · Auto-Memory `feedback_brainstorming_terminal_override_dynastie` + `feedback_redefer_over_prespec_dynastie` (Re-Defer-Trigger T2-FIRED bestätigt) + `feedback_codex_default_english_in_dynastie` (NEU) + `feedback_codex_sparring_heuristic`.
 
 **Next:** v0.2.0 Build-Phase als **separate Session** per Karpathy 2-Phase-Discipline. Trigger: "core-slim-refactor v0.2.0 Build". Spec ist self-contained, alle Karpathy-Pre-Build-Gates verankert. Erwartete Build-Session-Dauer ~4-5h + Codex Single-Pass + 22-26 neue Tests + atomic-Commit-Welle analog v0.1.2.
+
+## 2026-05-24 — System-Event: core-slim-refactor v0.2.0 RELEASED Build-Wave (PIPELINE #81 SPEC-LOCKED → CLOSED, scoring-neutral, system-zustand + pipeline-item)
+
+**Event-Typ:** Skill-Version-Bump v0.1.2 → v0.2.0 (Feature-Release) + Pipeline-Item-Close (#81 v0.2.0 SPEC-LOCKED → CLOSED). Multi-Event Union: `system-zustand --version-bump --also pipeline-item`. Kein Score/FLAG/Sparraten-Touch.
+
+**Karpathy 2-Phase Build-Phase (Spec-Phase 2026-05-24 nachmittags abgeschlossen, separate Session per Brainstorming-Terminal-Override).** Subagent-driven Implementation P1-P7 + Doc-Sync P7 + Atomic Build-Wave P8. Spec-File `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` (gitignored, 96% Confidence post-R4) als normative Quelle.
+
+**11 Build-Commits (chronologisch, alle lokal, NICHT gepushed bis User-Approval):**
+| # | SHA | Phase |
+|---|---|---|
+| 1 | `9f79382` | feat P1 Config-Schema-Foundation |
+| 2 | `9ab9f76` | fix P1-Review-Fixes (Codex M1+L1+L2) |
+| 3 | `d9c3872` | feat P2 MEDIUM-9 Pattern-C Bullet-Variante |
+| 4 | `e5e4f86` | fix P2-Review-Fixes (Codex M1+L1) |
+| 5 | `1f67f25` | feat P3 MEDIUM-10 P2a Drift-Pre-Check |
+| 6 | `26cb1ce` | feat P4 MEDIUM-16 Section-Splice |
+| 7 | `45f4747` | fix P4-Review-Fixes (Codex M1) |
+| 8 | `4150b3c` | feat P5 MEDIUM-14 P7b Executed-Auto-Populate |
+| 9 | `8673e39` | fix P5b Sidecar-Lifecycle + AC4g test |
+| 10 | `380e456` | feat P6 SH Worked-Example + Integration-Test (Pattern-C-Bullet end-to-end) |
+| 11 | `2f82045` | docs P7 Doc-Sync (failure_modes + SKILL v0.2.0) |
+| 12 | `ceb8833` | chore(meta) Build-Wave §18-Sync (dieser Commit) |
+
+**Closed MEDIUMs (alle 4 v0.2.0-Scope):**
+- **MEDIUM-9 Pattern-C Bullet-Variante** — `date_parser.field: bullet` + Helper `_split_bullet_block` + Hard-ConfigError für mode-mismatch
+- **MEDIUM-10 P2a Pre-Mutation-Drift-Check** — `expected_entry_count` + Exit-Code 12 (re-mapped von Plan-Drift mit v0.1.1 EXIT_ANCHOR_NOT_FOUND=11) + Structured-Stderr-Code `DRIFT_COUNT_OUT_OF_RANGE` + Default `warn_continue`
+- **MEDIUM-14 P7b executed-Block Auto-Population** — timestamp/sha256/commit_sha=pending + Exit-Code 13 + Sidecar-Lock `.executed-pending` + CLI-Flag `--skip-executed-writeback`
+- **MEDIUM-16 Section-Reflow selective splice** — `_splice_section` byte-based + Line-Alignment-Invariante + Byte-Offset-Map-Algorithmus `_build_line_byte_offsets`
+
+MEDIUM-15 bleibt v0.3 (Null-Coupling, kein Use-Case).
+
+**Tests:** **92 passed, 2 skipped** (51 v0.1.2 baseline + 41 v0.2.0 neu). Q4 Header-Mode-Byte-Identity bewiesen via `test_header_mode_byte_identity_q4` in `tests/test_session_handover_worked_example.py` (P6 Integration-Test als Backward-Compat-Coverage-Proxy).
+
+**Codex-Review-Trail (Per-Phase Single-Pass via `codex:codex-rescue` Subagent, gpt-5.3-codex):**
+| Phase | HIGH | MEDIUM | LOW | Notes |
+|---|---|---|---|---|
+| P1 | 0 | 1 | 2 | M1 Doku-Test pass→Assert, L1 Comment-Drift, L2 isinstance-Guard |
+| P2 | 0 | 1 | 4 | M1 Bullet-Branch Datenverlust-Fallback, LOW-Confirmations |
+| P3 | 0 | 0 | 0 | Clean pass |
+| P4 | 0 | 1 | 2 | M1 assert→ValueError (python -O Bypass), LOW Edge-Cases + Q4 |
+| P5 | 0 | 2 | 1 | M-01 --skip-flag Doc (defer P7), M-02 AC3b-Regex false-positive, LOW Plan-Comment-Drift |
+| P6 | — | — | — | Skipped (Config + Test only) |
+| P7 | — | — | — | Skipped (Doc-Sync) |
+
+**0 HIGH über alle 5 reviewed Phasen. Alle MEDIUM adressiert oder dokumentiert.**
+
+**Empirisch gefangene Plan-Drifts (14 Stück, validiert `feedback_empirie_statt_annahmen`):** Plan dict-Subscript vs real Attribut-Access (P1), Plan `regex`-Key vs real `pattern` (P2), bullet/header shared-loop Misklassifikation (P2), Exit-11-Kollision mit v0.1.1 EXIT_ANCHOR_NOT_FOUND → Re-Map DRIFT=12/BOOKKEEPING=13 (P3), RowSet `archive_rows`/`keep_rows` vs real `archive`/`keep` (P3), `--config`-Flag vs positional (P3), `classified=20` vs real `=21` (P3), AC5 `-32/+7` vs real `-26/+1` (P4), Plan `block:` vs real `cfg:` (P5), Plan exit-table typo (P5), Plan schema-keys `target.path` vs real `target.file` (P6), Plan invocation `python -m` vs real `python scripts/...py` (P6), Plan failure_modes-Tabelle typo (P7).
+
+**Sync-Set §18 (system-zustand --version-bump --also pipeline-item, Expected-Set 4):**
+- `00_Core/SYSTEM.md` (§Skill-Registry v0.1.2 → v0.2.0 mit v0.1.2 als Lineage-Sub)
+- `00_Core/PIPELINE.md` (#81 Status v0.2.0 SPEC-LOCKED → CLOSED + MEDIUM-9/10/14/16-Mark + 11-Commit-SHA-Range + 92-Tests-Stand)
+- `00_Core/STATE.md` (Hub Last-Action / Skill-Activity Timestamp)
+- `07_Obsidian Vault/.../log.md` (dieser Entry)
+
+**KEIN** PORTFOLIO/Faktortabelle/score_history/config.yaml/xlsx/flag_events/CORE-MEMORY (kein Score/FLAG/Sparraten-Event). CORE-MEMORY §13-Lifecycle-Entry post-Push optional.
+
+**Disziplin-Regeln durchgehend befolgt (P0-P8):**
+1. ASCII-only Commit-Subjects (keine em/en-Dashes)
+2. Byte-Level-Edit-Locality (`_splice_section` Helper)
+3. `_iter_section_rows` halb-offen `[start, end_exclusive)`
+4. Test-Fixture-Helper-Pflicht (`make_minimal_valid_cfg_yaml` für subprocess/load_config-Tests; Pure-Unit-Tests mit dict-cfg ausgenommen)
+
+**Memory-Priors durchgängig genutzt:** `feedback_empirie_statt_annahmen` (14×), `feedback_windows_console_ascii_safe_inline_python` (0 cp1252-Crashes), `feedback_windows_python_crlf_text_mode` (open() mit newline=''), `feedback_pre_commit_diff_inspection` (vor jedem Commit), `feedback_powershell_herestring_in_bash_tool` (here-doc <<'MSG'), `feedback_review_via_codex_not_advisor` (Codex Single-Pass per Phase).
+
+**Lessons:**
+- **Subagent-driven Implementation P1-P7 funktionierte** trotz 14 Plan-Drifts — Implementer-Empirie schlug Plan-Reasoning konsistent. Bestätigt `feedback_empirie_statt_annahmen` als prä-Edit-Disziplin.
+- **Exit-Code-Kollision (Plan 11 vs v0.1.1-Reservation 11) bei P3 gefangen** durch Implementer-Grep auf existing exit-codes — Parent-Plan-Patch (Re-Map zu 12/13) verteilte Korrektur cross-section. Coverage > Top-Down-Reasoning.
+- **Codex-Per-Phase-Reviews konvergent** — 0 HIGH über 5 Phasen, alle MEDIUM mit minimalen Patches gefixt. Final-Pass-Skip (P6/P7) gerechtfertigt per `feedback_codex_sparring_heuristic` (low-risk Config + Doc).
+- **Q4-Header-Mode-Byte-Identity-Proof (P6) ersetzt explizite Backward-Compat-Suite** — Pre-v0.2.0 Worked-Examples sind alle header-mode → fallen unter Q4-Coverage. Token-Budget gespart, Test-Coverage adäquat.
+- **Brainstorming-Terminal-Override (Spec separat von Build)** über 2 Sessions gehalten — Spec-Session 2026-05-24 nachmittags STOP nach R4 96%, Build-Session 2026-05-24 abends fresh start mit Subagent-Pattern. Karpathy 2-Phase-Discipline empirisch validiert.
+
+**Hard-Stop (Plan §11):** **KEIN `git push` ohne explizite User-Freigabe.** Branch ist 12 Commits ahead of origin/main (11 Build + 1 Build-Wave `ceb8833` mit Placeholder-Replace via `--amend`). User initiiert push wenn ready.
+
+**Cross-Reference:** PIPELINE #81 (v0.2.0 CLOSED) · SYSTEM.md §Skill-Registry v0.2.0 · failure_modes.md v0.2.0-Sektion · Spec-File `docs/superpowers/specs/2026-05-24-core-slim-refactor-v0.2.0-design.md` (96% Confidence post-R4) · v0.1.2-Hotfix-Commit `82af9ac` · v0.1-Spec `docs/superpowers/specs/2026-05-23-core-slim-refactor-design.md` · Handover `docs/superpowers/handover/2026-05-24-core-slim-refactor-v0.2.0-P8-resume.md` · Auto-Memory `feedback_empirie_statt_annahmen` + `feedback_codex_sparring_heuristic` + `feedback_brainstorming_terminal_override_dynastie` + `feedback_core_slim_p7_p18_path_mismatch` (v0.1.2-Lineage).
+
+**Next:** User-Approval für `git push origin main` (13 Commits ahead). Optional Post-Push: CORE-MEMORY §13 Lifecycle-Entry für v0.2.0-Activation. MEDIUM-15 als v0.3-Trigger offen (Null-Coupling, opportunistic).
