@@ -100,10 +100,12 @@ def test_classify_date_cut_bullet_branching():
 
 
 def test_classify_date_cut_header_mode_unchanged_q4_regression():
-    """Q4-Verdict: header-mode produces byte-identical output with or without explicit field=header.
+    """Q4-Verdict: header-mode classification stays equivalent across v0.1.x and v0.2.0.
 
-    Smoke-variant: classify result is stable across v0.1.x implicit (no field key)
-    and v0.2.0 explicit (field: header) configs.
+    Klassifikations-aequivalent (nicht byte-identisch -- mutate_date_cut waere fuer Byte-Test
+    noetig, das uebernimmt der Worked-Example-Integration-Test in Phase 6). Hier reicht der
+    Smoke: implizites Header-Default (v0.1.x, kein field-Key) und explizites field=header
+    (v0.2.0) muessen identische RowSet-Klassifikation liefern.
     """
     md = "## 2026-05-15\nA\n## 2026-05-17\nB\n## 2026-05-20\nC\n"
     # v0.1.x-style: no field key (implicit header)
@@ -121,3 +123,29 @@ def test_classify_date_cut_header_mode_unchanged_q4_regression():
     # Both paths must produce identical results
     assert rs_v1.archive == rs_v2.archive
     assert rs_v1.keep == rs_v2.keep
+
+
+# ---------------------------------------------------------------------------
+# Codex-MEDIUM-1 Regression: bullet-mode no-match must preserve content
+# ---------------------------------------------------------------------------
+
+
+def test_classify_date_cut_bullet_no_match_preserves_content():
+    """Bullet-mode mit Content der KEINE bullet_regex-Matches enthaelt -> ganzer md geht in keep.
+
+    Codex-Review (post d9c3872) MEDIUM-1: stiller Datenverlust wenn _split_bullet_block []
+    liefert. Fix: classify_date_cut bullet-branch faengt das ab und preservt den Content
+    analog zum Header-Mode (der unmatched Content auch in keep schreibt).
+    """
+    md_no_bullets = "# Section\n\nNo bullets here, just prose.\n\n## Trailing\nMore prose.\n"
+    cfg = {
+        "cut_before": "2026-05-17",
+        "date_parser": {
+            "field": "bullet",
+            "pattern": _BULLET_REGEX,
+            "trailing_boundary": _TRAILING_BOUNDARY,
+        },
+    }
+    rs = classify_date_cut(md_no_bullets, section_anchor=None, cfg=cfg)
+    assert rs.archive == []
+    assert rs.keep == [md_no_bullets]

@@ -345,7 +345,13 @@ def classify_date_cut(md: str, section_anchor: str | None, cfg: dict) -> RowSet:
         if tb is None:
             raise ValueError("bullet_mode_requires_trailing_boundary")
         # _split_bullet_block returns (date_str, body) -- date already extracted
-        for entry_date, body in _split_bullet_block(md, pattern, tb):
+        entries = _split_bullet_block(md, pattern, tb)
+        if not entries:
+            # No bullets matched -- preserve entire content as keep (header-mode-analogue
+            # behavior; prevents silent data loss when bullet_regex misses).
+            rs.keep.append(md)
+            return rs
+        for entry_date, body in entries:
             if entry_date < cut_before:
                 rs.archive.append(body)
             else:
