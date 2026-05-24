@@ -1,0 +1,68 @@
+schema_version: 1
+profile_name: core-memory-s6-versionsverlauf-pre-may-15-bucket
+
+# T2-Empirie-Test #1 (2026-05-24) für PIPELINE #81 v0.2.0 Re-Defer-Gate:
+# Live-Run Pattern A bucket-archive gegen CORE-MEMORY §6 Versionsverlauf.
+# Archiviert v3.7-Era-Einträge (17.04.-07.05.2026) als 2. Bucket-Layer
+# (1. Bucket "Pre-v3.7" wurde 2026-05-23 erstellt, siehe L218-Pointer).
+# Halte nur 2026-05-21 session-closure v0.2.0 (recent, <14d alt).
+#
+# Erwartung: 10 Rows archive, 1 Row keep, +1 Pointer-Row → §6 von 11 → 2 rows.
+
+target:
+  file: "00_Core/CORE-MEMORY.md"
+  section: "## 6. System-Upgrades & Versionsverlauf"
+  section_anchor_alt: null
+  append_only_immutable: false
+
+pattern: bucket-archive
+
+bucket_archive:
+  classify:
+    by: keyword
+    keywords:
+      - "2026-04-17"
+      - "2026-04-18"
+      - "2026-04-19"
+      - "2026-04-22"
+      - "2026-04-24"
+      - "2026-05-07"
+    keep_keywords:
+      - "2026-05-21"
+    case_sensitive: true
+  archive:
+    path: "05_Archiv/CORE-MEMORY-§6-Versionsverlauf-v3.7-Era-archiv.md"
+    header_template: |
+      # Versionsverlauf v3.7-Era — Verbatim Archive (17.04.-07.05.2026)
+
+      Cut: {timestamp}
+      Source: {target_file} {section}
+      Total Rows: {n_rows}
+      Trigger: T2-Empirie-Test #1 für PIPELINE #81 v0.2.0 Re-Defer-Gate.
+  pointer:
+    insert_at: chronological
+    template: "| 2026-05-15 | **v3.7-Era-Versionsverlauf** | bucket | konsolidiert {n_rows} Rows (Verbatim-Archiv) → [Archive]({archive_link}) |"
+
+backlink_scan:
+  scan_paths:
+    - "00_Core/"
+    - "CLAUDE.md"
+    - "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/"
+    - "03_Tools/"
+  search_terms:
+    - "§6"
+    - "§ 6"
+    - "section 6"
+    - "Versionsverlauf"
+  on_match: warn_continue
+  skip_override_allowed: false
+
+audit:
+  pre_run: true
+  pre_run_pass_threshold: pass
+  post_run_hint: true
+  fail_close_on_drift: false
+
+retry_policy:
+  max_identical_phase_failures: 2
+  identity_key: ["phase", "exception_class"]

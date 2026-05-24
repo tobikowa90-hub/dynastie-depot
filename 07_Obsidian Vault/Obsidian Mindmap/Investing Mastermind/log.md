@@ -918,3 +918,53 @@ HIGH-3 Codex-Claim raises TypeError at runtime ist auf Python 3.14.3 (Project-En
 **Cross-Reference:** PIPELINE #81 v0.2.0-Body (Re-Defer-Note + T1/T2/T3 + Scope-Pre-Lock 9+10+14) · `01_Skills/core-slim-refactor/references/failure_modes.md` (MEDIUM-9/10/14 Pain-Substrate, MEDIUM-15 "akzeptiert"-Status) · `00_Core/SESSION-HANDOVER.md` (44.5K Substrate-Beleg) · Auto-Memory `feedback_redefer_over_prespec_dynastie.md` (neue Lesson-Anker) · Memory `feedback_plan_on_runtime_not_doc_assumption` + `feedback_brainstorming_terminal_override_dynastie` (entscheidungs-tragend) · Commit `<TBD>`.
 
 **Next:** PIPELINE #81 bleibt DEFERRED bis T1/T2/T3 feuert. Wahrscheinlichster Re-Activation-Pfad: nächste konkrete Slim-Anwendung des v0.1.1-Skills gegen ein anderes 00_Core-File (T2) oder organische SH-Größe → 60K-Threshold (T1). Bis dahin: failure_modes.md MEDIUM-9/10/14 als Backlog-Anker; MEDIUM-15 ohne PIPELINE-Item bis Use-Case konkret.
+
+## 2026-05-24 — System-Event: core-slim-refactor v0.1.1 T2-Empirie 2 Live-Runs DONE — Phase-3-Bucket-Welle (scoring-neutral, system-zustand Multi-Event Union §18-Sync)
+
+**Trigger:** T2 (≥1 weitere echte v0.1.1-Anwendung) per `feedback_redefer_over_prespec_dynastie` aktiv — User-Direktive "Wir brauchen mindestens 2 Testruns" → 2 unabhängige Pattern-A bucket-archive Live-Runs gegen CORE-MEMORY §6+§13 als 4./5. Bucket-Layer (Phase-3-Folge nach 23.05. Phase 1+2).
+
+**Test #1 (~02:06 GMT+2):** §6 Versionsverlauf Pattern A bucket-archive
+- YAML: `01_Skills/core-slim-refactor/references/configs/core-memory-s6-versionsverlauf-bucket.yaml`
+- Keywords: 17.04. / 18.04. / 19.04. / 22.04. / 24.04. / 07.05. → 10 v3.7-Era-Rows archive; Keep `2026-05-21` → 1 session-closure Row
+- Archive: `05_Archiv/CORE-MEMORY-§6-Versionsverlauf-v3.7-Era-archiv.md` (1559b, 10 Rows)
+- Source-Delta: -10/+1 (10 Rows raus, 1 Pointer rein); 125.3K → 124.2K (-1.1K)
+- Exit-Code: 0; P0-P6 alle PASS; P3 warn_continue (11 legitime §6-Cross-Refs)
+
+**Test #2 (~02:14 GMT+2):** §13 Lifecycle Pattern A bucket-archive
+- YAML: `01_Skills/core-slim-refactor/references/configs/core-memory-s13-lifecycle-pre-may-10-bucket.yaml`
+- Keywords: 23.04. / 24.04. / 25.04. / 26.04. / 27.04. / 30.04. / 02.05. / 07.05. / 2026-05-08 / 2026-05-09 → 26 Rows archive; Keep 10.05.+ → ~13 Rows
+- Archive: `05_Archiv/CORE-MEMORY-§13-Lifecycle-23.04.-09.05.2026-archiv.md` (26861b, 26 Rows)
+- Source-Delta: -32/+7 (incl. 5 Whitespace + 1 Footer-Reflow + 1 Pointer); 124.2K → ~89K (-35K)
+- Exit-Code: 0; P0-P6 alle PASS
+
+**🔴 Empirische v0.1.2-HOTFIX-Findings (3 stk):**
+
+1. **HIGH P7 §18-Skill-Gate Path-Mismatch** — Skill sucht hardcoded `01_Skills/paragraph-18-sync/scripts/p18_sync.py` (existiert nicht) + Fallback `paragraph-18-sync` bare-command (nicht in PATH). Real-Validator: `03_Tools/para18_sync/validator.py`. P7 emittiert silent WARNING `"paragraph-18-sync not found; skipping §18-gate (operative runs MUST resolve)"` statt fail-close — SKILL.md §4-Discipline-#5 Versprechen verletzt. Auto-Memory `feedback_core_slim_p7_p18_path_mismatch.md` persistiert. **Root-Cause:** Spec-Drift zwischen den zwei v0.1.0-Skills (beide am 23.05.2026 promoted, ohne Cross-Wire-Up-Build-Gate).
+
+2. **MEDIUM Section-Reflow** — `patterns.py::mutate_bucket_archive` re-baut Section-Body aus `new_section_lines` von Grund auf → harmlose Whitespace/Footer-Re-Layout im Diff (Test #2: -32/+7 statt erwartet -26/+1; mathematisch korrekt, kein Datenverlust, aber Diff-Optisch lauter als nötig).
+
+3. **MEDIUM Pointer-Placement** — wenn `pointer_date` nicht im YAML gesetzt → Default „9999-99-99" → kein kept-table-row matched `dt > pointer_date` → Fallback-Branch appended Pointer am Section-Ende. In CORE-MEMORY §13 enthält Section-Ende den Footer-Bullet → Pointer landet POST-Footer (sichtbar L425 nach L424-Footer). Fix: `pointer_date` als required-YAML-Field markieren ODER footer-aware Insertion (skip trailing non-table-rows beim Anchor-Search).
+
+**T2-Trigger-Status:** ≥2 genuine v0.1.1-Anwendungen delivered → **T2 FIRED**. PIPELINE #81 v0.2.0 Spec-Phase kann jetzt aktivieren mit Scope-PreLock 9+10+14 (unverändert) **plus v0.1.2-Hotfix als P0-Item vorgezogen** (3 obige Findings). v0.1.2 = Bugfix-Bump vor v0.2.0-Feature-Release sinnvoll.
+
+**Process-Empirie (Karpathy-meta):**
+- **Pessimismus-Fehler korrigiert:** Initial-Recon (5 Files gescannt) framing war "kein Target heute" — falsch, §6 + §13 waren legitimate weitere Bucket-Layer auf already-touched-Files (Multi-Layer Pattern-A explizit by-design). User-Korrektur ("Wir wollen den Skill testen, kein §18-Sync-Detour") rückte den Fokus.
+- **§18-Sync ist Operational-Ceremony, nicht Teil des Test-Loops** — Live-Run zur Mutation-Validation ist 1 Sache; commit-mit-§18-Sync ist separate Entscheidung post-Test.
+- **Force-add notwendig für .md-Archive:** `.gitignore L8 `05_Archiv/*` blockt — `git add -f` pro Archive-Datei (Convention).
+- **Dirty-Tree-Predicate fail-close korrekt** — paragraph-18-sync Validator P1 trigggered bei 56 unrelated dirty files (pre-existing ruff-format 03_Tools+01_Skills); `--allow-dirty 60` Override mit Specific-File-Stage hat saubere Commit-Vorbereitung garantiert.
+
+**Sync-Set (§18 system-zustand-event, scoring-neutral, multi-event Union mit pipeline-item):**
+- `00_Core/CORE-MEMORY.md` (§6 + §13 mutated + Footer v1.27 → v1.28)
+- `00_Core/SYSTEM.md` (Footer v1.10 → v1.11)
+- `07_Obsidian Vault/.../log.md` (dieser Entry)
+- `05_Archiv/CORE-MEMORY-§6-Versionsverlauf-v3.7-Era-archiv.md` (force-added)
+- `05_Archiv/CORE-MEMORY-§13-Lifecycle-23.04.-09.05.2026-archiv.md` (force-added)
+- `01_Skills/core-slim-refactor/references/configs/core-memory-s6-versionsverlauf-bucket.yaml` (recipe)
+- `01_Skills/core-slim-refactor/references/configs/core-memory-s13-lifecycle-pre-may-10-bucket.yaml` (recipe)
+- Auto-Memory `feedback_core_slim_p7_p18_path_mismatch.md` (NEU, persistiert)
+
+KEIN PORTFOLIO/Faktortabelle/config.yaml/xlsx/jsonl-Touch (kein Score/FLAG/Sparraten-Event). Sparraten 285€ unverändert, DEFCON v3.7 + 12 Scores unverändert.
+
+**Cross-Reference:** PIPELINE #81 v0.2.0-Body (T2-FIRED + 3 v0.1.2-HOTFIX-Items hinzufügen) · CORE-MEMORY §13 (Pointer L425 post-footer als Empirie-Beleg für MEDIUM-3-Bug) · SYSTEM.md §System-Zustand (core-slim-refactor v0.1.1 Bullet bleibt bestehen + v0.1.2-Hotfix-Annahme) · Auto-Memory `feedback_redefer_over_prespec_dynastie` (T2-Fire = Re-Defer korrekt) · `feedback_core_slim_p7_p18_path_mismatch` (3 Findings konsolidiert) · Commit `<TBD>`.
+
+**Next:** v0.1.2-Hotfix-Spec (Karpathy 1-Phase Bugfix-Bump: 3 HIGH/MEDIUM fixes, minimal Scope, Build separate Session). Danach v0.2.0 mit Pre-Lock 9+10+14 wie ratifiziert.
