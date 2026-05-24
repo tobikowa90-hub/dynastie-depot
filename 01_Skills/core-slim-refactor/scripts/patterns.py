@@ -295,28 +295,78 @@ def _split_into_entries(md: str, header_pattern: str) -> list[tuple[str, str]]:
     return [(h, "\n".join(body)) for h, body in entries]
 
 
+def _split_bullet_block(
+    md: str,
+    bullet_regex: str,
+    trailing_boundary: str,
+) -> list[tuple[str, str]]:
+    """Pattern-C Bullet-List-Variante -- Spec SS3.1 MEDIUM-9.
+
+    Scans lines top-down, identifies bullets via bullet_regex; body ends at
+    next bullet OR trailing_boundary (e.g. '^## ') OR EOF.
+    Returns list[(date_str, body_str)] analogous to _split_into_entries.
+    """
+    bullet_re = re.compile(bullet_regex)
+    boundary_re = re.compile(trailing_boundary)
+    lines = md.split("\n")
+    bullet_idx: list[tuple[int, str]] = []
+    boundary_idx: int | None = None
+    for i, line in enumerate(lines):
+        m = bullet_re.match(line)
+        if m:
+            bullet_idx.append((i, m.group(1)))
+            continue
+        # First trailing-boundary AFTER at least one bullet is the sentinel
+        if boundary_re.match(line) and bullet_idx:
+            boundary_idx = i
+            break
+    if not bullet_idx:
+        return []
+    end_sentinel = boundary_idx if boundary_idx is not None else len(lines)
+    entries: list[tuple[str, str]] = []
+    for k, (start, date_str) in enumerate(bullet_idx):
+        body_end = bullet_idx[k + 1][0] if k + 1 < len(bullet_idx) else end_sentinel
+        body = "\n".join(lines[start:body_end])
+        entries.append((date_str, body))
+    return entries
+
+
 def classify_date_cut(md: str, section_anchor: str | None, cfg: dict) -> RowSet:
     """Classify entries by header-date vs cut_before. Entries before cut_before are archived."""
     cut_before = cfg["cut_before"]
     parser = cfg["date_parser"]
+    field = parser.get("field", "header")
     pattern = parser["pattern"]
-    date_re = re.compile(pattern)
 
-    entries = _split_into_entries(md, pattern)
     rs = RowSet()
-    for header, body in entries:
-        if not header:
-            rs.keep.append(body)
-            continue
-        m = date_re.match(header)
-        if not m:
-            rs.keep.append(body)
-            continue
-        entry_date = m.group(1)
-        if entry_date < cut_before:
-            rs.archive.append(body)
-        else:
-            rs.keep.append(body)
+    if field == "bullet":
+        tb = parser.get("trailing_boundary")
+        # Defensive gate: config.py already enforces this, but double-check here
+        if tb is None:
+            raise ValueError("bullet_mode_requires_trailing_boundary")
+        # _split_bullet_block returns (date_str, body) -- date already extracted
+        for entry_date, body in _split_bullet_block(md, pattern, tb):
+            if entry_date < cut_before:
+                rs.archive.append(body)
+            else:
+                rs.keep.append(body)
+    else:
+        # Header mode: _split_into_entries returns (header_line, body);
+        # re-match the header line to extract the date group.
+        date_re = re.compile(pattern)
+        for header, body in _split_into_entries(md, pattern):
+            if not header:
+                rs.keep.append(body)
+                continue
+            m = date_re.match(header)
+            if not m:
+                rs.keep.append(body)
+                continue
+            entry_date = m.group(1)
+            if entry_date < cut_before:
+                rs.archive.append(body)
+            else:
+                rs.keep.append(body)
     return rs
 
 
