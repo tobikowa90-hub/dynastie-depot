@@ -16,7 +16,7 @@
 |-------|------------------|------------|
 | `03_Tools/Rebalancing_Tool_v3.4.xlsx` | **Voll** (Punkte A-F) | 249 Formeln + 6 Conditional Formats — hohes Korruptions-Risiko (Live-State 2026-05-25 post User-Update; vorher 218/6, drift via Q-Spalten-Erweiterung + R28-Row) |
 | `03_Tools/Satelliten_Monitor_v2.0.xlsx` | **Voll** (Punkte A-F) | 13 Formeln + 5 Conditional Formats + §G Σ-Check via Hook (`brokers.scalable.sparrate_eur`-Anker, Live-State 2026-05-25 post User-Update; Σ-Check-Lokus per Variante G zu Hook verlagert, vorher Excel-Text-Sanity N19) |
-| `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` | **Minimal-Check-Annex** (nur A + Existenz) | 0 Formeln, 0 CF — kein Korruptions-Risiko via openpyxl. Hochstufung in Voll-Smoke-Test erst nach Watchlist-Tool-Update (offenes PIPELINE-Item, Sekundär-Priorität). |
+| `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` | **Minimal-Check-Annex** (nur A + Existenz) | 0 Formeln, 0 CF — kein Korruptions-Risiko via openpyxl. Hochstufung in Voll-Smoke-Test erst sobald Excel-Formeln (`=...`) zur Watchlist hinzugefügt werden (file-pattern-driven Trigger, kein PIPELINE-Item-Backing). |
 
 ---
 
@@ -61,6 +61,18 @@ Sheet `Portfolio & Rebalancing`. Per Ticker-Zeile (R18-R28) verifizieren:
 - ✅ **PASS:** Alle Pflicht-Zellen reflektieren den aktuellen Sync-Stand
 - ❌ **FAIL:** Eine oder mehrere Pflicht-Zellen stale → openpyxl-Write hat nicht alle Zellen erreicht. STOP.
 
+**US-Exposure-Sentinel-Set (P14, Sheet `US-Exposure`):** Spiegel-Sheet (R4-R20 = Portfolio R5-R21, 1:1-Mirror). Sentinel-Pflicht-Checks zur Drift-Vermeidung bei Portfolio-Ticker-Range-Änderungen:
+
+| Zelle | Inhalt | Erwartung |
+|-------|--------|-----------|
+| `US-Exposure!R4` (Spalten A-D) | `='Portfolio & Rebalancing'!A5/B5/F5/E5` | Erste Mirror-Zeile resolvet ohne `#REF!` (Portfolio R5 = EUWAX Gold) |
+| `US-Exposure!R20` (Spalten A-D) | `='Portfolio & Rebalancing'!A21/B21/F21/E21` | Letzte Mirror-Zeile resolvet ohne `#REF!` (Portfolio R21 = letzter Ticker, aktuell AMZN) |
+| `US-Exposure!R21 E` | `=SUM(E4:E20)` | Σ-US-Anteil € resolvet auf `> 0` (nicht 0/leer) |
+| `US-Exposure!R25 B` | `='Parameter & Regeln'!B11` | US-Hard-Cap-Lookup resolvet (aktuell `0.63` = 63%); Cross-Ref-Existenz |
+
+- ✅ **PASS:** R4 + R20 Mirror ohne `#REF!`, R21 E Σ > 0, R25 B löst zum aktuellen US-Hard-Cap-Wert auf
+- ❌ **FAIL:** `#REF!` in R4/R20 (Portfolio-Range-Drift, Mirror gebrochen) ODER R21 E = 0/leer (Σ-Aggregat verloren) ODER R25 B = `#REF!` (Parameter-Sheet umbenannt/B11 verschoben). STOP.
+
 ### D. Pflicht-Zell-Cross-Check Satelliten-Monitor
 
 Sheet `Satelliten Monitor`. Verifizieren:
@@ -70,19 +82,36 @@ Sheet `Satelliten Monitor`. Verifizieren:
 | `O2` | Stand-Stempel | `Stand: YYYY-MM-DD ...` |
 | `B3` | Header-Sparraten-Zeile | `D3/D4-Rate: X€ \| D2-Sockelbetrag: Y€ \| Nenner Z (Pfad-Note)` |
 | `H3` | Eingefroren-Liste | Alle FLAG-Tickers mit Datum |
-| `K3` | Ergebnis-Zeile | `🟢 N Voll  🟠 M D2  🔴 K Eingefroren (Liste)` |
+| `K3` | Ergebnis-Zeile | `● N Voll  ● M D2-Sockelbetrag  ● K Eingefroren (Liste)` (●-Marker vereinheitlicht 2026-05-25, vorher 🟢/🟠/🔴) |
 | `L<ticker>` | Score-String | `'NN / DEFCON X'` pro Ticker-Zeile |
 | `M<ticker>` | Δ-Note | aktueller Δ vs. Vorperiode |
 | `N<ticker>` | Status/FLAG-Text | mit Pfad-Note + ggf. Q-Verify-Pointer / PIPELINE-Item |
-| `B24` | Footer Eingefroren-Liste | Komplett, mit FLAG-Grund pro Ticker |
-| `B25` | Footer Volle-Rate-Liste | Mit Σ-Check-Formel (z.B. `7×38,00 + 1×19,00 + 3×0 = 285,00€ ✓`) — Σ muss aufgehen |
+| `B24` | Legende Verifikations-Marker | `[~]` Schätzung Wissensbasis (plausibel) \| `[V]` Vollanalyse verifiziert \| `[TC]` Tariff-Check abgeschlossen (statischer Legende-Text, keine Ticker-Liste) |
+| `B25` | Footer Eingefroren-Liste | Komplett, mit FLAG-Grund pro Ticker (Pattern: `● EINGEFROREN: <Ticker> (FLAG <Grund>, D<X>, Score <NN>) \| ...`) |
+| `B26` | Footer Volle-Rate-Liste + Nenner-Aufteilung | Aufteilung Volle-Rate (38,00€) / D2-Sockelbetrag (19,00€) / Eingefroren (0€) mit Ticker-Listen + Nenner-Formel (Pattern: `● Volle Rate 38,00€ (N Positionen): <Ticker>... \| ● D2-Sockelbetrag 19,00€ (M): <Ticker>... \| ● Eingefroren 0€ (K): <Ticker>... \| Nenner ...`) |
+| `N19` | Σ-Check Text-Sanity | Literal `'→ muss = 285,00 €'` (Sanity-Echo, **keine** Excel-Formel; Σ-Verifikation per Hook-Punkt §G `_check_g_sparrate_sigma` — Mapping config.yaml SSoT) |
 
-- ✅ **PASS:** Alle Pflicht-Zellen aktuell + Σ-Check-Formel im Footer `B25` resolvet ohne Fehler
-- ❌ **FAIL:** Pflicht-Zelle stale ODER Σ-Check schlägt rechnerisch fehl. STOP.
+- ✅ **PASS:** Alle Pflicht-Zellen aktuell + `N19` Sanity-Text literal präsent; Σ-Check-Verifikation erfolgt im Hook-Punkt §G (`01_Skills/dynastie-depot/config.yaml` SSoT → `derive_rate(flag, defcon)`-Mapping: `flag=True→0€`, `flag=False+defcon∈{3,4}→38€`, `flag=False+defcon=2→19€` → `Σ == cfg.brokers.scalable.sparrate_eur` = 285,00€)
+- ❌ **FAIL:** Pflicht-Zelle stale ODER `N19`-Sanity-Text fehlt/falsch ODER Hook-§G-Σ-Check failed. STOP.
+
+**Status-Marker-Konvention (P10, vereinheitlicht 2026-05-25):** `●` ersetzt die alten Emoji-Marker (🟢/🟡/🟠/🔴) konsistent in B3/H3/K3/B25/B26/N7-N18. Inhaltliche Klassifikation bleibt erhalten (Volle Rate / D2-Sockel / Eingefroren / FLAG), nur das Glyph ist neutral. Smoke-Test prüft Existenz der Pflicht-Zellen, nicht das Marker-Glyph.
+
+### D2. QuickScreen-Ampel-Sheet Cross-Check (Satelliten_Monitor_v2.0.xlsx, Sheet 2)
+
+Sheet `QuickScreen Ampel` (zweites Sheet im Satelliten-Monitor). 0 Formeln, 0 CF — Pflichtprüfung ist Struktur- + Ticker-Konsistenz gegen Hauptsheet:
+
+| Zelle / Range | Inhalt | Erwartung |
+|---------------|--------|-----------|
+| `B5:I5` (Header-Row) | Spalten-Header: Ticker, Name, P/FCF Filter, ROIC Filter, Moat Filter, FLAG, Gesamt-Ampel, Nächster Schritt | 8 Spalten-Header in Row 5, alle besetzt (Sheet-Dims starten bei `B2`, Spalte A leer by-design) |
+| `B6:B17` (Ticker-Range) | 12 Ticker (ASML, AVGO, MSFT, COST, RMS, VEEV, SU, BRK.B, V, TMO, APH, AMZN) mit Ampel-Status pro Filter | **Cross-Check gegen `Satelliten Monitor`-Sheet `B7:B18`**: identisches Ticker-Set (Set-Gleichheit) |
+| `B19` (Legende-Header) + `B20:B23` (Erklärung) | LEGENDE-Block mit ●-Marker-Semantik (HALTEN / PRÜFEN / EINGEFROREN / Exception-Logik) | Header-Zelle `B19` enthält literal `'LEGENDE'` + 4 Beschreibungs-Rows `B20:B23` |
+
+- ✅ **PASS:** R5-Header vollständig, R6-R17 Ticker-Set identisch zu Hauptsheet R7-R18 (Set-Gleichheit, nicht Order-Drift-tolerant), Legende-Block ab R19 präsent
+- ❌ **FAIL:** Ticker-Drift zwischen QuickScreen R6-R17 und Hauptsheet R7-R18 (z.B. Hauptsheet hat AMZN aber QuickScreen nicht) → manueller xlsx-Edit hat eines der beiden Sheets vergessen. STOP.
 
 ### E. Conditional-Format-Stichprobe
 
-Pro Voll-Scope-Datei drei zufällige Zellen mit Color-Coding sichten (z.B. DEFCON-Spalte N18, FLAG-Spalte O18, Σ-Check-Footer B25):
+Pro Voll-Scope-Datei drei zufällige Zellen mit Color-Coding sichten (z.B. Rebal: DEFCON-Spalte N10-N21, FLAG-Spalte O10-O21, Sparrate P10-P21 — Sat: K3 Ergebnis-Zeile, L7-L18 Score-String, N7-N18 Status-Marker):
 
 - ✅ **PASS:** Color-Coding entspricht dem erwarteten Wert (z.B. DEFCON 1 = rot, DEFCON 4 = grün)
 - ❌ **FAIL:** Color-Coding fehlt komplett oder Farbe passt nicht zum Wert → Conditional-Format wurde von `openpyxl`-Write zerstört. STOP.
@@ -105,7 +134,7 @@ Aktuell nur:
 - ✅ Datei öffnet ohne Repair-Prompt (Punkt A)
 - ✅ Datei existiert + ist lesbar (`ls 03_Tools/Watchlist_*.xlsx` returns Pfad)
 
-Punkte B-F entfallen (0 Formeln, 0 Conditional Formats — kein Korruptions-Risiko via openpyxl). Hochstufung in Voll-Smoke-Test sobald Watchlist-Tool-Update PIPELINE-Item resolved (Formeln / Logik hinzugefügt).
+Punkte B-F entfallen (0 Formeln, 0 Conditional Formats — kein Korruptions-Risiko via openpyxl). Hochstufung in Voll-Smoke-Test erst wenn Excel-Formeln (`=...`) zur Watchlist hinzugefügt werden (Status-Ampel-Werte sind aktuell Plain-Text, kein Korruptions-Risiko via openpyxl-Write). Kein konkretes PIPELINE-Backing — Trigger ist file-pattern-driven (Formel-Count > 0 bei nächstem Smoke-Test-Probe-Lauf).
 
 ---
 
