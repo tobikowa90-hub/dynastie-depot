@@ -1,16 +1,64 @@
 # Session-Handover xlsx-smoke-test-runner Skill (α+ Adaption)
 
-**Stand**: 2026-05-25 ~18:30 (kurz vor Session-Cut wegen Kontext-Voll)
+**Stand**: 2026-05-25 ~20:30 (Session-Cut nach SPEC-COMPLETE + Multi-File-Sync-Commit `d10b63d`)
 
 ## Resume-Prompt für nächste Session
 
 ```
-Resume xlsx-smoke-test-runner Skill α+ Spec-Phase.
-Drift-Doc Gate-0 fertig + Codex R1+R2 GO-mit-Conditions adressiert.
-Pflicht-Lesen vor Spec-Phase-Start: 01_Skills/xlsx-smoke-test-runner/drift-live-vs-doc.md
-Plus _SESSION-HANDOVER.md (diese Datei).
-Direkt zu Task #3 (Spec α+ Scope) — Skill-Scope-Statement aus drift-doc §0a literal in SKILL.md description übernehmen.
+Resume xlsx-smoke-test-runner Klasse-D §D-Block-Rewrite (SPEC §6 Schritt 9).
+SPEC v0.1 GO-Ready + Multi-File-Sync committed (d10b63d). Substrate stabil.
+Pflicht-Lesen: SPEC.md + drift-live-vs-doc.md §2.2 + §2.4 (Soll-Werte).
+Direkt zu xlsx-smoke-test.md §D-Block-Rewrite: P6 (B24↔B25 Swap) + P7 (B26 neue Pflicht-Cell) + P8 (Σ-Check-Paradigma zu Hook via Variante G) + P10 (●-Status-Marker-Vereinheitlichung).
+Inline-Übernahme aus drift-doc (Substrate ist Codex-R1+R2 gereviewt) — kein eigener Codex-Pass nötig sofern strikt §2.2 + §2.4 Werte verwendet.
 ```
+
+## Session-Output 2026-05-25 (durable in Repo, Commit d10b63d)
+
+| Artefakt | Stand | Notiz |
+|----------|-------|-------|
+| `01_Skills/xlsx-smoke-test-runner/SPEC.md` | 635 LOC, GO-Ready | Post 2× Codex-Sparring (R1: 2 HIGH + 4 MED + 4 LOW; R2: 0 HIGH + 3 MED + 1 LOW), alle Findings adressiert |
+| `01_Skills/xlsx-smoke-test-runner/drift-live-vs-doc.md` | 16 Patches + R1+R2 + Coverage-Expansion + RESOLVED-Marker | Substrate für Klasse D |
+| `01_Skills/xlsx-smoke-test-runner/_SESSION-HANDOVER.md` | (diese Datei, post-Cut-Update) | Resume-Pointer für D |
+| Multi-File-Sync 4 Files | INSTRUKTIONEN §18.7 + SYSTEM L42 + xlsx-smoke-test.md L17/L18 + Hook Z42/Z47 | Formel-Counts 218→249, 12→13 + Anker-Pfad-Korrektur |
+| `01_Skills/dynastie-depot/config.yaml` L70-78 | post-AMZN Sparraten-Kommentar | 3× → 4× eingefroren, Math 285€ identisch |
+| log.md | system-zustand-Eintrag | Spec-Phase + Multi-File-Sync dokumentiert |
+| Memory `feedback_historical_snapshot_not_a_scope_excuse.md` | NEU | Lifecycle-Snapshot ≠ Scope-Reduktions-Argument |
+
+## Was als nächstes erledigt werden muss (priorisiert)
+
+### 1. Klasse D — xlsx-smoke-test.md §D-Block-Rewrite (kleiner Doku-Patch, ~15-30min)
+
+**File**: `03_Tools/xlsx-smoke-test.md` Zeilen 77-85 (§D Satelliten Pflicht-Zellen + PASS-Criteria + CF-Stichprobe)
+
+**Pflicht-Patches** (Soll-Werte literal aus `drift-live-vs-doc.md` §2.2 + §2.4):
+- **P6**: Tabellen-Row L77 = `B24 | Footer Eingefroren-Liste` → ist falsch; B24 ist **Legende** `[~]/[V]/[TC]`. SWAP mit L78.
+- **P6**: Tabellen-Row L78 = `B25 | Footer Volle-Rate-Liste | Mit Σ-Check-Formel` → ist falsch; B25 ist **Eingefroren-Liste**.
+- **P7**: NEU `B26 | Footer Volle-Rate-Liste + Nenner-Aufteilung` als Pflicht-Cell (User-Erweiterung 2026-05-25).
+- **P8**: PASS-Criteria L80 `Σ-Check-Formel im Footer B25 resolvet ohne Fehler` → Variante G: Σ-Check ist Text-Sanity in N19 (`'→ muss = 285,00 €'`), KEINE Excel-Formel; PASS-Kriterium an Hook-§G delegiert (post Skill-Execution-Stage).
+- **P9**: QuickScreen-Ampel-Sheet als §D2 oder Sub-Section ergänzen (R5 Headers + R6-R17 Ticker-Konsistenz gegen Satelliten R7-R18 + R19+ Legende).
+- **P10**: ●-Status-Marker-Vereinheitlichung dokumentieren (vs alte Doku 🟢/🟡/🟠/🔴).
+- **P14**: US-Exposure-Sentinel-Set in §C aufnehmen (R4+R20 Mirror + R21 E Σ + R25 B Cross-Ref auf Parameter!B11).
+- **P16**: §Annex-Reference auf nicht-existentes PIPELINE-Item — entweder konkrete Item-ID nachziehen ODER „Logik" → „Formeln (`=...`)" Re-Phrase ohne PIPELINE-Backing.
+
+**Empfohlener Modus**: Inline-Patch direkt, kein Codex-Sparring (Substrate ist gereviewt). Falls Unsicherheit → Single-Pass R1 auf den Diff.
+
+### 2. Stage-2 Execution (separate Session pflicht per `feedback_brainstorming_terminal_override_dynastie`)
+
+SPEC §6 Schritte 5-9:
+- `safe_insert.py` Implementation (Body, ~30min)
+- Hook-Punkt-G Extension (`_derive_rate_eur` + `_check_g_sparrate_sigma`, ~25min)
+- 15 Fixtures Generator + Generierung (~50min via 7a/7b/7c-Split)
+- Test-Run + §18.7-Smoke-Test (~10min)
+
+## Cross-Reference (für Resume)
+
+- SPEC: `01_Skills/xlsx-smoke-test-runner/SPEC.md` (§6 Schritte 0-9 Sequenz)
+- Drift-Doc: `01_Skills/xlsx-smoke-test-runner/drift-live-vs-doc.md` (§2.2 + §2.4 Soll-Werte)
+- Soll-Doku (Patch-Target Klasse D): `03_Tools/xlsx-smoke-test.md` L77-85
+- Hook: `03_Tools/precommit/xlsx_smoke_test.py` (jetzt Z42/Z47 sync)
+- config.yaml: `01_Skills/dynastie-depot/config.yaml` (L27 Anker, L70-78 Sparraten-Kommentar)
+- Codex-Threads: R1 `task-mplhql8t-klqd0v` resumable, R2 `aee23b12f73d5f502`
+- Memory: `feedback_historical_snapshot_not_a_scope_excuse` + `feedback_skill_name_is_scope_contract` + `feedback_codex_sparring_heuristic`
 
 ## Was erledigt ist (durable)
 
