@@ -95,6 +95,12 @@ ruvector.db
 03_Tools/precommit/_fixtures/*.input
 03_Tools/precommit/_fixtures/*.xlsx
 
+# xlsx-smoke-test-runner Skill Test-Fixtures (Stage-2 Schritt 7, SPEC §5.2):
+# deterministisch regenerable via 01_Skills/xlsx-smoke-test-runner/_fixtures/_generate_fixtures.py
+# (ZIP-Subset-Hashing exkludiert docProps-volatile Members).
+01_Skills/xlsx-smoke-test-runner/_fixtures/*.xlsx
+01_Skills/xlsx-smoke-test-runner/_fixtures/*.yaml
+
 # ── GSD baseline (auto-generated) ──
 .mcp.json
 .bg-shell/

@@ -22,7 +22,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from types import ModuleType
 
-_GATE_RE = re.compile(r"\(Punkt\s+([A-G])(?:\s*,\s*minimal)?\)")
+_GATE_RE = re.compile(r"\(Punkt\s+([A-G])\b[^)]*\)")
 _PROFIL_RE = re.compile(r"profil=([A-Za-z_]+)")
 
 
