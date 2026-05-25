@@ -15,9 +15,9 @@
 
 | Ticker | Score | DEFCON | Rate | FLAG | Nächster Trigger |
 |--------|-------|--------|------|------|------------------|
-| AVGO | **53** | **🟠 2** | **0€** | 🔴 Insider-Selling 90d $106M+ (27.04.) | Q3 FY26 Re-Eval (Score 84→53 am 30.04., Detail §12.1) |
+| AVGO | **53** | **🟠 2** | **0€** | 🔴 Insider-Selling 90d $106M+ (27.04.) | **03.06.2026** (amc) Q2 FY26 Earnings — FLAG-Resolve-Gate ($20M-Schwelle vs. $106M-Diskr.); Score 84→53 am 30.04. (§12.1); Drift erkannt via `earnings_calendar.py` 25.05. |
 | BRK.B | **71** | 🟡 3 | **38,00€** | ✅ Insurance Exception | Q2 FY26 ~02./03.08. — KHC-OTTI / GEICO-Decel / Form-13F Apple-Trim ~14.05. / Buyback-Cashflow-Reconciliation (PIPELINE #36-#41) |
-| VEEV | 74 | 🟡 3 | **38,00€** | ✅ | **27.05.2026** Q1 FY27 Earnings (yfinance-Pull 30.04.) |
+| VEEV | 74 | 🟡 3 | **38,00€** | ✅ | **03.06.2026** (amc) Q1 FY27 Earnings (Date-Recheck 25.05. Finnhub+Yahoo+IR konvergent; vorherige 27.05.-Annahme war Stale-yfinance-Pull 30.04.) |
 | SU | 69 | 🟡 3 | **38,00€** | ✅ | H1 Juli/Aug |
 | COST | 69 | 🟡 3 | **38,00€** | ✅ Screener-Exception | **28.05.2026** Q3 FY26 Earnings (yfinance-Pull 30.04. — Membership-Yield-Watch); Q1 FY27 ~Dez |
 | RMS | 68 | 🟡 3 | **38,00€** | ✅ Screener-Exception | H1 Juli/Aug |
@@ -44,7 +44,7 @@
 - **ASML Fwd P/E FY27 = 30,30** — Grenzfall. Bei <30 deaktiviert Fix-1-Fwd-Zweig → Score +1 bis +2 möglich (D3→D4-Kandidat).
 - **MSFT FLAG-Status (UPDATED 30.04.2026):** Trigger A ✅ 57,7% / B ❌ FAIL CY26 $190B +23% Surprise / C ✅✅ Azure +39% cc — UND nicht vollumfänglich → FLAG bleibt aktiv. Re-Eval Q4 FY26 ~Juli + Insider-Block-Re-Score post-14.05. (Skip-Window läuft).
 - **TMO Q2 Re-Check** (Q1 23.04. resolved): Organic-Akzeleration H2 3-4%-Guide + Clario-Integration-Execution — Q2 Ende Juli.
-- **AVGO Re-Eval Q3 FY26** (FLAG aktiv seit 27.04. $106,4M Diskr. 90d >> $20M-Resolve-Schwelle; Vollanalyse 30.04. Score 84→53 D4→D2; Detail §12.1).
+- **AVGO Re-Eval Q2 FY26 03.06.2026 (amc) [FLAG-Resolve-Gate primär]** → Folge-Re-Eval Q3 FY26 ~Sept (FLAG aktiv seit 27.04. $106,4M Diskr. 90d >> $20M-Resolve-Schwelle; Vollanalyse 30.04. Score 84→53 D4→D2; Detail §12.1).
 - **AMZN Neuaufnahme 12. Satellit (15.05.2026, User-Direktive 18.05.):** Score 42/D1, 🔴 CapEx/OCF-FLAG TTM 99,2% netto (≫60%, schärfer als GOOGL 74-79%). FCF TTM nur $1,2B (-95% YoY, FCF-Yield 0,04%). Sparrate **0€ regelkonform** (User-Entscheidung: kein Owner-Override, FLAG heilig). Slot-Erweiterung 11→12 nenner-neutral. **Resolve-Gate:** CapEx/OCF <60% — frühestens wenn Monetarisierung der KI-CapEx OCF überholt (Jassy: "early years FCF challenged", 6-24 Mt. Lag). Re-Eval Q2 FY26 ~Ende Juli. Detail §12.<amzn> + score_history.jsonl + flag_events.jsonl.
 
 ---
@@ -55,8 +55,9 @@
 |-------|--------|--------|--------|
 | 28.04. (overdue) | SNPS/SPGI | B | Watchlist-Review Q1 Earnings — Nachholbedarf (PIPELINE #62) |
 | Mai | ZTS/PEGA/CPRT | B | Q-Earnings + Slot-16 |
-| 27.05. | VEEV | B | Q1 FY27 Earnings |
 | 28.05. | COST | B | Q3 FY26 Earnings (Membership-Yield-Watch) |
+| 03.06. (amc) | AVGO | B | Q2 FY26 Earnings + FLAG-Resolve-Gate ($20M-Schwelle vs. $106M-Diskr. 27.04.; Drift erkannt 25.05. via `earnings_calendar.py`) |
+| 03.06. (amc) | VEEV | B | Q1 FY27 Earnings (Date-Korrektur 25.05., war 27.05. = Stale) |
 | ~Ende Juli | AMZN | B/C | Q2 FY26 Earnings — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse (Score 42/D1, FLAG seit 15.05.) |
 
 

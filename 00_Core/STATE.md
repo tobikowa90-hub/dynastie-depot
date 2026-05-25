@@ -20,7 +20,7 @@
 - **13.–14.05. ✅ Watchlist-Ersatzbank-Refresh v3.2 + #26 MSFT-Insider-Re-Score (Δ=0) + #61 Retro + Plugin-Refactor DONE** (scoring-neutral). Detail → CORE-MEMORY §13 + §12.6 + git log.
 
 **Forward-Triggers (~14 Tage):**
-- **27.05.** VEEV Q1 FY27 · **28.05.** COST Q3 FY26 (Klasse-B Earnings)
+- **28.05.** COST Q3 FY26 · **03.06. (amc)** VEEV Q1 FY27 + **AVGO Q2 FY26 [FLAG-Resolve-Gate]** (Klasse-B Earnings)
 - **~Ende Juli** AMZN Q2 FY26 — CapEx/OCF-FLAG-Re-Eval + Vollanalyse
 - **28.05.** MSFT Insider-Skip-Window nächstes Expiry
 
@@ -42,7 +42,7 @@
 
 ## 🔍 Last Audit
 
-**Timestamp (UTC):** 2026-05-24T23:29:37Z
+**Timestamp (UTC):** 2026-05-24T23:38:46Z
 **Result:** 10/15 PASS (2 FAIL, 3 WARN)
 **Run:** `python 03_Tools/system_audit.py --core`
 **Full-Report:** stdout (kein Archiv-File)

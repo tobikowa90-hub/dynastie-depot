@@ -1154,3 +1154,52 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Cross-Reference:** Build-Wave-Commit `98a3eb7` (P8) · SHA-Fix-Commit `78c8597` · CORE-MEMORY §13 v0.2.0-Entry · Auto-Memory `feedback_git_amend_sha_churn_trap` + `feedback_claude_default_english_in_dynastie` (beide neu).
 
 **Next:** MEDIUM-15 v0.3-Trigger offen (Null-Coupling, opportunistic). Session-Close möglich.
+
+---
+
+## [2026-05-25] system | VEEV/AVGO — Earnings-Date-Drift-Repair (PORTFOLIO+STATE) + AVGO-Earnings-Discovery via earnings_calendar.py + Pre-Earnings-Briefs T-9 (scoring-neutral, Live-State-Repair)
+
+**Event-Typ:** Live-State-Drift-Repair + Pre-Earnings-Prep (kein Score/FLAG/Sparraten-Touch; rein PORTFOLIO/STATE-Korrektur + neue Briefing-Artefakte)
+
+**Was passiert ist:**
+- User-Anfrage: VEEV Q1 FY27 Pre-Earnings-Brief mit `earnings-preview`-Skill. Mental-Model + PORTFOLIO+STATE behaupteten Earnings-Datum **27.05.2026**.
+- **yfinance-Pull lieferte 2026-06-03** (Yahoo Calendar). Date-Diskrepanz erkannt → Cross-Check mit Finnhub angeordnet.
+- **Finnhub /calendar/earnings (via `03_Tools/finnhub_client.py`) bestätigte 2026-06-03 amc** (epsEstimate 2.1709, revenueEstimate $870.7M). Yahoo+Finnhub konvergent. User confirmierte 03.06. via Web-Recherche.
+- **PORTFOLIO.md Z. 20 + 58** und **STATE.md Z. 23** auf **03.06.2026 (amc)** korrigiert mit Audit-Trail-Hinweis (Stale-yfinance-Pull 30.04. als Root-Cause vermerkt).
+- **User-Folgeanfrage:** Funktioniert `03_Tools/earnings_calendar.py` korrekt? → Tool-Lauf `--check --alert-window 14` erbrachte:
+  - VEEV: 2026-06-03 🟢 in trigger (post-Edit korrekt)
+  - COST: 2026-05-28 🟢 in trigger
+  - **AVGO: 2026-06-03 🔴 DRIFT** — Q3 FY26 Earnings am selben Tag wie VEEV, im PORTFOLIO-Trigger-Block bisher nicht erwähnt
+  - 12/12 Ticker mit Datum, Smoke-Test BRK.B = 2026-08-01 PASS
+- **AVGO-Drift in PORTFOLIO + STATE nachgezogen:**
+  - PORTFOLIO.md Z. 18: AVGO-Trigger-Zelle um "03.06.2026 (amc) Q3 FY26 Earnings — FLAG-Resolve-Gate ($20M-Schwelle vs. $106M-Diskr.)" erweitert
+  - PORTFOLIO.md "30-Tage-Trigger-Tabelle": AVGO-Zeile + Re-Ordering (28.05. COST → 03.06. AVGO → 03.06. VEEV)
+  - STATE.md Forward-Triggers: `03.06. (amc) VEEV Q1 FY27 + AVGO Q2 FY26 [FLAG-Resolve-Gate]`
+- **Pre-Earnings-Briefs (Konvention `02_Analysen/Earnings Reports/<Company>/<TICKER>_pre-earnings_<earnings-date>.md`):**
+  - **VEEV** (`Veeva Systems/VEEV_pre-earnings_2026-06-03.md`): 8-Sektionen-MSFT-Template-Parity, Score-Move-Watch-Matrix (keine FLAG), Yahoo×Finnhub-Cross-Check, News-Sentiment-Cluster (38 Items, AI-Sunset-Fear vs. Compounder-Reversion binär), Mean-Target +64% Upside, Burry-Position notable
+  - **AVGO** (`Broadcom/AVGO_pre-earnings_2026-06-03.md`): 8-Sektionen, FLAG-Decision-Matrix (analog MSFT), Trillion-Cap-Context, EPS-Wachstum +51% YoY, near-52w-Hoch, Asymmetrie umgekehrt zu VEEV (Bear-Target -48% Downside vs. VEEV +9.9% Upside)
+
+**Sync-Set (§18 Multi-Event-Union §18.2 — Live-State-Repair + Pipeline-Item, scoring-neutral, Expected-Set 4 + 2 Briefing-Artefakte):**
+- `00_Core/PORTFOLIO.md` (Z. 18 AVGO-Trigger-Zelle + Z. 20 VEEV-Trigger-Zelle + Z. 47 AVGO-Re-Eval-Description + Z. 57-60 30-Tage-Trigger-Tabelle)
+- `00_Core/STATE.md` (Z. 23 Forward-Triggers)
+- `00_Core/PIPELINE.md` (#69 Discovery-Stamp 25.05. — 53 M-Files Empirie + Stale-Snapshot-Vermerk; bewusst KEIN Re-Scope, deferred auf nächste Skill-Build-Session per User-Direktive)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+
+**KEIN** Score-History/Faktortabelle/config.yaml/xlsx/flag_events-Touch (kein Score/FLAG/Sparraten-Event — FLAG-Status AVGO bleibt 🔴 aktiv unverändert; Resolve-Entscheidung kommt frühestens Tag +1 04.06. nach Vollanalyse).
+
+**Briefing-Artefakte (außerhalb §18-Sync-Set, neu in `02_Analysen/`):**
+- `02_Analysen/Earnings Reports/Veeva Systems/VEEV_pre-earnings_2026-06-03.md`
+- `02_Analysen/Earnings Reports/Broadcom/AVGO_pre-earnings_2026-06-03.md`
+
+**Lehre:**
+- **yfinance-Calendar-Stale-Risk empirisch konfirmiert:** PORTFOLIO-Datum war 30.04.-Pull-Snapshot, hat sich danach 27.05.→03.06. verschoben ohne automatischen Drift-Alert. `earnings_calendar.py` als Hook hätte das fangen müssen — Tool funktioniert aber wurde nicht regelmäßig gelaufen. **Möglicher §18-Sync-Extension-Trigger:** `earnings_calendar.py --check` als SessionStart-Hook oder !Briefing-Vorab-Step? (PIPELINE-Item-Kandidat, später entscheiden).
+- **Finnhub-Free-Tier-Value bestätigt:** `/calendar/earnings` + `/quote` + `/news` funktionieren zuverlässig. Beat/Miss-History (`/stock/earnings`) und Metrics (`/stock/metric`) Premium-restricted (leer) — Yahoo bleibt primär für diese. **Cross-Check-Pattern Yahoo × Finnhub** in Pre-Earnings-Workflow neu etabliert (Memory-Kandidat: `reference_finnhub_yahoo_cross_check_pre_earnings.md`).
+- **MSFT-Template-Konvention adaptiv:** FLAG-Decision-Matrix-Sektion für FLAG-aktive Ticker (AVGO ✓ MSFT-Vorlage), Score-Move-Watch-Matrix für FLAG-freie Ticker (VEEV neue Variante). 8-Sektionen-Skelett identisch, Sektion-6-Inhalt FLAG-Status-driven.
+- **Parallel-Earnings-Slot 03.06.:** VEEV + AVGO selber Tag = doppeltes Tag-+1-Vollanalyse-Slot 04.06. — Token-Budget + Sequencing vorab planen (Brief 7. Sektion warnt explizit).
+
+**Cross-Reference:** PORTFOLIO.md Z. 18 + 20 + 57-60 · STATE.md Z. 23 · `02_Analysen/Earnings Reports/Veeva Systems/VEEV_pre-earnings_2026-06-03.md` · `02_Analysen/Earnings Reports/Broadcom/AVGO_pre-earnings_2026-06-03.md` · `03_Tools/earnings_calendar.py --check --alert-window 14` Tool-Output 25.05.
+
+**Nächste Tracks:**
+- Tag 0 (03.06. amc): VEEV+AVGO Doppel-Recap via `_extern/earnings-recap` + FLAG-Quick-Check (AVGO besonders sensibel wegen 🔴-Status); Pre-Call-Snapshots CORE-MEMORY §12.veev + §12.1 (AVGO bestehend updaten)
+- Tag +1 (04.06.): `!Analysiere VEEV` + `!Analysiere AVGO` mit Transcript via defeatbeta-MCP; AVGO Sub-FLAG-Resolution-Gate ($20M-Schwelle) explizit prüfen
+- Optional Pipeline-Item: `earnings_calendar.py --check` als SessionStart-Hook-Erweiterung (verhindert wiederholten Stale-Date-Reinfall)
