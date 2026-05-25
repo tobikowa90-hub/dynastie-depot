@@ -24,6 +24,7 @@ with contextlib.suppress(Exception):
     sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
 
 import openpyxl
+import yaml
 from openpyxl.utils.exceptions import InvalidFileException
 
 # Error-Strings (xlsx-smoke-test.md Punkt B). Substring-Scan statt exact-match
@@ -32,18 +33,33 @@ from openpyxl.utils.exceptions import InvalidFileException
 # Bewusste Abweichung von der md-exact-match, zur Codex-Disposition (Spec §6).
 _ERROR_TOKENS: tuple[str, ...] = ("#REF!", "#NAME?", "#VALUE!", "#N/A")
 
+# Config-Anker für Punkt G (SPEC §4.3 Variante G, drift-doc §2.4).
+# Anker-Pfad: brokers.scalable.sparrate_eur (verified config.yaml L27,
+# 2026-05-25 post Codex-R1 HIGH-1 — portfolio.satelliten_sparrate existiert NICHT).
+_CONFIG_YAML_PATH = (
+    Path(__file__).resolve().parents[2] / "01_Skills" / "dynastie-depot" / "config.yaml"
+)
+
 # Profil-Soll-Werte. SSoT = 03_Tools/xlsx-smoke-test.md (Scope-Tabelle).
 # `cf_rule_count` ist gegen die Live-xlsx beim ersten pre-commit-Smoke zu
 # verifizieren/justieren (Spec Akzeptanz-Kriterium 1) — Annahme explizit (§0.1).
+# `sheets` Tupel erweitert per P13 (drift-doc §1.1 + §2.1 — 2026-05-25 Stage-2 Schritt 6).
 _PROFILES: dict[str, dict] = {
     "Rebalancing_Tool": {
         "scope": "voll",
-        "sheets": ("Portfolio & Rebalancing",),
+        "sheets": (
+            "Portfolio & Rebalancing",
+            "US-Exposure",  # P13 NEU 2026-05-25 (drift-doc §1.1)
+            "Parameter & Regeln",  # P13 NEU 2026-05-25 (drift-doc §1.1)
+        ),
         "cf_rule_count": 6,  # md: "249 Formeln + 6 Conditional Formats" (Live-State 2026-05-25, vorher 218/6)
     },
     "Satelliten_Monitor": {
         "scope": "voll",
-        "sheets": ("Satelliten Monitor",),
+        "sheets": (
+            "Satelliten Monitor",
+            "QuickScreen Ampel",  # P13 NEU 2026-05-25 (drift-doc §2.1)
+        ),
         "cf_rule_count": 5,  # md: "13 Formeln + 5 Conditional Formats + §G Σ-Check via Hook" (Live-State 2026-05-25, vorher 12/5 + Excel-Σ-Plan)
     },
     "Watchlist_Ersatzbank_Monitor": {
@@ -63,6 +79,10 @@ def _fail(path: Path, profil: str, grund: str) -> int:
 
 
 def _resolve_profil(path: Path) -> tuple[str, dict] | None:
+    # NOTE (Codex-R3 MED-1 deferred): startswith ist kollision-anfällig bei
+    # Backup-Suffixen (z.B. `Rebalancing_Tool_v3.4_backup.xlsx`). v0.2-Refactor-Pfad
+    # → regex full-match `^<Profil>_v\d+\.\d+\.xlsx$` (SPEC §4.4 Codex-R1 LOW).
+    # v0.1: bewusst startswith — kein Backup-Pattern aktuell im Repo.
     for key, prof in _PROFILES.items():
         if path.name.startswith(key):
             return key, prof
@@ -74,6 +94,78 @@ def _count_cf_rules(wb: openpyxl.Workbook) -> int:
     for ws in wb.worksheets:
         total += sum(1 for _ in ws.conditional_formatting)
     return total
+
+
+def _derive_rate_eur(satellit_cfg: dict) -> int:
+    """Punkt G Mapping: config.yaml satellit → Sparrate-EUR (SPEC §4.3, drift-doc §2.4).
+
+    - flag=True                     → 0
+    - flag=False + defcon in {3,4}  → 38
+    - flag=False + defcon == 2      → 19
+    - flag=False + defcon == 1      → 0 (FLAG fehlt, aber DEFCON 1)
+
+    Wirft ValueError bei unmapped defcon.
+    """
+    if satellit_cfg.get("flag") is True:
+        return 0
+    defcon = satellit_cfg.get("defcon")
+    if defcon in (3, 4):
+        return 38
+    if defcon == 2:
+        return 19
+    if defcon == 1:
+        return 0
+    raise ValueError(f"unmapped defcon={defcon!r} für satellit={satellit_cfg.get('ticker', '?')}")
+
+
+def _check_g_sparrate_sigma(wb: openpyxl.Workbook, config_yaml_path: Path) -> str | None:
+    """Punkt G Sparrate-Σ-Sanity (SPEC §4.3 Variante G).
+
+    Steps:
+    1. Load config_yaml_path (yaml.safe_load)
+    2. Σ = sum(_derive_rate_eur(s) for s in cfg["satelliten"])
+    3. Assert Σ == cfg["brokers"]["scalable"]["sparrate_eur"]  (Anker 285€)
+    4. Assert wb "Satelliten Monitor" K3-Text enthält ' Voll' + 'D2-Sockelbetrag' + 'Eingefroren'
+    5. Assert wb "Satelliten Monitor" N19-Text == '→ muss = 285,00 €'
+
+    Returns None bei PASS, str (Fehler-Detail) bei FAIL.
+    """
+    try:
+        with Path(config_yaml_path).open(encoding="utf-8") as f:
+            cfg = yaml.safe_load(f)
+    except (OSError, yaml.YAMLError) as e:
+        return f"config.yaml unreadable: {e}"
+
+    try:
+        sigma = sum(_derive_rate_eur(s) for s in cfg["satelliten"])
+    except (KeyError, TypeError, ValueError) as e:
+        return f"satelliten-mapping fail: {e}"
+
+    try:
+        anker = cfg["brokers"]["scalable"]["sparrate_eur"]
+    except (KeyError, TypeError) as e:
+        return f"anker brokers.scalable.sparrate_eur missing: {e}"
+
+    if sigma != anker:
+        return f"Σ-Drift: derived={sigma}€ != anker={anker}€ (config.yaml.brokers.scalable.sparrate_eur)"
+
+    if "Satelliten Monitor" not in wb.sheetnames:
+        return "Sheet 'Satelliten Monitor' fehlt — kein §G-Display-Check möglich"
+    sat_ws = wb["Satelliten Monitor"]
+
+    k3 = sat_ws["K3"].value or ""
+    for needle in (" Voll", "D2-Sockelbetrag", "Eingefroren"):
+        if needle not in str(k3):
+            return f"K3-Display-Drift: '{needle}' fehlt in {k3!r}"
+
+    # N19-Display aus anker abgeleitet (Codex-R3 MED-2), NICHT hardcoded.
+    # Deutsche Schreibweise: 285,00 € (Komma als Dezimaltrenner).
+    n19 = sat_ws["N19"].value or ""
+    expected_n19 = f"→ muss = {anker:.2f} €".replace(".", ",")
+    if expected_n19 not in str(n19):
+        return f"N19-Sanity-Drift: erwartet {expected_n19!r}, live={n19!r}"
+
+    return None
 
 
 def validate_file(path: Path) -> int:
@@ -138,6 +230,13 @@ def validate_file(path: Path) -> int:
                 f"{prof['cf_rule_count']} — CF von openpyxl-Write zerstört? "
                 f"(Punkt E; Soll-SSoT = xlsx-smoke-test.md)",
             )
+
+        # Punkt G: Sparrate-Σ-Sanity (nur Satelliten_Monitor-Profil, SPEC §4.3).
+        if profil == "Satelliten_Monitor":
+            g_err = _check_g_sparrate_sigma(wb, _CONFIG_YAML_PATH)
+            if g_err is not None:
+                return _fail(path, profil, f"Sparrate-Σ-Drift (Punkt G): {g_err}")
+
         return 0
     finally:
         wb.close()

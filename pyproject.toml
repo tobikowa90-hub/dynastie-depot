@@ -58,3 +58,8 @@ known-first-party = ["schemas", "versions", "system_audit"]
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: live-state-coupled tests (config.yaml/Live-xlsx). Default-Run; auf CI optional via -m 'not integration' filterbar.",
+]
