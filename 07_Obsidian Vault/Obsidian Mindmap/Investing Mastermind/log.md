@@ -1203,3 +1203,49 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 - Tag 0 (03.06. amc): VEEV+AVGO Doppel-Recap via `_extern/earnings-recap` + FLAG-Quick-Check (AVGO besonders sensibel wegen 🔴-Status); Pre-Call-Snapshots CORE-MEMORY §12.veev + §12.1 (AVGO bestehend updaten)
 - Tag +1 (04.06.): `!Analysiere VEEV` + `!Analysiere AVGO` mit Transcript via defeatbeta-MCP; AVGO Sub-FLAG-Resolution-Gate ($20M-Schwelle) explizit prüfen
 - Optional Pipeline-Item: `earnings_calendar.py --check` als SessionStart-Hook-Erweiterung (verhindert wiederholten Stale-Date-Reinfall)
+
+---
+
+## [2026-05-25] system | xlsx-smoke-test-runner Skill α+ SPEC-COMPLETE + Multi-File-Sync (P1+P13+P15+config.yaml-Drift, scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (xlsx-smoke-test §18.7-Gate Live-State-Werte synchronisiert) + Pipeline-Item (xlsx-smoke-test-runner Skill SPEC v0.1 GO-Ready) — kein Score/FLAG/Sparraten-Touch.
+
+**Was passiert ist:**
+- **Spec-Phase abgeschlossen:** `01_Skills/xlsx-smoke-test-runner/SPEC.md` v0.1 (635 LOC) post 2× Codex-Sparring (R1: 2 HIGH + 4 MED + 4 LOW → alle adressiert; R2 Diff-Re-Review: 0 HIGH + 3 MED + 1 LOW → alle adressiert). HIGH-Threshold per `feedback_codex_sparring_heuristic` für R3 nicht erreicht.
+- **2 Codex-R1 HIGH-Findings empirisch verifiziert + gefixt:**
+  - HIGH-1: §G Anker-Pfad-Drift — `portfolio.satelliten_sparrate` 0 grep-Treffer in `config.yaml`; korrekter Pfad `brokers.scalable.sparrate_eur: 285.00` (L27). drift-doc §2.4 + §P8 in EINEM Commit mit-gepatched.
+  - HIGH-2: `verify_wrapper`-Import-Pfad — `03_Tools/precommit/` hat kein `__init__.py` (Glob-Verify); Lösung via `importlib.util.spec_from_file_location` dokumentiert in SPEC §4.2.
+- **Multi-File-Sync (P1+P13+P15) 4-Files (post Coverage-Gap-Expansion 2026-05-25T20:05):**
+  - `03_Tools/xlsx-smoke-test.md` L17/L18: Formel-Counts 218→249 + 12→13, §G-Anker `brokers.scalable.sparrate_eur` ergänzt
+  - `00_Core/INSTRUKTIONEN.md §18.7 Z475`: identische Sync
+  - `00_Core/SYSTEM.md L42`: v2.4-Lifecycle-Block Live-State-Update (initial mis-skopt als "historischer Snapshot", User-Direktive korrigiert)
+  - `03_Tools/precommit/xlsx_smoke_test.py Z42/Z47`: md-Source-Kommentare
+- **Klasse-C-Cleanup (scoring-neutral):** `config.yaml` L70-78 Sparraten-Kommentar von 28.04.-Stand (3× eingefroren) auf 25.05.-Stand (4× eingefroren, post-AMZN-Integration 15.05.) aktualisiert — Math-Result (285€) identisch, nur Struktur-Drift.
+- **Klasse-B-Cleanup:** drift-doc §3.1 Hook-Kommentar-"outdated"-Notizen post-Patch als RESOLVED markiert.
+
+**Sync-Set (§18 system-zustand + pipeline-item-Union, scoring-neutral, Expected-Set 8):**
+- `00_Core/INSTRUKTIONEN.md` (§18.7 Z475 Live-Werte-Sync)
+- `00_Core/SYSTEM.md` (L42 v2.4-Lifecycle-Eintrag Live-Werte-Sync)
+- `01_Skills/dynastie-depot/config.yaml` (L70-78 post-AMZN Sparraten-Kommentar)
+- `01_Skills/xlsx-smoke-test-runner/SPEC.md` (NEU, 635 LOC, GO-Ready)
+- `01_Skills/xlsx-smoke-test-runner/drift-live-vs-doc.md` (NEU, 16 Patches Substrate + Codex R1+R2 adressiert + P15-Coverage-Expansion + RESOLVED-Marker)
+- `01_Skills/xlsx-smoke-test-runner/_SESSION-HANDOVER.md` (NEU, Resume-Prompt + Stage-Cut)
+- `03_Tools/xlsx-smoke-test.md` (L17/L18 Scope-Tabelle Live-Werte-Sync)
+- `03_Tools/precommit/xlsx_smoke_test.py` (Z42/Z47 md-Source-Kommentare)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+
+**KEIN** PORTFOLIO/Faktortabelle/score_history/flag_events/xlsx-Touch (kein Score/FLAG/Sparraten-Event — 12 Satelliten + 285€ Σ + Nenner 7,5 unverändert).
+
+**Lehre:**
+- **Skill-Name = Scope-Contract (Reinfall-Prävention):** Pre-Spec Coverage-Matrix Gate-0 in drift-doc §0a literal in SPEC §1 + Codex-R1 evaluierte explizit Coverage-Vollständigkeit. KEIN aspirational scope.
+- **Codex-Sparring-Loop-Disziplin gehalten:** Single-Pass Default, R2 erst conditional auf HIGH≥2 (genau erreicht). HIGH-Threshold-Mechanik per `feedback_codex_sparring_heuristic` empirisch validiert (R1 NO-GO, R2 HOLD, R3 nicht pflicht).
+- **Historische-Snapshot-Argumentation als Scope-Reduktion ist Anti-Pattern:** SYSTEM.md L42 initial als "historischer Lifecycle-Snapshot" mis-skopt — User-Korrektur etabliert: Live-State-Aussagen in Lifecycle-Bullets sind Live, nicht eingefroren. NEUE Memory `feedback_historical_snapshot_not_a_scope_excuse.md`.
+- **Empirie statt Annahmen (per `feedback_empirie_statt_annahmen`):** beide Codex-R1-HIGH wurden vor Patch via Grep/Glob verifiziert. Reasoning-only-Patch wäre Reinfall-Klasse.
+- **Coverage-Gap-Expansion bei Multi-File-Sync:** initial 3 Files (drift-doc P15), nach grep-Verify 4 Files (SYSTEM.md L42 hinzu). Coverage-Liste = Plan, grep-Treffer = Realität.
+
+**Cross-Reference:** SPEC.md (NEU) · drift-live-vs-doc.md v1.4 (NEU) · INSTRUKTIONEN.md §18.7 Z475 · SYSTEM.md L42 · config.yaml L27 (Anker) + L70-78 (Kommentar) · `xlsx_smoke_test.py` Z38-54 _PROFILES · Codex-R1 Task-ID `task-mplhql8t-klqd0v` · Memory `feedback_historical_snapshot_not_a_scope_excuse.md` (NEU)
+
+**Nächste Tracks:**
+- **Schritt 3** (SPEC §6): P16 PIPELINE-Reference-Klärung (xlsx-smoke-test.md §Annex "offenes PIPELINE-Item Watchlist-Tool-Update" → grep-leer; konkrete Item-ID oder Re-Phrase)
+- **Schritt 9** (SPEC §6): Restliche Patches P2-P12+P14 (xlsx-smoke-test.md §D-Block-Rewrite — B24/B25/B26-Swap per P6/P7 + §G-Paradigm-Statement per P8) — separater Commit
+- **Stage-2 Execution** (separate Session per `feedback_brainstorming_terminal_override_dynastie`): SPEC §6 Schritte 5-9 — `safe_insert.py` + Hook-Punkt-G-Extension + 15 Fixtures + Test-Run

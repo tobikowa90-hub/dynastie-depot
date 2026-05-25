@@ -472,7 +472,7 @@ Vault `log.md` wird **quartalsweise** in `archive/log/log-YYYY-Qn.md` ausgelager
 
 ### 18.7 xlsx Post-Write Smoke-Test Stufe 1 (seit 2026-05-11, v2.4)
 
-Verpflichtender Post-Write-Validation-Step für die xlsx-Sync-Welle. Adressiert silent-Korruptions-Risiken durch `openpyxl`-Writes auf Formel-/Conditional-Format-tragenden xlsx-Dateien (Rebalancing v3.4: 218 Formeln + 6 CF; Satelliten-Monitor v2.0: 12 Formeln + 5 CF).
+Verpflichtender Post-Write-Validation-Step für die xlsx-Sync-Welle. Adressiert silent-Korruptions-Risiken durch `openpyxl`-Writes auf Formel-/Conditional-Format-tragenden xlsx-Dateien (Rebalancing v3.4: 249 Formeln + 6 CF; Satelliten-Monitor v2.0: 13 Formeln + 5 CF + §G Σ-Check via Hook auf `brokers.scalable.sparrate_eur`-Anker — Live-State 2026-05-25 post User-Update + Variante-G-Entscheidung, vorher 218/6 bzw 12/5 + Excel-Σ-Plan).
 
 **Reihenfolge:** Smoke-Test läuft **nach** Provenance-Gate §18.5 (P3.5 PASS), **nach** `openpyxl`-Write der Pflicht-Zellen, **vor** `git add` der xlsx-Files. Damit greift §18.3-Commit-Atomarität wie geplant — Smoke-Test ist Pre-Stage-Gate, nicht Post-Commit-Audit.
 

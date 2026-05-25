@@ -39,12 +39,12 @@ _PROFILES: dict[str, dict] = {
     "Rebalancing_Tool": {
         "scope": "voll",
         "sheets": ("Portfolio & Rebalancing",),
-        "cf_rule_count": 6,  # md: "218 Formeln + 6 Conditional Formats"
+        "cf_rule_count": 6,  # md: "249 Formeln + 6 Conditional Formats" (Live-State 2026-05-25, vorher 218/6)
     },
     "Satelliten_Monitor": {
         "scope": "voll",
         "sheets": ("Satelliten Monitor",),
-        "cf_rule_count": 5,  # md: "12 Formeln + 5 Conditional Formats + Σ-Check"
+        "cf_rule_count": 5,  # md: "13 Formeln + 5 Conditional Formats + §G Σ-Check via Hook" (Live-State 2026-05-25, vorher 12/5 + Excel-Σ-Plan)
     },
     "Watchlist_Ersatzbank_Monitor": {
         "scope": "minimal",  # md Minimal-Check-Annex: nur A1 + Existenz

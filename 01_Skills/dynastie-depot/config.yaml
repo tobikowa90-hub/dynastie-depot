@@ -67,12 +67,13 @@ system_regeln:
     gewichte: "D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0"
     formel: "Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht"
     beispiel: |
-      Aktueller Stand (28.04.2026 spätabends, post-V Rescoring-Revert nach Codex-HIGH-1+HIGH-2-Review D3→D2): 7× D4/D3 (Gewicht 1.0) + 1× D2 (V, Gewicht 0.5) + 3× 🔴 eingefroren (MSFT + APH + AVGO)
-      Nenner = (7 × 1.0) + (1 × 0.5) + (3 × 0) = 7.5
+      Aktueller Stand (2026-05-25, post-AMZN-Integration 15.05.2026 als 12. Satellit mit FLAG=0€ Gewicht 0,0; Nenner unverändert): 7× D4/D3 (Gewicht 1.0) + 1× D2 (V, Gewicht 0.5) + 4× 🔴 eingefroren (MSFT + APH + AVGO + AMZN)
+      Nenner = (7 × 1.0) + (1 × 0.5) + (4 × 0) = 7.5
       D4/D3-Einzelrate = 285€ / 7.5 × 1.0 = 38,00€
       D2-Einzelrate (V) = 285€ / 7.5 × 0.5 = 19,00€
       🔴/D1-Rate = 0€
-      Summencheck: 7 × 38,00 + 1 × 19,00 + 3 × 0 = 266 + 19 = 285,00€ ✓
+      Summencheck: 7 × 38,00 + 1 × 19,00 + 4 × 0 = 266 + 19 = 285,00€ ✓
+      Vorgänger (28.04.2026 spätabends, post-V Rescoring-Revert nach Codex-HIGH-1+HIGH-2-Review D3→D2): 7× D4/D3 + 1× D2 (V) + 3× 🔴 eingefroren (MSFT + APH + AVGO) — vor AMZN-Slot-Erweiterung 11→12, Math-Result identisch.
       Vorgänger-Beispiel (28.04.2026 mittags, post-V Q2 Beat-Cascade D2→D3, durch Codex-Review-Revert spätabends überschrieben): Nenner 8.0, D4/D3 35,63€, D2 entfiel — historisch.
       Vor-Vorgänger (27.04.2026, post-AVGO Insider-FLAG-Aktivierung): Nenner 7.5, D4/D3 35,63€, D2 19,00€ — historisch (Nenner gleich, Rate-Δ wegen anderem Sparrate-Cap).
       Vor-Vor-Vorgänger (23.04.2026, post-TMO Q1 Resolve-Gate): Nenner 8.5, D4/D3 33,53€, D2 16,76€ — historisch.

@@ -14,8 +14,8 @@
 
 | Datei | Smoke-Test-Tiefe | Begründung |
 |-------|------------------|------------|
-| `03_Tools/Rebalancing_Tool_v3.4.xlsx` | **Voll** (Punkte A-F) | 218 Formeln + 6 Conditional Formats — hohes Korruptions-Risiko |
-| `03_Tools/Satelliten_Monitor_v2.0.xlsx` | **Voll** (Punkte A-F) | 12 Formeln + 5 Conditional Formats + Σ-Check-Formel im Footer |
+| `03_Tools/Rebalancing_Tool_v3.4.xlsx` | **Voll** (Punkte A-F) | 249 Formeln + 6 Conditional Formats — hohes Korruptions-Risiko (Live-State 2026-05-25 post User-Update; vorher 218/6, drift via Q-Spalten-Erweiterung + R28-Row) |
+| `03_Tools/Satelliten_Monitor_v2.0.xlsx` | **Voll** (Punkte A-F) | 13 Formeln + 5 Conditional Formats + §G Σ-Check via Hook (`brokers.scalable.sparrate_eur`-Anker, Live-State 2026-05-25 post User-Update; Σ-Check-Lokus per Variante G zu Hook verlagert, vorher Excel-Text-Sanity N19) |
 | `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` | **Minimal-Check-Annex** (nur A + Existenz) | 0 Formeln, 0 CF — kein Korruptions-Risiko via openpyxl. Hochstufung in Voll-Smoke-Test erst nach Watchlist-Tool-Update (offenes PIPELINE-Item, Sekundär-Priorität). |
 
 ---
