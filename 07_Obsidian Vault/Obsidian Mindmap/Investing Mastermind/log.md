@@ -1319,3 +1319,31 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Nächste Tracks:**
 - skill-creator description-Optimization-Loop (20 Eval-Queries + run_loop.py, ~10-20min Background) — pending User-Go, vorgesehen direkt im Anschluss.
 - PIPELINE #69 deferred-Debt Catchup unverändert offen.
+
+## [2026-05-26] system | SYSTEM.md Slim-Refactor Welle 1 DONE (scoring-neutral, system-zustand §18-Sync Multi-Event Union)
+
+**Event-Typ:** system-zustand Multi-Event Union (Doku-Refactor + Memory-Migration + Memory-Fork-Reference). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Outcome:** 6 Strips Hard-Obsolete in SYSTEM.md — (1) Briefing-v3.0.6-Phase-3.5-Narrative L19 + (2) Open-Backlog-21.04. 8 Items L25-33 + (3) 6-Paper-Ingest-Doppel L35-36 + (4) Plugin-Substrate-Deep-Sweep L41 + (5) core-slim-refactor Mega-Bullet L45 → 1-Zeile-Skill-Registry + (6) Footer-Mega-Changelog L137 → kompakt v1.13. **Bilanz:** 47KB→31.9KB (−32%, −14 Zeilen, ~7700 Wörter Doku-Bloat raus). Empirie-Check pro Schnitt (Migrate-before-Strip-Disziplin): git log + §13 + Memory + failure_modes.md + Test-Fixtures + Code-Read.
+
+**Memory-Discoveries (User-Direktive "Empirie > Annahmen" konsistent gefahren):**
+- 2 stale Memory-Refs aufgedeckt in SYSTEM.md L19+L27 (`feedback_correctness_over_runtime` + `feedback_spec_section_drift`) — beide existierten im **OneDrive-Path-Memory** (`C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory/`) mit vollwertigem Inhalt, NICHT im aktiven **Code-Path-Memory** (`C--Users-tobia-Code/memory/`). Migration via `cp` ausgeführt + MEMORY.md-Index ergänzt.
+- **Memory-Fork-Issue identified:** 4 project-scoped Memory-Pfade existieren parallel; SessionStart lädt nur Code-Path (52 Files). OneDrive-Path-Memory hat ~12 unique Files mit echtem Inhalt die unsichtbar bleiben. Persistiert als `reference_memory_fork_onedrive_vs_code_path.md` mit Konsolidierungs-Plan für eigene Session.
+
+**Welle 2/3 deferred eigene Session:**
+- Welle 2 (Migration B): L34 Track-5b nach PIPELINE migrieren · L17 Allokation nach PORTFOLIO migrieren · L16/L20/L38/L67 strippen
+- Welle 3 (Slim C): §Briefing-Status / §Plugin-Layer / §Passive-Read-Only-Data-Layer / §Earnings-Calendar-Status / §18-Deploy-Bullet
+- Ziel End-State: ~10-12KB SYSTEM.md (von aktuell 31.9KB)
+
+**§18-Sync-Set (system-zustand Multi-Event Union, scoring-neutral):**
+- SYSTEM.md (Footer v1.12→v1.13, 6 Strips)
+- CORE-MEMORY.md §13 (neuer Eintrag 2026-05-26 + Footer v1.30→v1.31)
+- Vault log.md (dieser Eintrag)
+- (Memory-Migration Bonus-Sync: MEMORY.md-Index + 3 neue Memory-Files in `~/.claude/.../C--Users-tobia-Code/memory/` — out-of-git-tree)
+
+**KEIN** PORTFOLIO/Faktortabelle/score_history/config.yaml/xlsx/flag_events-Touch (kein Score/FLAG/Sparraten-Event).
+
+**Lessons:**
+- Block-für-Block-Empirie-Check als Workflow bewährt — User-Direktive konsistent geführt zu 2 stale Memory-Refs + 1 Memory-Fork-Discovery die in 1-Pass-Strip übersehen worden wären.
+- Stale Memory-Refs in alten SSoT-Dokus sind erwartbare Klasse — Auto-Memory-Filename-Existenz-Check als Pre-Strip-Gate ist günstig.
+- Memory-Fork-Issue Cross-Working-Dir = strukturelles Substrate-Problem das eigene Konsolidierungs-Session braucht (Code-Path = SSoT-Konvention).
