@@ -1389,3 +1389,37 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 - Block-für-Block-Empirie-Check spart Re-Defer-Slots: 6/6 Strips ohne Coverage-Lücke, weil Gate-Inventur in PIPELINE und Record-Counts vor Edit verifiziert wurden.
 
 **Nächste Welle:** Welle 3 (Slim C) deferred — §Briefing-Status / §Plugin-Layer / §Passive-Read-Only-Data-Layer / §Earnings-Calendar-Status (~17 KB Sub-Section-Heavy-Lifting, eigene Session). Ziel End-State ~10-12 KB SYSTEM.md.
+
+---
+
+## 2026-05-26 (Mo) ~22:15 — ✅ SYSTEM.md Slim-Refactor Welle 3 (Slim C) DONE (System-Zustand-Event, scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (Sub-Section-Bloat-Reduction unterhalb §System-Zustand, vier Blöcke gestrippt; Footer v1.14 → v1.15). Kein Score/FLAG/Sparraten-Touch — scoring-neutral.
+
+**Was passiert ist (Block-für-Block-Empirie-Check vor jedem Strip, Welle-2-Disziplin):**
+
+1. **Block 1: §Passive Read-Only Data Layer** (FinnHub Mega-Block ~30 Z. → 1 Live-State-Bullet + Pflege-Regel). Empirie-Check vor Strip: 6 Deliverable-Files (`finnhub_client.py`/`finnhub_smoke_test.py`/`defeatbeta_subprocess.py`/`finnhub_crosswalk_trigger.py`/`finnhub_a12_identity_check.py` + `finnhub_health.json`) auf Disk PASS; Spec `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` + Plan `docs/superpowers/plans/2026-05-22-finnhub-integration-build-v0.1.md` on-disk PASS; PIPELINE #74 (BUILD-PHASE-DONE) + #75 (Shadow-Run Hard-Deadline 2026-07-06) + #76 (5/8-Methoden-Discovery deferred) tragen Substanz; CORE-MEMORY §13 L412 (Spec+Plan+Build-Eintrag) + STATE.md L14 (Critical-Alert) als zusätzliche Anker.
+2. **Block 2: §Briefing-Status** (Probe/Prod-Trigger-Narrative + Connector-Recreation-Detail + v2.1-Rollback (>30d past) + API-Empirie-ccr → 6 lean Bullets). Empirie-Check: Memory `feedback_tavily_connector_uuid_rotation` + `feedback_remote_trigger_shallow_partial_update` decken Connector-Lessons + ccr-shallow-replace; Decision-Doc `05_Archiv/superpowers-pre-sunset/specs/2026-05-10-cloud-aidefence-decision.md` decken FAIL-OPEN-Decision-C; INSTRUKTIONEN §24 L629/L630 decken Briefing-v3.1.1-Prompt-File + Rollback-Backup-Pfad als Detail-Spec-SSoT. Allow-List-Regex v3.1.0 + FAIL-OPEN-Pfad-Klausel als normative Bullets erhalten.
+3. **Block 3: §Earnings-Calendar-Status** (Erstlauf-Narrative 30.04. + Stufenplan-Wave-Detail + Stufe-2-Coverage-IR-URLs + Stufe-2-Trigger-Mechanik-Detail → 4 Bullets). Empirie-Check: INSTRUKTIONEN §30 L809-L819 decken `briefing-sync-check.ps1`-Hook + `--json`-Flag + M2-Single-Owner-Rule als normative SSoT; Stufe-2-Spec `05_Archiv/superpowers-pre-sunset/specs/2026-05-06-earnings-calendar-stufe2-coverage-trigger-design.md` als Pointer erhalten; Override-YAML + Tool-Aufruf + Limits operational bewahrt.
+4. **Block 4: §Plugin-Layer** (claude-mem-Doku-Drift-Narrative 13.05.→16.05. + Phase-0b-Task-9-Tiefendiagnose-Detail + obsidian-skills-3-Zeilen → 2 Paragraphs). Empirie-Check: Hybrid-Final-State-Absatz (autoMemory=SSoT/claude-mem=read-only-Augmentation/Bun-Invariante/Memory-Guard-Rail) als normativer Block 1:1 erhalten; obsidian-skills + context-mode + claude-mem in 1 Substrat-Bullet konsolidiert; CORE-MEMORY §13 + Memory `reference_context_mode_surrogate_crash_and_fix` decken Lifecycle-Detail.
+
+**Bilanz:**
+- SYSTEM.md 117 → 82 Zeilen (-30%), ~30 KB → 18.0 KB (-40%)
+- Welle 1+2+3 zusammen: 47 KB → 18 KB (-62%), Section-Count stabil bei 7 Top-Level-Headers
+- Footer v1.14 → v1.15 mit Welle-3-Changelog
+- Alle normativen Pfade erhalten: Allow-List-Regex v3.1.0, FAIL-OPEN-Pfad-Klausel, Cloud-AIDefence-Decision-C, Bun-Invariante, Pflege-Regel (Passive Read-Only Data Layer), Tool-Limits (Earnings-Calendar), Hybrid-Final-State (autoMemory=SSoT)
+
+**§18-Sync-Set (system-zustand-Event, scoring-neutral):**
+- SYSTEM.md (Footer v1.14 → v1.15, 4 Sub-Section-Block-Edits)
+- Vault log.md (dieser Eintrag)
+
+**KEIN** PORTFOLIO/CORE-MEMORY/Faktortabelle/score_history/config.yaml/xlsx/flag_events-Touch (kein Score/FLAG/Sparraten-Event, kein neuer §13-Lifecycle-Buckets-Bedarf — Vorgänger-Eintrag Welle 1 L428 deckt System-Lifecycle-Pointer-Pattern). Pre-existing dirty (~56 Files `03_Tools/`+`01_Skills/`) bleibt ausserhalb Bundle = PIPELINE #69 deferred (Memory `feedback_pre_existing_dirty_is_pipeline_69`).
+
+**Lessons:**
+- Welle-3 hat die 10-12-KB-Stretch-Ambition nicht erreicht (18 KB final), aber alle vier Sub-Section-Targets der Handover-Spec literal abgearbeitet. Restliche „Fat" lebt in §System-Zustand (10 Skill-/Infra-Registry-Bullets, ~9 KB) und ist per Welle-3-Scope-Definition out-of-scope (Skill-Registry-Pointer sind normativ).
+- Block-für-Block-Empirie-Check vor Strip funktioniert auch über mehrere Substanz-Quellen pro Block (Disk-Files + PIPELINE-Items + Memories + INSTRUKTIONEN-§§ + Decision-Doc): 4/4 Strips ohne Coverage-Lücke.
+- Memory-Fork-Konsolidierung bleibt offen als optionale Stretch (siehe SESSION-HANDOVER.md §Mini-Task post-Welle-3); Welle-3 hat keine neuen stale Memory-Refs aufgedeckt, deshalb kein zwingender Migrate-Bedarf.
+
+**Cross-Reference:** SYSTEM.md L1-82 v1.15 · Commit `<TBD>` · Vorgänger Welle 1 `a4323ef` + Welle 2 `537cf13`.
+
+**Nächste Tracks:** Memory-Fork-Konsolidierung (OPTIONAL Stretch, ~30-60 min) ODER Konsolidierungstag-Pickup ODER reguläre Klasse-B-Termine VEEV (28.05. via Recheck) + COST (28.05.). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
