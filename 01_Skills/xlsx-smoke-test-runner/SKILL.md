@@ -17,16 +17,24 @@ description: |-
   - der User Phrasen wie „smoke-test xlsx", „post-write verify", „re-validate
     xlsx", „xlsx persistiert?", „xlsx-Sync committen" benutzt.
 
-  **In-Scope (Skill automatisiert — literal aus SPEC §1):**
+  **Abgrenzung:** Dieser Skill ersetzt keine Score-/Analyse-Workflows (z.B.
+  `dynastie-depot`); er ist ausschließlich Post-openpyxl-Verify/Insert-Safety-
+  Layer. Bei „Score-Update committen" bleibt `dynastie-depot`/Pipeline-Owner;
+  xlsx-smoke-test-runner wird darin als Library-Call eingehängt, nicht als
+  konkurrierender Workflow.
+
+  **In-Scope (Skill automatisiert):**
   - §A Open-Repair (Workbook-Load + Sheet-Existenz aller Profile-Sheets)
   - §B Error-Token-Scan (`#REF!`/`#NAME?`/`#VALUE!`/`#N/A` in allen Sheets)
   - §E CF-Rule-Count-Drift-Check pro Profil
   - §G Sparrate-Σ-Sanity (config.yaml-Mapping → Σ-Check gegen Anker 285€ +
     xlsx-Display-Konsistenz K3/B3/B26/N19, nur Satelliten_Monitor)
-  - Pflicht-Cell-Existenz-Checks (Adressen aus `03_Tools/xlsx-smoke-test.md` §C/§D)
 
-  **Out-of-Scope (manuell bzw. UI-only — literal aus SPEC §1):**
-  - §C/§D Pflicht-Cell-Inhalt-Semantik (gehört zu §18-Sync)
+  **Out-of-Scope (manuell bzw. UI-only — empirisch verifiziert via
+  `03_Tools/precommit/xlsx_smoke_test.py` Kommentar L7-8 + SPEC Coverage-Matrix
+  §2.2):**
+  - §C/§D Pflicht-Cell-Existenz UND -Semantik (Skill prüft beides NICHT;
+    Cell-Adressen-Cross-Check passiert manuell per `03_Tools/xlsx-smoke-test.md`)
   - §F Read-only-Close (interaktiv)
   - Cell-Number-Format, CF-Rules-Identität, Defined Names, Pivots,
     Workbook-Protection, Print-Settings
@@ -82,6 +90,9 @@ Vertrag:
 ### `safe_insert` — openpyxl Insert+Merge-Trap-Schutz (SPEC §4.1)
 
 ```python
+import sys
+from pathlib import Path
+sys.path.insert(0, "01_Skills/xlsx-smoke-test-runner")
 from safe_insert import safe_insert_rows, safe_insert_cols, safe_save
 import openpyxl
 
@@ -102,20 +113,23 @@ insert → insert → re-merge aus capture.
 
 | Bedarf | Datei |
 |--------|-------|
-| Fachlicher Vertrag (was Punkt A–G prüfen, Profile-Tabelle, Toleranz-Ausnahmen) | `03_Tools/xlsx-smoke-test.md` |
-| Function-Signatures + Docstring-Verträge | `SPEC.md` §4 |
-| Coverage-Matrix (Profil × Capability × Hook × Fixture) | `SPEC.md` §2 |
-| Akzeptanz-Kriterien | `SPEC.md` §8 |
-| Out-of-Scope-Liste (normativ) | `SPEC.md` §7 |
-| Test-Fixtures (15 Profile, deterministisch generiert) | `_fixtures/` + `_fixtures/_generate_fixtures.py` |
+| Fachlicher Vertrag (Punkt A–G, Profile-Tabelle, Toleranz-Ausnahmen) | `03_Tools/xlsx-smoke-test.md` |
+| Function-Signatures + Docstring-Verträge | `verify_wrapper.py` + `safe_insert.py` (Docstrings) |
+| Hook-Implementierung (Layer 1) | `03_Tools/precommit/xlsx_smoke_test.py` |
+| Test-Fixtures (15 Profile, deterministisch) | `_fixtures/_generate_fixtures.py` |
 | Pytest-Suite (54/54 green 2026-05-26) | `tests/` |
+| Design-Snapshot (Pre-Release v0.1, lokal/gitignored) | `docs/superpowers/specs/2026-05-25-xlsx-smoke-test-runner-v0.1-design.md` |
 
 ## Out-of-Scope (Erinnerung)
 
-Cell-Inhalt-Semantik (§C/§D), Cell-Number-Format, CF-Rules-Identität, Defined
+§C/§D Pflicht-Cell-Existenz UND -Semantik (Skill prüft beides NICHT —
+empirisch verifiziert via `03_Tools/precommit/xlsx_smoke_test.py` L7-8 +
+SPEC Coverage-Matrix §2.2), Cell-Number-Format, CF-Rules-Identität, Defined
 Names, Pivots, Workbook-Protection, Print-Settings, Read-only-Close (§F),
 Cross-Sheet-Formel-Refs nach `safe_insert`. Diese Items sind explizit manuell
-bzw. by-design ausgeklammert — siehe SPEC.md §7 für Re-Activation-Trigger.
+bzw. by-design ausgeklammert — siehe Design-Snapshot (`docs/superpowers/specs/
+2026-05-25-xlsx-smoke-test-runner-v0.1-design.md` §7, lokal) für Re-Activation-
+Trigger.
 
 ## Repo-Floor
 

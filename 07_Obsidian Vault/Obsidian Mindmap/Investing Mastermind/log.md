@@ -1281,3 +1281,41 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 - PIPELINE #69 separates Catchup: 56 ungestaged Files (~50 .py ruff/CRLF + extern sec-edgar-Deletion + _SESSION-HANDOVER.md-Deletion) — eigene Session.
 - INSTRUKTIONEN §Skill-Zuordnung Drift-(D) earnings-preview/recap/calendar zeigen auf nicht im aktiven `01_Skills/` vorhandene Skills (vermutlich `_extern/`) — Klärung in separater Session, kein Hotfix-Bedarf.
 - Optional: skill-creator description-Optimization-Loop für xlsx-runner SKILL.md (Trigger-Score über 20-Query-Eval-Set) — defer bis erste Real-World-Trigger-Empirie vorliegt.
+
+## 2026-05-26 ~02:50 GMT+2 — System-Event: xlsx-smoke-test-runner v0.1.0 Codex-Review-Adopt + Spec-Extraktion (scoring-neutral, system-zustand)
+
+**Was passierte:** Post-Push-Codex-Review-Loop (R1+R2) auf der v0.1.0 SKILL.md. R1 Single-Pass 91% mit 1 HIGH + 1 MEDIUM + 1 LOW; R2 Diff-Re-Review 90% mit 1 NEU-MEDIUM + 1 Misread-Korrektur. Alle 4 Findings adressiert, finaler Empirie-Re-Grep = 0 HIGH / 0 MEDIUM / 0 LOW open. Plus User-Direktive: SPEC.md + drift-substrate aus skill dir nach `docs/superpowers/specs/` (gitignored, Repo-Konvention) extrahiert — Pointer-Tabelle in SKILL.md auf code-docstrings + canonical doc + tests umgeschwenkt.
+
+**Codex-Findings adressiert:**
+- **HIGH** R1 — Scope-Contract-Drift §C/§D: In-Scope-Block hatte „Pflicht-Cell-Existenz-Checks (Adressen aus ... §C/§D)" — empirisch falsch laut Hook `03_Tools/precommit/xlsx_smoke_test.py:7-8` + SPEC Coverage-Matrix §2.2. Out-of-Scope auf „Pflicht-Cell-Existenz UND -Semantik (Skill prüft beides NICHT)" verschärft, sowohl im description-Frontmatter als auch im footer Out-of-Scope-Block. Literal-from-SPEC-Disziplin (`feedback_skill_name_is_scope_contract`) gebrochen zugunsten empirischer Korrektheit — SPEC §1 selbst trug die Aspirational-Klausel.
+- **MEDIUM** R1 — Path-Import: `from pathlib import Path` zum safe_insert-Snippet ergänzt.
+- **LOW** R1 — Konkurrenz-Abgrenzung: Neuer Abgrenzungs-Absatz nach Trigger-Bullets („ersetzt keine Score-/Analyse-Workflows ... bei „Score-Update committen" bleibt dynastie-depot/Pipeline-Owner; xlsx-smoke-test-runner als Library-Call eingehängt").
+- **NEU-MEDIUM** R2 — sys.path.insert-Inkonsistenz: safe_insert-Snippet bekam Standalone-Import-Setup analog verify_wrapper-Snippet.
+
+**Strukturelle Cleanup:**
+- `01_Skills/xlsx-smoke-test-runner/SPEC.md` (635 LOC) → `docs/superpowers/specs/2026-05-25-xlsx-smoke-test-runner-v0.1-design.md` (gitignored, User-Hand-Move)
+- `01_Skills/xlsx-smoke-test-runner/drift-live-vs-doc.md` (33 KB) → `docs/superpowers/specs/_artifacts/drift-live-vs-doc.md` (gitignored, User-Hand-Move)
+- SKILL.md Pointer-Tabelle: SPEC §N-Pointer ersetzt durch `verify_wrapper.py` + `safe_insert.py` (Docstrings) + `03_Tools/precommit/xlsx_smoke_test.py` (Hook) + tests/ + _fixtures/ + Design-Snapshot-Pointer auf neuen gitignored docs-Pfad.
+- Skill-Dir nach Cleanup lean: SKILL.md + safe_insert.py + verify_wrapper.py + tests/ + _fixtures/.
+
+**Geänderte Files (5 staged):**
+- `01_Skills/xlsx-smoke-test-runner/SKILL.md` (M, 4 Patches + Pointer-Cleanup: +12/-26)
+- `01_Skills/xlsx-smoke-test-runner/SPEC.md` (D, Move-Side-Effect: -635)
+- `01_Skills/xlsx-smoke-test-runner/drift-live-vs-doc.md` (D, Move-Side-Effect: -359)
+- `00_Core/SYSTEM.md` (M, L47 Skill-Registry-Eintrag um post-Review-Adoption-Annotation erweitert)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+
+**§18-Sync:** `python 03_Tools/para18_sync/validator.py system-zustand --dry-run --allow-dirty 70` → verdict=DRY-RUN, expected_files=[SYSTEM.md + log.md] beide gestaged. xlsx_warnings=[], kein quarterly-rollover.
+
+**KEIN** Version-Bump (v0.1.0 unverändert) — Doku-Quality-Pass + Struktur-Cleanup ohne Behavior-Change. KEIN Score/FLAG/Sparraten-Event.
+
+**Lehre:**
+- **Codex-Background unzuverlässig (`feedback_viral_plugin_substrate_risk_eval`):** R2 hing 7min in „verifying"-Phase ohne Progression, Companion-Status zeigte stale „running" während PID 1612 schon tot war. Fresh-Thread-Foreground-Respawn löst zuverlässig in ~2.5min. User-Heuristik validiert: bei Codex-Hang nicht warten, respawnen.
+- **Codex empirisches Lese-Fail bei Patches in Resumed-Thread:** R2 las `safe_insert`-Snippet als „kein `from pathlib import Path`" obwohl der Patch seit ~10min on-disk war (verifiziert via head -10 SKILL.md). Mögliche Erklärungen: Codex cache-stale, Tool-Use-Failure, oder Resume-State-Inkonsistenz. Empfehlung: bei Confidence-Lücken durch Codex-Misread → eigener empirischer Re-Grep statt R3 (`feedback_codex_sparring_heuristic` HIGH-Threshold-Disziplin: HIGH=0 → kein R3 Pflicht).
+- **Literal-from-SPEC vs Empirie-Konflikt:** SPEC §1 selbst war aspirational (§C/§D als In-Scope geführt). Per `feedback_empirie_statt_annahmen` schlägt Hook-Source-Empirie SPEC-Literal-Inheritance. SKILL.md jetzt Quelle-der-Wahrheit, SPEC bewusst als Pre-Release-Snapshot eingefroren in `docs/superpowers/specs/` (read-only-Lifecycle).
+
+**Cross-Reference:** SKILL.md (M post-Review) · SYSTEM.md L47 · `docs/superpowers/specs/2026-05-25-xlsx-smoke-test-runner-v0.1-design.md` (gitignored) · `docs/superpowers/specs/_artifacts/drift-live-vs-doc.md` (gitignored) · Codex R1 task-mplhql8t-klqd0v · R2 task-mplwfloy-a9g0h4 (hung, respawned fresh)
+
+**Nächste Tracks:**
+- skill-creator description-Optimization-Loop (20 Eval-Queries + run_loop.py, ~10-20min Background) — pending User-Go, vorgesehen direkt im Anschluss.
+- PIPELINE #69 deferred-Debt Catchup unverändert offen.
