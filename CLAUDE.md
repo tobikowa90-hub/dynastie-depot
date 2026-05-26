@@ -19,9 +19,22 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen). **`dynastie-depot`-Skill NICH
 
 | Tier | Speicherort | Wer schreibt | Wann gelesen | Pflege |
 |------|------------|--------------|-------------|--------|
-| 1. Auto-Memory | ~/.claude/.../memory/*.md | Claude automatisch | Session-Start | Auto-Dream konsolidiert |
+| 1. Auto-Memory | `~/.claude/projects/C--Users-tobia-Code/memory/*.md` | Claude automatisch | Session-Start (MEMORY.md auto-loaded) | Auto-Dream konsolidiert |
 | 2. Applied Learning | `00_Core/APPLIED-LEARNING.md` | Manuell bei Review | On-Demand (per Routing-Table) | Monatlich + Kurator-Regel |
 | 3. Formelle Regeln | `00_Core/INSTRUKTIONEN.md` §§ | Bei bewiesenem Bedarf | Per Routing-Table | Bei Systemänderungen |
+
+**Tier-1 Pfad-SSoT (NORMATIV ab 2026-05-26):** Code-Path `~/.claude/projects/C--Users-tobia-Code/memory/` ist der **einzige** Speicherort und die **einzige Quelle** für Auto-Memory-Files. Index = `MEMORY.md` (auto-loaded). **Anti-Fork-Direktive:** Neue Memories IMMER hier ablegen — keine Parallel-Pfade (z.B. `C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory/` ist DEPRECATED + konsolidiert 2026-05-26), keine Duplikate, keine Pfad-Schatten-Welten. Bei Fork-Verdacht oder unsichtbaren Memories: `reference_memory_fork_onedrive_vs_code_path` konsultieren.
+
+**S-Tier-Memories (workflow-blocking, immer-relevant — Volle Liste in MEMORY.md):**
+- `feedback_pre_investigation_recall_check` — vor jeder ≥3-Tool-Diagnose 1× mem-search/PIPELINE-Live-Grep-Pass
+- `feedback_empirie_statt_annahmen` — Real-Verhalten via Grep/Test-Run/Code-Read VOR Edit verifizieren (Karpathy-Sibling)
+- `feedback_xlsx_tools_in_sync_set` — §18.1 Pflicht-Sync: Rebalancing + Satelliten-Monitor + Watchlist xlsx bei Score/FLAG/Sparraten-Change
+- `feedback_earnings_call_wait_discipline` — §19.1: Klasse-B-Vollanalyse Tag +1 morgens (nicht Tag 0)
+- `feedback_review_via_codex_not_advisor` — Reviews/Second-Opinions via Codex (`codex:codex-rescue` / `codex:rescue`), nie `advisor()`
+- `feedback_correctness_over_runtime` — Datenkorrektheit/Recall > Runtime-Optimierung (Briefing + Scoring + FLAG + alle Pipelines)
+- `reference_no_cloud_sync_onedrive_inactive` — Pfad heißt nur „OneDrive", KEIN aktiver Cloud-Sync; Worktree-Drift nicht auf Cloud schieben
+
+**Karpathy-Regeln** sind in `## Verhalten` „Code-Verhalten"-Bullet inline verankert + via Skill `andrej-karpathy-skills:karpathy-guidelines` abrufbar. **Memory-Guard-Rail** siehe Routing-Table-Klausel + `INSTRUKTIONEN.md §17.1`.
 
 Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNING.md`.
 

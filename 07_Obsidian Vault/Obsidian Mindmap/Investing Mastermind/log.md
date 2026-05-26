@@ -1423,3 +1423,42 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Cross-Reference:** SYSTEM.md L1-82 v1.15 · Commit `<TBD>` · Vorgänger Welle 1 `a4323ef` + Welle 2 `537cf13`.
 
 **Nächste Tracks:** Memory-Fork-Konsolidierung (OPTIONAL Stretch, ~30-60 min) ODER Konsolidierungstag-Pickup ODER reguläre Klasse-B-Termine VEEV (28.05. via Recheck) + COST (28.05.). DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+---
+
+## 2026-05-26 (Mo) ~22:55 — ✅ Memory-Fork-Konsolidierung DONE + CLAUDE.md Code-Path-SSoT verankert (System-Zustand-Event, scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (Memory-Infrastructure-Refactor + CLAUDE.md-Strukturelle-Festlegung Pfad-SSoT + Anti-Fork-Direktive + S-Tier-Memory-Block). Kein Score/FLAG/Sparraten-Touch — scoring-neutral.
+
+**Was passiert ist (in dieser Session ~22:00-22:55 GMT+2 nach Welle-3-Completion):**
+
+1. **Empirie-Diff der Memory-Pfade:** Code-Path (`~/.claude/projects/C--Users-tobia-Code/memory/`) 55 Files vs OneDrive-Path (`~/.claude/projects/C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory/`) 43 Files. Drei Surprise-Findings vs Handover-Plan: (a) Code-Path 55 statt erwarteter 52 (Memory-Stat war stale), (b) OneDrive-only 26 statt erwarteter ~12 (doppelt so groß), (c) 16 Files in beiden Pfaden mit Divergenz-Risiko.
+2. **CLAUDE.md ## Kontinuierliches Lernen verankert (Pfad-SSoT + S-Tier-Block):** Tier-1 Pfad-SSoT-Klausel NORMATIV ab 2026-05-26 — Code-Path ist einziger Speicherort + einzige Quelle. **Anti-Fork-Direktive:** neue Memories IMMER Code-Path. 7 S-Tier-Memory-Pointer expliziert (pre_investigation_recall_check, empirie_statt_annahmen, xlsx_tools_in_sync_set, earnings_call_wait_discipline, review_via_codex_not_advisor, correctness_over_runtime, no_cloud_sync_onedrive_inactive). Karpathy-Regeln-Cross-Ref auf §Verhalten + Skill. Net add CLAUDE.md +18 Zeilen / ~2 KB.
+3. **Overlap-Konsolidierung (16 Files):** 12 SHA-identisch → OneDrive-Versionen gelöscht (Code-Path = canonical). 3 divergente Code-Path-wins (review/xlsx/defeatbeta) → OneDrive-gelöscht. 2 echte Merges: (a) **Tavily**: OD-only 2026-05-07-Stage-2-Block (Connector-Bind-Recovery, Multi-Cause-Klassifikation, PIPELINE #45, ccr-shallow-replace Cross-Ref) in Code-Path appended + Title auf umfassendes „Zwei-Stufen-Pattern" upgraded; (b) **CodeRabbit**: OD-only 5638b-Version (CRLF-Workaround, --files-Scope-Caveat, Authority-Regel, Empirie-Vergleich, Kalibrierungs-Learning) als neue Basis übernommen + Code-Path-spezifische Notes (Distro `-d Ubuntu`, Installer-POSIX-Note, Commits-Trail) integriert.
+4. **OneDrive-only-Migration (26 Files):** 18 mit Category-Prefix (feedback_/project_) direkt migriert (Filename unverändert). 5 „other"-Files mit `reference_`-Prefix-Rename migriert (context7-availability/data-source-coverage/morning-briefing-config/py314_threadpool_daemon/remote-trigger-api). 3 Discards: `portfolio-state-snapshot.md` (stale 2026-04-17, PORTFOLIO.md ist Live-SSoT), `system-architecture.md` (redundant zu CLAUDE.md/INSTRUKTIONEN), `coderabbit_cli_via_wsl.md` (via Merge in `reference_coderabbit_via_wsl.md` übernommen).
+5. **MEMORY.md-Index-Update:** Tavily-Pointer-Title auf „Zwei-Stufen-Pattern" geupdated, CodeRabbit-Pointer auf erweiterten Hook (CRLF-Workaround + Authority-Regel), Memory-Fork-Pointer auf **RESOLVED 2026-05-26** mit Konsolidierungs-Bilanz, 23 neue Pointer-Einträge unter neuer Section „Migriert aus OneDrive-Path 2026-05-26 (Memory-Fork-Konsolidierung)".
+6. **reference_memory_fork_onedrive_vs_code_path.md selbst:** Frontmatter + neuer Status-Banner-Block mit Konsolidierungs-Bilanz + Archive-Pointer am Top eingefügt. Historischer Befund-Abschnitt bleibt als Lessons-Learned-Trail erhalten.
+7. **Archive-Snapshot (Belt-and-Suspenders):** Komplette OneDrive-Path-Memory (43 Files, 221K) **vor jeder Löschung** nach `05_Archiv/memory-fork-onedrive-archiv-2026-05-26/` kopiert via `cp -r`. Restore-fähig falls je benötigt. Archive ist gitignored per `.gitignore:8 (05_Archiv/*)`, bleibt lokal-only.
+
+**Bilanz:**
+- Pre-State: Code-Path 55 / OneDrive 43 / Overlap 16 / OD-only 26
+- Post-State: **Code-Path 78** (55 + 23 Migrationen) / **OneDrive-Path 0** (Memory-Dir leer)
+- Operationen-Bilanz: 12 OD-Identical-Deletes + 3 OD-Loser-Deletes + 2 Merges + 23 Migrationen + 3 Discards = 43 OD-Files final touched (alle).
+- CLAUDE.md: 89 → 107 Zeilen, 11.4 KB → ~13 KB (+2 KB für Pfad-SSoT-Block + S-Tier-Pointer)
+- Anti-Fork-Direktive normativ verankert: neue Memories IMMER Code-Path (siehe CLAUDE.md §Kontinuierliches Lernen).
+
+**§18-Sync-Set (system-zustand-Event, scoring-neutral):**
+- CLAUDE.md (Code-Path-SSoT-Block + S-Tier-Memory-Pointer + Anti-Fork-Direktive)
+- Vault log.md (dieser Eintrag)
+
+**KEIN** PORTFOLIO/CORE-MEMORY/Faktortabelle/SYSTEM/score_history/config.yaml/xlsx/flag_events-Touch (kein Score/FLAG/Sparraten-Event, kein System-Zustand-Bullet-Add in SYSTEM.md weil Memory-Operationen außerhalb des git-Repos leben und keine MCP/Briefing/Backtest/R5/§30/Backlog-Mutationen tangieren). **Memory-Operations** (78 File-Moves/Edits) sind außerhalb des git-Repos (`~/.claude/`-Path), NICHT im §18-Trigger-Set — nur die §-Auswirkungen in CLAUDE.md werden committed. Archive (`05_Archiv/memory-fork-onedrive-archiv-2026-05-26/`) ist gitignored, kein Bundle-Bedarf. Pre-existing dirty NICHT gebündelt (Memory `feedback_pre_existing_dirty_is_pipeline_69`).
+
+**Lessons:**
+- **Merge-statt-Discard-Disziplin zahlt sich aus:** 2 echte Content-Merges (Tavily Stage-2-Block + CodeRabbit-Workflow-Details) hätten bei naivem „Code-Path-wins"-Heuristik verloren gegangen. Inhalts-Diff vor Migration ist die normale Pflicht-Stufe.
+- **Pfad-SSoT-Festlegung in CLAUDE.md ist die echte Anti-Fork-Versicherung:** Ohne explizite Direktive würde der Working-Directory-Hash-Mechanismus bei jedem Path-Switch potenziell wieder einen neuen Memory-Namespace eröffnen. Code-Path-Lock + Anti-Fork-Direktive macht das robust.
+- **S-Tier-Selection bewusst lean (7 Pointer):** Nicht volle 78-File-Index in CLAUDE.md (wäre +7-8 KB Pflicht-Token-Cost pro Session), sondern nur die workflow-blocking Memories. MEMORY.md ist bereits auto-loaded mit Voll-Index — die S-Tier-Liste dient als Discoverability-Boost für die kritischsten.
+- **Discard-Disziplin:** `portfolio-state-snapshot.md` (Snapshot-Memory) ist by-design stale — PORTFOLIO.md ist Live-SSoT. `system-architecture.md` ist by-design redundant — CLAUDE.md ist normative SSoT. Beide sind Discards, nicht Migrations.
+
+**Cross-Reference:** CLAUDE.md ## Kontinuierliches Lernen · `reference_memory_fork_onedrive_vs_code_path.md` (RESOLVED-Marker + Konsolidierungs-Bilanz am Top) · Archive `05_Archiv/memory-fork-onedrive-archiv-2026-05-26/` (43 Files, 221K, gitignored) · Commit `<TBD>`.
+
+**Nächste Tracks:** Welle 3 + Memory-Fork-Konsolidierung beide DONE. Pickup-Optionen: VEEV/COST Klasse-B-Termine 28.05., PIPELINE #69 pre-existing-dirty-Abräumung (Memory wird obsolet), Konsolidierungstag, oder reguläre PIPELINE-Items. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
