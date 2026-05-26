@@ -1249,3 +1249,35 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 - **Schritt 3** (SPEC §6): P16 PIPELINE-Reference-Klärung (xlsx-smoke-test.md §Annex "offenes PIPELINE-Item Watchlist-Tool-Update" → grep-leer; konkrete Item-ID oder Re-Phrase)
 - **Schritt 9** (SPEC §6): Restliche Patches P2-P12+P14 (xlsx-smoke-test.md §D-Block-Rewrite — B24/B25/B26-Swap per P6/P7 + §G-Paradigm-Statement per P8) — separater Commit
 - **Stage-2 Execution** (separate Session per `feedback_brainstorming_terminal_override_dynastie`): SPEC §6 Schritte 5-9 — `safe_insert.py` + Hook-Punkt-G-Extension + 15 Fixtures + Test-Run
+
+## 2026-05-26 ~02:10 GMT+2 — System-Event: xlsx-smoke-test-runner v0.1.0 RELEASE + Drift-Catchup CLAUDE.md/INSTRUKTIONEN.md (scoring-neutral, system-zustand)
+
+**Was passierte:** Stage-2-Substrate (54 pytest + 15 Fixtures + Live-Smoke 3/3 GREEN gegen Rebalancing_Tool_v3.4 + Satelliten_Monitor_v2.0 + Watchlist_Ersatzbank_Monitor_v1.1) durch SKILL.md-Exposure-Layer als v0.1.0 freigegeben. Während Release-Vorbereitung User-Catch §1-Befehls-Übersicht-Drift: `!SessionClose` + `!ParaSync18` bereits Routing-Table-Anker, aber nicht in INSTRUKTIONEN §1 verankert; Skill-Inventar in CLAUDE.md Projektstruktur fehlte 3 Skills (`session-closure` / `paragraph-18-sync` / `core-slim-refactor`) zusätzlich zum neuen xlsx-Skill. Erweiterter §1-Refresh + §Skill-Zuordnung-Tabelle-Drift mit-aufgeräumt (8 neue §1-Rows + 3 neue Zuordnungs-Rows).
+
+**Vorgeschichte (heute Nacht):**
+- Pytest 54/54 + Live-Smoke 3/3 PASS gegen die drei produktiven xlsx → Stage-2-Build empirisch produktionsreif verifiziert.
+- `verify_wrapper.py:92` PEP-758-Form als „Portability-Bug" geflagt → ruff-format hat den Klammer-Fix wieder rausgeschmissen. Empirie: `requires-python = ">=3.14"` + ruff `target-version = "py314"` → Repo committed sich auf Py-3.14-Floor; PEP-758 ist intentional. Fix zurückgerollt, Memory `feedback_pyproject_floor_before_portability_claim.md` (NEU, Anker an `feedback_empirie_statt_annahmen`).
+- Skill-Creator-Skill für SKILL.md-Exposure invoked: 124-LOC SKILL.md mit literal-from-SPEC-§1 In/Out-Scope (per `feedback_skill_name_is_scope_contract`, keine aspirational Erweiterung), Library-Mode-API-Block, Progressive-Disclosure-Pointer auf SPEC + canonical doc.
+
+**Geänderte Files (4 staged, Bundle isoliert von PIPELINE #69 deferred-Debt via expliziter `git add`-Selektion):**
+- `01_Skills/xlsx-smoke-test-runner/SKILL.md` (NEU, 124 LOC)
+- `00_Core/SYSTEM.md` (L47 neuer Skill-Registry-Eintrag analog session-closure/paragraph-18-sync/core-slim-refactor)
+- `00_Core/INSTRUKTIONEN.md` (§1 +8 Befehls-Rows: !EarningsPreview/Recap/Calendar + !InsiderScan + !ParaSync18 + !SyncBriefing + !BriefingCheck + !SessionClose; §Skill-Zuordnung +3 Rows: !ParaSync18 + !SlimRefactor + §18.7-xlsx)
+- `CLAUDE.md` (L31 Projektstruktur: 7→10 Skills + xlsx-runner; alphabetisch-thematisch zwischen sec-edgar-skill und `_extern/`)
+- `07_Obsidian Vault/.../log.md` (dieser Eintrag)
+
+**§18-Sync:** `python 03_Tools/para18_sync/validator.py system-zustand --dry-run --allow-dirty 70` → verdict=DRY-RUN, events=[system-zustand], expected_files=[SYSTEM.md + log.md] beide gestaged. CLAUDE.md/INSTRUKTIONEN.md sind nicht in §18-Trigger-Set (Governance/Rules); Pre-Commit-Hook prüft nur SSoT-Live-State.
+
+**KEIN** PORTFOLIO/Faktortabelle/score_history/flag_events/xlsx-Touch (kein Score/FLAG/Sparraten-Event — 11 Satelliten + 285€ Σ + Nenner 7,5 unverändert).
+
+**Lehre:**
+- **Pre-Edit Repo-Floor-Check (`feedback_pyproject_floor_before_portability_claim`):** Vor „Portability-Fix"-Vorschlag bei moderner Py-Syntax (PEP-758/match-case/etc.) EINMAL `requires-python`+ruff `target-version` grep. Sonst Fix-vs-Linter-Konflikt-Reinfall.
+- **Drift-Catchup als Surgical Edit, nicht Restructure:** User-Direktive „Wir werden sowieso den Core noch grundlegend überarbeiten müssen. Wichtig ist erstmal das alles up to date ist." — Skill-Liste + §1 + §Skill-Zuordnung gemäß tatsächlichem On-Disk-Inventar, keine kosmetische Umgruppierung. Grundlegende Core-Restruktur kommt separat post-Core-Slim-Refactor-Reinfall.
+- **Bundle-Isolation via `git add`-Scoping (`feedback_pre_commit_diff_inspection`):** 56 dirty Pre-existing-Files (PIPELINE #69 Ruff/CRLF-Debt + extern-Cleanup) blieben unstaged; Bundle ausschließlich die 4 mit dem Release verbundenen Files. `--allow-dirty 70` als expliziter Acknowledgment-Knob im Validator.
+
+**Cross-Reference:** SKILL.md (NEU) · INSTRUKTIONEN §1 + §Skill-Zuordnung · CLAUDE.md L31 · SYSTEM.md L47 · `feedback_pyproject_floor_before_portability_claim.md` (NEU) · `feedback_skill_name_is_scope_contract` (Anker für SKILL.md description-Literal)
+
+**Nächste Tracks (deferred):**
+- PIPELINE #69 separates Catchup: 56 ungestaged Files (~50 .py ruff/CRLF + extern sec-edgar-Deletion + _SESSION-HANDOVER.md-Deletion) — eigene Session.
+- INSTRUKTIONEN §Skill-Zuordnung Drift-(D) earnings-preview/recap/calendar zeigen auf nicht im aktiven `01_Skills/` vorhandene Skills (vermutlich `_extern/`) — Klärung in separater Session, kein Hotfix-Bedarf.
+- Optional: skill-creator description-Optimization-Loop für xlsx-runner SKILL.md (Trigger-Score über 20-Query-Eval-Set) — defer bis erste Real-World-Trigger-Empirie vorliegt.

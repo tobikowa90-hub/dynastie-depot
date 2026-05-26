@@ -102,6 +102,14 @@
 | `!Rebalancing` | Sparplan-Drift-Check + Vorschlag | ~10 min |
 | `!QuickCheck [TICKER\|ALL]` | Ampel-Check, kein Deep Dive | ~3–5 min |
 | `!Briefing` | Manuelles Morning Briefing (Kurs-Check, FLAGs, Earnings) | ~3-5 min |
+| `!EarningsPreview [TICKER]` | Earnings-Vorbereitung (48h vor Call) | ~5-10 min |
+| `!EarningsRecap [TICKER]` | Press-Release-Recap Tag 0 post-Call (kein Score-Move, siehe §19.1) | ~5-10 min |
+| `!EarningsCalendar` | Wöchentlicher Earnings-Überblick | ~2-3 min |
+| `!InsiderScan` | Form-4-Scan der 8 US-Satelliten (standalone, ohne `!Analysiere`) | ~5 min |
+| `!ParaSync18 <event-type> [--also …]` | §18-Multi-File-Sync-Orchestrator vor `git commit` (§18.0) | ~1-3 min |
+| `!SyncBriefing` | Briefing-relevante `00_Core/`-Änderungen ins Repo pushen (Pflicht-Review-Gate, kein Auto-Commit) | ~2-3 min |
+| `!BriefingCheck` | Vorab-Check ob 10:00-Briefing-Trigger aktuelle Daten liest | ~30s |
+| `!SessionClose` | Session-Ende-Workflow: lokale Commits autonom, Push nur nach Freigabe (§25.5) | ~3-5 min |
 
 ---
 
@@ -349,6 +357,9 @@ Trigger: nur bei Score ≥ 80 aus Stufe 2
 | `!InsiderScan` | `insider-intelligence` | Manuell (Standalone-Scan ohne !Analysiere) |
 | `!Analysiere` Schritt 7 | **`backtest-ready-forward-verify`** | **⚙️ Programmatisch** (aus dynastie-depot SKILL.md Schritt 7, jsonl-Write-Pflicht) |
 | `!SessionClose` | `session-closure` | Manuell (Session-Ende, Strict-Trigger; siehe §25.5) |
+| `!ParaSync18 <event-type> [--also …]` | `paragraph-18-sync` | Manuell oder file-pattern-Auto-Trigger via CLAUDE.md Routing-Table (siehe §18.0) |
+| `!SlimRefactor <config>` | `core-slim-refactor` | Manuell (YAML-driven 8-Phase Markdown-Section-Refactor — Pattern A/B/C; siehe SYSTEM.md Skill-Registry) |
+| §18.7 Post-openpyxl-Write (file-pattern, kein `!`-Trigger) | `xlsx-smoke-test-runner` | Library-Mode (`from verify_wrapper import verify_after_write`) — vor `git add` xlsx |
 | Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` | Quartalsweise manuell (Python-Tool, kein Skill) |
 | Dokument-Konflikt / 10-K-Text | `sec-edgar-skill` | Eskalations-Fallback (manuell) |
 
