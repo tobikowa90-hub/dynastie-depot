@@ -1462,3 +1462,38 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Cross-Reference:** CLAUDE.md ## Kontinuierliches Lernen · `reference_memory_fork_onedrive_vs_code_path.md` (RESOLVED-Marker + Konsolidierungs-Bilanz am Top) · Archive `05_Archiv/memory-fork-onedrive-archiv-2026-05-26/` (43 Files, 221K, gitignored) · Commit `<TBD>`.
 
 **Nächste Tracks:** Welle 3 + Memory-Fork-Konsolidierung beide DONE. Pickup-Optionen: VEEV/COST Klasse-B-Termine 28.05., PIPELINE #69 pre-existing-dirty-Abräumung (Memory wird obsolet), Konsolidierungstag, oder reguläre PIPELINE-Items. DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+---
+
+## 2026-05-26 (Mo) ~23:05 — ✅ TOKEN-RULES.md Inline-Migrate Option B + Slim-Refactor (System-Zustand-Event, scoring-neutral)
+
+**Event-Typ:** System-Zustand-Change (Token-Effizienz-Architektur-Refactor). Kein Score/FLAG/Sparraten-Touch — scoring-neutral.
+
+**Trigger:** User-Frage „TOKEN-RULES prominenter in CLAUDE.md verankern + bei jedem Session-Start lesen?". Empirie-Audit zeigte: von 7 Rules sind 4 redundant (Sync-Pflicht/Skills-lazy-load/MCP-lazy/Modell — alle bereits inline in CLAUDE.md oder System-Default), 3 unique-value (Snapshot-First/DEFCON-1-Stopp/Compact-Cue). Auto-Load der Voll-File (~915 Tokens/Session) wäre Token-Verschwendung; Inline-Migrate der 3 unique Rules (~146 Tokens/Session) ist 6.3× effizienter.
+
+**Was passiert ist:**
+
+1. **CLAUDE.md §Verhalten:** Neuer Bullet „Token-Effizienz (Claude-Disziplin)" zwischen Sync-Pflicht + Earnings-Call-Wait. Inline die 3 unique-value Rules (Snapshot-First / DEFCON-1-Stopp / /compact-Cue) mit Cross-Ref auf `00_Core/TOKEN-RULES.md` für Operator-Detail.
+2. **TOKEN-RULES.md slim-refactor:** 41→38 Zeilen (3.57 KB → 2.86 KB, -184 Tokens trotz mehr Klarheit). Strip: redundante Sync-Pflicht-Bullet + Skills-lazy-load-Bullet + Pause-Regel-Bullet + DEFCON-1-Bullet + Snapshot-First-Bullet (alle nach CLAUDE.md migriert). Keep: Operator-Slash-Command-Detail (`/compact` Preserve-Spec, `/model` Wahl, `/mcp disable` Vault-Only) + Skill-§-Cross-Refs (dynastie-depot §170/§171/§172/§795) + Accessibility-Hinweis. Neuer Architektur-Hinweis-Block am Top dokumentiert den Refactor.
+3. **Net-Effekt für Token-Bilanz:** Jede Session lädt jetzt +146 Tokens (CLAUDE.md-Bullet inline) und sieht die 3 Claude-Action-Rules garantiert. TOKEN-RULES.md bleibt Routing-Table-on-demand für Operator-Lookups (Slash-Commands + Skill-§). User-Vorschlag-A (Auto-Load Full-File) wäre +915 Tokens/Session gewesen → ~6.3× ineffizienter bei gleichem Claude-Outcome.
+
+**Bilanz:**
+- CLAUDE.md: 89 → 90 Zeilen, 13.15 KB → 13.72 KB (+1 Bullet ~3 Zeilen, +146 Tokens)
+- TOKEN-RULES.md: 41 → 38 Zeilen, 3.57 KB → 2.86 KB (-20%, -184 Tokens, Operator-Detail-Density gesteigert)
+- Architektur-Klarheit: Claude-Disziplin = CLAUDE.md SSoT; Operator-Disziplin = TOKEN-RULES.md SSoT (sauber getrennt, keine Re-Stating-Doppelung)
+
+**§18-Sync-Set (system-zustand-Event, scoring-neutral):**
+- CLAUDE.md (Token-Effizienz §Verhalten-Bullet inline)
+- 00_Core/TOKEN-RULES.md (slim-refactor + Architektur-Hinweis)
+- 07_Obsidian Vault/.../log.md (dieser Eintrag)
+
+**KEIN** PORTFOLIO/CORE-MEMORY/Faktortabelle/SYSTEM/score_history/config.yaml/xlsx/flag_events-Touch. TOKEN-RULES.md + CLAUDE.md NICHT im §18-Trigger-Set (Routing-Table P18-File-Touch-Liste); nur log.md ist normativ pflicht. Pre-existing dirty NICHT gebündelt (Memory `feedback_pre_existing_dirty_is_pipeline_69`).
+
+**Lessons:**
+- **Empirie schlägt Bauchgefühl:** User hatte die Hypothese „Rules verlieren sich". Empirie-Audit bestätigte das Gefühl, widerlegte aber die Diagnose-Ursache. Nicht „unsichtbar" → „großteils redundant + nicht Claude-actionable". Auto-Load-Vorschlag = teurer als nötig.
+- **Doppel-SSoT-Vermeidung pays off:** Sync-Pflicht-Klausel + Skills-lazy-load-Klausel waren BEIDE in CLAUDE.md UND TOKEN-RULES.md — Doppel-Mention ohne Mehrwert. Slim-Refactor löst die Duplikation: CLAUDE.md ist Claude-Action-SSoT, TOKEN-RULES.md ist Operator-Action-SSoT.
+- **Snapshot-First wurde ohnehin implizit befolgt:** Default-Session-Load = STATE + PORTFOLIO (per Routing-Table). Explizite Pflicht-Klausel im CLAUDE.md-Bullet macht den Anti-Drift-Schutz bei Cross-Source-Drift-Checks normativ — bisher war es nur Routing-Table-Side-Effect.
+
+**Cross-Reference:** CLAUDE.md §Verhalten Token-Effizienz-Bullet · 00_Core/TOKEN-RULES.md (slim v2 2026-05-26) · Commit `<TBD>` · Vorgänger Memory-Fork-Commit `b0fb526`.
+
+**Nächste Tracks:** Welle 3 + Memory-Fork + TOKEN-RULES-Inline-Migrate alle DONE in einer Session. Pickup-Optionen weiterhin: VEEV/COST 28.05., PIPELINE #69, Konsolidierungstag.
