@@ -72,6 +72,43 @@ Entscheidung steht (siehe Status-Banner): **autoMemory = kanonisches System-of-R
 - **Phase-D-3 source-only-deferred-D3:** CPZ-2019 → 2028-Review-Gate Backtest-Validation-Wave
 - **Phase-D Reject-Inventarisiert:** BPZ-2023 → Latent für 2028-Review-Gate Backtest-Methodology-Roadmap
 
+## 📌 Mini-Task Pickup: xlsx-smoke-test-runner Description-Optimization-Loop
+
+**Status:** Pending — User-Direktive 2026-05-26 ~03:00 GMT+2 (Session-Ende), nicht-blockend.
+
+**Was:** Skill-Creator-Optimization-Loop für `01_Skills/xlsx-smoke-test-runner/SKILL.md` description-Frontmatter laufen lassen — Trigger-Accuracy-Kalibrierung BEVOR Real-World-Empirie Drift sammelt (Begründung: Auto-Trigger-Skill ohne `!`-Befehl → description ist einziger Activation-Pfad, silent-failure-Risiko bei mismatch).
+
+**Vorgeschichte (durable in git):**
+- Commit `aab66f4` (post-Codex-Review): SKILL.md description literal-empirisch korrekt (§A/§B/§E/§G in-scope; §C/§D inkl. Existence out-of-scope), Konkurrenz-Abgrenzung gegen `dynastie-depot` explizit. 0 HIGH/MEDIUM/LOW Codex-Findings open.
+- Substrate: `01_Skills/xlsx-smoke-test-runner/SKILL.md` (124 LOC, v0.1.0); Skill-Creator-Skill via `Skill(skill="skill-creator:skill-creator")`.
+
+**Pickup-Schritte:**
+1. 20 Trigger-Eval-Queries generieren (10 should-trigger / 10 should-not-trigger, davon viele Near-Miss-Edge-Cases im Dynastie-Depot-Kontext):
+   - **should-trigger Beispiele:** „Score-Update von TMO ins Rebalancing-Sheet schreiben und committen" / „openpyxl-Patch für Sat-Monitor B26 vor dem Push smoke-testen" / „Watchlist xlsx wurde geändert, soll ich verify_after_write laufen lassen?" / „insert_rows in Rebalancing_Tool Zeile 20 — merge-safe?"
+   - **should-not-trigger Beispiele (Near-Miss):** „!Analysiere TMO Q3" (Pipeline-Owner = dynastie-depot, xlsx-Touch ist downstream) / „!Rebalancing-Drift-Check" (Workflow, nicht Tooling) / „xlsx Schritt 6 in Hook-Code reviewen" (Code-Review, nicht Smoke-Test) / „Faktortabelle.md Score-Eintrag korrigieren" (kein xlsx-Touch).
+2. User-Review der 20 Queries via `assets/eval_review.html`-Template (`/tmp/eval_review_xlsx-smoke-test-runner.html`); User kann Queries editieren + should-trigger togglen.
+3. Eval-Set als JSON exportieren in Skill-Creator-Workspace.
+4. `python -m scripts.run_loop --eval-set <path> --skill-path 01_Skills/xlsx-smoke-test-runner --model claude-opus-4-7 --max-iterations 5 --verbose` im Background (~10-20min, 3 Reps pro Query × 20 Queries × 5 Iterationen).
+5. Result: `best_description` (gewählt per Test-Score, nicht Train-Score) → update SKILL.md frontmatter.
+6. Wenn description geändert → erneuter §18-Sync-Lauf (system-zustand) + Commit.
+
+**Out-of-Scope für diesen Mini-Task:**
+- Kein Code-Change am Skill (verify_wrapper.py / safe_insert.py unverändert).
+- Kein Behavior-Change am Hook.
+- Kein Version-Bump (v0.1.0 bleibt; oder v0.1.1 wenn description substantiell mutiert — User-Entscheidung).
+
+**Memory-Anker:** `feedback_skill_name_is_scope_contract` (description literal, nicht aspirational) · `feedback_brainstorming_terminal_override_dynastie` (Pickup als eigene Session) · `feedback_codex_default_english_in_dynastie` (German für etwaige Codex-Sparring-Pässe auf neuer description).
+
+**Substrate-Pointer:**
+- Aktueller Skill-Dir: `01_Skills/xlsx-smoke-test-runner/` (lean: SKILL.md + safe_insert.py + verify_wrapper.py + tests/ + _fixtures/).
+- Design-Snapshot (gitignored, read-only-Lifecycle): `docs/superpowers/specs/2026-05-25-xlsx-smoke-test-runner-v0.1-design.md`.
+- Drift-Substrate (gitignored): `docs/superpowers/specs/_artifacts/drift-live-vs-doc.md`.
+- Canonical fachlicher Vertrag: `03_Tools/xlsx-smoke-test.md`.
+
+**Anticipated Effort:** ~30-45min total (10min Query-Gen + 5min Review + 15-20min Background-Run + 5min Apply + Commit).
+
+---
+
 ## 🔖 Vorgänger-Historie
 
 Vorherige Banner-Versionen + Phase-D-1-Final-Closure 09.05. + Konsolidierungstag-Wave-1/2/3/4 + Cluster-A-#31/#32/#33/#34 + Wiki-Modus-#54 + AVGO/MSFT/V/BRK.B/APH-Vollanalysen → **git log + STATE.md Critical-Alerts (≤10-Tage-Window) + CORE-MEMORY.md §13 (System-Lifecycle) + Vault `log.md` + `archive/log/` (vollständige History; quartalsweise Roll-over per INSTRUKTIONEN §18.6, Initial-Cut 10.05.2026)**.
