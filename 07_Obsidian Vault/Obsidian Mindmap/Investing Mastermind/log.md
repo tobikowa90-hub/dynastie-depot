@@ -1347,3 +1347,45 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 - Block-für-Block-Empirie-Check als Workflow bewährt — User-Direktive konsistent geführt zu 2 stale Memory-Refs + 1 Memory-Fork-Discovery die in 1-Pass-Strip übersehen worden wären.
 - Stale Memory-Refs in alten SSoT-Dokus sind erwartbare Klasse — Auto-Memory-Filename-Existenz-Check als Pre-Strip-Gate ist günstig.
 - Memory-Fork-Issue Cross-Working-Dir = strukturelles Substrate-Problem das eigene Konsolidierungs-Session braucht (Code-Path = SSoT-Konvention).
+
+---
+
+## 2026-05-26 (Mo) ~18:20 — ✅ SYSTEM.md Slim-Refactor Welle 2 (Migration B) DONE (System-Zustand-Event, scoring-neutral)
+
+**Context:** Fortsetzung Session 80ebeade direkt nach Welle 1 (commit `a4323ef`). Block-für-Block-Empirie-Check pro Bullet (Forward-Gate-Coverage in PIPELINE, score_history-Record-Count, Memory-Substanz-Verify) vor jedem Strip.
+
+**Pre-Welle-1 Line-Mapping zu aktuellem Stand (via `git show a4323ef^:00_Core/SYSTEM.md`):**
+- L16 → Live-Verify v3.7 5/11
+- L17 → Allokation 65/30/5
+- L20 → Backtest-Ready 27-Records-Block
+- L34 → Track 5 Pläne
+- L38 → KG-Roadmap draft-frozen
+- L67 → claude-mem Context-Injection-Tuning 17.05.
+
+**Aktion (1 Migrate + 5 Strips):**
+1. **L17 Allokation → PORTFOLIO.md** als neuer Bullet direkt nach Stand-Line (Live-Portfolio-Meta-State gehört in PORTFOLIO.md).
+2. **L16 Live-Verify 5/11 strippen** — Snapshot vom 18.04. ist hard-stale: `wc -l 05_Archiv/score_history.jsonl` = 35 (war 27 zum Zeitpunkt der Aussage), seither Earnings V/MSFT/APH/AVGO/COST/AMZN/BRK.B durchgelaufen.
+3. **L20 Backtest-Ready 27-Records-Block strippen** — Record-Count + Drift-Migration-21.04.-Narrative historisch. Forward-Gates `2026-10-17 Score-Archiv-Interim` + `2028-04-01 Review` empirisch in PIPELINE.md L102+L105 verifiziert (eigene Gate-Tabelle).
+4. **L34 Track-5 Pläne strippen** — Track-5a-Deliverable (sec-edgar-skill v1.1) hat eigenen Bullet auf aktueller L28; Track-5b-PAUSIERT-Status mit Re-Activation-Trigger-Bedingungen in PIPELINE.md #60 vollständig dokumentiert.
+5. **L38 KG-Roadmap strippen** — Re-Review-Trigger + draft-frozen-Status in PIPELINE.md #58 vorhanden. "Q1-Q3 offen + v3.0.3-Prod-Deploy nicht blockiert"-Cross-Refs sind selbst obsolet (Briefing v3.0.3 → v3.2.0 LIVE seit 11.05.).
+6. **L67 claude-mem Context-Injection-Tuning 17.05. strippen** — Substanz dreischichtig persistiert: (a) Live-Config `~/.claude-mem/settings.json`, (b) Backup `settings.json.bak-20260517` on-disk, (c) Memory `feedback_pre_investigation_recall_check.md` mit Pre-Investigation-Recall-Check-Disziplin + Auslöser-Detail.
+
+**Bilanz:**
+- SYSTEM.md 124 → 117 Zeilen, ~7 KB Doku-Bloat raus
+- PORTFOLIO.md +2 Zeilen (Allokation-Bullet)
+- Footer v1.13 → v1.14
+- Alle Forward-Gates kanonisch in PIPELINE.md erhalten, keine gebrochenen Cross-Refs (`grep`-Check: nur 1 historische "Drift-Migration 21.04."-Mention in INSTRUKTIONEN.md L800 verbleibt, self-contained Rationale-Zitat, kein dangling Cross-Ref).
+
+**§18-Sync-Set (system-zustand-Event, scoring-neutral):**
+- SYSTEM.md (Footer v1.13 → v1.14, 6 Block-Edits)
+- PORTFOLIO.md (Allokation-Migration-Target, +2 Zeilen)
+- Vault log.md (dieser Eintrag)
+
+**KEIN** CORE-MEMORY/Faktortabelle/score_history/config.yaml/xlsx/flag_events-Touch (kein Score/FLAG/Sparraten-Event). Pre-existing dirty (~56 Files `03_Tools/`+`01_Skills/`) bewusst NICHT gebündelt (Memory `feedback_pre_existing_dirty_is_pipeline_69`).
+
+**Lessons:**
+- Welle-1 + Welle-2 zusammen: 47 KB → ~30 KB SYSTEM.md (Brutto-Reduktion ~36%), Bullet-Count System-Zustand-Section von ~20 auf ~12; alle operativen Forward-Gates + Skill-Registry intakt.
+- Live-Portfolio-Meta-State (Allokation) hatte in 00_Core/ keinen klaren Owner; PORTFOLIO ist der natürliche Slot (default-load + bereits 285€-Anker in Sparraten-Nenner-Block).
+- Block-für-Block-Empirie-Check spart Re-Defer-Slots: 6/6 Strips ohne Coverage-Lücke, weil Gate-Inventur in PIPELINE und Record-Counts vor Edit verifiziert wurden.
+
+**Nächste Welle:** Welle 3 (Slim C) deferred — §Briefing-Status / §Plugin-Layer / §Passive-Read-Only-Data-Layer / §Earnings-Calendar-Status (~17 KB Sub-Section-Heavy-Lifting, eigene Session). Ziel End-State ~10-12 KB SYSTEM.md.
