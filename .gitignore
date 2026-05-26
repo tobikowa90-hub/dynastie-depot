@@ -125,3 +125,6 @@ vendor/
 coverage/
 .cache/
 tmp/
+
+# Skill-Creator iteration workspaces (eval-sets, run_loop logs — lokal-only, SESSION-HANDOVER referenziert sie)
+01_Skills/*-workspace/

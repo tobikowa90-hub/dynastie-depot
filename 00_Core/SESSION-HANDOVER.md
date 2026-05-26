@@ -72,40 +72,44 @@ Entscheidung steht (siehe Status-Banner): **autoMemory = kanonisches System-of-R
 - **Phase-D-3 source-only-deferred-D3:** CPZ-2019 → 2028-Review-Gate Backtest-Validation-Wave
 - **Phase-D Reject-Inventarisiert:** BPZ-2023 → Latent für 2028-Review-Gate Backtest-Methodology-Roadmap
 
-## 📌 Mini-Task Pickup: xlsx-smoke-test-runner Description-Optimization-Loop
+## 📌 Mini-Task: xlsx-smoke-test-runner Description-Optimization-Loop — RE-DEFERRED 2026-05-26
 
-**Status:** Pending — User-Direktive 2026-05-26 ~03:00 GMT+2 (Session-Ende), nicht-blockend.
+**Status:** Re-Deferred (User-Entscheidung 2026-05-26 ~13:50 GMT+2). Pain-grounded Trigger statt Polish-Tier-Spec.
 
-**Was:** Skill-Creator-Optimization-Loop für `01_Skills/xlsx-smoke-test-runner/SKILL.md` description-Frontmatter laufen lassen — Trigger-Accuracy-Kalibrierung BEVOR Real-World-Empirie Drift sammelt (Begründung: Auto-Trigger-Skill ohne `!`-Befehl → description ist einziger Activation-Pfad, silent-failure-Risiko bei mismatch).
+**Was passiert ist (2026-05-26 13:40-13:50 GMT+2):**
+1. 20 Trigger-Eval-Queries gedraftet (10/10 Split), HTML-Review via `assets/eval_review.html` durchlaufen, User hat 3 Tweaks bestätigt (#9 schärfen, #16 → Cell-Existence-§C/D-Boundary, #20 → Cell-Number-Format-§Out-of-Scope-Boundary).
+2. `eval_set.json` exportiert + ins Workspace kopiert (`01_Skills/xlsx-smoke-test-runner-workspace/desc-opt-iteration-1/eval_set.json`, 20 Queries, 10 positive).
+3. `python -m scripts.run_loop` gestartet → **sofortiger Crash** mit `WinError 10038` (alle 8 Parallel-Worker-Subprocess-Calls failen) + `UnicodeEncodeError cp1252 ✗`.
 
-**Vorgeschichte (durable in git):**
-- Commit `aab66f4` (post-Codex-Review): SKILL.md description literal-empirisch korrekt (§A/§B/§E/§G in-scope; §C/§D inkl. Existence out-of-scope), Konkurrenz-Abgrenzung gegen `dynastie-depot` explizit. 0 HIGH/MEDIUM/LOW Codex-Findings open.
-- Substrate: `01_Skills/xlsx-smoke-test-runner/SKILL.md` (124 LOC, v0.1.0); Skill-Creator-Skill via `Skill(skill="skill-creator:skill-creator")`.
+**Blocker (durable diagnostiziert):**
+- **Root-Cause:** `skill-creator/scripts/run_eval.py:108` benutzt `select.select([process.stdout], ...)` — auf Windows funktioniert `select.select` ausschließlich mit Socket-Handles, nicht mit Pipe-Handles. Fundamentale Plattform-Inkompatibilität (Python-Doku: "On Windows, the underlying select() function is provided by the WinSock library, and does not handle file descriptors that don't originate from WinSock").
+- **Sekundär:** `run_loop.py:151/278/317/321` schreibt HTML via `.write_text(generate_html(...))` ohne `encoding='utf-8'` → cp1252-Crash bei UTF-8-Symbolen (✗/✓). Klassische Memory-Anker `feedback_windows_console_ascii_safe_inline_python`.
+- **Konsequenz:** Description-Optimization-Loop ist auf Windows-Nativ-Python NICHT lauffähig. Brauchbar nur via WSL2-Ubuntu (~60-90min Setup: Plugin-Cache + OneDrive-Workspace WSL-side mounten) ODER lokalem Plugin-Patch (~30-45min, Risiko: Upstream-Drift bei Plugin-Update).
 
-**Pickup-Schritte:**
-1. 20 Trigger-Eval-Queries generieren (10 should-trigger / 10 should-not-trigger, davon viele Near-Miss-Edge-Cases im Dynastie-Depot-Kontext):
-   - **should-trigger Beispiele:** „Score-Update von TMO ins Rebalancing-Sheet schreiben und committen" / „openpyxl-Patch für Sat-Monitor B26 vor dem Push smoke-testen" / „Watchlist xlsx wurde geändert, soll ich verify_after_write laufen lassen?" / „insert_rows in Rebalancing_Tool Zeile 20 — merge-safe?"
-   - **should-not-trigger Beispiele (Near-Miss):** „!Analysiere TMO Q3" (Pipeline-Owner = dynastie-depot, xlsx-Touch ist downstream) / „!Rebalancing-Drift-Check" (Workflow, nicht Tooling) / „xlsx Schritt 6 in Hook-Code reviewen" (Code-Review, nicht Smoke-Test) / „Faktortabelle.md Score-Eintrag korrigieren" (kein xlsx-Touch).
-2. User-Review der 20 Queries via `assets/eval_review.html`-Template (`/tmp/eval_review_xlsx-smoke-test-runner.html`); User kann Queries editieren + should-trigger togglen.
-3. Eval-Set als JSON exportieren in Skill-Creator-Workspace.
-4. `python -m scripts.run_loop --eval-set <path> --skill-path 01_Skills/xlsx-smoke-test-runner --model claude-opus-4-7 --max-iterations 5 --verbose` im Background (~10-20min, 3 Reps pro Query × 20 Queries × 5 Iterationen).
-5. Result: `best_description` (gewählt per Test-Score, nicht Train-Score) → update SKILL.md frontmatter.
-6. Wenn description geändert → erneuter §18-Sync-Lauf (system-zustand) + Commit.
+**Begründung Re-Defer (statt WSL/Patch):**
+- Description ist frisch empirie-validiert (Commit `aab66f4` post-Codex 2026-05-26 ~00:47): 0 HIGH/MEDIUM/LOW Findings open; literal-Scope §A/§B/§E/§G in / §C/§D/Cell-Format out korrekt abgebildet.
+- Zero Real-World-Empirie bisher (Skill <24h alt, 0 Live-Trigger-Events) — kein konkretes Drift-Signal das WSL/Patch-Aufwand rechtfertigt.
+- Polish-Tier per ursprünglicher Pickup-Spec, kein Blocker für Primary-Track #73a oder Secondary-Track #75.
+- Memory-Anker `feedback_redefer_over_prespec_dynastie` (24.05.2026): bei <2 Real-Runs + Infrastruktur-Pain → Re-Defer mit pain-grounded Trigger ist nominaler Pfad.
 
-**Out-of-Scope für diesen Mini-Task:**
-- Kein Code-Change am Skill (verify_wrapper.py / safe_insert.py unverändert).
-- Kein Behavior-Change am Hook.
-- Kein Version-Bump (v0.1.0 bleibt; oder v0.1.1 wenn description substantiell mutiert — User-Entscheidung).
+**Re-Trigger-Schwellen (klar verifizierbar):**
+1. **Untrigger-Drift:** ≥1 dokumentierter Real-World-Case wo User ein `openpyxl`-Live-Tool-Mutation macht UND Skill silent bleibt (Detection via Pre-Commit-Hook-Block oder downstream-Audit-Fail) → konkretes Pain-Signal.
+2. **Overtrigger-Drift:** ≥1 Case wo Skill triggert bei klarem Non-Smoke-Kontext (z.B. Markdown-Edit, `!`-Routing-Trigger) und User-Override braucht.
+3. **Description-Mutation-Anlass:** SKILL.md description wird aus anderem Grund substantiell editiert (Scope-Expansion §C/§D inkl., neues 4. Live-Tool, etc.) → Optimization-Loop wird auf neuer Description-Baseline sinnvoll.
+4. **Tooling-Fix:** skill-creator-Plugin patched select-Issue upstream ODER WSL2-Dynastie-Bridge wird für anderen Use-Case aufgesetzt (sunk-cost-Argument).
 
-**Memory-Anker:** `feedback_skill_name_is_scope_contract` (description literal, nicht aspirational) · `feedback_brainstorming_terminal_override_dynastie` (Pickup als eigene Session) · `feedback_codex_default_english_in_dynastie` (German für etwaige Codex-Sparring-Pässe auf neuer description).
+**Durables Substrate (für nächsten Pickup, falls Re-Trigger hits):**
+- Eval-Set: `01_Skills/xlsx-smoke-test-runner-workspace/desc-opt-iteration-1/eval_set.json` (20 Queries, 10/10 Split, User-validiert + bewusst editiert; SKILL-Description-Contract-aligned — §C/D/Cell-Format Out-of-Scope-Boundaries explizit covered).
+- Draft-JSON: gleiches Verzeichnis `trigger-eval-draft.json` (Vorstufe vor User-Review).
+- Workspace-Verzeichnis bleibt erhalten unter `01_Skills/xlsx-smoke-test-runner-workspace/` (gitignored falls von Reset-Hook erfasst, sonst lokal-only — Workspace ist Skill-Creator-Convention, kein §18-Substrate).
 
-**Substrate-Pointer:**
-- Aktueller Skill-Dir: `01_Skills/xlsx-smoke-test-runner/` (lean: SKILL.md + safe_insert.py + verify_wrapper.py + tests/ + _fixtures/).
-- Design-Snapshot (gitignored, read-only-Lifecycle): `docs/superpowers/specs/2026-05-25-xlsx-smoke-test-runner-v0.1-design.md`.
-- Drift-Substrate (gitignored): `docs/superpowers/specs/_artifacts/drift-live-vs-doc.md`.
-- Canonical fachlicher Vertrag: `03_Tools/xlsx-smoke-test.md`.
+**Memory-Anker (neu + reused):**
+- NEU: `reference_skill_creator_windows_pipe_incompat` (run_eval.py select.select Pipe-Trap, Line 108, mit Fix-Pfaden) — wird in dieser Session geschrieben.
+- Reused: `feedback_skill_name_is_scope_contract` · `feedback_brainstorming_terminal_override_dynastie` · `feedback_codex_default_english_in_dynastie` · `feedback_redefer_over_prespec_dynastie` · `feedback_windows_console_ascii_safe_inline_python`.
 
-**Anticipated Effort:** ~30-45min total (10min Query-Gen + 5min Review + 15-20min Background-Run + 5min Apply + Commit).
+**§18-Sync-Impact:** Keiner. SESSION-HANDOVER.md ist working-tree-only, außerhalb §18-Trigger-Set. Reiner doc-Commit ohne Sync-Wave.
+
+**Out-of-Scope (war + bleibt):** Kein Code-Change am Skill, kein Hook-Behavior-Change, kein Version-Bump.
 
 ---
 
