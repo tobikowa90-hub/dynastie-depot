@@ -9,6 +9,7 @@ Run:
 Expected (pre-Install): 6/6 FAIL (ImportError on edgar)
 Expected (post-Install + Identity): 6/6 PASS
 """
+
 from __future__ import annotations
 
 import subprocess
@@ -71,7 +72,8 @@ def case_1() -> None:
 # Case 2: MSFT-Lookup
 # ---------------------------------------------------------------------------
 def case_2() -> None:
-    from edgar import set_identity, Company
+    from edgar import Company, set_identity
+
     set_identity(IDENTITY)
     c = Company("MSFT")
     # SEC EDGAR returns Registrar-Legal-Form ("MICROSOFT CORP"), not "Microsoft Corporation".
@@ -94,7 +96,8 @@ def case_3() -> None:
     a comment-vs-code-mismatch (default-annual would return ~6 annual capped, not
     20 quarterly). Forces UC4-style calls to use period='quarterly' explicitly.
     """
-    from edgar import set_identity, Company
+    from edgar import Company, set_identity
+
     set_identity(IDENTITY)
     c = Company("MSFT")
 
@@ -106,8 +109,10 @@ def case_3() -> None:
     )
     df_a = inc_annual.to_dataframe()
     period_cols_a = [
-        col for col in df_a.columns
-        if col not in {"label", "depth", "is_abstract", "is_total", "section", "concept", "confidence"}
+        col
+        for col in df_a.columns
+        if col
+        not in {"label", "depth", "is_abstract", "is_total", "section", "concept", "confidence"}
     ]
     assert any(str(c).startswith("FY") for c in period_cols_a), (
         f"Default period must be annual (FY-prefixed), got period_cols={period_cols_a!r}"
@@ -118,8 +123,10 @@ def case_3() -> None:
     assert inc_q is not None, "income_statement(period='quarterly', periods=4) returned None"
     df_q = inc_q.to_dataframe()
     period_cols_q = [
-        col for col in df_q.columns
-        if col not in {"label", "depth", "is_abstract", "is_total", "section", "concept", "confidence"}
+        col
+        for col in df_q.columns
+        if col
+        not in {"label", "depth", "is_abstract", "is_total", "section", "concept", "confidence"}
     ]
     assert any(str(c).startswith("Q") for c in period_cols_q), (
         f"Quarterly period must yield Q-prefixed columns, got period_cols={period_cols_q!r}"
@@ -130,14 +137,17 @@ def case_3() -> None:
 # Case 4: Company.to_context() Char-Budget
 # ---------------------------------------------------------------------------
 def case_4() -> None:
-    from edgar import set_identity, Company
+    from edgar import Company, set_identity
+
     set_identity(IDENTITY)
     c = Company("MSFT")
     ctx = c.to_context()
     assert isinstance(ctx, str) and len(ctx) > 0, f"to_context empty/invalid: {ctx!r}"
     char_len = len(ctx)
     # Log live char-len for audit (SKILL.md §3 Drift-Buffer)
-    print(f"  [audit] Company.to_context len = {char_len} chars (budget {COMPANY_TO_CONTEXT_MAX_CHARS})")
+    print(
+        f"  [audit] Company.to_context len = {char_len} chars (budget {COMPANY_TO_CONTEXT_MAX_CHARS})"
+    )
     assert char_len <= COMPANY_TO_CONTEXT_MAX_CHARS, (
         f"Company.to_context exceeds budget: {char_len} > {COMPANY_TO_CONTEXT_MAX_CHARS}"
     )
@@ -147,7 +157,8 @@ def case_4() -> None:
 # Case 5: XBRL.to_context() Char-Budget
 # ---------------------------------------------------------------------------
 def case_5() -> None:
-    from edgar import set_identity, Company
+    from edgar import Company, set_identity
+
     set_identity(IDENTITY)
     c = Company("MSFT")
     filings = c.get_filings(form="10-K")

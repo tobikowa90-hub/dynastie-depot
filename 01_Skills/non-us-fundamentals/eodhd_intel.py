@@ -24,6 +24,7 @@ import json
 import os
 import sys
 from datetime import datetime
+from pathlib import Path
 
 import requests
 import yfinance as yf
@@ -37,16 +38,16 @@ from urllib3.util.retry import Retry
 # Non-US Satelliten mit Yahoo Finance EUR-Symbolen
 NON_US_SATELLITES = {
     "ASML": {
-        "yf_symbol": "ASML.AS",          # Amsterdam Euronext
+        "yf_symbol": "ASML.AS",  # Amsterdam Euronext
         "name": "ASML Holding N.V.",
         "currency": "EUR",
         "exchange": "Amsterdam",
         "reporting": "IFRS",
-        "reporting_freq": "quarterly",    # ASML berichtet quartalsweise
+        "reporting_freq": "quarterly",  # ASML berichtet quartalsweise
         "substitute": "SNPS",
     },
     "RMS": {
-        "yf_symbol": "RMS.PA",            # Paris Euronext
+        "yf_symbol": "RMS.PA",  # Paris Euronext
         "name": "Hermes International SCA",
         "currency": "EUR",
         "exchange": "Paris",
@@ -55,7 +56,7 @@ NON_US_SATELLITES = {
         "substitute": "RACE",
     },
     "SU": {
-        "yf_symbol": "SU.PA",             # Paris Euronext
+        "yf_symbol": "SU.PA",  # Paris Euronext
         "name": "Schneider Electric SE",
         "currency": "EUR",
         "exchange": "Paris",
@@ -65,17 +66,19 @@ NON_US_SATELLITES = {
     },
 }
 
-FLAG_CAPEX_THRESHOLD = 60.0   # CapEx/OCF > 60% = FLAG
-FLAG_SBC_THRESHOLD    = 15.0   # SBC/OCF  > 15% = FLAG
+FLAG_CAPEX_THRESHOLD = 60.0  # CapEx/OCF > 60% = FLAG
+FLAG_SBC_THRESHOLD = 15.0  # SBC/OCF  > 15% = FLAG
+
 
 # API-Keys: config.json hat Vorrang, Env-Var als Fallback
 def _load_config() -> dict:
-    cfg_path = os.path.join(os.path.dirname(__file__), "config.json")
+    cfg_path = Path(__file__).parent / "config.json"
     try:
-        with open(cfg_path, encoding="utf-8") as f:
+        with cfg_path.open(encoding="utf-8") as f:
             return json.load(f)
-    except Exception:
+    except OSError, json.JSONDecodeError:
         return {}
+
 
 _CFG = _load_config()
 FRED_API_KEY = _CFG.get("fred_api_key") or os.getenv("FRED_API_KEY", "")
@@ -84,6 +87,7 @@ FRED_API_KEY = _CFG.get("fred_api_key") or os.getenv("FRED_API_KEY", "")
 # ---------------------------------------------------------------------------
 # FRED / WACC
 # ---------------------------------------------------------------------------
+
 
 def _get_http_session() -> requests.Session:
     """HTTP-Session mit Retry-Logik fuer FRED-Calls."""
@@ -100,7 +104,7 @@ def fetch_wacc_hurdle() -> dict:
     Fallback: statischer Wert 4.20% risikofreier Zins wenn kein Key oder API-Fehler.
     """
     EQUITY_RISK_PREMIUM = 5.0  # Standard-ERP
-    WACC_BUFFER = 5.0          # Eiserne Regel: ROIC > WACC + 5%
+    WACC_BUFFER = 5.0  # Eiserne Regel: ROIC > WACC + 5%
 
     if FRED_API_KEY:
         try:
@@ -113,7 +117,7 @@ def fetch_wacc_hurdle() -> dict:
             resp.raise_for_status()
             risk_free = float(resp.json()["observations"][0]["value"])
             source = "Live (FRED DGS10)"
-        except Exception:
+        except requests.RequestException, KeyError, IndexError, ValueError:
             risk_free = 4.20
             source = "Fallback (FRED-Fehler)"
     else:
@@ -134,13 +138,14 @@ def fetch_wacc_hurdle() -> dict:
 # Hilfsfunktionen
 # ---------------------------------------------------------------------------
 
+
 def _safe(val, default=0.0):
     """Sichere Konvertierung zu float."""
     try:
         if val is None or str(val) in ("None", "", "nan", "NaT"):
             return default
         return float(val)
-    except (ValueError, TypeError):
+    except ValueError, TypeError:
         return default
 
 
@@ -192,6 +197,7 @@ def _get_is_row(is_df, *row_names):
 # Datenabruf und Aufbereitung
 # ---------------------------------------------------------------------------
 
+
 def fetch_metrics(ticker: str) -> dict:
     """Hole und berechne alle DEFCON-relevanten Metriken via yfinance."""
     meta = NON_US_SATELLITES[ticker]
@@ -201,10 +207,10 @@ def fetch_metrics(ticker: str) -> dict:
     t = yf.Ticker(sym)
 
     info = t.info or {}
-    cf = t.cashflow           # Jaehrlich, neueste zuerst
-    bs = t.balance_sheet      # Jaehrlich
-    inc = t.income_stmt       # Jaehrlich
-    cf_q = t.quarterly_cashflow  # Quartalsweise
+    cf = t.cashflow  # Jaehrlich, neueste zuerst
+    bs = t.balance_sheet  # Jaehrlich
+    inc = t.income_stmt  # Jaehrlich
+    cf_q = t.quarterly_cashflow  # noqa: F841  # Quartalsweise (WIP-Stub fuer geplante Q-CF-Auswertung)
 
     # --- Aktueller Kurs & Marktdaten ---
     price = _safe(info.get("currentPrice") or info.get("regularMarketPrice"))
@@ -212,17 +218,24 @@ def fetch_metrics(ticker: str) -> dict:
     currency = info.get("currency", "EUR")
 
     # --- Cashflow-Historik (letzte 3 Jahre) ---
-    ocf_row = _get_cf_row(cf, "Operating Cash Flow", "Cash From Operations",
-                           "Total Cash From Operating Activities")
-    capex_row = _get_cf_row(cf, "Capital Expenditure", "Capital Expenditures",
-                             "Purchase Of Property Plant And Equipment")
+    ocf_row = _get_cf_row(
+        cf, "Operating Cash Flow", "Cash From Operations", "Total Cash From Operating Activities"
+    )
+    capex_row = _get_cf_row(
+        cf,
+        "Capital Expenditure",
+        "Capital Expenditures",
+        "Purchase Of Property Plant And Equipment",
+    )
     fcf_row = _get_cf_row(cf, "Free Cash Flow")
     sbc_row = _get_cf_row(cf, "Stock Based Compensation")
 
     # info-level TTM values as fallback for IFRS tickers (yfinance annual bug)
     info_ocf_ttm = _safe(info.get("operatingCashflow"))
     info_fcf_ttm = _safe(info.get("freeCashflow"))
-    info_capex_ttm = (info_ocf_ttm - info_fcf_ttm) if (info_ocf_ttm > 0 and info_fcf_ttm > 0) else None
+    info_capex_ttm = (
+        (info_ocf_ttm - info_fcf_ttm) if (info_ocf_ttm > 0 and info_fcf_ttm > 0) else None
+    )
 
     capex_ocf_history = []
     if cf is not None and not cf.empty:
@@ -243,7 +256,7 @@ def fetch_metrics(ticker: str) -> dict:
                     fcf_val = None  # Historical CapEx not available via yfinance
 
             # FCF fallback (normal case: CapEx known but FCF row missing)
-            if fcf_val is None or fcf_val == 0 and ocf > 0:
+            if fcf_val is None or (fcf_val == 0 and ocf > 0):
                 fcf_val = ocf - capex if capex > 0 else None
             rev = _safe(info.get("totalRevenue")) if year == str(datetime.now().year - 1) else None
             # Versuche Revenue aus IS
@@ -255,15 +268,17 @@ def fetch_metrics(ticker: str) -> dict:
             ratio = _pct(capex, ocf) if ocf > 0 and capex > 0 else None
             fcf_margin = _pct(fcf_val, rev) if (fcf_val is not None and rev and rev > 0) else None
 
-            capex_ocf_history.append({
-                "year": year,
-                "ocf_m": _m(ocf),
-                "capex_m": _m(capex) if capex > 0 else None,
-                "fcf_m": _m(fcf_val) if fcf_val is not None else None,
-                "capex_ocf_pct": ratio,
-                "fcf_margin_pct": fcf_margin,
-                "revenue_m": _m(rev) if rev else None,
-            })
+            capex_ocf_history.append(
+                {
+                    "year": year,
+                    "ocf_m": _m(ocf),
+                    "capex_m": _m(capex) if capex > 0 else None,
+                    "fcf_m": _m(fcf_val) if fcf_val is not None else None,
+                    "capex_ocf_pct": ratio,
+                    "fcf_margin_pct": fcf_margin,
+                    "revenue_m": _m(rev) if rev else None,
+                }
+            )
 
     # Aktuellste Werte fuer Scoring
     latest_ocf = _safe(info.get("operatingCashflow"))
@@ -282,14 +297,19 @@ def fetch_metrics(ticker: str) -> dict:
     if len(capex_ocf_history) >= 2:
         cur = capex_ocf_history[0]
         prv = capex_ocf_history[1]
-        if (cur["fcf_m"] is not None and prv["fcf_m"] is not None and
-                cur["capex_m"] is not None and prv["capex_m"] is not None):
+        if (
+            cur["fcf_m"] is not None
+            and prv["fcf_m"] is not None
+            and cur["capex_m"] is not None
+            and prv["capex_m"] is not None
+        ):
             flag_fcf_trend = (cur["fcf_m"] < prv["fcf_m"]) and (cur["capex_m"] > prv["capex_m"])
 
     # SBC-Flag: SBC > 15% OCF
     latest_sbc = _safe(
-        sbc_row[list(cf.columns)[0]]
-        if sbc_row is not None and cf is not None and not cf.empty else None
+        sbc_row[next(iter(cf.columns))]
+        if sbc_row is not None and cf is not None and not cf.empty
+        else None
     )
     sbc_ocf_pct = _pct(latest_sbc, latest_ocf) if latest_ocf > 0 and latest_sbc > 0 else None
     flag_sbc = sbc_ocf_pct is not None and sbc_ocf_pct > FLAG_SBC_THRESHOLD
@@ -299,13 +319,15 @@ def fetch_metrics(ticker: str) -> dict:
 
     # --- Bilanz ---
     total_assets = _safe(info.get("totalAssets")) or _safe(
-        _get_bs_row(bs, "Total Assets")[list(bs.columns)[0]]
-        if bs is not None and not bs.empty and _get_bs_row(bs, "Total Assets") is not None else None
+        _get_bs_row(bs, "Total Assets")[next(iter(bs.columns))]
+        if bs is not None and not bs.empty and _get_bs_row(bs, "Total Assets") is not None
+        else None
     )
     goodwill_row = _get_bs_row(bs, "Goodwill", "Goodwill And Other Intangible Assets")
     goodwill = _safe(
-        goodwill_row[list(bs.columns)[0]]
-        if goodwill_row is not None and bs is not None and not bs.empty else None
+        goodwill_row[next(iter(bs.columns))]
+        if goodwill_row is not None and bs is not None and not bs.empty
+        else None
     )
     net_debt = _safe(info.get("netDebt") or info.get("totalDebt"))
     ebitda = _safe(info.get("ebitda"))
@@ -339,11 +361,18 @@ def fetch_metrics(ticker: str) -> dict:
     # ROIC Proxy: EBIT*(1-0.25) / (Total Assets - Current Liabilities)
     ebit = _safe(info.get("ebit"))
     curr_liab = _safe(info.get("currentLiabilities")) or _safe(
-        _get_bs_row(bs, "Current Liabilities", "Total Current Liabilities")[list(bs.columns)[0]]
-        if bs is not None and not bs.empty and _get_bs_row(bs, "Current Liabilities", "Total Current Liabilities") is not None else None
+        _get_bs_row(bs, "Current Liabilities", "Total Current Liabilities")[next(iter(bs.columns))]
+        if bs is not None
+        and not bs.empty
+        and _get_bs_row(bs, "Current Liabilities", "Total Current Liabilities") is not None
+        else None
     )
     invested_capital = total_assets - curr_liab if total_assets and curr_liab else None
-    roic_proxy = round(ebit * 0.75 / invested_capital * 100, 1) if ebit and invested_capital and invested_capital > 0 else None
+    roic_proxy = (
+        round(ebit * 0.75 / invested_capital * 100, 1)
+        if ebit and invested_capital and invested_capital > 0
+        else None
+    )
 
     # --- Technicals ---
     sma200 = _safe(info.get("twoHundredDayAverage"))
@@ -351,12 +380,16 @@ def fetch_metrics(ticker: str) -> dict:
     week52_high = _safe(info.get("fiftyTwoWeekHigh"))
     week52_low = _safe(info.get("fiftyTwoWeekLow"))
     beta = _safe(info.get("beta"))
-    ath_dist_pct = _pct(price - week52_high, week52_high) if week52_high else None  # 52W als ATH-Proxy
+    ath_dist_pct = (
+        _pct(price - week52_high, week52_high) if week52_high else None
+    )  # 52W als ATH-Proxy
 
     # --- Valuation ---
     fwd_pe = _safe(info.get("forwardPE"))
     trailing_pe = _safe(info.get("trailingPE"))
-    p_fcf = round(market_cap / latest_fcf, 1) if market_cap and latest_fcf and latest_fcf > 0 else None
+    p_fcf = (
+        round(market_cap / latest_fcf, 1) if market_cap and latest_fcf and latest_fcf > 0 else None
+    )
     ev_ebitda = _safe(info.get("enterpriseToEbitda"))
     peg = _safe(info.get("pegRatio"))
 
@@ -384,7 +417,6 @@ def fetch_metrics(ticker: str) -> dict:
         "reporting_freq": meta["reporting_freq"],
         "substitute": meta["substitute"],
         "scan_date": datetime.now().strftime("%Y-%m-%d"),
-
         # Kurs
         "price": price,
         "market_cap_m": _m(market_cap),
@@ -394,7 +426,6 @@ def fetch_metrics(ticker: str) -> dict:
         "week52_low": week52_low,
         "beta": beta,
         "ath_dist_pct": ath_dist_pct,
-
         # CapEx/OCF + Flags
         "capex_ocf_pct": latest_capex_ocf_pct,
         "flag_capex": flag_capex,
@@ -402,14 +433,12 @@ def fetch_metrics(ticker: str) -> dict:
         "flag_sbc": flag_sbc,
         "sbc_ocf_pct": sbc_ocf_pct,
         "capex_ocf_history": capex_ocf_history,
-
         # Bilanz
         "net_debt_m": _m(net_debt),
         "net_debt_ebitda": net_debt_ebitda,
         "goodwill_pct_assets": goodwill_pct,
         "current_ratio": current_ratio,
         "ebitda_m": _m(ebitda),
-
         # Margen
         "revenue_m": _m(revenue),
         "gross_margin_pct": gross_margin_pct,
@@ -417,7 +446,6 @@ def fetch_metrics(ticker: str) -> dict:
         "net_margin_pct": net_margin_pct,
         "gm_trend_3y": gm_trend,
         "sbc_revenue_pct": sbc_revenue_pct,
-
         # Valuation
         "fwd_pe": fwd_pe,
         "trailing_pe": trailing_pe,
@@ -425,18 +453,15 @@ def fetch_metrics(ticker: str) -> dict:
         "ev_ebitda": ev_ebitda,
         "fcf_yield_pct": fcf_yield_pct,
         "peg": peg,
-
         # ROIC
         "roic_proxy_pct": roic_proxy,
         "roe_pct": roe,
         "roa_pct": roa,
-
         # Analysten
         "analyst_target": analyst_target,
         "target_upside_pct": target_upside,
         "analyst_consensus": recommendations,
         "n_analysts": n_analysts,
-
         # Ownership
         "pct_insiders": pct_insiders,
         "pct_institutions": pct_institutions,
@@ -446,6 +471,7 @@ def fetch_metrics(ticker: str) -> dict:
 # ---------------------------------------------------------------------------
 # Output Formatter
 # ---------------------------------------------------------------------------
+
 
 def _flag_icon(condition):
     return "🔴" if condition else "🟢"
@@ -482,15 +508,21 @@ def format_defcon_block(m: dict, wacc: dict | None = None) -> str:
     # --- WACC-Kontext ---
     if wacc:
         roic_ok = m.get("roic_proxy_pct") and m["roic_proxy_pct"] > wacc["roic_hurdle_pct"]
-        roic_vs = f"{m['roic_proxy_pct']:.1f}% vs. Hürde {wacc['roic_hurdle_pct']:.1f}% — {'✅ übertrifft' if roic_ok else '⚠️ verfehlt'}" if m.get("roic_proxy_pct") else "n/a"
-        lines.extend([
-            "### WACC-Kontext",
-            "",
-            f"| Risikofreier Zins (10Y) | WACC (ERP +5%) | ROIC-Hürde (WACC +5%) | ROIC Proxy |",
-            f"|------------------------|----------------|----------------------|------------|",
-            f"| {wacc['risk_free_pct']:.2f}% ({wacc['source']}) | {wacc['wacc_pct']:.2f}% | {wacc['roic_hurdle_pct']:.2f}% | {roic_vs} |",
-            "",
-        ])
+        roic_vs = (
+            f"{m['roic_proxy_pct']:.1f}% vs. Hürde {wacc['roic_hurdle_pct']:.1f}% — {'✅ übertrifft' if roic_ok else '⚠️ verfehlt'}"
+            if m.get("roic_proxy_pct")
+            else "n/a"
+        )
+        lines.extend(
+            [
+                "### WACC-Kontext",
+                "",
+                "| Risikofreier Zins (10Y) | WACC (ERP +5%) | ROIC-Hürde (WACC +5%) | ROIC Proxy |",
+                "|------------------------|----------------|----------------------|------------|",
+                f"| {wacc['risk_free_pct']:.2f}% ({wacc['source']}) | {wacc['wacc_pct']:.2f}% | {wacc['roic_hurdle_pct']:.2f}% | {roic_vs} |",
+                "",
+            ]
+        )
 
     # --- CapEx/OCF ---
     # Baue Warn-Suffixe fuer zusaetzliche Flags
@@ -501,17 +533,23 @@ def format_defcon_block(m: dict, wacc: dict | None = None) -> str:
         extra_flags.append(f"⚠️ SBC/OCF {m['sbc_ocf_pct']:.1f}% >15%")
     extra_str = " | " + " | ".join(extra_flags) if extra_flags else ""
 
-    lines.extend([
-        f"### CapEx/OCF — {flag_icon} {flag_text}{extra_str}",
-        "",
-        f"| Jahr | OCF ({curr}M) | CapEx ({curr}M) | FCF ({curr}M) | CapEx/OCF | FCF-Marge |",
-        "|------|-------------|-------------|------------|-----------|-----------|",
-    ])
+    lines.extend(
+        [
+            f"### CapEx/OCF — {flag_icon} {flag_text}{extra_str}",
+            "",
+            f"| Jahr | OCF ({curr}M) | CapEx ({curr}M) | FCF ({curr}M) | CapEx/OCF | FCF-Marge |",
+            "|------|-------------|-------------|------------|-----------|-----------|",
+        ]
+    )
     for row in m["capex_ocf_history"]:
         flag_marker = " 🔴" if row["capex_ocf_pct"] and row["capex_ocf_pct"] > 60 else ""
         capex_str = f"{row['capex_m']:,.1f}" if row["capex_m"] is not None else "n/a"
         fcf_str = f"{row['fcf_m']:,.1f}" if row["fcf_m"] is not None else "n/a"
-        ratio_str = f"{row['capex_ocf_pct']:.1f}%{flag_marker}" if row["capex_ocf_pct"] is not None else "n/a"
+        ratio_str = (
+            f"{row['capex_ocf_pct']:.1f}%{flag_marker}"
+            if row["capex_ocf_pct"] is not None
+            else "n/a"
+        )
         margin_str = f"{row['fcf_margin_pct']:.1f}%" if row["fcf_margin_pct"] is not None else "n/a"
         lines.append(
             f"| {row['year']} | {row['ocf_m']:,.1f} | {capex_str} | {fcf_str} | {ratio_str} | {margin_str} |"
@@ -519,110 +557,164 @@ def format_defcon_block(m: dict, wacc: dict | None = None) -> str:
     lines.append("")
 
     # --- Bilanz ---
-    lines.extend([
-        "### Bilanz",
-        "",
-        "| Metrik | Wert | Ampel |",
-        "|--------|------|-------|",
-    ])
+    lines.extend(
+        [
+            "### Bilanz",
+            "",
+            "| Metrik | Wert | Ampel |",
+            "|--------|------|-------|",
+        ]
+    )
     if m["net_debt_ebitda"] is not None:
-        nd_label = "🟢 <2.5x" if m["net_debt_ebitda"] < 2.5 else "🟡 2.5-3.5x" if m["net_debt_ebitda"] < 3.5 else "🔴 >3.5x"
+        nd_label = (
+            "🟢 <2.5x"
+            if m["net_debt_ebitda"] < 2.5
+            else "🟡 2.5-3.5x"
+            if m["net_debt_ebitda"] < 3.5
+            else "🔴 >3.5x"
+        )
         lines.append(f"| Net Debt/EBITDA | {m['net_debt_ebitda']:.2f}x | {nd_label} |")
     if m["goodwill_pct_assets"] is not None:
-        gw_label = "🟢 <30%" if m["goodwill_pct_assets"] < 30 else "🟡 30-50%" if m["goodwill_pct_assets"] < 50 else "🔴 >50%"
+        gw_label = (
+            "🟢 <30%"
+            if m["goodwill_pct_assets"] < 30
+            else "🟡 30-50%"
+            if m["goodwill_pct_assets"] < 50
+            else "🔴 >50%"
+        )
         lines.append(f"| Goodwill/Assets | {m['goodwill_pct_assets']:.1f}% | {gw_label} |")
     if m["current_ratio"]:
-        cr_label = "🟢 >1.5" if m["current_ratio"] > 1.5 else "🟡 1.0-1.5" if m["current_ratio"] >= 1.0 else "🔴 <1.0"
+        cr_label = (
+            "🟢 >1.5"
+            if m["current_ratio"] > 1.5
+            else "🟡 1.0-1.5"
+            if m["current_ratio"] >= 1.0
+            else "🔴 <1.0"
+        )
         lines.append(f"| Current Ratio | {m['current_ratio']:.2f} | {cr_label} |")
     lines.append(f"| Net Debt | {m['net_debt_m']:,.0f}M {curr} | — |")
     lines.append("")
 
     # --- Valuation ---
-    lines.extend([
-        "### Valuation",
-        "",
-        "| Metrik | Wert |",
-        "|--------|------|",
-        f"| Fwd P/E | {m['fwd_pe']:.1f}x |" if m["fwd_pe"] else "| Fwd P/E | n/a |",
-        f"| P/FCF | {m['p_fcf']:.1f}x |" if m["p_fcf"] else "| P/FCF | n/a |",
-        f"| EV/EBITDA | {m['ev_ebitda']:.1f}x |" if m["ev_ebitda"] else "| EV/EBITDA | n/a |",
-        f"| FCF Yield | {m['fcf_yield_pct']:.2f}% |" if m["fcf_yield_pct"] else "| FCF Yield | n/a |",
-        f"| PEG | {m['peg']:.2f} |" if m["peg"] else "| PEG | n/a |",
-        "",
-    ])
+    lines.extend(
+        [
+            "### Valuation",
+            "",
+            "| Metrik | Wert |",
+            "|--------|------|",
+            f"| Fwd P/E | {m['fwd_pe']:.1f}x |" if m["fwd_pe"] else "| Fwd P/E | n/a |",
+            f"| P/FCF | {m['p_fcf']:.1f}x |" if m["p_fcf"] else "| P/FCF | n/a |",
+            f"| EV/EBITDA | {m['ev_ebitda']:.1f}x |" if m["ev_ebitda"] else "| EV/EBITDA | n/a |",
+            f"| FCF Yield | {m['fcf_yield_pct']:.2f}% |"
+            if m["fcf_yield_pct"]
+            else "| FCF Yield | n/a |",
+            f"| PEG | {m['peg']:.2f} |" if m["peg"] else "| PEG | n/a |",
+            "",
+        ]
+    )
 
     # --- Margen + GM-Trend ---
-    lines.extend([
-        "### Margen",
-        "",
-        "| Metrik | Wert |",
-        "|--------|------|",
-        f"| Gross Margin | {m['gross_margin_pct']:.1f}% |" if m["gross_margin_pct"] else "| Gross Margin | n/a |",
-        f"| FCF-Marge | {m['fcf_margin_pct']:.1f}% |" if m["fcf_margin_pct"] else "| FCF-Marge | n/a |",
-        f"| Net Margin | {m['net_margin_pct']:.1f}% |" if m["net_margin_pct"] else "| Net Margin | n/a |",
-        f"| SBC/Revenue | {m['sbc_revenue_pct']:.1f}% |" if m["sbc_revenue_pct"] else "| SBC/Revenue | n/a |",
-        "",
-    ])
+    lines.extend(
+        [
+            "### Margen",
+            "",
+            "| Metrik | Wert |",
+            "|--------|------|",
+            f"| Gross Margin | {m['gross_margin_pct']:.1f}% |"
+            if m["gross_margin_pct"]
+            else "| Gross Margin | n/a |",
+            f"| FCF-Marge | {m['fcf_margin_pct']:.1f}% |"
+            if m["fcf_margin_pct"]
+            else "| FCF-Marge | n/a |",
+            f"| Net Margin | {m['net_margin_pct']:.1f}% |"
+            if m["net_margin_pct"]
+            else "| Net Margin | n/a |",
+            f"| SBC/Revenue | {m['sbc_revenue_pct']:.1f}% |"
+            if m["sbc_revenue_pct"]
+            else "| SBC/Revenue | n/a |",
+            "",
+        ]
+    )
 
     # GM-Trend
     gm_vals = [r["gm_pct"] for r in m["gm_trend_3y"] if r["gm_pct"]]
     if len(gm_vals) >= 2:
         gm_delta = gm_vals[0] - gm_vals[-1]
         trend_label = (
-            f"🟢 Steigend +{gm_delta:.1f}pp" if gm_delta > 1
-            else f"🔴 Fallend {gm_delta:.1f}pp" if gm_delta < -1
+            f"🟢 Steigend +{gm_delta:.1f}pp"
+            if gm_delta > 1
+            else f"🔴 Fallend {gm_delta:.1f}pp"
+            if gm_delta < -1
             else "🟡 Stabil"
         )
-        gm_str = " → ".join(f"{r['year']}: {r['gm_pct']:.1f}%" for r in reversed(m["gm_trend_3y"]) if r["gm_pct"])
+        gm_str = " → ".join(
+            f"{r['year']}: {r['gm_pct']:.1f}%" for r in reversed(m["gm_trend_3y"]) if r["gm_pct"]
+        )
         lines.append(f"**GM-Trend 3J:** {trend_label} | {gm_str}")
         lines.append("")
 
     # --- ROIC ---
-    lines.extend([
-        "### Profitabilitaet",
-        "",
-        f"| ROIC (Proxy) | {'%.1f%%' % m['roic_proxy_pct'] if m['roic_proxy_pct'] else 'n/a'} | _Verifikation via GuruFocus empfohlen_ |",
-        f"| ROE | {'%.1f%%' % m['roe_pct'] if m['roe_pct'] else 'n/a'} | |",
-        f"| ROA | {'%.1f%%' % m['roa_pct'] if m['roa_pct'] else 'n/a'} | |",
-        "",
-    ])
+    lines.extend(
+        [
+            "### Profitabilitaet",
+            "",
+            f"| ROIC (Proxy) | {'{:.1f}%'.format(m['roic_proxy_pct']) if m['roic_proxy_pct'] else 'n/a'} | _Verifikation via GuruFocus empfohlen_ |",
+            f"| ROE | {'{:.1f}%'.format(m['roe_pct']) if m['roe_pct'] else 'n/a'} | |",
+            f"| ROA | {'{:.1f}%'.format(m['roa_pct']) if m['roa_pct'] else 'n/a'} | |",
+            "",
+        ]
+    )
 
     # --- Technicals ---
     if m["sma200"] and m["price"]:
         vs_200 = round((m["price"] / m["sma200"] - 1) * 100, 1)
         ma_label = "🟢 ueber 200MA" if vs_200 > 0 else "🔴 unter 200MA"
         ath_str = f"{m['ath_dist_pct']:.1f}%" if m["ath_dist_pct"] else "—"
-        lines.extend([
-            "### Technicals (Kurzblock)",
-            "",
-            f"| Kurs | SMA-200 | vs. 200MA | 52W-Hoch | Dist. 52W | Beta |",
-            f"|------|---------|-----------|----------|-----------|------|",
-            f"| {m['price']:.2f} | {m['sma200']:.2f} | {vs_200:+.1f}% {ma_label} "
-            f"| {m['week52_high']:.2f} | {ath_str} | {m['beta']:.2f} |",
-            "",
-        ])
+        lines.extend(
+            [
+                "### Technicals (Kurzblock)",
+                "",
+                "| Kurs | SMA-200 | vs. 200MA | 52W-Hoch | Dist. 52W | Beta |",
+                "|------|---------|-----------|----------|-----------|------|",
+                f"| {m['price']:.2f} | {m['sma200']:.2f} | {vs_200:+.1f}% {ma_label} "
+                f"| {m['week52_high']:.2f} | {ath_str} | {m['beta']:.2f} |",
+                "",
+            ]
+        )
 
     # --- Analysten ---
     if m["n_analysts"] > 0:
         upside_str = f"{m['target_upside_pct']:+.1f}%" if m["target_upside_pct"] else "—"
-        lines.extend([
-            "### Analysten",
-            "",
-            f"**Konsensus:** {m['analyst_consensus']} ({m['n_analysts']} Analysten)",
-            f"**Ø Kursziel:** {m['analyst_target']:.2f} {curr} ({upside_str} Upside)" if m["analyst_target"] else "",
-            "",
-        ])
+        lines.extend(
+            [
+                "### Analysten",
+                "",
+                f"**Konsensus:** {m['analyst_consensus']} ({m['n_analysts']} Analysten)",
+                f"**Ø Kursziel:** {m['analyst_target']:.2f} {curr} ({upside_str} Upside)"
+                if m["analyst_target"]
+                else "",
+                "",
+            ]
+        )
 
     # --- Ownership ---
-    ins_label = "🟢 >1%" if m["pct_insiders"] >= 1 else "🟡 0.1-1%" if m["pct_insiders"] >= 0.1 else "🔴 <0.1%"
-    lines.extend([
-        "### Ownership",
-        "",
-        f"- Insider: {m['pct_insiders']:.2f}% {ins_label}",
-        f"- Institutionen: {m['pct_institutions']:.1f}%",
-        "",
-        f"_Non-US Insider-Pflicht: {'AFM' if m['ticker'] == 'ASML' else 'AMF'} manuell pruefen — keine Form-4-Pflicht._",
-    ])
+    ins_label = (
+        "🟢 >1%"
+        if m["pct_insiders"] >= 1
+        else "🟡 0.1-1%"
+        if m["pct_insiders"] >= 0.1
+        else "🔴 <0.1%"
+    )
+    lines.extend(
+        [
+            "### Ownership",
+            "",
+            f"- Insider: {m['pct_insiders']:.2f}% {ins_label}",
+            f"- Institutionen: {m['pct_institutions']:.1f}%",
+            "",
+            f"_Non-US Insider-Pflicht: {'AFM' if m['ticker'] == 'ASML' else 'AMF'} manuell pruefen — keine Form-4-Pflicht._",
+        ]
+    )
 
     return "\n".join(lines)
 
@@ -630,7 +722,7 @@ def format_defcon_block(m: dict, wacc: dict | None = None) -> str:
 def format_summary_table(results: list[dict]) -> str:
     """Kompakte Uebersichtstabelle aller Non-US-Satelliten."""
     lines = [
-        f"# Non-US Fundamentals — Uebersicht",
+        "# Non-US Fundamentals — Uebersicht",
         f"**Datum:** {datetime.now().strftime('%d.%m.%Y')} | Quelle: Yahoo Finance (EUR)",
         "",
         "| Ticker | Kurs EUR | CapEx/OCF | FLAG | Fwd P/E | P/FCF | FCF-Marge | Net Debt/EBITDA |",
@@ -643,11 +735,11 @@ def format_summary_table(results: list[dict]) -> str:
         flag = "🔴" if m["flag_capex"] else "🟢"
         lines.append(
             f"| {m['ticker']} | {m['price']:.2f} | "
-            f"{'%.1f%%' % m['capex_ocf_pct'] if m['capex_ocf_pct'] else '—'} | {flag} | "
-            f"{'%.1f%%' % m['fwd_pe'] + 'x' if m['fwd_pe'] else '—'} | "
-            f"{'%.1f' % m['p_fcf'] + 'x' if m['p_fcf'] else '—'} | "
-            f"{'%.1f%%' % m['fcf_margin_pct'] if m['fcf_margin_pct'] else '—'} | "
-            f"{'%.2f' % m['net_debt_ebitda'] + 'x' if m['net_debt_ebitda'] else '—'} |"
+            f"{'{:.1f}%'.format(m['capex_ocf_pct']) if m['capex_ocf_pct'] else '—'} | {flag} | "
+            f"{'{:.1f}%'.format(m['fwd_pe']) + 'x' if m['fwd_pe'] else '—'} | "
+            f"{'{:.1f}'.format(m['p_fcf']) + 'x' if m['p_fcf'] else '—'} | "
+            f"{'{:.1f}%'.format(m['fcf_margin_pct']) if m['fcf_margin_pct'] else '—'} | "
+            f"{'{:.2f}'.format(m['net_debt_ebitda']) + 'x' if m['net_debt_ebitda'] else '—'} |"
         )
     return "\n".join(lines)
 
@@ -655,6 +747,7 @@ def format_summary_table(results: list[dict]) -> str:
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -675,16 +768,24 @@ def main():
     args = parser.parse_args()
 
     if args.command == "scan":
-        tickers = [t.upper() for t in args.tickers] if args.tickers else list(NON_US_SATELLITES.keys())
+        tickers = (
+            [t.upper() for t in args.tickers] if args.tickers else list(NON_US_SATELLITES.keys())
+        )
         results = []
         for ticker in tickers:
             if ticker not in NON_US_SATELLITES:
-                results.append({"ticker": ticker, "error": f"Nicht in NON_US_SATELLITES. Verfuegbar: {list(NON_US_SATELLITES.keys())}"})
+                results.append(
+                    {
+                        "ticker": ticker,
+                        "error": f"Nicht in NON_US_SATELLITES. Verfuegbar: {list(NON_US_SATELLITES.keys())}",
+                    }
+                )
                 continue
             try:
                 m = fetch_metrics(ticker)
                 results.append(m)
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
+                # yfinance kann diverse Exceptions werfen; isolieren pro Ticker
                 results.append({"ticker": ticker, "error": str(e)})
 
         if args.json:
@@ -702,13 +803,17 @@ def main():
     elif args.command == "detail":
         ticker = args.ticker.upper()
         if ticker not in NON_US_SATELLITES:
-            print(f"FEHLER: {ticker} unbekannt. Verfuegbar: {list(NON_US_SATELLITES.keys())}", file=sys.stderr)
+            print(
+                f"FEHLER: {ticker} unbekannt. Verfuegbar: {list(NON_US_SATELLITES.keys())}",
+                file=sys.stderr,
+            )
             sys.exit(1)
         try:
             m = fetch_metrics(ticker)
             wacc = fetch_wacc_hurdle()
             print(format_defcon_block(m, wacc=wacc))
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
+            # CLI top-level catch: print + exit
             print(f"FEHLER: {e}", file=sys.stderr)
             sys.exit(1)
 
@@ -722,10 +827,13 @@ def main():
                 if m["sma200"] and m["price"]:
                     vs = round((m["price"] / m["sma200"] - 1) * 100, 1)
                     ath_dist = f"{m['ath_dist_pct']:.1f}%" if m["ath_dist_pct"] else "—"
-                    print(f"| {ticker} | {m['price']:.2f} | {m['sma200']:.2f} | {vs:+.1f}% | {m['week52_high']:.2f} | {ath_dist} |")
+                    print(
+                        f"| {ticker} | {m['price']:.2f} | {m['sma200']:.2f} | {vs:+.1f}% | {m['week52_high']:.2f} | {ath_dist} |"
+                    )
                 else:
                     print(f"| {ticker} | {m['price']:.2f} | — | — | — | — |")
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
+                # Batch-Loop pro Ticker; isoliert Fail je Zeile
                 print(f"| {ticker} | FEHLER | — | — | — | {e} |")
 
 

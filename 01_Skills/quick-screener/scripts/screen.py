@@ -16,10 +16,10 @@ import argparse
 import csv
 import json
 import sys
-import yaml
-from pathlib import Path
 from dataclasses import dataclass, field
-from typing import Optional
+from pathlib import Path
+
+import yaml
 
 # --- Schwellenwerte (synchron mit thresholds.md) ---
 
@@ -47,15 +47,15 @@ EXCEPTION_THRESHOLDS = {
 @dataclass
 class ScreenResult:
     ticker: str
-    p_fcf: Optional[float] = None
-    roic: Optional[float] = None
-    gross_margin: Optional[float] = None
-    rev_cagr: Optional[float] = None
-    morningstar_moat: Optional[str] = None  # "Wide", "Narrow", "None"
+    p_fcf: float | None = None
+    roic: float | None = None
+    gross_margin: float | None = None
+    rev_cagr: float | None = None
+    morningstar_moat: str | None = None  # "Wide", "Narrow", "None"
     # Exception fields
-    price_book: Optional[float] = None
-    combined_ratio: Optional[float] = None
-    float_growth: Optional[float] = None
+    price_book: float | None = None
+    combined_ratio: float | None = None
+    float_growth: float | None = None
     is_exception: bool = False
     # Results
     ampel_p_fcf: str = ""
@@ -213,7 +213,7 @@ def parse_csv(filepath: str, exceptions: list) -> list:
         "float_growth": ["float_growth", "float growth", "fg"],
     }
 
-    with open(filepath, "r", encoding="utf-8-sig") as f:
+    with Path(filepath).open(encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         headers = {h.lower().strip(): h for h in reader.fieldnames}
 
@@ -237,7 +237,7 @@ def parse_csv(filepath: str, exceptions: list) -> list:
             r = ScreenResult(ticker=ticker)
             r.is_exception = ticker in [e.upper() for e in exceptions]
 
-            def safe_float(field_name):
+            def safe_float(field_name, row=row):
                 col = find_col(field_name)
                 if col and row.get(col):
                     val = row[col].strip().replace("%", "").replace(",", ".")
@@ -266,7 +266,7 @@ def parse_csv(filepath: str, exceptions: list) -> list:
 
 def extract_tickers_from_yaml(yaml_path: str) -> list:
     """Extract watchlist + keine_zuteilung + ersatz tickers from config.yaml."""
-    with open(yaml_path, "r") as f:
+    with Path(yaml_path).open(encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
     tickers = set()
@@ -284,8 +284,8 @@ def extract_tickers_from_yaml(yaml_path: str) -> list:
     for sat in config.get("satelliten", []):
         ersatz = sat.get("ersatz", "")
         if ersatz:
-            for e in str(ersatz).replace("/", ",").split(","):
-                e = e.strip()
+            for raw_e in str(ersatz).replace("/", ",").split(","):
+                e = raw_e.strip()
                 if e:
                     tickers.add(e)
 
@@ -298,11 +298,21 @@ def generate_template(yaml_path: str, output_path: str, exceptions: list):
     tickers = extract_tickers_from_yaml(yaml_path)
 
     headers = [
-        "Ticker", "Name", "P/FCF", "ROIC", "Gross Margin", "Revenue CAGR 5Y",
-        "Morningstar Moat", "P/B", "Combined Ratio", "Float Growth", "Quelle", "Notizen"
+        "Ticker",
+        "Name",
+        "P/FCF",
+        "ROIC",
+        "Gross Margin",
+        "Revenue CAGR 5Y",
+        "Morningstar Moat",
+        "P/B",
+        "Combined Ratio",
+        "Float Growth",
+        "Quelle",
+        "Notizen",
     ]
 
-    with open(output_path, "w", newline="", encoding="utf-8-sig") as f:
+    with Path(output_path).open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.writer(f)
         writer.writerow(headers)
 
@@ -314,7 +324,7 @@ def generate_template(yaml_path: str, output_path: str, exceptions: list):
     print(f"CSV-Template erstellt: {output_path}")
     print(f"  {len(tickers)} Ticker aus config.yaml extrahiert")
     print(f"  Spalten: {', '.join(headers)}")
-    print(f"\nBitte fuellen Sie die leeren Spalten aus und fuehren Sie dann aus:")
+    print("\nBitte fuellen Sie die leeren Spalten aus und fuehren Sie dann aus:")
     print(f"  python scripts/screen.py --csv {output_path}")
 
 
@@ -338,35 +348,43 @@ def validate_data(results: list) -> list:
                 missing.append("Combined Ratio ODER Float Growth ODER ROIC")
 
         if missing:
-            warnings.append({
-                "ticker": r.ticker,
-                "type": "FEHLEND",
-                "detail": f"Fehlende Daten: {', '.join(missing)}",
-                "severity": "hoch"
-            })
+            warnings.append(
+                {
+                    "ticker": r.ticker,
+                    "type": "FEHLEND",
+                    "detail": f"Fehlende Daten: {', '.join(missing)}",
+                    "severity": "hoch",
+                }
+            )
 
         # Implausible values
         if r.p_fcf is not None and r.p_fcf < 0:
-            warnings.append({
-                "ticker": r.ticker,
-                "type": "UNPLAUSIBEL",
-                "detail": f"Negativer P/FCF ({r.p_fcf}) — negativer Free Cash Flow?",
-                "severity": "hoch"
-            })
+            warnings.append(
+                {
+                    "ticker": r.ticker,
+                    "type": "UNPLAUSIBEL",
+                    "detail": f"Negativer P/FCF ({r.p_fcf}) — negativer Free Cash Flow?",
+                    "severity": "hoch",
+                }
+            )
         if r.roic is not None and r.roic > 100:
-            warnings.append({
-                "ticker": r.ticker,
-                "type": "UNPLAUSIBEL",
-                "detail": f"ROIC > 100% ({r.roic}%) — Berechnung pruefen",
-                "severity": "mittel"
-            })
+            warnings.append(
+                {
+                    "ticker": r.ticker,
+                    "type": "UNPLAUSIBEL",
+                    "detail": f"ROIC > 100% ({r.roic}%) — Berechnung pruefen",
+                    "severity": "mittel",
+                }
+            )
         if r.gross_margin is not None and r.gross_margin > 95:
-            warnings.append({
-                "ticker": r.ticker,
-                "type": "PRUEFHINWEIS",
-                "detail": f"Gross Margin {r.gross_margin}% — ungewoehnlich hoch",
-                "severity": "niedrig"
-            })
+            warnings.append(
+                {
+                    "ticker": r.ticker,
+                    "type": "PRUEFHINWEIS",
+                    "detail": f"Gross Margin {r.gross_margin}% — ungewoehnlich hoch",
+                    "severity": "niedrig",
+                }
+            )
 
     return warnings
 
@@ -380,7 +398,9 @@ def format_markdown(results: list) -> str:
     lines.append("| Ticker | P/FCF | ROIC | Moat | Gesamt | Notes |")
     lines.append("|--------|-------|------|------|--------|-------|")
 
-    for r in sorted(results, key=lambda x: {"GRUEN": 0, "GELB": 1, "ROT": 2}.get(x.ampel_gesamt, 3)):
+    for r in sorted(
+        results, key=lambda x: {"GRUEN": 0, "GELB": 1, "ROT": 2}.get(x.ampel_gesamt, 3)
+    ):
         emoji = AMPEL_EMOJI.get(r.ampel_gesamt, "")
         notes = "; ".join(r.notes) if r.notes else "—"
         lines.append(
@@ -398,22 +418,24 @@ def format_json(results: list) -> str:
     """Format results as JSON."""
     output = []
     for r in results:
-        output.append({
-            "ticker": r.ticker,
-            "ampel_p_fcf": r.ampel_p_fcf,
-            "ampel_roic": r.ampel_roic,
-            "ampel_moat": r.ampel_moat,
-            "ampel_gesamt": r.ampel_gesamt,
-            "is_exception": r.is_exception,
-            "notes": r.notes,
-            "values": {
-                "p_fcf": r.p_fcf,
-                "roic": r.roic,
-                "gross_margin": r.gross_margin,
-                "rev_cagr": r.rev_cagr,
-                "price_book": r.price_book,
-            },
-        })
+        output.append(
+            {
+                "ticker": r.ticker,
+                "ampel_p_fcf": r.ampel_p_fcf,
+                "ampel_roic": r.ampel_roic,
+                "ampel_moat": r.ampel_moat,
+                "ampel_gesamt": r.ampel_gesamt,
+                "is_exception": r.is_exception,
+                "notes": r.notes,
+                "values": {
+                    "p_fcf": r.p_fcf,
+                    "roic": r.roic,
+                    "gross_margin": r.gross_margin,
+                    "rev_cagr": r.rev_cagr,
+                    "price_book": r.price_book,
+                },
+            }
+        )
     return json.dumps(output, indent=2, ensure_ascii=False)
 
 
@@ -426,8 +448,12 @@ def format_warnings_markdown(warnings: list) -> str:
     lines.append("|--------|-----|--------|---------|")
     for w in warnings:
         sev_emoji = {"hoch": "🔴", "mittel": "🟡", "niedrig": "ℹ️"}.get(w["severity"], "")
-        lines.append(f"| {w['ticker']} | {w['type']} | {w['detail']} | {sev_emoji} {w['severity']} |")
-    lines.append("\n*Ticker mit hoher Schwere: Ergebnis moeglicherweise unzuverlaessig — manuelle Pruefung empfohlen.*")
+        lines.append(
+            f"| {w['ticker']} | {w['type']} | {w['detail']} | {sev_emoji} {w['severity']} |"
+        )
+    lines.append(
+        "\n*Ticker mit hoher Schwere: Ergebnis moeglicherweise unzuverlaessig — manuelle Pruefung empfohlen.*"
+    )
     return "\n".join(lines)
 
 
@@ -435,14 +461,27 @@ def main():
     parser = argparse.ArgumentParser(description="Quick-Screener Batch-Tool")
     parser.add_argument("--csv", help="CSV-Datei mit Finanzkennzahlen")
     parser.add_argument("--yaml", help="config.yaml — extrahiert Ticker-Liste")
-    parser.add_argument("--generate-template", metavar="OUTPUT",
-                        help="CSV-Template mit Tickern aus config.yaml erstellen")
-    parser.add_argument("--validate", action="store_true",
-                        help="Datenqualitaets-Checks durchfuehren und Warnungen ausgeben")
-    parser.add_argument("--exceptions", default="BRK.B,MKL,FFH.TO",
-                        help="Komma-separierte Ausnahme-Ticker (Default: BRK.B,MKL,FFH.TO)")
-    parser.add_argument("--format", choices=["markdown", "json"], default="markdown",
-                        help="Output-Format (Default: markdown)")
+    parser.add_argument(
+        "--generate-template",
+        metavar="OUTPUT",
+        help="CSV-Template mit Tickern aus config.yaml erstellen",
+    )
+    parser.add_argument(
+        "--validate",
+        action="store_true",
+        help="Datenqualitaets-Checks durchfuehren und Warnungen ausgeben",
+    )
+    parser.add_argument(
+        "--exceptions",
+        default="BRK.B,MKL,FFH.TO",
+        help="Komma-separierte Ausnahme-Ticker (Default: BRK.B,MKL,FFH.TO)",
+    )
+    parser.add_argument(
+        "--format",
+        choices=["markdown", "json"],
+        default="markdown",
+        help="Output-Format (Default: markdown)",
+    )
     args = parser.parse_args()
 
     exceptions = [e.strip() for e in args.exceptions.split(",")]
@@ -464,7 +503,9 @@ def main():
             print(f"  - {t}{exc}")
         print(f"\nGesamt: {len(tickers)} Ticker")
         print("\nCSV-Template erstellen mit:")
-        print(f"  python scripts/screen.py --yaml {args.yaml} --generate-template screener_template.csv")
+        print(
+            f"  python scripts/screen.py --yaml {args.yaml} --generate-template screener_template.csv"
+        )
         return
 
     # Mode 3: Screen from CSV
@@ -490,7 +531,9 @@ def main():
             if warnings:
                 high = sum(1 for w in warnings if w["severity"] == "hoch")
                 if high:
-                    print(f"⚠ {high} Ticker mit kritischen Datenhinweisen — manuelle Pruefung empfohlen!")
+                    print(
+                        f"⚠ {high} Ticker mit kritischen Datenhinweisen — manuelle Pruefung empfohlen!"
+                    )
     else:
         parser.print_help()
 

@@ -18,7 +18,6 @@ Rate Limit: max 10 req/s — Script haelt 0.12s Pause pro Request (~8 req/s).
 
 import argparse
 import json
-import os
 import re
 import sys
 import time
@@ -30,6 +29,7 @@ import requests
 
 try:
     import yaml
+
     HAS_YAML = True
 except ImportError:
     HAS_YAML = False
@@ -47,14 +47,14 @@ USER_AGENT = "Tobias tobikowa90@gmail.com"
 # CIK-Tabelle: Alle US-Satelliten des Dynastie-Depots
 # Einmalig hinterlegt — bei Slot-Tausch aktualisieren
 SATELLITES_CIK = {
-    "AVGO":  "0001730168",  # Broadcom Inc.
-    "MSFT":  "0000789019",  # Microsoft Corporation
-    "V":     "0001403161",  # Visa Inc.
+    "AVGO": "0001730168",  # Broadcom Inc.
+    "MSFT": "0000789019",  # Microsoft Corporation
+    "V": "0001403161",  # Visa Inc.
     "BRK.B": "0001067983",  # Berkshire Hathaway Inc.
-    "TMO":   "0000097745",  # Thermo Fisher Scientific
-    "VEEV":  "0001393052",  # Veeva Systems Inc.
-    "APH":   "0000820313",  # Amphenol Corporation
-    "COST":  "0000909832",  # Costco Wholesale Corporation
+    "TMO": "0000097745",  # Thermo Fisher Scientific
+    "VEEV": "0001393052",  # Veeva Systems Inc.
+    "APH": "0000820313",  # Amphenol Corporation
+    "COST": "0000909832",  # Costco Wholesale Corporation
 }
 
 # Pfade (relativ zum Script-Verzeichnis)
@@ -97,11 +97,12 @@ TX_CODES = {
 # HTTP Layer
 # ---------------------------------------------------------------------------
 
+
 def _headers() -> dict:
     return {"User-Agent": USER_AGENT, "Accept": "application/json"}
 
 
-def _get(url: str, params: dict = None) -> requests.Response:
+def _get(url: str, params: dict | None = None) -> requests.Response:
     """Rate-limited GET (SEC Policy: max 10 req/s)."""
     time.sleep(0.12)  # ~8 req/s — sicher unter Limit
     resp = requests.get(url, headers=_headers(), params=params, timeout=30)
@@ -112,6 +113,7 @@ def _get(url: str, params: dict = None) -> requests.Response:
 # ---------------------------------------------------------------------------
 # Form 4 Fetching
 # ---------------------------------------------------------------------------
+
 
 def fetch_form4_filings(cik: str, days: int = 180) -> list[dict]:
     """Hole Form-4-Filing-Metadaten von SEC EDGAR."""
@@ -135,11 +137,13 @@ def fetch_form4_filings(cik: str, days: int = 180) -> list[dict]:
         if filing_date < cutoff:
             continue
 
-        filings.append({
-            "filing_date": filing_date,
-            "accession_number": accessions[i] if i < len(accessions) else "",
-            "document": primary_docs[i] if i < len(primary_docs) else "",
-        })
+        filings.append(
+            {
+                "filing_date": filing_date,
+                "accession_number": accessions[i] if i < len(accessions) else "",
+                "document": primary_docs[i] if i < len(primary_docs) else "",
+            }
+        )
 
     return filings
 
@@ -147,6 +151,7 @@ def fetch_form4_filings(cik: str, days: int = 180) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Form 4 XML Parsing
 # ---------------------------------------------------------------------------
+
 
 def _find(element, tag: str, ns: str = ""):
     """Finde Child-Element mit optionalem Namespace."""
@@ -160,7 +165,7 @@ def _safe_float(text, default: float = 0.0) -> float:
     """Sichere Float-Konvertierung."""
     try:
         return float(str(text).replace(",", ""))
-    except (ValueError, TypeError, AttributeError):
+    except ValueError, TypeError, AttributeError:
         return default
 
 
@@ -234,8 +239,10 @@ def parse_form4_xml(xml_text: str, filing_date: str) -> list[dict]:
     if footnotes_el is not None:
         for fn in footnotes_el:
             fn_text = "".join(fn.itertext()).lower()
-            if any(kw in fn_text for kw in ["10b5-1", "rule 10b5", "trading plan",
-                                             "10b-5", "pre-arranged"]):
+            if any(
+                kw in fn_text
+                for kw in ["10b5-1", "rule 10b5", "trading plan", "10b-5", "pre-arranged"]
+            ):
                 has_10b51_footnote = True
                 break
 
@@ -266,9 +273,12 @@ def parse_form4_xml(xml_text: str, filing_date: str) -> list[dict]:
                 # 10b5-1 Indikator (SEC Amendment April 2023+)
                 for child in coding:
                     child_tag = (child.tag.replace(ns, "") if ns else child.tag).lower()
-                    if "10b5" in child_tag or "rule10b" in child_tag:
-                        if child.text and child.text.strip() in ("1", "true", "yes"):
-                            is_10b51 = True
+                    if (
+                        ("10b5" in child_tag or "rule10b" in child_tag)
+                        and child.text
+                        and child.text.strip() in ("1", "true", "yes")
+                    ):
+                        is_10b51 = True
 
             # Footnote-basierte 10b5-1 Erkennung (Fallback fuer Pre-2023 Filings)
             if not is_10b51 and has_10b51_footnote and tx_code in ("S", "D"):
@@ -328,27 +338,29 @@ def parse_form4_xml(xml_text: str, filing_date: str) -> list[dict]:
             # DEFCON-Klassifikation
             defcon_type = _classify_transaction(tx_code, is_10b51, price)
 
-            trades.append({
-                "filing_date": filing_date,
-                "transaction_date": tx_date or filing_date,
-                "insider_name": insider_name,
-                "insider_title": insider_title,
-                "is_director": is_director,
-                "is_officer": is_officer,
-                "is_ten_pct_owner": is_ten_pct,
-                "transaction_code": tx_code,
-                "transaction_type": TX_CODES.get(tx_code, f"Unknown ({tx_code})"),
-                "is_10b51_plan": is_10b51,
-                "is_derivative": is_derivative,
-                "security": sec_title,
-                "shares": shares,
-                "price_per_share": price,
-                "transaction_value": tx_value,
-                "acquired_disposed": acq_disp,
-                "post_holdings": post_holdings,
-                "ownership_type": ownership,
-                "defcon_classification": defcon_type,
-            })
+            trades.append(
+                {
+                    "filing_date": filing_date,
+                    "transaction_date": tx_date or filing_date,
+                    "insider_name": insider_name,
+                    "insider_title": insider_title,
+                    "is_director": is_director,
+                    "is_officer": is_officer,
+                    "is_ten_pct_owner": is_ten_pct,
+                    "transaction_code": tx_code,
+                    "transaction_type": TX_CODES.get(tx_code, f"Unknown ({tx_code})"),
+                    "is_10b51_plan": is_10b51,
+                    "is_derivative": is_derivative,
+                    "security": sec_title,
+                    "shares": shares,
+                    "price_per_share": price,
+                    "transaction_value": tx_value,
+                    "acquired_disposed": acq_disp,
+                    "post_holdings": post_holdings,
+                    "ownership_type": ownership,
+                    "defcon_classification": defcon_type,
+                }
+            )
 
     return trades
 
@@ -399,6 +411,7 @@ def _classify_transaction(tx_code: str, is_10b51: bool, price: float) -> str:
 # Cashless Exercise Detection
 # ---------------------------------------------------------------------------
 
+
 def detect_cashless_exercises(trades: list[dict]) -> list[dict]:
     """Erkenne M+S same-day Cashless Exercises — KEIN FLAG-Signal.
 
@@ -407,13 +420,18 @@ def detect_cashless_exercises(trades: list[dict]) -> list[dict]:
     Transaktionsvolumen trotzdem pruefen — bei >$20M und kein 10b5-1-Plan → FLAG.
     """
     exercises = [t for t in trades if t["transaction_code"] == "M"]
-    sales = [t for t in trades if t["transaction_code"] == "S"
-             and t["defcon_classification"] == "DISCRETIONARY_SALE"]
+    sales = [
+        t
+        for t in trades
+        if t["transaction_code"] == "S" and t["defcon_classification"] == "DISCRETIONARY_SALE"
+    ]
 
     for ex in exercises:
         for sale in sales:
-            if (ex["transaction_date"] == sale["transaction_date"]
-                    and ex["insider_name"] == sale["insider_name"]):
+            if (
+                ex["transaction_date"] == sale["transaction_date"]
+                and ex["insider_name"] == sale["insider_name"]
+            ):
                 sale["defcon_classification"] = "CASHLESS_EXERCISE_SALE"
 
     return trades
@@ -422,6 +440,7 @@ def detect_cashless_exercises(trades: list[dict]) -> list[dict]:
 # ---------------------------------------------------------------------------
 # DEFCON Metrics Computation
 # ---------------------------------------------------------------------------
+
 
 def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
     """Berechne DEFCON-Insider-Block-Metriken aus geparsten Transaktionen."""
@@ -443,8 +462,10 @@ def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
     # BRK.B Exception: Entity-Level-Verkaeufe herausfiltern
     is_brk = ticker.upper() in ("BRK.B", "BRK")
     if is_brk:
+
         def _is_entity_sale(t):
             return t["insider_name"].upper().strip() in BRK_ENTITY_NAMES
+
         trades_90d_flag = [t for t in trades_90d if not _is_entity_sale(t)]
         trades_180d_flag = [t for t in trades_180d if not _is_entity_sale(t)]
     else:
@@ -452,8 +473,9 @@ def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
         trades_180d_flag = trades_180d
 
     def sum_value(txs, classifications):
-        return sum(t["transaction_value"] for t in txs
-                   if t["defcon_classification"] in classifications)
+        return sum(
+            t["transaction_value"] for t in txs if t["defcon_classification"] in classifications
+        )
 
     def count_tx(txs, classifications):
         return len([t for t in txs if t["defcon_classification"] in classifications])
@@ -476,20 +498,22 @@ def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
     # FLAG Detection — BRK.B: nur Named Executives
     flag_active = disc_sell_90d > FLAG_THRESHOLD_USD
     flag_transactions = [
-        t for t in trades_90d_flag
-        if t["defcon_classification"] in sell_discretionary
-        and t["transaction_value"] > 1_000_000
+        t
+        for t in trades_90d_flag
+        if t["defcon_classification"] in sell_discretionary and t["transaction_value"] > 1_000_000
     ]
 
     # Unique Insiders
-    buyers_180d = sorted(set(
-        t["insider_name"] for t in trades_180d
-        if t["defcon_classification"] in buy_classes
-    ))
-    sellers_disc_180d = sorted(set(
-        t["insider_name"] for t in trades_180d_flag
-        if t["defcon_classification"] in sell_discretionary
-    ))
+    buyers_180d = sorted(
+        set(t["insider_name"] for t in trades_180d if t["defcon_classification"] in buy_classes)
+    )
+    sellers_disc_180d = sorted(
+        set(
+            t["insider_name"]
+            for t in trades_180d_flag
+            if t["defcon_classification"] in sell_discretionary
+        )
+    )
 
     # Top Insider Holdings (aus letzter Transaktion)
     latest_holdings = {}
@@ -502,15 +526,14 @@ def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
             }
 
     # DEFCON Scoring (max 10 Punkte)
-    score_net_buy = _score_net_buy(net_180d, buy_180d)       # max 4
-    score_no_flag = _score_no_flag(disc_sell_90d)             # max 3
+    score_net_buy = _score_net_buy(net_180d, buy_180d)  # max 4
+    score_no_flag = _score_no_flag(disc_sell_90d)  # max 3
     # score_ownership = max 3 — benoetigt Market Cap, extern ergaenzen
 
     return {
         "ticker": ticker,
         "scan_date": now.strftime("%Y-%m-%d"),
         "cik": SATELLITES_CIK.get(ticker, ""),
-
         "flag_active": flag_active,
         "flag_reason": (
             f"Diskretionaere Verkaeufe ${disc_sell_90d:,.0f} "
@@ -519,7 +542,6 @@ def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
             else "Kein FLAG"
         ),
         "flag_transactions": flag_transactions,
-
         "window_90d": {
             "discretionary_sell_value": disc_sell_90d,
             "plan_sell_value": plan_sell_90d,
@@ -539,7 +561,6 @@ def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
             "total_sell_value": sell_12m,
             "net": buy_12m - sell_12m,
         },
-
         "transaction_counts": {
             "total_parsed": len(trades),
             "open_market_buys": count_tx(trades, buy_classes),
@@ -550,21 +571,17 @@ def compute_defcon_metrics(ticker: str, trades: list[dict]) -> dict:
             "tax_withholding": count_tx(trades, {"TAX_WITHHOLDING"}),
             "gifts": count_tx(trades, {"GIFT"}),
         },
-
         "defcon_scoring": {
             "net_buy_score": score_net_buy,
             "ownership_score": "—",
             "no_flag_score": score_no_flag,
             "subtotal": score_net_buy + score_no_flag,
             "max_without_ownership": 7,
-            "note": "Ownership-Score (max 3) benoetigt Market Cap + percent_insiders"
+            "note": "Ownership-Score (max 3) benoetigt Market Cap + percent_insiders",
         },
-
         "top_insider_holdings": dict(
-            sorted(latest_holdings.items(),
-                   key=lambda x: x[1]["shares"], reverse=True)[:5]
+            sorted(latest_holdings.items(), key=lambda x: x[1]["shares"], reverse=True)[:5]
         ),
-
         "all_transactions": trades,
     }
 
@@ -614,6 +631,7 @@ def _score_no_flag(disc_sell_90d: float) -> int:
 # Scan & Output
 # ---------------------------------------------------------------------------
 
+
 def scan_satellite(ticker: str, days: int = 180) -> dict:
     """Vollstaendiger Scan eines US-Satelliten."""
     cik = SATELLITES_CIK.get(ticker.upper())
@@ -624,11 +642,11 @@ def scan_satellite(ticker: str, days: int = 180) -> dict:
 
     try:
         filings = fetch_form4_filings(cik, days=days)
-    except Exception as e:
+    except (requests.RequestException, OSError, ValueError) as e:
+        # ValueError -> json.JSONDecodeError (EDGAR liefert HTML bei Rate-Limit/Auth)
         return {"ticker": ticker, "error": f"EDGAR API Fehler: {e}"}
 
-    print(f"  [{ticker}] {len(filings)} Form-4-Filings gefunden, parse XML...",
-          file=sys.stderr)
+    print(f"  [{ticker}] {len(filings)} Form-4-Filings gefunden, parse XML...", file=sys.stderr)
 
     all_trades = []
     errors = 0
@@ -639,22 +657,19 @@ def scan_satellite(ticker: str, days: int = 180) -> dict:
         if "/" in doc:
             doc = doc.split("/", 1)[1]
 
-        xml_url = (
-            f"{SEC_WWW}/Archives/edgar/data/"
-            f"{cik.lstrip('0')}/{accession}/{doc}"
-        )
+        xml_url = f"{SEC_WWW}/Archives/edgar/data/{cik.lstrip('0')}/{accession}/{doc}"
 
         try:
             resp = _get(xml_url)
             trades = parse_form4_xml(resp.text, filing["filing_date"])
             all_trades.extend(trades)
-        except Exception:
+        except Exception:  # noqa: BLE001
+            # XML-Parse + Network Errors heterogen; Error-Count reicht
             errors += 1
             continue
 
     if errors:
-        print(f"  [{ticker}] {errors} Filings konnten nicht geparst werden",
-              file=sys.stderr)
+        print(f"  [{ticker}] {errors} Filings konnten nicht geparst werden", file=sys.stderr)
 
     # Cashless Exercises erkennen
     all_trades = detect_cashless_exercises(all_trades)
@@ -690,67 +705,71 @@ def format_defcon_output(result: dict) -> str:
         lines.append("")
 
     # Zeitfenster-Tabelle
-    lines.extend([
-        "| Metrik | 90 Tage | 180 Tage | 12 Monate |",
-        "|--------|---------|----------|-----------|",
-        f"| Diskr. Verkaeufe | ${w90['discretionary_sell_value']:,.0f} "
-        f"| ${w180['discretionary_sell_value']:,.0f} | — |",
-        f"| 10b5-1 Plan-Verkaeufe | ${w90['plan_sell_value']:,.0f} "
-        f"| ${w180['plan_sell_value']:,.0f} | — |",
-        f"| Open-Market-Kaeufe | ${w90['buy_value']:,.0f} "
-        f"| ${w180['buy_value']:,.0f} | — |",
-        f"| **Netto** | **${w90['net']:+,.0f}** "
-        f"| **${w180['net']:+,.0f}** | **${w12m['net']:+,.0f}** |",
-        "",
-    ])
+    lines.extend(
+        [
+            "| Metrik | 90 Tage | 180 Tage | 12 Monate |",
+            "|--------|---------|----------|-----------|",
+            f"| Diskr. Verkaeufe | ${w90['discretionary_sell_value']:,.0f} "
+            f"| ${w180['discretionary_sell_value']:,.0f} | — |",
+            f"| 10b5-1 Plan-Verkaeufe | ${w90['plan_sell_value']:,.0f} "
+            f"| ${w180['plan_sell_value']:,.0f} | — |",
+            f"| Open-Market-Kaeufe | ${w90['buy_value']:,.0f} | ${w180['buy_value']:,.0f} | — |",
+            f"| **Netto** | **${w90['net']:+,.0f}** "
+            f"| **${w180['net']:+,.0f}** | **${w12m['net']:+,.0f}** |",
+            "",
+        ]
+    )
 
     # Transaktions-Zusammenfassung
-    lines.extend([
-        f"**Transaktionen gesamt:** {counts['total_parsed']} | "
-        f"Kaeufe: {counts['open_market_buys']} | "
-        f"Diskr. Verkaeufe: {counts['discretionary_sales']} | "
-        f"Plan-Verkaeufe: {counts['plan_sales_10b51']} | "
-        f"Exercises: {counts['exercises_vestings']}",
-        "",
-    ])
+    lines.extend(
+        [
+            f"**Transaktionen gesamt:** {counts['total_parsed']} | "
+            f"Kaeufe: {counts['open_market_buys']} | "
+            f"Diskr. Verkaeufe: {counts['discretionary_sales']} | "
+            f"Plan-Verkaeufe: {counts['plan_sales_10b51']} | "
+            f"Exercises: {counts['exercises_vestings']}",
+            "",
+        ]
+    )
 
     # Unique Insiders
     if w180["unique_buyers"]:
         lines.append(f"**Kaeufer (180d):** {', '.join(w180['unique_buyers'])}")
     if w180["unique_discretionary_sellers"]:
         lines.append(
-            f"**Diskr. Verkaeufer (180d):** "
-            f"{', '.join(w180['unique_discretionary_sellers'])}"
+            f"**Diskr. Verkaeufer (180d):** {', '.join(w180['unique_discretionary_sellers'])}"
         )
     lines.append("")
 
     # Scoring-Tabelle
-    lines.extend([
-        "| Scoring-Komponente | Punkte | Basis |",
-        "|-------------------|--------|-------|",
-        f"| Net Buy (6M) | {scoring['net_buy_score']}/4 "
-        f"| Netto ${w180['net']:+,.0f} |",
-        f"| Ownership (>1%) | {scoring['ownership_score']}/3 "
-        f"| _(extern ergaenzen)_ |",
-        f"| Kein diskr. Selling >$20M | {scoring['no_flag_score']}/3 "
-        f"| Diskr. 90d: ${w90['discretionary_sell_value']:,.0f} |",
-        f"| **Subtotal** | **{scoring['subtotal']}/7*** | |",
-        "",
-        "*Ownership-Score via Shibui `share_stats.percent_insiders` "
-        "oder GuruFocus ergaenzen.*",
-    ])
+    lines.extend(
+        [
+            "| Scoring-Komponente | Punkte | Basis |",
+            "|-------------------|--------|-------|",
+            f"| Net Buy (6M) | {scoring['net_buy_score']}/4 | Netto ${w180['net']:+,.0f} |",
+            f"| Ownership (>1%) | {scoring['ownership_score']}/3 | _(extern ergaenzen)_ |",
+            f"| Kein diskr. Selling >$20M | {scoring['no_flag_score']}/3 "
+            f"| Diskr. 90d: ${w90['discretionary_sell_value']:,.0f} |",
+            f"| **Subtotal** | **{scoring['subtotal']}/7*** | |",
+            "",
+            "*Ownership-Score via Shibui `share_stats.percent_insiders` oder GuruFocus ergaenzen.*",
+        ]
+    )
 
     # FLAG-Transaktionen Detail
     if result["flag_transactions"]:
-        lines.extend([
-            "",
-            "**FLAG-relevante Transaktionen (>$1M diskretionaer, 90d):**",
-            "",
-            "| Datum | Insider | Titel | Wert | 10b5-1? |",
-            "|-------|---------|-------|------|---------|",
-        ])
-        for t in sorted(result["flag_transactions"],
-                        key=lambda x: x["transaction_value"], reverse=True):
+        lines.extend(
+            [
+                "",
+                "**FLAG-relevante Transaktionen (>$1M diskretionaer, 90d):**",
+                "",
+                "| Datum | Insider | Titel | Wert | 10b5-1? |",
+                "|-------|---------|-------|------|---------|",
+            ]
+        )
+        for t in sorted(
+            result["flag_transactions"], key=lambda x: x["transaction_value"], reverse=True
+        ):
             plan = "Ja" if t["is_10b51_plan"] else "**NEIN**"
             lines.append(
                 f"| {t['transaction_date']} | {t['insider_name']} | "
@@ -762,8 +781,7 @@ def format_defcon_output(result: dict) -> str:
         lines.extend(["", "**Top Insider Holdings (Direct):**", ""])
         for name, info in list(result["top_insider_holdings"].items())[:5]:
             lines.append(
-                f"- {name} ({info['title']}): "
-                f"{info['shares']:,.0f} Aktien (Stand: {info['as_of']})"
+                f"- {name} ({info['title']}): {info['shares']:,.0f} Aktien (Stand: {info['as_of']})"
             )
 
     return "\n".join(lines)
@@ -796,10 +814,12 @@ def format_flag_summary(results: list[dict]) -> str:
     clean = [r for r in results if not r.get("flag_active") and "error" not in r]
     errors = [r for r in results if "error" in r]
 
-    lines.extend([
-        "",
-        f"**Ergebnis:** {len(clean)} clean, {len(flags)} FLAG(s), {len(errors)} Fehler",
-    ])
+    lines.extend(
+        [
+            "",
+            f"**Ergebnis:** {len(clean)} clean, {len(flags)} FLAG(s), {len(errors)} Fehler",
+        ]
+    )
 
     if flags:
         lines.append("")
@@ -814,7 +834,8 @@ def format_flag_summary(results: list[dict]) -> str:
 # Faktortabelle Integration
 # ---------------------------------------------------------------------------
 
-def update_faktortabelle(results: list[dict], path: Path = None) -> None:
+
+def update_faktortabelle(results: list[dict], path: Path | None = None) -> None:
     """Aktualisiert FLAG-Status in Faktortabelle.md via Kommentar-Anker.
 
     Sucht <!-- DATA:TICKER --> Anker und aktualisiert die FLAG-Spalte
@@ -839,7 +860,7 @@ def update_faktortabelle(results: list[dict], path: Path = None) -> None:
 
         # Finde die Tabellenzeile nach dem Anker
         anchor_pos = content.index(anchor)
-        rest = content[anchor_pos + len(anchor):]
+        rest = content[anchor_pos + len(anchor) :]
         # Naechste Zeile ist die Tabellenzeile
         line_start = rest.index("\n") + 1
         line_end = rest.index("\n", line_start)
@@ -863,8 +884,7 @@ def update_faktortabelle(results: list[dict], path: Path = None) -> None:
             old_flag = "FLAG" if r["flag_active"] else "clean"
             changes.append(f"  {ticker}: {old_flag}")
             print(
-                f"  ⚠️ config.yaml sync: {ticker} FLAG "
-                f"{'true' if r['flag_active'] else 'false'}",
+                f"  ⚠️ config.yaml sync: {ticker} FLAG {'true' if r['flag_active'] else 'false'}",
                 file=sys.stderr,
             )
 
@@ -892,7 +912,7 @@ def update_faktortabelle(results: list[dict], path: Path = None) -> None:
         print("  Faktortabelle.md: keine Aenderungen.", file=sys.stderr)
 
 
-def _parse_faktortabelle_flags(path: Path = None) -> dict[str, bool]:
+def _parse_faktortabelle_flags(path: Path | None = None) -> dict[str, bool]:
     """Extrahiert FLAG-Status pro Ticker aus Faktortabelle.md."""
     fpath = path or FAKTORTABELLE_PATH
     if not fpath.exists():
@@ -914,7 +934,7 @@ def _parse_faktortabelle_flags(path: Path = None) -> dict[str, bool]:
     return flags
 
 
-def _parse_config_yaml_flags(path: Path = None) -> dict[str, dict]:
+def _parse_config_yaml_flags(path: Path | None = None) -> dict[str, dict]:
     """Extrahiert FLAG-Status + FLAG-Typ pro Ticker aus config.yaml.
 
     Returns dict[ticker] = {"active": bool, "type": "insider"|"capex"|"other"|None, "grund": str}
@@ -931,7 +951,7 @@ def _parse_config_yaml_flags(path: Path = None) -> dict[str, dict]:
         )
         return {}
 
-    with open(cpath, "r", encoding="utf-8") as f:
+    with Path(cpath).open(encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
     flags = {}
@@ -993,7 +1013,7 @@ def factor_sync() -> str:
         cfg_active = cfg_data.get("active", False) if cfg_data else False
         cfg_type = cfg_data.get("type") if cfg_data else None
 
-        def fmt_cfg():
+        def fmt_cfg(cfg_data=cfg_data, cfg_active=cfg_active, cfg_type=cfg_type):
             if not cfg_data:
                 return "—"
             if not cfg_active:
@@ -1025,25 +1045,27 @@ def factor_sync() -> str:
             status = "⚠️ DRIFT"
             drift_count += 1
 
-        lines.append(
-            f"| {ticker} | {fmt_cfg()} | {fmt(tab)} | {fmt(live)} | {status} |"
-        )
+        lines.append(f"| {ticker} | {fmt_cfg()} | {fmt(tab)} | {fmt(live)} | {status} |")
 
-    lines.extend([
-        "",
-        f"**Ergebnis:** {len(SATELLITES_CIK) - drift_count} sync, {drift_count} drift",
-    ])
+    lines.extend(
+        [
+            "",
+            f"**Ergebnis:** {len(SATELLITES_CIK) - drift_count} sync, {drift_count} drift",
+        ]
+    )
 
     if drift_count > 0:
         lines.append("")
         lines.append("⚠️ Bei Drift: config.yaml manuell aktualisieren.")
 
     if not HAS_YAML:
-        lines.extend([
-            "",
-            "⚠️ pyyaml nicht installiert — config.yaml-Spalte leer.",
-            "   Install: pip install pyyaml",
-        ])
+        lines.extend(
+            [
+                "",
+                "⚠️ pyyaml nicht installiert — config.yaml-Spalte leer.",
+                "   Install: pip install pyyaml",
+            ]
+        )
 
     return "\n".join(lines)
 
@@ -1052,63 +1074,47 @@ def factor_sync() -> str:
 # CLI
 # ---------------------------------------------------------------------------
 
+
 def main():
-    parser = argparse.ArgumentParser(
-        description="Dynastie-Depot Insider Intelligence Module v1.0"
-    )
+    parser = argparse.ArgumentParser(description="Dynastie-Depot Insider Intelligence Module v1.0")
     sub = parser.add_subparsers(dest="command", required=True)
 
     # scan
-    p_scan = sub.add_parser(
-        "scan",
-        help="Scanne US-Satelliten (alle oder bestimmte Ticker)"
-    )
+    p_scan = sub.add_parser("scan", help="Scanne US-Satelliten (alle oder bestimmte Ticker)")
+    p_scan.add_argument("tickers", nargs="*", help="Ticker-Liste (leer = alle 8 US-Satelliten)")
     p_scan.add_argument(
-        "tickers", nargs="*",
-        help="Ticker-Liste (leer = alle 8 US-Satelliten)"
+        "--days", type=int, default=180, help="Lookback-Zeitraum in Tagen (default: 180)"
     )
+    p_scan.add_argument("--json", action="store_true", help="JSON-Output statt Markdown")
     p_scan.add_argument(
-        "--days", type=int, default=180,
-        help="Lookback-Zeitraum in Tagen (default: 180)"
-    )
-    p_scan.add_argument(
-        "--json", action="store_true",
-        help="JSON-Output statt Markdown"
-    )
-    p_scan.add_argument(
-        "--update-faktortabelle", action="store_true",
-        help="Aktualisiert Faktortabelle.md nach Scan"
+        "--update-faktortabelle",
+        action="store_true",
+        help="Aktualisiert Faktortabelle.md nach Scan",
     )
 
     # flag-check
-    p_flag = sub.add_parser(
-        "flag-check",
-        help="Schneller FLAG-Status aller 8 US-Satelliten"
+    p_flag = sub.add_parser("flag-check", help="Schneller FLAG-Status aller 8 US-Satelliten")
+    p_flag.add_argument(
+        "--days", type=int, default=90, help="Lookback-Zeitraum in Tagen (default: 90)"
     )
     p_flag.add_argument(
-        "--days", type=int, default=90,
-        help="Lookback-Zeitraum in Tagen (default: 90)"
-    )
-    p_flag.add_argument(
-        "--update-faktortabelle", action="store_true",
-        help="Aktualisiert Faktortabelle.md nach FLAG-Check"
+        "--update-faktortabelle",
+        action="store_true",
+        help="Aktualisiert Faktortabelle.md nach FLAG-Check",
     )
 
     # factor-sync
     sub.add_parser(
-        "factor-sync",
-        help="3-Wege-Vergleich: config.yaml vs. Faktortabelle vs. Live-Scan"
+        "factor-sync", help="3-Wege-Vergleich: config.yaml vs. Faktortabelle vs. Live-Scan"
     )
 
     # detail
     p_det = sub.add_parser(
-        "detail",
-        help="Vollstaendiger Detail-Report eines Tickers mit allen Transaktionen"
+        "detail", help="Vollstaendiger Detail-Report eines Tickers mit allen Transaktionen"
     )
     p_det.add_argument("ticker", help="Ticker (z.B. AVGO)")
     p_det.add_argument(
-        "--days", type=int, default=365,
-        help="Lookback-Zeitraum in Tagen (default: 365)"
+        "--days", type=int, default=365, help="Lookback-Zeitraum in Tagen (default: 365)"
     )
 
     args = parser.parse_args()
@@ -1163,8 +1169,9 @@ def main():
         print("| Datum | Insider | Code | Shares | Preis | Wert | 10b5-1 | Klasse |")
         print("|-------|---------|------|--------|-------|------|--------|--------|")
 
-        for t in sorted(result["all_transactions"],
-                        key=lambda x: x["transaction_date"], reverse=True):
+        for t in sorted(
+            result["all_transactions"], key=lambda x: x["transaction_date"], reverse=True
+        ):
             plan = "Ja" if t["is_10b51_plan"] else "—"
             name = t["insider_name"][:25]
             print(

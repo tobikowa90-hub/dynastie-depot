@@ -10,13 +10,14 @@ Run:
 Expected (before helpers exist): 6/6 FAIL (ImportError on _forward_verify_helpers)
 Expected (after helpers): 6/6 PASS
 """
+
 from __future__ import annotations
 
+import contextlib
 import json
 import subprocess
 import sys
 import tempfile
-from datetime import date
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -56,6 +57,7 @@ PORTFOLIO_MD_FIXTURE = """\
 | APH | 63 | 🟠 2 | **0€** | 🔴 Score-basiert | 23.07. Q2 |
 | MSFT | 59 | 🟠 2 | **0€** | 🔴 CapEx/OCF 83.6% | **29.04. Q3 FY26 — FLAG-Review** |
 """
+
 
 # ---------------------------------------------------------------------------
 # Helper: build a minimal-valid ScoreRecord dict for a given ticker/date
@@ -185,6 +187,7 @@ try:
         parse_wrapper,
     )
     from provenance_gate import check_provenance
+
     HELPERS_AVAILABLE = True
 except ImportError as _imp_err:
     HELPERS_AVAILABLE = False
@@ -380,9 +383,7 @@ def case_5() -> None:
 
     # AVGO: score=84, defcon=4, ⚠️ = watch (not hard flag) → flags_active=False
     avgo = parse_state_row("AVGO", PORTFOLIO_MD_FIXTURE)
-    assert avgo == {"score": 84, "defcon": 4, "flags_active": False}, (
-        f"AVGO mismatch: {avgo}"
-    )
+    assert avgo == {"score": 84, "defcon": 4, "flags_active": False}, f"AVGO mismatch: {avgo}"
 
     # V: bold-wrap **63** / **🟠 2** / ✅ → flags_active=False
     v = parse_state_row("V", PORTFOLIO_MD_FIXTURE)
@@ -440,8 +441,7 @@ def case_6() -> None:
         subprocess.run(["git", "init", "-b", "main"], cwd=tmpdir, capture_output=True)
         subprocess.run(["git", "add", "."], cwd=tmpdir, capture_output=True)
         subprocess.run(
-            ["git", "-c", "user.email=t@t.t", "-c", "user.name=t",
-             "commit", "-m", "initial"],
+            ["git", "-c", "user.email=t@t.t", "-c", "user.name=t", "commit", "-m", "initial"],
             cwd=tmpdir,
             capture_output=True,
         )
@@ -455,7 +455,14 @@ def case_6() -> None:
 
         # Reset files (git checkout)
         subprocess.run(
-            ["git", "checkout", "--", "00_Core/PORTFOLIO.md", "00_Core/Faktortabelle.md", "00_Core/log.md"],
+            [
+                "git",
+                "checkout",
+                "--",
+                "00_Core/PORTFOLIO.md",
+                "00_Core/Faktortabelle.md",
+                "00_Core/log.md",
+            ],
             cwd=tmpdir,
             capture_output=True,
         )
@@ -489,7 +496,9 @@ def case_6() -> None:
             f"Sub-case D: conditional files must be ignored, got {result_d}"
         )
         # Verify CORE-MEMORY and config are NOT in the result
-        assert "CORE-MEMORY.md" not in result_d, "CORE-MEMORY.md must not appear in freshness result"
+        assert "CORE-MEMORY.md" not in result_d, (
+            "CORE-MEMORY.md must not appear in freshness result"
+        )
         assert "config.yaml" not in result_d, "config.yaml must not appear in freshness result"
 
 
@@ -507,9 +516,7 @@ def case_7() -> None:
     # Build a forward+vollanalyse record (NOT backfill — would skip Check #1)
     ticker = "ZTS"
     score_datum = "2026-04-21"
-    record = _build_minimal_record(
-        ticker, score_datum, score_gesamt=65, defcon_level=3
-    )
+    record = _build_minimal_record(ticker, score_datum, score_gesamt=65, defcon_level=3)
     # Override to forward+vollanalyse with valid kurs.referenz + valid quellen + active version
     record["source"] = "forward"
     record["analyse_typ"] = "vollanalyse"
@@ -548,10 +555,8 @@ def case_7() -> None:
     # P2b: PORTFOLIO-Tripwire (kein Konflikt — wir nutzen ZTS, das nicht im
     # PORTFOLIO_MD_FIXTURE ist; Caller wuerde "[tripwire: ticker 'ZTS' not in
     # PORTFOLIO.md — new position]" emitten und weiter machen. Kein FAIL P2b.)
-    try:
+    with contextlib.suppress(ValueError, KeyError):
         parse_state_row(ticker, PORTFOLIO_MD_FIXTURE)
-    except (ValueError, KeyError):
-        pass
 
     # P3.5: hier muss fail-close greifen
     passed, reasons = check_provenance(
@@ -629,11 +634,17 @@ def case_8() -> None:
     record_a["source"] = "forward"
     record_a["analyse_typ"] = "vollanalyse"
     record_a["defcon_version"] = "v3.7"
-    record_a["kurs"] = {"wert": 100.0, "waehrung": "USD",
-                        "referenz": "close_of_score_datum", "quelle": "yahoo_eod"}
+    record_a["kurs"] = {
+        "wert": 100.0,
+        "waehrung": "USD",
+        "referenz": "close_of_score_datum",
+        "quelle": "yahoo_eod",
+    }
     record_a["quellen"] = {
-        "fundamentals": "defeatbeta", "technicals": "shibui",
-        "insider": "openinsider+sec_edgar", "moat": "gurufocus",
+        "fundamentals": "defeatbeta",
+        "technicals": "shibui",
+        "insider": "openinsider+sec_edgar",
+        "moat": "gurufocus",
         "sentiment": "zacks+yahoo",
     }
 
@@ -647,11 +658,10 @@ def case_8() -> None:
 
     # Run B: P3.5 pass (kein freshness_missing)
     p3_call_count["n"] = 0  # reset
-    result, reasons = _run_pipeline(record_a, [], {})
+    result, _reasons = _run_pipeline(record_a, [], {})
     assert result == "P3_DONE", f"Run B expected P3_DONE, got {result}"
     assert p3_call_count["n"] == 1, (
-        f"Run B: P3 muss 1x aufgerufen sein nach P3.5-Pass, "
-        f"got Counter={p3_call_count['n']}"
+        f"Run B: P3 muss 1x aufgerufen sein nach P3.5-Pass, got Counter={p3_call_count['n']}"
     )
 
 
