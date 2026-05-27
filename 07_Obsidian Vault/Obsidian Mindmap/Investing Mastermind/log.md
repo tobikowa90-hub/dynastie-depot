@@ -1531,3 +1531,44 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Cross-Reference:** PIPELINE.md #69 Closure-Block · 5 Commits 0e6b27d/d971621/27ad40d/40b62f8/ea6fdbe · Memory `feedback_pre_existing_dirty_is_pipeline_69` → RESOLVED · Codex R1 + R2 Transkripte (session-memory) · CR-Output dismissed (12 false-positive PEP-758).
 
 **Nächste Tracks:** PIPELINE-Inbox leer geräumt (#69 ALLE DONE). Codex-R2 MEDIUM Doku-Drift-Note (`00_Core/INSTRUKTIONEN.md` `system_audit/types.py::CheckResult`-Docstring-Reference) ist optional follow-up. DEFCON v3.7 + Portfolio + Sparraten 285€ unverändert (scoring-neutral durchgehend).
+
+## [2026-05-27] system | PIPELINE Aktiv-Pipeline-Cleanup-Welle DONE (pipeline-item §18-Sync, scoring-neutral)
+
+**Trigger:** User-Direktive Bloat-Reduktion ("Lass uns jetzt noch die Pipeline aufräumen. Die ist ziemlich bloated und inflated") nach #69-Closure gestern (fa3c40c).
+
+**Aktionen:**
+- **Entfernt aus Aktiv-Liste (Numbering-Gap-Konvention):**
+  - **#69 Operational Pre-Existing-Debt-Remediation ALLE GESCHLOSSEN** — (a) NON-TASK 18.05. + (b)+(c) DONE 27.05. via 5 Cluster-Commits `0e6b27d` + `d971621` + `27ad40d` + `40b62f8` + `ea6fdbe` + Sync-Commit `fa3c40c`. Detail: log.md L1503-1534 (gestern) + git log + CORE-MEMORY §13 (heute Entry).
+  - **#74 FinnHub-Integration v0.1 BUILD-PHASE-DONE 2026-05-22** — Detail: CORE-MEMORY §13 L412 (22.05.) + SYSTEM.md §Passive Read-Only Data Layer + `01_Skills/_extern/finnhub/`. Forward-Tracking lebt aktiv in #75 (Shadow-Run-Tracker bis 2026-07-06) + #76 (5/8-Methoden-Discovery, gated auf #75).
+- **Konsolidiert:** BRK-Q2-FY26-Cluster ehemals #36/#38/#39/#40/#41 → 1 Parent #36 (Multi-Watch-Cluster mit 5 Sub-Watches a-e: KHC-OTTI · BHE-ETR-Wildfire-Settlement · OxyChem-Goodwill-Identifiable-Assets-Allocation · Buyback-Cashflow-Discrepancy · GEICO-UW-Decel-Asymmetry). Numbering-Gaps #38-#41 als Archiv-Pointer.
+- **Slim:** #17 Beispiele.md Anker-Refactor (Sparring-Historie R1-R3 + Codex-Round-3 84% Confidence → git log 28./29.04. + `05_Archiv/superpowers-pre-sunset/plans/`, ~3600→~2000 chars; 5-Anker-Plan + Pflicht-Vorab + Trigger + Sync-Set vollständig erhalten) + #75/#76 FinnHub-Forward-Tracking (redundante #74-BUILD-Phase-Cross-Refs entfernt).
+
+**Bilanz:**
+- PIPELINE.md: 110 Z. / 116 KB → 98 Z. / 104 KB (**−12 Z. / −11.7 KB / −10%**)
+- 🟡 Bereit-Section: 17 KB → 13 KB (**−24%**)
+- 🔵 Deferred-Section: 67 KB → 58 KB (**−13%**)
+- ⏰ Long-Term-Gates: 30 KB → 31 KB (Footer-Verbose, nicht angefasst — deferred eigene Session per User-Direktive)
+- Memory-Erhaltung voll (alle Sub-Watches + Trigger + Sync-Sets erhalten, nur Sparring-Detail / Historie / DONE-Items nach Archiv/git log)
+
+**Pre-Commit-Gates:**
+- Atomares Python-Mutations-Script `03_Tools/_temp_pipeline_cleanup_2026-05-27.py` (self-deleting) — UTF-8-stdout pflicht per Memory `feedback_windows_console_ascii_safe_inline_python`
+- Struktur-Verify via `ctx_execute_file` Section-Count + Item-Count + Numbering-Gap-Konsistenz post-Mutation
+- §18-Sync Script `_temp_sync_2026-05-27.py` für §13 + Footer-Bump + log.md (dieser Entry) atomar
+
+**Sync-Set §18 pipeline-item:**
+- `00_Core/PIPELINE.md` (Cleanup-Mutationen + Footer v2.74 → v2.75)
+- `00_Core/CORE-MEMORY.md` §13 (Konsolidations-Entry 2026-05-27 + Footer v1.31 → v1.32)
+- `07_Obsidian Vault/.../log.md` (dieser System-Event)
+- KEIN PORTFOLIO/Faktortabelle/score_history/config.yaml/xlsx/flag_events (kein Score/FLAG/Sparraten-Event)
+
+**Scoring-Status:** DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Lessons:**
+- Numbering-Gap-Konvention spart Anker-Stabilität ohne Renumber-Cost — historische Commit-Refs wie "PIPELINE #69" bleiben lesbar nach Removal
+- Item-Konsolidierung bei identischem Trigger (BRK Q2 10-Q ~02./03.08.) reduziert Bloat ohne Info-Loss, wenn Sub-Watches als a-e Bullets im Parent-Body voll erhalten bleiben
+- Atomares Python-Mutations-Script > Edit-Tool-Loop bei dichten Long-Items (>3K chars old_string-Match riskant, Token-Bloat hoch)
+- Long-Term-Gates-Section bewusst deferred (eigene Session per User-Direktive) — nicht jeden Cleanup in einer Welle erschlagen
+
+**Cross-Reference:** PIPELINE.md #69-Closure log-Entry gestern (L1503-1534, fa3c40c) · CORE-MEMORY §13 L412 (#74 FinnHub-Detail) · git log 27.05. ~03:00 GMT+2 (Cleanup-Commit folgt).
+
+**Nächste Tracks:** Long-Term-Gates-Section-Cleanup (eigene Session) · #36 BRK-Q2-Trigger ~02./03.08. · #75 FinnHub-Shadow-Run-Gate bis 2026-07-06.
