@@ -1497,3 +1497,37 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Cross-Reference:** CLAUDE.md §Verhalten Token-Effizienz-Bullet · 00_Core/TOKEN-RULES.md (slim v2 2026-05-26) · Commit `<TBD>` · Vorgänger Memory-Fork-Commit `b0fb526`.
 
 **Nächste Tracks:** Welle 3 + Memory-Fork + TOKEN-RULES-Inline-Migrate alle DONE in einer Session. Pickup-Optionen weiterhin: VEEV/COST 28.05., PIPELINE #69, Konsolidierungstag.
+
+---
+
+## [2026-05-27] system | #69 (b)+(c) Operational Pre-Existing-Debt-Remediation ALLE GESCHLOSSEN (scoring-neutral, system-zustand)
+
+**Event-Typ:** Pipeline-Item-Closure (Status: (a) GESCHLOSSEN 18.05. + (b)+(c) DEFERRED → ALLE 3 DONE 27.05.; kein Score/FLAG/Sparraten-Touch)
+
+**Was passiert ist:**
+- Dedizierte #69-Session abgearbeitet nach User-Direktive "Direkt raus mit der Task, wenn DONE". Empirie-First-Prinzip durchgezogen.
+- **Recon-Phase 0 (Empirie überholt Spec):** PIPELINE-Discovery 25.05. (`earnings_calendar.py:96` invalid Py3) widerlegt — PEP-758 (Py 3.14) erlaubt `except E1, E2, E3:` ohne Klammern; alle 14 PEP-758-Stellen ast.parse OK. `ruff format --check` = 109 already formatted (war 46/55-Snapshot stale): Working-Tree-Apply vom 18.05. bytes-identisch zu `ruff format(HEAD)` per-File-Roundtrip → 0 Logic-Drift.
+- **Phase (b)+(c) Walk:** 32 safe-Auto-Fixes (UP045/F541/I001/F401/UP017/UP015/RUF021) + 19 selektive Unsafe (UP031/RUF013/RUF015/SIM105/SIM102/RUF059) + F841-noqa + 7 manual-disposition (PLW2901-rename ×5, PLW1510 check=False ×3, PTH118/120/123 ×7, SIM102 ×1, BLE001 narrow ×4 + noqa ×3, B023 default-arg-binding ×6, I001 ×1).
+- **Bonus-Fix:** `_smoke_temp_repo.py` pre-existing-FAIL via sys.path-Shadowing (lokales `system_audit/types.py` schattete stdlib `types`). `git mv types.py → audit_types.py` + 22 importer aktualisiert + I001-resort. Smoke jetzt PASS 18.7s.
+- **Per-file-ignores Extension** (pyproject): `01_Skills/**/_smoke_*.py` neu (mirror 03_Tools), erweitert um PLW1510/SIM105/RUF059; 56 → 24 → 0 Errors strukturell.
+- **Codex Sparring R1 + R2:** R1 NEEDS-FURTHER-INSPECTION (B023 false-positives klassifiziert immediate-call), R2 NEEDS-CHANGES (1 fix `insider_intel.py:645` +`ValueError` für EDGAR-HTML-JSON-Edge-Case applied).
+- **CR-Pass via WSL:** 12 CRITICAL findings — alle systemische false-positives (CR kennt PEP-758/Py 3.14 nicht). Memory `feedback_cr_convergence_and_project_compat` verankert das Pattern; dismissed per Empirie (ast.parse + ruff py314 + 7 smokes + 94 pytest alle grün).
+- **5-Cluster-Commit-Lineage:**
+  - `0e6b27d` refactor(system-audit): pyproject per-file-ignores + types→audit_types rename + ruff cleanup (27 files, 1769+/875-)
+  - `d971621` style(skills): ruff cleanup 5 Skill-Module (5 files, 617+/438-)
+  - `27ad40d` style(backtest-ready): ruff cleanup 12 Tools (12 files, 331+/194-)
+  - `40b62f8` style(tools): ruff cleanup 03_Tools/ Root + tests + video_ingest (11 files, 470+/213-)
+  - `ea6fdbe` chore(skills): remove obsolete SKILL.md + post-Stage-2 Closure SESSION-HANDOVER (2 D-files, -389)
+
+**Sync-Set (§18 system-zustand + pipeline-item-event):** PIPELINE.md (#69 Status → ✅ ALLE GESCHLOSSEN + Closure-Block + Footer v2.73 → v2.74) + log.md (dieser Eintrag). **KEIN** PORTFOLIO/CORE-MEMORY/Faktortabelle/score_history/config.yaml/xlsx/flag_events (kein Score/FLAG/Sparraten-Event). SYSTEM.md `types`-Rename ist Implementations-Detail unterhalb `03_Tools/` Granularität (CLAUDE.md Projektstruktur-Linie weiterhin korrekt).
+
+**Lehre:**
+- **Empirie überholt 9-Tage-alte PIPELINE-Spec:** 18.05.-Architektur-Annahme "(b)+(c) gekoppelt, file-weise" war korrekt für die Doktrin, aber konkrete Counts (46/100/55) waren stale. HEAD-blob-roundtrip per File ist der definitive Test was Format vs Content ist.
+- **Codex-vs-CR-Hierarchie bestätigt:** Codex (target-version=py314-aware) hat 12 CR-Critical-Findings korrekt als false-positive dismissed. Memory `feedback_review_via_codex_not_advisor` + `feedback_cr_convergence_and_project_compat` halten gegen "CR-CRITICAL = immer fix"-Reflex.
+- **types.py-Naming-Lesson:** Stdlib-Shadowing-Bug latent über Wochen, weil Smoke nur via package-import lief, nicht via direct-script-Run. Lesson: bei Modulen, die als-Script ausgeführt werden können, stdlib-Namen vermeiden.
+- **B023 false-positive-Klasse:** nested-function-in-loop kann safe sein wenn immediate-call. Canonical-Fix: default-arg-binding (`def f(x=x):` immediate-bound) statt noqa. Ruff erkennt das und schweigt.
+- **PEP-758 Adoption:** Codebase nutzt 14 Stellen `except E1, E2, E3:` ohne Klammern; `requires-python = ">=3.14"` + `target-version = "py314"` lock-in. Memory `reference_no_cloud_sync_onedrive_inactive` + `feedback_pyproject_floor_before_portability_claim` verankern den 3.14-Floor.
+
+**Cross-Reference:** PIPELINE.md #69 Closure-Block · 5 Commits 0e6b27d/d971621/27ad40d/40b62f8/ea6fdbe · Memory `feedback_pre_existing_dirty_is_pipeline_69` → RESOLVED · Codex R1 + R2 Transkripte (session-memory) · CR-Output dismissed (12 false-positive PEP-758).
+
+**Nächste Tracks:** PIPELINE-Inbox leer geräumt (#69 ALLE DONE). Codex-R2 MEDIUM Doku-Drift-Note (`00_Core/INSTRUKTIONEN.md` `system_audit/types.py::CheckResult`-Docstring-Reference) ist optional follow-up. DEFCON v3.7 + Portfolio + Sparraten 285€ unverändert (scoring-neutral durchgehend).
