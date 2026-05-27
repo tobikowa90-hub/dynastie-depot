@@ -2,6 +2,7 @@
 
 Run: python 03_Tools/system_audit/_smoke_test.py
 """
+
 from __future__ import annotations
 
 import sys
@@ -23,39 +24,65 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "03_Tools"))
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 
 def test_check_result_pass_semantics() -> None:
     r = CheckResult(
-        name="demo", status="PASS", n_checked=3, n_passed=3,
-        failures=[], duration_ms=10, category="core",
+        name="demo",
+        status="PASS",
+        n_checked=3,
+        n_passed=3,
+        failures=[],
+        duration_ms=10,
+        category="core",
     )
     assert r.status == "PASS"
     assert not r.failures
 
+
 def test_check_result_fail_error() -> None:
     r = CheckResult(
-        name="demo", status="FAIL", n_checked=3, n_passed=2,
-        failures=[FailureDetail(
-            location="x.md:1", expected="a", actual="b",
-            severity="error", hint=None,
-        )],
-        duration_ms=10, category="core",
+        name="demo",
+        status="FAIL",
+        n_checked=3,
+        n_passed=2,
+        failures=[
+            FailureDetail(
+                location="x.md:1",
+                expected="a",
+                actual="b",
+                severity="error",
+                hint=None,
+            )
+        ],
+        duration_ms=10,
+        category="core",
     )
     assert any(f.severity == "error" for f in r.failures)
 
+
 def test_check_result_warn_is_not_fail() -> None:
     r = CheckResult(
-        name="demo", status="WARN", n_checked=3, n_passed=2,
-        failures=[FailureDetail(
-            location="x.md:1", expected="fresh", actual="stale",
-            severity="warning", hint=None,
-        )],
-        duration_ms=10, category="core",
+        name="demo",
+        status="WARN",
+        n_checked=3,
+        n_passed=2,
+        failures=[
+            FailureDetail(
+                location="x.md:1",
+                expected="fresh",
+                actual="stale",
+                severity="warning",
+                hint=None,
+            )
+        ],
+        duration_ms=10,
+        category="core",
     )
     assert r.status == "WARN"
     assert all(f.severity == "warning" for f in r.failures)
+
 
 def test_audit_context_repo_root() -> None:
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False, vault_timeout_s=20)
@@ -65,9 +92,13 @@ def test_audit_context_repo_root() -> None:
 
 def test_failure_detail_is_frozen() -> None:
     import dataclasses
+
     f = FailureDetail(
-        location="x", expected="a", actual="b",
-        severity="error", hint=None,
+        location="x",
+        expected="a",
+        actual="b",
+        severity="error",
+        hint=None,
     )
     try:
         f.location = "y"
@@ -78,8 +109,12 @@ def test_failure_detail_is_frozen() -> None:
 
 def test_check_result_skip_status() -> None:
     r = CheckResult(
-        name="demo", status="SKIP", n_checked=0, n_passed=0,
-        duration_ms=0, category="core",
+        name="demo",
+        status="SKIP",
+        n_checked=0,
+        n_passed=0,
+        duration_ms=0,
+        category="core",
     )
     assert r.status == "SKIP"
     assert r.failures == []
@@ -87,52 +122,80 @@ def test_check_result_skip_status() -> None:
 
 def test_check_result_failures_mutable() -> None:
     r = CheckResult(
-        name="demo", status="FAIL", n_checked=1, n_passed=0,
-        duration_ms=0, category="core",
+        name="demo",
+        status="FAIL",
+        n_checked=1,
+        n_passed=0,
+        duration_ms=0,
+        category="core",
     )
-    r.failures.append(FailureDetail(
-        location="x", expected="a", actual="b",
-        severity="error", hint=None,
-    ))
+    r.failures.append(
+        FailureDetail(
+            location="x",
+            expected="a",
+            actual="b",
+            severity="error",
+            hint=None,
+        )
+    )
     assert len(r.failures) == 1
 
 
 def test_jsonl_schema_pass_on_good_fixture() -> None:
     from system_audit.checks.jsonl_schema import run
+
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "jsonl_schema"
-    result = run(REPO_ROOT, ctx, stores_override={
-        "score_history": fx / "good_score.jsonl",
-        "flag_events": fx / "empty.jsonl",
-        "portfolio_returns": fx / "empty.jsonl",
-        "benchmark_series": fx / "empty.jsonl",
-    })
-    assert result.status in ("PASS", "WARN", "SKIP"), f"expected PASS/WARN/SKIP, got {result.status}"
+    result = run(
+        REPO_ROOT,
+        ctx,
+        stores_override={
+            "score_history": fx / "good_score.jsonl",
+            "flag_events": fx / "empty.jsonl",
+            "portfolio_returns": fx / "empty.jsonl",
+            "benchmark_series": fx / "empty.jsonl",
+        },
+    )
+    assert result.status in ("PASS", "WARN", "SKIP"), (
+        f"expected PASS/WARN/SKIP, got {result.status}"
+    )
     assert all(f.severity != "error" for f in result.failures)
+
 
 def test_jsonl_schema_fail_on_bad_fixture() -> None:
     from system_audit.checks.jsonl_schema import run
+
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "jsonl_schema"
-    result = run(REPO_ROOT, ctx, stores_override={
-        "score_history": fx / "bad_score.jsonl",
-        "flag_events": fx / "empty.jsonl",
-        "portfolio_returns": fx / "empty.jsonl",
-        "benchmark_series": fx / "empty.jsonl",
-    })
+    result = run(
+        REPO_ROOT,
+        ctx,
+        stores_override={
+            "score_history": fx / "bad_score.jsonl",
+            "flag_events": fx / "empty.jsonl",
+            "portfolio_returns": fx / "empty.jsonl",
+            "benchmark_series": fx / "empty.jsonl",
+        },
+    )
     assert result.status == "FAIL"
     assert any(f.severity == "error" for f in result.failures)
     assert any("bad_score.jsonl:1" in f.location for f in result.failures)
 
+
 def test_jsonl_schema_skip_on_missing_file() -> None:
     from system_audit.checks.jsonl_schema import run
+
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-    result = run(REPO_ROOT, ctx, stores_override={
-        "score_history": REPO_ROOT / "does" / "not" / "exist.jsonl",
-        "flag_events": REPO_ROOT / "no.jsonl",
-        "portfolio_returns": REPO_ROOT / "no.jsonl",
-        "benchmark_series": REPO_ROOT / "no.jsonl",
-    })
+    result = run(
+        REPO_ROOT,
+        ctx,
+        stores_override={
+            "score_history": REPO_ROOT / "does" / "not" / "exist.jsonl",
+            "flag_events": REPO_ROOT / "no.jsonl",
+            "portfolio_returns": REPO_ROOT / "no.jsonl",
+            "benchmark_series": REPO_ROOT / "no.jsonl",
+        },
+    )
     assert result.status == "SKIP"
     assert all(f.severity == "warning" for f in result.failures)
 
@@ -143,22 +206,28 @@ def test_store_freshness_warn_on_stale() -> None:
     import tempfile
 
     from system_audit.checks.store_freshness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         pr = tdp / "portfolio_returns.jsonl"
         bs = tdp / "benchmark-series.jsonl"
         # 14 calendar days = ≥10 business days, robust to long-weekend execution
         stale = (datetime.date.today() - datetime.timedelta(days=14)).isoformat()
-        pr.write_text(json.dumps({"schema_version":"1.0","date":stale}) + "\n", encoding="utf-8")
-        bs.write_text(json.dumps({"schema_version":"1.0","date":stale}) + "\n", encoding="utf-8")
+        pr.write_text(json.dumps({"schema_version": "1.0", "date": stale}) + "\n", encoding="utf-8")
+        bs.write_text(json.dumps({"schema_version": "1.0", "date": stale}) + "\n", encoding="utf-8")
         ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-        result = run(REPO_ROOT, ctx, stores_override={
-            "portfolio_returns": pr,
-            "benchmark_series": bs,
-        })
+        result = run(
+            REPO_ROOT,
+            ctx,
+            stores_override={
+                "portfolio_returns": pr,
+                "benchmark_series": bs,
+            },
+        )
     assert result.status == "WARN"
     assert all(f.severity == "warning" for f in result.failures)
     assert len(result.failures) == 2
+
 
 def test_store_freshness_pass_on_fresh() -> None:
     import datetime
@@ -166,58 +235,87 @@ def test_store_freshness_pass_on_fresh() -> None:
     import tempfile
 
     from system_audit.checks.store_freshness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         pr = tdp / "portfolio_returns.jsonl"
         bs = tdp / "benchmark-series.jsonl"
         today = datetime.date.today().isoformat()
-        pr.write_text(json.dumps({"schema_version":"1.0","date":today}) + "\n", encoding="utf-8")
-        bs.write_text(json.dumps({"schema_version":"1.0","date":today}) + "\n", encoding="utf-8")
+        pr.write_text(json.dumps({"schema_version": "1.0", "date": today}) + "\n", encoding="utf-8")
+        bs.write_text(json.dumps({"schema_version": "1.0", "date": today}) + "\n", encoding="utf-8")
         ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-        result = run(REPO_ROOT, ctx, stores_override={
-            "portfolio_returns": pr, "benchmark_series": bs,
-        })
+        result = run(
+            REPO_ROOT,
+            ctx,
+            stores_override={
+                "portfolio_returns": pr,
+                "benchmark_series": bs,
+            },
+        )
     assert result.status == "PASS"
     assert result.failures == []
 
+
 def test_store_freshness_skip_on_missing() -> None:
     from system_audit.checks.store_freshness import run
+
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-    result = run(REPO_ROOT, ctx, stores_override={
-        "portfolio_returns": REPO_ROOT / "does-not-exist-1.jsonl",
-        "benchmark_series": REPO_ROOT / "does-not-exist-2.jsonl",
-    })
+    result = run(
+        REPO_ROOT,
+        ctx,
+        stores_override={
+            "portfolio_returns": REPO_ROOT / "does-not-exist-1.jsonl",
+            "benchmark_series": REPO_ROOT / "does-not-exist-2.jsonl",
+        },
+    )
     assert result.status == "SKIP"
 
 
 def test_markdown_header_pass_on_aligned() -> None:
     from system_audit.checks.markdown_header import run
+
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "markdown_header"
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-    result = run(REPO_ROOT, ctx, targets_override=[
-        (fx / "state_ok.md", "state"),
-        (fx / "core_memory_ok.md", "core_memory"),
-        (fx / "faktortabelle_ok.md", "faktortabelle"),
-    ])
+    result = run(
+        REPO_ROOT,
+        ctx,
+        targets_override=[
+            (fx / "state_ok.md", "state"),
+            (fx / "core_memory_ok.md", "core_memory"),
+            (fx / "faktortabelle_ok.md", "faktortabelle"),
+        ],
+    )
     assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
+
 
 def test_markdown_header_fail_on_stale() -> None:
     from system_audit.checks.markdown_header import run
+
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "markdown_header"
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-    result = run(REPO_ROOT, ctx, targets_override=[
-        (fx / "state_stale.md", "state"),
-    ])
+    result = run(
+        REPO_ROOT,
+        ctx,
+        targets_override=[
+            (fx / "state_stale.md", "state"),
+        ],
+    )
     assert result.status == "FAIL"
     assert any(f.severity == "error" for f in result.failures)
 
+
 def test_markdown_header_warn_on_lag() -> None:
     from system_audit.checks.markdown_header import run
+
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "markdown_header"
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-    result = run(REPO_ROOT, ctx, targets_override=[
-        (fx / "state_warn.md", "state"),
-    ])
+    result = run(
+        REPO_ROOT,
+        ctx,
+        targets_override=[
+            (fx / "state_warn.md", "state"),
+        ],
+    )
     assert result.status == "WARN"
     assert all(f.severity == "warning" for f in result.failures)
     assert len(result.failures) == 1
@@ -230,6 +328,7 @@ def test_markdown_header_excludes_future_dates() -> None:
     import tempfile
 
     from system_audit.checks.markdown_header import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         doc = tdp / "state_with_future.md"
@@ -242,31 +341,36 @@ def test_markdown_header_excludes_future_dates() -> None:
         )
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         # Freeze "today" to 2026-04-23 so both 29.04.2026 and 2028-04-01 are future
-        result = run(tdp, ctx,
-                     targets_override=[(doc, "state")],
-                     today=_dt.date(2026, 4, 23))
+        result = run(tdp, ctx, targets_override=[(doc, "state")], today=_dt.date(2026, 4, 23))
     assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
     assert result.failures == []
 
 
 def test_cross_source_pass_on_aligned() -> None:
     from system_audit.checks.cross_source import run
+
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "cross_source"
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-    result = run(REPO_ROOT, ctx, sources_override={
-        "config": fx / "config.yaml",
-        "portfolio": fx / "state.md",
-        "faktortabelle": fx / "faktortabelle.md",
-        "vault_entities_dir": None,
-    })
+    result = run(
+        REPO_ROOT,
+        ctx,
+        sources_override={
+            "config": fx / "config.yaml",
+            "portfolio": fx / "state.md",
+            "faktortabelle": fx / "faktortabelle.md",
+            "vault_entities_dir": None,
+        },
+    )
     assert result.status in ("PASS", "WARN"), f"got {result.status}, failures={result.failures}"
     assert all(f.severity != "error" for f in result.failures)
+
 
 def test_cross_source_fail_on_divergence() -> None:
     import shutil
     import tempfile
 
     from system_audit.checks.cross_source import run
+
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "cross_source"
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
@@ -275,18 +379,24 @@ def test_cross_source_fail_on_divergence() -> None:
         state = (fx / "state.md").read_text(encoding="utf-8").replace("AVGO | 84", "AVGO | 85")
         (tdp / "state.md").write_text(state, encoding="utf-8")
         ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
-        result = run(REPO_ROOT, ctx, sources_override={
-            "config": tdp / "config.yaml",
-            "portfolio": tdp / "state.md",
-            "faktortabelle": tdp / "faktortabelle.md",
-            "vault_entities_dir": None,
-        })
+        result = run(
+            REPO_ROOT,
+            ctx,
+            sources_override={
+                "config": tdp / "config.yaml",
+                "portfolio": tdp / "state.md",
+                "faktortabelle": tdp / "faktortabelle.md",
+                "vault_entities_dir": None,
+            },
+        )
     assert result.status == "FAIL"
     assert any("AVGO" in f.actual for f in result.failures)
+
 
 def test_flag_parser_all_six_variants() -> None:
     """Spec §7.3 Parser-Golden-Test: alle 6 beobachteten FLAG-Strings."""
     from system_audit.checks.cross_source import parse_flag_icon
+
     assert parse_flag_icon("✅") == ("ok", None)
     assert parse_flag_icon("⚠️ Insider-Review") == ("warn", "Insider-Review")
     assert parse_flag_icon("✅ Insurance Exception") == ("ok", "Insurance Exception")
@@ -294,9 +404,11 @@ def test_flag_parser_all_six_variants() -> None:
     assert parse_flag_icon("🔴 Score-basiert") == ("flag", "Score-basiert")
     assert parse_flag_icon("🔴 CapEx/OCF 83.6%") == ("flag", "CapEx/OCF 83.6%")
 
+
 def test_flag_mismatch_matrix() -> None:
     """Spec §5.1 Check-3 FLAG-Matrix."""
     from system_audit.checks.cross_source import compare_flag
+
     assert compare_flag(False, "ok") == "match"
     assert compare_flag(False, "warn") == "warning"
     assert compare_flag(False, "flag") == "error"
@@ -310,6 +422,7 @@ def test_existence_pass_on_existing_paths() -> None:
     import tempfile
 
     from system_audit.checks.existence import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "sub").mkdir()
@@ -327,6 +440,7 @@ def test_existence_skips_bare_filenames() -> None:
     import tempfile
 
     from system_audit.checks.existence import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "doc.md").write_text(
@@ -344,6 +458,7 @@ def test_existence_skips_memory_files() -> None:
     import tempfile
 
     from system_audit.checks.existence import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "doc.md").write_text(
@@ -360,6 +475,7 @@ def test_existence_demotes_plan_findings_to_warning() -> None:
     import tempfile
 
     from system_audit.checks.existence import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         plan_dir = tdp / "docs" / "superpowers" / "plans"
@@ -377,6 +493,7 @@ def test_existence_ignores_paths_with_spaces() -> None:
     import tempfile
 
     from system_audit.checks.existence import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "doc.md").write_text(
@@ -401,15 +518,18 @@ def _make_skill(root: Path, name: str, version: str) -> None:
         encoding="utf-8",
     )
 
+
 def _make_zip(root: Path, name: str, version: str) -> None:
     (root / "06_Skills-Pakete").mkdir(parents=True, exist_ok=True)
     (root / "06_Skills-Pakete" / f"{name}_v{version}.zip").write_text("", encoding="utf-8")
+
 
 def test_skill_version_pass_fixture() -> None:
     """PASS: SKILL.md == ZIP version."""
     import tempfile
 
     from system_audit.checks.skill_version import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         _make_skill(tdp, "demo", "1.0.0")
@@ -419,11 +539,13 @@ def test_skill_version_pass_fixture() -> None:
     assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
     assert result.failures == []
 
+
 def test_skill_version_warn_on_unpacked_newer_fixture() -> None:
     """WARN: SKILL.md v2.0.0 aber hoechste ZIP nur v1.9.0 (ungepackt)."""
     import tempfile
 
     from system_audit.checks.skill_version import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         _make_skill(tdp, "demo", "2.0.0")
@@ -433,11 +555,13 @@ def test_skill_version_warn_on_unpacked_newer_fixture() -> None:
     assert result.status == "WARN"
     assert any("1.9.0" in f.actual for f in result.failures)
 
+
 def test_skill_version_warn_on_orphan_zip_fixture() -> None:
     """WARN: ZIP ohne passendes 01_Skills/<name>/."""
     import tempfile
 
     from system_audit.checks.skill_version import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "01_Skills").mkdir()
@@ -446,13 +570,18 @@ def test_skill_version_warn_on_orphan_zip_fixture() -> None:
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx)
     assert result.status == "WARN"
-    assert any("orphan" in (f.actual + (f.hint or "")).lower() or "ghost" in f.location for f in result.failures)
+    assert any(
+        "orphan" in (f.actual + (f.hint or "")).lower() or "ghost" in f.location
+        for f in result.failures
+    )
+
 
 def test_skill_version_pass_on_bare_zip_fixture() -> None:
     """PASS: SKILL.md vN.N.N + non-versioned <name>.zip (accepted convention)."""
     import tempfile
 
     from system_audit.checks.skill_version import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         _make_skill(tdp, "demo", "1.0.0")
@@ -469,6 +598,7 @@ def test_skill_version_warn_on_orphan_bare_zip_fixture() -> None:
     import tempfile
 
     from system_audit.checks.skill_version import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "01_Skills").mkdir()
@@ -485,6 +615,7 @@ def test_skill_version_pass_on_extern_bare_zip_fixture() -> None:
     import tempfile
 
     from system_audit.checks.skill_version import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "01_Skills" / "_extern" / "external-skill").mkdir(parents=True)
@@ -501,6 +632,7 @@ def test_skill_version_skip_on_missing_frontmatter_fixture() -> None:
     import tempfile
 
     from system_audit.checks.skill_version import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         d = tdp / "01_Skills" / "demo"
@@ -516,6 +648,7 @@ def test_skill_version_skip_on_missing_frontmatter_fixture() -> None:
 def test_pipeline_ssot_parser_three_variants() -> None:
     """Spec §7.3 Parser-Golden-Test."""
     from system_audit.checks.pipeline_ssot import extract_plan_refs
+
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "pipeline_ssot"
     full = extract_plan_refs((fx / "state_full.md").read_text(encoding="utf-8"))
     assert set(full) == {
@@ -528,14 +661,18 @@ def test_pipeline_ssot_parser_three_variants() -> None:
     broken = extract_plan_refs((fx / "state_broken.md").read_text(encoding="utf-8"))
     assert broken == ["docs/superpowers/plans/2099-12-31-nonexistent.md"]
 
+
 def test_pipeline_ssot_pass_on_live_state() -> None:
     from system_audit.checks.pipeline_ssot import run
+
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
     result = run(REPO_ROOT, ctx)
     assert result.status == "PASS", f"failures={result.failures}"
 
+
 def test_pipeline_ssot_fail_on_broken_ref() -> None:
     from system_audit.checks.pipeline_ssot import run
+
     fx = REPO_ROOT / "03_Tools" / "system_audit" / "fixtures" / "pipeline_ssot"
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
     result = run(REPO_ROOT, ctx, pipeline_path_override=fx / "state_broken.md")
@@ -545,20 +682,37 @@ def test_pipeline_ssot_fail_on_broken_ref() -> None:
 
 def test_log_lag_live_repo_pass() -> None:
     from system_audit.checks.log_lag import run
+
     ctx = AuditContext(repo_root=REPO_ROOT, include_optional=False)
     result = run(REPO_ROOT, ctx)
     assert result.status in ("PASS", "SKIP"), f"failures={result.failures}"
+
 
 def test_log_lag_fail_on_stale() -> None:
     import subprocess
     import tempfile
 
     from system_audit.checks.log_lag import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         subprocess.run(["git", "init", "-q"], cwd=tdp, check=True)
-        subprocess.run(["git", "-c", "user.name=T", "-c", "user.email=t@t", "commit",
-                        "--allow-empty", "-m", "init"], cwd=tdp, check=True, capture_output=True)
+        subprocess.run(
+            [
+                "git",
+                "-c",
+                "user.name=T",
+                "-c",
+                "user.email=t@t",
+                "commit",
+                "--allow-empty",
+                "-m",
+                "init",
+            ],
+            cwd=tdp,
+            check=True,
+            capture_output=True,
+        )
         vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki"
         vault.mkdir(parents=True)
         (vault / "log.md").write_text("## [2020-01-01] historical\n", encoding="utf-8")
@@ -569,15 +723,34 @@ def test_log_lag_fail_on_stale() -> None:
 
 def test_report_human_format_contains_summary() -> None:
     from system_audit.report import render_human
+
     results = [
-        CheckResult(name="jsonl_schema", status="PASS", n_checked=27, n_passed=27,
-                    failures=[], duration_ms=128, category="core"),
-        CheckResult(name="cross_source", status="FAIL", n_checked=11, n_passed=10,
-                    failures=[FailureDetail(
-                        location="00_Core/STATE.md:18",
-                        expected="AVGO Score=84", actual="Score=85",
-                        severity="error", hint="STATE.md-Zeile aktualisieren",
-                    )], duration_ms=91, category="core"),
+        CheckResult(
+            name="jsonl_schema",
+            status="PASS",
+            n_checked=27,
+            n_passed=27,
+            failures=[],
+            duration_ms=128,
+            category="core",
+        ),
+        CheckResult(
+            name="cross_source",
+            status="FAIL",
+            n_checked=11,
+            n_passed=10,
+            failures=[
+                FailureDetail(
+                    location="00_Core/STATE.md:18",
+                    expected="AVGO Score=84",
+                    actual="Score=85",
+                    severity="error",
+                    hint="STATE.md-Zeile aktualisieren",
+                )
+            ],
+            duration_ms=91,
+            category="core",
+        ),
     ]
     text = render_human(results, timestamp_utc="2026-04-21T14:32:41Z")
     assert "Check-1" in text or "jsonl_schema" in text
@@ -585,6 +758,7 @@ def test_report_human_format_contains_summary() -> None:
     assert "❌" in text or "FAIL" in text
     assert "AVGO" in text
     assert "Exit-Code: 1" in text
+
 
 def test_report_human_severity_icons_and_grouping() -> None:
     """Regression-gate: WARN-Semantik pro-failure (⚠️/🔴/ℹ️) + Batch-Output
@@ -594,31 +768,55 @@ def test_report_human_severity_icons_and_grouping() -> None:
     from system_audit.report import render_human
 
     mixed = [
-        FailureDetail(location="STATE.md: A", expected="x", actual="y",
-                      severity="error", hint=None),
-        FailureDetail(location="STATE.md: B", expected="x", actual="y",
-                      severity="warning", hint=None),
+        FailureDetail(
+            location="STATE.md: A", expected="x", actual="y", severity="error", hint=None
+        ),
+        FailureDetail(
+            location="STATE.md: B", expected="x", actual="y", severity="warning", hint=None
+        ),
     ]
     grouped = [
-        FailureDetail(location=f"CLAUDE.md:{i}", expected="x", actual=f"p{i}",
-                      severity="error", hint=None)
+        FailureDetail(
+            location=f"CLAUDE.md:{i}", expected="x", actual=f"p{i}", severity="error", hint=None
+        )
         for i in range(5)
     ] + [
-        FailureDetail(location="STATE.md:1", expected="x", actual="z",
-                      severity="error", hint=None)
+        FailureDetail(location="STATE.md:1", expected="x", actual="z", severity="error", hint=None)
     ]
     singletons = [
-        FailureDetail(location=f"pkg/{name}.zip", expected="x", actual="orphan",
-                      severity="warning", hint=None)
+        FailureDetail(
+            location=f"pkg/{name}.zip", expected="x", actual="orphan", severity="warning", hint=None
+        )
         for name in ("a", "b", "c", "d")
     ]
     results = [
-        CheckResult(name="c1", status="FAIL", n_checked=2, n_passed=0,
-                    failures=mixed, duration_ms=1, category="core"),
-        CheckResult(name="c2", status="FAIL", n_checked=6, n_passed=0,
-                    failures=grouped, duration_ms=1, category="core"),
-        CheckResult(name="c3", status="WARN", n_checked=4, n_passed=4,
-                    failures=singletons, duration_ms=1, category="core"),
+        CheckResult(
+            name="c1",
+            status="FAIL",
+            n_checked=2,
+            n_passed=0,
+            failures=mixed,
+            duration_ms=1,
+            category="core",
+        ),
+        CheckResult(
+            name="c2",
+            status="FAIL",
+            n_checked=6,
+            n_passed=0,
+            failures=grouped,
+            duration_ms=1,
+            category="core",
+        ),
+        CheckResult(
+            name="c3",
+            status="WARN",
+            n_checked=4,
+            n_passed=4,
+            failures=singletons,
+            duration_ms=1,
+            category="core",
+        ),
     ]
     text = render_human(results, timestamp_utc="2026-04-23T20:00:00Z")
 
@@ -640,9 +838,17 @@ def test_report_json_format_is_valid() -> None:
     import json
 
     from system_audit.report import render_json
+
     results = [
-        CheckResult(name="a", status="PASS", n_checked=1, n_passed=1,
-                    failures=[], duration_ms=10, category="core"),
+        CheckResult(
+            name="a",
+            status="PASS",
+            n_checked=1,
+            n_passed=1,
+            failures=[],
+            duration_ms=10,
+            category="core",
+        ),
     ]
     text = render_json(results, timestamp_utc="2026-04-21T14:32:41Z")
     data = json.loads(text)
@@ -663,19 +869,23 @@ def test_main_rc2_emits_partial_json_and_preserves_diagnosis() -> None:
     import types as stdlib_types
 
     main_spec = importlib.util.spec_from_file_location(
-        "_sa_main_under_test", str(REPO_ROOT / "03_Tools" / "system_audit.py"),
+        "_sa_main_under_test",
+        str(REPO_ROOT / "03_Tools" / "system_audit.py"),
     )
     assert main_spec is not None and main_spec.loader is not None
     main_mod = importlib.util.module_from_spec(main_spec)
     main_spec.loader.exec_module(main_mod)
 
     broken_mod = stdlib_types.ModuleType("_sa_broken_check_under_test")
+
     def _boom(_root, _ctx):
         raise RuntimeError("synthetic boom for rc=2 test")
+
     broken_mod.run = _boom  # type: ignore[attr-defined]
     sys.modules["_sa_broken_check_under_test"] = broken_mod
 
     from system_audit import checks as checks_mod
+
     original_core = dict(checks_mod.CORE)
     checks_mod.CORE.clear()
     checks_mod.CORE["broken_test"] = "_sa_broken_check_under_test:run"
@@ -709,8 +919,9 @@ def test_render_json_partial_flag_emits_internal_errors() -> None:
     exit_code to 2, and attaches the error list for automation consumers."""
     import json as _json
 
+    from system_audit.audit_types import CheckResult
     from system_audit.report import render_json
-    from system_audit.types import CheckResult
+
     results = [CheckResult(name="dummy", status="PASS", n_checked=1, n_passed=1)]
     out = render_json(
         results,
@@ -732,8 +943,9 @@ def test_render_json_without_internal_errors_is_non_partial() -> None:
     internal_errors key. Exit-code remains 0/1 per existing FAIL semantics."""
     import json as _json
 
+    from system_audit.audit_types import CheckResult
     from system_audit.report import render_json
-    from system_audit.types import CheckResult
+
     results = [CheckResult(name="dummy", status="PASS", n_checked=1, n_passed=1)]
     out = render_json(results, timestamp_utc="2026-04-21T00:00:00Z")
     data = _json.loads(out)
@@ -746,14 +958,19 @@ def test_state_writer_first_run_inserts_before_footer() -> None:
     import tempfile
 
     from system_audit.state_writer import write_last_audit
+
     with tempfile.TemporaryDirectory() as td:
         p = Path(td) / "STATE.md"
         p.write_text(
             "# STATE\n\n## Section A\nContent\n\n---\n*🦅 STATE.md v1.0 | Footer*\n",
             encoding="utf-8",
         )
-        write_last_audit(p, timestamp_utc="2026-04-21T14:32:41Z",
-                         summary="7/7 PASS", run_cmd="python 03_Tools/system_audit.py --core")
+        write_last_audit(
+            p,
+            timestamp_utc="2026-04-21T14:32:41Z",
+            summary="7/7 PASS",
+            run_cmd="python 03_Tools/system_audit.py --core",
+        )
         text = p.read_text(encoding="utf-8")
     assert "<!-- system-audit:last-audit:start -->" in text
     assert "<!-- system-audit:last-audit:end -->" in text
@@ -761,34 +978,43 @@ def test_state_writer_first_run_inserts_before_footer() -> None:
     assert "2026-04-21T14:32:41Z" in text
     assert text.index("<!-- system-audit:last-audit:end -->") < text.index("🦅 STATE.md v1.0")
 
+
 def test_state_writer_second_run_replaces_block() -> None:
     import tempfile
 
     from system_audit.state_writer import write_last_audit
+
     with tempfile.TemporaryDirectory() as td:
         p = Path(td) / "STATE.md"
         p.write_text(
             "# STATE\n\n---\n*🦅 STATE.md v1.0*\n",
             encoding="utf-8",
         )
-        write_last_audit(p, timestamp_utc="2026-04-21T14:32:41Z",
-                         summary="7/7 PASS", run_cmd="x")
-        write_last_audit(p, timestamp_utc="2026-04-22T09:00:00Z",
-                         summary="6/7 PASS (1 FAIL)", run_cmd="x")
+        write_last_audit(p, timestamp_utc="2026-04-21T14:32:41Z", summary="7/7 PASS", run_cmd="x")
+        write_last_audit(
+            p, timestamp_utc="2026-04-22T09:00:00Z", summary="6/7 PASS (1 FAIL)", run_cmd="x"
+        )
         text = p.read_text(encoding="utf-8")
     assert text.count("<!-- system-audit:last-audit:start -->") == 1
     assert "2026-04-22T09:00:00Z" in text
     assert "2026-04-21T14:32:41Z" not in text
     assert "6/7 PASS" in text
 
+
 def test_orchestrator_dry_run_on_live_repo() -> None:
     """Dev-Smoke: akzeptiert rc in {0, 1} weil Live-Repo noch Drift haben kann
     (pre-Task-17 existence-Cleanup). Hard-Baseline-Gate ist Task 17/15."""
     import json
     import subprocess
+
     out = subprocess.run(
         [sys.executable, "03_Tools/system_audit.py", "--core", "--no-write", "--json"],
-        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60,
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=60,
     )
     assert out.returncode in (0, 1), (
         f"rc={out.returncode} (2=tool-bug)\nstdout={out.stdout[:500]}\nstderr={out.stderr[:500]}"
@@ -805,15 +1031,19 @@ def test_orchestrator_duration_budget_core() -> None:
     pass misleadingly (CodeRabbit-subagent Finding K)."""
     import subprocess
     import time
+
     t0 = time.monotonic()
     out = subprocess.run(
         [sys.executable, "03_Tools/system_audit.py", "--core", "--no-write"],
-        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45,
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=45,
     )
     elapsed = time.monotonic() - t0
-    assert out.returncode in (0, 1), (
-        f"rc={out.returncode} (2=tool-bug), stderr={out.stderr[:500]}"
-    )
+    assert out.returncode in (0, 1), f"rc={out.returncode} (2=tool-bug), stderr={out.stderr[:500]}"
     assert elapsed < 30.0, f"took {elapsed:.1f}s, budget 30s"
 
 
@@ -821,9 +1051,15 @@ def test_orchestrator_minimal_baseline_scope() -> None:
     """--minimal-baseline runs exactly jsonl_schema + pipeline_ssot + log_lag."""
     import json
     import subprocess
+
     out = subprocess.run(
         [sys.executable, "03_Tools/system_audit.py", "--minimal-baseline", "--no-write", "--json"],
-        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=30,
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=30,
     )
     assert out.returncode in (0, 1), f"rc={out.returncode}\nstderr={out.stderr[:500]}"
     data = json.loads(out.stdout)
@@ -840,9 +1076,15 @@ def test_orchestrator_vault_runs_optional_checks() -> None:
     """
     import json
     import subprocess
+
     out = subprocess.run(
         [sys.executable, "03_Tools/system_audit.py", "--vault", "--no-write", "--json"],
-        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60,
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=60,
     )
     assert out.returncode in (0, 1), f"rc={out.returncode}, stderr={out.stderr[:500]}"
     data = json.loads(out.stdout)
@@ -854,10 +1096,22 @@ def test_orchestrator_vault_runs_optional_checks() -> None:
 def test_orchestrator_invalid_timeout_rejected() -> None:
     """--timeout-per-check <= 0 must return rc=2."""
     import subprocess
+
     out = subprocess.run(
-        [sys.executable, "03_Tools/system_audit.py",
-         "--core", "--no-write", "--timeout-per-check", "0"],
-        cwd=str(REPO_ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20,
+        [
+            sys.executable,
+            "03_Tools/system_audit.py",
+            "--core",
+            "--no-write",
+            "--timeout-per-check",
+            "0",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=20,
     )
     assert out.returncode == 2, f"rc={out.returncode}, stderr={out.stderr[:200]}"
 
@@ -866,6 +1120,7 @@ def test_state_writer_raises_on_orphan_start_marker() -> None:
     import tempfile
 
     from system_audit.state_writer import write_last_audit
+
     with tempfile.TemporaryDirectory() as td:
         p = Path(td) / "STATE.md"
         p.write_text(
@@ -885,6 +1140,7 @@ def test_vault_backlinks_pass_fixture() -> None:
     import tempfile
 
     from system_audit.checks.vault_backlinks import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind"
@@ -895,11 +1151,13 @@ def test_vault_backlinks_pass_fixture() -> None:
         result = run(tdp, ctx)
     assert result.status == "PASS", f"failures={result.failures}"
 
+
 def test_vault_backlinks_fail_on_missing() -> None:
     """FAIL: [[Missing]] hat keinen Target."""
     import tempfile
 
     from system_audit.checks.vault_backlinks import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind"
@@ -910,14 +1168,24 @@ def test_vault_backlinks_fail_on_missing() -> None:
     assert result.status == "FAIL"
     assert any("Nonexistent" in f.expected or "Nonexistent" in f.actual for f in result.failures)
 
+
 def test_status_matrix_pass_fixture() -> None:
     """PASS: B1-B5 lückenlos, keine Duplikate. Table-row format."""
     import tempfile
 
     from system_audit.checks.status_matrix import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
-        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "synthesis"
+            / "Wissenschaftliche-Fundierung-DEFCON.md"
+        )
         target.parent.mkdir(parents=True)
         target.write_text(
             "# Doc\n\n## Status-Matrix\n\n"
@@ -934,14 +1202,24 @@ def test_status_matrix_pass_fixture() -> None:
         result = run(tdp, ctx)
     assert result.status == "PASS", f"failures={result.failures}"
 
+
 def test_status_matrix_fail_on_gap() -> None:
     """FAIL: B3 fehlt zwischen B2 und B4. Table-row format."""
     import tempfile
 
     from system_audit.checks.status_matrix import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
-        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "synthesis"
+            / "Wissenschaftliche-Fundierung-DEFCON.md"
+        )
         target.parent.mkdir(parents=True)
         target.write_text(
             "## Status-Matrix\n\n"
@@ -958,14 +1236,24 @@ def test_status_matrix_fail_on_gap() -> None:
     assert result.status == "FAIL"
     assert any("B3" in f.actual for f in result.failures)
 
+
 def test_status_matrix_fail_on_duplicate() -> None:
     """FAIL: B2 erscheint 2× als Tabellen-Row. Real-dup-detection (row-anchored)."""
     import tempfile
 
     from system_audit.checks.status_matrix import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
-        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "synthesis"
+            / "Wissenschaftliche-Fundierung-DEFCON.md"
+        )
         target.parent.mkdir(parents=True)
         target.write_text(
             "## Status-Matrix\n\n"
@@ -995,9 +1283,18 @@ def test_status_matrix_no_dup_on_legend_range_mention() -> None:
     import tempfile
 
     from system_audit.checks.status_matrix import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
-        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "synthesis"
+            / "Wissenschaftliche-Fundierung-DEFCON.md"
+        )
         target.parent.mkdir(parents=True)
         target.write_text(
             "## Status-Matrix\n\n"
@@ -1035,6 +1332,7 @@ def test_vault_backlinks_skip_on_missing_vault() -> None:
     import tempfile
 
     from system_audit.checks.vault_backlinks import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         ctx = AuditContext(repo_root=tdp, include_optional=True, vault_timeout_s=10)
@@ -1051,9 +1349,18 @@ def test_status_matrix_header_anchored_not_prose_match() -> None:
     import tempfile
 
     from system_audit.checks.status_matrix import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
-        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "synthesis"
+            / "Wissenschaftliche-Fundierung-DEFCON.md"
+        )
         target.parent.mkdir(parents=True)
         target.write_text(
             "# Titel\n\nDiese Seite enthält eine **Status-Matrix** mit B-Nummern.\n\n"
@@ -1081,9 +1388,18 @@ def test_status_matrix_subsections_are_scanned() -> None:
     import tempfile
 
     from system_audit.checks.status_matrix import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
-        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "synthesis"
+            / "Wissenschaftliche-Fundierung-DEFCON.md"
+        )
         target.parent.mkdir(parents=True)
         target.write_text(
             "## Status-Matrix\n\n"
@@ -1112,9 +1428,18 @@ def test_status_matrix_n_passed_arithmetic_with_gaps() -> None:
     import tempfile
 
     from system_audit.checks.status_matrix import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
-        target = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+        target = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "synthesis"
+            / "Wissenschaftliche-Fundierung-DEFCON.md"
+        )
         target.parent.mkdir(parents=True)
         target.write_text(
             "## Status-Matrix\n\n"
@@ -1143,6 +1468,7 @@ def test_jsonl_schema_malformed_json_hint() -> None:
     import tempfile
 
     from system_audit.checks.jsonl_schema import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         bad = tdp / "bad.jsonl"
@@ -1150,19 +1476,22 @@ def test_jsonl_schema_malformed_json_hint() -> None:
         empty = tdp / "empty.jsonl"
         empty.write_text("", encoding="utf-8")
         ctx = AuditContext(repo_root=tdp, include_optional=False)
-        result = run(tdp, ctx, stores_override={
-            "score_history": bad,
-            "flag_events": empty,
-            "portfolio_returns": empty,
-            "benchmark_series": empty,
-        })
+        result = run(
+            tdp,
+            ctx,
+            stores_override={
+                "score_history": bad,
+                "flag_events": empty,
+                "portfolio_returns": empty,
+                "benchmark_series": empty,
+            },
+        )
     assert result.status == "FAIL"
     json_failures = [f for f in result.failures if f.severity == "error"]
     assert len(json_failures) >= 1
-    assert any(
-        f.hint is not None and "manuell" in f.hint.lower()
-        for f in json_failures
-    ), f"malformed JSON erwartet 'manuell pruefen/entfernen' hint; got hints={[f.hint for f in json_failures]}"
+    assert any(f.hint is not None and "manuell" in f.hint.lower() for f in json_failures), (
+        f"malformed JSON erwartet 'manuell pruefen/entfernen' hint; got hints={[f.hint for f in json_failures]}"
+    )
 
 
 def test_pyyaml_preflight_clean_message() -> None:
@@ -1173,8 +1502,10 @@ def test_pyyaml_preflight_clean_message() -> None:
     import importlib.util
     import io
     import sys as _sys
+
     main_spec = importlib.util.spec_from_file_location(
-        "_sa_main_preflight_test", str(REPO_ROOT / "03_Tools" / "system_audit.py"),
+        "_sa_main_preflight_test",
+        str(REPO_ROOT / "03_Tools" / "system_audit.py"),
     )
     assert main_spec is not None and main_spec.loader is not None
     main_mod = importlib.util.module_from_spec(main_spec)
@@ -1204,6 +1535,7 @@ def test_score_event_parity_pass_on_aligned_readme() -> None:
     import tempfile
 
     from system_audit.checks.score_event_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         readme_dir = tdp / "03_Tools" / "backtest-ready"
@@ -1236,11 +1568,13 @@ def test_score_event_parity_pass_on_aligned_readme() -> None:
     assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
     assert result.failures == []
 
+
 def test_score_event_parity_fail_on_v17_drift() -> None:
     """FAIL F1: README sagt §18 v1.7 statt v2.1."""
     import tempfile
 
     from system_audit.checks.score_event_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         rd = tdp / "03_Tools" / "backtest-ready"
@@ -1262,15 +1596,16 @@ def test_score_event_parity_fail_on_v17_drift() -> None:
         result = run(tdp, ctx)
     assert result.status == "FAIL"
     assert any(
-        "v1.7" in f.actual or "v1.7" in f.location
-        for f in result.failures if f.severity == "error"
+        "v1.7" in f.actual or "v1.7" in f.location for f in result.failures if f.severity == "error"
     ), f"v1.7-drift muss als error gefunden werden; got {result.failures}"
+
 
 def test_score_event_parity_fail_on_missing_file_in_briefing_sync() -> None:
     """FAIL F4: briefing-sync-check.ps1 listet config.yaml nicht."""
     import tempfile
 
     from system_audit.checks.score_event_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         rd = tdp / "03_Tools" / "backtest-ready"
@@ -1300,15 +1635,16 @@ def test_score_event_parity_fail_on_missing_file_in_briefing_sync() -> None:
         result = run(tdp, ctx)
     assert result.status == "FAIL"
     assert any(
-        "config.yaml" in f.expected and "briefing" in f.location.lower()
-        for f in result.failures
+        "config.yaml" in f.expected and "briefing" in f.location.lower() for f in result.failures
     ), f"config.yaml-miss in briefing-sync muss gefangen werden; got {result.failures}"
+
 
 def test_score_event_parity_skip_on_missing_sources() -> None:
     """SKIP: keine der erwarteten Source-Files vorhanden — kein FAIL."""
     import tempfile
 
     from system_audit.checks.score_event_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         ctx = AuditContext(repo_root=tdp, include_optional=False)
@@ -1322,6 +1658,7 @@ def test_score_event_parity_no_fp_on_changelog() -> None:
     trigger version-drift FAIL. §18 subsection refs are not governing-rule mentions.
     """
     from system_audit.checks.score_event_parity import _scan_text_for_wrong_versions
+
     text = (
         "## 18. Sync-Pflicht v2.1\n"
         "Body referencing §18 v2.1 governance.\n"
@@ -1330,13 +1667,17 @@ def test_score_event_parity_no_fp_on_changelog() -> None:
         "- v2.0 -> v2.1 (2026-04-25): config.yaml in Set.\n"
     )
     out = _scan_text_for_wrong_versions(text)
-    assert out == [], f"changelog with §18.1/§18.2 subsection refs must not flag wrong-version; got {out}"
+    assert out == [], (
+        f"changelog with §18.1/§18.2 subsection refs must not flag wrong-version; got {out}"
+    )
+
 
 def test_score_event_parity_no_fp_on_basename_in_prose() -> None:
     """Regression Codex-TaskID-12: basename mention in narrative prose must NOT
     count as list-entry. Line-scope to list markers only.
     """
     from system_audit.checks.score_event_parity import _scan_text_for_basenames
+
     text = "Bitte schaue in die log.md Datei nach den letzten Eintraegen.\n"
     found = _scan_text_for_basenames(text)
     assert "log.md" not in found, f"prose mention must not count; got {found}"
@@ -1356,6 +1697,7 @@ def test_score_event_parity_fail_on_drift_in_section_with_decoy_outside() -> Non
     import tempfile
 
     from system_audit.checks.score_event_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         # README.md: §18 block missing config.yaml (drift), but config.yaml
@@ -1363,9 +1705,7 @@ def test_score_event_parity_fail_on_drift_in_section_with_decoy_outside() -> Non
         # would find it; cluster-window must not.
         rd = tdp / "03_Tools" / "backtest-ready"
         rd.mkdir(parents=True)
-        decoy_padding = "\n".join(
-            f"| col-{i} | `config.yaml` skill-file |" for i in range(40)
-        )
+        decoy_padding = "\n".join(f"| col-{i} | `config.yaml` skill-file |" for i in range(40))
         readme_body = (
             "# Backtest-Ready README\n\n"
             "## Skill-File-Table (NOT the §18 list)\n\n"
@@ -1390,10 +1730,9 @@ def test_score_event_parity_fail_on_drift_in_section_with_decoy_outside() -> Non
         f"drift in §18 block must FAIL despite decoy mention; got {result.status}, "
         f"failures={result.failures}"
     )
-    assert any(
-        "config.yaml" in f.expected and f.severity == "error"
-        for f in result.failures
-    ), f"missing config.yaml in canonical block must be reported; got {result.failures}"
+    assert any("config.yaml" in f.expected and f.severity == "error" for f in result.failures), (
+        f"missing config.yaml in canonical block must be reported; got {result.failures}"
+    )
 
 
 def test_score_event_parity_window_helper_clusters_only() -> None:
@@ -1404,6 +1743,7 @@ def test_score_event_parity_window_helper_clusters_only() -> None:
         CANONICAL_SCORE_EVENT_BASENAMES,
         _basenames_in_best_window,
     )
+
     # Cluster: 7 basenames in one line
     text_clustered = (
         "Header\n\n"
@@ -1415,12 +1755,8 @@ def test_score_event_parity_window_helper_clusters_only() -> None:
 
     # Scattered: each basename in its own line, separated by 30+ lines
     padding = "\n".join("intermediate line" for _ in range(30))
-    text_scattered = "\n".join(
-        f"- {bn}\n{padding}" for bn in CANONICAL_SCORE_EVENT_BASENAMES
-    )
-    out_scattered = _basenames_in_best_window(
-        text_scattered, CANONICAL_SCORE_EVENT_BASENAMES
-    )
+    text_scattered = "\n".join(f"- {bn}\n{padding}" for bn in CANONICAL_SCORE_EVENT_BASENAMES)
+    out_scattered = _basenames_in_best_window(text_scattered, CANONICAL_SCORE_EVENT_BASENAMES)
     # Best window catches at most 1-2 basenames (they are 30+ lines apart)
     assert len(out_scattered) < len(CANONICAL_SCORE_EVENT_BASENAMES), (
         f"scattered basenames must not cluster; got {out_scattered}"
@@ -1431,6 +1767,7 @@ def test_skill_frontmatter_pass_on_complete() -> None:
     import tempfile
 
     from system_audit.checks.skill_frontmatter import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         d = tdp / "01_Skills" / "demo"
@@ -1443,11 +1780,13 @@ def test_skill_frontmatter_pass_on_complete() -> None:
         result = run(tdp, ctx)
     assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
 
+
 def test_skill_frontmatter_warn_on_missing_version() -> None:
     """F8-Pathologie: SKILL.md hat name+description aber version: fehlt."""
     import tempfile
 
     from system_audit.checks.skill_frontmatter import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         d = tdp / "01_Skills" / "draft-skill"
@@ -1460,14 +1799,15 @@ def test_skill_frontmatter_warn_on_missing_version() -> None:
         result = run(tdp, ctx)
     assert result.status == "WARN"
     assert any(
-        "version" in f.expected.lower() and "draft-skill" in f.location
-        for f in result.failures
+        "version" in f.expected.lower() and "draft-skill" in f.location for f in result.failures
     ), f"expected version-missing warning for draft-skill; got {result.failures}"
+
 
 def test_skill_frontmatter_warn_on_missing_description() -> None:
     import tempfile
 
     from system_audit.checks.skill_frontmatter import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         d = tdp / "01_Skills" / "no-desc"
@@ -1481,11 +1821,13 @@ def test_skill_frontmatter_warn_on_missing_description() -> None:
     assert result.status == "WARN"
     assert any("description" in f.expected.lower() for f in result.failures)
 
+
 def test_skill_frontmatter_skip_on_no_frontmatter() -> None:
     """Convention: SKILL.md ohne Frontmatter ist 'draft', WARN nicht FAIL."""
     import tempfile
 
     from system_audit.checks.skill_frontmatter import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         d = tdp / "01_Skills" / "no-fm"
@@ -1496,11 +1838,13 @@ def test_skill_frontmatter_skip_on_no_frontmatter() -> None:
     assert result.status == "WARN"
     assert any("frontmatter" in (f.hint or "").lower() for f in result.failures)
 
+
 def test_skill_frontmatter_ignores_extern_subskills() -> None:
     """_extern/<name>/ Skills sind nicht audit-scope (read-only third-party)."""
     import tempfile
 
     from system_audit.checks.skill_frontmatter import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         d = tdp / "01_Skills" / "_extern" / "third-party"
@@ -1516,14 +1860,13 @@ def test_header_freshness_fail_on_placeholder() -> None:
     import tempfile
 
     from system_audit.checks.header_freshness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         target = tdp / "03_Tools" / "morning-briefing-prompt-v3.md"
         target.parent.mkdir(parents=True)
         target.write_text(
-            "# Morning Briefing v3.0.3\n\n"
-            "Deployed: <YYYY-MM-DD>\n\n"
-            "Body\n",
+            "# Morning Briefing v3.0.3\n\nDeployed: <YYYY-MM-DD>\n\nBody\n",
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=False)
@@ -1534,12 +1877,14 @@ def test_header_freshness_fail_on_placeholder() -> None:
         for f in result.failures
     ), f"placeholder muss als error gefangen werden; got {result.failures}"
 
+
 def test_header_freshness_warn_on_stale_date() -> None:
     """Stand-Datum > 30d alt: WARN."""
     import datetime as _dt
     import tempfile
 
     from system_audit.checks.header_freshness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         target = tdp / "01_Skills" / "demo" / "SKILL.md"
@@ -1552,17 +1897,17 @@ def test_header_freshness_warn_on_stale_date() -> None:
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=False)
-        result = run(tdp, ctx,
-                     targets_override=[(target, "Stand")],
-                     today=_dt.date(2026, 4, 25))
+        result = run(tdp, ctx, targets_override=[(target, "Stand")], today=_dt.date(2026, 4, 25))
     assert result.status == "WARN"
     assert any(f.severity == "warning" for f in result.failures)
+
 
 def test_header_freshness_pass_on_recent() -> None:
     import datetime as _dt
     import tempfile
 
     from system_audit.checks.header_freshness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         target = tdp / "01_Skills" / "fresh" / "SKILL.md"
@@ -1572,15 +1917,15 @@ def test_header_freshness_pass_on_recent() -> None:
             encoding="utf-8",
         )
         ctx = AuditContext(repo_root=tdp, include_optional=False)
-        result = run(tdp, ctx,
-                     targets_override=[(target, "Stand")],
-                     today=_dt.date(2026, 4, 25))
+        result = run(tdp, ctx, targets_override=[(target, "Stand")], today=_dt.date(2026, 4, 25))
     assert result.status == "PASS"
+
 
 def test_header_freshness_skip_on_no_targets() -> None:
     import tempfile
 
     from system_audit.checks.header_freshness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         ctx = AuditContext(repo_root=tdp, include_optional=False)
@@ -1593,6 +1938,7 @@ def test_governance_parity_pass_on_aligned() -> None:
     import tempfile
 
     from system_audit.checks.governance_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
@@ -1608,11 +1954,13 @@ def test_governance_parity_pass_on_aligned() -> None:
         result = run(tdp, ctx, expected_core_count=11)
     assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
 
+
 def test_governance_parity_fail_on_count_drift() -> None:
     """F11-Pathologie: Slash sagt '7' aber CORE-Registry hat 8."""
     import tempfile
 
     from system_audit.checks.governance_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
@@ -1624,15 +1972,16 @@ def test_governance_parity_fail_on_count_drift() -> None:
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx, expected_core_count=11)
     assert result.status == "FAIL"
-    assert any(
-        "11" in f.expected and "7" in f.actual
-        for f in result.failures
-    ), f"count-drift muss als error gefangen werden; got {result.failures}"
+    assert any("11" in f.expected and "7" in f.actual for f in result.failures), (
+        f"count-drift muss als error gefangen werden; got {result.failures}"
+    )
+
 
 def test_governance_parity_warn_on_missing_minimal_baseline_mention() -> None:
     import tempfile
 
     from system_audit.checks.governance_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
@@ -1647,10 +1996,7 @@ def test_governance_parity_warn_on_missing_minimal_baseline_mention() -> None:
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx, expected_core_count=11)
     assert result.status == "WARN"
-    assert any(
-        "minimal-baseline" in f.expected.lower()
-        for f in result.failures
-    )
+    assert any("minimal-baseline" in f.expected.lower() for f in result.failures)
 
 
 def test_governance_parity_fail_on_missing_timeout_per_check_flag() -> None:
@@ -1661,6 +2007,7 @@ def test_governance_parity_fail_on_missing_timeout_per_check_flag() -> None:
     import tempfile
 
     from system_audit.checks.governance_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
@@ -1674,8 +2021,7 @@ def test_governance_parity_fail_on_missing_timeout_per_check_flag() -> None:
         result = run(tdp, ctx, expected_core_count=11)
     assert result.status == "FAIL", f"got {result.status}, failures={result.failures}"
     assert any(
-        "--timeout-per-check" in f.expected and f.severity == "error"
-        for f in result.failures
+        "--timeout-per-check" in f.expected and f.severity == "error" for f in result.failures
     ), f"missing --timeout-per-check must error; got {result.failures}"
 
 
@@ -1686,6 +2032,7 @@ def test_governance_parity_accepts_short_or_long_v_form() -> None:
     import tempfile
 
     from system_audit.checks.governance_parity import run
+
     base = (
         "Default = --core (11 Kern-Checks). Flags: --core --full --vault "
         "--minimal-baseline --no-write --json --timeout-per-check"
@@ -1699,8 +2046,7 @@ def test_governance_parity_accepts_short_or_long_v_form() -> None:
             ctx = AuditContext(repo_root=tdp, include_optional=False)
             result = run(tdp, ctx, expected_core_count=11)
         assert result.status == "PASS", (
-            f"v_form={v_form} should pass alt-form; got {result.status}, "
-            f"failures={result.failures}"
+            f"v_form={v_form} should pass alt-form; got {result.status}, failures={result.failures}"
         )
 
 
@@ -1711,6 +2057,7 @@ def test_governance_parity_fail_on_no_v_form_at_all() -> None:
     import tempfile
 
     from system_audit.checks.governance_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
@@ -1723,16 +2070,16 @@ def test_governance_parity_fail_on_no_v_form_at_all() -> None:
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx, expected_core_count=11)
     assert result.status == "FAIL"
-    assert any(
-        "-v/--verbose" in f.expected and f.severity == "error"
-        for f in result.failures
-    ), f"missing both -v and --verbose must error; got {result.failures}"
+    assert any("-v/--verbose" in f.expected and f.severity == "error" for f in result.failures), (
+        f"missing both -v and --verbose must error; got {result.failures}"
+    )
 
 
 def test_governance_parity_skip_on_missing_slash_cmd() -> None:
     import tempfile
 
     from system_audit.checks.governance_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         ctx = AuditContext(repo_root=tdp, include_optional=False)
@@ -1749,6 +2096,7 @@ def test_governance_parity_handles_live_core_count_import_failure() -> None:
     from unittest.mock import patch
 
     from system_audit.checks.governance_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
@@ -1769,10 +2117,9 @@ def test_governance_parity_handles_live_core_count_import_failure() -> None:
             result = run(tdp, ctx)  # KEIN expected_core_count -> trifft except-Branch
     # Check darf NICHT crashen; Count-Parity-Sub-Check liefert warning,
     # Flag-Coverage-Sub-Checks laufen normal durch (alle 8 Flags da → PASS).
-    assert any(
-        f.severity == "warning" and "import failed" in f.actual
-        for f in result.failures
-    ), f"missing graceful-import-failure warning; got {result.failures}"
+    assert any(f.severity == "warning" and "import failed" in f.actual for f in result.failures), (
+        f"missing graceful-import-failure warning; got {result.failures}"
+    )
     assert result.status == "WARN"
     # Flag-Coverage muss noch laufen → 9 sub-checks (1 count + 8 flags), 8 passed
     assert result.n_checked == 9
@@ -1787,6 +2134,7 @@ def test_governance_parity_substring_match_does_not_swallow_v_flag() -> None:
     import tempfile
 
     from system_audit.checks.governance_parity import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cmd = tdp / ".claude" / "commands" / "SystemAudit.md"
@@ -1799,8 +2147,9 @@ def test_governance_parity_substring_match_does_not_swallow_v_flag() -> None:
         )
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx, expected_core_count=11)
-    assert result.status == "FAIL", \
+    assert result.status == "FAIL", (
         f"expected FAIL for missing -v/--verbose, got {result.status} (Substring-Bug-Regression?)"
+    )
 
 
 def test_markdown_header_unknown_kind_emits_failure_not_keyerror() -> None:
@@ -1814,26 +2163,28 @@ def test_markdown_header_unknown_kind_emits_failure_not_keyerror() -> None:
     import tempfile
 
     from system_audit.checks.markdown_header import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         good = tdp / "good.md"
         good.write_text(
-            "**Stand:** 08.05.2026\nEvent on 2026-05-08\n", encoding="utf-8",
+            "**Stand:** 08.05.2026\nEvent on 2026-05-08\n",
+            encoding="utf-8",
         )
         bad = tdp / "bad.md"
         bad.write_text("**Stand:** 08.05.2026\n", encoding="utf-8")
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         # Pre-fix would raise KeyError on the second target.
         result = run(
-            tdp, ctx,
+            tdp,
+            ctx,
             targets_override=[(good, "state"), (bad, "nonexistent-kind")],
             today=_dt.date(2026, 5, 8),
         )
     # Kein KeyError-Crash.
-    assert any(
-        f.severity == "error" and "nonexistent-kind" in f.actual
-        for f in result.failures
-    ), f"missing unknown-kind error; got {result.failures}"
+    assert any(f.severity == "error" and "nonexistent-kind" in f.actual for f in result.failures), (
+        f"missing unknown-kind error; got {result.failures}"
+    )
     # Valid target ran (n_checked=1) → status FAIL (has error).
     assert result.n_checked == 1
     assert result.status == "FAIL"
@@ -1844,6 +2195,7 @@ def test_cross_source_reverse_pass_on_aligned() -> None:
     import tempfile
 
     from system_audit.checks.cross_source_reverse import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cfg_dir = tdp / "01_Skills" / "dynastie-depot"
@@ -1853,7 +2205,15 @@ def test_cross_source_reverse_pass_on_aligned() -> None:
             "watchlist:\n  - ticker: MA\n    name: Mastercard\n",
             encoding="utf-8",
         )
-        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "entities"
+            / "satelliten"
+        )
         (vault / "ersatzbank").mkdir(parents=True)
         (vault / "AVGO.md").write_text("---\nticker: AVGO\n---\n", encoding="utf-8")
         (vault / "ersatzbank" / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
@@ -1861,11 +2221,13 @@ def test_cross_source_reverse_pass_on_aligned() -> None:
         result = run(tdp, ctx)
     assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
 
+
 def test_cross_source_reverse_warn_on_orphan_vault_ticker() -> None:
     """F18-Pathologie: MA im Vault, fehlt in config (alle 3 Listen)."""
     import tempfile
 
     from system_audit.checks.cross_source_reverse import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cfg_dir = tdp / "01_Skills" / "dynastie-depot"
@@ -1874,16 +2236,24 @@ def test_cross_source_reverse_warn_on_orphan_vault_ticker() -> None:
             "satelliten:\n  - ticker: AVGO\n    score: 84\n    defcon: D4\n",
             encoding="utf-8",
         )
-        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "entities"
+            / "satelliten"
+        )
         vault.mkdir(parents=True)
         (vault / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx)
     assert result.status == "WARN"
-    assert any(
-        "MA" in f.actual and "config.yaml" in f.expected
-        for f in result.failures
-    ), f"orphan-ticker MA muss als warning gefangen werden; got {result.failures}"
+    assert any("MA" in f.actual and "config.yaml" in f.expected for f in result.failures), (
+        f"orphan-ticker MA muss als warning gefangen werden; got {result.failures}"
+    )
+
 
 def test_cross_source_reverse_fail_on_satelliten_tag_mismatch() -> None:
     """ERROR-Pfad: Vault hat satelliten/MA.md Top-Level, config hat MA nur in watchlist.
@@ -1892,6 +2262,7 @@ def test_cross_source_reverse_fail_on_satelliten_tag_mismatch() -> None:
     import tempfile
 
     from system_audit.checks.cross_source_reverse import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cfg_dir = tdp / "01_Skills" / "dynastie-depot"
@@ -1901,7 +2272,15 @@ def test_cross_source_reverse_fail_on_satelliten_tag_mismatch() -> None:
             "watchlist:\n  - ticker: MA\n    name: Mastercard\n",
             encoding="utf-8",
         )
-        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "entities"
+            / "satelliten"
+        )
         vault.mkdir(parents=True)
         # MA in Top-Level satelliten/ — aber config.satelliten hat MA nicht (nur watchlist)
         (vault / "MA.md").write_text("---\nticker: MA\n---\n", encoding="utf-8")
@@ -1922,6 +2301,7 @@ def test_cross_source_reverse_dotted_ticker_extracted() -> None:
     import tempfile
 
     from system_audit.checks.cross_source_reverse import _vault_ticker_locations
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         vault = tdp / "satelliten"
@@ -1937,6 +2317,7 @@ def test_cross_source_reverse_skip_on_missing_config() -> None:
     import tempfile
 
     from system_audit.checks.cross_source_reverse import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         ctx = AuditContext(repo_root=tdp, include_optional=False)
@@ -1953,6 +2334,7 @@ def test_cross_source_reverse_fail_on_invalid_yaml() -> None:
     import tempfile
 
     from system_audit.checks.cross_source_reverse import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         cfg_dir = tdp / "01_Skills" / "dynastie-depot"
@@ -1964,7 +2346,15 @@ def test_cross_source_reverse_fail_on_invalid_yaml() -> None:
         )
         # Vault has tickers — without the fix these would all show up as
         # orphan-warnings; with the fix the YAML parse failure short-circuits.
-        vault = tdp / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities" / "satelliten"
+        vault = (
+            tdp
+            / "07_Obsidian Vault"
+            / "Obsidian Mindmap"
+            / "Investing Mastermind"
+            / "wiki"
+            / "entities"
+            / "satelliten"
+        )
         vault.mkdir(parents=True)
         (vault / "AVGO.md").write_text("---\nticker: AVGO\n---\n", encoding="utf-8")
         (vault / "MSFT.md").write_text("---\nticker: MSFT\n---\n", encoding="utf-8")
@@ -1985,6 +2375,7 @@ def test_pointer_completeness_pass_on_existing_targets() -> None:
     import tempfile
 
     from system_audit.checks.pointer_completeness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "00_Core").mkdir()
@@ -2000,12 +2391,14 @@ def test_pointer_completeness_pass_on_existing_targets() -> None:
         result = run(tdp, ctx)
     assert result.status == "PASS", f"got {result.status}, failures={result.failures}"
 
+
 def test_pointer_completeness_fail_on_missing_pointer_target() -> None:
     """F12-style: Pointer auf existing Target ist OK; aber Pointer auf
     fehlende Datei muss FAIL."""
     import tempfile
 
     from system_audit.checks.pointer_completeness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "CLAUDE.md").write_text(
@@ -2018,20 +2411,20 @@ def test_pointer_completeness_fail_on_missing_pointer_target() -> None:
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx)
     assert result.status == "FAIL"
-    assert any(
-        "MISSING.md" in f.actual or "MISSING.md" in f.location
-        for f in result.failures
-    )
+    assert any("MISSING.md" in f.actual or "MISSING.md" in f.location for f in result.failures)
+
 
 def test_pointer_completeness_skip_on_no_claude_md() -> None:
     import tempfile
 
     from system_audit.checks.pointer_completeness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         ctx = AuditContext(repo_root=tdp, include_optional=False)
         result = run(tdp, ctx)
     assert result.status == "SKIP"
+
 
 def test_pointer_completeness_section_scoped_not_routing_table() -> None:
     """P2-09: Backtick-Pfade in Routing-Tabelle (anderer Section) duerfen
@@ -2039,6 +2432,7 @@ def test_pointer_completeness_section_scoped_not_routing_table() -> None:
     import tempfile
 
     from system_audit.checks.pointer_completeness import run
+
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "00_Core").mkdir()
@@ -2062,8 +2456,7 @@ def test_pointer_completeness_section_scoped_not_routing_table() -> None:
         f"failures={result.failures}"
     )
     assert all(
-        "NONEXISTENT-IN-ROUTING" not in f.location and
-        "NONEXISTENT-IN-ROUTING" not in f.actual
+        "NONEXISTENT-IN-ROUTING" not in f.location and "NONEXISTENT-IN-ROUTING" not in f.actual
         for f in result.failures
     ), "Routing-Tabellen-Pfad darf nicht als Pointer-Failure gewertet werden"
 

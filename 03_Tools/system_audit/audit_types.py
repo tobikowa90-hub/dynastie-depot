@@ -1,4 +1,5 @@
 """Shared dataclasses for the system-audit check-registry contract (Spec §4.3)."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -37,6 +38,7 @@ class AuditContext:
     Mutable by design — orchestrator sets include_optional / vault_timeout_s
     per run before dispatching. Checks treat it as read-only.
     """
+
     repo_root: Path
     include_optional: bool = False
     vault_timeout_s: float = 20.0

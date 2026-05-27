@@ -15,6 +15,7 @@ Plan: docs/superpowers/plans/2026-04-21-system-audit-tool.md Task 13
 Plan-Header-Notice dokumentiert --minimal-baseline + --timeout-per-check als additiv
 ueber Spec §6.1 (Spec frozen v0.2).
 """
+
 from __future__ import annotations
 
 import argparse
@@ -51,10 +52,15 @@ def _preflight_dependencies() -> int | None:
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "03_Tools"))
 
+from system_audit.audit_types import (  # noqa: E402
+    AuditContext,
+    Category,
+    CheckResult,
+    FailureDetail,
+)
 from system_audit.checks import CORE, OPTIONAL  # noqa: E402
 from system_audit.report import compute_exit_code, render_human, render_json  # noqa: E402
 from system_audit.state_writer import write_last_audit  # noqa: E402
-from system_audit.types import AuditContext, Category, CheckResult, FailureDetail  # noqa: E402
 
 MINIMAL_BASELINE_KEYS = ("jsonl_schema", "pipeline_ssot", "log_lag")
 
@@ -75,10 +81,9 @@ def _build_scoped_checks(args: argparse.Namespace) -> list[ScopedCheck]:
     if args.vault:
         return [(k, v, "optional") for k, v in OPTIONAL.items()]
     if args.full:
-        return (
-            [(k, v, "core") for k, v in CORE.items()]
-            + [(k, v, "optional") for k, v in OPTIONAL.items()]
-        )
+        return [(k, v, "core") for k, v in CORE.items()] + [
+            (k, v, "optional") for k, v in OPTIONAL.items()
+        ]
     if args.minimal_baseline:
         return [(k, CORE[k], "core") for k in MINIMAL_BASELINE_KEYS if k in CORE]
     return [(k, v, "core") for k, v in CORE.items()]
@@ -115,7 +120,8 @@ def _run_one(
         return None, e
 
     executor = ThreadPoolExecutor(
-        max_workers=1, thread_name_prefix=f"audit-{name}",
+        max_workers=1,
+        thread_name_prefix=f"audit-{name}",
     )
     try:
         future = executor.submit(fn, REPO_ROOT, context)
@@ -127,13 +133,15 @@ def _run_one(
                 status="FAIL",
                 n_checked=0,
                 n_passed=0,
-                failures=[FailureDetail(
-                    location=name,
-                    expected=f"complete within {timeout_s:g}s",
-                    actual="timeout",
-                    severity="error",
-                    hint=f"check hung; raise --timeout-per-check or investigate {spec}",
-                )],
+                failures=[
+                    FailureDetail(
+                        location=name,
+                        expected=f"complete within {timeout_s:g}s",
+                        actual="timeout",
+                        severity="error",
+                        hint=f"check hung; raise --timeout-per-check or investigate {spec}",
+                    )
+                ],
                 duration_ms=int(timeout_s * 1000),
                 category=category,
             )
@@ -190,26 +198,38 @@ def main(argv: list[str] | None = None) -> int:
     scope = parser.add_mutually_exclusive_group()
     scope.add_argument("--core", action="store_true", help="Run core checks (default)")
     scope.add_argument("--full", action="store_true", help="Run core + optional checks")
-    scope.add_argument("--vault", action="store_true", help="Run only optional checks (vault_backlinks + status_matrix)")
     scope.add_argument(
-        "--minimal-baseline", action="store_true",
-        help="Run minimal structural checks only (jsonl_schema + pipeline_ssot + log_lag) — "
-             "Task-17 regression gate pre-drift-cleanup",
+        "--vault",
+        action="store_true",
+        help="Run only optional checks (vault_backlinks + status_matrix)",
     )
-    parser.add_argument("--no-write", action="store_true",
-                        help="Skip STATE.md Last-Audit update (dry-run)")
-    parser.add_argument("--json", action="store_true",
-                        help="Emit JSON instead of human report")
-    parser.add_argument("-v", "--verbose", action="store_true",
-                        help="Reserved for future per-check detail")
-    parser.add_argument("--timeout-per-check", type=float, default=20.0,
-                        metavar="SEC",
-                        help="Per-check wall-clock timeout in seconds (default 20)")
+    scope.add_argument(
+        "--minimal-baseline",
+        action="store_true",
+        help="Run minimal structural checks only (jsonl_schema + pipeline_ssot + log_lag) — "
+        "Task-17 regression gate pre-drift-cleanup",
+    )
+    parser.add_argument(
+        "--no-write", action="store_true", help="Skip STATE.md Last-Audit update (dry-run)"
+    )
+    parser.add_argument("--json", action="store_true", help="Emit JSON instead of human report")
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Reserved for future per-check detail"
+    )
+    parser.add_argument(
+        "--timeout-per-check",
+        type=float,
+        default=20.0,
+        metavar="SEC",
+        help="Per-check wall-clock timeout in seconds (default 20)",
+    )
     args = parser.parse_args(argv)
 
     if args.timeout_per_check <= 0:
-        print(f"[error] --timeout-per-check must be positive (got {args.timeout_per_check})",
-              file=sys.stderr)
+        print(
+            f"[error] --timeout-per-check must be positive (got {args.timeout_per_check})",
+            file=sys.stderr,
+        )
         return 2
 
     scoped_checks = _build_scoped_checks(args)
@@ -228,25 +248,33 @@ def main(argv: list[str] | None = None) -> int:
         # --vault with no OPTIONAL registered (pre-Task-14) lands here — degenerate case.
         # Emit explicit SKIP so exit-code is 0 AND the user sees "nothing ran", not
         # a silent "all green".
-        results.append(CheckResult(
-            name="no_checks_registered",
-            status="SKIP",
-            n_checked=0,
-            n_passed=0,
-            failures=[FailureDetail(
-                location="registry",
-                expected="1+ check in selected scope",
-                actual="empty registry",
-                severity="warning",
-                hint="--vault requires OPTIONAL checks (Task 14); try --core",
-            )],
-            duration_ms=0,
-            category="optional",
-        ))
+        results.append(
+            CheckResult(
+                name="no_checks_registered",
+                status="SKIP",
+                n_checked=0,
+                n_passed=0,
+                failures=[
+                    FailureDetail(
+                        location="registry",
+                        expected="1+ check in selected scope",
+                        actual="empty registry",
+                        severity="warning",
+                        hint="--vault requires OPTIONAL checks (Task 14); try --core",
+                    )
+                ],
+                duration_ms=0,
+                category="optional",
+            )
+        )
     else:
         for name, spec, category in scoped_checks:
             result, err = _run_one(
-                name, spec, context, args.timeout_per_check, category,
+                name,
+                spec,
+                context,
+                args.timeout_per_check,
+                category,
             )
             if err is not None:
                 internal_errors.append((name, err))
@@ -259,22 +287,25 @@ def main(argv: list[str] | None = None) -> int:
         # (with partial=True + internal_errors[] in JSON) BEFORE escalating to rc=2
         # so automation + humans can still see what did complete. STATE.md stays
         # unwritten — corrupted audit state must not be persisted.
-        ierrs_payload = [
-            (name, type(exc).__name__, str(exc)) for name, exc in internal_errors
-        ]
+        ierrs_payload = [(name, type(exc).__name__, str(exc)) for name, exc in internal_errors]
         if args.json:
-            print(render_json(
-                results, timestamp_utc=timestamp_utc, internal_errors=ierrs_payload,
-            ))
+            print(
+                render_json(
+                    results,
+                    timestamp_utc=timestamp_utc,
+                    internal_errors=ierrs_payload,
+                )
+            )
         else:
             print(render_human(results, timestamp_utc=timestamp_utc))
             print("", file=sys.stderr)
-            print("[partial] tool-internal errors encountered — results above are "
-                  "incomplete:", file=sys.stderr)
+            print(
+                "[partial] tool-internal errors encountered — results above are incomplete:",
+                file=sys.stderr,
+            )
         for name, exc in internal_errors:
             print(
-                f"[error] check '{name}' tool-internal failure: "
-                f"{type(exc).__name__}: {exc}",
+                f"[error] check '{name}' tool-internal failure: {type(exc).__name__}: {exc}",
                 file=sys.stderr,
             )
             traceback.print_exception(exc, file=sys.stderr)
@@ -296,8 +327,9 @@ def main(argv: list[str] | None = None) -> int:
                 run_cmd=_build_run_cmd(argv),
             )
         except RuntimeError as e:
-            print(f"[error] STATE.md write failed (marker-block inconsistent): {e}",
-                  file=sys.stderr)
+            print(
+                f"[error] STATE.md write failed (marker-block inconsistent): {e}", file=sys.stderr
+            )
             return 2
         except PermissionError as e:
             print(f"[warn] STATE.md write permission denied: {e}", file=sys.stderr)

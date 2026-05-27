@@ -3,6 +3,7 @@
 Spec §5.1 Check-5. Higher SKILL.md version than any ZIP -> warning (not yet packaged).
 Orphan ZIP without SKILL.md -> warning.
 """
+
 from __future__ import annotations
 
 import re
@@ -11,7 +12,7 @@ from pathlib import Path
 
 import yaml
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 ZIP_VERSION_RE = re.compile(r"_v(\d+)\.(\d+)\.(\d+)\.zip$")
 
@@ -77,11 +78,19 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
 
     if not skills_dir.exists():
         return CheckResult(
-            name="skill_version", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location="01_Skills/", expected="skills dir", actual="missing",
-                severity="warning", hint="Struktur geaendert?",
-            )],
+            name="skill_version",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location="01_Skills/",
+                    expected="skills dir",
+                    actual="missing",
+                    severity="warning",
+                    hint="Struktur geaendert?",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -98,13 +107,15 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         zip_vers = _zip_versions(packages_dir, skill_name)
         bare_zip = _has_bare_zip(packages_dir, skill_name)
         if not zip_vers and not bare_zip:
-            failures.append(FailureDetail(
-                location=f"01_Skills/{skill_name}/SKILL.md",
-                expected=f"ZIP 06_Skills-Pakete/{skill_name}.zip or {skill_name}_v{'.'.join(map(str, md_ver))}.zip",
-                actual="no ZIPs found",
-                severity="warning",
-                hint="Skill-Packaging ausstehend",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"01_Skills/{skill_name}/SKILL.md",
+                    expected=f"ZIP 06_Skills-Pakete/{skill_name}.zip or {skill_name}_v{'.'.join(map(str, md_ver))}.zip",
+                    actual="no ZIPs found",
+                    severity="warning",
+                    hint="Skill-Packaging ausstehend",
+                )
+            )
             continue
         if not zip_vers:
             # Only bare-name ZIP exists — accepted convention, version unknowable.
@@ -112,13 +123,15 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             continue
         highest = zip_vers[-1]
         if highest < md_ver:
-            failures.append(FailureDetail(
-                location=f"01_Skills/{skill_name}/SKILL.md",
-                expected=f"ZIP matches v{'.'.join(map(str, md_ver))}",
-                actual=f"highest ZIP v{'.'.join(map(str, highest))}",
-                severity="warning",
-                hint="Neu-Packen vor Release",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"01_Skills/{skill_name}/SKILL.md",
+                    expected=f"ZIP matches v{'.'.join(map(str, md_ver))}",
+                    actual=f"highest ZIP v{'.'.join(map(str, highest))}",
+                    severity="warning",
+                    hint="Neu-Packen vor Release",
+                )
+            )
         else:
             n_passed += 1
 
@@ -128,9 +141,7 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         # don't flag as orphan (pairs with bare-ZIP accept above).
         extern_dir = skills_dir / "_extern"
         if extern_dir.exists() and extern_dir.is_dir():
-            existing_skill_names |= {
-                d.name for d in extern_dir.iterdir() if d.is_dir()
-            }
+            existing_skill_names |= {d.name for d in extern_dir.iterdir() if d.is_dir()}
         for zf in packages_dir.glob("*.zip"):
             m_ver = re.match(r"^(.+?)_v\d+\.\d+\.\d+\.zip$", zf.name)
             if m_ver:
@@ -139,32 +150,39 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
                 # Bare-name ZIP (non-versioned convention)
                 name = zf.name[:-4]
             if name not in existing_skill_names:
-                failures.append(FailureDetail(
-                    location=f"06_Skills-Pakete/{zf.name}",
-                    expected="matching 01_Skills/<name>/ or _extern/<name>/",
-                    actual="orphan ZIP",
-                    severity="warning",
-                    hint="Skill-Dir entfernt? ZIP archivieren",
-                ))
+                failures.append(
+                    FailureDetail(
+                        location=f"06_Skills-Pakete/{zf.name}",
+                        expected="matching 01_Skills/<name>/ or _extern/<name>/",
+                        actual="orphan ZIP",
+                        severity="warning",
+                        hint="Skill-Dir entfernt? ZIP archivieren",
+                    )
+                )
 
     # Surface YAML parse-errors collected in _skill_version (L7 Plan-Fix)
     for md_path, err in parse_errors:
         rel = md_path.relative_to(repo_root) if md_path.is_relative_to(repo_root) else md_path
-        failures.append(FailureDetail(
-            location=str(rel),
-            expected="parseable YAML frontmatter",
-            actual=err,
-            severity="warning",
-            hint="SKILL.md frontmatter YAML-Syntax pruefen",
-        ))
+        failures.append(
+            FailureDetail(
+                location=str(rel),
+                expected="parseable YAML frontmatter",
+                actual=err,
+                severity="warning",
+                hint="SKILL.md frontmatter YAML-Syntax pruefen",
+            )
+        )
 
     has_error = any(f.severity == "error" for f in failures)
     has_warn = any(f.severity == "warning" for f in failures)
     status = "FAIL" if has_error else ("WARN" if has_warn else "PASS")
 
     return CheckResult(
-        name="skill_version", status=status,  # type: ignore[arg-type]
-        n_checked=n_checked, n_passed=n_passed, failures=failures,
+        name="skill_version",
+        status=status,  # type: ignore[arg-type]
+        n_checked=n_checked,
+        n_passed=n_passed,
+        failures=failures,
         duration_ms=int((time.monotonic() - start) * 1000),
         category="core",
     )

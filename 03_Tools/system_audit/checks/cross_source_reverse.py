@@ -8,6 +8,7 @@ Severity: WARN, nicht FAIL. Neue Recherche-Kandidaten ohne config-Eintrag
 sind legitim (Recherche-Phase). FAIL nur wenn ticker in Vault als 'satellit'
 getaggt ist aber config-satelliten ihn nicht hat (echte Drift).
 """
+
 from __future__ import annotations
 
 import re
@@ -16,7 +17,7 @@ from pathlib import Path
 
 import yaml
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 VAULT_ENTITIES_REL = Path(
     "07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki/entities/satelliten"
@@ -86,14 +87,21 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     cfg_path = repo_root / "01_Skills" / "dynastie-depot" / "config.yaml"
     if not cfg_path.exists():
         return CheckResult(
-            name="cross_source_reverse", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(cfg_path.relative_to(repo_root)) if cfg_path.is_relative_to(repo_root) else str(cfg_path),
-                expected="config.yaml present",
-                actual="missing",
-                severity="warning",
-                hint="dynastie-depot config-Pfad pruefen",
-            )],
+            name="cross_source_reverse",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(cfg_path.relative_to(repo_root))
+                    if cfg_path.is_relative_to(repo_root)
+                    else str(cfg_path),
+                    expected="config.yaml present",
+                    actual="missing",
+                    severity="warning",
+                    hint="dynastie-depot config-Pfad pruefen",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -106,18 +114,26 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         # Final-Review Important #2). First line of YAMLError typically
         # carries the problem-mark; rest is multi-line context.
         first = str(e).splitlines()[0] if str(e) else type(e).__name__
-        rel_loc = str(cfg_path.relative_to(repo_root)) if cfg_path.is_relative_to(repo_root) else str(cfg_path)
+        rel_loc = (
+            str(cfg_path.relative_to(repo_root))
+            if cfg_path.is_relative_to(repo_root)
+            else str(cfg_path)
+        )
         return CheckResult(
-            name="cross_source_reverse", status="FAIL",
-            n_checked=1, n_passed=0,
-            failures=[FailureDetail(
-                location=rel_loc,
-                expected="config.yaml parses as valid YAML",
-                actual=f"YAMLError: {first}",
-                severity="error",
-                hint="config.yaml ist defekt — Vault-Parity-Check kann nicht laufen, "
-                     "bis Datei valides YAML ist. Parser-Fehler oben + git diff pruefen",
-            )],
+            name="cross_source_reverse",
+            status="FAIL",
+            n_checked=1,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=rel_loc,
+                    expected="config.yaml parses as valid YAML",
+                    actual=f"YAMLError: {first}",
+                    severity="error",
+                    hint="config.yaml ist defekt — Vault-Parity-Check kann nicht laufen, "
+                    "bis Datei valides YAML ist. Parser-Fehler oben + git diff pruefen",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -130,38 +146,47 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             # Tag-Konsistenz: 'satelliten/<TICKER>.md' (location='satelliten')
             # muss in config.satelliten sein, nicht nur watchlist
             if location == "satelliten" and ticker not in sat_set:
-                failures.append(FailureDetail(
-                    location=f"Vault entities/satelliten/{ticker}.md",
-                    expected=f"{ticker} in config.satelliten (matches Vault folder)",
-                    actual=f"{ticker} only in {'watchlist' if ticker in watch_set else 'keine_zuteilung'}",
-                    severity="error",
-                    hint="Vault-Pfad sagt satellit, config sagt nicht — entweder Vault → ersatzbank/ verschieben oder config.satelliten ergaenzen",
-                ))
+                failures.append(
+                    FailureDetail(
+                        location=f"Vault entities/satelliten/{ticker}.md",
+                        expected=f"{ticker} in config.satelliten (matches Vault folder)",
+                        actual=f"{ticker} only in {'watchlist' if ticker in watch_set else 'keine_zuteilung'}",
+                        severity="error",
+                        hint="Vault-Pfad sagt satellit, config sagt nicht — entweder Vault → ersatzbank/ verschieben oder config.satelliten ergaenzen",
+                    )
+                )
             else:
                 n_passed += 1
         else:
             # location='satelliten' = Vault-Root (kein Sub-Dir); 'ersatzbank' = Sub-Dir.
             # Pfad-Doppelung „satelliten/satelliten" vermeiden.
             rel_path = f"{location}/{ticker}.md" if location == "ersatzbank" else f"{ticker}.md"
-            failures.append(FailureDetail(
-                location=f"Vault entities/satelliten/{rel_path}",
-                expected=f"{ticker} in config.yaml (satelliten/watchlist/keine_zuteilung)",
-                actual=f"{ticker} not present in any config-list",
-                severity="warning",
-                hint=f"Vault hat {ticker} aber config.yaml nicht — Sync-Gap oder Recherche-Kandidat noch nicht eingetragen",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"Vault entities/satelliten/{rel_path}",
+                    expected=f"{ticker} in config.yaml (satelliten/watchlist/keine_zuteilung)",
+                    actual=f"{ticker} not present in any config-list",
+                    severity="warning",
+                    hint=f"Vault hat {ticker} aber config.yaml nicht — Sync-Gap oder Recherche-Kandidat noch nicht eingetragen",
+                )
+            )
 
     if n_checked == 0:
         # No Vault tickers found — graceful no-op
         return CheckResult(
-            name="cross_source_reverse", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(VAULT_ENTITIES_REL),
-                expected="vault entities present",
-                actual="no ticker-bearing notes found",
-                severity="warning",
-                hint="Vault leer? Repo-Layout veraendert?",
-            )],
+            name="cross_source_reverse",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(VAULT_ENTITIES_REL),
+                    expected="vault entities present",
+                    actual="no ticker-bearing notes found",
+                    severity="warning",
+                    hint="Vault leer? Repo-Layout veraendert?",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )

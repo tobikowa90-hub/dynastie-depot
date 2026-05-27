@@ -7,6 +7,7 @@ Schliesst die Luecke in skill_version.py:82-84 wo `if md_ver is None: continue`
 einen Skill silent skippt — F8-Pathologie quick-screener war so monatelang
 unsichtbar im Audit.
 """
+
 from __future__ import annotations
 
 import time
@@ -14,7 +15,7 @@ from pathlib import Path
 
 import yaml
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 REQUIRED_FRONTMATTER_FIELDS = ("name", "description", "version")
 
@@ -32,7 +33,7 @@ def _parse_frontmatter(skill_dir: Path) -> dict | None:
         if not isinstance(data, dict):
             return {}
         return data
-    except (ValueError, yaml.YAMLError):
+    except ValueError, yaml.YAMLError:
         return {}
 
 
@@ -45,11 +46,19 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
 
     if not skills_dir.exists():
         return CheckResult(
-            name="skill_frontmatter", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location="01_Skills/", expected="skills dir", actual="missing",
-                severity="warning", hint="Repo-Layout veraendert?",
-            )],
+            name="skill_frontmatter",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location="01_Skills/",
+                    expected="skills dir",
+                    actual="missing",
+                    severity="warning",
+                    hint="Repo-Layout veraendert?",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -69,25 +78,29 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             continue  # SKILL.md missing — already excluded above
 
         if fm == {}:
-            failures.append(FailureDetail(
-                location=f"01_Skills/{skill_dir.name}/SKILL.md",
-                expected="frontmatter block (---\\nname: ...\\n---) at top of file",
-                actual="no frontmatter",
-                severity="warning",
-                hint="SKILL.md sollte frontmatter mit name+description+version haben (draft-skill?)",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"01_Skills/{skill_dir.name}/SKILL.md",
+                    expected="frontmatter block (---\\nname: ...\\n---) at top of file",
+                    actual="no frontmatter",
+                    severity="warning",
+                    hint="SKILL.md sollte frontmatter mit name+description+version haben (draft-skill?)",
+                )
+            )
             continue
 
         local_failures: list[FailureDetail] = []
         for field in REQUIRED_FRONTMATTER_FIELDS:
             if field not in fm or fm[field] in (None, "", []):
-                local_failures.append(FailureDetail(
-                    location=f"01_Skills/{skill_dir.name}/SKILL.md",
-                    expected=f"frontmatter field '{field}' present and non-empty",
-                    actual=f"'{field}' missing or empty",
-                    severity="warning",
-                    hint=f"{skill_dir.name}: '{field}'-Feld in YAML-Frontmatter ergaenzen",
-                ))
+                local_failures.append(
+                    FailureDetail(
+                        location=f"01_Skills/{skill_dir.name}/SKILL.md",
+                        expected=f"frontmatter field '{field}' present and non-empty",
+                        actual=f"'{field}' missing or empty",
+                        severity="warning",
+                        hint=f"{skill_dir.name}: '{field}'-Feld in YAML-Frontmatter ergaenzen",
+                    )
+                )
         if local_failures:
             failures.extend(local_failures)
         else:

@@ -3,13 +3,14 @@
 Compares .claude/commands/SystemAudit.md numeric claims + flag list against
 the live CORE-Registry + system_audit.py argparse spec.
 """
+
 from __future__ import annotations
 
 import re
 import time
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 SLASH_CMD_PATH = Path(".claude") / "commands" / "SystemAudit.md"
 
@@ -52,6 +53,7 @@ def _live_core_count(repo_root: Path) -> int:
     """
     import importlib
     import sys as _sys
+
     sa_path = str(repo_root / "03_Tools")
     inserted = False
     if sa_path not in _sys.path:
@@ -77,14 +79,19 @@ def run(
     cmd_path = repo_root / SLASH_CMD_PATH
     if not cmd_path.exists():
         return CheckResult(
-            name="governance_parity", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(SLASH_CMD_PATH),
-                expected="slash-command file present",
-                actual="missing",
-                severity="warning",
-                hint="Repo ohne .claude/commands/SystemAudit.md? Test-Repo?",
-            )],
+            name="governance_parity",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(SLASH_CMD_PATH),
+                    expected="slash-command file present",
+                    actual="missing",
+                    severity="warning",
+                    hint="Repo ohne .claude/commands/SystemAudit.md? Test-Repo?",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -107,33 +114,39 @@ def run(
         try:
             expected = _live_core_count(repo_root)
         except (ImportError, AttributeError, ModuleNotFoundError, TypeError) as e:
-            failures.append(FailureDetail(
-                location=f"{SLASH_CMD_PATH}: count-parity sub-check",
-                expected="readable system_audit.checks.CORE registry",
-                actual=f"import failed: {type(e).__name__}: {str(e)[:80]}",
-                severity="warning",
-                hint="system_audit.checks unimportierbar — sys.path / Repo-Struktur pruefen",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{SLASH_CMD_PATH}: count-parity sub-check",
+                    expected="readable system_audit.checks.CORE registry",
+                    actual=f"import failed: {type(e).__name__}: {str(e)[:80]}",
+                    severity="warning",
+                    hint="system_audit.checks unimportierbar — sys.path / Repo-Struktur pruefen",
+                )
+            )
             expected = None
     m = COUNT_RE.search(text)
     if m and expected is not None:
         claimed = int(m.group(1))
         if claimed != expected:
-            failures.append(FailureDetail(
-                location=f"{SLASH_CMD_PATH}: '... Kern-Checks'",
-                expected=f"{expected} Kern-Checks (matches len(CORE))",
-                actual=f"{claimed} Kern-Checks",
-                severity="error",
-                hint=f"Slash-Doku-Drift: CORE-Registry hat {expected}, Doku sagt {claimed}",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{SLASH_CMD_PATH}: '... Kern-Checks'",
+                    expected=f"{expected} Kern-Checks (matches len(CORE))",
+                    actual=f"{claimed} Kern-Checks",
+                    severity="error",
+                    hint=f"Slash-Doku-Drift: CORE-Registry hat {expected}, Doku sagt {claimed}",
+                )
+            )
     elif not m:
-        failures.append(FailureDetail(
-            location=str(SLASH_CMD_PATH),
-            expected="explicit 'N Kern-Checks' phrase",
-            actual="phrase not found",
-            severity="warning",
-            hint="Numerik-Aussage zur Check-Anzahl ergaenzen",
-        ))
+        failures.append(
+            FailureDetail(
+                location=str(SLASH_CMD_PATH),
+                expected="explicit 'N Kern-Checks' phrase",
+                actual="phrase not found",
+                severity="warning",
+                hint="Numerik-Aussage zur Check-Anzahl ergaenzen",
+            )
+        )
 
     # 2. Flag-Coverage
     # Severity-Policy: alle Flags = error, AUSSER --minimal-baseline = warning
@@ -149,13 +162,15 @@ def run(
             primary = alts[0]
             display = "/".join(alts) if len(alts) > 1 else primary
             severity = "warning" if "--minimal-baseline" in alts else "error"
-            failures.append(FailureDetail(
-                location=f"{SLASH_CMD_PATH}: flag list",
-                expected=f"flag '{display}' documented",
-                actual="flag not mentioned",
-                severity=severity,  # type: ignore[arg-type]
-                hint=f"Slash-Doku sollte {display} explizit nennen",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{SLASH_CMD_PATH}: flag list",
+                    expected=f"flag '{display}' documented",
+                    actual="flag not mentioned",
+                    severity=severity,  # type: ignore[arg-type]
+                    hint=f"Slash-Doku sollte {display} explizit nennen",
+                )
+            )
 
     has_error = any(f.severity == "error" for f in failures)
     has_warn = any(f.severity == "warning" for f in failures)

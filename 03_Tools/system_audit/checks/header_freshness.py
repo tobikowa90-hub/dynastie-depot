@@ -8,6 +8,7 @@ Audited targets: whitelist of known header-bearing files. Each entry is
 a (relative path, header-keyword) tuple. The keyword identifies which line
 to scan ('Stand:' / 'Deployed:' / 'Aktualisiert:').
 """
+
 from __future__ import annotations
 
 import datetime as _dt
@@ -15,7 +16,7 @@ import re
 import time
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 DEFAULT_TARGETS = (
     ("03_Tools/morning-briefing-prompt-v3.md", "Deployed"),
@@ -88,14 +89,19 @@ def run(
     present = [(p, kw) for p, kw in targets if p.exists()]
     if not present:
         return CheckResult(
-            name="header_freshness", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(repo_root),
-                expected="at least one header-bearing target",
-                actual="no targets found",
-                severity="warning",
-                hint="DEFAULT_TARGETS-Liste pruefen — Repo-Layout veraendert?",
-            )],
+            name="header_freshness",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(repo_root),
+                    expected="at least one header-bearing target",
+                    actual="no targets found",
+                    severity="warning",
+                    hint="DEFAULT_TARGETS-Liste pruefen — Repo-Layout veraendert?",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -108,44 +114,52 @@ def run(
         date_val, raw_val = _extract_header_date(text, keyword)
 
         if raw_val is not None and any(p in raw_val for p in PLACEHOLDER_PATTERNS):
-            failures.append(FailureDetail(
-                location=f"{rel}: {keyword}",
-                expected="resolved date (YYYY-MM-DD or DD.MM.YYYY)",
-                actual=raw_val,
-                severity="error",
-                hint="Header-Placeholder beim Deploy ersetzen (echtes Datum eintragen)",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{rel}: {keyword}",
+                    expected="resolved date (YYYY-MM-DD or DD.MM.YYYY)",
+                    actual=raw_val,
+                    severity="error",
+                    hint="Header-Placeholder beim Deploy ersetzen (echtes Datum eintragen)",
+                )
+            )
             continue
 
         if raw_val is None:
-            failures.append(FailureDetail(
-                location=f"{rel}: {keyword}",
-                expected=f"line '{keyword}: <date>' present",
-                actual="header keyword not found",
-                severity="warning",
-                hint=f"{keyword}-Header ergaenzen oder Target aus DEFAULT_TARGETS entfernen",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{rel}: {keyword}",
+                    expected=f"line '{keyword}: <date>' present",
+                    actual="header keyword not found",
+                    severity="warning",
+                    hint=f"{keyword}-Header ergaenzen oder Target aus DEFAULT_TARGETS entfernen",
+                )
+            )
             continue
 
         if date_val is None:
-            failures.append(FailureDetail(
-                location=f"{rel}: {keyword}",
-                expected="parsable date",
-                actual=raw_val,
-                severity="warning",
-                hint="Datum nicht im Format YYYY-MM-DD oder DD.MM.YYYY",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{rel}: {keyword}",
+                    expected="parsable date",
+                    actual=raw_val,
+                    severity="warning",
+                    hint="Datum nicht im Format YYYY-MM-DD oder DD.MM.YYYY",
+                )
+            )
             continue
 
         age_days = (today - date_val).days
         if age_days > STALE_THRESHOLD_DAYS:
-            failures.append(FailureDetail(
-                location=f"{rel}: {keyword}",
-                expected=f"date within {STALE_THRESHOLD_DAYS}d of today",
-                actual=f"date={date_val.isoformat()} (age={age_days}d)",
-                severity="warning",
-                hint=f"Header-Stempel > {STALE_THRESHOLD_DAYS}d alt — Inhalt seitdem unveraendert?",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{rel}: {keyword}",
+                    expected=f"date within {STALE_THRESHOLD_DAYS}d of today",
+                    actual=f"date={date_val.isoformat()} (age={age_days}d)",
+                    severity="warning",
+                    hint=f"Header-Stempel > {STALE_THRESHOLD_DAYS}d alt — Inhalt seitdem unveraendert?",
+                )
+            )
         else:
             n_passed += 1
 

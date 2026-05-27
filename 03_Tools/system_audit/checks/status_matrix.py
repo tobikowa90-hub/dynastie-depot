@@ -1,4 +1,5 @@
 """Optional Check-9: B1..BN monotonicity + no-duplicate in Status-Matrix."""
+
 from __future__ import annotations
 
 import re
@@ -6,7 +7,7 @@ import time
 from collections import Counter
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 # Row-anchored: only matches B-labels that lead a markdown table row, i.e.
 # `| Bn | <status> | <activation> | <annotation> |`. Any Bn appearing in
@@ -27,17 +28,38 @@ HEADER_RE = re.compile(r"^#{1,6}\s+[^\n]*Status-Matrix[^\n]*$", re.MULTILINE | r
 
 def run(repo_root: Path, context: AuditContext) -> CheckResult:
     start = time.monotonic()
-    target = repo_root / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "synthesis" / "Wissenschaftliche-Fundierung-DEFCON.md"
+    target = (
+        repo_root
+        / "07_Obsidian Vault"
+        / "Obsidian Mindmap"
+        / "Investing Mastermind"
+        / "wiki"
+        / "synthesis"
+        / "Wissenschaftliche-Fundierung-DEFCON.md"
+    )
     if not target.exists():
-        return CheckResult(name="status_matrix", status="SKIP", n_checked=0, n_passed=0,
-                           failures=[], duration_ms=0, category="optional")
+        return CheckResult(
+            name="status_matrix",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[],
+            duration_ms=0,
+            category="optional",
+        )
 
     text = target.read_text(encoding="utf-8")
     m = HEADER_RE.search(text)
     if not m:
-        return CheckResult(name="status_matrix", status="SKIP", n_checked=0, n_passed=0,
-                           failures=[], duration_ms=int((time.monotonic() - start) * 1000),
-                           category="optional")
+        return CheckResult(
+            name="status_matrix",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[],
+            duration_ms=int((time.monotonic() - start) * 1000),
+            category="optional",
+        )
     section_start = m.start()
     after = text[section_start:]
     # Skip the matched header line itself when searching for the next heading,
@@ -51,7 +73,7 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     level = len(header_line) - len(header_line.lstrip("#"))
     term_pattern = rf"^#{{1,{level}}}\s+(?!.*Status-Matrix)"
     next_h = re.search(term_pattern, after[body_start:], re.MULTILINE | re.IGNORECASE)
-    section = after[:body_start + next_h.start()] if next_h else after
+    section = after[: body_start + next_h.start()] if next_h else after
 
     all_nums = [int(lm.group(1)) for lm in B_ROW_RE.finditer(section)]
     numbers = sorted(set(all_nums))
@@ -61,18 +83,26 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         counts = Counter(all_nums)
         dup_numbers = {n for n, c in counts.items() if c > 1}
         for n in sorted(dup_numbers):
-            failures.append(FailureDetail(
-                location=str(target.relative_to(repo_root)),
-                expected=f"B{n} unique", actual=f"B{n} appears {counts[n]}×",
-                severity="error", hint="Duplicate B-Nummer in Status-Matrix",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=str(target.relative_to(repo_root)),
+                    expected=f"B{n} unique",
+                    actual=f"B{n} appears {counts[n]}×",
+                    severity="error",
+                    hint="Duplicate B-Nummer in Status-Matrix",
+                )
+            )
         for i in range(numbers[0], numbers[-1]):
             if i not in numbers:
-                failures.append(FailureDetail(
-                    location=str(target.relative_to(repo_root)),
-                    expected=f"B{i} present", actual=f"B{i} missing",
-                    severity="error", hint="B-Nummerierung monoton",
-                ))
+                failures.append(
+                    FailureDetail(
+                        location=str(target.relative_to(repo_root)),
+                        expected=f"B{i} present",
+                        actual=f"B{i} missing",
+                        severity="error",
+                        hint="B-Nummerierung monoton",
+                    )
+                )
 
     has_error = any(f.severity == "error" for f in failures)
     status = "FAIL" if has_error else "PASS"
@@ -81,8 +111,11 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     # not reduce n_passed — otherwise `B1 B3 B5` (3 unique, 2 gaps) yields
     # n_passed=1 instead of the correct 3.
     return CheckResult(
-        name="status_matrix", status=status,  # type: ignore[arg-type]
-        n_checked=len(numbers), n_passed=len(numbers) - len(dup_numbers),
-        failures=failures, duration_ms=int((time.monotonic() - start) * 1000),
+        name="status_matrix",
+        status=status,  # type: ignore[arg-type]
+        n_checked=len(numbers),
+        n_passed=len(numbers) - len(dup_numbers),
+        failures=failures,
+        duration_ms=int((time.monotonic() - start) * 1000),
         category="optional",
     )

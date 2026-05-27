@@ -3,6 +3,7 @@
 Spec §5.1 Check-1.5. severity="warning" (WARN-Contribution); exit-code stays 0.
 Escalation to "error" erst wenn Track 4 Auto-Persist-Cron existiert.
 """
+
 from __future__ import annotations
 
 import datetime
@@ -10,7 +11,7 @@ import json
 import time
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 LAG_THRESHOLD_BUSINESS_DAYS = 3  # Spec §5.1 Check-1.5: Puffer fuer Karfreitag/Oster
 
@@ -52,7 +53,7 @@ def _last_record_date(path: Path) -> datetime.date | None:
     try:
         rec = json.loads(last_line)
         return datetime.date.fromisoformat(rec["date"])
-    except (json.JSONDecodeError, KeyError, ValueError, TypeError):
+    except json.JSONDecodeError, KeyError, ValueError, TypeError:
         return None
 
 
@@ -87,13 +88,17 @@ def run(
             continue
         lag = business_days_between(last_date, lbd)
         if lag > LAG_THRESHOLD_BUSINESS_DAYS:
-            failures.append(FailureDetail(
-                location=str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path),
-                expected=f"last record >= {lbd.isoformat()} (<={LAG_THRESHOLD_BUSINESS_DAYS} business days lag)",
-                actual=f"last record {last_date.isoformat()}, lag {lag} business days",
-                severity="warning",
-                hint="Daily-Append fehlt — Track 4 Auto-Persist-Cron offen",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=str(path.relative_to(repo_root))
+                    if path.is_relative_to(repo_root)
+                    else str(path),
+                    expected=f"last record >= {lbd.isoformat()} (<={LAG_THRESHOLD_BUSINESS_DAYS} business days lag)",
+                    actual=f"last record {last_date.isoformat()}, lag {lag} business days",
+                    severity="warning",
+                    hint="Daily-Append fehlt — Track 4 Auto-Persist-Cron offen",
+                )
+            )
         else:
             n_passed += 1
 

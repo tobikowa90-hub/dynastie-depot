@@ -3,6 +3,7 @@
 Spec §6.5 + Codex-Patch P5: HTML-comment markers define a unique replacement region.
 Atomic write via tmp-file + Path.replace.
 """
+
 from __future__ import annotations
 
 import contextlib
@@ -67,8 +68,12 @@ def write_last_audit(
     tmp_path: Path | None = None
     try:
         with tempfile.NamedTemporaryFile(
-            mode="w", encoding="utf-8", delete=False,
-            dir=state_path.parent, prefix=".state_audit_", suffix=".tmp",
+            mode="w",
+            encoding="utf-8",
+            delete=False,
+            dir=state_path.parent,
+            prefix=".state_audit_",
+            suffix=".tmp",
         ) as tmp:
             tmp_path = Path(tmp.name)
             tmp.write(new_text)

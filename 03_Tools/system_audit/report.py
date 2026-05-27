@@ -1,4 +1,5 @@
 """Human + JSON renderer for audit results. Spec §6.3 / §6.4."""
+
 from __future__ import annotations
 
 import json
@@ -6,7 +7,7 @@ from collections import OrderedDict
 from collections.abc import Sequence
 from dataclasses import asdict
 
-from system_audit.types import CheckResult, FailureDetail
+from system_audit.audit_types import CheckResult, FailureDetail
 
 STATUS_ICON = {"PASS": "✅", "FAIL": "❌", "WARN": "⚠️", "SKIP": "⏭️"}
 SEVERITY_ICON = {"error": "🔴", "warning": "⚠️", "info": "ℹ️"}
@@ -63,7 +64,9 @@ def render_human(results: Sequence[CheckResult], *, timestamp_utc: str) -> str:
     for i, r in enumerate(results, 1):
         icon = STATUS_ICON.get(r.status, "?")
         ratio = f"{r.n_passed}/{r.n_checked}" if r.n_checked else "-"
-        lines.append(f"Check-{i:<2} {r.name:<20} {icon} {r.status:<5} {ratio:<8} | {r.duration_ms:>5}ms")
+        lines.append(
+            f"Check-{i:<2} {r.name:<20} {icon} {r.status:<5} {ratio:<8} | {r.duration_ms:>5}ms"
+        )
 
         groups = _group_failures(r.failures) if r.failures else None
         use_grouped = (
@@ -91,7 +94,9 @@ def render_human(results: Sequence[CheckResult], *, timestamp_utc: str) -> str:
                 for f in bucket[:PER_SECTION_PREVIEW]:
                     lines.extend(_render_failure(f, "           "))
                 if len(bucket) > PER_SECTION_PREVIEW:
-                    lines.append(f"           ... {len(bucket) - PER_SECTION_PREVIEW} more in [{section}]")
+                    lines.append(
+                        f"           ... {len(bucket) - PER_SECTION_PREVIEW} more in [{section}]"
+                    )
 
         total_ms += r.duration_ms
         if r.status == "PASS":
@@ -144,7 +149,6 @@ def render_json(
     }
     if partial:
         payload["internal_errors"] = [
-            {"check": name, "type": etype, "msg": emsg}
-            for name, etype, emsg in internal_errors
+            {"check": name, "type": etype, "msg": emsg} for name, etype, emsg in internal_errors
         ]
     return json.dumps(payload, ensure_ascii=False, indent=2)

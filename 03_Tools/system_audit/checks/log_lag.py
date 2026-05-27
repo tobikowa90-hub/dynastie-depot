@@ -2,6 +2,7 @@
 
 Spec §5.1 Check-7 + INSTRUKTIONEN §18 Sync-Pflicht Position 1.
 """
+
 from __future__ import annotations
 
 import datetime
@@ -10,7 +11,7 @@ import subprocess
 import time
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 LOG_ENTRY_RE = re.compile(r"^##\s+\[(\d{4}-\d{2}-\d{2})\]", re.MULTILINE)
 
@@ -41,10 +42,14 @@ def _git_head_date(repo_root: Path) -> datetime.date | None:
     try:
         out = subprocess.run(
             ["git", "log", "-1", "--pretty=%cs"],
-            cwd=repo_root, capture_output=True, text=True, check=True, timeout=5,
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=5,
         )
         return datetime.date.fromisoformat(out.stdout.strip())
-    except (subprocess.CalledProcessError, subprocess.TimeoutExpired, ValueError):
+    except subprocess.CalledProcessError, subprocess.TimeoutExpired, ValueError:
         return None
 
 
@@ -70,12 +75,19 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             break
     if log_path is None:
         return CheckResult(
-            name="log_lag", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(DEFAULT_LOG_PATHS[0]),
-                expected="log.md present", actual="missing",
-                severity="warning", hint="log.md in Projekt-Root oder Vault erwartet",
-            )],
+            name="log_lag",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(DEFAULT_LOG_PATHS[0]),
+                    expected="log.md present",
+                    actual="missing",
+                    severity="warning",
+                    hint="log.md in Projekt-Root oder Vault erwartet",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -86,13 +98,21 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
 
     if log_date is None or head_date is None:
         return CheckResult(
-            name="log_lag", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(log_path.relative_to(repo_root)) if log_path.is_relative_to(repo_root) else str(log_path),
-                expected="parseable log + git HEAD",
-                actual=f"log={log_date}, head={head_date}",
-                severity="warning", hint="log.md-Format oder git-Repo pruefen",
-            )],
+            name="log_lag",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(log_path.relative_to(repo_root))
+                    if log_path.is_relative_to(repo_root)
+                    else str(log_path),
+                    expected="parseable log + git HEAD",
+                    actual=f"log={log_date}, head={head_date}",
+                    severity="warning",
+                    hint="log.md-Format oder git-Repo pruefen",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -100,20 +120,31 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     lag = _business_days_lag(head_date, log_date)
     if lag > 1:
         return CheckResult(
-            name="log_lag", status="FAIL", n_checked=1, n_passed=0,
-            failures=[FailureDetail(
-                location=str(log_path.relative_to(repo_root)) if log_path.is_relative_to(repo_root) else str(log_path),
-                expected=f"log.md latest >= {head_date.isoformat()} - 1 business day",
-                actual=f"log.md {log_date.isoformat()}, git HEAD {head_date.isoformat()} (lag {lag})",
-                severity="error",
-                hint="Sync-Pflicht §18 Position 1 verletzt — log.md-Entry nachtragen",
-            )],
+            name="log_lag",
+            status="FAIL",
+            n_checked=1,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(log_path.relative_to(repo_root))
+                    if log_path.is_relative_to(repo_root)
+                    else str(log_path),
+                    expected=f"log.md latest >= {head_date.isoformat()} - 1 business day",
+                    actual=f"log.md {log_date.isoformat()}, git HEAD {head_date.isoformat()} (lag {lag})",
+                    severity="error",
+                    hint="Sync-Pflicht §18 Position 1 verletzt — log.md-Entry nachtragen",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
 
     return CheckResult(
-        name="log_lag", status="PASS", n_checked=1, n_passed=1,
-        failures=[], duration_ms=int((time.monotonic() - start) * 1000),
+        name="log_lag",
+        status="PASS",
+        n_checked=1,
+        n_passed=1,
+        failures=[],
+        duration_ms=int((time.monotonic() - start) * 1000),
         category="core",
     )

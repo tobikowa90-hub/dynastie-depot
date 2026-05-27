@@ -12,13 +12,14 @@ Drift-Patterns the check must detect:
 - F2: README.md 7-file-list missing config.yaml
 - F4: briefing-sync-check.ps1 $briefingFiles missing config.yaml
 """
+
 from __future__ import annotations
 
 import re
 import time
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 # Canonical 7-File-Set per CLAUDE.md Z11 + INSTRUKTIONEN.md §18 v2.1
 CANONICAL_SCORE_EVENT_BASENAMES = (
@@ -118,6 +119,7 @@ def _basenames_in_best_window(
 # §18 as governing-rule reference: NOT followed by '.' + digit (subsection)
 _GOVERNING_18_RE = re.compile(r"§18(?!\.\d)")
 
+
 def _scan_text_for_wrong_versions(text: str) -> list[str]:
     """Return list of wrong-version mentions (v1.7, v2.0) co-located with §18.
 
@@ -147,13 +149,21 @@ def _audit_source(
     """Audit a single source file. Returns (n_checked, n_passed, failures)."""
     failures: list[FailureDetail] = []
     if not path.exists():
-        return 0, 0, [FailureDetail(
-            location=str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path),
-            expected="source file present",
-            actual="missing",
-            severity="warning",
-            hint=f"{label}: erwartete Source-Datei fehlt im Repo",
-        )]
+        return (
+            0,
+            0,
+            [
+                FailureDetail(
+                    location=str(path.relative_to(repo_root))
+                    if path.is_relative_to(repo_root)
+                    else str(path),
+                    expected="source file present",
+                    actual="missing",
+                    severity="warning",
+                    hint=f"{label}: erwartete Source-Datei fehlt im Repo",
+                )
+            ],
+        )
 
     text = path.read_text(encoding="utf-8", errors="replace")
     if expected_basenames:
@@ -164,32 +174,38 @@ def _audit_source(
     rel_loc = str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
 
     for bn in sorted(missing):
-        failures.append(FailureDetail(
-            location=f"{rel_loc} ({label})",
-            expected=f"basename '{bn}' in §18 7-File-Set listing",
-            actual="not referenced",
-            severity="error",
-            hint=f"§18 v2.1 Score-Event-Set verlangt {bn}; bitte in {label} ergaenzen",
-        ))
+        failures.append(
+            FailureDetail(
+                location=f"{rel_loc} ({label})",
+                expected=f"basename '{bn}' in §18 7-File-Set listing",
+                actual="not referenced",
+                severity="error",
+                hint=f"§18 v2.1 Score-Event-Set verlangt {bn}; bitte in {label} ergaenzen",
+            )
+        )
 
     if require_version_string:
         wrongs = _scan_text_for_wrong_versions(text)
         if wrongs:
-            failures.append(FailureDetail(
-                location=f"{rel_loc} ({label})",
-                expected=f"§18 {CANONICAL_VERSION}",
-                actual=f"§18 {wrongs[0]}",
-                severity="error",
-                hint=f"Versions-String-Drift; CLAUDE.md autoritativ ({CANONICAL_VERSION})",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{rel_loc} ({label})",
+                    expected=f"§18 {CANONICAL_VERSION}",
+                    actual=f"§18 {wrongs[0]}",
+                    severity="error",
+                    hint=f"Versions-String-Drift; CLAUDE.md autoritativ ({CANONICAL_VERSION})",
+                )
+            )
         elif CANONICAL_VERSION not in text:
-            failures.append(FailureDetail(
-                location=f"{rel_loc} ({label})",
-                expected=f"explicit '{CANONICAL_VERSION}' mention",
-                actual="version string not found",
-                severity="warning",
-                hint=f"{label}-Header sollte §18 {CANONICAL_VERSION} explizit nennen",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{rel_loc} ({label})",
+                    expected=f"explicit '{CANONICAL_VERSION}' mention",
+                    actual="version string not found",
+                    severity="warning",
+                    hint=f"{label}-Header sollte §18 {CANONICAL_VERSION} explizit nennen",
+                )
+            )
 
     n_checked = 1
     n_passed = 1 if not failures else 0
@@ -203,8 +219,12 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     n_passed_total = 0
 
     sources = [
-        ("README", repo_root / "03_Tools" / "backtest-ready" / "README.md", True,
-         CANONICAL_SCORE_EVENT_BASENAMES),
+        (
+            "README",
+            repo_root / "03_Tools" / "backtest-ready" / "README.md",
+            True,
+            CANONICAL_SCORE_EVENT_BASENAMES,
+        ),
         # briefing-sync tracks Briefing-relevant state files (00_Core/* + config.yaml),
         # not the §18 score-event-set. F4 driver-intent is specifically: config.yaml
         # MUST appear in $briefingFiles (added in §18 v2.1 since 25.04.2026).
@@ -212,26 +232,42 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         # mention false-positives in the file-wide scan; cluster-scan exposes that
         # the array genuinely doesn't list log.md / score_history.jsonl / flag_events.jsonl
         # (they're score-event JSONLs, not briefing-trigger inputs).
-        ("briefing-sync", repo_root / "03_Tools" / "briefing-sync-check.ps1", False,
-         ("config.yaml",)),
-        ("dynastie-depot SKILL", repo_root / "01_Skills" / "dynastie-depot" / "SKILL.md", False,
-         CANONICAL_SCORE_EVENT_BASENAMES),
-        ("INSTRUKTIONEN", repo_root / "00_Core" / "INSTRUKTIONEN.md", True,
-         ()),  # version-string-only, no basename-scan
+        (
+            "briefing-sync",
+            repo_root / "03_Tools" / "briefing-sync-check.ps1",
+            False,
+            ("config.yaml",),
+        ),
+        (
+            "dynastie-depot SKILL",
+            repo_root / "01_Skills" / "dynastie-depot" / "SKILL.md",
+            False,
+            CANONICAL_SCORE_EVENT_BASENAMES,
+        ),
+        (
+            "INSTRUKTIONEN",
+            repo_root / "00_Core" / "INSTRUKTIONEN.md",
+            True,
+            (),
+        ),  # version-string-only, no basename-scan
     ]
 
     any_source_present = any(p.exists() for _, p, _, _ in sources)
     if not any_source_present:
         return CheckResult(
-            name="score_event_parity", status="SKIP",
-            n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(repo_root),
-                expected="at least one §18-Parity source",
-                actual="no source files found",
-                severity="warning",
-                hint="Repo-Layout veraendert? Sweep-Spec §28 referenziert 4 Sources",
-            )],
+            name="score_event_parity",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(repo_root),
+                    expected="at least one §18-Parity source",
+                    actual="no source files found",
+                    severity="warning",
+                    hint="Repo-Layout veraendert? Sweep-Spec §28 referenziert 4 Sources",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )

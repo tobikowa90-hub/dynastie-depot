@@ -10,13 +10,14 @@ hoch — '01_Skills' ohne Datei waere keine Behauptung sondern Erwaehnung).
 Section-Scoping verhindert Treffer aus Routing-Tabelle, Wiki-Modus-Section
 oder Beispiel-Code-Bloecken (Codex-Review P2-09).
 """
+
 from __future__ import annotations
 
 import re
 import time
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 # Match a markdown table row '| `path/to/file` | Zweck |'
 POINTER_RE = re.compile(r"\|\s*`([^`]+)`\s*\|", re.MULTILINE)
@@ -46,14 +47,19 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
 
     if not claude_md.exists():
         return CheckResult(
-            name="pointer_completeness", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location="CLAUDE.md",
-                expected="CLAUDE.md present",
-                actual="missing",
-                severity="warning",
-                hint="Repo ohne CLAUDE.md? Test-Repo?",
-            )],
+            name="pointer_completeness",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location="CLAUDE.md",
+                    expected="CLAUDE.md present",
+                    actual="missing",
+                    severity="warning",
+                    hint="Repo ohne CLAUDE.md? Test-Repo?",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -62,14 +68,19 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     section = _extract_pointer_section(full_text)
     if section is None:
         return CheckResult(
-            name="pointer_completeness", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location="CLAUDE.md: '## Pointer'-section",
-                expected="'## Pointer'-Heading present",
-                actual="section heading not found",
-                severity="warning",
-                hint="CLAUDE.md ohne Pointer-Section — Layout veraendert?",
-            )],
+            name="pointer_completeness",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location="CLAUDE.md: '## Pointer'-section",
+                    expected="'## Pointer'-Heading present",
+                    actual="section heading not found",
+                    severity="warning",
+                    hint="CLAUDE.md ohne Pointer-Section — Layout veraendert?",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -90,24 +101,31 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
         if target.exists():
             n_passed += 1
         else:
-            failures.append(FailureDetail(
-                location=f"CLAUDE.md: pointer `{rel}`",
-                expected=f"path '{rel}' resolvable from repo-root",
-                actual="path does not exist",
-                severity="error",
-                hint=f"Pointer in CLAUDE.md zeigt auf fehlende Datei {rel} — entweder Datei anlegen oder Pointer entfernen",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"CLAUDE.md: pointer `{rel}`",
+                    expected=f"path '{rel}' resolvable from repo-root",
+                    actual="path does not exist",
+                    severity="error",
+                    hint=f"Pointer in CLAUDE.md zeigt auf fehlende Datei {rel} — entweder Datei anlegen oder Pointer entfernen",
+                )
+            )
 
     if n_checked == 0:
         return CheckResult(
-            name="pointer_completeness", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location="CLAUDE.md",
-                expected="at least one pointer-table entry",
-                actual="no parsable pointers found",
-                severity="warning",
-                hint="POINTER_RE matched nichts — Tabellen-Format aendern? Section-Header?",
-            )],
+            name="pointer_completeness",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location="CLAUDE.md",
+                    expected="at least one pointer-table entry",
+                    actual="no parsable pointers found",
+                    severity="warning",
+                    hint="POINTER_RE matched nichts — Tabellen-Format aendern? Section-Header?",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )

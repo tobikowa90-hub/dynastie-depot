@@ -3,6 +3,7 @@ Faktortabelle.md / Vault entity frontmatter.
 
 Spec §5.1 Check-3, Codex-Patch P3 (FLAG-Parsing-Matrix).
 """
+
 from __future__ import annotations
 
 import re
@@ -12,7 +13,7 @@ from typing import Literal
 
 import yaml
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 FlagIcon = Literal["ok", "warn", "flag"]
 
@@ -21,11 +22,11 @@ def parse_flag_icon(cell: str) -> tuple[FlagIcon, str | None]:
     """Return (status, optional reason). Emoji is status, suffix text is reason."""
     s = cell.strip()
     if s.startswith("🔴"):
-        return "flag", s[len("🔴"):].strip() or None
+        return "flag", s[len("🔴") :].strip() or None
     if s.startswith("⚠️"):
-        return "warn", s[len("⚠️"):].strip() or None
+        return "warn", s[len("⚠️") :].strip() or None
     if s.startswith("✅"):
-        return "ok", s[len("✅"):].strip() or None
+        return "ok", s[len("✅") :].strip() or None
     raise ValueError(f"Unrecognized FLAG cell: {cell!r}")
 
 
@@ -60,9 +61,14 @@ def _parse_state_table(path: Path) -> dict[str, dict]:
                 score = int(re.sub(r"\D", "", cells[1]))
                 defcon = int(re.sub(r"\D", "", cells[2].split()[-1]))
                 flag_icon, flag_reason = parse_flag_icon(cells[4])
-            except (ValueError, IndexError):
+            except ValueError, IndexError:
                 continue
-            out[ticker] = {"score": score, "defcon": defcon, "flag_icon": flag_icon, "flag_reason": flag_reason}
+            out[ticker] = {
+                "score": score,
+                "defcon": defcon,
+                "flag_icon": flag_icon,
+                "flag_reason": flag_reason,
+            }
     return out
 
 
@@ -146,7 +152,7 @@ def _parse_faktortabelle(path: Path) -> dict[str, dict]:
         if flag_raw:
             try:
                 icon, _reason = parse_flag_icon(flag_raw)
-                flag_value = (icon == "flag")
+                flag_value = icon == "flag"
             except ValueError:
                 low = flag_raw.lower()
                 if low in ("true", "ja", "yes"):
@@ -202,7 +208,12 @@ def run(
         "config": repo_root / "01_Skills" / "dynastie-depot" / "config.yaml",
         "portfolio": repo_root / "00_Core" / "PORTFOLIO.md",
         "faktortabelle": repo_root / "00_Core" / "Faktortabelle.md",
-        "vault_entities_dir": repo_root / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind" / "wiki" / "entities",
+        "vault_entities_dir": repo_root
+        / "07_Obsidian Vault"
+        / "Obsidian Mindmap"
+        / "Investing Mastermind"
+        / "wiki"
+        / "entities",
     }
 
     failures: list[FailureDetail] = []
@@ -212,11 +223,19 @@ def run(
     cfg_path = sources["config"]
     if cfg_path is None or not cfg_path.exists():
         return CheckResult(
-            name="cross_source", status="SKIP", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(cfg_path), expected="config.yaml present",
-                actual="missing", severity="warning", hint="Skill-config-Pfad pruefen",
-            )],
+            name="cross_source",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(cfg_path),
+                    expected="config.yaml present",
+                    actual="missing",
+                    severity="warning",
+                    hint="Skill-config-Pfad pruefen",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -225,14 +244,21 @@ def run(
         config = yaml.safe_load(cfg_path.read_text(encoding="utf-8", errors="replace")) or {}
     except yaml.YAMLError as e:
         return CheckResult(
-            name="cross_source", status="FAIL", n_checked=0, n_passed=0,
-            failures=[FailureDetail(
-                location=str(cfg_path.relative_to(repo_root)) if cfg_path.is_relative_to(repo_root) else str(cfg_path),
-                expected="valid YAML",
-                actual=f"YAMLError: {str(e)[:120]}",
-                severity="error",
-                hint="config.yaml manuell pruefen",
-            )],
+            name="cross_source",
+            status="FAIL",
+            n_checked=0,
+            n_passed=0,
+            failures=[
+                FailureDetail(
+                    location=str(cfg_path.relative_to(repo_root))
+                    if cfg_path.is_relative_to(repo_root)
+                    else str(cfg_path),
+                    expected="valid YAML",
+                    actual=f"YAMLError: {str(e)[:120]}",
+                    severity="error",
+                    hint="config.yaml manuell pruefen",
+                )
+            ],
             duration_ms=int((time.monotonic() - start) * 1000),
             category="core",
         )
@@ -260,70 +286,86 @@ def run(
             c_defcon = sat["defcon"]
             c_flag = bool(sat.get("flag", False))
         except (KeyError, TypeError) as e:
-            failures.append(FailureDetail(
-                location=f"config.yaml: {sat if isinstance(sat, str) else sat.get('ticker', '<unknown>')}",
-                expected="ticker+score+defcon keys",
-                actual=f"malformed entry: {str(e)[:80]}",
-                severity="error",
-                hint="config.yaml-Entry strukturell defekt",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"config.yaml: {sat if isinstance(sat, str) else sat.get('ticker', '<unknown>')}",
+                    expected="ticker+score+defcon keys",
+                    actual=f"malformed entry: {str(e)[:80]}",
+                    severity="error",
+                    hint="config.yaml-Entry strukturell defekt",
+                )
+            )
             continue
 
-        for mirror_name, mirror in [("PORTFOLIO.md", portfolio_by_ticker), ("Faktortabelle.md", fakt_by_ticker), ("Vault", vault_by_ticker)]:
+        for mirror_name, mirror in [
+            ("PORTFOLIO.md", portfolio_by_ticker),
+            ("Faktortabelle.md", fakt_by_ticker),
+            ("Vault", vault_by_ticker),
+        ]:
             if ticker not in mirror:
                 if mirror_name == "Vault":
                     continue
-                failures.append(FailureDetail(
-                    location=f"{mirror_name}: {ticker}",
-                    expected="present",
-                    actual="missing",
-                    severity="error",
-                    hint=f"{mirror_name}-Zeile fuer {ticker} fehlt — config.yaml autoritativ",
-                ))
+                failures.append(
+                    FailureDetail(
+                        location=f"{mirror_name}: {ticker}",
+                        expected="present",
+                        actual="missing",
+                        severity="error",
+                        hint=f"{mirror_name}-Zeile fuer {ticker} fehlt — config.yaml autoritativ",
+                    )
+                )
                 continue
             m = mirror[ticker]
             n_checked += 1
 
             if m.get("score") != c_score:
-                failures.append(FailureDetail(
-                    location=f"{mirror_name}: {ticker}",
-                    expected=f"score={c_score}",
-                    actual=f"{ticker} score={m.get('score')}",
-                    severity="error",
-                    hint=f"{mirror_name}-Zeile aktualisieren, config.yaml ist Wahrheitsquelle",
-                ))
+                failures.append(
+                    FailureDetail(
+                        location=f"{mirror_name}: {ticker}",
+                        expected=f"score={c_score}",
+                        actual=f"{ticker} score={m.get('score')}",
+                        severity="error",
+                        hint=f"{mirror_name}-Zeile aktualisieren, config.yaml ist Wahrheitsquelle",
+                    )
+                )
                 continue
             # Skip DEFCON mismatch for Vault when defcon is absent (valid when entity carries only score)
             if mirror_name == "Vault" and m.get("defcon") is None:
                 pass  # DEFCON not required in Vault frontmatter
             elif m.get("defcon") != c_defcon:
-                failures.append(FailureDetail(
-                    location=f"{mirror_name}: {ticker}",
-                    expected=f"defcon={c_defcon}",
-                    actual=f"{ticker} defcon={m.get('defcon')}",
-                    severity="error",
-                    hint=f"DEFCON-Mismatch — {mirror_name} syncen",
-                ))
+                failures.append(
+                    FailureDetail(
+                        location=f"{mirror_name}: {ticker}",
+                        expected=f"defcon={c_defcon}",
+                        actual=f"{ticker} defcon={m.get('defcon')}",
+                        severity="error",
+                        hint=f"DEFCON-Mismatch — {mirror_name} syncen",
+                    )
+                )
                 continue
             if mirror_name == "PORTFOLIO.md":
                 verdict = compare_flag(c_flag, m["flag_icon"])
                 if verdict == "error":
-                    failures.append(FailureDetail(
-                        location=f"{mirror_name}: {ticker}",
-                        expected=f"FLAG matches config flag={c_flag}",
-                        actual=f"icon={m['flag_icon']} reason={m.get('flag_reason')}",
-                        severity="error",
-                        hint="FLAG-Status reconcile (Spec §5.1 Check-3 Matrix)",
-                    ))
+                    failures.append(
+                        FailureDetail(
+                            location=f"{mirror_name}: {ticker}",
+                            expected=f"FLAG matches config flag={c_flag}",
+                            actual=f"icon={m['flag_icon']} reason={m.get('flag_reason')}",
+                            severity="error",
+                            hint="FLAG-Status reconcile (Spec §5.1 Check-3 Matrix)",
+                        )
+                    )
                     continue
                 elif verdict == "warning":
-                    failures.append(FailureDetail(
-                        location=f"{mirror_name}: {ticker}",
-                        expected="watch-active consistent with config false",
-                        actual=f"icon={m['flag_icon']} reason={m.get('flag_reason')}",
-                        severity="warning",
-                        hint="Watch ist informativ — kein Fehler",
-                    ))
+                    failures.append(
+                        FailureDetail(
+                            location=f"{mirror_name}: {ticker}",
+                            expected="watch-active consistent with config false",
+                            actual=f"icon={m['flag_icon']} reason={m.get('flag_reason')}",
+                            severity="warning",
+                            hint="Watch ist informativ — kein Fehler",
+                        )
+                    )
                     n_passed += 1
                     continue
             if (
@@ -331,13 +373,15 @@ def run(
                 and m.get("flag") is not None
                 and bool(m["flag"]) != c_flag
             ):
-                failures.append(FailureDetail(
-                    location=f"{mirror_name}: {ticker}",
-                    expected=f"flag={c_flag}",
-                    actual=f"flag={m['flag']}",
-                    severity="error",
-                    hint="Faktortabelle-FLAG-Spalte syncen",
-                ))
+                failures.append(
+                    FailureDetail(
+                        location=f"{mirror_name}: {ticker}",
+                        expected=f"flag={c_flag}",
+                        actual=f"flag={m['flag']}",
+                        severity="error",
+                        hint="Faktortabelle-FLAG-Spalte syncen",
+                    )
+                )
                 continue
             n_passed += 1
 
@@ -346,8 +390,11 @@ def run(
     status = "FAIL" if has_error else ("WARN" if has_warn else "PASS")
 
     return CheckResult(
-        name="cross_source", status=status,  # type: ignore[arg-type]
-        n_checked=n_checked, n_passed=n_passed, failures=failures,
+        name="cross_source",
+        status=status,  # type: ignore[arg-type]
+        n_checked=n_checked,
+        n_passed=n_passed,
+        failures=failures,
         duration_ms=int((time.monotonic() - start) * 1000),
         category="core",
     )

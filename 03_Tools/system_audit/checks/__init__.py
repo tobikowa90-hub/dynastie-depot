@@ -9,6 +9,7 @@ Konvention (Klasse f, Validator-Catch-Lücken — Spec 2026-05-11-codebase-defec
   `CheckResult(status="WARN" oder "FAIL", failures=[FailureDetail(...)])`.
   Validatoren emit FailureDetail, never KeyError-escape.
 """
+
 from __future__ import annotations
 
 CORE: dict[str, str] = {
@@ -27,7 +28,7 @@ CORE: dict[str, str] = {
     "cross_source_reverse": "system_audit.checks.cross_source_reverse:run",
     "pointer_completeness": "system_audit.checks.pointer_completeness:run",
     "sum_consistency": "system_audit.checks.sum_consistency:run",
-}      # name → "system_audit.checks.<module>:run"  (15 core checks)
+}  # name → "system_audit.checks.<module>:run"  (15 core checks)
 OPTIONAL: dict[str, str] = {
     "vault_backlinks": "system_audit.checks.vault_backlinks:run",
     "status_matrix": "system_audit.checks.status_matrix:run",

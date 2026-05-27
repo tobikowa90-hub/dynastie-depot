@@ -47,8 +47,11 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "03_Tools/tests/**" = ["B", "SIM", "F841", "BLE001", "TRY"]
-"03_Tools/**/_smoke_*.py" = ["F401", "E402", "BLE001", "TRY"]
-"03_Tools/**/_*_test.py" = ["BLE001", "TRY"]
+# _smoke_*.py: explizites RC-Handling statt subprocess check= (PLW1510);
+# suppress-Patterns für stdout-reconfigure (SIM105); destructure-skip (RUF059)
+"03_Tools/**/_smoke_*.py" = ["F401", "E402", "BLE001", "TRY", "PLW1510", "SIM105", "RUF059"]
+"01_Skills/**/_smoke_*.py" = ["F401", "E402", "BLE001", "TRY", "PLW1510", "SIM105", "RUF059"]
+"03_Tools/**/_*_test.py" = ["BLE001", "TRY", "SIM105"]
 "**/__init__.py" = ["F401"]
 
 [tool.ruff.lint.isort]

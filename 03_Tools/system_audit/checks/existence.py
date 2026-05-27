@@ -14,13 +14,14 @@ False-Positive-Filter (2026-05-06):
   `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md`
   (Shorthand-Konvention, dokumentiert in SESSION-HANDOVER.md).
 """
+
 from __future__ import annotations
 
 import re
 import time
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 # PATH_RE rejects whitespace in paths by design — backtick-path-refs in Dynasty-Depot
 # Konvention nutzen keine Spaces. Pfade mit Spaces (e.g. "07_Obsidian Vault/...") werden
@@ -29,8 +30,13 @@ PATH_RE = re.compile(r"`([^\s`]+\.(py|md|yaml|yml|jsonl|xlsx|zip|sh|ps1))`")
 WIKILINK_RE = re.compile(r"\[\[[^\]]+\]\]")
 
 WHITELIST_PREFIXES = (
-    "_drafts/", "node_modules/", ".git/", "venv/", "__pycache__/",
-    "http://", "https://",
+    "_drafts/",
+    "node_modules/",
+    ".git/",
+    "venv/",
+    "__pycache__/",
+    "http://",
+    "https://",
     "~/",  # User-Home-Refs (z.B. `~/.claude/CLAUDE.md`) liegen außerhalb Repo.
 )
 
@@ -87,6 +93,7 @@ def run(
             # Forward-dependency on Task 9 Check-6 — guard gracefully.
             try:
                 from system_audit.checks.pipeline_ssot import extract_plan_refs
+
                 refs = extract_plan_refs(pipeline_path.read_text(encoding="utf-8"))
                 pipeline_plans = [repo_root / r for r in refs if (repo_root / r).exists()]
             except ImportError:
@@ -118,15 +125,21 @@ def run(
                 # (Echte Pfade in diesem Repo haben mindestens einen Folder-Prefix.)
                 if "/" not in raw:
                     continue
-                if raw.endswith("SESSION-HANDOVER.md") and "00_Core" not in raw and legacy_handover.exists():
+                if (
+                    raw.endswith("SESSION-HANDOVER.md")
+                    and "00_Core" not in raw
+                    and legacy_handover.exists()
+                ):
                     n_checked += 1
-                    failures.append(FailureDetail(
-                        location=f"{src.relative_to(repo_root) if src.is_relative_to(repo_root) else src}:{lineno}",
-                        expected="00_Core/SESSION-HANDOVER.md (canonical path)",
-                        actual=raw,
-                        severity="error",
-                        hint="Kanonischer Pfad 00_Core/SESSION-HANDOVER.md verwenden",
-                    ))
+                    failures.append(
+                        FailureDetail(
+                            location=f"{src.relative_to(repo_root) if src.is_relative_to(repo_root) else src}:{lineno}",
+                            expected="00_Core/SESSION-HANDOVER.md (canonical path)",
+                            actual=raw,
+                            severity="error",
+                            hint="Kanonischer Pfad 00_Core/SESSION-HANDOVER.md verwenden",
+                        )
+                    )
                     continue
                 # Alias-Resolution (Shorthand-Konvention).
                 resolved = ALIAS_RESOLUTIONS.get(raw, raw)
@@ -135,15 +148,19 @@ def run(
                 if target.exists():
                     n_passed += 1
                 else:
-                    src_rel = str(src.relative_to(repo_root) if src.is_relative_to(repo_root) else src).replace("\\", "/")
+                    src_rel = str(
+                        src.relative_to(repo_root) if src.is_relative_to(repo_root) else src
+                    ).replace("\\", "/")
                     severity = "warning" if src_rel.startswith(PLAN_PATH_PREFIX) else "error"
-                    failures.append(FailureDetail(
-                        location=f"{src.relative_to(repo_root) if src.is_relative_to(repo_root) else src}:{lineno}",
-                        expected="referenced path exists",
-                        actual=raw,
-                        severity=severity,
-                        hint="Pfad umbenannt/geloescht? Referenz aktualisieren",
-                    ))
+                    failures.append(
+                        FailureDetail(
+                            location=f"{src.relative_to(repo_root) if src.is_relative_to(repo_root) else src}:{lineno}",
+                            expected="referenced path exists",
+                            actual=raw,
+                            severity=severity,
+                            hint="Pfad umbenannt/geloescht? Referenz aktualisieren",
+                        )
+                    )
 
     has_error = any(f.severity == "error" for f in failures)
     has_warning = any(f.severity == "warning" for f in failures)
@@ -155,8 +172,11 @@ def run(
         status = "PASS"
 
     return CheckResult(
-        name="existence", status=status,  # type: ignore[arg-type]
-        n_checked=n_checked, n_passed=n_passed, failures=failures,
+        name="existence",
+        status=status,  # type: ignore[arg-type]
+        n_checked=n_checked,
+        n_passed=n_passed,
+        failures=failures,
         duration_ms=int((time.monotonic() - start) * 1000),
         category="core",
     )

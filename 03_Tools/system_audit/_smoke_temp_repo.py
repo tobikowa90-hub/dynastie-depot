@@ -5,6 +5,7 @@ Verifies:
 - STATE.md gets Last-Audit block written
 - Timestamp within last 120 seconds
 """
+
 from __future__ import annotations
 
 import contextlib
@@ -45,19 +46,32 @@ def main() -> int:
         tdp = Path(td) / "repo"
         # Copy essentials (not .git, not __pycache__)
         shutil.copytree(
-            REPO_ROOT, tdp,
+            REPO_ROOT,
+            tdp,
             ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc", "node_modules", ".venv"),
         )
         # Init git so log_lag check has a commit
         subprocess.run(["git", "init", "-q"], cwd=tdp, check=True)
-        subprocess.run(["git", "-c", "user.name=smoke", "-c", "user.email=s@s", "add", "."],
-                       cwd=tdp, check=True, capture_output=True)
-        subprocess.run(["git", "-c", "user.name=smoke", "-c", "user.email=s@s", "commit",
-                        "-q", "-m", "smoke"], cwd=tdp, check=True, capture_output=True)
+        subprocess.run(
+            ["git", "-c", "user.name=smoke", "-c", "user.email=s@s", "add", "."],
+            cwd=tdp,
+            check=True,
+            capture_output=True,
+        )
+        subprocess.run(
+            ["git", "-c", "user.name=smoke", "-c", "user.email=s@s", "commit", "-q", "-m", "smoke"],
+            cwd=tdp,
+            check=True,
+            capture_output=True,
+        )
 
         rc = subprocess.run(
             [sys.executable, "03_Tools/system_audit.py", "--core"],
-            cwd=tdp, capture_output=True, text=True, encoding="utf-8", timeout=60,
+            cwd=tdp,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            timeout=60,
         )
         print(rc.stdout)
         if rc.stderr:
@@ -78,7 +92,9 @@ def main() -> int:
         # Timestamp within 120s (relaxed for temp-repo overhead)
         m = re.search(r"Timestamp \(UTC\):\*\*\s*(\S+)", state_text)
         assert m, "timestamp not found in STATE.md"
-        ts = datetime.datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.UTC)
+        ts = datetime.datetime.strptime(m.group(1), "%Y-%m-%dT%H:%M:%SZ").replace(
+            tzinfo=datetime.UTC
+        )
         now = datetime.datetime.now(datetime.UTC)
         delta = (now - ts).total_seconds()
         assert 0 <= delta < 120, f"timestamp not recent: {delta}s ago"
@@ -90,10 +106,22 @@ def smoke_seeded_drift() -> int:
     """Seed a defcon-drift into score_history.jsonl, expect exit-code 1 + FAIL Check-1."""
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td) / "repo"
-        shutil.copytree(REPO_ROOT, tdp, ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc"))
+        shutil.copytree(
+            REPO_ROOT, tdp, ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc")
+        )
         subprocess.run(["git", "init", "-q"], cwd=tdp, check=True)
-        subprocess.run(["git", "-c","user.name=s","-c","user.email=s@s","add","."], cwd=tdp, check=True, capture_output=True)
-        subprocess.run(["git", "-c","user.name=s","-c","user.email=s@s","commit","-q","-m","init"], cwd=tdp, check=True, capture_output=True)
+        subprocess.run(
+            ["git", "-c", "user.name=s", "-c", "user.email=s@s", "add", "."],
+            cwd=tdp,
+            check=True,
+            capture_output=True,
+        )
+        subprocess.run(
+            ["git", "-c", "user.name=s", "-c", "user.email=s@s", "commit", "-q", "-m", "init"],
+            cwd=tdp,
+            check=True,
+            capture_output=True,
+        )
 
         hist = tdp / "05_Archiv" / "score_history.jsonl"
         lines = hist.read_text(encoding="utf-8").splitlines()
@@ -104,7 +132,11 @@ def smoke_seeded_drift() -> int:
 
         rc = subprocess.run(
             [sys.executable, "03_Tools/system_audit.py", "--core", "--json"],
-            cwd=tdp, capture_output=True, text=True, encoding="utf-8", timeout=60,
+            cwd=tdp,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            timeout=60,
         )
     assert rc.returncode == 1, f"expected rc=1, got {rc.returncode}, stderr={rc.stderr}"
     data = json.loads(rc.stdout)

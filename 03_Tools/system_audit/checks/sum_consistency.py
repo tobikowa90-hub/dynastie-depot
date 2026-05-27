@@ -22,7 +22,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 
 def _parse_version(v: str) -> tuple[int, ...]:
@@ -33,21 +33,33 @@ def _parse_version(v: str) -> tuple[int, ...]:
     """
     try:
         return tuple(int(part) for part in v.split("."))
-    except (ValueError, AttributeError):
+    except ValueError, AttributeError:
         return (1, 0)
+
 
 # Block-Klassen → Liste numerischer Sub-Field-Namen.
 # MoatScore explizit EXKLUDIERT (rating-derived).
 BLOCK_NUMERIC_FIELDS: dict[str, tuple[str, ...]] = {
     "fundamentals": (
-        "fwd_pe", "p_fcf", "bilanz", "capex_ocf", "roic", "fcf_yield",
-        "operating_margin", "sbc_malus", "accruals_malus", "tariff_malus",
+        "fwd_pe",
+        "p_fcf",
+        "bilanz",
+        "capex_ocf",
+        "roic",
+        "fcf_yield",
+        "operating_margin",
+        "sbc_malus",
+        "accruals_malus",
+        "tariff_malus",
     ),
     "technicals": ("ath_distanz", "rel_staerke", "trend_lage", "dcf_relation_delta"),
     "insider": ("net_buy_6m", "ownership", "kein_20m_selling"),
     "sentiment": (
-        "strong_buy_ratio", "sell_ratio", "pt_upside",
-        "eps_revision_delta", "pt_dispersion_delta",
+        "strong_buy_ratio",
+        "sell_ratio",
+        "pt_upside",
+        "eps_revision_delta",
+        "pt_dispersion_delta",
     ),
     # NOTE: "moat" intentionally absent — MoatScore.gesamt is rating-derived.
 }
@@ -80,13 +92,15 @@ def run(
     n_passed = 0
 
     if not store.exists():
-        failures.append(FailureDetail(
-            location=f"sum_consistency:{store}",
-            expected="score_history.jsonl present",
-            actual="missing",
-            severity="warning",
-            hint="Backfill ausstehend oder Pfad falsch?",
-        ))
+        failures.append(
+            FailureDetail(
+                location=f"sum_consistency:{store}",
+                expected="score_history.jsonl present",
+                actual="missing",
+                severity="warning",
+                hint="Backfill ausstehend oder Pfad falsch?",
+            )
+        )
         return CheckResult(
             name="sum_consistency",
             status="SKIP",
@@ -123,7 +137,7 @@ def run(
                     continue
                 try:
                     gesamt_float = float(gesamt)
-                except (ValueError, TypeError):
+                except ValueError, TypeError:
                     # Non-numeric gesamt — jsonl_schema.py-Domain, hier skip
                     continue
                 subs_sum = _sum_numerics(block, field_names)
@@ -133,22 +147,26 @@ def run(
                 # Mismatch detected
                 if schema_v_parts >= (2, 0):
                     record_ok = False
-                    failures.append(FailureDetail(
-                        location=f"{rec_id}:{block_name}",
-                        expected=f"{block_name}.gesamt == sum(numerics)={subs_sum}",
-                        actual=f"gesamt={gesamt}",
-                        severity="error",
-                        hint=f"Schema v{schema_v_str} strict — Sub-Field-Belegung korrigieren",
-                    ))
+                    failures.append(
+                        FailureDetail(
+                            location=f"{rec_id}:{block_name}",
+                            expected=f"{block_name}.gesamt == sum(numerics)={subs_sum}",
+                            actual=f"gesamt={gesamt}",
+                            severity="error",
+                            hint=f"Schema v{schema_v_str} strict — Sub-Field-Belegung korrigieren",
+                        )
+                    )
                 else:
                     # v1.0 grandfathered — INFO, nicht FAIL
-                    failures.append(FailureDetail(
-                        location=f"{rec_id}:{block_name}",
-                        expected=f"{block_name}.gesamt == sum(numerics)={subs_sum}",
-                        actual=f"gesamt={gesamt} (legacy v{schema_v_str})",
-                        severity="info",
-                        hint="Legacy v1.0 grandfathered; neue Records auf v2.0 bumpen",
-                    ))
+                    failures.append(
+                        FailureDetail(
+                            location=f"{rec_id}:{block_name}",
+                            expected=f"{block_name}.gesamt == sum(numerics)={subs_sum}",
+                            actual=f"gesamt={gesamt} (legacy v{schema_v_str})",
+                            severity="info",
+                            hint="Legacy v1.0 grandfathered; neue Records auf v2.0 bumpen",
+                        )
+                    )
 
             if record_ok:
                 n_passed += 1

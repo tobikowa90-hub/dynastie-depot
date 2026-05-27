@@ -3,13 +3,14 @@
 Timeout is sourced from context.vault_timeout_s (AuditContext default 20s,
 overridable per orchestrator invocation).
 """
+
 from __future__ import annotations
 
 import re
 import time
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:\|[^\]]+)?(?:#[^\]]+)?\]\]")
 # Inline-Code-Spans (single backticks) und Schema-Beispiele wie `[[Page Title]]`
@@ -24,8 +25,15 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
     timeout_s = context.vault_timeout_s
     vault = repo_root / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind"
     if not vault.exists():
-        return CheckResult(name="vault_backlinks", status="SKIP", n_checked=0, n_passed=0,
-                           failures=[], duration_ms=0, category="optional")
+        return CheckResult(
+            name="vault_backlinks",
+            status="SKIP",
+            n_checked=0,
+            n_passed=0,
+            failures=[],
+            duration_ms=0,
+            category="optional",
+        )
 
     # Notes-Set inkludiert raw/-Files als valide Wikilink-Targets (Obsidian sieht
     # sie als Vault-Notes), aber wir scannen sie nicht für outgoing wikilinks
@@ -72,16 +80,27 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
             continue
         if (time.monotonic() - start) > timeout_s:
             return CheckResult(
-                name="vault_backlinks", status="SKIP", n_checked=n_checked, n_passed=n_passed,
-                failures=[*failures, FailureDetail(
-                    location="vault_backlinks", expected=f"scan < {timeout_s}s",
-                    actual="timed out", severity="warning", hint="Scope reduzieren oder Timeout erhöhen",
-                )],
+                name="vault_backlinks",
+                status="SKIP",
+                n_checked=n_checked,
+                n_passed=n_passed,
+                failures=[
+                    *failures,
+                    FailureDetail(
+                        location="vault_backlinks",
+                        expected=f"scan < {timeout_s}s",
+                        actual="timed out",
+                        severity="warning",
+                        hint="Scope reduzieren oder Timeout erhöhen",
+                    ),
+                ],
                 duration_ms=int((time.monotonic() - start) * 1000),
                 category="optional",
             )
         in_fence = False
-        for lineno, raw_line in enumerate(md.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+        for lineno, raw_line in enumerate(
+            md.read_text(encoding="utf-8", errors="replace").splitlines(), 1
+        ):
             if raw_line.lstrip().startswith("```"):
                 in_fence = not in_fence
                 continue
@@ -98,19 +117,24 @@ def run(repo_root: Path, context: AuditContext) -> CheckResult:
                 if target in notes:
                     n_passed += 1
                 else:
-                    failures.append(FailureDetail(
-                        location=f"{md.relative_to(repo_root)}:{lineno}",
-                        expected=f"[[{target}]] resolves",
-                        actual="no matching note",
-                        severity="error",
-                        hint=f"Note '{target}' fehlt oder umbenannt",
-                    ))
+                    failures.append(
+                        FailureDetail(
+                            location=f"{md.relative_to(repo_root)}:{lineno}",
+                            expected=f"[[{target}]] resolves",
+                            actual="no matching note",
+                            severity="error",
+                            hint=f"Note '{target}' fehlt oder umbenannt",
+                        )
+                    )
 
     has_error = any(f.severity == "error" for f in failures)
     status = "FAIL" if has_error else "PASS"
     return CheckResult(
-        name="vault_backlinks", status=status,  # type: ignore[arg-type]
-        n_checked=n_checked, n_passed=n_passed, failures=failures,
+        name="vault_backlinks",
+        status=status,  # type: ignore[arg-type]
+        n_checked=n_checked,
+        n_passed=n_passed,
+        failures=failures,
         duration_ms=int((time.monotonic() - start) * 1000),
         category="optional",
     )

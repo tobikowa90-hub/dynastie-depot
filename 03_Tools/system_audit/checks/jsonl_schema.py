@@ -4,6 +4,7 @@ Spec §5.1 Check-1. Missing/empty stores → SKIP with warning. Validation error
 line → FailureDetail(severity="error"). No SKIP-fallback for missing models
 (Q1 resolved YES; Task 1 nachgeruestet PortfolioReturnRecord + BenchmarkReturnRecord).
 """
+
 from __future__ import annotations
 
 import sys
@@ -12,7 +13,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 
 def run(
@@ -36,8 +37,14 @@ def run(
     default_stores: dict[str, tuple[Path, type]] = {
         "score_history": (repo_root / "05_Archiv" / "score_history.jsonl", ScoreRecord),
         "flag_events": (repo_root / "05_Archiv" / "flag_events.jsonl", FlagEvent),
-        "portfolio_returns": (repo_root / "05_Archiv" / "portfolio_returns.jsonl", PortfolioReturnRecord),
-        "benchmark_series": (repo_root / "05_Archiv" / "benchmark-series.jsonl", BenchmarkReturnRecord),
+        "portfolio_returns": (
+            repo_root / "05_Archiv" / "portfolio_returns.jsonl",
+            PortfolioReturnRecord,
+        ),
+        "benchmark_series": (
+            repo_root / "05_Archiv" / "benchmark-series.jsonl",
+            BenchmarkReturnRecord,
+        ),
     }
 
     if stores_override:
@@ -54,22 +61,26 @@ def run(
     for store_name, (path, model) in stores.items():
         path_str = str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
         if not path.exists():
-            failures.append(FailureDetail(
-                location=f"{store_name}:{path_str}",
-                expected="file present",
-                actual="missing",
-                severity="warning",
-                hint="Backfill ausstehend oder Pfad falsch?",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{store_name}:{path_str}",
+                    expected="file present",
+                    actual="missing",
+                    severity="warning",
+                    hint="Backfill ausstehend oder Pfad falsch?",
+                )
+            )
             continue
         if path.stat().st_size == 0:
-            failures.append(FailureDetail(
-                location=f"{store_name}:{path_str}",
-                expected="non-empty store",
-                actual="empty",
-                severity="warning",
-                hint="Store leer — erster Record erwartet",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=f"{store_name}:{path_str}",
+                    expected="non-empty store",
+                    actual="empty",
+                    severity="warning",
+                    hint="Store leer — erster Record erwartet",
+                )
+            )
             continue
 
         any_parsed = True
@@ -92,17 +103,19 @@ def run(
                         actual = f"{loc_path}: {first['msg']}"[:140]
                     else:
                         actual = str(e)[:140]
-                    failures.append(FailureDetail(
-                        location=f"{path.relative_to(repo_root)}:{lineno}",
-                        expected="valid JSON" if is_json_error else f"{model.__name__} valid",
-                        actual=actual,
-                        severity="error",
-                        hint=(
-                            "Record manuell pruefen / entfernen"
-                            if is_json_error
-                            else "Migration-Helper ausfuehren oder Backfill re-run"
-                        ),
-                    ))
+                    failures.append(
+                        FailureDetail(
+                            location=f"{path.relative_to(repo_root)}:{lineno}",
+                            expected="valid JSON" if is_json_error else f"{model.__name__} valid",
+                            actual=actual,
+                            severity="error",
+                            hint=(
+                                "Record manuell pruefen / entfernen"
+                                if is_json_error
+                                else "Migration-Helper ausfuehren oder Backfill re-run"
+                            ),
+                        )
+                    )
 
     has_error = any(f.severity == "error" for f in failures)
     has_warning = any(f.severity == "warning" for f in failures)

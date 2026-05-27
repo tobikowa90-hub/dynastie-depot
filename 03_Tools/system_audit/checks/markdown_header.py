@@ -8,6 +8,7 @@ newest event-date parseable from the markdown content — NOT git commit date
 (mass-edit commits would false-positive). Mon-Fri business-day lag threshold:
 1-2 days -> WARN, >2 days -> FAIL.
 """
+
 from __future__ import annotations
 
 import datetime
@@ -16,7 +17,7 @@ import time
 from collections.abc import Callable
 from pathlib import Path
 
-from system_audit.types import AuditContext, CheckResult, FailureDetail
+from system_audit.audit_types import AuditContext, CheckResult, FailureDetail
 
 STAND_RE = re.compile(r"\*\*Stand:\*\*\s*(\d{2}\.\d{2}\.\d{4})")
 STAND_RE_HEADER = re.compile(r"Stand:\s*(\d{2}\.\d{2}\.\d{4})")
@@ -47,7 +48,7 @@ def _stand_date(text: str) -> datetime.date | None:
     m = STAND_RE.search(text) or STAND_RE_HEADER.search(text)
     try:
         return _parse_dot(m.group(1)) if m else None
-    except (ValueError, AttributeError):
+    except ValueError, AttributeError:
         return None
 
 
@@ -132,25 +133,36 @@ def run(
 
     for path, kind in targets:
         if not path.exists():
-            path_str = str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
-            failures.append(FailureDetail(
-                location=path_str, expected="file present", actual="missing",
-                severity="warning", hint="Target fehlt — Struktur geaendert?",
-            ))
+            path_str = (
+                str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
+            )
+            failures.append(
+                FailureDetail(
+                    location=path_str,
+                    expected="file present",
+                    actual="missing",
+                    severity="warning",
+                    hint="Target fehlt — Struktur geaendert?",
+                )
+            )
             continue
         # CR-#47-Critical-Cluster-D: targets_override mit unbekanntem `kind`
         # liess `PARSERS[kind]` silent KeyError raisen. Defensive: Guard +
         # FailureDetail + Skip-Iteration; erlaubt Tests/External-Caller, das
         # Issue zu surfacen statt Stacktrace.
         if kind not in PARSERS:
-            path_str = str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
-            failures.append(FailureDetail(
-                location=path_str,
-                expected=f"kind in {sorted(PARSERS.keys())}",
-                actual=f"kind={kind!r}",
-                severity="error",
-                hint="Targets-Override mit unbekanntem kind — PARSERS-Tabelle pruefen",
-            ))
+            path_str = (
+                str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path)
+            )
+            failures.append(
+                FailureDetail(
+                    location=path_str,
+                    expected=f"kind in {sorted(PARSERS.keys())}",
+                    actual=f"kind={kind!r}",
+                    severity="error",
+                    hint="Targets-Override mit unbekanntem kind — PARSERS-Tabelle pruefen",
+                )
+            )
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         stand = _stand_date(text)
@@ -159,32 +171,44 @@ def run(
         n_checked += 1
 
         if stand is None or newest is None:
-            failures.append(FailureDetail(
-                location=str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path),
-                expected="parseable Stand + event-date",
-                actual=f"Stand={stand}, newest_event={newest}",
-                severity="error",
-                hint="Header-Regex matched nicht — Struktur geaendert?",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=str(path.relative_to(repo_root))
+                    if path.is_relative_to(repo_root)
+                    else str(path),
+                    expected="parseable Stand + event-date",
+                    actual=f"Stand={stand}, newest_event={newest}",
+                    severity="error",
+                    hint="Header-Regex matched nicht — Struktur geaendert?",
+                )
+            )
             continue
 
         lag = _business_days_lag(newest, stand)
         if lag > 2:
-            failures.append(FailureDetail(
-                location=str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path),
-                expected=f"Stand >= {newest.isoformat()} or <= 2 business-day lag",
-                actual=f"Stand {stand.isoformat()} vs newest-event {newest.isoformat()} (lag {lag} business days)",
-                severity="error",
-                hint=f"Header-Zeile auf {newest.strftime('%d.%m.%Y')} aktualisieren",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=str(path.relative_to(repo_root))
+                    if path.is_relative_to(repo_root)
+                    else str(path),
+                    expected=f"Stand >= {newest.isoformat()} or <= 2 business-day lag",
+                    actual=f"Stand {stand.isoformat()} vs newest-event {newest.isoformat()} (lag {lag} business days)",
+                    severity="error",
+                    hint=f"Header-Zeile auf {newest.strftime('%d.%m.%Y')} aktualisieren",
+                )
+            )
         elif lag >= 1:
-            failures.append(FailureDetail(
-                location=str(path.relative_to(repo_root)) if path.is_relative_to(repo_root) else str(path),
-                expected=f"Stand = {newest.isoformat()}",
-                actual=f"Stand {stand.isoformat()} (lag {lag} business day)",
-                severity="warning",
-                hint="Header-Sync empfohlen",
-            ))
+            failures.append(
+                FailureDetail(
+                    location=str(path.relative_to(repo_root))
+                    if path.is_relative_to(repo_root)
+                    else str(path),
+                    expected=f"Stand = {newest.isoformat()}",
+                    actual=f"Stand {stand.isoformat()} (lag {lag} business day)",
+                    severity="warning",
+                    hint="Header-Sync empfohlen",
+                )
+            )
             n_passed += 1
         else:
             n_passed += 1
