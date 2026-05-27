@@ -80,8 +80,18 @@ PARSER_ERROR_LOG: Path = REPO_ROOT / "05_Archiv" / "_parser_errors.log"
 # --- constants -------------------------------------------------------------
 SECTION_HEADER_RE = re.compile(r"^## 4\. Score-Register")
 MONTHS_DE: dict[str, int] = {
-    "Januar": 1, "Februar": 2, "März": 3, "April": 4, "Mai": 5, "Juni": 6,
-    "Juli": 7, "August": 8, "September": 9, "Oktober": 10, "November": 11, "Dezember": 12,
+    "Januar": 1,
+    "Februar": 2,
+    "März": 3,
+    "April": 4,
+    "Mai": 5,
+    "Juni": 6,
+    "Juli": 7,
+    "August": 8,
+    "September": 9,
+    "Oktober": 10,
+    "November": 11,
+    "Dezember": 12,
 }
 # Emoji + digit — we only need the digit
 DEFCON_LEVEL_RE = re.compile(r"([1-4])")
@@ -177,7 +187,7 @@ def extract_table_rows(md_text: str) -> list[list[str]]:
     # collect table lines until next "## " or EOF
     rows: list[list[str]] = []
     seen_separator = False
-    for line in lines[start_idx + 1:]:
+    for line in lines[start_idx + 1 :]:
         if line.startswith("## "):
             break
         stripped = line.strip()
@@ -349,8 +359,8 @@ def load_existing_record_ids(path: Path) -> set[str]:
         return set()
     ids: set[str] = set()
     with path.open("r", encoding="utf-8") as fh:
-        for line in fh:
-            line = line.strip()
+        for raw_line in fh:
+            line = raw_line.strip()
             if not line:
                 continue
             try:
@@ -390,8 +400,7 @@ def main(argv: list[str] | None = None) -> int:
 
     rows = extract_table_rows(md_text)
     if not rows:
-        print("[FATAL] Score-Register table empty or not found in CORE-MEMORY.md",
-              file=sys.stderr)
+        print("[FATAL] Score-Register table empty or not found in CORE-MEMORY.md", file=sys.stderr)
         return 1
 
     existing_ids = load_existing_record_ids(ARCHIVE_PATH)

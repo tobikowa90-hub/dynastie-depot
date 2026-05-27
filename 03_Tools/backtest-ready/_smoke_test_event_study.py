@@ -48,6 +48,7 @@ def _patch_fetch(price_table: dict[str, dict[date, float]]):
     Ticker (z.B. BENCHMARK_TICKER-Rename) sofort diagnose-bare Fehlermeldung
     statt opaker AttributeError downstream.
     """
+
     # Note (CR 2026-05-07): Monkey-patching via attribute reassignment
     # (`fes.fetch_history_window = ...` unten) ist hier korrekt, weil
     # `fetch_history_window` IM SELBEN Modul wie `compute_event_result`
@@ -60,6 +61,7 @@ def _patch_fetch(price_table: dict[str, dict[date, float]]):
                 f"add to price_table (known: {sorted(price_table)})"
             )
         return price_table[ticker]
+
     return _fake
 
 
@@ -108,8 +110,8 @@ def test_forward_fallback_today_cap() -> tuple[bool, str]:
     """
     event = _make_event("TEST", date(2025, 10, 1))
     prices = {
-        date(2025, 10, 1): 100.0,   # Trigger-Day-Preis
-        date(2025, 11, 5): 105.0,   # Look-Ahead-Preis (post-today)
+        date(2025, 10, 1): 100.0,  # Trigger-Day-Preis
+        date(2025, 11, 5): 105.0,  # Look-Ahead-Preis (post-today)
     }
     # CR 2026-05-07: bench flat — würde sonst Look-Ahead-Daten enthalten
     # (dict(prices) inkludierte 2025-11-05). Test asserted nur ticker-side,

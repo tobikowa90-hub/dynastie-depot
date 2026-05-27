@@ -101,8 +101,8 @@ def _ensure_utf8_stdout() -> None:
 def load_flag_events(path: Path) -> list[FlagEvent]:
     events: list[FlagEvent] = []
     with path.open("r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
+        for raw_line in f:
+            line = raw_line.strip()
             if not line:
                 continue
             events.append(FlagEvent.model_validate_json(line))
@@ -127,6 +127,7 @@ def fetch_history_window(ticker: str, start: date, end: date) -> dict[date, floa
             return None
         out: dict[date, float] = {}
         import pandas as pd  # local — yfinance schon importiert oben
+
         for ts, row in hist.iterrows():
             # ts is pandas Timestamp with tz — convert to date.
             # Defensive fallback (CR 2026-05-07): coerce non-Timestamp via pd.Timestamp,
@@ -137,13 +138,15 @@ def fetch_history_window(ticker: str, start: date, end: date) -> dict[date, floa
                 d = pd.Timestamp(ts).to_pydatetime().date()
             out[d] = float(row["Close"])
         return out
-    except (OSError, ValueError, KeyError, AttributeError, RuntimeError):
+    except OSError, ValueError, KeyError, AttributeError, RuntimeError:
         # yfinance kann ConnectionError/HTTPError/JSONDecodeError/etc. werfen;
         # graceful degradation = None. Bewusst breit gefasst (Library-Boundary).
         return None
 
 
-def closest_close_on_or_after(prices: dict[date, float], target: date, max_days: int = 7) -> tuple[date, float] | None:
+def closest_close_on_or_after(
+    prices: dict[date, float], target: date, max_days: int = 7
+) -> tuple[date, float] | None:
     """Find first available close on or after `target`, scanning up to `max_days` forward."""
     for i in range(max_days + 1):
         d = target + timedelta(days=i)
@@ -152,7 +155,9 @@ def closest_close_on_or_after(prices: dict[date, float], target: date, max_days:
     return None
 
 
-def closest_close_on_or_before(prices: dict[date, float], target: date, max_days: int = 7) -> tuple[date, float] | None:
+def closest_close_on_or_before(
+    prices: dict[date, float], target: date, max_days: int = 7
+) -> tuple[date, float] | None:
     for i in range(max_days + 1):
         d = target - timedelta(days=i)
         if d in prices:
@@ -268,7 +273,8 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
         if (
             bench is not None
             and er.kurs_benchmark_at_trigger is not None
-            and er.kurs_benchmark_at_trigger != 0.0  # CR 2026-05-07: Zero-Division-Guard auch bench-side
+            and er.kurs_benchmark_at_trigger
+            != 0.0  # CR 2026-05-07: Zero-Division-Guard auch bench-side
         ):
             # Symmetrisch zum Ticker-Block oben: Forward-Fallback durch `today` kappen
             # (§29.5 Look-Ahead-Prevention) — CR Pipeline #46/47-Folgepass.
@@ -278,7 +284,9 @@ def compute_event_result(event: FlagEvent, today: date) -> EventResult:
                 b_hit = closest_close_on_or_after(bench, target_date, max_days=min(7, max_fwd_b))
             if b_hit is not None:
                 _b_date, b_price = b_hit
-                hr.benchmark_return_pct = (b_price - er.kurs_benchmark_at_trigger) / er.kurs_benchmark_at_trigger * 100.0
+                hr.benchmark_return_pct = (
+                    (b_price - er.kurs_benchmark_at_trigger) / er.kurs_benchmark_at_trigger * 100.0
+                )
                 hr.alpha_pp = hr.raw_return_pct - hr.benchmark_return_pct
 
     return er
@@ -365,9 +373,7 @@ def format_event_narrative_googl(er: EventResult) -> str:
         )
     pending = [h for h in HORIZONS if er.horizons[h].status == "pending"]
     if pending:
-        parts.append(
-            f"**Noch offen:** {', '.join(f'+{h}d' for h in pending)}."
-        )
+        parts.append(f"**Noch offen:** {', '.join(f'+{h}d' for h in pending)}.")
     return " ".join(parts)
 
 
@@ -437,8 +443,8 @@ def build_report(results: list[EventResult], today: date) -> str:
         lines.append(row)
     lines.append("")
     lines.append(
-        "> *Für nicht-observierte Horizonte: \"pending (needs X more days)\". "
-        "yfinance-Failures werden als \"n.a. (data source)\" markiert.*"
+        '> *Für nicht-observierte Horizonte: "pending (needs X more days)". '
+        'yfinance-Failures werden als "n.a. (data source)" markiert.*'
     )
     lines.append("")
 
@@ -477,7 +483,7 @@ def build_report(results: list[EventResult], today: date) -> str:
     lines.append("")
     lines.append(
         "> *n pro FLAG-Typ zu klein für Mittelwerte oder Signifikanztests — "
-        "nur Median + Range ausgewiesen. Bei observed=0 steht \"–\".*"
+        'nur Median + Range ausgewiesen. Bei observed=0 steht "–".*'
     )
     lines.append("")
 
@@ -506,16 +512,14 @@ def build_report(results: list[EventResult], today: date) -> str:
         lines.append("")
 
     # Section 4: Limitationen
-    observed_total = sum(
-        1 for r in results for h in HORIZONS if r.horizons[h].status == "observed"
-    )
-    pending_total = sum(
-        1 for r in results for h in HORIZONS if r.horizons[h].status == "pending"
-    )
+    observed_total = sum(1 for r in results for h in HORIZONS if r.horizons[h].status == "observed")
+    pending_total = sum(1 for r in results for h in HORIZONS if r.horizons[h].status == "pending")
     possible_total = n * len(HORIZONS)
     lines.append("## 4. Limitationen & Lehren für 2028-Review")
     lines.append("")
-    lines.append(f"- **n = {n}** ist nicht-repräsentativ (Infrastruktur-Sample, keine statistische Power).")
+    lines.append(
+        f"- **n = {n}** ist nicht-repräsentativ (Infrastruktur-Sample, keine statistische Power)."
+    )
     lines.append(
         f"- **{observed_total} / {possible_total}** Horizont-Messpunkte observierbar, "
         f"**{pending_total} / {possible_total}** pending (brauchen zusätzliche Marktdaten)."

@@ -106,9 +106,7 @@ CATALOGUE: list[BackfillCandidate] = [
         trigger_datum="2026-03-15",
         metrik_definition="n/a",
         notizen="n/a",
-        skip_reason=(
-            "APH: score-based FLAG type not in schema enum (skipped, intentional)"
-        ),
+        skip_reason=("APH: score-based FLAG type not in schema enum (skipped, intentional)"),
     ),
     BackfillCandidate(
         ticker="AVGO",
@@ -118,8 +116,7 @@ CATALOGUE: list[BackfillCandidate] = [
         metrik_definition="insider_selling_aggregate_usd",
         notizen="n/a",
         skip_reason=(
-            "AVGO: insider_selling_20m status=REVIEW_PENDING "
-            "(skipped per spec §9.2 no guessing)"
+            "AVGO: insider_selling_20m status=REVIEW_PENDING (skipped per spec §9.2 no guessing)"
         ),
     ),
 ]
@@ -137,8 +134,8 @@ def _load_existing_flag_ids(path: Path) -> set[str]:
     out: set[str] = set()
     try:
         with path.open("r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
+            for raw_line in f:
+                line = raw_line.strip()
                 if not line:
                     continue
                 rec = json.loads(line)

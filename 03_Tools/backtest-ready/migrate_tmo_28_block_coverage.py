@@ -45,6 +45,7 @@ Ausgaben. ``--apply`` #1 mutiert genau einen Record; ``--apply`` #2 ist
 no-op (kein Diff, weil Felder bereits gesetzt). Empirisch belegt in
 Step 0.5.4.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -61,15 +62,12 @@ BACKFILL_VALUES: dict[str, float | int | str] = {
     # FY23 GM 39.90% → FY25 GM 40.93%, (40.93−39.90)/2 = +0.515 pp/a
     # Quelle: yfinance income_stmt (Gross Profit / Total Revenue), siehe Module-Docstring
     "gm_trend_3j_pct_p_a": 0.5,
-
     # TMO 6M -9.38% vs SPY 6M +6.55% (anchor 2025-10-22 → 2026-04-22)
     # Quelle: yfinance history end='2026-04-23', auto_adjust=False
     "rel_strength_sp500_6m_pct": -16,
     "rel_staerke_sp500_6m_pct": -16,  # = rel_strength (v3.5-Rename-Alias-Spiegel)
-
     # Close $513.98 vs MA200 $525.17 am 2026-04-22
     "kurs_vs_200ma_pct": -2.13,
-
     # MA200 +1.83% über letzte ~21 Trading-Days → rising (Schema-Literal)
     "ma200_slope": "rising",
 }
@@ -95,8 +93,8 @@ def _load_lines_with_endings() -> list[tuple[bytes, bytes]]:
             out.append((data[pos:], b""))
             break
         line_end = nl + 1
-        if nl > 0 and data[nl - 1:nl] == b"\r":
-            json_part = data[pos:nl - 1]
+        if nl > 0 and data[nl - 1 : nl] == b"\r":
+            json_part = data[pos : nl - 1]
             ending = b"\r\n"
         else:
             json_part = data[pos:nl]
@@ -143,8 +141,7 @@ def _format_diff(diffs: dict[str, tuple]) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--apply", action="store_true",
-                        help="Persist changes (default = dry-run).")
+    parser.add_argument("--apply", action="store_true", help="Persist changes (default = dry-run).")
     args = parser.parse_args()
 
     # Guard: BACKFILL_VALUES darf keine unaufgelösten Ellipsis-Sentinels haben
@@ -193,8 +190,10 @@ def main() -> int:
             fh.write(ending)
     tmp_path.replace(ARCHIVE_PATH)
 
-    print("\n[APPLIED] 1 record migrated, score_history.jsonl rewritten "
-          "(original line-endings preserved).")
+    print(
+        "\n[APPLIED] 1 record migrated, score_history.jsonl rewritten "
+        "(original line-endings preserved)."
+    )
     return 0
 
 

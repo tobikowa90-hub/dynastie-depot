@@ -18,9 +18,9 @@ Run::
 
     python 03_Tools/backtest-ready/_forward_verify_helpers_test.py
 """
+
 from __future__ import annotations
 
-import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -77,11 +77,7 @@ def _tmpdir_path() -> str:
 # ---------------------------------------------------------------------------
 def case_9() -> None:
     """All 3 required files modified with ASCII paths → no missing."""
-    stdout = (
-        b"M  00_Core/PORTFOLIO.md\x00"
-        b"M  00_Core/Faktortabelle.md\x00"
-        b"M  00_Core/log.md\x00"
-    )
+    stdout = b"M  00_Core/PORTFOLIO.md\x00M  00_Core/Faktortabelle.md\x00M  00_Core/log.md\x00"
     with _patch_run(stdout):
         result = helpers.check_freshness(repo_root=_tmpdir_path())
     assert result == [], f"expected [], got {result}"
@@ -93,10 +89,7 @@ def case_9() -> None:
 def case_10() -> None:
     """Path with spaces (``07_Obsidian Vault/...``) — -z mode preserves
     them literally; legacy text-mode would have wrapped in double-quotes."""
-    stdout = (
-        b"M  07_Obsidian Vault/work area/log.md\x00"
-        b"M  00_Core/PORTFOLIO.md\x00"
-    )
+    stdout = b"M  07_Obsidian Vault/work area/log.md\x00M  00_Core/PORTFOLIO.md\x00"
     with _patch_run(stdout):
         result = helpers.check_freshness(repo_root=_tmpdir_path())
     # log.md and PORTFOLIO.md detected; Faktortabelle.md still missing
@@ -161,10 +154,7 @@ def case_12() -> None:
     # Sub-case: only the rename — Faktortabelle and log still missing.
     # Confirms the second NUL-token is consumed as path-2, NOT as a new
     # entry (which would crash on len < 4 or pollute basenames).
-    stdout_only_rename = (
-        b"R  00_Core/PORTFOLIO.md\x00"
-        b"00_Core/PORTFOLIO_OLD.md\x00"
-    )
+    stdout_only_rename = b"R  00_Core/PORTFOLIO.md\x0000_Core/PORTFOLIO_OLD.md\x00"
     with _patch_run(stdout_only_rename):
         result_only = helpers.check_freshness(repo_root=_tmpdir_path())
     assert sorted(result_only) == sorted(["Faktortabelle.md", "log.md"]), (
@@ -200,9 +190,7 @@ def case_13() -> None:
     (synthetic bytes — no real file with newline-in-name needed)."""
     stdout = (
         # weird\nfolder/log.md  (newline byte mid-path)
-        b"M  weird\nfolder/log.md\x00"
-        b"M  00_Core/PORTFOLIO.md\x00"
-        b"M  00_Core/Faktortabelle.md\x00"
+        b"M  weird\nfolder/log.md\x00M  00_Core/PORTFOLIO.md\x00M  00_Core/Faktortabelle.md\x00"
     )
     with _patch_run(stdout):
         result = helpers.check_freshness(repo_root=_tmpdir_path())
@@ -213,9 +201,9 @@ def case_13() -> None:
     stdout_nl_basename = b"M  00_Core/foo\nbar.md\x00"
     with _patch_run(stdout_nl_basename):
         result_nb = helpers.check_freshness(repo_root=_tmpdir_path())
-    assert sorted(result_nb) == sorted(
-        ["PORTFOLIO.md", "Faktortabelle.md", "log.md"]
-    ), f"expected all 3 missing, got {result_nb}"
+    assert sorted(result_nb) == sorted(["PORTFOLIO.md", "Faktortabelle.md", "log.md"]), (
+        f"expected all 3 missing, got {result_nb}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -239,9 +227,7 @@ def case_14() -> None:
         except RuntimeError as exc:
             msg = str(exc)
             assert "returncode=128" in msg, f"missing returncode in msg: {msg!r}"
-            assert "not a git repository" in msg, (
-                f"stderr-bytes not decoded into message: {msg!r}"
-            )
+            assert "not a git repository" in msg, f"stderr-bytes not decoded into message: {msg!r}"
             return
         raise AssertionError("expected RuntimeError on returncode != 0")
     finally:

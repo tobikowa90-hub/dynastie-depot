@@ -9,6 +9,7 @@ Spec: docs/superpowers/specs/2026-04-21-score-append-provenance-gate-design.md �
 
 Nicht direkt CLI-aufrufbar — Library-Funktion fuer SKILL.md-Orchestrator.
 """
+
 from __future__ import annotations
 
 import contextlib
@@ -26,34 +27,68 @@ from versions import DEFCON_ACTIVE_VERSION
 # Constants
 # ---------------------------------------------------------------------------
 
-PLATZHALTER_BLACKLIST: Final[frozenset[str]] = frozenset({
-    "unknown", "tbd", "todo", "placeholder", "none", "na", "n/a", "?",
-})
+PLATZHALTER_BLACKLIST: Final[frozenset[str]] = frozenset(
+    {
+        "unknown",
+        "tbd",
+        "todo",
+        "placeholder",
+        "none",
+        "na",
+        "n/a",
+        "?",
+    }
+)
 
 # Source-Tokens single-word: muessen als Whole-Word im Stem vorkommen (split auf "_")
-CARRYOVER_SOURCE_TOKENS: Final[frozenset[str]] = frozenset({
-    "gurufocus", "defeatbeta", "shibui", "openinsider",
-    "yahoo", "zacks", "yfinance", "alphaspread", "tavily",
-    "stocktitan", "benzinga", "afm", "amf", "eodhd",
-})
+CARRYOVER_SOURCE_TOKENS: Final[frozenset[str]] = frozenset(
+    {
+        "gurufocus",
+        "defeatbeta",
+        "shibui",
+        "openinsider",
+        "yahoo",
+        "zacks",
+        "yfinance",
+        "alphaspread",
+        "tavily",
+        "stocktitan",
+        "benzinga",
+        "afm",
+        "amf",
+        "eodhd",
+    }
+)
 
 # Source-Tokens multi-word: muessen mit "_"-Boundary im Stem stehen
 # (Whole-Word-Match ueber stem.split("_") funktioniert nicht, da multi-Tokens
 # selbst Underscores enthalten — Codex-Round-3-MEDIUM 28.04.)
-CARRYOVER_SOURCE_TOKENS_MULTI: Final[frozenset[str]] = frozenset({
-    "sec_edgar",
-})
+CARRYOVER_SOURCE_TOKENS_MULTI: Final[frozenset[str]] = frozenset(
+    {
+        "sec_edgar",
+    }
+)
 
 # Source-Prefixes: dynamische Source-Familien (Company-IR-Pages)
 CARRYOVER_SOURCE_PREFIXES: Final[tuple[str, ...]] = ("ir_",)
 
 # Reason-Tokens: Workflow-Begruendungen, muessen am Stem-Ende stehen (terminal)
-CARRYOVER_REASON_TERMINAL: Final[frozenset[str]] = frozenset({
-    "skip_window", "pre_score", "pre_gate", "bridge", "carry_from",
-})
+CARRYOVER_REASON_TERMINAL: Final[frozenset[str]] = frozenset(
+    {
+        "skip_window",
+        "pre_score",
+        "pre_gate",
+        "bridge",
+        "carry_from",
+    }
+)
 
 QUELLEN_PFLICHT_FELDER: Final[tuple[str, ...]] = (
-    "fundamentals", "technicals", "insider", "moat", "sentiment",
+    "fundamentals",
+    "technicals",
+    "insider",
+    "moat",
+    "sentiment",
 )
 
 _RE_QUESTION_MARKS = re.compile(r"\?+")
@@ -109,10 +144,7 @@ def _is_placeholder(value: str) -> bool:
 
     # (c) Reason-Token terminal
     # Carryover ohne anerkannten Stamm → True
-    return not any(
-        stem == r or stem.endswith("_" + r)
-        for r in CARRYOVER_REASON_TERMINAL
-    )
+    return not any(stem == r or stem.endswith("_" + r) for r in CARRYOVER_REASON_TERMINAL)
 
 
 def check_provenance(
@@ -152,9 +184,7 @@ def check_provenance(
     if analyse_typ == "vollanalyse":
         kurs_referenz = (record_dict.get("kurs") or {}).get("referenz")
         if kurs_referenz != "close_of_score_datum":
-            return False, [
-                f"vollanalyse requires fresh kurs (referenz='{kurs_referenz}')"
-            ]
+            return False, [f"vollanalyse requires fresh kurs (referenz='{kurs_referenz}')"]
 
     # Check #4: rescoring braucht skill_meta fuer Δ-Gate
     if analyse_typ == "rescoring" and not skill_meta_norm:
@@ -176,9 +206,7 @@ def check_provenance(
     for field in QUELLEN_PFLICHT_FELDER:
         value = quellen.get(field, "")
         if not isinstance(value, str) or _is_placeholder(value):
-            return False, [
-                f"placeholder source '{value}' in quellen.{field}"
-            ]
+            return False, [f"placeholder source '{value}' in quellen.{field}"]
 
     # Check #8: skill_meta.migration_to_version inconsistent mit record.defcon_version
     if skill_meta_norm:

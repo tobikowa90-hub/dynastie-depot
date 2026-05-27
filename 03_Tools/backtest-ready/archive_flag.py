@@ -57,8 +57,8 @@ def _load_events(path: Path) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     try:
         with path.open("r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
+            for raw_line in f:
+                line = raw_line.strip()
                 if not line:
                     continue
                 out.append(json.loads(line))
@@ -125,9 +125,7 @@ def _build_flag_event(
 ) -> FlagEvent:
     """Construct + validate FlagEvent; schwelle/name derived from FLAG_RULES."""
     if flag_typ not in FLAG_RULES:
-        raise ValueError(
-            f"unknown flag_typ '{flag_typ}'; expected one of {sorted(FLAG_RULES)}"
-        )
+        raise ValueError(f"unknown flag_typ '{flag_typ}'; expected one of {sorted(FLAG_RULES)}")
     schwelle, _direction = FLAG_RULES[flag_typ]
     metrik_name = FLAG_METRIK_NAME[flag_typ]
 
@@ -443,16 +441,26 @@ def _run_smoke_tests() -> int:
     rc, out, err = run(
         [
             "trigger",
-            "--ticker", "GOOGL",
-            "--flag-typ", "capex_ocf",
-            "--datum", "2025-10-28",
-            "--metrik-wert", "78",
-            "--metrik-definition", "annual_cash_flow_fy26_guidance",
-            "--kurs", "142.30",
-            "--waehrung", "USD",
-            "--kurs-quelle", "yahoo_eod",
-            "--related-score-record-id", "2025-10-28_GOOGL_vollanalyse",
-            "--notizen", "FY26 Guidance 74-79% OCF",
+            "--ticker",
+            "GOOGL",
+            "--flag-typ",
+            "capex_ocf",
+            "--datum",
+            "2025-10-28",
+            "--metrik-wert",
+            "78",
+            "--metrik-definition",
+            "annual_cash_flow_fy26_guidance",
+            "--kurs",
+            "142.30",
+            "--waehrung",
+            "USD",
+            "--kurs-quelle",
+            "yahoo_eod",
+            "--related-score-record-id",
+            "2025-10-28_GOOGL_vollanalyse",
+            "--notizen",
+            "FY26 Guidance 74-79% OCF",
             "--dry-run",
         ]
     )
@@ -462,14 +470,22 @@ def _run_smoke_tests() -> int:
     rc, out, err = run(
         [
             "trigger",
-            "--ticker", "GOOGL",
-            "--flag-typ", "capex_ocf",
-            "--datum", "2025-10-28",
-            "--metrik-wert", "78",
-            "--metrik-definition", "annual_cash_flow_fy26_guidance",
-            "--kurs", "142.30",
-            "--waehrung", "USD",
-            "--kurs-quelle", "yahoo_eod",
+            "--ticker",
+            "GOOGL",
+            "--flag-typ",
+            "capex_ocf",
+            "--datum",
+            "2025-10-28",
+            "--metrik-wert",
+            "78",
+            "--metrik-definition",
+            "annual_cash_flow_fy26_guidance",
+            "--kurs",
+            "142.30",
+            "--waehrung",
+            "USD",
+            "--kurs-quelle",
+            "yahoo_eod",
         ]
     )
     assert rc == 0, f"[1b] trigger append expected rc=0, got {rc}; err={err}"
@@ -480,13 +496,20 @@ def _run_smoke_tests() -> int:
     rc, out, err = run(
         [
             "resolve",
-            "--flag-id", "GOOGL_capex_ocf_2025-10-28",
-            "--datum", "2027-02-15",
-            "--metrik-wert", "54",
-            "--metrik-definition", "annual_cash_flow_fy27",
-            "--kurs", "168.90",
-            "--waehrung", "USD",
-            "--kurs-quelle", "yahoo_eod",
+            "--flag-id",
+            "GOOGL_capex_ocf_2025-10-28",
+            "--datum",
+            "2027-02-15",
+            "--metrik-wert",
+            "54",
+            "--metrik-definition",
+            "annual_cash_flow_fy27",
+            "--kurs",
+            "168.90",
+            "--waehrung",
+            "USD",
+            "--kurs-quelle",
+            "yahoo_eod",
             "--dry-run",
         ]
     )
@@ -498,13 +521,20 @@ def _run_smoke_tests() -> int:
     rc, out, err = run(
         [
             "resolve",
-            "--flag-id", "GOOGL_capex_ocf_2025-10-28",
-            "--datum", "2027-02-15",
-            "--metrik-wert", "54",
-            "--metrik-definition", "annual_cash_flow_fy27",
-            "--kurs", "168.90",
-            "--waehrung", "USD",
-            "--kurs-quelle", "yahoo_eod",
+            "--flag-id",
+            "GOOGL_capex_ocf_2025-10-28",
+            "--datum",
+            "2027-02-15",
+            "--metrik-wert",
+            "54",
+            "--metrik-definition",
+            "annual_cash_flow_fy27",
+            "--kurs",
+            "168.90",
+            "--waehrung",
+            "USD",
+            "--kurs-quelle",
+            "yahoo_eod",
         ]
     )
     assert rc == 0 and "APPENDED" in out, f"[2b] resolve append: rc={rc}, out={out!r}, err={err}"
@@ -513,30 +543,46 @@ def _run_smoke_tests() -> int:
     rc, out, err = run(
         [
             "resolve",
-            "--flag-id", "MSFT_fcf_trend_neg_2025-01-01",
-            "--datum", "2025-06-01",
-            "--metrik-wert", "10",
-            "--metrik-definition", "fy25_fcf",
-            "--kurs", "400.00",
-            "--waehrung", "USD",
-            "--kurs-quelle", "yahoo_eod",
+            "--flag-id",
+            "MSFT_fcf_trend_neg_2025-01-01",
+            "--datum",
+            "2025-06-01",
+            "--metrik-wert",
+            "10",
+            "--metrik-definition",
+            "fy25_fcf",
+            "--kurs",
+            "400.00",
+            "--waehrung",
+            "USD",
+            "--kurs-quelle",
+            "yahoo_eod",
         ]
     )
     assert rc == 1, f"[3] expected rc=1, got {rc}"
-    assert "no trigger record found" in err, f"[3] expected 'no trigger record found' in err, got {err!r}"
+    assert "no trigger record found" in err, (
+        f"[3] expected 'no trigger record found' in err, got {err!r}"
+    )
     print("  [3/7] resolve on non-existent trigger rejected")
 
     # 4) Double-resolve → Error (already resolved above)
     rc, out, err = run(
         [
             "resolve",
-            "--flag-id", "GOOGL_capex_ocf_2025-10-28",
-            "--datum", "2027-03-01",
-            "--metrik-wert", "50",
-            "--metrik-definition", "annual_cash_flow_fy27_q4",
-            "--kurs", "170.00",
-            "--waehrung", "USD",
-            "--kurs-quelle", "yahoo_eod",
+            "--flag-id",
+            "GOOGL_capex_ocf_2025-10-28",
+            "--datum",
+            "2027-03-01",
+            "--metrik-wert",
+            "50",
+            "--metrik-definition",
+            "annual_cash_flow_fy27_q4",
+            "--kurs",
+            "170.00",
+            "--waehrung",
+            "USD",
+            "--kurs-quelle",
+            "yahoo_eod",
         ]
     )
     assert rc == 1, f"[4] expected rc=1, got {rc}; out={out!r}, err={err!r}"
@@ -547,14 +593,22 @@ def _run_smoke_tests() -> int:
     rc, out, err = run(
         [
             "trigger",
-            "--ticker", "AAPL",
-            "--flag-typ", "capex_ocf",
-            "--datum", "2026-01-15",
-            "--metrik-wert", "45",  # < 60 → does NOT violate '>' rule
-            "--metrik-definition", "fy26_guidance",
-            "--kurs", "195.00",
-            "--waehrung", "USD",
-            "--kurs-quelle", "yahoo_eod",
+            "--ticker",
+            "AAPL",
+            "--flag-typ",
+            "capex_ocf",
+            "--datum",
+            "2026-01-15",
+            "--metrik-wert",
+            "45",  # < 60 → does NOT violate '>' rule
+            "--metrik-definition",
+            "fy26_guidance",
+            "--kurs",
+            "195.00",
+            "--waehrung",
+            "USD",
+            "--kurs-quelle",
+            "yahoo_eod",
         ]
     )
     assert rc == 1, f"[5] expected rc=1, got {rc}; out={out!r}"
@@ -567,14 +621,22 @@ def _run_smoke_tests() -> int:
     rc, out, err = run(
         [
             "trigger",
-            "--ticker", "GOOGL",
-            "--flag-typ", "capex_ocf",
-            "--datum", "2025-10-28",
-            "--metrik-wert", "78",
-            "--metrik-definition", "duplicate",
-            "--kurs", "142.30",
-            "--waehrung", "USD",
-            "--kurs-quelle", "yahoo_eod",
+            "--ticker",
+            "GOOGL",
+            "--flag-typ",
+            "capex_ocf",
+            "--datum",
+            "2025-10-28",
+            "--metrik-wert",
+            "78",
+            "--metrik-definition",
+            "duplicate",
+            "--kurs",
+            "142.30",
+            "--waehrung",
+            "USD",
+            "--kurs-quelle",
+            "yahoo_eod",
         ]
     )
     assert rc == 1, f"[6] expected rc=1, got {rc}"

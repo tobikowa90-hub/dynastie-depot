@@ -11,6 +11,7 @@ Usage:
     python migrate_defcon_drift.py --dry-run    # zeige Diff, schreibe nicht
     python migrate_defcon_drift.py              # write changes
 """
+
 from __future__ import annotations
 
 import argparse
@@ -43,7 +44,9 @@ def main() -> int:
         print(f"ERROR: archive not found: {ARCHIVE}", file=sys.stderr)
         return 2
 
-    drifted: list[tuple[int, str, int, int, int]] = []  # (line_no, record_id, score, old_defcon, new_defcon)
+    drifted: list[
+        tuple[int, str, int, int, int]
+    ] = []  # (line_no, record_id, score, old_defcon, new_defcon)
     out_lines: list[str] = []
 
     with ARCHIVE.open("r", encoding="utf-8") as fh:

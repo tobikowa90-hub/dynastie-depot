@@ -6,6 +6,7 @@ is Python territory — the skill only orchestrates (Markdown prosa).
 Lives in 03_Tools/backtest-ready/ next to schemas.py so `from schemas import ...`
 works directly. Smoke test adds this directory to sys.path.
 """
+
 from __future__ import annotations
 
 import json
@@ -284,11 +285,10 @@ def check_freshness(repo_root: str) -> list[str]:
             cwd=repo_root,
             capture_output=True,
             timeout=30,
+            check=False,
         )
     except subprocess.TimeoutExpired as exc:
-        raise RuntimeError(
-            f"git status timed out after 30s in {repo_root}"
-        ) from exc
+        raise RuntimeError(f"git status timed out after 30s in {repo_root}") from exc
     except FileNotFoundError as exc:
         raise RuntimeError(
             f"git status could not run in {repo_root} "
@@ -323,17 +323,12 @@ def check_freshness(repo_root: str) -> list[str]:
         # Rename (R) or Copy (C) status: NEXT entry is the second path
         # (no XY prefix, raw path bytes — git docs: in -z mode "from" follows "to").
         # Accept R/C in either index (porcelain XY can be 'R ', ' R', 'RM', etc.).
-        if xy[0:1] in (b"R", b"C") or xy[1:2] in (b"R", b"C"):
-            if i + 1 < len(entries):
-                second_path = entries[i + 1].decode("utf-8", errors="replace")
-                modified_basenames.add(Path(second_path).name)
-                i += 2
-                continue
+        if (xy[0:1] in (b"R", b"C") or xy[1:2] in (b"R", b"C")) and i + 1 < len(entries):
+            second_path = entries[i + 1].decode("utf-8", errors="replace")
+            modified_basenames.add(Path(second_path).name)
+            i += 2
+            continue
         i += 1
 
-    missing = [
-        fname
-        for fname in REQUIRED_TOUCH_FILES
-        if fname not in modified_basenames
-    ]
+    missing = [fname for fname in REQUIRED_TOUCH_FILES if fname not in modified_basenames]
     return missing

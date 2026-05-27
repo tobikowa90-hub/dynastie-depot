@@ -52,10 +52,19 @@ QT_P_FCF_MAX1_LOW: Final[float] = 22.0
 # metriken_roh.bull_dcf_source ein literal-Quellen-Label tragen
 # (z.B. "alphaspread_bull_band_2026-04-30" oder "internal_capex_fcf_bull_$520").
 # Heuristic/Empty -> Reject. Definition siehe _is_heuristic_bull_dcf_source.
-BULL_DCF_HEURISTIC_BLACKLIST: Final[frozenset[str]] = frozenset({
-    "unknown", "tbd", "todo", "placeholder", "none", "na", "n/a", "?",
-    "heuristic",
-})
+BULL_DCF_HEURISTIC_BLACKLIST: Final[frozenset[str]] = frozenset(
+    {
+        "unknown",
+        "tbd",
+        "todo",
+        "placeholder",
+        "none",
+        "na",
+        "n/a",
+        "?",
+        "heuristic",
+    }
+)
 
 
 def _is_heuristic_bull_dcf_source(value: str | None) -> bool:
@@ -73,6 +82,7 @@ def _is_heuristic_bull_dcf_source(value: str | None) -> bool:
     if stripped in BULL_DCF_HEURISTIC_BLACKLIST:
         return True
     return "heuristic" in stripped
+
 
 # FLAG-Typ Schwellen + Verletzungsrichtung (Spec Section 4.2)
 FLAG_RULES: Final[dict[str, tuple[float, str]]] = {
@@ -529,22 +539,36 @@ class ScoreRecord(BaseModel):
 
         BLOCK_FIELDS: dict[str, tuple[str, ...]] = {
             "fundamentals": (
-                "fwd_pe", "p_fcf", "net_debt_ebitda", "current_ratio",
-                "goodwill_pct_assets", "capex_ocf_pct_gaap", "capex_ocf_pct_bereinigt",
-                "roic_gaap_pct", "roic_bereinigt_pct", "wacc_pct",
-                "fcf_yield_pct", "sbc_revenue_pct", "sbc_ocf_pct",
-                "accruals_ratio_pct", "tariff_exposure_pct",
+                "fwd_pe",
+                "p_fcf",
+                "net_debt_ebitda",
+                "current_ratio",
+                "goodwill_pct_assets",
+                "capex_ocf_pct_gaap",
+                "capex_ocf_pct_bereinigt",
+                "roic_gaap_pct",
+                "roic_bereinigt_pct",
+                "wacc_pct",
+                "fcf_yield_pct",
+                "sbc_revenue_pct",
+                "sbc_ocf_pct",
+                "accruals_ratio_pct",
+                "tariff_exposure_pct",
                 "operating_margin_ttm_pct",
             ),
             "moat": ("gm_trend_3j_pct_p_a",),
             "technicals": (
                 # Dual-Naming-Defensive: any() prüft beide Alias-Felder direkt
-                "rel_strength_sp500_6m_pct", "rel_staerke_sp500_6m_pct",
-                "kurs_vs_200ma_pct", "ma200_slope",
+                "rel_strength_sp500_6m_pct",
+                "rel_staerke_sp500_6m_pct",
+                "kurs_vs_200ma_pct",
+                "ma200_slope",
             ),
             # insider: Roh-Metriken nicht in metriken_roh → skip im Loop unten
             "sentiment": (
-                "eps_revisions_up_90d", "eps_revisions_down_90d", "pt_dispersion_pct",
+                "eps_revisions_up_90d",
+                "eps_revisions_down_90d",
+                "pt_dispersion_pct",
             ),
         }
 
@@ -661,6 +685,7 @@ class FlagEvent(BaseModel):
 
 class Position(BaseModel):
     """Equal-weight Satellite position — Dynasty-Depot 11-Satelliten-Basket."""
+
     model_config = ConfigDict(extra="forbid")
 
     ticker: str
@@ -675,6 +700,7 @@ class PortfolioReturnRecord(BaseModel):
     Schema v1.0 — Daily equal-weight 11-Satelliten-Basket. Mixed-Currency-Local-Return
     (not FX-adjusted; siehe Docstring portfolio_risk.py + Interim-Gate 2027-10-19).
     """
+
     model_config = ConfigDict(extra="forbid")
 
     schema_version: Literal["1.0"]
@@ -699,6 +725,7 @@ class PortfolioReturnRecord(BaseModel):
 
 class BenchmarkReturnRecord(BaseModel):
     """Row of 05_Archiv/benchmark-series.jsonl. Currently SPY only; Multi-Benchmark = future."""
+
     model_config = ConfigDict(extra="forbid")
 
     schema_version: Literal["1.0"]
@@ -972,7 +999,19 @@ def _smoke_tests() -> None:
         "benchmark_return": 0.01209,
         "positions": [
             {"ticker": t, "weight_eod": 0.090909, "price_eod": 100.0, "value_eod": 924.86}
-            for t in ["V","AVGO","BRK.B","VEEV","COST","TMO","APH","MSFT","ASML","RMS","SU"]
+            for t in [
+                "V",
+                "AVGO",
+                "BRK.B",
+                "VEEV",
+                "COST",
+                "TMO",
+                "APH",
+                "MSFT",
+                "ASML",
+                "RMS",
+                "SU",
+            ]
         ],
     }
     pr = PortfolioReturnRecord.model_validate(port_valid)
@@ -1020,11 +1059,22 @@ def _smoke_tests() -> None:
     d2 = copy.deepcopy(avgo)
     d2["record_id"] = "2026-04-22_AVGO_vollanalyse"
     for f in (
-        "fwd_pe", "p_fcf", "net_debt_ebitda", "current_ratio",
-        "goodwill_pct_assets", "capex_ocf_pct_gaap", "capex_ocf_pct_bereinigt",
-        "roic_gaap_pct", "roic_bereinigt_pct", "wacc_pct",
-        "fcf_yield_pct", "sbc_revenue_pct", "sbc_ocf_pct",
-        "accruals_ratio_pct", "tariff_exposure_pct", "operating_margin_ttm_pct",
+        "fwd_pe",
+        "p_fcf",
+        "net_debt_ebitda",
+        "current_ratio",
+        "goodwill_pct_assets",
+        "capex_ocf_pct_gaap",
+        "capex_ocf_pct_bereinigt",
+        "roic_gaap_pct",
+        "roic_bereinigt_pct",
+        "wacc_pct",
+        "fcf_yield_pct",
+        "sbc_revenue_pct",
+        "sbc_ocf_pct",
+        "accruals_ratio_pct",
+        "tariff_exposure_pct",
+        "operating_margin_ttm_pct",
     ):
         d2["metriken_roh"][f] = None
     try:
@@ -1132,6 +1182,7 @@ def _smoke_tests() -> None:
 
 if __name__ == "__main__":
     import sys
+
     # Best-effort: upgrade stdout to UTF-8 so the checkmark renders.
     with contextlib.suppress(Exception):
         sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
