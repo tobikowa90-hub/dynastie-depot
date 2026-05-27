@@ -8,6 +8,7 @@ Usage:
 
 Categories: earnings-calls | interviews | conferences | analyses | updating-system
 """
+
 from __future__ import annotations
 
 import argparse
@@ -23,7 +24,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from video_ingest_lib import build_slug, quality_gate, sha256_file
 
-VAULT = Path(__file__).resolve().parents[1] / "07_Obsidian Vault" / "Obsidian Mindmap" / "Investing Mastermind"
+VAULT = (
+    Path(__file__).resolve().parents[1]
+    / "07_Obsidian Vault"
+    / "Obsidian Mindmap"
+    / "Investing Mastermind"
+)
 RAW_VIDEOS = VAULT / "raw" / "videos"
 SRC_VIDEOS = VAULT / "wiki" / "sources" / "videos"
 
@@ -44,7 +50,9 @@ def whisper_package_version() -> str:
     try:
         out = subprocess.run(  # noqa: PLW1510
             [sys.executable, "-m", "pip", "show", "openai-whisper"],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
         ).stdout
         for line in out.splitlines():
             if line.lower().startswith("version:"):
@@ -59,7 +67,7 @@ def url_reachable(url: str, timeout: int = 10) -> bool:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return r.status == 200
-    except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+    except urllib.error.URLError, TimeoutError, OSError, ValueError:
         # ValueError for malformed URLs; URLError covers HTTPError + connection issues
         return False
 
@@ -67,24 +75,34 @@ def url_reachable(url: str, timeout: int = 10) -> bool:
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("url")
-    p.add_argument("--category", required=True,
-                   choices=["earnings-calls", "interviews", "conferences", "analyses", "updating-system"])
+    p.add_argument(
+        "--category",
+        required=True,
+        choices=["earnings-calls", "interviews", "conferences", "analyses", "updating-system"],
+    )
     p.add_argument("--channel", required=True, help="kebab-case channel slug, e.g. 'brk'")
     p.add_argument("--topic", required=True, help="short topic, e.g. 'annual qa'")
-    p.add_argument("--upload-date", default=None, help="YYYY-MM-DD original upload (default: today)")
+    p.add_argument(
+        "--upload-date", default=None, help="YYYY-MM-DD original upload (default: today)"
+    )
     p.add_argument("--content-language", default="en")
     p.add_argument("--note-language", default="de")
     p.add_argument("--whisper-model", default="large-v3")
-    p.add_argument("--dry-run", action="store_true",
-                   help="Skip whisper (large download), only do yt-dlp + stub")
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Skip whisper (large download), only do yt-dlp + stub",
+    )
     args = p.parse_args()
 
     upload_date = args.upload_date or date.today().isoformat()
     slug = build_slug(upload_date, args.channel, args.topic)
     work_dir = RAW_VIDEOS / args.category / slug
     if work_dir.exists():
-        print(f"ERROR: {work_dir} already exists. Pick a different topic or add collision suffix.",
-              file=sys.stderr)
+        print(
+            f"ERROR: {work_dir} already exists. Pick a different topic or add collision suffix.",
+            file=sys.stderr,
+        )
         return 2
     work_dir.mkdir(parents=True)
 
@@ -104,7 +122,7 @@ def main() -> int:
     # 0. URL reachability
     t0 = time.time()
     url_ok = url_reachable(args.url)
-    log(f"[step 0] url_reachable={url_ok} ({time.time()-t0:.1f}s)")
+    log(f"[step 0] url_reachable={url_ok} ({time.time() - t0:.1f}s)")
     if not url_ok:
         log("FAIL: URL unreachable, abort")
         flush_log()
@@ -122,15 +140,19 @@ def main() -> int:
     # 1. yt-dlp download — single video only (--no-playlist)
     t0 = time.time()
     cmd = [
-        "yt-dlp", "-x", "--audio-format", "m4a",
-        "--no-playlist",                # critical: never download playlist by accident
+        "yt-dlp",
+        "-x",
+        "--audio-format",
+        "m4a",
+        "--no-playlist",  # critical: never download playlist by accident
         "--write-info-json",
-        "-o", str(work_dir / "%(id)s.%(ext)s"),
+        "-o",
+        str(work_dir / "%(id)s.%(ext)s"),
         args.url,
     ]
     log(f"[step 1] yt-dlp: {' '.join(cmd)}")
-    r = subprocess.run(cmd, capture_output=True, text=True)
-    log(f"[step 1] exit={r.returncode}, dt={time.time()-t0:.1f}s")
+    r = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    log(f"[step 1] exit={r.returncode}, dt={time.time() - t0:.1f}s")
     if r.returncode != 0:
         log(f"FAIL: yt-dlp stderr:\n{r.stderr[-2000:]}")
         flush_log()
@@ -139,9 +161,11 @@ def main() -> int:
     audio_files = list(work_dir.glob("*.m4a"))
     info_files = list(work_dir.glob("*.info.json"))
     if len(audio_files) != 1 or len(info_files) != 1:
-        log(f"FAIL: expected exactly 1 audio + 1 info file, got "
+        log(
+            f"FAIL: expected exactly 1 audio + 1 info file, got "
             f"{len(audio_files)} audio + {len(info_files)} info; "
-            f"dir contents: {[p.name for p in work_dir.iterdir()]}")
+            f"dir contents: {[p.name for p in work_dir.iterdir()]}"
+        )
         flush_log()
         return 5
 
@@ -160,7 +184,9 @@ def main() -> int:
     info_canonical = work_dir / "info.json"
     info_path.rename(info_canonical)
 
-    log(f"[info] duration_min={duration_min:.1f}, chapters={bool(chapters)}, video_id={info.get('id')}")
+    log(
+        f"[info] duration_min={duration_min:.1f}, chapters={bool(chapters)}, video_id={info.get('id')}"
+    )
 
     # 2. whisper transcribe (skipped on dry-run)
     transcript_path = work_dir / "transcript.md"
@@ -169,24 +195,30 @@ def main() -> int:
 
     if args.dry_run:
         log("[step 2] DRY-RUN: skipping whisper, writing stub transcript")
-        stub = (f"# Dry-run stub transcript for {slug}\n\n"
-                f"[00:00:00] (whisper skipped via --dry-run)\n"
-                + ("# pad\n" * 100))  # pad to >500 chars
+        stub = (
+            f"# Dry-run stub transcript for {slug}\n\n"
+            f"[00:00:00] (whisper skipped via --dry-run)\n" + ("# pad\n" * 100)
+        )  # pad to >500 chars
         transcript_path.write_text(stub, encoding="utf-8")
         segments = 1
     else:
         t0 = time.time()
         # JSON output: stable language detection + segment timestamps in one file
         cmd = [
-            "whisper", str(audio),
-            "--model", args.whisper_model,
-            "--language", args.content_language,
-            "--output_format", "json",
-            "--output_dir", str(work_dir),
+            "whisper",
+            str(audio),
+            "--model",
+            args.whisper_model,
+            "--language",
+            args.content_language,
+            "--output_format",
+            "json",
+            "--output_dir",
+            str(work_dir),
         ]
         log(f"[step 2] whisper: {' '.join(cmd)}")
-        r = subprocess.run(cmd, capture_output=True, text=True)
-        log(f"[step 2] exit={r.returncode}, dt={time.time()-t0:.1f}s")
+        r = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        log(f"[step 2] exit={r.returncode}, dt={time.time() - t0:.1f}s")
         if r.returncode != 0:
             log(f"FAIL: whisper stderr:\n{r.stderr[-2000:]}")
             flush_log()
@@ -208,8 +240,8 @@ def main() -> int:
             h, rem = divmod(int(seconds), 3600)
             m, s = divmod(rem, 60)
             return f"[{h:02d}:{m:02d}:{s:02d}]"
-        lines = [f"{fmt_ts(seg['start'])} {seg['text'].strip()}"
-                 for seg in whisper_segments]
+
+        lines = [f"{fmt_ts(seg['start'])} {seg['text'].strip()}" for seg in whisper_segments]
         transcript_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
         # Move raw whisper json to a stable name for audit (not deleted, small)
@@ -250,7 +282,7 @@ def main() -> int:
     src_page = src_dir / f"{slug}.md"
 
     fm = f"""---
-title: "{info.get('title', slug)}"
+title: "{info.get("title", slug)}"
 type: source
 medium: video
 tags: []
@@ -261,10 +293,10 @@ related: []
 
 video:
   platform: youtube
-  video_id: "{info.get('id', '')}"
+  video_id: "{info.get("id", "")}"
   source_url: "{args.url}"
   source_url_checked: {date.today().isoformat()}
-  channel: "{info.get('uploader', args.channel)}"
+  channel: "{info.get("uploader", args.channel)}"
   uploaded: {upload_date}
   duration_min: {duration_min:.0f}
   chapters: {str(bool(chapters)).lower()}
@@ -272,9 +304,9 @@ video:
 transcript:
   asr_model: "whisper"
   asr_model_version: "{args.whisper_model}"
-  asr_implementation: "{versions['whisper'][:80]}"
-  ytdlp_version: "{versions['yt-dlp'][:40]}"
-  ffmpeg_version: "{versions['ffmpeg'][:80]}"
+  asr_implementation: "{versions["whisper"][:80]}"
+  ytdlp_version: "{versions["yt-dlp"][:40]}"
+  ffmpeg_version: "{versions["ffmpeg"][:80]}"
   segments: {segments}
   transcript_sha256: "{transcript_sha}"
   info_sha256: "{info_sha}"
@@ -289,9 +321,9 @@ manual_review: {str(gate.manual_review).lower()}
 manual_review_reasons: {gate.warns}
 ---
 
-# {info.get('title', slug)}
+# {info.get("title", slug)}
 
-**Source:** [{info.get('uploader', args.channel)} — {upload_date}]({args.url})
+**Source:** [{info.get("uploader", args.channel)} — {upload_date}]({args.url})
 **Raw transcript:** [[transcript]] (in `raw/videos/{args.category}/{slug}/`)
 
 ## Key Takeaways
@@ -305,7 +337,9 @@ _(human-curated synthesis, generated during INGEST step 8 per WIKI-SCHEMA workfl
     src_page.write_text(fm, encoding="utf-8")
     log(f"[step 7] wrote source page: {src_page}")
 
-    print("\nSUCCESS. Next: complete the source page body and run standard INGEST steps 4-9 (entities, concepts, synthesis, index, log, lint).")
+    print(
+        "\nSUCCESS. Next: complete the source page body and run standard INGEST steps 4-9 (entities, concepts, synthesis, index, log, lint)."
+    )
     print(f"Source page: {src_page}")
     print(f"Raw artifacts: {work_dir}")
     return 0

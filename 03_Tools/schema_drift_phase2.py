@@ -12,6 +12,7 @@ Run:
   python 03_Tools/schema_drift_phase2.py --dry-run    # show diff stats
   python 03_Tools/schema_drift_phase2.py --apply      # write files
 """
+
 import argparse
 import pathlib
 import re
@@ -19,7 +20,7 @@ import sys
 
 VAULT = pathlib.Path("07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/wiki")
 RELATED_LINE = re.compile(r'^related:\s*"([^"]*)"\s*$', re.MULTILINE)
-SOURCES_LINE = re.compile(r'^sources:', re.MULTILINE)
+SOURCES_LINE = re.compile(r"^sources:", re.MULTILINE)
 
 
 def convert(text: str):
@@ -34,20 +35,20 @@ def convert(text: str):
         replacement = "related: []"
         items_count = 0
     else:
-        items = [i.strip() for i in re.split(r',\s*', content) if i.strip()]
+        items = [i.strip() for i in re.split(r",\s*", content) if i.strip()]
         for item in items:
-            if not (item.startswith('[[') and item.endswith(']]')):
+            if not (item.startswith("[[") and item.endswith("]]")):
                 return None  # bail on non-wikilink tokens
         block = ["related:"] + [f'  - "{item}"' for item in items]
         replacement = line_end.join(block)
         items_count = len(items)
 
-    new_text = text[:m.start()] + replacement + text[m.end():]
+    new_text = text[: m.start()] + replacement + text[m.end() :]
 
     sources_inserted = False
     if not SOURCES_LINE.search(new_text):
-        m2 = re.search(r'^related:', new_text, re.MULTILINE)
-        new_text = new_text[:m2.start()] + "sources: []" + line_end + new_text[m2.start():]
+        m2 = re.search(r"^related:", new_text, re.MULTILINE)
+        new_text = new_text[: m2.start()] + "sources: []" + line_end + new_text[m2.start() :]
         sources_inserted = True
 
     return new_text, items_count, sources_inserted
@@ -96,8 +97,10 @@ def main():
             print(f"WOULD  {marker} {items_count:>2} items  {f.relative_to(VAULT)}")
 
     print("-" * 100)
-    print(f"Converted: {converted} | Skipped: {skipped} | "
-          f"Total wikilinks: {total_items} | sources:[] inserted: {total_sources_inserted}")
+    print(
+        f"Converted: {converted} | Skipped: {skipped} | "
+        f"Total wikilinks: {total_items} | sources:[] inserted: {total_sources_inserted}"
+    )
     return 0 if skipped == 0 else 1
 
 

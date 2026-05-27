@@ -75,9 +75,7 @@ def atomic_jsonl_append(path: Path, record: BaseModel) -> None:
         existing = b""
 
     # Write to tempfile in same dir for atomic replace on same-volume
-    fd, tmp_name = tempfile.mkstemp(
-        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
-    )
+    fd, tmp_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
     # NOTE: Pre-replace-Failures (fsync OSError, write OSError) propagieren bewusst;
     # Tempfile bleibt liegen — Spec-v1.1 §3 M5 "Tempfile bleibt für Recovery".
     # KEIN try/except mit os.unlink — das würde die Spec-Semantik verletzen.

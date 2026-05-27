@@ -58,9 +58,7 @@ class TestAtomicJsonlAppend:
         assert text == '{"id": 0, "payload": "orig"}\n'
         # Tempfile bleibt — Spec-v1.1 §3 M5 "Pre-replace-Failures: Tempfile bleibt liegen"
         tempfiles = list(tmp_path.glob(f".{target.name}.*.tmp"))
-        assert len(tempfiles) == 1, (
-            f"Expected exactly 1 leftover tempfile, found {len(tempfiles)}"
-        )
+        assert len(tempfiles) == 1, f"Expected exactly 1 leftover tempfile, found {len(tempfiles)}"
 
     def test_unicode_payload_preserved(self, tmp_path: Path) -> None:
         """Verify UTF-8 nicht-ASCII (Umlaute) durch model_dump_json() preserved."""

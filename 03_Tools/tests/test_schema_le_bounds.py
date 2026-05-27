@@ -49,7 +49,12 @@ def test_fundamentals_block_cap_still_enforced() -> None:
     with pytest.raises(ValidationError):
         FundamentalsScore(
             **_base_kwargs(
-                fwd_pe=44, p_fcf=10, bilanz=10, capex_ocf=10, roic=10, fcf_yield=10,
+                fwd_pe=44,
+                p_fcf=10,
+                bilanz=10,
+                capex_ocf=10,
+                roic=10,
+                fcf_yield=10,
                 gesamt=60,  # > 50
             )
         )
@@ -73,9 +78,9 @@ def test_operating_margin_le_bound_still_enforced() -> None:
 @pytest.mark.parametrize(
     "field,bad_value",
     [
-        ("sbc_malus", 1),       # le=0, malus → muss <= 0 sein
+        ("sbc_malus", 1),  # le=0, malus → muss <= 0 sein
         ("accruals_malus", 1),  # le=0
-        ("tariff_malus", 1),    # le=0
+        ("tariff_malus", 1),  # le=0
     ],
 )
 def test_malus_le_zero_enforced(field: str, bad_value: int) -> None:

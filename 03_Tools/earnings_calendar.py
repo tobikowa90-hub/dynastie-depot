@@ -93,7 +93,7 @@ def load_overrides(today: date, path: Path = OVERRIDES_PATH) -> dict[str, list[S
         return {}
     try:
         raw = yaml.safe_load(path.read_text(encoding="utf-8"))
-    except (yaml.YAMLError, OSError, UnicodeDecodeError):
+    except yaml.YAMLError, OSError, UnicodeDecodeError:
         # YAMLError = parse failure; OSError = file IO (permission, lock);
         # UnicodeDecodeError = file not UTF-8 (cp1252 etc.). Alle drei => degrade.
         return {}
@@ -194,7 +194,10 @@ def next_earnings(
         source_tag = "+".join(sources)
         event_type = types[0] if types else None
         return EarningsResult(
-            ticker, sym, earliest, source_tag,
+            ticker,
+            sym,
+            earliest,
+            source_tag,
             event_type=event_type,
         )
 
@@ -204,7 +207,10 @@ def next_earnings(
     #    c) "no_data"-Result
     if cal_date_stale is not None:
         return EarningsResult(
-            ticker, sym, cal_date_stale, "calendar_stale",
+            ticker,
+            sym,
+            cal_date_stale,
+            "calendar_stale",
             note=f"calendar shows past date {cal_date_stale.isoformat()}",
         )
     if errors:
@@ -240,17 +246,24 @@ def trigger_mentions_date(cell: str, d: date) -> bool:
     return any(p.search(cell) for p in (yyyy_mm_dd, dd_mm_yyyy, dd_mm_short))
 
 
-def render_report(results: list[EarningsResult], today: date, alert_window: int,
-                  portfolio_text: str) -> tuple[str, list[EarningsResult]]:
+def render_report(
+    results: list[EarningsResult], today: date, alert_window: int, portfolio_text: str
+) -> tuple[str, list[EarningsResult]]:
     lines = [f"# Earnings-Calendar — Stand {today.isoformat()}", ""]
-    lines.append("| Ticker | Yahoo | Next Earnings | Days | Source | PORTFOLIO Trigger (excerpt) | Drift |")
-    lines.append("|--------|-------|---------------|------|--------|------------------------------|-------|")
+    lines.append(
+        "| Ticker | Yahoo | Next Earnings | Days | Source | PORTFOLIO Trigger (excerpt) | Drift |"
+    )
+    lines.append(
+        "|--------|-------|---------------|------|--------|------------------------------|-------|"
+    )
     drifts: list[EarningsResult] = []
     for r in results:
         cell = portfolio_trigger_cell(r.ticker, portfolio_text)
         cell_excerpt = cell[:60].replace("|", "\\|").replace("\n", " ")
         if r.earnings_date is None:
-            lines.append(f"| {r.ticker} | {r.yahoo_symbol} | — | — | {r.source} | {cell_excerpt} | ⚠️ {r.note or 'no data'} |")
+            lines.append(
+                f"| {r.ticker} | {r.yahoo_symbol} | — | — | {r.source} | {cell_excerpt} | ⚠️ {r.note or 'no data'} |"
+            )
             continue
         days = (r.earnings_date - today).days
         in_trigger = trigger_mentions_date(cell, r.earnings_date)
@@ -276,8 +289,9 @@ def render_report(results: list[EarningsResult], today: date, alert_window: int,
 TOOL_VERSION = "2.0"
 
 
-def _classify_drift(r: EarningsResult, today: date, alert_window: int,
-                    is_drift: bool = False) -> str:
+def _classify_drift(
+    r: EarningsResult, today: date, alert_window: int, is_drift: bool = False
+) -> str:
     """Map render_report markers -> JSON drift_status enum.
 
     `is_drift` = ticker is in the drifts set produced by render_report.
@@ -315,16 +329,18 @@ def build_json_payload(
         cell_excerpt = cell[:120].replace("\n", " ")
         is_drift = r.ticker in drifts
         days_until = (r.earnings_date - today).days if r.earnings_date else None
-        items.append({
-            "ticker": r.ticker,
-            "yahoo_symbol": r.yahoo_symbol,
-            "earnings_date": r.earnings_date.isoformat() if r.earnings_date else None,
-            "days_until": days_until,
-            "source": r.source,
-            "event_type": r.event_type,
-            "drift_status": _classify_drift(r, today, alert_window, is_drift=is_drift),
-            "portfolio_trigger_excerpt": cell_excerpt,
-        })
+        items.append(
+            {
+                "ticker": r.ticker,
+                "yahoo_symbol": r.yahoo_symbol,
+                "earnings_date": r.earnings_date.isoformat() if r.earnings_date else None,
+                "days_until": days_until,
+                "source": r.source,
+                "event_type": r.event_type,
+                "drift_status": _classify_drift(r, today, alert_window, is_drift=is_drift),
+                "portfolio_trigger_excerpt": cell_excerpt,
+            }
+        )
 
     tickers_with_data = sum(1 for r in results if r.earnings_date is not None)
     return {
@@ -372,12 +388,17 @@ def evaluate_smoke(
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Dynastie-Earnings-Calendar (yfinance)")
     ap.add_argument("--check", action="store_true", help="run check + print report")
-    ap.add_argument("--smoke-test", action="store_true",
-                    help=f"hard-fail unless {SMOKE_TICKER} = {SMOKE_DATE.isoformat()}")
-    ap.add_argument("--alert-window", type=int, default=10,
-                    help="days for DRIFT alert (default: 10)")
-    ap.add_argument("--json", action="store_true",
-                    help="emit JSON to stdout instead of markdown report")
+    ap.add_argument(
+        "--smoke-test",
+        action="store_true",
+        help=f"hard-fail unless {SMOKE_TICKER} = {SMOKE_DATE.isoformat()}",
+    )
+    ap.add_argument(
+        "--alert-window", type=int, default=10, help="days for DRIFT alert (default: 10)"
+    )
+    ap.add_argument(
+        "--json", action="store_true", help="emit JSON to stdout instead of markdown report"
+    )
     args = ap.parse_args(argv)
 
     if not args.check and not args.smoke_test:
@@ -414,6 +435,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.json:
         import json
+
         payload = build_json_payload(
             results=results,
             drifts=drift_tickers,
@@ -431,8 +453,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f"\n## Drifts detektiert ({len(drifts)}, Window {args.alert_window}d)")
             for r in drifts:
                 cell = portfolio_trigger_cell(r.ticker, portfolio_text)
-                print(f"- **{r.ticker}** {r.earnings_date.isoformat()} "
-                      f"({(r.earnings_date - today).days}d) - PORTFOLIO-Trigger: {cell[:120]}")
+                print(
+                    f"- **{r.ticker}** {r.earnings_date.isoformat()} "
+                    f"({(r.earnings_date - today).days}d) - PORTFOLIO-Trigger: {cell[:120]}"
+                )
 
     return exit_code
 

@@ -7,16 +7,24 @@ R2 Codex MEDIUM-1: Pfade werden via Env-Vars HOOK_LATENCY_CTX_LOG +
 HOOK_LATENCY_MEM_LOG überschreibbar — Default-Pfade sind Pre-Flight-verifiziert,
 aber bei Abweichungen aus Pre-Flight-Verdict-File entsprechende Env-Vars setzen.
 """
+
 from __future__ import annotations
+
 import json
 import os
 import statistics
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
-CTX_LOG = Path(os.environ.get("HOOK_LATENCY_CTX_LOG", Path.home() / ".claude" / "context-mode" / "hook-timing.log"))
-MEM_LOG = Path(os.environ.get("HOOK_LATENCY_MEM_LOG", Path.home() / ".claude-mem" / "logs" / "hook-timing.log"))
+CTX_LOG = Path(
+    os.environ.get(
+        "HOOK_LATENCY_CTX_LOG", Path.home() / ".claude" / "context-mode" / "hook-timing.log"
+    )
+)
+MEM_LOG = Path(
+    os.environ.get("HOOK_LATENCY_MEM_LOG", Path.home() / ".claude-mem" / "logs" / "hook-timing.log")
+)
 OUT_DIR = Path("03_Tools/hook-latency-history")
 
 
@@ -57,19 +65,22 @@ def main() -> int:
     if not combined:
         # R1 Codex MEDIUM-3 / Gemini LOW-3: persistiere no-data-Record statt silent-exit
         no_data_record = {
-            "ts_utc": datetime.now(timezone.utc).isoformat(),
+            "ts_utc": datetime.now(UTC).isoformat(),
             "status": "no_data",
             "ctx_log_exists": CTX_LOG.exists(),
             "mem_log_exists": MEM_LOG.exists(),
         }
-        out_file = OUT_DIR / f"{datetime.now(timezone.utc).strftime('%Y-%m-%d')}.jsonl"
+        out_file = OUT_DIR / f"{datetime.now(UTC).strftime('%Y-%m-%d')}.jsonl"
         with out_file.open("a", encoding="utf-8", newline="") as f:
             f.write(json.dumps(no_data_record) + "\n")
         print(json.dumps(no_data_record, indent=2), file=sys.stderr)
-        print("WARN: no hook timing data — record persisted as 'no_data' for audit trail", file=sys.stderr)
+        print(
+            "WARN: no hook timing data — record persisted as 'no_data' for audit trail",
+            file=sys.stderr,
+        )
         return 2
     record = {
-        "ts_utc": datetime.now(timezone.utc).isoformat(),
+        "ts_utc": datetime.now(UTC).isoformat(),
         "ctx_samples": len(ctx),
         "mem_samples": len(mem),
         "combined_samples": len(combined),
@@ -79,7 +90,7 @@ def main() -> int:
         "max_ms": round(max(combined), 2),
         "threshold_300ms_pass": percentile(combined, 95) <= 300.0,
     }
-    out_file = OUT_DIR / f"{datetime.now(timezone.utc).strftime('%Y-%m-%d')}.jsonl"
+    out_file = OUT_DIR / f"{datetime.now(UTC).strftime('%Y-%m-%d')}.jsonl"
     with out_file.open("a", encoding="utf-8", newline="") as f:
         f.write(json.dumps(record) + "\n")
     print(json.dumps(record, indent=2))

@@ -3,6 +3,7 @@
 No subprocess calls, no network — only file reads for hashing.
 Tested in 03_Tools/tests/test_video_ingest_lib.py.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -14,14 +15,17 @@ from pathlib import Path
 
 _SLUG_RE = re.compile(r"[^a-z0-9]+")
 
+
 def build_slug(date_iso: str, channel: str, topic: str, collision_suffix: int | None = None) -> str:
     """Build a vault slug: <YYYY-MM-DD>-<channel>-<topic>[-N].
 
     Lowercases and kebab-cases channel and topic. Strips non-alphanumeric.
     """
-    parts = [date_iso.strip(),
-             _SLUG_RE.sub("-", channel.lower()).strip("-"),
-             _SLUG_RE.sub("-", topic.lower()).strip("-")]
+    parts = [
+        date_iso.strip(),
+        _SLUG_RE.sub("-", channel.lower()).strip("-"),
+        _SLUG_RE.sub("-", topic.lower()).strip("-"),
+    ]
     slug = "-".join(p for p in parts if p)
     if collision_suffix is not None and collision_suffix > 1:
         slug = f"{slug}-{collision_suffix}"
@@ -29,6 +33,7 @@ def build_slug(date_iso: str, channel: str, topic: str, collision_suffix: int | 
 
 
 # ---------- Hashing ----------
+
 
 def sha256_file(path: Path, chunk_size: int = 65536) -> str:
     """Return hex sha256 of file content. Streams to handle large files."""
@@ -43,6 +48,7 @@ def sha256_file(path: Path, chunk_size: int = 65536) -> str:
 
 
 # ---------- Quality gate ----------
+
 
 @dataclass
 class GateResult:

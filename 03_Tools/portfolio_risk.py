@@ -15,6 +15,7 @@ Wissenschaftlicher Kontext (19.04.2026): Basis für Palomar 2025 Ch 6
 Risk-Metrics (Sortino/Calmar/Max-DD/CVaR/IR). Aktivierung Review
 2028-04-01 nach 24+ Monaten sauberer Return-Serie (Phase 3 R5).
 """
+
 from __future__ import annotations
 
 import argparse
@@ -82,12 +83,14 @@ def component_risk(returns: pd.DataFrame, weights: pd.Series) -> pd.DataFrame:
     port_vol = float(np.sqrt(weights @ cov @ weights))
     mrc = (cov @ weights) / port_vol
     contribution = weights * mrc
-    return pd.DataFrame({
-        "weight": weights,
-        "asset_vol_ann": returns.std() * np.sqrt(ANN_FACTOR),
-        "risk_contribution": contribution,
-        "risk_share_%": 100 * contribution / contribution.sum(),
-    }).sort_values("risk_share_%", ascending=False)
+    return pd.DataFrame(
+        {
+            "weight": weights,
+            "asset_vol_ann": returns.std() * np.sqrt(ANN_FACTOR),
+            "risk_contribution": contribution,
+            "risk_share_%": 100 * contribution / contribution.sum(),
+        }
+    ).sort_values("risk_share_%", ascending=False)
 
 
 def stress_test(returns: pd.DataFrame, weights: pd.Series) -> pd.DataFrame:
@@ -100,22 +103,23 @@ def stress_test(returns: pd.DataFrame, weights: pd.Series) -> pd.DataFrame:
         total = float((1 + window).prod() - 1)
         cum = (1 + window).cumprod()
         dd = float((cum / cum.cummax() - 1).min())
-        rows.append({
-            "scenario": name,
-            "period": f"{start} to {end}",
-            "total_return_%": 100 * total,
-            "max_drawdown_%": 100 * dd,
-            "worst_day_%": 100 * float(window.min()),
-            "vol_ann_%": 100 * float(window.std() * np.sqrt(ANN_FACTOR)),
-        })
+        rows.append(
+            {
+                "scenario": name,
+                "period": f"{start} to {end}",
+                "total_return_%": 100 * total,
+                "max_drawdown_%": 100 * dd,
+                "worst_day_%": 100 * float(window.min()),
+                "vol_ann_%": 100 * float(window.std() * np.sqrt(ANN_FACTOR)),
+            }
+        )
     return pd.DataFrame(rows)
 
 
 def _df_to_md(df: pd.DataFrame, index: bool = True) -> str:
     frame = df.reset_index() if index else df.copy()
     headers = [str(c) for c in frame.columns]
-    rows = ["| " + " | ".join(headers) + " |",
-            "| " + " | ".join("---" for _ in headers) + " |"]
+    rows = ["| " + " | ".join(headers) + " |", "| " + " | ".join("---" for _ in headers) + " |"]
     for _, row in frame.iterrows():
         cells = []
         for v in row.tolist():
@@ -209,8 +213,11 @@ def _fetch_latest_common_closes(
     end = anchor + timedelta(days=1)
     start = anchor - timedelta(days=lookback_days)
     hist = yf.download(
-        yahoo_symbols, start=start.isoformat(), end=end.isoformat(),
-        auto_adjust=True, progress=False,
+        yahoo_symbols,
+        start=start.isoformat(),
+        end=end.isoformat(),
+        auto_adjust=True,
+        progress=False,
     )
     if hist.empty or "Close" not in hist:
         raise RuntimeError("No price data returned from yfinance.")
@@ -226,14 +233,11 @@ def _fetch_latest_common_closes(
     if len(common) < 2:
         raise RuntimeError(
             f"Need >=2 common trading dates for all {len(yahoo_symbols)} tickers, "
-            f"got {len(common)}."
-            + (f" (as_of={as_of.isoformat()})" if as_of is not None else "")
+            f"got {len(common)}." + (f" (as_of={as_of.isoformat()})" if as_of is not None else "")
         )
     latest_ts = common.index[-1]
     trading_date = latest_ts.date() if hasattr(latest_ts, "date") else latest_ts
-    available_sessions = [
-        (ts.date() if hasattr(ts, "date") else ts) for ts in common.index
-    ]
+    available_sessions = [(ts.date() if hasattr(ts, "date") else ts) for ts in common.index]
     return trading_date, common.iloc[-1], common.iloc[-2], available_sessions
 
 
@@ -275,8 +279,8 @@ def persist_daily_snapshot(
         lookback_days = max(14, gap_calendar_days + 7)
 
     all_symbols = [*tickers.values(), benchmark]
-    trading_date_obj, latest_closes, prev_closes, available_sessions = (
-        _fetch_latest_common_closes(all_symbols, lookback_days=lookback_days, as_of=as_of)
+    trading_date_obj, latest_closes, prev_closes, available_sessions = _fetch_latest_common_closes(
+        all_symbols, lookback_days=lookback_days, as_of=as_of
     )
     trading_date = trading_date_obj.isoformat()
 
@@ -337,12 +341,14 @@ def persist_daily_snapshot(
 
     positions = []
     for ticker, latest_close, _ in sat_returns:
-        positions.append({
-            "ticker": ticker,
-            "weight_eod": round(weight, 6),
-            "price_eod": round(latest_close, 4),
-            "value_eod": round(per_position_value, 2),
-        })
+        positions.append(
+            {
+                "ticker": ticker,
+                "weight_eod": round(weight, 6),
+                "price_eod": round(latest_close, 4),
+                "value_eod": round(per_position_value, 2),
+            }
+        )
 
     bench_close = float(latest_closes[benchmark])
     bench_prev = float(prev_closes[benchmark])
@@ -391,8 +397,7 @@ def persist_daily_snapshot(
                     f.truncate(bench_size_before)
         except OSError as truncate_err:
             sys.stderr.write(
-                f"WARN: rollback truncate failed ({truncate_err}); "
-                f"original error: {original_err}\n"
+                f"WARN: rollback truncate failed ({truncate_err}); original error: {original_err}\n"
             )
         raise
 
@@ -419,17 +424,29 @@ def _parse_as_of(s: str) -> date:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", default="03_Tools/Output")
-    parser.add_argument("--persist", choices=["daily"],
-                        help="Persistence mode (daily snapshot to JSONL)")
-    parser.add_argument("--cashflow", type=float, default=0.0,
-                        help="Net cashflow today in EUR (+ deposit, - withdrawal)")
-    parser.add_argument("--benchmark", default="SPY",
-                        help="Benchmark ticker (default: SPY)")
-    parser.add_argument("--initial-notional", type=float, default=10000.0,
-                        help="Initial portfolio notional EUR (first record only)")
-    parser.add_argument("--as-of", type=_parse_as_of, default=None,
-                        help="Backfill target date YYYY-MM-DD (default: latest "
-                             "available trading session). Must not be in the future.")
+    parser.add_argument(
+        "--persist", choices=["daily"], help="Persistence mode (daily snapshot to JSONL)"
+    )
+    parser.add_argument(
+        "--cashflow",
+        type=float,
+        default=0.0,
+        help="Net cashflow today in EUR (+ deposit, - withdrawal)",
+    )
+    parser.add_argument("--benchmark", default="SPY", help="Benchmark ticker (default: SPY)")
+    parser.add_argument(
+        "--initial-notional",
+        type=float,
+        default=10000.0,
+        help="Initial portfolio notional EUR (first record only)",
+    )
+    parser.add_argument(
+        "--as-of",
+        type=_parse_as_of,
+        default=None,
+        help="Backfill target date YYYY-MM-DD (default: latest "
+        "available trading session). Must not be in the future.",
+    )
     args = parser.parse_args()
 
     if args.persist == "daily":
