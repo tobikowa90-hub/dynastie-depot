@@ -98,6 +98,12 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 
 ---
 
+## Engineering-Skills — Pocock-Subset (2026-06-05)
+
+`grill-with-docs` + `improve-codebase-architecture` aktiv; **lazy-create-Design** — kein eager-Seed von `CONTEXT.md` / `docs/adr/` (Skill scaffoldet beim ersten Real-Trigger selbst, SKILL.md L52). `prototype` aktiv als **Empirie-Sandbox-Layer** vor Spec/Plan bei High-Fi-Fragen (Pocock-Pattern `grill → prototype → grill again`; Detail Memory `feedback_pocock_low_fi_high_fi_grilling.md`) — nicht Code-Bau-Ersatz, sondern Pre-Spec-Empirie für Fragen die parametrisches Grilling nicht beantworten kann (Coverage-Matrix, Real-Datenstand, Edge-Case-Topologie). Issue-/Triage-/PRD-Skills (`triage`/`to-issues`/`qa`/`to-prd`) **SKIP** — `00_Core/PIPELINE.md` ist Work-SSoT, würde §18-Sync brechen. `/setup-matt-pocock-skills` nicht ausgeführt (Walk-Through 2026-06-05).
+
+---
+
 ## Plugin-Layer (2026-05-13, Hybrid 2026-05-16)
 
 Ruflo Sunset. Passive Substrate: context-mode + obsidian-skills + **claude-mem v13.2.0 enabled = rein additiver read-only Augmentation-Layer, nie SSoT**; natives autoMemory kanonisch + Live-State-Priorität unberührt (HYBRID, empirisch verifiziert). Memory-Guard-Rail → §Routing-Table + INSTRUKTIONEN.md §17.1. Voll-Detail (Bun-Invariante, Begründung, Backups) → **SYSTEM.md §Plugin-Layer**.
