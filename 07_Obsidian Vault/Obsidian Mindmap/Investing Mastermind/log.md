@@ -1588,3 +1588,23 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **§18-Sync-Set:** PORTFOLIO + Faktortabelle (DATA:AVGO) + CORE-MEMORY §12.1 + config.yaml (Satellit + flags_aktiv) + score_history.jsonl (`2026-06-04_AVGO_vollanalyse`) + log.md. **xlsx (Rebalancing v3.4 R11 + Satelliten Monitor) durch User** — Score-Feld 53→56, Rate/Gewicht 0 unverändert.
 
 **Nächster Trigger:** AVGO Q3 FY26 ~02.09.2026 Re-Eval + FLAG-Resolve-Check. Kontext: Umstrukturierung-2027 Phase A (NOW/KYCCF/ZETA-Analysen + Tool-Neuarchitektur) ausstehend.
+
+---
+
+## 🧭 2026-06-06 — Referenz-Korpus-Index (context-mode) Spec + ADR + Memory (PIPELINE #82 NEU, pipeline-item, scoring-neutral)
+
+**Event-Typ:** Pipeline-Item NEU — Design-Artefakte durable verankert; normativer Rollout PENDING separate Session. Kein Score/FLAG/Sparraten-Touch.
+
+**Herkunft:** Grill-with-docs-Runde 2026-06-06, ausgelöst aus /doctor-Session (Befund: context-mode wird nur teil-genutzt — empirisch ~9,8 KB/Tag passiver Auto-Capture, proaktiver `ctx_index` auf Referenz-Korpora ungenutzt). Entscheidung: `ctx_index`/`ctx_search` als proaktiver **Referenz-Korpus-Index** für Recall.
+
+**Entscheidungen (Grill, Ast für Ast):** Ziel **C (Recall) + B (Compact-Fenster)**, A (Token-Spar) nebensächlich. Scope **inhalts-typ-basiert**: Wiss-Fundierung-DEFCON + Vault-**Synthesis** + Earnings-Rohtext **IN**; Live-State (Scores/Faktortabelle/DEFCON-Status/FLAGs) **HART RAUS**, auch Vault-Score-Seiten. Frische: Re-Index am Schreib-Punkt (Wiki-Ingest / Earnings-Workflow §19.1) + Stale-Flag, **kein Cron**. Invocation **pull-basiert/explorativ**; Scoring-Pfad bleibt **autoritativer Vollread**. Schutzprinzip: **Exklusion statt Frische** (sonst „falscher-AVGO-Score-53-statt-56"-Klasse — kein Frische-Modell ist echtzeitig).
+
+**Artefakte (durable):** `docs/adr/0001-no-live-state-in-reference-index.md` (Warum) · `docs/specs/2026-06-06-reference-corpus-index-rollout.md` (Was/Wie + Rollout-Checklist) · Tier-1-Memory `feedback_reference_corpus_index_pattern` (auffindbar, `~/.claude`-Pfad, + MEMORY.md-Index).
+
+**Discovery-Design (Antwort auf „wie kennt das System das Pattern?"):** *bindend* via TOKEN-RULES + Routing-Table-Wiki-Ops (+ optional INSTRUKTIONEN §17.1) — *auffindbar* via Tier-1-Memory — *Warum* via ADR. Memory allein reicht nicht (Guard-Rail: advisory-only).
+
+**Sync-Set §18 pipeline-item:** `00_Core/PIPELINE.md` (#82 NEU unter 🔴 Primär-Track + Footer v2.75 → v2.76) + `07_Obsidian Vault/.../log.md` (dieser Entry) + Support-Docs `docs/adr/0001-…` + `docs/specs/2026-06-06-…` mitversioniert. **KEIN** PORTFOLIO/Faktortabelle/CORE-MEMORY/score_history/config.yaml/xlsx/flag_events. **KEIN** SYSTEM.md (System-Zustand-Change erst beim normativen Rollout — bewusst deferred).
+
+**Scoring-Status:** DEFCON v3.7 + Scores + Sparraten unverändert.
+
+**Nächster Schritt:** PIPELINE #82 — normativer Einbau in eigener Session (TOKEN-RULES + Routing-Table + ggf. INSTRUKTIONEN §17.1 + SYSTEM.md §18 + Codex-Sparring-Pass über Anker-Diffs).
