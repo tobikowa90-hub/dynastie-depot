@@ -1572,3 +1572,19 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Cross-Reference:** PIPELINE.md #69-Closure log-Entry gestern (L1503-1534, fa3c40c) · CORE-MEMORY §13 L412 (#74 FinnHub-Detail) · git log 27.05. ~03:00 GMT+2 (Cleanup-Commit folgt).
 
 **Nächste Tracks:** Long-Term-Gates-Section-Cleanup (eigene Session) · #36 BRK-Q2-Trigger ~02./03.08. · #75 FinnHub-Shadow-Run-Gate bis 2026-07-06.
+
+---
+
+## 🦅 2026-06-06 — AVGO Q2 FY26 Tag-+1 Vollanalyse (§18-Score-Sync)
+
+**Score-Event:** AVGO **53→56** (Δ+3), DEFCON 🟠2 unverändert, FLAG Insider-Selling aktiv unverändert → Sparrate **0€** (FLAG-Override). Kein flag_events-Append (FLAG-Status unverändert), keine Sparraten-Änderung.
+
+**Q2 FY26 (03.06. amc, Beat-and-Raise):** Rev $22,2B (+48%), AI-Semi $10,8B (+143%, Bookings >$30B), Non-GAAP-EPS $2,44 (Beat $2,32), Op-Margin 67% ATH, FCF $10,3B (46%), Q3-Guide $29,4B (+84% ≫Konsens $28,7B), FY26-AI $56B reaffirmed, FY27-AI >$100B **nicht angehoben** → sell-the-news −12,6% am 04.06. ($480→$418,91).
+
+**Score-Drivers vs 30.04.:** Technicals ath_distanz 1→3 (Selloff = besserer Entry, −15% von ATH $495); Sentiment pt_upside 1→2 (PT-Raises JPM $580/Jefferies $550/Mizuho $530). Fundamentals 23 unverändert (Record-Margen QT-gecappt: Wide×Fwd-P/E 22,7 NTM = max 1, Drawdown-Modulator inaktiv; Wide×P/FCF >35 = hart 0). Insider 3/10 (ownership 3, FLAG).
+
+**FLAG-Resolve-Gate + User-10b5-1-Challenge verifiziert:** Diskr. 90d $106,4M ≫$20M → bleibt aktiv. Samueli Henry $281M am 25.03. korrekt als 10b5-1-Plan ausgeschlossen (Tool plan-biased via global-footnote-OR); $106M-Basis = operative C-Suite (CFO Spears/CLO Brazeal/Presidents Velaga+Kawwas) non-plan per SEC-Form-4-Eigenattestierung.
+
+**§18-Sync-Set:** PORTFOLIO + Faktortabelle (DATA:AVGO) + CORE-MEMORY §12.1 + config.yaml (Satellit + flags_aktiv) + score_history.jsonl (`2026-06-04_AVGO_vollanalyse`) + log.md. **xlsx (Rebalancing v3.4 R11 + Satelliten Monitor) durch User** — Score-Feld 53→56, Rate/Gewicht 0 unverändert.
+
+**Nächster Trigger:** AVGO Q3 FY26 ~02.09.2026 Re-Eval + FLAG-Resolve-Check. Kontext: Umstrukturierung-2027 Phase A (NOW/KYCCF/ZETA-Analysen + Tool-Neuarchitektur) ausstehend.

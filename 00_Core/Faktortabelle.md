@@ -27,7 +27,7 @@
 <!-- DATA:ASML -->
 | ASML | 33,8% | 26,48% | 52,8% | 0,21x | Wide | 68 | 🟡 3 | ✅ Clean | 2026-04-17 | Q2 2026 Earnings — FY27 Fwd P/E Watch (30,30 → D4-Kandidat <30) |
 <!-- DATA:AVGO -->
-| AVGO | ~30% | **3,98% GAAP / 45,7% §410-Goodwill-bereinigt (M&A-Compounder VMware/CA/Symantec/Brocade GW 57,2% Assets) vs WACC defeatbeta 15,96%** | ~65% | 1,41x | Wide | **53** | **🟠 2** | 🔴 Insider-Selling 90d $106,4M (FLAG aktiv 27.04.2026 — Sparrate 0€, Resolve-Gate ≤$20M) | **2026-04-30** | **Q3 FY26 — !Analysiere Re-Eval; FLAG-Resolve-Check** |
+| AVGO | ~30% | **5,54% GAAP / 51,1% §410-Goodwill-bereinigt (M&A-Compounder VMware/CA/Symantec/Brocade GW 57,2% Assets) vs WACC defeatbeta 15,96% (carryover, Tool-Bug `bc10_year`)** | ~67% | ~1,1x | Wide | **56** | **🟠 2** | 🔴 Insider-Selling 90d $106,4M (FLAG aktiv 27.04.2026 — Sparrate 0€, Resolve-Gate ≤$20M; Q2 04.06. Beat-Raise aber FLAG bleibt) | **2026-06-04** | **Q3 FY26 ~02.09. — !Analysiere Re-Eval; FLAG-Resolve-Check** |
 <!-- DATA:V -->
 | V | ~54% 5J | **9,89% defeatbeta vs WACC 10,48% [carryover 18.04.; Q3-Verify-Watch PIPELINE #21]** | 80,4% | 0,31x | Wide | **64** | **🟠 2** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **2026-04-28** | **Q3 FY26 ~Ende Juli** — Cross-Border-Velocity + ROIC-Methodology-Verify |
 <!-- DATA:MSFT -->

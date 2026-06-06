@@ -20,7 +20,7 @@
 - **13.–14.05. ✅ Watchlist-Ersatzbank-Refresh v3.2 + #26 MSFT-Insider-Re-Score (Δ=0) + #61 Retro + Plugin-Refactor DONE** (scoring-neutral). Detail → CORE-MEMORY §13 + §12.6 + git log.
 
 **Forward-Triggers (~14 Tage):**
-- **28.05.** COST Q3 FY26 · **03.06. (amc)** VEEV Q1 FY27 + **AVGO Q2 FY26 [FLAG-Resolve-Gate]** (Klasse-B Earnings)
+- **04.06. ✅ AVGO Q2 FY26 Vollanalyse DONE** (53→56, FLAG bleibt — §12.1) · VEEV/COST (Earnings 03.06./28.05.) → Verkauf/Drop via Umstrukturierung-2027 · **~02.09.** AVGO Q3 FY26 Re-Eval
 - **~Ende Juli** AMZN Q2 FY26 — CapEx/OCF-FLAG-Re-Eval + Vollanalyse
 - **28.05.** MSFT Insider-Skip-Window nächstes Expiry
 
