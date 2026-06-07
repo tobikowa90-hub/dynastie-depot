@@ -1,6 +1,6 @@
 # Spec: Referenz-Korpus-Index (context-mode) — Rollout
 
-**Status:** Spec fertig (Grill-Runde 2026-06-06). Normativer §18-Einbau **PENDING** — separate Session.
+**Status:** **DONE** — normativer §18-Einbau 2026-06-07 committet (PIPELINE #82 CLOSED). Bindende Anker live: `TOKEN-RULES.md §Referenz-Korpus-Index` + `CLAUDE.md` Routing-Table Wiki-Ops + `INSTRUKTIONEN.md §17.1` Punkt 6 + `SYSTEM.md` System-Zustand. Spec fertig (Grill-Runde 2026-06-06).
 **Herkunft:** Grill-with-docs-Runde 2026-06-06. Tiefenbegründung: `docs/adr/0001-no-live-state-in-reference-index.md`.
 
 ## Problem / Ziel

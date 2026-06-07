@@ -389,6 +389,8 @@ Ein Ad-hoc-Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 5. Bei Konflikt zwischen Memory und Live-Dateien oder Routing-Regeln ist Memory zu ignorieren. Maßgeblich sind die Live-Dateien. Der Konflikt ist in `log.md` unter `mem-conflict` zu protokollieren.
 
+6. **Referenz-Korpus-Index-Korollar (ADR-0001, PIPELINE #82, NEU 2026-06-07):** Live-State (Scores, Faktortabelle, DEFCON-Status, FLAGs) wird **niemals** in einen `ctx_index`/`ctx_search`-Referenz-Korpus aufgenommen — egal in welcher Datei, auch nicht Vault-Score-Seiten. Schutz durch **Exklusion, nicht durch Frische** (kein Re-Index-Modell ist echtzeitig; ein Snippet im Sync-Fenster könnte einen veralteten Score liefern). `ctx_search`-Treffer sind wie Memory strikt advisory (Punkt 4) und nie Override gegen Live-Dateien. Betriebsregel: `TOKEN-RULES.md §Referenz-Korpus-Index`; Tiefenbegründung: `docs/adr/0001-no-live-state-in-reference-index.md`.
+
 ---
 
 ## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2.4, 2026-05-11)

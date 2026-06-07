@@ -3,7 +3,7 @@ name: Token-Effizienz Operator-Detail
 description: Operator-Action-Cues für Dynasty-Depot-Sessions (/compact, /model, /mcp, /clear). Claude-Action-Disziplin liegt inline in CLAUDE.md §Verhalten (Snapshot-First / DEFCON-1-Stopp / /compact-Cue).
 type: ruleset
 scope: operator-disziplin + skill-§-cross-refs
-updated: 2026-05-26
+updated: 2026-06-07
 ---
 
 # Token-Effizienz — Operator-Detail
@@ -32,6 +32,16 @@ Workflow-Details bei einzigartigem Token-Profil bleiben kontextnah im jeweiligen
   - **§795** Token-Budget-Benchmark (~12-18k Werktag / ~2-3k Wochenende pro `!Analysiere`-Lauf)
 
 **Konvention:** Skill-interne Token-Regeln nur bei Skills mit **einzigartigem Token-Profil** (eigene Compact-Schwellen, Budget-Benchmarks, MCP-Aktivierungs-Pattern). Leichte/programmatische Skills (`backtest-ready-forward-verify`, `non-us-fundamentals`, `quick-screener`) nutzen diese File als Baseline ohne eigene Regeln.
+
+## Referenz-Korpus-Index (context-mode) — Recall-Betriebsregel (NEU 2026-06-07, PIPELINE #82)
+
+> **Bindend.** Tiefenbegründung: `../docs/adr/0001-no-live-state-in-reference-index.md`. Spec: `../docs/specs/2026-06-06-reference-corpus-index-rollout.md`.
+
+- **Zweck:** `ctx_index`/`ctx_search` als persistenter Referenz-Korpus-Index für **Recall** (Ziel C) + späteres `/compact`-Fenster (Ziel B). Token-Ersparnis (A) nebensächlich (~9,8 KB/Tag, allein kein Adoptions-Grund).
+- **IN (indexieren):** stabile Textkorpora — `…/synthesis/Wissenschaftliche-Fundierung-DEFCON.md`, Vault-**Synthesis**-Seiten, Earnings-Rohtext-Ordner (pro Aktie).
+- **HART RAUS:** **Live-State (Scores, Faktortabelle, DEFCON-Status, FLAGs) NIE indexieren** — egal in welcher Datei, auch nicht Vault-Score-Seiten. Schutz durch **Exklusion, nicht Frische**: ein Such-Snippet im Re-Index-Fenster könnte einen veralteten Score liefern (z.B. AVGO `53` statt `56`). Korollar in `INSTRUKTIONEN.md §17.1` Punkt 6, Tiefenbegründung ADR-0001.
+- **Invocation:** pull-basiert/explorativ (breite Lookups über viel Text). Scoring-Pfad (`!Analysiere`) bleibt **autoritativer Vollread** — kein Snippet-Ersatz für Regel-/Begründungs-Autorität (gleiche Logik wie `INSTRUKTIONEN.md` aus dem Index raushalten).
+- **Frische:** Re-Index am Schreib-Punkt (Wiki-Ingest für Synthesis · Earnings-Workflow §19.1 für neue Earnings-Docs · Wiss-Fundierung ad-hoc). Kein Cron, keine §18-Kopplung. Stale-Flag (Content-Hash) = fail-safe Signal „gegen Quelle gegenkontrollieren".
 
 ## Accessibility-Modell (unverändert seit 2026-04-24)
 

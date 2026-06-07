@@ -1608,3 +1608,23 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Scoring-Status:** DEFCON v3.7 + Scores + Sparraten unverändert.
 
 **Nächster Schritt:** PIPELINE #82 — normativer Einbau in eigener Session (TOKEN-RULES + Routing-Table + ggf. INSTRUKTIONEN §17.1 + SYSTEM.md §18 + Codex-Sparring-Pass über Anker-Diffs).
+
+---
+
+## 🧭 2026-06-07 — Referenz-Korpus-Index (context-mode) normativer Rollout DONE (PIPELINE #82 CLOSED, system-zustand + pipeline-item, scoring-neutral)
+
+**Event-Typ:** Multi-Event-Union §18 (System-Zustand-Change + Pipeline-Item-Close). Kein Score/FLAG/Sparraten-Touch. Abschluss des 06.06. designten Patterns.
+
+**Was:** Die bindenden Anker für den Referenz-Korpus-Index sind eingebaut und live; PIPELINE #82 aus der Aktiv-Liste entfernt (Numbering-Gap-Pointer, 🔴 Primär-Track jetzt leer).
+
+**Pattern (unverändert zur Spec):** `ctx_index`/`ctx_search` als proaktiver Referenz-Korpus-Index für **Recall** (Ziel C) + `/compact`-Fenster (Ziel B) über stabile Textkorpora (Wiss-Fundierung-DEFCON / Vault-**Synthesis** / Earnings-Rohtext). **Live-State (Scores/Faktortabelle/DEFCON-Status/FLAGs) NIE indexiert** — Schutz durch **Exklusion, nicht Frische** (kein Re-Index-Modell ist echtzeitig; ein Snippet im Sync-Fenster könnte einen veralteten Score liefern, z.B. AVGO 53 statt 56). Invocation pull-basiert/explorativ; Scoring-Pfad (`!Analysiere`) bleibt autoritativer Vollread. Frische = Re-Index am Schreib-Punkt (Wiki-Ingest / Earnings §19.1), kein Cron, keine §18-Kopplung.
+
+**Bindende Anker (live):** (1) `00_Core/TOKEN-RULES.md` §Referenz-Korpus-Index (neue Recall-Betriebsregel) · (2) `CLAUDE.md` Routing-Table Wiki-Ops-Zeile (Reference-Lookup → `ctx_search` explorativ, Scoring-Pfad autoritativer Vollread) · (3) `00_Core/INSTRUKTIONEN.md §17.1` Punkt 6 (Live-State-nie-im-Index-Korollar) · (4) `00_Core/SYSTEM.md` §System-Zustand (Status-Bullet). **Auffindbar:** Tier-1-Memory `feedback_reference_corpus_index_pattern`. **Warum:** `docs/adr/0001-no-live-state-in-reference-index.md` + Spec `docs/specs/2026-06-06-reference-corpus-index-rollout.md` (Status → DONE).
+
+**Review:** Codex-Sparring-Pass über die Anker-Diffs vor Commit (`feedback_review_via_codex_not_advisor`).
+
+**Sync-Set §18 (Multi-Event):** `00_Core/TOKEN-RULES.md` + `CLAUDE.md` + `00_Core/INSTRUKTIONEN.md` (§17.1 P6) + `00_Core/SYSTEM.md` (§System-Zustand) + `00_Core/PIPELINE.md` (#82 entfernt + Footer v2.76→v2.77) + `00_Core/CORE-MEMORY.md` (§13 + Footer v1.32→v1.33) + `docs/specs/2026-06-06-…` (Status DONE) + `07_Obsidian Vault/.../log.md` (dieser Entry). **KEIN** PORTFOLIO/Faktortabelle/score_history/config.yaml/xlsx/flag_events.
+
+**Scoring-Status:** DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
+
+**Lesson:** Discovery-Design braucht *bindend* (normativer Anker im Pflicht-Lese-Pfad) UND *auffindbar* (Memory) — Memory allein reicht nicht (Guard-Rail §17.1: advisory-only, nie route-determining).
