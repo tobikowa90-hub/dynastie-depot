@@ -6,6 +6,7 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen). **`dynastie-depot`-Skill NICH
 
 ## Verhalten
 
+- Wenn du mir Informationen mitteilst, sei äußerst prägnant und verzichte zugunsten der Prägnanz auf grammatikalische Korrektheit.
 - `00_Core/CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
 - Stil: direkt, faktenbasiert, kein Filler — siehe INSTRUKTIONEN.md
 - **Code-Verhalten (Karpathy-Regeln):** Bei Code-/File-Edit-Operationen gelten Think-Before-Coding, Simplicity-First, Surgical-Changes, Goal-Driven-Execution, **Pre-Refactor-Caller-Scan** (`Grep` auf Symbol vor Edit bei externen Aufrufern) und **Approach-Reset-Schwelle** (nach 2 identischen Failed-Attempts: Stop → Codex-Sparring / Plan-Wechsel / User-Konsultation). Detail: `INSTRUKTIONEN.md §0`. Nicht verbindlich für Markdown-Sync und Wiki-Operationen.
