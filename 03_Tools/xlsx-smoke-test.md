@@ -14,8 +14,8 @@
 
 | Datei | Smoke-Test-Tiefe | Begründung |
 |-------|------------------|------------|
-| `03_Tools/Rebalancing_Tool_v3.4.xlsx` | **Voll** (Punkte A-F) | 249 Formeln + 6 Conditional Formats — hohes Korruptions-Risiko (Live-State 2026-05-25 post User-Update; vorher 218/6, drift via Q-Spalten-Erweiterung + R28-Row) |
-| `03_Tools/Satelliten_Monitor_v2.0.xlsx` | **Voll** (Punkte A-F) | 13 Formeln + 5 Conditional Formats + §G Σ-Check via Hook (`brokers.scalable.sparrate_eur`-Anker, Live-State 2026-05-25 post User-Update; Σ-Check-Lokus per Variante G zu Hook verlagert, vorher Excel-Text-Sanity N19) |
+| `03_Tools/Rebalancing_Tool_v3.4.xlsx` | **Voll** (Punkte A-F) | 7 Conditional Formats — hohes Korruptions-Risiko (Live-State 2026-06-07 Umstrukturierung-2027 v4.0-Roster: 13 Satelliten [NOW/KYCCF/ZETA rein, VEEV/COST raus] + JEDI/WQTM → sheet1 CF 5→6 legit; §C/§D-Zell-Ref-Reconcile DONE 2026-06-07: Satelliten R11-R23 [R5 Gold EWG2, R6-R10 ETFs], US-Exposure-Mirror R4-R22 = Portfolio R5-R23; vorher 2026-05-25 6 CF) |
+| `03_Tools/Satelliten_Monitor_v2.0.xlsx` | **Voll** (Punkte A-F) | 11 Conditional Formats (5 Sheet `Satelliten Monitor`: L/M/N/O/R + 6 Sheet `QuickScreen Ampel`: Ampel-Coloring D/D-G/E/F/G/H, Umstrukturierung 2026-06-07) + §G SOLL-Σ-Check via Hook (Tier-Modell: `Σ satelliten_tier_raten[tier] == brokers.scalable.sparrate_eur` = 364€; Funded-Echo-Display layout-robust per Content-Scan, vorher fixe N19; vorher 2026-05-25 5 CF + flaches 285€-Modell) |
 | `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` | **Minimal-Check-Annex** (nur A + Existenz) | 0 Formeln, 0 CF — kein Korruptions-Risiko via openpyxl. Hochstufung in Voll-Smoke-Test erst sobald Excel-Formeln (`=...`) zur Watchlist hinzugefügt werden (file-pattern-driven Trigger, kein PIPELINE-Item-Backing). |
 
 ---
@@ -49,29 +49,28 @@ Empfehlung: "Suchen in: Arbeitsmappe" + "Suchen: Werte".
 
 ### C. Pflicht-Zell-Cross-Check Rebalancing-Tool
 
-Sheet `Portfolio & Rebalancing`. Per Ticker-Zeile (R18-R28) verifizieren:
+Sheet `Portfolio & Rebalancing`. Positionen R5-R23 (R5 Gold EWG2, R6-R10 ETFs, **R11-R23 = 13 Satelliten**, R24 GESAMT). Per Satelliten-Zeile (R11-R23) verifizieren:
 
 | Zelle | Inhalt | Erwartung |
 |-------|--------|-----------|
-| `N18`-`N28` | DEFCON-Score-String | Format `'DEFCON X (NN)'`, X = aktueller DEFCON-Level, NN = aktueller Score |
-| `O18`-`O28` | FLAG-Status-Text | bei FLAG aktiv: `🔴 ... (Pfad-Note)`; sonst grün/leer |
-| `P18`-`P28` | Sparrate-Output (Formel) | Formel-Resolve gegen erwartete Sparrate des Tickers (Cross-Check gegen `01_Skills/dynastie-depot/config.yaml`) |
-| `R2` | Datum-Stempel | `Stand: YYYY-MM-DD` aktuell, ggf. mit Tagesdatum-Wechsel |
+| `N11`-`N23` | DEFCON-Score-String | Format `'DEFCON X (NN)'`, X = aktueller DEFCON-Level, NN = aktueller Score; Platzhalter NOW/KYCCF/ZETA = `'DEFCON 3 (–) \| Neu …'` |
+| `O11`-`O23` | FLAG-Status-Text | bei FLAG aktiv: `🔴 ... (Pfad-Note)`; sonst grün/leer |
+| `P11`-`P23` | Sparrate-Output (Formel) | Formel-Resolve gegen erwartete effektive Tier-Rate des Tickers (Tier-Modell: Cross-Check gegen `01_Skills/dynastie-depot/config.yaml` `satelliten_tier_raten` × DEFCON/FLAG-Modulation) |
 
 - ✅ **PASS:** Alle Pflicht-Zellen reflektieren den aktuellen Sync-Stand
 - ❌ **FAIL:** Eine oder mehrere Pflicht-Zellen stale → openpyxl-Write hat nicht alle Zellen erreicht. STOP.
 
-**US-Exposure-Sentinel-Set (P14, Sheet `US-Exposure`):** Spiegel-Sheet (R4-R20 = Portfolio R5-R21, 1:1-Mirror). Sentinel-Pflicht-Checks zur Drift-Vermeidung bei Portfolio-Ticker-Range-Änderungen:
+**US-Exposure-Sentinel-Set (Sheet `US-Exposure`):** Spiegel-Sheet (R4-R22 = Portfolio R5-R23, 1:1-Mirror; R23 = GESAMT). Sentinel-Pflicht-Checks zur Drift-Vermeidung bei Portfolio-Ticker-Range-Änderungen (Range erweitert 2026-06-07 Umstrukturierung, vorher R4-R20):
 
 | Zelle | Inhalt | Erwartung |
 |-------|--------|-----------|
-| `US-Exposure!R4` (Spalten A-D) | `='Portfolio & Rebalancing'!A5/B5/F5/E5` | Erste Mirror-Zeile resolvet ohne `#REF!` (Portfolio R5 = EUWAX Gold) |
-| `US-Exposure!R20` (Spalten A-D) | `='Portfolio & Rebalancing'!A21/B21/F21/E21` | Letzte Mirror-Zeile resolvet ohne `#REF!` (Portfolio R21 = letzter Ticker, aktuell AMZN) |
-| `US-Exposure!R21 E` | `=SUM(E4:E20)` | Σ-US-Anteil € resolvet auf `> 0` (nicht 0/leer) |
-| `US-Exposure!R25 B` | `='Parameter & Regeln'!B11` | US-Hard-Cap-Lookup resolvet (aktuell `0.63` = 63%); Cross-Ref-Existenz |
+| `US-Exposure!R4` (Spalten A-D) | `='Portfolio & Rebalancing'!A5/B5/F5/E5` | Erste Mirror-Zeile resolvet ohne `#REF!` (Portfolio R5 = EWG2 Gold) |
+| `US-Exposure!R22` (Spalten A-D) | `='Portfolio & Rebalancing'!A23/B23/F23/E23` | Letzte Mirror-Zeile resolvet ohne `#REF!` (Portfolio R23 = letzter Satellit, aktuell ZETA) |
+| `US-Exposure!R23 E` | `=SUM(E4:R22)` | Σ-US-Anteil € resolvet auf `> 0` (nicht 0/leer) |
+| `US-Exposure!R25/R27 B` | `='Parameter & Regeln'!B…` | US-Hard-Cap-Lookup resolvet (aktuell `0.63` = 63%); Cross-Ref-Existenz |
 
-- ✅ **PASS:** R4 + R20 Mirror ohne `#REF!`, R21 E Σ > 0, R25 B löst zum aktuellen US-Hard-Cap-Wert auf
-- ❌ **FAIL:** `#REF!` in R4/R20 (Portfolio-Range-Drift, Mirror gebrochen) ODER R21 E = 0/leer (Σ-Aggregat verloren) ODER R25 B = `#REF!` (Parameter-Sheet umbenannt/B11 verschoben). STOP.
+- ✅ **PASS:** R4 + R22 Mirror ohne `#REF!`, GESAMT-Σ > 0, US-Hard-Cap-Lookup löst auf
+- ❌ **FAIL:** `#REF!` in R4/R22 (Portfolio-Range-Drift, Mirror gebrochen) ODER Σ = 0/leer (Σ-Aggregat verloren) ODER Hard-Cap-Lookup = `#REF!` (Parameter-Sheet umbenannt/verschoben). STOP.
 
 ### D. Pflicht-Zell-Cross-Check Satelliten-Monitor
 
@@ -80,34 +79,35 @@ Sheet `Satelliten Monitor`. Verifizieren:
 | Zelle | Inhalt | Erwartung |
 |-------|--------|-----------|
 | `O2` | Stand-Stempel | `Stand: YYYY-MM-DD ...` |
-| `B3` | Header-Sparraten-Zeile | `D3/D4-Rate: X€ \| D2-Sockelbetrag: Y€ \| Nenner Z (Pfad-Note)` |
+| `B3` | Header-Sparraten-Zeile | Tier-System (ab 06.06.2026): `Funded X€/Monat \| SOLL Y€/Monat \| Tier 1=40€, Tier 2=32€, Tier 3=18€ (DEFCON/FLAG überschreibt SOLL)` |
 | `H3` | Eingefroren-Liste | Alle FLAG-Tickers mit Datum |
-| `K3` | Ergebnis-Zeile | `● N Voll  ● M D2-Sockelbetrag  ● K Eingefroren (Liste)` (●-Marker vereinheitlicht 2026-05-25, vorher 🟢/🟠/🔴) |
-| `L<ticker>` | Score-String | `'NN / DEFCON X'` pro Ticker-Zeile |
-| `M<ticker>` | Δ-Note | aktueller Δ vs. Vorperiode |
-| `N<ticker>` | Status/FLAG-Text | mit Pfad-Note + ggf. Q-Verify-Pointer / PIPELINE-Item |
-| `B24` | Legende Verifikations-Marker | `[~]` Schätzung Wissensbasis (plausibel) \| `[V]` Vollanalyse verifiziert \| `[TC]` Tariff-Check abgeschlossen (statischer Legende-Text, keine Ticker-Liste) |
-| `B25` | Footer Eingefroren-Liste | Komplett, mit FLAG-Grund pro Ticker (Pattern: `● EINGEFROREN: <Ticker> (FLAG <Grund>, D<X>, Score <NN>) \| ...`) |
-| `B26` | Footer Volle-Rate-Liste + Nenner-Aufteilung | Aufteilung Volle-Rate (38,00€) / D2-Sockelbetrag (19,00€) / Eingefroren (0€) mit Ticker-Listen + Nenner-Formel (Pattern: `● Volle Rate 38,00€ (N Positionen): <Ticker>... \| ● D2-Sockelbetrag 19,00€ (M): <Ticker>... \| ● Eingefroren 0€ (K): <Ticker>... \| Nenner ...`) |
-| `N19` | Σ-Check Text-Sanity | Literal `'→ muss = 285,00 €'` (Sanity-Echo, **keine** Excel-Formel; Σ-Verifikation per Hook-Punkt §G `_check_g_sparrate_sigma` — Mapping config.yaml SSoT) |
+| `K3` | Ergebnis-Zeile | `● N Volle Tier-Rate  ● M D2-Sockelbetrag  ● K Eingefroren (Liste) \| Funded X€ / SOLL Y€` (●-Marker vereinheitlicht 2026-05-25) |
+| `L<ticker>` (L7-L19) | Score-String | `'NN / DEFCON X'` pro Ticker-Zeile (13 Satelliten R7-R19; Platzhalter NOW/KYCCF/ZETA = `'[ausstehend]'`) |
+| `M<ticker>` (M7-M19) | Δ-Note | aktueller Δ vs. Vorperiode |
+| `N<ticker>` (N7-N19) | Status/FLAG-Text | mit Pfad-Note + ggf. Q-Verify-Pointer / PIPELINE-Item |
+| `B22` | Legende-Header | `'LEGENDE & DATENQUALITÄT'` |
+| `B25` | Legende Verifikations-Marker | `[~]` Schätzung Wissensbasis (plausibel) \| `[V]` Vollanalyse verifiziert \| `[TC]` Tariff-Check (statischer Legende-Text) |
+| `B26` | Footer Eingefroren-Liste | Komplett, mit FLAG-Grund pro Ticker (Pattern: `● EINGEFROREN: <Ticker> (FLAG <Grund>, D<X>, Score <NN>) \| ...`) |
+| `B27` | Footer Tier-System | Tier-Aufteilung (SOLL → Real): `● Tier 1 (SOLL 40€): <Ticker>... \| ● Tier 2 (SOLL 32€): ... \| ● Tier 3 (SOLL 18€): ... \| Funded Σ = ... \| SOLL Σ = ...` |
+| Funded-Echo (Content-Scan) | Σ-Check Text-Sanity | Zelle(n) mit `'Funded … SOLL …'` (aktuell N20 `'→ Funded 210,00 € (SOLL 364,00 € …)'` + B3-Header; **keine** Excel-Formel; **layout-robust per Content-Scan** statt fixe Zelle — N19→N20-Drift bei Roster-Resize 2026-06-07; Σ-Verifikation per Hook-Punkt §G `_check_g_sparrate_sigma`) |
 
-- ✅ **PASS:** Alle Pflicht-Zellen aktuell + `N19` Sanity-Text literal präsent; Σ-Check-Verifikation erfolgt im Hook-Punkt §G (`01_Skills/dynastie-depot/config.yaml` SSoT → `derive_rate(flag, defcon)`-Mapping: `flag=True→0€`, `flag=False+defcon∈{3,4}→38€`, `flag=False+defcon=2→19€` → `Σ == cfg.brokers.scalable.sparrate_eur` = 285,00€)
-- ❌ **FAIL:** Pflicht-Zelle stale ODER `N19`-Sanity-Text fehlt/falsch ODER Hook-§G-Σ-Check failed. STOP.
+- ✅ **PASS:** Alle Pflicht-Zellen aktuell + Funded-Echo-Zelle präsent; Σ-Check-Verifikation erfolgt im Hook-Punkt §G (`01_Skills/dynastie-depot/config.yaml` SSoT → **Tier-Modell**: effektive Rate = `satelliten_tier_raten[tier] × DEFCON-Modulation × FLAG` [`flag=True→0`, `defcon∈{3,4}→voll`, `defcon=2→halb`, `defcon=1→0`]; **SOLL-Invariante** `Σ satelliten_tier_raten[tier] == cfg.brokers.scalable.sparrate_eur` = 364,00€; Funded-Echo = `Σ modulierte Raten` = 210,00€)
+- ❌ **FAIL:** Pflicht-Zelle stale ODER Funded-Echo-Zelle fehlt/falsch ODER Hook-§G-SOLL-Σ-Check failed. STOP.
 
 **Status-Marker-Konvention (P10, vereinheitlicht 2026-05-25):** `●` ersetzt die alten Emoji-Marker (🟢/🟡/🟠/🔴) konsistent in B3/H3/K3/B25/B26/N7-N18. Inhaltliche Klassifikation bleibt erhalten (Volle Rate / D2-Sockel / Eingefroren / FLAG), nur das Glyph ist neutral. Smoke-Test prüft Existenz der Pflicht-Zellen, nicht das Marker-Glyph.
 
 ### D2. QuickScreen-Ampel-Sheet Cross-Check (Satelliten_Monitor_v2.0.xlsx, Sheet 2)
 
-Sheet `QuickScreen Ampel` (zweites Sheet im Satelliten-Monitor). 0 Formeln, 0 CF — Pflichtprüfung ist Struktur- + Ticker-Konsistenz gegen Hauptsheet:
+Sheet `QuickScreen Ampel` (zweites Sheet im Satelliten-Monitor). 0 Formeln, **6 CF** (Ampel-Coloring D/D-G/E/F/G/H, neu ab 2026-06-07 Umstrukturierung — zählt in den §E-CF-Count 11) — Pflichtprüfung ist Struktur- + Ticker-Konsistenz gegen Hauptsheet:
 
 | Zelle / Range | Inhalt | Erwartung |
 |---------------|--------|-----------|
 | `B5:I5` (Header-Row) | Spalten-Header: Ticker, Name, P/FCF Filter, ROIC Filter, Moat Filter, FLAG, Gesamt-Ampel, Nächster Schritt | 8 Spalten-Header in Row 5, alle besetzt (Sheet-Dims starten bei `B2`, Spalte A leer by-design) |
-| `B6:B17` (Ticker-Range) | 12 Ticker (ASML, AVGO, MSFT, COST, RMS, VEEV, SU, BRK.B, V, TMO, APH, AMZN) mit Ampel-Status pro Filter | **Cross-Check gegen `Satelliten Monitor`-Sheet `B7:B18`**: identisches Ticker-Set (Set-Gleichheit) |
-| `B19` (Legende-Header) + `B20:B23` (Erklärung) | LEGENDE-Block mit ●-Marker-Semantik (HALTEN / PRÜFEN / EINGEFROREN / Exception-Logik) | Header-Zelle `B19` enthält literal `'LEGENDE'` + 4 Beschreibungs-Rows `B20:B23` |
+| `B6:B18` (Ticker-Range) | 13 Ticker (ASML, AVGO, MSFT, RMS, SU, BRK.B, V, TMO, APH, AMZN, NOW, KYCCF, ZETA) mit Ampel-Status pro Filter | **Cross-Check gegen `Satelliten Monitor`-Sheet `B7:B19`**: identisches Ticker-Set (Set-Gleichheit) |
+| `B19` (Legende-Header) + Folge-Rows | LEGENDE-Block mit ●-Marker-Semantik (HALTEN / PRÜFEN / EINGEFROREN / Exception-Logik) | Header-Zelle `B19` enthält literal `'LEGENDE'` + Beschreibungs-Rows |
 
-- ✅ **PASS:** R5-Header vollständig, R6-R17 Ticker-Set identisch zu Hauptsheet R7-R18 (Set-Gleichheit, nicht Order-Drift-tolerant), Legende-Block ab R19 präsent
-- ❌ **FAIL:** Ticker-Drift zwischen QuickScreen R6-R17 und Hauptsheet R7-R18 (z.B. Hauptsheet hat AMZN aber QuickScreen nicht) → manueller xlsx-Edit hat eines der beiden Sheets vergessen. STOP.
+- ✅ **PASS:** R5-Header vollständig, R6-R18 Ticker-Set identisch zu Hauptsheet R7-R19 (Set-Gleichheit, nicht Order-Drift-tolerant), Legende-Block ab R19 präsent
+- ❌ **FAIL:** Ticker-Drift zwischen QuickScreen R6-R18 und Hauptsheet R7-R19 (z.B. Hauptsheet hat ZETA aber QuickScreen nicht) → manueller xlsx-Edit hat eines der beiden Sheets vergessen. STOP.
 
 ### E. Conditional-Format-Stichprobe
 

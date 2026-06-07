@@ -888,26 +888,27 @@ Wenn der User \!Rebalancing eingibt oder nach Sparplan-Verteilung fragt:
 1.  Lies config.md für aktuellen Portfolio-State
 2.  Lies manifest.md Kapitel 2+3 für Ziel-Allokation
 3.  Prüfe Drift: Weicht eine Position \> 10% von Zielgewichtung ab?
-4.  Erstelle Sparplan-Vorschlag:
-    - Gesamtrate: 950€/Monat
-    - ETF-Core: 65% (ING) = 617,50€
-    - Satelliten: 30% (Scalable) = 285€
-    - Gold: 5% (EUWAX) = 47,50€
+4.  Erstelle Sparplan-Vorschlag (Umstrukturierung 2026-06-07, 60/35/5):
+    - Gesamtrate: ~1.031€/Monat
+    - ETF-Core: 60% (ING) = 616€
+    - Satelliten: 35% (Scalable) = 364€ SOLL (Funded transient, aktuell 210€)
+    - Gold: 5% (Scalable/EWG2) = 51€
     - Max. 10% Single-Stock-Cap
-5.  **3-Stufen-Sparraten-Logik:**
-    - D4/D3 (kein 🔴 FLAG) → Volle Rate (Gewicht 1.0)
-    - D2 (kein 🔴 FLAG) → 50% Sockelbetrag (Gewicht 0.5)
-    - D1 / 🔴 FLAG → 0 € (eingefroren)
-    - Formel: `Einzelrate = 285€ / Σ Gewichte × Eigengewicht`
+5.  **Tier-Sparraten-Logik (Umstrukturierung 2026-06-07, löst flaches 38/19-Modell ab):**
+    - Tier-Basis (Optimal D3/D4 clean): Tier 1 = 40€, Tier 2 = 32€, Tier 3 = 18€ (config.yaml `satelliten_tier_raten`)
+    - DEFCON-Modulation: D3/D4 → volle Tier-Rate | D2 → 50% Sockelbetrag | D1 → 0 €
+    - 🔴 FLAG → 0 € (heilig, überschreibt DEFCON score-unabhängig)
+    - Formel: `effektive Rate = satelliten_tier_raten[tier] × Modulation(defcon, flag)`
+    - SOLL-Σ (alle 13 × Tier-Basis) = 364€; Funded-Σ (moduliert) transient; Differenz SOLL−Funded → Rebalancing-Tool value-based
 6.  Steuer-Bremse beachten: Niemals durch Verkauf rebalancen. Stattdessen Sparplan umleiten (untergewichtete Werte aufstocken).
 
 ## PORTFOLIO-KONTEXT (Kurzreferenz)
 
-**Satelliten (Scalable):** ASML, AVGO, MSFT, RMS, VEEV, SU, BRK.B, V, TMO, APH, COST
-**ETFs (ING):** IWDA, EIMI, EXUSA, AVGC
-**Gold:** EUWAX Gold (\~5%)
-**Slots:** 16 max | **US-Cap:** 63% (aktuell \~53%)
-**Sparrate:** 950€/mtl | **Broker:** ING (Core) + Scalable (Satelliten)
+**Satelliten (Scalable, 13):** ASML(T2), AVGO(T1), MSFT(T1), RMS(T3), SU(T3), BRK.B(T3), V(T2), TMO(T3), APH(T3), AMZN(T1), NOW(T1), KYCCF(T2), ZETA(T3) — NOW/KYCCF/ZETA Platzhalter-Score, O3-Vollanalyse pending
+**ETFs (ING):** IWDA, EIMI, AVGC | **(Scalable):** JEDI, WQTM
+**Gold:** EWG2 EUWAX Gold II (\~5%)
+**Slots:** 13 Aktien | **US-Cap:** 63%
+**Sparrate:** ~1.031€/mtl (60/35/5) | **Broker:** ING (ETF-Core) + Scalable (Satelliten + JEDI/WQTM + Gold)
 
 **Ersatzbank (1:1 Matrix):**
 

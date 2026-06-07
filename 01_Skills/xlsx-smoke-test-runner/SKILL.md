@@ -27,8 +27,9 @@ description: |-
   - §A Open-Repair (Workbook-Load + Sheet-Existenz aller Profile-Sheets)
   - §B Error-Token-Scan (`#REF!`/`#NAME?`/`#VALUE!`/`#N/A` in allen Sheets)
   - §E CF-Rule-Count-Drift-Check pro Profil
-  - §G Sparrate-Σ-Sanity (config.yaml-Mapping → Σ-Check gegen Anker 285€ +
-    xlsx-Display-Konsistenz K3/B3/B26/N19, nur Satelliten_Monitor)
+  - §G Sparrate-SOLL-Σ-Sanity (Tier-Modell ab 2026-06-07: `Σ satelliten_tier_raten[tier]`
+    gegen Anker `brokers.scalable.sparrate_eur` = 364€ + Funded-Echo-Display-Konsistenz
+    K3/B3/Funded-Echo per Content-Scan, nur Satelliten_Monitor)
 
   **Out-of-Scope (manuell bzw. UI-only — empirisch verifiziert via
   `03_Tools/precommit/xlsx_smoke_test.py` Kommentar L7-8 + SPEC Coverage-Matrix

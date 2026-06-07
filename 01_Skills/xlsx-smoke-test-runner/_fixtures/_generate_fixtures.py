@@ -61,12 +61,15 @@ def _add_cf_rules(ws, count: int, start_row: int = 5) -> None:
 
 
 def _build_rebal_a_open_clean() -> None:
-    """3-Sheet-Rebal + 6 CFs + no error tokens (Hook PASS §A+§B+§E)."""
+    """3-Sheet-Rebal + 7 CFs + no error tokens (Hook PASS §A+§B+§E).
+
+    Rebal-Profil cf_rule_count = 7 (Live-State ab 2026-06-06 v4.0-Roster, sheet1 CF 5→6).
+    """
     wb = openpyxl.Workbook()
     ws1 = wb.active
     ws1.title = "Portfolio & Rebalancing"
     ws1["A1"] = "Header"
-    _add_cf_rules(ws1, 5)
+    _add_cf_rules(ws1, 6)
     ws2 = wb.create_sheet("US-Exposure")
     _add_cf_rules(ws2, 0)
     ws3 = wb.create_sheet("Parameter & Regeln")
@@ -105,13 +108,18 @@ def _build_rebal_e_cf_count_mismatch() -> None:
     _save(wb, "Rebalancing_Tool_e_cf_count_mismatch_fixture.xlsx")
 
 
-def _build_sat_canonical_wb(cf_count: int = 5) -> openpyxl.Workbook:
-    """Sat-Workbook mit erwarteten Sheets + K3/N19-Display (PASS §G default)."""
+def _build_sat_canonical_wb(cf_count: int = 11) -> openpyxl.Workbook:
+    """Sat-Workbook mit erwarteten Sheets + K3/Funded-Echo (PASS §G default gegen Live-config).
+
+    Tier-Modell (Umstrukturierung 2026-06-07): Live-config SOLL-Σ=364, Funded-Σ=210, anker=364.
+    §G prüft Funded-Echo per Content-Scan ('Funded'+'SOLL'), nicht fixe N19 (layout-robust).
+    cf_count default 11 (5 Satelliten-Monitor-Ranges + 6 QuickScreen-Ampel-Ranges Live).
+    """
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Satelliten Monitor"
-    ws["K3"] = "Ergebnis: ● 7 Voll  ● 1 D2-Sockelbetrag (V)  ● 4 Eingefroren"
-    ws["N19"] = "→ muss = 285,00 €"
+    ws["K3"] = "Ergebnis: ● 8 Volle Tier-Rate  ● 1 D2-Sockelbetrag (V)  ● 4 Eingefroren"
+    ws["N20"] = "→ Funded 210 € (SOLL 364 €)"
     _add_cf_rules(ws, cf_count)
     wb.create_sheet("QuickScreen Ampel")
     return wb
@@ -138,42 +146,37 @@ def _build_sat_b_error_token_in_l7() -> None:
 
 
 def _build_sat_e_cf_count_mismatch() -> None:
-    """4 CFs statt 5 → Hook FAIL §E."""
-    wb = _build_sat_canonical_wb(cf_count=4)
+    """10 CFs statt 11 → Hook FAIL §E."""
+    wb = _build_sat_canonical_wb(cf_count=10)
     _save(wb, "Satelliten_Monitor_e_cf_count_mismatch_fixture.xlsx")
 
 
 def _build_sat_g_sparrate_mapping_drift() -> None:
-    """xlsx clean (PASS §A+§B+§E+§G-display) + companion config mit Σ=323 ≠ 285."""
+    """xlsx clean (PASS §A+§B+§E+§G-display) + companion config mit SOLL-Σ=364 ≠ anker=285 (stale-anker-Drift)."""
     wb = _build_sat_canonical_wb()
     _save(wb, "Satelliten_Monitor_g_sparrate_mapping_drift_fixture.xlsx")
 
-    # Companion config: APH flag=False statt True → Σ +19 = 304
-    # plus AVGO flag=False → Σ +19 = 323
-    drift_sats = [
-        {"ticker": "ASML", "defcon": 3, "flag": False},
-        {"ticker": "AVGO", "defcon": 2, "flag": False},  # drift: flag was True
-        {"ticker": "MSFT", "defcon": 2, "flag": True},
-        {"ticker": "COST", "defcon": 3, "flag": False},
-        {"ticker": "RMS", "defcon": 3, "flag": False},
-        {"ticker": "VEEV", "defcon": 3, "flag": False},
-        {"ticker": "SU", "defcon": 3, "flag": False},
-        {"ticker": "BRK.B", "defcon": 3, "flag": False},
-        {"ticker": "V", "defcon": 2, "flag": False},
-        {"ticker": "TMO", "defcon": 3, "flag": False},
-        {"ticker": "APH", "defcon": 2, "flag": False},  # drift: flag was True
-        {"ticker": "AMZN", "defcon": 1, "flag": True},
-    ]
-    cfg = {"brokers": {"scalable": {"sparrate_eur": 285}}, "satelliten": drift_sats}
+    # Companion config (Tier-Modell): 13-Roster SOLL-Σ = 4×40 + 3×32 + 6×18 = 364,
+    # aber anker stale auf 285 (altes flaches Modell) → §G SOLL-Σ-Drift (364 ≠ 285).
+    drift_sats = (
+        [{"ticker": f"T1_{i}", "tier": 1, "defcon": 3, "flag": False} for i in range(4)]
+        + [{"ticker": f"T2_{i}", "tier": 2, "defcon": 3, "flag": False} for i in range(3)]
+        + [{"ticker": f"T3_{i}", "tier": 3, "defcon": 3, "flag": False} for i in range(6)]
+    )
+    cfg = {
+        "brokers": {"scalable": {"sparrate_eur": 285}},
+        "satelliten_tier_raten": {1: 40, 2: 32, 3: 18},
+        "satelliten": drift_sats,
+    }
     cfg_path = _HERE / "Satelliten_Monitor_g_sparrate_mapping_drift_config.yaml"
     cfg_path.write_text(yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8")
-    print(f"  wrote {cfg_path.name} (companion config, sigma=323)")
+    print(f"  wrote {cfg_path.name} (companion config, SOLL=364 != anker=285)")
 
 
 def _build_sat_g_display_drift() -> None:
-    """N19 = '→ muss = 999,00 €' (display drift) → §G FAIL gegen Live anker."""
+    """Funded-Echo mit falschem Funded-Wert (999 statt 210) → §G FAIL gegen Live (Funded-Echo-Drift)."""
     wb = _build_sat_canonical_wb()
-    wb["Satelliten Monitor"]["N19"] = "→ muss = 999,00 €"
+    wb["Satelliten Monitor"]["N20"] = "→ Funded 999 € (SOLL 364 €)"
     _save(wb, "Satelliten_Monitor_g_display_drift_fixture.xlsx")
 
 

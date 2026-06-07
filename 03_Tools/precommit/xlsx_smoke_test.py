@@ -52,7 +52,7 @@ _PROFILES: dict[str, dict] = {
             "US-Exposure",  # P13 NEU 2026-05-25 (drift-doc §1.1)
             "Parameter & Regeln",  # P13 NEU 2026-05-25 (drift-doc §1.1)
         ),
-        "cf_rule_count": 6,  # md: "249 Formeln + 6 Conditional Formats" (Live-State 2026-05-25, vorher 218/6)
+        "cf_rule_count": 7,  # md: "325 Formeln + 7 Conditional Formats" (Live-State 2026-06-06 v4.0-Roster: NOW/KYCCF/ZETA rein, VEEV/COST raus -> sheet1 CF 5->6 legit; vorher 2026-05-25 249/6)
     },
     "Satelliten_Monitor": {
         "scope": "voll",
@@ -60,7 +60,7 @@ _PROFILES: dict[str, dict] = {
             "Satelliten Monitor",
             "QuickScreen Ampel",  # P13 NEU 2026-05-25 (drift-doc §2.1)
         ),
-        "cf_rule_count": 5,  # md: "13 Formeln + 5 Conditional Formats + §G Σ-Check via Hook" (Live-State 2026-05-25, vorher 12/5 + Excel-Σ-Plan)
+        "cf_rule_count": 11,  # 5 (Satelliten Monitor: L/M/N/O/R) + 6 (QuickScreen Ampel: D/D-G/E/F/G/H Ampel-Coloring, Umstrukturierung 2026-06-07) = 11 Ranges. Vorher 5 (QuickScreen hatte 0 CF).
     },
     "Watchlist_Ersatzbank_Monitor": {
         "scope": "minimal",  # md Minimal-Check-Annex: nur A1 + Existenz
@@ -96,37 +96,47 @@ def _count_cf_rules(wb: openpyxl.Workbook) -> int:
     return total
 
 
-def _derive_rate_eur(satellit_cfg: dict) -> int:
-    """Punkt G Mapping: config.yaml satellit → Sparrate-EUR (SPEC §4.3, drift-doc §2.4).
+def _derive_rate_eur(satellit_cfg: dict, tier_raten: dict) -> float:
+    """Punkt G Mapping: config.yaml satellit → effektive (modulierte) Tier-Rate-EUR.
 
-    - flag=True                     → 0
-    - flag=False + defcon in {3,4}  → 38
-    - flag=False + defcon == 2      → 19
-    - flag=False + defcon == 1      → 0 (FLAG fehlt, aber DEFCON 1)
+    Tier-Modell (Umstrukturierung 2026-06-07, löst flaches 38/19-Modell ab):
+        effektive Rate = tier_basis × DEFCON-Modulation × FLAG
+    - tier_basis = tier_raten[satellit.tier]   (Tier 1=40, 2=32, 3=18)
+    - flag=True                     → 0           (heilig, überschreibt DEFCON score-unabhängig)
+    - flag=False + defcon in {3,4}  → tier_basis        (volle Tier-Rate)
+    - flag=False + defcon == 2      → tier_basis / 2    (halber Sockelbetrag)
+    - flag=False + defcon == 1      → 0
 
-    Wirft ValueError bei unmapped defcon.
+    Wirft ValueError bei unmapped tier oder defcon.
     """
+    tier = satellit_cfg.get("tier")
+    if tier not in tier_raten:
+        raise ValueError(f"unmapped tier={tier!r} für satellit={satellit_cfg.get('ticker', '?')}")
+    base = tier_raten[tier]
     if satellit_cfg.get("flag") is True:
         return 0
     defcon = satellit_cfg.get("defcon")
     if defcon in (3, 4):
-        return 38
+        return base
     if defcon == 2:
-        return 19
+        return base / 2
     if defcon == 1:
         return 0
     raise ValueError(f"unmapped defcon={defcon!r} für satellit={satellit_cfg.get('ticker', '?')}")
 
 
 def _check_g_sparrate_sigma(wb: openpyxl.Workbook, config_yaml_path: Path) -> str | None:
-    """Punkt G Sparrate-Σ-Sanity (SPEC §4.3 Variante G).
+    """Punkt G Sparrate-Σ-Sanity (SPEC §4.3, Tier-Modell Umstrukturierung 2026-06-07).
 
     Steps:
     1. Load config_yaml_path (yaml.safe_load)
-    2. Σ = sum(_derive_rate_eur(s) for s in cfg["satelliten"])
-    3. Assert Σ == cfg["brokers"]["scalable"]["sparrate_eur"]  (Anker 285€)
-    4. Assert wb "Satelliten Monitor" K3-Text enthält ' Voll' + 'D2-Sockelbetrag' + 'Eingefroren'
-    5. Assert wb "Satelliten Monitor" N19-Text == '→ muss = 285,00 €'
+    2. tier_raten = cfg["satelliten_tier_raten"]
+    3. SOLL-Σ = sum(tier_raten[s["tier"]] for s in satelliten)   [strukturell, stabil — bricht NICHT bei FLAG-Events]
+    4. Assert SOLL-Σ == cfg["brokers"]["scalable"]["sparrate_eur"]  (Anker 364€)
+    5. Funded-Σ = sum(_derive_rate_eur(s, tier_raten) ...)   [transient, moduliert]
+    6. Assert "Satelliten Monitor" K3-Text enthält ' Voll' + 'Sockelbetrag' + 'Eingefroren'
+    7. Assert Funded-Echo-Zelle (Content-Scan 'Funded'+'SOLL', layout-robust) enthält
+       Funded-Σ + SOLL-Σ formatiert (deutsche Schreibweise mit Komma).
 
     Returns None bei PASS, str (Fehler-Detail) bei FAIL.
     """
@@ -137,33 +147,51 @@ def _check_g_sparrate_sigma(wb: openpyxl.Workbook, config_yaml_path: Path) -> st
         return f"config.yaml unreadable: {e}"
 
     try:
-        sigma = sum(_derive_rate_eur(s) for s in cfg["satelliten"])
+        tier_raten = cfg["satelliten_tier_raten"]
+        soll = sum(tier_raten[s["tier"]] for s in cfg["satelliten"])
+        funded = sum(_derive_rate_eur(s, tier_raten) for s in cfg["satelliten"])
     except (KeyError, TypeError, ValueError) as e:
-        return f"satelliten-mapping fail: {e}"
+        return f"satelliten/tier-mapping fail: {e}"
 
     try:
         anker = cfg["brokers"]["scalable"]["sparrate_eur"]
     except (KeyError, TypeError) as e:
         return f"anker brokers.scalable.sparrate_eur missing: {e}"
 
-    if sigma != anker:
-        return f"Σ-Drift: derived={sigma}€ != anker={anker}€ (config.yaml.brokers.scalable.sparrate_eur)"
+    if soll != anker:
+        return f"SOLL-Σ-Drift: derived={soll}€ != anker={anker}€ (config.yaml.brokers.scalable.sparrate_eur)"
 
     if "Satelliten Monitor" not in wb.sheetnames:
         return "Sheet 'Satelliten Monitor' fehlt — kein §G-Display-Check möglich"
     sat_ws = wb["Satelliten Monitor"]
 
     k3 = sat_ws["K3"].value or ""
-    for needle in (" Voll", "D2-Sockelbetrag", "Eingefroren"):
+    for needle in (" Voll", "Sockelbetrag", "Eingefroren"):
         if needle not in str(k3):
             return f"K3-Display-Drift: '{needle}' fehlt in {k3!r}"
 
-    # N19-Display aus anker abgeleitet (Codex-R3 MED-2), NICHT hardcoded.
-    # Deutsche Schreibweise: 285,00 € (Komma als Dezimaltrenner).
-    n19 = sat_ws["N19"].value or ""
-    expected_n19 = f"→ muss = {anker:.2f} €".replace(".", ",")
-    if expected_n19 not in str(n19):
-        return f"N19-Sanity-Drift: erwartet {expected_n19!r}, live={n19!r}"
+    # Funded-Echo layout-robust per Content-Scan (alle Zellen mit 'Funded'+'SOLL'), statt fixe Zelle.
+    # Begründung: fixe Zelle (vormals N19) driftet bei Roster-Resize (Umstrukturierung
+    # 2026-06-07: N19 wurde Ticker-Zeile, Echo wanderte nach N20). Es gibt mehrere Echo-Zellen
+    # (Header-Zeile + Detail-Footer) in unterschiedlichem Format ("210 €" vs "210,00 €") —
+    # JEDE muss mit dem config-abgeleiteten Funded-/SOLL-Wert übereinstimmen (Drift in einer
+    # Echo-Zelle = Fail). Integer-Form als Match (deckt "210" und "210,00" ab), Werte aus
+    # config abgeleitet, NICHT hardcoded.
+    echoes = [
+        (c.coordinate, c.value)
+        for row in sat_ws.iter_rows()
+        for c in row
+        if isinstance(c.value, str) and "Funded" in c.value and "SOLL" in c.value
+    ]
+    if not echoes:
+        return "Funded-Echo-Zelle (enthält 'Funded'+'SOLL') fehlt im Satelliten-Monitor (Punkt G)"
+    funded_i = f"{int(funded)}"
+    soll_i = f"{int(anker)}"
+    for coord, val in echoes:
+        if funded_i not in val:
+            return f"Funded-Echo-Drift {coord}: erwartet Funded {funded_i} €, live={val!r}"
+        if soll_i not in val:
+            return f"Funded-Echo-Drift {coord}: erwartet SOLL {soll_i} €, live={val!r}"
 
     return None
 

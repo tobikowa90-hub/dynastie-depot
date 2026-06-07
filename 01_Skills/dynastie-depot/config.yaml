@@ -1,15 +1,15 @@
 # Dynastie-Depot – Portfolio State
 # Regeln: SKILL.md | Strategie: manifest.md | Pipeline: PIPELINE.md
-# Stand: 2026-05-18 (AMZN Neuaufnahme 12. Satellit per User-Direktive — Score 42/D1, 🔴 CapEx/OCF-FLAG TTM 99,2%, Sparrate 0€ regelkonform. Slot-Erweiterung 11→12, Nenner unverändert 7,5 [FLAG=Gewicht 0,0], alle 11 bestehenden Raten unverändert. Davor: 28.04. V Rescoring-Revert D3→D2 Nenner 8,0→7,5)
+# Stand: 2026-06-07 (Umstrukturierung-2027 Phase A: Equal-Weight→3-Tier Conviction-Modell [satelliten_tier_raten], Split 65/30/5→60/35/5, Roster 12→13 [VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter], ETF exUSA→JEDI+WQTM, Gold EUWAX→EWG2, Satelliten-Budget 285→364€ SOLL. Davor: 2026-05-18 AMZN 12. Satellit)
 
 # ─────────────────────────────────────────────
 # PORTFOLIO-RAHMEN
 # ─────────────────────────────────────────────
 portfolio:
-  sparrate_eur: 950
-  aktuelle_slots: 17  # 4 ETF + 12 Aktien + 1 Gold (AMZN-Slot-Erweiterung 11→12, User-Direktive 2026-05-18)
-  max_aktien_slots: 12
-  belegte_aktien_slots: 12
+  sparrate_eur: 1031  # Umstrukturierung 2026-06-07: real ~1.031€ SOLL (Live-File 950€ war veraltet). ETF 616 + Satelliten-SOLL 364 + Gold 51 = 1031
+  aktuelle_slots: 19  # 5 ETF (IWDA/EIMI/AVGC/JEDI/WQTM, exUSA gestoppt) + 13 Aktien + 1 Gold (Umstrukturierung 2026-06-07)
+  max_aktien_slots: 13
+  belegte_aktien_slots: 13
   freie_aktien_slots: 0
   us_hard_cap_pct: 63
   us_current_pct: 46.41  # AMZN nenner-neutral (FLAG=0€) → kein neuer US-Kapitalfluss, us_current unverändert bis FLAG-Resolve
@@ -18,23 +18,37 @@ portfolio:
 brokers:
   ing:
     zweck: "ETF-Core + Freistellungsauftrag"
-    sparanteil_pct: 65
-    sparrate_eur: 617.50
+    sparanteil_pct: 60  # Umstrukturierung 2026-06-07: Split 65→60
+    sparrate_eur: 616.00  # ETF-Block: IWDA 257 + EIMI 123 + AVGC 103 + JEDI 82 + WQTM 51 = 616 (exUSA gestoppt 04.06.)
     freistellung_eur: 1500
   scalable:
     zweck: "Satelliten + Alpha"
-    sparanteil_pct: 30
-    sparrate_eur: 285.00
+    sparanteil_pct: 35  # Umstrukturierung 2026-06-07: Split 30→35
+    sparrate_eur: 364.00  # SOLL-Σ Satelliten-Budget (Tier-Modell: 4×40 + 3×32 + 6×18 = 364). Vorher 285,00 (flaches 38/19-Modell, abgelöst 2026-06-07 Umstrukturierung). Funded transient (aktuell 210€) lenkt das Rebalancing-Tool value-based.
     freistellung_eur: 500
   euwax:
     zweck: "Gold"
     sparanteil_pct: 5
-    sparrate_eur: 47.50
+    sparrate_eur: 51.00  # Umstrukturierung 2026-06-07: EWG2 (EUWAX Gold II) 51€ (vorher 47,50)
 
 allokation:
-  etf_core_pct: 65
-  satelliten_pct: 30
+  etf_core_pct: 60   # Umstrukturierung 2026-06-07: 65→60
+  satelliten_pct: 35 # Umstrukturierung 2026-06-07: 30→35
   gold_pct: 5
+
+# ─────────────────────────────────────────────
+# SATELLITEN-TIER-RATEN (Single-Source, Umstrukturierung 2026-06-07)
+# SOLL-Basisrate je Conviction-Tier (Optimal-Fall = DEFCON 3/4 clean, kein FLAG).
+# Rate-Modell (löst flaches 38/19-Equal-Weight-Modell ab):
+#   effektive Rate = tier_basis × DEFCON-Modulation × FLAG
+#     DEFCON 3/4 → voll (×1.0) | DEFCON 2 → halb (×0.5) | DEFCON 1 → 0 | FLAG → 0 (heilig, überschreibt)
+#   SOLL-Σ (alle 13 × tier_basis) = brokers.scalable.sparrate_eur (364€)
+#   Funded-Σ (modulierte Raten, transient) = aktuell 210€; Differenz → Rebalancing-Tool (value-based)
+# ─────────────────────────────────────────────
+satelliten_tier_raten:
+  1: 40   # Tier 1 (höchste Conviction)
+  2: 32   # Tier 2
+  3: 18   # Tier 3
 
 # ─────────────────────────────────────────────
 # SYSTEMREGELN (v3.7 — 17.04.2026)
@@ -63,20 +77,23 @@ system_regeln:
     aktion: "Sofortiger !Analysiere — kein Warten auf Score-Verfall"
 
   sparplan_verteilung:
-    beschreibung: "Formelle Berechnungsregel für !Rebalancing. Verbindlich. v3.4-Stand."
-    gewichte: "D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0"
-    formel: "Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht"
+    beschreibung: "Formelle Berechnungsregel für !Rebalancing. Verbindlich. Tier-Modell-Stand (Umstrukturierung 2026-06-07, löst flaches Equal-Weight-Modell ab)."
+    modell: "3-Tier Conviction-Weighting + DEFCON-Modulation + FLAG-Heiligkeit"
+    tier_basis: "siehe satelliten_tier_raten (Top-Level): Tier 1 = 40€, Tier 2 = 32€, Tier 3 = 18€ (Optimal-Fall D3/D4 clean)"
+    modulation: "DEFCON 3/4 → volle Tier-Rate (×1.0) | DEFCON 2 → halbe Tier-Rate (×0.5, 'Sockelbetrag') | DEFCON 1 → 0€ | 🔴 FLAG → 0€ (heilig, überschreibt DEFCON score-unabhängig)"
+    formel: "effektive Rate = satelliten_tier_raten[satellit.tier] × Modulation(defcon, flag)"
+    budget_logik: "SOLL-Σ (alle 13 × Tier-Basis) = 364€ = brokers.scalable.sparrate_eur. Funded-Σ (Summe modulierter Raten) ist transient; Differenz SOLL−Funded (FLAG-eingefroren + D2-Sockel-Reduktion) wird vom Rebalancing-Tool value-based auf untergewichtete Positionen umgelenkt (voller Monatsbeitrag deployed, nur Verteilung verschiebt sich)."
     beispiel: |
-      Aktueller Stand (2026-05-25, post-AMZN-Integration 15.05.2026 als 12. Satellit mit FLAG=0€ Gewicht 0,0; Nenner unverändert): 7× D4/D3 (Gewicht 1.0) + 1× D2 (V, Gewicht 0.5) + 4× 🔴 eingefroren (MSFT + APH + AVGO + AMZN)
-      Nenner = (7 × 1.0) + (1 × 0.5) + (4 × 0) = 7.5
-      D4/D3-Einzelrate = 285€ / 7.5 × 1.0 = 38,00€
-      D2-Einzelrate (V) = 285€ / 7.5 × 0.5 = 19,00€
-      🔴/D1-Rate = 0€
-      Summencheck: 7 × 38,00 + 1 × 19,00 + 4 × 0 = 266 + 19 = 285,00€ ✓
-      Vorgänger (28.04.2026 spätabends, post-V Rescoring-Revert nach Codex-HIGH-1+HIGH-2-Review D3→D2): 7× D4/D3 + 1× D2 (V) + 3× 🔴 eingefroren (MSFT + APH + AVGO) — vor AMZN-Slot-Erweiterung 11→12, Math-Result identisch.
-      Vorgänger-Beispiel (28.04.2026 mittags, post-V Q2 Beat-Cascade D2→D3, durch Codex-Review-Revert spätabends überschrieben): Nenner 8.0, D4/D3 35,63€, D2 entfiel — historisch.
-      Vor-Vorgänger (27.04.2026, post-AVGO Insider-FLAG-Aktivierung): Nenner 7.5, D4/D3 35,63€, D2 19,00€ — historisch (Nenner gleich, Rate-Δ wegen anderem Sparrate-Cap).
-      Vor-Vor-Vorgänger (23.04.2026, post-TMO Q1 Resolve-Gate): Nenner 8.5, D4/D3 33,53€, D2 16,76€ — historisch.
+      Aktueller Stand (2026-06-07, post-Umstrukturierung 13-Roster):
+      SOLL-Σ = Tier1 4×40 (AMZN/MSFT/NOW/AVGO) + Tier2 3×32 (V/KYCCF/ASML) + Tier3 6×18 (RMS/BRK.B/TMO/APH/SU/ZETA) = 160 + 96 + 108 = 364,00€ ✓ (== scalable.sparrate_eur)
+      Funded-Σ (modulierte Raten):
+        Tier 1: NOW 40 (D3 clean) | AMZN 0 (D1+FLAG) | MSFT 0 (D2+FLAG) | AVGO 0 (D2+FLAG) → 40€
+        Tier 2: ASML 32 (D3) | KYCCF 32 (D3-Platzhalter) | V 16 (D2-Sockelbetrag = 50% von 32) → 80€
+        Tier 3: RMS/BRK.B/TMO/SU/ZETA je 18 (D3) | APH 0 (D2+FLAG) → 90€
+        Funded-Σ = 40 + 80 + 90 = 210,00€
+      Differenz 364−210 = 154€ (138€ FLAG-eingefroren AMZN/MSFT/AVGO/APH + 16€ V-D2-Sockel-Reduktion) → Rebalancing-Tool value-based.
+      NOW/KYCCF/ZETA = DEFCON-3-Platzhalter (Owner-Conviction-Adds ohne Score, analog AMZN-Präzedenz) → volle Tier-Rate bis Vollanalyse (O3 PIPELINE).
+      Vorgänger-Modell (bis 2026-06-06, flaches Equal-Weight): Aktien-Budget 285€ / Σ Gewichte (D4/D3=1.0, D2=0.5, D1/FLAG=0.0) × Eigengewicht; D4/D3-Rate 38,00€, D2-Rate 19,00€. Historisch — durch Tier-Modell ersetzt (Governance-Override UMSTRUKTURIERUNG-2027 §6.1).
 
   tariff_exposure_quelle:
     beschreibung: "Primärquelle für Tariff-Exposure-Scoring (Pflicht bei jedem !Analysiere)"
@@ -88,36 +105,55 @@ system_regeln:
 # ─────────────────────────────────────────────
 # ETF-CORE (ING)
 # ─────────────────────────────────────────────
+# Umstrukturierung 2026-06-07: exUSA gestoppt 04.06.; JEDI + WQTM neu (zwei Themen-Wetten, zusammen 13% ETF-Block); Gold EUWAX→EWG2. ISIN/Rate aus UMSTRUKTURIERUNG-2027 §2.
 etfs:
   - ticker: IWDA
-    name: "iShares MSCI World"
+    name: "iShares Core MSCI World"
+    isin: IE00B4L5Y983
     broker: ING
     typ: "Developed World"
+    rate_eur: 257
   - ticker: EIMI
-    name: "iShares ACWI IMI"
+    name: "iShares Core MSCI EM IMI"
+    isin: IE00BKM4GZ66
     broker: ING
     typ: "Emerging Markets"
-  - ticker: EXUSA
-    name: "iShares MSCI World ex-USA"
-    broker: ING
-    typ: "Ex-USA Diversifikation"
+    rate_eur: 123
   - ticker: AVGC
     name: "Avantis Global Small Cap Value"
+    isin: IE0003R87OG3
     broker: ING
     typ: "Factor / Small Cap Value"
-  - ticker: EUWAX
-    name: "EUWAX Gold"
+    rate_eur: 103
+  - ticker: JEDI
+    name: "VanEck Space Innovators"
+    isin: IE000YU9K6K2
+    broker: Scalable
+    typ: "Themen-Wette / Space"
+    rate_eur: 82  # neu gestartet 04.06.2026
+  - ticker: WQTM
+    name: "WisdomTree Quantum Computing"
+    isin: IE000W8WMSL2
+    broker: Scalable
+    typ: "Themen-Wette / Quantum"
+    rate_eur: 51
+  - ticker: EWG2
+    name: "EUWAX Gold II"
     broker: Scalable
     typ: "Gold 5%"
+    rate_eur: 51
 
 # ─────────────────────────────────────────────
-# SATELLITEN (Scalable) – 12/12 Slots belegt (AMZN 12. Satellit ab 15.05.2026, User-Direktive Slot 11→12)
-# Alle 12 Positionen auf DEFCON v3.7 — 6/12 Live-Verify (V + TMO 18.04. Forward, ASML + RMS post-Q1 17.04., AMZN 15.05. Forward-Vollanalyse), Rest Algebra-Projektion bis Earnings-Trigger. Threshold-Labels seit 18.04.: ≥80→D4, 65-79→D3, 50-64→D2, <50→D1.
+# SATELLITEN (Scalable) – 13/13 Slots belegt (Umstrukturierung 2026-06-07: VEEV+COST raus, NOW/KYCCF/ZETA rein)
+# 3-Tier Conviction-Modell (siehe satelliten_tier_raten + system_regeln.sparplan_verteilung). Jeder Satellit hat `tier: 1|2|3`.
+# NOW/KYCCF/ZETA = Owner-Conviction-Adds ohne DEFCON-Score (Platzhalter defcon: 3, analog AMZN-Präzedenz §1) — Vollanalyse O3 PIPELINE.
+# Threshold-Labels: ≥80→D4, 65-79→D3, 50-64→D2, <50→D1.
 # ─────────────────────────────────────────────
 satelliten:
   - ticker: ASML
     name: "ASML Holding"
     typ: "Asset-Light / Halbleiter-Equipment"
+    tier: 2
     defcon: 3
     score: 68
     score_datum: "2026-04-17"
@@ -135,6 +171,7 @@ satelliten:
   - ticker: AVGO
     name: "Broadcom"
     typ: "Asset-Light / Semiconductors"
+    tier: 1
     defcon: 2
     score: 56
     score_datum: "2026-06-04"
@@ -155,6 +192,7 @@ satelliten:
   - ticker: MSFT
     name: "Microsoft"
     typ: "Asset-Light / Cloud"
+    tier: 1
     defcon: 2
     score: 50
     score_datum: "2026-04-30"
@@ -176,6 +214,7 @@ satelliten:
   - ticker: RMS
     name: "Hermès International"
     typ: "Substanz / Luxury"
+    tier: 3
     defcon: 3
     score: 68
     score_datum: "2026-04-17"
@@ -189,25 +228,10 @@ satelliten:
     region: Europa
     us_exposure: false
 
-  - ticker: VEEV
-    name: "Veeva Systems"
-    typ: "Asset-Light / Life Sciences SaaS"
-    defcon: 3
-    score: 74
-    score_datum: "2026-04-17"
-    score_valid_until: "2026-10-14"
-    flag: false
-    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 74 in 65-79-Range)."
-    naechste_pruefung: "Nächste Earnings"
-    scoring_notiz: "Score 74: Wide Moat (Life Sciences Vault-Monopol). Bewertung drückt Score unter 80."
-    ersatz: "ZTS / SAP"
-    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
-    region: USA
-    us_exposure: true
-
   - ticker: SU
     name: "Schneider Electric"
     typ: "Substanz / Industrials"
+    tier: 3
     defcon: 3
     score: 69
     score_datum: "2026-04-17"
@@ -224,6 +248,7 @@ satelliten:
   - ticker: BRK.B
     name: "Berkshire Hathaway"
     typ: "Substanz / Holding / Float-Modell"
+    tier: 3
     defcon: 3
     score: 71
     score_datum: "2026-05-04"
@@ -241,6 +266,7 @@ satelliten:
   - ticker: V
     name: "Visa"
     typ: "Asset-Light / Payments"
+    tier: 2
     defcon: 2
     score: 64
     score_datum: "2026-04-28"
@@ -257,6 +283,7 @@ satelliten:
   - ticker: TMO
     name: "Thermo Fisher Scientific"
     typ: "Substanz / Life Sciences"
+    tier: 3
     defcon: 3
     score: 67
     score_datum: "2026-04-23"
@@ -275,6 +302,7 @@ satelliten:
   - ticker: APH
     name: "Amphenol"
     typ: "Asset-Light / Connectors"
+    tier: 3
     defcon: 2
     score: 61
     score_datum: "2026-04-30"
@@ -291,27 +319,10 @@ satelliten:
     region: USA
     us_exposure: true
 
-  - ticker: COST
-    name: "Costco"
-    typ: "Substanz / Retail"
-    defcon: 3
-    score: 69
-    score_datum: "2026-04-17"
-    score_valid_until: "2026-10-14"
-    flag: false
-    sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 69 in 65-79-Range). Screener-Exception: Membership Yield 15.2% > WACC 12.3% als ökonomischer Return."
-    naechste_pruefung: "Q1 FY27 Earnings ~Dez 2026"
-    scoring_notiz: "Score 69: ROIC 5.6% GAAP (strukturell durch niedriges Book Value). Membership Yield 15.2% ($5.3B / $34.9B IC) als ökonomischer Return > WACC 12.3%. Moat 19/20 (Membership-Loyalty). Schwächen: P/FCF 53x, FCF Yield 1.88%."
-    ersatz: null
-    substitute_activation_rule: "Kein direkter Ersatz — Costco-Modell strukturell einzigartig. Bei DEFCON 1: BRK.B-Verstärkung prüfen."
-    region: USA
-    us_exposure: true
-    screener_exception: true
-    screener_hinweis: "Niedriger GM geschäftsmodellbedingt – Screener Stufe 0 überspringen, direkt DEFCON"
-
   - ticker: AMZN
     name: "Amazon.com"
     typ: "Hyperscaler / E-Commerce + AWS-Cloud + Ads"
+    tier: 1
     defcon: 1
     score: 42
     score_datum: "2026-05-15"
@@ -326,6 +337,54 @@ satelliten:
     naechste_pruefung: "Q2 FY26 Earnings ~Ende Juli — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + voller DEFCON-Refresh"
     ersatz: null
     substitute_activation_rule: "Kein definierter Ersatz — Hyperscaler-Conviction-Position. Bei DEFCON-1-Persistenz Owner-Entscheidung (User-getrieben, kein automatischer Replace)."
+    region: USA
+    us_exposure: true
+
+  - ticker: NOW
+    name: "ServiceNow"
+    typ: "Asset-Light / Enterprise-Workflow-SaaS"
+    tier: 1
+    defcon: 3   # Platzhalter (Owner-Conviction-Add ohne Score, analog AMZN-Präzedenz) — Vollanalyse O3 PIPELINE
+    score: null
+    score_datum: null
+    flag: false
+    sparrate_hinweis: "Tier 1, DEFCON-3-Platzhalter, kein FLAG → volle Tier-1-Rate 40,00€ bis Vollanalyse."
+    naechste_pruefung: "O3 Vollanalyse (!Analysiere NOW, US) — ersetzt Platzhalter-Score"
+    scoring_notiz: "Neuaufnahme Umstrukturierung 2026-06-07 (VEEV-Erlös → NOW). Owner-Conviction-Add ohne DEFCON-Score (Governance-Override UMSTRUKTURIERUNG-2027 §6.4, analog AMZN §1). DEFCON 3 = Platzhalter für volle Tier-Rate; echter Score via O3 Vollanalyse."
+    ersatz: null
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: USA
+    us_exposure: true
+
+  - ticker: KYCCF
+    name: "Keyence"
+    typ: "Asset-Light / Factory-Automation"
+    tier: 2
+    defcon: 3   # Platzhalter (Owner-Conviction-Add ohne Score) — Vollanalyse O3 PIPELINE (non-us-fundamentals JP)
+    score: null
+    score_datum: null
+    flag: false
+    sparrate_hinweis: "Tier 2, DEFCON-3-Platzhalter, kein FLAG → volle Tier-2-Rate 32,00€ bis Vollanalyse."
+    naechste_pruefung: "O3 Vollanalyse (non-us-fundamentals, Japan) — ersetzt Platzhalter-Score"
+    scoring_notiz: "Neuaufnahme Umstrukturierung 2026-06-07. Owner-Conviction-Add ohne DEFCON-Score (Governance-Override UMSTRUKTURIERUNG-2027 §6.4). DEFCON 3 = Platzhalter für volle Tier-Rate; echter Score via O3 non-us-fundamentals (JP, JPY/IFRS)."
+    ersatz: null
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
+    region: Asien
+    us_exposure: false
+
+  - ticker: ZETA
+    name: "Zeta Global"
+    typ: "Asset-Light / AI-Marketing-Cloud"
+    tier: 3
+    defcon: 3   # Platzhalter (Owner-Conviction-Add, bewusste Spekulation — war QuickScreener-Rot) — Vollanalyse O3 PIPELINE
+    score: null
+    score_datum: null
+    flag: false
+    sparrate_hinweis: "Tier 3, DEFCON-3-Platzhalter, kein FLAG → volle Tier-3-Rate 18,00€ bis Vollanalyse."
+    naechste_pruefung: "O3 Vollanalyse (!Analysiere ZETA, US) — ersetzt Platzhalter-Score"
+    scoring_notiz: "Neuaufnahme Umstrukturierung 2026-06-07. Owner-Conviction-Add ohne DEFCON-Score (Governance-Override UMSTRUKTURIERUNG-2027 §6.4), bewusste Spekulation — QuickScreener-Rot. DEFCON 3 = Platzhalter für volle Tier-Rate; echter Score via O3 Vollanalyse."
+    ersatz: null
+    substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: USA
     us_exposure: true
 

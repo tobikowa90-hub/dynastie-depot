@@ -65,7 +65,7 @@ def test_rebal_cf_count_mismatch_fails_e():
 
 
 def test_sat_clean_fixture_passes_hook_all_gates():
-    """Sat-clean enthaelt 5 CF + K3+N19 + 2 Sheets — alle Gates inkl. §G."""
+    """Sat-clean enthaelt 11 CF + K3 + Funded-Echo + 2 Sheets — alle Gates inkl. §G (Tier-Modell)."""
     p = _FIX_DIR / "Satelliten_Monitor_a_open_clean_fixture.xlsx"
     result = verify_after_write(p)
     assert result.ok is True, f"clean Sat fixture failed: {result.detail}"
@@ -96,12 +96,12 @@ def test_sat_cf_count_mismatch_fails_e():
 
 
 def test_sat_g_display_drift_fails_g():
-    """N19='→ muss = 999,00 €' gegen Live anker=285 → §G FAIL."""
+    """Funded-Echo '999' statt '210' gegen Live (Funded-Σ=210) → §G FAIL (Funded-Echo-Drift)."""
     p = _FIX_DIR / "Satelliten_Monitor_g_display_drift_fixture.xlsx"
     result = verify_after_write(p)
     assert result.ok is False
     assert result.failed_gate == "G"
-    assert "N19" in result.detail
+    assert "Funded" in result.detail
 
 
 def test_watch_clean_passes_minimal_a():
@@ -121,7 +121,7 @@ def test_watch_empty_a1_fails_minimal_a():
 
 
 def test_sat_g_sparrate_mapping_drift_via_companion_config():
-    """Companion config Σ=323 ≠ anker=285 → §G FAIL via direct API."""
+    """Companion config SOLL-Σ=364 ≠ anker=285 (stale anker) → §G FAIL via direct API."""
     import importlib.util
 
     hook_path = (
@@ -137,7 +137,7 @@ def test_sat_g_sparrate_mapping_drift_via_companion_config():
     companion = _FIX_DIR / "Satelliten_Monitor_g_sparrate_mapping_drift_config.yaml"
     err = mod._check_g_sparrate_sigma(wb, companion)
     assert err is not None
-    assert "323" in err and "285" in err
+    assert "364" in err and "285" in err
 
 
 # ----- safe_insert/safe_save fixture-integration (SPEC §8 #4) -----
