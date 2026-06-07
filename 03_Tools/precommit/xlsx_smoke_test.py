@@ -17,6 +17,7 @@ Fail-close: EXIT 1 bei erstem Fail, Pfad+Profil+Grund auf stderr.
 from __future__ import annotations
 
 import contextlib
+import re
 import sys
 from pathlib import Path
 
@@ -39,6 +40,29 @@ _ERROR_TOKENS: tuple[str, ...] = ("#REF!", "#NAME?", "#VALUE!", "#N/A")
 _CONFIG_YAML_PATH = (
     Path(__file__).resolve().parents[2] / "01_Skills" / "dynastie-depot" / "config.yaml"
 )
+
+
+def _echo_int_numbers(text: str) -> set[int]:
+    """Extrahiert exakte ganzzahlige Zahlenwerte aus einem Funded/SOLL-Echo-String.
+
+    Robuster Ersatz für den naiven Substring-Scan (Codex-Review 2026-06-08 HIGH):
+    `funded_i in val` lieferte False-PASS, weil Substrings matchen ('210' ⊂ '2100',
+    '364' ⊂ '3640'). Ein simpler Label-Anker ('Zahl direkt nach Funded') scheitert
+    am realen B27-Format 'Funded Σ = 40+80+90 = 210€' (läse 40 statt 210).
+    Lösung: ALLE Zahlen-Tokens word-boundary-exakt extrahieren (Lookarounds
+    verhindern Teil-Matches in '2100'), deutsche Dezimal-/Tausenderform
+    normalisieren ('210,00'→210, '1.500'→1500), auf int reduzieren. Der §G-Check
+    prüft dann exakte Set-Membership (funded ∈ Zahlen, soll ∈ Zahlen) statt
+    Substring — fängt jede Ziffern-Drift, ohne an den 4 realen Echo-Formaten
+    (B3/K3/N20/B27) false-zu-failen. Korrektheit > Laufzeit.
+    """
+    out: set[int] = set()
+    for m in re.finditer(r"(?<![\d.,])\d[\d.]*(?:,\d+)?(?![\d.,])", text):
+        intpart = m.group(0).split(",")[0].replace(".", "")
+        if intpart.isdigit():
+            out.add(int(intpart))
+    return out
+
 
 # Profil-Soll-Werte. SSoT = 03_Tools/xlsx-smoke-test.md (Scope-Tabelle).
 # `cf_rule_count` ist gegen die Live-xlsx beim ersten pre-commit-Smoke zu
@@ -175,8 +199,9 @@ def _check_g_sparrate_sigma(wb: openpyxl.Workbook, config_yaml_path: Path) -> st
     # 2026-06-07: N19 wurde Ticker-Zeile, Echo wanderte nach N20). Es gibt mehrere Echo-Zellen
     # (Header-Zeile + Detail-Footer) in unterschiedlichem Format ("210 €" vs "210,00 €") —
     # JEDE muss mit dem config-abgeleiteten Funded-/SOLL-Wert übereinstimmen (Drift in einer
-    # Echo-Zelle = Fail). Integer-Form als Match (deckt "210" und "210,00" ab), Werte aus
-    # config abgeleitet, NICHT hardcoded.
+    # Echo-Zelle = Fail). Match via exakte Zahlen-Token-Set-Membership (_echo_int_numbers),
+    # NICHT Substring — verhindert False-PASS ('210' ⊂ '2100'). Werte aus config abgeleitet,
+    # NICHT hardcoded. (Codex-Review 2026-06-08 HIGH.)
     echoes = [
         (c.coordinate, c.value)
         for row in sat_ws.iter_rows()
@@ -185,13 +210,16 @@ def _check_g_sparrate_sigma(wb: openpyxl.Workbook, config_yaml_path: Path) -> st
     ]
     if not echoes:
         return "Funded-Echo-Zelle (enthält 'Funded'+'SOLL') fehlt im Satelliten-Monitor (Punkt G)"
-    funded_i = f"{int(funded)}"
-    soll_i = f"{int(anker)}"
+    funded_i = int(funded)
+    soll_i = int(anker)
     for coord, val in echoes:
-        if funded_i not in val:
-            return f"Funded-Echo-Drift {coord}: erwartet Funded {funded_i} €, live={val!r}"
-        if soll_i not in val:
-            return f"Funded-Echo-Drift {coord}: erwartet SOLL {soll_i} €, live={val!r}"
+        nums = _echo_int_numbers(val)
+        if funded_i not in nums:
+            return f"Funded-Echo-Drift {coord}: erwartet Funded {funded_i} € (exakte Zahl), live={val!r}"
+        if soll_i not in nums:
+            return (
+                f"Funded-Echo-Drift {coord}: erwartet SOLL {soll_i} € (exakte Zahl), live={val!r}"
+            )
 
     return None
 

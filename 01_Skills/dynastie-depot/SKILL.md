@@ -890,7 +890,7 @@ Wenn der User \!Rebalancing eingibt oder nach Sparplan-Verteilung fragt:
 3.  Prüfe Drift: Weicht eine Position \> 10% von Zielgewichtung ab?
 4.  Erstelle Sparplan-Vorschlag (Umstrukturierung 2026-06-07, 60/35/5):
     - Gesamtrate: ~1.031€/Monat
-    - ETF-Core: 60% (ING) = 616€
+    - ETF-Core: 60% = 616€ (physisch ING: IWDA+EIMI 380 · Scalable: AVGC+JEDI+WQTM 236)
     - Satelliten: 35% (Scalable) = 364€ SOLL (Funded transient, aktuell 210€)
     - Gold: 5% (Scalable/EWG2) = 51€
     - Max. 10% Single-Stock-Cap
@@ -905,10 +905,10 @@ Wenn der User \!Rebalancing eingibt oder nach Sparplan-Verteilung fragt:
 ## PORTFOLIO-KONTEXT (Kurzreferenz)
 
 **Satelliten (Scalable, 13):** ASML(T2), AVGO(T1), MSFT(T1), RMS(T3), SU(T3), BRK.B(T3), V(T2), TMO(T3), APH(T3), AMZN(T1), NOW(T1), KYCCF(T2), ZETA(T3) — NOW/KYCCF/ZETA Platzhalter-Score, O3-Vollanalyse pending
-**ETFs (ING):** IWDA, EIMI, AVGC | **(Scalable):** JEDI, WQTM
+**ETFs (ING):** IWDA, EIMI | **(Scalable):** AVGC, JEDI, WQTM
 **Gold:** EWG2 EUWAX Gold II (\~5%)
 **Slots:** 13 Aktien | **US-Cap:** 63%
-**Sparrate:** ~1.031€/mtl (60/35/5) | **Broker:** ING (ETF-Core) + Scalable (Satelliten + JEDI/WQTM + Gold)
+**Sparrate:** ~1.031€/mtl (60/35/5) | **Broker:** ING (IWDA+EIMI) + Scalable (AVGC/JEDI/WQTM + Satelliten + Gold)
 
 **Ersatzbank (1:1 Matrix):**
 

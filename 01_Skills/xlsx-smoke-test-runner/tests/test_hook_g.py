@@ -182,6 +182,57 @@ def test_check_g_passes_on_live_config_yaml_and_canonical_wb():
     assert err is None, f"§G fail gegen Live-config: {err}"
 
 
+# ----- _echo_int_numbers + §G False-PASS-Regression (Codex-Review 2026-06-08 HIGH) -----
+
+
+def test_echo_int_numbers_parses_all_real_echo_formats():
+    """Die 4 realen Echo-Formate (B3/K3/N20/B27) müssen 210 UND 364 exakt liefern."""
+    mod = _load_hook()
+    b3 = "Sparrate Satelliten: Funded 210 €/Monat | SOLL 364 €/Monat | Tier 1 = 40€, Tier 2 = 32€, Tier 3 = 18€"
+    k3 = "Ergebnis: ● 8 Volle Tier-Rate ● 1 D2-Sockelbetrag (V, 16€) ● 4 Eingefroren | Funded 210€ / SOLL 364€"
+    n20 = "→ Funded 210,00 € (SOLL 364,00 € – 154,00 € nicht gefunded: 138,00 € + 16,00 €)"
+    b27 = "TIER-SYSTEM | Funded Σ = 40+80+90 = 210€ | SOLL Σ = 160+96+108 = 364€"
+    for s in (b3, k3, n20, b27):
+        nums = mod._echo_int_numbers(s)
+        assert 210 in nums, f"210 fehlt in {s!r} -> {nums}"
+        assert 364 in nums, f"364 fehlt in {s!r} -> {nums}"
+
+
+def test_echo_int_numbers_rejects_substring_false_pass():
+    """Der alte Substring-Bug: '210' ⊂ '2100', '364' ⊂ '3640' — exakte Tokens dürfen NICHT matchen."""
+    mod = _load_hook()
+    nums = mod._echo_int_numbers("Funded 2100 € (SOLL 3640 €)")
+    assert nums == {2100, 3640}
+    assert 210 not in nums
+    assert 364 not in nums
+
+
+def test_check_g_fails_on_substring_false_pass_echo(tmp_path):
+    """REGRESSION: Echo 'Funded 2100 € (SOLL 3640 €)' bei config Funded 210/SOLL 364 → MUSS FAIL.
+
+    Vor dem Fix (Substring-Scan) lieferte das fälschlich PASS (210⊂2100, 364⊂3640).
+    """
+    mod = _load_hook()
+    cfg = _write_config_yaml(tmp_path, _build_canonical_sat_list_364())
+    wb = _build_sat_wb_clean()
+    wb["Satelliten Monitor"]["N20"] = "→ Funded 2100 € (SOLL 3640 €)"
+    err = mod._check_g_sparrate_sigma(wb, cfg)
+    assert err is not None, "Substring-False-PASS nicht gefangen (Regression!)"
+    assert "Funded" in err
+
+
+def test_check_g_passes_on_b27_expression_echo(tmp_path):
+    """B27-Format 'Funded Σ = 40+80+90 = 210€' darf NICHT false-failen (kein naiver Label-Anker)."""
+    mod = _load_hook()
+    cfg = _write_config_yaml(tmp_path, _build_canonical_sat_list_364())
+    wb = _build_sat_wb_clean()
+    wb["Satelliten Monitor"]["N20"] = (
+        "TIER-SYSTEM | Funded Σ = 40+80+90 = 210€ | SOLL Σ = 160+96+108 = 364€"
+    )
+    err = mod._check_g_sparrate_sigma(wb, cfg)
+    assert err is None, f"B27-Ausdrucksformat false-failed: {err}"
+
+
 # ----- P13 Sheets-Tupel-Expansion -----
 
 

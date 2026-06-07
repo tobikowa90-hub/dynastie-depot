@@ -19,7 +19,7 @@ brokers:
   ing:
     zweck: "ETF-Core + Freistellungsauftrag"
     sparanteil_pct: 60  # Umstrukturierung 2026-06-07: Split 65→60
-    sparrate_eur: 616.00  # ETF-Block: IWDA 257 + EIMI 123 + AVGC 103 + JEDI 82 + WQTM 51 = 616 (exUSA gestoppt 04.06.)
+    sparrate_eur: 616.00  # ETF-Core-Bucket gesamt (60%-Allokation): IWDA 257 + EIMI 123 + AVGC 103 + JEDI 82 + WQTM 51 = 616. Bucket-Modell, nicht physisch — physisch hält ING NUR IWDA+EIMI=380; AVGC+JEDI+WQTM=236 liegen bei Scalable (exUSA gestoppt 04.06.; Phase-A → alles Scalable, ING danach gekündigt, Plan §2 Z.94f).
     freistellung_eur: 1500
   scalable:
     zweck: "Satelliten + Alpha"
@@ -103,7 +103,7 @@ system_regeln:
     schwelle_check: "CN + TW + MY + TH + VN Anteil an Revenue + Supply-Chain-Anteil > 35% → FLAG"
 
 # ─────────────────────────────────────────────
-# ETF-CORE (ING)
+# ETF-CORE (60% — Bucket über ING + Scalable verteilt; broker-Tag = physische Lage)
 # ─────────────────────────────────────────────
 # Umstrukturierung 2026-06-07: exUSA gestoppt 04.06.; JEDI + WQTM neu (zwei Themen-Wetten, zusammen 13% ETF-Block); Gold EUWAX→EWG2. ISIN/Rate aus UMSTRUKTURIERUNG-2027 §2.
 etfs:
@@ -122,7 +122,7 @@ etfs:
   - ticker: AVGC
     name: "Avantis Global Small Cap Value"
     isin: IE0003R87OG3
-    broker: ING
+    broker: Scalable  # KORREKTUR 2026-06-08: physisch Scalable, nicht ING (ING hält nur IWDA+EIMI; Plan §2 Z.34 "läuft" ohne ING-Vermerk)
     typ: "Factor / Small Cap Value"
     rate_eur: 103
   - ticker: JEDI
