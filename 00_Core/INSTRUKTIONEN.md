@@ -240,16 +240,15 @@ Impuls / Idee
 2. Drift prüfen: Weicht eine Position >10% von Zielgewichtung ab?
 3. Sparplan-Vorschlag erstellen mit **formeller Berechnungsformel:**
 
-**Gewichte:** D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0
+**Tier-Modell (Umstrukturierung 2026-06-07, löst flaches Equal-Weight-Modell ab):**
+`effektive Rate = satelliten_tier_raten[tier] × DEFCON-Modulation × FLAG`
+**Tier-Basis (config.yaml `satelliten_tier_raten`):** Tier 1 = 40€ | Tier 2 = 32€ | Tier 3 = 18€ (Optimal-Fall D3/D4 clean)
+**Modulation:** D3/D4 → ×1,0 | D2 → ×0,5 (Sockelbetrag) | D1 → 0€ | 🔴 FLAG → 0€ (heilig, überschreibt DEFCON score-unabhängig)
 
-**Formel:** `Einzelrate = Aktien-Budget (285€) / Σ Gewichte × Eigengewicht`
-
-**Rechenbeispiel (aktueller Stand 18.04.2026: 7× D4/D3 + 2× D2 aktiv (V+TMO), 2× 🔴 eingefroren (MSFT+APH)):**
-- Nenner = (7 × 1.0) + (2 × 0.5) = **8.0**
-- D4/D3-Einzelrate = 285€ / 8.0 × 1.0 = **35,63€**
-- D2-Einzelrate (V, TMO) = 285€ / 8.0 × 0.5 = **17,81€**
-- 🔴/D1-Rate (MSFT, APH) = **0€**
-- Summencheck: 7 × 35,63€ + 2 × 17,81€ + 0 + 0 = 249,41 + 35,62 = 285,03€ (≈285€, 3 ct Rundung) ✓
+**Rechenbeispiel (Stand 2026-06-07, 13-Roster):**
+- SOLL-Σ = Tier1 4×40 (AMZN/MSFT/NOW/AVGO) + Tier2 3×32 (V/KYCCF/ASML) + Tier3 6×18 (RMS/BRK.B/TMO/APH/SU/ZETA) = 160 + 96 + 108 = **364€** (== config.yaml brokers.scalable.sparrate_eur)
+- Funded-Σ (moduliert) = NOW 40 + [ASML 32 + KYCCF 32 + V 16] + [RMS/BRK.B/TMO/SU/ZETA je 18 = 90] = **210€**; AMZN/MSFT/AVGO/APH = 0€ (FLAG)
+- Differenz SOLL−Funded = 154€ → Rebalancing-Tool lenkt **freies Kapital value-based** auf untergewichtete Positionen (voller Monatsbeitrag deployed, nur Verteilung verschiebt sich)
 
 4. **Steuer-Bremse**: Niemals durch Verkauf rebalancen → Sparplan umleiten
 5. US-Cap prüfen: Bleibt US-Exposure unter 63%?
@@ -589,29 +588,31 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 
 ---
 
-## 22. Sparplan-Formel (aktuell 18.04.2026, v3.7)
+## 22. Sparplan-Formel (3-Tier, aktuell 2026-06-07 — Umstrukturierung Phase A)
 
-**Formel:** `Einzelrate = 285€ / Σ Gewichte × Eigengewicht`
-**Gewichte:** D4/D3 (kein 🔴)=1,0 | D2 (kein 🔴)=0,5 | D1/🔴 FLAG=0,0
+**Formel:** `effektive Rate = satelliten_tier_raten[tier] × DEFCON-Modulation × FLAG`
+**Tier-Basis:** T1 40€ | T2 32€ | T3 18€ (Optimal D3/D4 clean) | **Modulation:** D3/D4 ×1,0 · D2 ×0,5 · D1 0 · 🔴 FLAG 0 (heilig)
 
-| Position | Score | DEFCON | Gewicht | Rate |
-|----------|-------|--------|---------|------|
-| AVGO | 84 | 🟢 4 | 1,0 | 35,63€ |
-| ASML | 68 | 🟡 3 | 1,0 | 35,63€ |
-| MSFT | 59 | 🟠 2 | 0,0 | 0€ (🔴 FLAG) |
-| RMS | 68 | 🟡 3 | 1,0 | 35,63€ |
-| VEEV | 74 | 🟡 3 | 1,0 | 35,63€ |
-| SU | 69 | 🟡 3 | 1,0 | 35,63€ |
-| BRK.B | 75 | 🟡 3 | 1,0 | 35,63€ |
-| V | 63 | 🟠 2 | 0,5 | 17,81€ |
-| TMO | 64 | 🟠 2 | 0,5 | 17,81€ |
-| APH | 63 | 🟠 2 | 0,0 | 0€ (🔴 FLAG score-basiert) |
-| COST | 69 | 🟡 3 | 1,0 | 35,63€ |
+| Position | Tier | Score | DEFCON | Modulation | Rate |
+|----------|------|-------|--------|-----------|------|
+| NOW | T1 | — (O3) | 🟡 3\* | ×1,0 | 40€ |
+| AVGO | T1 | 56 | 🟠 2 | 🔴 FLAG | 0€ |
+| MSFT | T1 | 50 | 🟠 2 | 🔴 FLAG | 0€ |
+| AMZN | T1 | 42 | 🔴 1 | 🔴 FLAG/D1 | 0€ |
+| ASML | T2 | 68 | 🟡 3 | ×1,0 | 32€ |
+| KYCCF | T2 | — (O3) | 🟡 3\* | ×1,0 | 32€ |
+| V | T2 | 64 | 🟠 2 | ×0,5 | 16€ |
+| RMS | T3 | 68 | 🟡 3 | ×1,0 | 18€ |
+| BRK.B | T3 | 71 | 🟡 3 | ×1,0 | 18€ |
+| TMO | T3 | 67 | 🟡 3 | ×1,0 | 18€ |
+| APH | T3 | 61 | 🟠 2 | 🔴 FLAG | 0€ |
+| SU | T3 | 69 | 🟡 3 | ×1,0 | 18€ |
+| ZETA | T3 | — (O3) | 🟡 3\* | ×1,0 | 18€ |
 
-**Summe:** 7×1,0 + 2×0,5 = 8,0 | **Volle Rate:** 35,63€ | **D2-Rate (V, TMO):** 17,81€ | **Eingefroren (MSFT, APH):** 0€
-**Check:** 7×35,63 + 2×17,81 = 249,41 + 35,62 = 285,03€ (≈285€, 3 ct Rundung) ✓
+\* NOW/KYCCF/ZETA = DEFCON-3-Platzhalter (Owner-Conviction-Add ohne Score, volle Tier-Rate bis O3-Vollanalyse).
+**SOLL-Σ:** 4×40 + 3×32 + 6×18 = **364€** (== config.yaml brokers.scalable.sparrate_eur) | **Funded-Σ:** 40 + 80 + 90 = **210€** | **Differenz 154€** (FLAG-frozen AMZN/MSFT/AVGO/APH 138€ + V-D2-Sockel 16€) → Rebalancing-Tool value-based.
 
-> **Hinweis Schema-Threshold-Drift 18.04.:** 5 Tickers (BRK.B/VEEV/SU/COST/RMS) wurden beim Aligning der Schema-SKILL-Thresholds von D4→D3 korrigiert. Label-Fix, Sparrate unverändert (D4 + D3 teilen Gewicht 1,0).
+> **SSoT:** config.yaml `satelliten_tier_raten` + `sparplan_verteilung`. Das flache Equal-Weight-Modell (285€/Σ-Gewichte, volle Rate 35,63€/D2 17,81€) ist seit 2026-06-07 historisch abgelöst (Governance-Override UMSTRUKTURIERUNG-2027 §6.1).
 
 ---
 

@@ -1,6 +1,7 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner (Sliding-Window — letzte 2 Sessions; volle Historie → `05_Archiv/SESSION-HANDOVER-bis-2026-05-25.md` + git log + Vault `log.md`):**
+- **Datum:** 2026-06-08 (So/Mo) ~00:00–01:00 Europe/Berlin — **✅ Umstrukturierung-2027 Phase A: Codex-Review + 00_Core-Markdown-Sync (bzgl. bestehender Scores neutral).** AVGC-Broker-Fix ING→Scalable + Hook-§G-False-PASS-Fix (exakte Zahlen-Token-Membership, +4 Tests, 59 passed) committed `1e3c817`. 00_Core nachgezogen auf 13-Roster + 3-Tier (40/32/18 × DEFCON × FLAG) + 60/35/5: STATE (Critical-Alerts+Forward), PORTFOLIO (Tabelle+Sparraten-Modell), Faktortabelle (DATA-Rows VEEV/COST raus, NOW/KYCCF/ZETA Platzhalter rein), KONTEXT (§2-§5 + neue §4b AVD-2027-Struktur: Invesco-World + Riester-Übertrag + Broker-Konsolidierung→Scalable), INSTRUKTIONEN §9+§22 Formel, PIPELINE-Trigger. **Pending:** Vault-Sync (Entity/Index/Concept-Drift + NOW/KYCCF/ZETA-Pages + Backlinks) + O3-Scoring (NOW/KYCCF/ZETA).
 - **Datum:** 2026-05-26 (Mo) ~22:00-23:15 Europe/Berlin — **✅ Mega-Evening 3-Wellen DONE (System-Zustand-Events, scoring-neutral, 3 Commits gepusht).** (a) **SYSTEM.md Slim-Refactor Welle 3 (Slim C)** `1de6fd7`: 4 Sub-Section-Strips unter §System-Zustand (Passive Read-Only Data Layer FinnHub-Mega → 1 Live-Bullet + Pflege-Regel / Briefing-Status → 6 lean Bullets / Earnings-Calendar → 4 Bullets / Plugin-Layer → 2 Paragraphs mit Hybrid-Final-State erhalten); Bilanz 117→82 Z., 30→18 KB (-40%); Welle 1+2+3 kumuliert 47→18 KB (-62%). (b) **Memory-Fork-Konsolidierung** `b0fb526`: OneDrive-Path 43→0 Files, Code-Path 55→78 (12 identische OD-Dupes gelöscht, 3 Code-Path-wins, 2 echte Merges (Tavily Stage-2-Block + CodeRabbit Workflow-Details), 23 OD-only migriert, 3 Discards); **Anti-Fork-Direktive in CLAUDE.md `## Kontinuierliches Lernen` verankert** (Code-Path = einziger Speicherort + einzige Quelle ab sofort); 7 S-Tier-Memory-Pointer expliziert; Archive belt-and-suspenders `05_Archiv/memory-fork-onedrive-archiv-2026-05-26/` (43 Files, 221K, gitignored). (c) **TOKEN-RULES.md Inline-Migrate Option B** `1b80fc8`: 3 unique-value Claude-Action-Rules (Snapshot-First / DEFCON-1-Stopp / /compact-Cue) inline in CLAUDE.md §Verhalten (+146 Tokens/Session statt Auto-Load +915 = ~6.3× effizienter); TOKEN-RULES.md slim 41→38 Z. (-184 Tokens), nur Operator-Detail + Skill-§-Cross-Refs verbleibend. **Doppel-SSoT eliminiert:** Claude-Action = CLAUDE.md SSoT / Operator-Action = TOKEN-RULES.md SSoT.
 - **Datum:** 2026-05-26 (Mo) ~18:30 Europe/Berlin — **✅ SYSTEM.md Slim-Refactor Welle 1 + Welle 2 (Migration B) DONE (System-Zustand-Event, scoring-neutral, 2 Commits `a4323ef` + `537cf13`).** Welle 1: 6 Strips Hard-Obsolete (Briefing v3.0.6 Phase-3.5-Narrative + Open-Backlog-21.04. 8 Items + 6-Paper-Ingest-Doppel + Plugin-Substrate-Deep-Sweep 13.05. + core-slim-refactor Mega-Bullet → 1-Zeile + Footer-Mega-Changelog), ~7700 Wörter Doku-Bloat raus. Migrate-before-Strip-Disziplin pro Schnitt: 2 stale Memory-Refs (`feedback_correctness_over_runtime` + `feedback_spec_section_drift`) OneDrive-Path → Code-Path migriert; Memory-Fork-Issue persistiert. Welle 2: 1 Migrate (Allokation 65/30/5 → PORTFOLIO.md) + 5 Strips (Live-Verify 5/11 / Backtest-Ready 27-Records / Track-5-Pläne / KG-Roadmap / claude-mem Context-Tuning 17.05.); Block-für-Block-Empirie-Check (Forward-Gates verifiziert). Bilanz Welle 1+2: ~47 KB → ~30 KB (-36%).
 
@@ -14,8 +15,11 @@
 
 | Datum | Item | Aktion |
 |-------|------|--------|
-| **27.05.** | VEEV Q1 FY27 | Klasse-B Earnings (yfinance-Pull 30.04. confirmed) — Tag 0 earnings-recap + FLAG-Quick-Check, Tag +1 Vollanalyse (§19.1) |
-| **28.05.** | COST Q3 FY26 | Klasse-B Earnings (Membership-Yield-Watch) — gleiche §19.1-Discipline |
+| **pending (O3)** | NOW / KYCCF / ZETA | Scoring-Nachzug — DEFCON-3-Platzhalter → echter Score (NOW US `!Analysiere` · KYCCF JP `non-us-fundamentals` · ZETA US) |
+| **~23.07.** | APH Q2 FY26 | Klasse-B (China-Tax + CommScope-Net-Lev, Score<65 FLAG) — §19.1 Tag+1 |
+| **~Ende Juli** | AMZN Q2 / V Q3 / TMO Q2 | Klasse-B (AMZN CapEx/OCF-FLAG-Re-Eval · V Cross-Border-Velocity · TMO Organic+Clario) |
+| **~02./03.08.** | BRK.B Q2 FY26 | Klasse-B (KHC-OTTI / GEICO-Decel / Form-13F) |
+| **~02.09.** | AVGO Q3 FY26 | Klasse-B FLAG-Resolve-Gate (§19.1 Tag+1) |
 
 ### 📋 Pending offene Slots (kein fester Termin)
 

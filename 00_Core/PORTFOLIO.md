@@ -1,8 +1,8 @@
 # PORTFOLIO.md — Depot-Live-State
 
-**Stand:** 06.06.2026 (letzter Score-Move AVGO 04.06. Q2 FY26 53→56 FLAG-bleibt; davor stabil seit 04.05. BRK.B; Doctor-Mo-Anker 7P/7W/0F). Score-/FLAG-/Sparraten-Chronik aller Moves seit 17.04. → CORE-MEMORY §12.X + git log (kanonische Detail-Quelle).
+**Stand:** 08.06.2026 (Umstrukturierung-2027 Phase A: Roster 12→13, Equal-Weight→3-Tier, Split 60/35/5; letzter Score-Move AVGO 04.06. Q2 FY26 53→56 FLAG-bleibt). Score-/FLAG-/Sparraten-Chronik aller Moves seit 17.04. → CORE-MEMORY §12.X + git log (kanonische Detail-Quelle).
 
-**Allokation:** 65/30/5 (ETF 617,50€ / Satelliten 285€ / Gold 47,50€), US-Cap 63% / Ist ~46%.
+**Allokation:** 60/35/5 (ETF 616€ / Satelliten SOLL 364€ [Funded 210€] / Gold 51€), Gesamt ~1031€/Mt. US-Cap 63% / Ist ~46%. ETF-Broker: ING (IWDA+EIMI) · Scalable (AVGC+JEDI+WQTM); exUSA raus.
 
 ## Verweise
 - [INSTRUKTIONEN.md §22](INSTRUKTIONEN.md#22-sparplan-formel-aktuell-18042026-v37) — Sparplan-Formel (Nenner-Berechnung)
@@ -13,24 +13,29 @@
 
 ---
 
-## Portfolio-State (12 Satelliten)
+## Portfolio-State (13 Satelliten — 3-Tier Conviction)
 
-| Ticker | Score | DEFCON | Rate | FLAG | Nächster Trigger |
-|--------|-------|--------|------|------|------------------|
-| AVGO | **56** | **🟠 2** | **0€** | 🔴 Insider-Selling 90d $106M+ (27.04.) | **Q3 FY26 ~02.09.2026** (amc) Re-Eval + FLAG-Resolve-Gate; Q2 FY26 Vollanalyse 04.06. Score 53→56 (§12.1; Beat-Raise aber FLAG bleibt: Samueli $281M=10b5-1 ausgeschl., C-Suite $106M diskr.) |
-| BRK.B | **71** | 🟡 3 | **38,00€** | ✅ Insurance Exception | Q2 FY26 ~02./03.08. — KHC-OTTI / GEICO-Decel / Form-13F Apple-Trim ~14.05. / Buyback-Cashflow-Reconciliation (PIPELINE #36-#41) |
-| VEEV | 74 | 🟡 3 | **38,00€** | ✅ | **03.06.2026** (amc) Q1 FY27 Earnings (Date-Recheck 25.05. Finnhub+Yahoo+IR konvergent; vorherige 27.05.-Annahme war Stale-yfinance-Pull 30.04.) |
-| SU | 69 | 🟡 3 | **38,00€** | ✅ | H1 Juli/Aug |
-| COST | 69 | 🟡 3 | **38,00€** | ✅ Screener-Exception | **28.05.2026** Q3 FY26 Earnings (yfinance-Pull 30.04. — Membership-Yield-Watch); Q1 FY27 ~Dez |
-| RMS | 68 | 🟡 3 | **38,00€** | ✅ Screener-Exception | H1 Juli/Aug |
-| ASML | 68 | 🟡 3 | **38,00€** | ✅ | Q2 2026 (Q1 17.04. Vollanalyse ✅) |
-| TMO | 67 | 🟡 3 | **38,00€** | ✅ Clean (fcf_trend_neg Resolve-Gate CLEAR 23.04.) | Q2 FY26 ~Ende Juli — Organic-Akzeleration + Clario-Integration-Check |
-| **V** | **64** | **🟠 2** | **19,00€** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity + ROIC-Methodology-Verify** |
-| APH | **61** | 🟠 2 | **0€** | 🔴 Score-basiert (Score 61 < 65 D3-Threshold) | Q2 FY26 ~23.07. — China-Tax + CommScope-Net-Lev Methodology-Watch (Score 63→61 am 30.04., Detail §12.7) |
-| MSFT | **50** | 🟠 2 | **0€** | 🔴 CapEx/OCF aktiv (Trigger A ✅ 57,7% / B ❌ / C ✅✅ — UND nicht vollumfänglich) | Q4 FY26 ~Juli — CapEx-Plateau-Recheck + WACC-Methodology-Verify; Insider-Block-Re-Score 14.05. (PIPELINE #25-#27) |
-| **AMZN** | **42** | **🔴 1** | **0€** | 🔴 CapEx/OCF aktiv (TTM netto 99,2% / gross 101,7% ≫60% — Neuaufnahme 12. Satellit 15.05.) | **Q2 FY26 ~Ende Juli — CapEx/OCF-FLAG-Re-Eval + Vollanalyse** |
+> Rate = Tier-Basis (T1 40 / T2 32 / T3 18€) × DEFCON-Modulation (D3/D4 ×1,0 · D2 ×0,5 · D1 0) × FLAG (🔴 → 0€, heilig). `—` Score = O3-Scoring noch nachzuholen (DEFCON-3-Platzhalter, Owner-Conviction-Add §6.4).
 
-**Sparraten-Nenner:** 7×1,0 + 1×0,5 + 4×0 = **7,5** → 38,00€ volle / 19,00€ D2 / 0€ FLAG. **Summe 285€** ✓ (7×38 + 1×19 + 4×0). FLAG-Override-Raten Score-unabhängig — Score-Moves bei AVGO/MSFT/APH/AMZN wirken nicht auf Nenner solange FLAG aktiv. **AMZN-Neuaufnahme (12. Satellit, User-Direktive 18.05.) ist nenner-neutral:** FLAG=Gewicht 0,0 → Nenner unverändert 7,5, alle 11 bestehenden Einzelraten unverändert (38€/19€/0€).
+| Tier | Ticker | Score | DEFCON | Rate | FLAG | Nächster Trigger |
+|------|--------|-------|--------|------|------|------------------|
+| **T1** | NOW | **— (O3)** | 🟡 3\* | **40€** | ✅ Platzhalter | O3-Vollanalyse pending (US `!Analysiere`) — Owner-Add ohne Score (§6.4, analog AMZN) |
+| **T1** | AVGO | **56** | 🟠 2 | **0€** | 🔴 Insider-Selling 90d $106M+ (27.04.) | **Q3 FY26 ~02.09.** (amc) Re-Eval + FLAG-Resolve-Gate; Q2 04.06. 53→56 (§12.1; Beat-Raise, FLAG bleibt: Samueli $281M=10b5-1 ausgeschl., C-Suite $106M diskr.) |
+| **T1** | MSFT | **50** | 🟠 2 | **0€** | 🔴 CapEx/OCF (A ✅ 57,7% / B ❌ / C ✅✅ — UND nicht vollumfänglich) | Q4 FY26 ~Juli — CapEx-Plateau + WACC-Methodology-Verify; Insider-Block-Re-Score (PIPELINE #25-#27) |
+| **T1** | AMZN | **42** | 🔴 1 | **0€** | 🔴 CapEx/OCF (TTM netto 99,2% ≫60%) | **Q2 FY26 ~Ende Juli — CapEx/OCF-FLAG-Re-Eval + Vollanalyse** |
+| **T2** | ASML | **68** | 🟡 3 | **32€** | ✅ | Q2 2026 (Q1 17.04. Vollanalyse ✅) |
+| **T2** | KYCCF | **— (O3)** | 🟡 3\* | **32€** | ✅ Platzhalter | O3 pending (JP `non-us-fundamentals`, JPY/IFRS) — Owner-Add ohne Score (§6.4) |
+| **T2** | V | **64** | 🟠 2 | **16€** | ✅ Clean (D2-Sockelbetrag = 50% von 32) | **Q3 FY26 ~Ende Juli — Cross-Border-Velocity + ROIC-Methodology-Verify** |
+| **T3** | BRK.B | **71** | 🟡 3 | **18€** | ✅ Insurance Exception | Q2 FY26 ~02./03.08. — KHC-OTTI / GEICO-Decel / Form-13F Apple-Trim / Buyback-Reconciliation (#36-#41) |
+| **T3** | SU | **69** | 🟡 3 | **18€** | ✅ | H1 Juli/Aug |
+| **T3** | RMS | **68** | 🟡 3 | **18€** | ✅ Screener-Exception | H1 Juli/Aug |
+| **T3** | TMO | **67** | 🟡 3 | **18€** | ✅ Clean (fcf_trend_neg Resolve-Gate CLEAR 23.04.) | Q2 FY26 ~Ende Juli — Organic-Akzeleration + Clario-Integration |
+| **T3** | APH | **61** | 🟠 2 | **0€** | 🔴 Score-basiert (61 < 65 D3-Threshold) | Q2 FY26 ~23.07. — China-Tax + CommScope-Net-Lev (Score 63→61 am 30.04., §12.7) |
+| **T3** | ZETA | **— (O3)** | 🟡 3\* | **18€** | ✅ Platzhalter | O3-Vollanalyse pending (US, war QuickScreener-Rot, bewusste Spekulation) — Owner-Add ohne Score (§6.4) |
+
+\* DEFCON-3-Platzhalter (NOW/KYCCF/ZETA): Owner-Conviction-Add ohne DEFCON-Score → volle Tier-Rate bis O3-Vollanalyse echten Score liefert.
+
+**Sparraten-Modell (3-Tier × DEFCON-Modulation × FLAG):** **SOLL-Σ = 4×40 + 3×32 + 6×18 = 364€** (== `config.yaml` brokers.scalable.sparrate_eur). **Funded-Σ = 210€** = NOW 40 + [ASML 32 + KYCCF 32 + V 16] + [RMS/BRK.B/TMO/SU/ZETA je 18 = 90]. Differenz **154€** (138€ FLAG-eingefroren AMZN/MSFT/AVGO/APH + 16€ V-D2-Sockel) → Rebalancing-Tool lenkt value-based auf untergewichtete Positionen (voller Monatsbeitrag deployed, nur Verteilung verschiebt sich). FLAG ist score-unabhängig (heilig) — Score-Moves bei geflaggten Titeln wirken nicht auf die Rate solange FLAG aktiv.
 
 > **Chronik aller Score-/FLAG-/Sparraten-Moves seit 17.04.2026** → CORE-MEMORY §12.X (Per-Ticker) + git log + `score_history.jsonl`. PORTFOLIO.md hält nur den Live-State; Vorgeschichte-Quotes 17.04.→04.05. entfernt (Cleanup 11.05.) — kein Info-Loss, da §12 + jsonl SSoT sind.
 
@@ -47,7 +52,7 @@
 - **MSFT FLAG-Status (UPDATED 30.04.2026):** Trigger A ✅ 57,7% / B ❌ FAIL CY26 $190B +23% Surprise / C ✅✅ Azure +39% cc — UND nicht vollumfänglich → FLAG bleibt aktiv. Re-Eval Q4 FY26 ~Juli + Insider-Block-Re-Score post-14.05. (Skip-Window läuft).
 - **TMO Q2 Re-Check** (Q1 23.04. resolved): Organic-Akzeleration H2 3-4%-Guide + Clario-Integration-Execution — Q2 Ende Juli.
 - **AVGO Re-Eval Q3 FY26 ~02.09.2026 (amc) [FLAG-Resolve-Gate primär]** (FLAG aktiv seit 27.04. $106,4M Diskr. 90d >> $20M-Resolve-Schwelle — Q2-Earnings 03.06. Beat-and-Raise [Rev $22,2B +48%, AI-Semi $10,8B +143%, EPS $2,44 Beat] aber FLAG bleibt: Samueli $281M=10b5-1 korrekt ausgeschl., C-Suite $106M non-plan; Q2 Vollanalyse 04.06. Score 53→56 D2 [sell-the-news −12,6% da FY27-AI nicht angehoben]; Detail §12.1).
-- **AMZN Neuaufnahme 12. Satellit (15.05.2026, User-Direktive 18.05.):** Score 42/D1, 🔴 CapEx/OCF-FLAG TTM 99,2% netto (≫60%, schärfer als GOOGL 74-79%). FCF TTM nur $1,2B (-95% YoY, FCF-Yield 0,04%). Sparrate **0€ regelkonform** (User-Entscheidung: kein Owner-Override, FLAG heilig). Slot-Erweiterung 11→12 nenner-neutral. **Resolve-Gate:** CapEx/OCF <60% — frühestens wenn Monetarisierung der KI-CapEx OCF überholt (Jassy: "early years FCF challenged", 6-24 Mt. Lag). Re-Eval Q2 FY26 ~Ende Juli. Detail §12.<amzn> + score_history.jsonl + flag_events.jsonl.
+- **AMZN (Tier 1, Neuaufnahme 15.05.2026, User-Direktive 18.05.):** Score 42/D1, 🔴 CapEx/OCF-FLAG TTM 99,2% netto (≫60%, schärfer als GOOGL 74-79%). FCF TTM nur $1,2B (-95% YoY, FCF-Yield 0,04%). Sparrate **0€ regelkonform** (User-Entscheidung: kein Owner-Override, FLAG heilig). Slot-Erweiterung 11→12 nenner-neutral. **Resolve-Gate:** CapEx/OCF <60% — frühestens wenn Monetarisierung der KI-CapEx OCF überholt (Jassy: "early years FCF challenged", 6-24 Mt. Lag). Re-Eval Q2 FY26 ~Ende Juli. Detail §12.<amzn> + score_history.jsonl + flag_events.jsonl.
 
 ---
 
@@ -55,14 +60,14 @@
 
 | Datum | Ticker | Klasse | Aktion |
 |-------|--------|--------|--------|
-| 28.04. (overdue) | SNPS/SPGI | B | Watchlist-Review Q1 Earnings — Nachholbedarf (PIPELINE #62) |
-| Mai | ZTS/PEGA/CPRT | B | Q-Earnings + Slot-16 |
-| 28.05. | COST | B | Q3 FY26 Earnings (Membership-Yield-Watch) |
-| ~02.09. (amc) | AVGO | B | Q3 FY26 Earnings + FLAG-Resolve-Gate (Q2 04.06. Score 53→56, FLAG bleibt $106M C-Suite diskr.) |
-| 03.06. (amc) | VEEV | B | Q1 FY27 Earnings (Date-Korrektur 25.05., war 27.05. = Stale) |
-| ~Ende Juli | AMZN | B/C | Q2 FY26 Earnings — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse (Score 42/D1, FLAG seit 15.05.) |
+| pending (O3) | NOW / KYCCF / ZETA | A | Scoring-Nachzug — echter Score ersetzt DEFCON-3-Platzhalter (NOW US · KYCCF JP · ZETA US) |
+| ~23.07. | APH | B | Q2 FY26 — China-Tax + CommScope-Net-Lev (Score 61<65 FLAG) |
+| ~Ende Juli | AMZN | B/C | Q2 FY26 — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse (Score 42/D1) |
+| ~Ende Juli | V / TMO | B | V Q3 FY26 (Cross-Border-Velocity + ROIC-Verify) · TMO Q2 (Organic-Akzeleration + Clario) |
+| ~02./03.08. | BRK.B | B | Q2 FY26 — KHC-OTTI / GEICO-Decel / Form-13F Apple-Trim (#36-#41) |
+| ~02.09. (amc) | AVGO | B | Q3 FY26 + FLAG-Resolve-Gate (Q2 04.06. Score 53→56, FLAG bleibt) |
 
 
 ---
 
-*🦅 PORTFOLIO.md v1.2 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-05-23 (Live-State stabil seit AMZN-Neuaufnahme 18.05.; 00_Core Slim-Refactor 23.05. — stale Earnings-Window-Note entfernt. Detail-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)*
+*🦅 PORTFOLIO.md v1.3 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-06-08 (Umstrukturierung-2027 Phase A: 13-Roster + 3-Tier-Conviction-Modell + 60/35/5; VEEV/COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter. Detail-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)*

@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 2026-05-23 (Live-State; letzter Score-Move BRK.B 75→71 am 04.05.; AMZN-Neuaufnahme 12. Satellit 18.05. Score 42/D1. Detail-Move-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)
+**Stand:** 2026-06-08 (Umstrukturierung-2027 Phase A: Roster 12→13, VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter ohne Score; letzter Score-Move AVGO 04.06. 53→56. Detail-Move-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -36,27 +36,29 @@
 | TMO | ~15% 5J | 8,04% GAAP / 17,18% bereinigt (GW-Ausnahme) vs WACC 10,44% | 40,9% | 2.57x (Pre-Clario) | Wide | **67** | **🟡 3** | ✅ Clean (fcf_trend_neg Resolve-Gate CLEAR — Q1 FCF $825M +121% YoY, WC-Unwind bestätigt) | **2026-04-23** | **Q2 FY26 ~Ende Juli** — Organic-Akzeleration + Clario-Integration-Check |
 <!-- DATA:RMS -->
 | RMS | ~28% 5J FCF | 24.2% TTM | ~71% | Netto-Cash +€9,89B | Wide | 68 | 🟡 3 | ✅ Clean | 2026-04-17 | H1 2026 Report Juli/Aug 2026 |
-<!-- DATA:VEEV -->
-| VEEV | — | — | — | — | Wide | 74 | 🟡 3 | ✅ Clean | 2026-04-17 | Nächste Earnings |
 <!-- DATA:SU -->
 | SU | ~10% 5J | 10.48% TTM | ~42% | 2.51x | Narrow/Wide | 69 | 🟡 3 | ✅ Clean | 2026-04-17 | H1 2026 Earnings Juli/Aug 2026 |
 <!-- DATA:BRK.B -->
 | BRK.B | N/A (Float-Modell) | 5.6–7.8% GAAP (Insurance-Cycle, Float-Spread > Standard-ROIC) | N/A (Holdings) | Netto-Cash $380B effektiv (T-Bill-Settlement-bereinigt; nominal $397,4B − $17,2B Payable, 10-Q p.2-3 Primary; Forbes/Bill-Stone Secondary-Confirm) | Wide | **71** (Codex-R1-REJECT-Korrektur 75→71 Δ-4) | 🟡 3 | ✅ Clean (Insurance Exception) | **2026-05-04** | **Q2 FY26 ~02./03.08.** — KHC-OTTI-Resolve + GEICO-UW-Decel-Trend + Form-13F Apple-Trim-Magnitude + Buyback-Cashflow-Reconciliation |
 <!-- DATA:APH -->
 | APH | 19,0% FY25 | 28% bereinigt §410 (CommScope-GW) vs WACC 14,30% | 36,9% FY25 | 1,6x Q1 FY26 (post-CommScope) | Wide | **61** | 🟠 2 | 🔴 FLAG (Score-basiert <65 D3) | **2026-04-30** | **Q2 FY26 ~23.07.** — China-Tax-ETR-27%-Verify + CommScope-Net-Lev-Verlauf + ROIC-GW-Bereinigung-Full-Year-Check |
-<!-- DATA:COST -->
-| COST | ~3% 5J | 5.6% GAAP (MY 15.2%) | ~12.7% | <1x | Wide | 69 | 🟡 3 | ✅ Clean (Screener-Exception) | 2026-04-17 | Q1 FY27 Earnings ~Dez 2026 |
 <!-- DATA:AMZN -->
 | AMZN | ~1% 5J (FCF TTM $1,2B, CapEx-Boom) | 5,4% 6Q-Ø GAAP vs WACC 15,57% (defeatbeta; §410 N/A GW 2,6%) | 50,3% FY25 (3J +1,65pp/J) | NetDebt/EBITDA ~0,4x | Wide | **42** | **🔴 1** | 🔴 CapEx/OCF TTM 99,2% netto (FLAG aktiv 2026-05-15 — Sparrate 0€, Resolve-Gate <60%) | **2026-05-15** | **Q2 FY26 ~Ende Juli — CapEx/OCF-FLAG-Re-Eval + Vollanalyse** |
+<!-- DATA:NOW -->
+| NOW | — | — | — | — | — | **— (O3)** | 🟡 3\* | ✅ Platzhalter (Owner-Add §6.4) | — | O3-Vollanalyse (US `!Analysiere`) — Score nachzuholen |
+<!-- DATA:KYCCF -->
+| KYCCF | — | — | — | — | — | **— (O3)** | 🟡 3\* | ✅ Platzhalter (Owner-Add §6.4) | — | O3 `non-us-fundamentals` (JP, JPY/IFRS) — Score nachzuholen |
+<!-- DATA:ZETA -->
+| ZETA | — | — | — | — | — | **— (O3)** | 🟡 3\* | ✅ Platzhalter (Owner-Add §6.4) | — | O3-Vollanalyse (US, war QuickScreener-Rot) — Score nachzuholen |
 <!-- END_TABLE -->
 
-**Aktive FLAGs:** MSFT (CapEx/OCF >60%) | **AVGO (Insider-Selling 90d $106M+ — aktiviert 27.04.2026)** | APH (Score-basiert, DEFCON 2 seit Threshold-Alignment) | **AMZN (CapEx/OCF TTM 99,2% netto — aktiviert 2026-05-15, Neuaufnahme 12. Satellit)**
+**Aktive FLAGs:** MSFT (CapEx/OCF >60%, T1) | **AVGO (Insider-Selling 90d $106M+ — aktiviert 27.04.2026, T1)** | APH (Score-basiert <65, DEFCON 2, T3) | **AMZN (CapEx/OCF TTM 99,2% netto — aktiviert 2026-05-15, T1)** — alle 4 FLAG → Rate 0€ (heilig)
 **Struktureller Disclosure (kein FLAG):** ~~TMO (fcf_trend_neg)~~ **Resolved 23.04.2026** (Q1 FY26 FCF $825M +121% YoY, WC-Unwind-These bestätigt)
 **Unter Review:** — (AVGO 27.04.2026 zu aktivem FLAG promotet)
-**Analysierte Positionen:** 12/12 ✅ (AMZN Neuaufnahme 15.05.2026 Forward-Vollanalyse — 12. Satellit; V 18.04. + TMO 18.04./23.04. + AVGO/MSFT/APH 30.04. + BRK.B 04.05. Forward-Vollanalyse, Rest Algebra-Projektion)
-**Offene Scores:** 0/12
+**Analysierte Positionen:** 10/13 ✅ (Umstrukturierung 2026-06-07: VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter ohne Score → O3-Scoring-Nachzug pending. Bestehende Scores: ASML/RMS/SU 17.04. + V 18.04. + TMO 23.04. + MSFT/APH 30.04. + BRK.B 04.05. + AMZN 15.05. + AVGO 04.06.)
+**Offene Scores:** 3/13 (NOW · KYCCF · ZETA — O3-Vollanalyse pending)
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
-**Sparraten-Nenner:** 7×1,0 + 1×0,5 + 3×0 = **7,5** → volle Rate **38,00€** / D2-Rate **19,00€** (V allein) / FLAG (APH, MSFT, AVGO) **0€**
+**Sparraten-Modell (3-Tier, Umstrukturierung 2026-06-07):** Rate = Tier-Basis (T1 40 / T2 32 / T3 18€) × DEFCON-Modulation (D3/D4 ×1,0 · D2 ×0,5 · D1 0) × FLAG (🔴 → 0€). **SOLL-Σ = 4×40 + 3×32 + 6×18 = 364€**; **Funded-Σ = 210€** (FLAG-frozen AMZN/MSFT/AVGO/APH + V-D2-Sockel 16€ + NOW/KYCCF/ZETA-Platzhalter voll). SSoT = config.yaml `satelliten_tier_raten` + PORTFOLIO.md.
 
 > ℹ️ **v3.7 (17.04.2026):** Fix 1 als Interaktionsterm (nicht Moat-Malus) gegen Double-Counting. Algebra-Projektion v3.5→v3.7: ASML 68→66 (bleibt D3, **Post-Q1 17.04. Vollanalyse: 68**), AVGO 85→84, MSFT 60→59, TMO 62→63, RMS 69→68, SU 71→69, APH 61→63, COST 69→69, V 86→86, BRK.B 75→75, VEEV 74→74.
 >
@@ -70,15 +72,15 @@
 
 | Datum | Position | Klasse | Trigger |
 |-------|----------|--------|---------|
-| 2026-04-28 (overdue) | SNPS | B | Q1 Earnings — Watchlist-Review (PIPELINE #62) |
-| 2026-04-28 (overdue) | SPGI | B | Q1 Earnings — Watchlist-Review (PIPELINE #62) |
-| 2026-05-27 | VEEV | B | Q1 FY27 Earnings |
-| 2026-05-28 | COST | B | Q3 FY26 Earnings (Membership-Yield-Watch) |
-| Mai 2026 | CPRT/ZTS/PEGA | B | Earnings → Watchlist-Review |
+| pending (O3) | NOW / KYCCF / ZETA | A | Scoring-Nachzug — DEFCON-3-Platzhalter → echter Score (NOW US · KYCCF JP · ZETA US) |
+| overdue | SNPS / SPGI | B | Q1 Earnings Watchlist-Review — Nachholbedarf (PIPELINE #62) |
 | Juni 2026 | — | — | Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung |
-| Q2 2026 | GOOGL | C | FLAG-Review nach Earnings |
+| ~23.07. | APH | B | Q2 FY26 — China-Tax + CommScope-Net-Lev |
 | ~Ende Juli | AMZN | B/C | Q2 FY26 — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse |
-| Q3 FY26 | AVGO | C | !Analysiere — FLAG-Re-Eval + DEFCON-Refresh + Methodology-Watches |
+| ~Ende Juli | V / TMO | B | V Q3 (Cross-Border-Velocity + ROIC-Verify) · TMO Q2 (Organic + Clario) |
+| ~02./03.08. | BRK.B | B | Q2 FY26 — KHC-OTTI / GEICO / Form-13F (#36-#41) |
+| Q2 2026 | GOOGL | C | FLAG-Review nach Earnings |
+| ~02.09. | AVGO | C | Q3 FY26 — !Analysiere FLAG-Re-Eval + DEFCON-Refresh + Methodology-Watches |
 
 ---
 
@@ -90,10 +92,10 @@
 
 ## Vault-Verknüpfungen
 
-[[ASML]] · [[AVGO]] · [[MSFT]] · [[RMS]] · [[VEEV]] · [[SU]] · [[BRK.B]] · [[V]] · [[TMO]] · [[APH]] · [[COST]]
+[[ASML]] · [[AVGO]] · [[MSFT]] · [[RMS]] · [[SU]] · [[BRK.B]] · [[V]] · [[TMO]] · [[APH]] · [[AMZN]] · [[NOW]] · [[KYCCF]] · [[ZETA]]
 
 Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · [[Context-Hygiene]]
 
 ---
 
-*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 2026-05-23 (00_Core Slim-Refactor — historische Score-Move-Comments + dead-Row-Backfill-Anchors gestrippt, Offene-Scores-Stub entfernt, Ersatzbank zu Pointer auf KONTEXT §6; alle Live-DATA-Anker erhalten)*
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 2026-06-08 (Umstrukturierung-2027 Phase A: 13-Roster, VEEV+COST DATA-Rows raus, NOW/KYCCF/ZETA Platzhalter-Rows rein, Sparraten-Nenner→3-Tier-Modell, Vault-Links + Update-Kalender nachgezogen)*

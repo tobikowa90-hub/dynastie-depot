@@ -29,8 +29,8 @@
 
 | Triebwerk | Beschreibung | Status |
 |-----------|-------------|--------|
-| **1 — Hauptdepot** | ING (ETF-Core) + Scalable Capital (Satelliten) | ✅ Aktiv, 950€/Monat |
-| **2 — Zweite Säule** | Je 150€ von Owner + Laura in Rentendepots (ab 2027, Altersvorsorgereformgesetz) | 🟡 Geplant ab 2027 |
+| **1 — Hauptdepot** | ING (IWDA+EIMI) + Scalable Capital (Satelliten + AVGC/JEDI/WQTM + Gold) | ✅ Aktiv, ~1031€/Monat |
+| **2 — Zweite Säule (AVD)** | Altersvorsorgedepot bei Scalable: Invesco MSCI World 257€/Mt (150€ förderfähig, Altersvorsorgereformgesetz) + Riester-Altvertrag-Übertrag (~5.252€). World-Sleeve relociert aus Dynastie. Detail → §4b | 🟡 Start Jan 2027 |
 | **3 — Opa-Booster** | Optional: 500€ zukünftig 100% in ETF-Fundament (De-Risking) | 🟡 Offen |
 
 ---
@@ -39,47 +39,80 @@
 
 | Block | Anteil | Betrag/Monat | Broker |
 |-------|--------|-------------|--------|
-| ETF-Core | 65% | 617,50 € | ING |
-| Wide-Moat-Satelliten | 30% | 285,00 € | Scalable Capital |
-| Gold | 5% | 47,50 € | Scalable Capital |
+| ETF-Core | 60% | 616 € | ING (IWDA+EIMI) + Scalable (AVGC+JEDI+WQTM) |
+| Wide-Moat-Satelliten | 35% | 364 € SOLL (Funded 210 €) | Scalable Capital |
+| Gold | 5% | 51 € | Scalable Capital (EWG2) |
+
+> Umstrukturierung 2026-06-07: Split 65/30/5 → **60/35/5**. ETF-Core von Equal-Sleeve auf IWDA/EIMI/AVGC + Themen-Wetten JEDI/WQTM (exUSA gestoppt). Satelliten Equal-Weight → 3-Tier (siehe §5). Gesamt ~1031 €.
 
 **US-Hard-Cap:** max. 63% | **Ist:** ~46,41% (unverändert — AMZN F=0€/Sparrate 0€, kein realer US-Kapitalfluss bis FLAG-Resolve) | **Ziel:** ~50,2% (AMZN trägt vollen US-Zielanteil wie alle Aktien — User-Direktive 18.05. „exakter Ziel-Anteil wie alle"; Rebalancing-Tool US-Exposure-Sheet B24 = 50,20%, <63% Hard-Cap)
-**Slots:** 17 gesamt (4 ETFs + 12 Aktien + 1 Gold) — alle vergeben (AMZN-Slot-Erweiterung 11→12, User-Direktive 2026-05-18)
+**Slots:** 19 gesamt (5 ETFs [IWDA/EIMI/AVGC/JEDI/WQTM, exUSA gestoppt] + 13 Aktien + 1 Gold) — alle vergeben (Umstrukturierung 2026-06-07: Aktien-Roster 12→13, VEEV+COST raus, NOW/KYCCF/ZETA rein)
 
 ---
 
-## 4. ETF-Core (ING)
+## 4. ETF-Core (60% — ING + Scalable)
 
-| Ticker | Name | Ziel % | Funktion |
-|--------|------|--------|----------|
-| IWDA | iShares Core MSCI World (Acc) | 30% | Globale Marktdominanz, US-Kern |
-| EIMI | iShares Core MSCI EM IMI | 10% | Schwellenländer + Small Caps |
-| EXUSA | Xtrackers MSCI World ex USA | 15% | Geopolitischer US-Hedge |
-| AVGC | Avantis Global Small Cap Value | 10% | Faktor-Prämien (wissenschaftlich) |
-| EWG2 | EUWAX Gold II | 5% | Krisendämpfer, nach 1 Jahr steuerfrei |
+| Ticker | Name | €/Monat | Broker | Funktion |
+|--------|------|---------|--------|----------|
+| IWDA | iShares Core MSCI World (Acc) | 257 € | ING | Globale Marktdominanz, US-Kern |
+| EIMI | iShares Core MSCI EM IMI | 123 € | ING | Schwellenländer + Small Caps |
+| AVGC | Avantis Global Small Cap Value | 103 € | Scalable | Faktor-Prämien (wissenschaftlich) |
+| JEDI | VanEck Space Innovators | 82 € | Scalable | Themen-Wette / Space (neu 04.06.) |
+| WQTM | WisdomTree Quantum Computing | 51 € | Scalable | Themen-Wette / Quantum |
+
+**Gold:** EWG2 (EUWAX Gold II) 51 € (5%) — Scalable; nach 1 Jahr steuerfrei. **exUSA** (Xtrackers MSCI World ex USA) **gestoppt 04.06.2026** (Erlös → JEDI/WQTM). ETF-Block Σ = 616 €. Broker-Split: ING hält physisch **nur** IWDA+EIMI (380 €); AVGC+JEDI+WQTM (236 €) bei Scalable. Phase B (2027): World-Sleeve → AVD, ING gekündigt.
+
+---
+
+## 4b. Phase B ab 2027 — Altersvorsorgedepot (AVD) & Broker-Konsolidierung
+
+**AVD (neu, bei Scalable, ab Jan 2027):**
+- **ETF:** Invesco MSCI World (IE00B60SX394) — **257 €/Monat** (davon 150 € förderfähig via Altersvorsorgereformgesetz, Rest ungefördert aber steuerbegünstigt). Übernimmt den World-Sleeve aus dem Dynastie-Depot.
+- **Riester-Altvertrag** (~5.251,70 €+) → Übertrag als Invesco-Einmalkauf ins AVD (Jan 2027); Guthaben bleibt zweckgebunden Altersvorsorge.
+- **World-Relocation:** IWDA-Sparplan im Dynastie endet Ende 2026; IWDA-Bestand (~3.994 €, +369 € G/V steuerfrei via Freistellung) verkauft → Teil WQTM, Rest Satelliten. MSCI-World-Exposure läuft danach über den Invesco im AVD.
+
+**Combined-View ETF-Core 60% (Dynastie + AVD zusammen):**
+
+| ETF | Anteil | Quelle |
+|---|---|---|
+| Invesco MSCI World | 25% | AVD |
+| EIMI | 12% | Dynastie |
+| AVGC | 10% | Dynastie |
+| JEDI | 8% | Dynastie |
+| WQTM | 5% | Dynastie |
+| **ETF gesamt** | **60%** | (Satelliten 35% · Gold 5%) |
+
+**Broker-Konsolidierung → alles zu Scalable:** EIMI per In-Kind-Übertrag ING→Scalable (Herbst 2026, keine Realisierung, +204 € latent). ING danach leer → **kündigen**. Endzustand: Dynastie (Satelliten + AVGC/JEDI/WQTM + Gold) + AVD (Invesco) komplett bei Scalable; ING aufgelöst.
+
+> Vollständiger Transaktionsplan + Timing → `UMSTRUKTURIERUNG-2027.md` §3 (Phase B) + §4 (Transaktionsplan 2026). Quelle: Desktop `Umstrukturierung.md` (Chat-Session 02.–04.06.2026).
 
 ---
 
 ## 5. Satelliten — Die Startelf (Scalable Capital)
 
-Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
+**3-Tier Conviction-Weighting** (Umstrukturierung 2026-06-07, löst Equal-Weight ab): Tier-Basis **T1 40€ / T2 32€ / T3 18€** × DEFCON-Modulation (D2 ×0,5, D1 0) × FLAG (🔴 0€). SOLL-Σ 364€, Funded 210€. Detail-Rate je Titel → PORTFOLIO.md.
 
-| Ticker | Name | Typ | Ersatz |
-|--------|------|-----|--------|
-| ASML | ASML Holding | Hardware-Monopol | SNPS |
-| AVGO | Broadcom Inc. | KI/Chips Asset-Light | NVDA |
-| MSFT | Microsoft | Cloud/Software | GOOGL |
-| COST | Costco Wholesale | Retail-Festung | — |
-| RMS | Hermès International | Luxury-Monopol | RACE |
-| VEEV | Veeva Systems | Nischen-SaaS | IDXX (User-Vorschlag 14.05., !QuickCheck 🟢 GRÜN — Vet-Diagnostics-Monopol) |
-| SU | Schneider Electric | Energie-Infrastruktur | DE |
-| BRK.B | Berkshire Hathaway B | Kapitalallokator | MKL / FFH.TO |
-| V | Visa Inc. | Zahlungs-Infrastruktur | MA |
-| TMO | Thermo Fisher Scientific | Life-Science-Monopol | ZTS |
-| APH | Amphenol Corp. | Verbindungstechnologie | — |
-| AMZN | Amazon.com | Hyperscaler (AWS+E-Commerce+Ads) | — |
+| Tier | Ticker | Name | Typ | Ersatz |
+|------|--------|------|-----|--------|
+| T1 | AMZN | Amazon.com | Hyperscaler (AWS+E-Commerce+Ads) | — |
+| T1 | MSFT | Microsoft | Cloud/Software | GOOGL |
+| T1 | NOW | ServiceNow | Enterprise-Workflow-SaaS | — |
+| T1 | AVGO | Broadcom Inc. | KI/Chips Asset-Light | NVDA |
+| T2 | ASML | ASML Holding | Hardware-Monopol | SNPS |
+| T2 | KYCCF | Keyence | Factory-Automation / Sensorik (JP) | — |
+| T2 | V | Visa Inc. | Zahlungs-Infrastruktur | MA |
+| T3 | RMS | Hermès International | Luxury-Monopol | RACE |
+| T3 | BRK.B | Berkshire Hathaway B | Kapitalallokator | MKL / FFH.TO |
+| T3 | TMO | Thermo Fisher Scientific | Life-Science-Monopol | ZTS |
+| T3 | APH | Amphenol Corp. | Verbindungstechnologie | — |
+| T3 | SU | Schneider Electric | Energie-Infrastruktur | DE |
+| T3 | ZETA | Zeta Global | AI-Marketing-Cloud (Spekulation) | — |
 
-**12. Satellit AMZN (Neuaufnahme 2026-05-18, User-Direktive):** Slot-Erweiterung 11→12, keine Verdrängung. Score 42/🔴 D1, 🔴 CapEx/OCF-FLAG (TTM 99,2%) → Sparrate 0€ regelkonform (kein Owner-Override, FLAG heilig). Nenner-neutral (FLAG=Gewicht 0,0 → bestehende 11 Raten unverändert). Conviction-Position ohne definierten Ersatz. Bewusste Owner-Entscheidung trotz DEFCON-1/FLAG — DEFCON-System dokumentiert den Zustand faktentreu, die Aufnahme-Entscheidung ist Owner-Mandat (KONTEXT §1 „Mein Portfolio, meine Regeln").
+**Owner-Conviction-Adds ohne DEFCON-Score (Governance-Override §6.4, Präzedenz AMZN):**
+- **AMZN** (Tier 1, Neuaufnahme 2026-05-18): Score 42/🔴 D1, 🔴 CapEx/OCF-FLAG (TTM 99,2%) → Sparrate 0€ regelkonform (kein Owner-Override, FLAG heilig). Conviction-Position ohne definierten Ersatz.
+- **NOW (Tier 1) / KYCCF (Tier 2) / ZETA (Tier 3)** (Umstrukturierung 2026-06-07): DEFCON-3-Platzhalter ohne echten Score → volle Tier-Rate bis O3-Vollanalyse (NOW US `!Analysiere`, KYCCF JP `non-us-fundamentals`, ZETA US — war QuickScreener-Rot, bewusste Spekulation). VEEV+COST-Erlös finanziert mit.
+
+Bewusste Owner-Mandate trotz fehlendem/kritischem Score — DEFCON dokumentiert den Zustand faktentreu, die Aufnahme ist Owner-Entscheidung (§1 „Mein Portfolio, meine Regeln").
 
 **Keine Hyper-Growth-Angreifer** — CRWD und PLTR wurden entfernt.
 
@@ -88,6 +121,8 @@ Alle gleichgewichtet 2,73% | APH 2,70% als Ausgleichsposition
 ## 6. Ersatzbank & Watchlist
 
 **Stand:** 14.05.2026 — Refresh v3.2
+
+> ⚠️ **Pre-Umstrukturierung-Snapshot (vor 06.06.).** Nach der Umstrukturierung sind VEEV+COST exited → IDXX-„VEEV-Ersatz" + ZTS-/TYL-„VEEV"-Bezüge unten **obsolet**; die neuen Satelliten NOW/KYCCF/ZETA haben noch **kein** definiertes Ersatz-Mapping. Voll-Refresh des Ersatz-Mappings + `Watchlist_Ersatzbank_Monitor`.xlsx = separater Watchlist-Refresh-Lauf (gekoppelt an O3-Scoring-Nachzug, pending).
 
 | Ticker | Rolle/Slot | Score | DEFCON | Notiz |
 |---|---|---|---|---|
@@ -144,17 +179,19 @@ Physischer Notfall-Ordner für Laura:
 
 ---
 
-## 10. Anstehende Termine (Mai–Juli 2026)
+## 10. Anstehende Termine (Juni–Sept 2026)
 
 | Datum | Event | Aktion |
 |-------|-------|--------|
-| 27.05.2026 | VEEV Q1 FY27 Earnings | Klasse-B Vollanalyse |
-| 28.05.2026 | COST Q3 FY26 Earnings | Membership-Yield-Watch |
-| Mai 2026 | ZTS / PEGA / FICO Earnings | Slot-16-Entscheidung PEGA |
+| pending (O3) | NOW / KYCCF / ZETA Scoring-Nachzug | echte Scores ersetzen DEFCON-3-Platzhalter (NOW US · KYCCF JP · ZETA US) |
 | Juni 2026 | Bausparvertrag 9.500€ + Steuererstattung 2.000€ | Sparplan-Booster planen |
-| ~Ende Juli 2026 | AMZN Q2 FY26 Earnings | CapEx/OCF-FLAG-Re-Eval (Resolve <60%) + Vollanalyse (Score 42/🔴 D1, FLAG seit 15.05.) |
+| ~23.07.2026 | APH Q2 FY26 Earnings | China-Tax + CommScope-Net-Lev (FLAG-Review Score<65) |
+| ~Ende Juli 2026 | AMZN Q2 FY26 Earnings | CapEx/OCF-FLAG-Re-Eval (Resolve <60%) + Vollanalyse |
+| ~Ende Juli 2026 | V Q3 / TMO Q2 FY26 Earnings | V Cross-Border-Velocity + ROIC-Verify · TMO Organic-Akzeleration + Clario |
+| ~02./03.08.2026 | BRK.B Q2 FY26 Earnings | KHC-OTTI / GEICO-Decel / Form-13F (#36-#41) |
+| ~02.09.2026 | AVGO Q3 FY26 Earnings | FLAG-Resolve-Gate + !Analysiere Re-Eval |
 
-> April-Earnings-Termine (TMO 23.04., SPGI 28.04. overdue, MSFT 29.04.) entfernt im 00_Core Slim-Refactor 23.05.2026. Detail → CORE-MEMORY §12 + git log + score_history.jsonl.
+> VEEV/COST entfernt (exited Umstrukturierung 06.06.). April-Earnings-Termine entfernt im 00_Core Slim-Refactor 23.05.2026. Detail → CORE-MEMORY §12 + git log + score_history.jsonl.
 
 ---
 
@@ -182,7 +219,7 @@ Das Dynastie-Depot-System hält seinen Zustand in **vier formal getrennten Layer
 ### Projection-Layer — Session-Entry-Snapshot (abgeleitet)
 
 - **`STATE.md`** — **Hub**: Navigation + Critical-Alerts (≤10 Tage) + Last-Audit-Block. **Keine eigenständige Wahrheitsquelle.**
-- **`PORTFOLIO.md`** — Live-Portfolio-State: 11-Satelliten-Tabelle + Aktive Watches + 30-Tage-Trigger + Sparraten-Nenner. Default-load bei Session-Start.
+- **`PORTFOLIO.md`** — Live-Portfolio-State: 13-Satelliten-Tabelle (3-Tier) + Aktive Watches + 30-Tage-Trigger + Sparraten-Modell. Default-load bei Session-Start.
 - **`PIPELINE.md`** — Offene Pläne (🔴/🟡/🔵) + Long-Term-Gates (⏰).
 - **`SYSTEM.md`** — System-Zustand: DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog.
 - Alle vier Projection-Files sind **Projektion aus State + Narrative**, werden via §18 Sync-Pflicht synchron gehalten (trigger-basiertes Event-Mapping seit 2026-04-25 Task-6 Governance).
@@ -256,4 +293,4 @@ Bei !QuickCheck-Rot oder Score <60: kein §6-Eintrag, Slot bleibt offen oder Bra
 - V-Q2-Incident 28.04.2026 — Präzedenz „Score-Move auf unzureichender Evidenz"
 
 ---
-*🦅 KONTEXT.md v1.5 | Dynastie-Depot | Stand: 2026-05-23 (§10 Anstehende Termine: April-Earnings-DONE-Strip im 00_Core Slim-Refactor; Forward-Triggers 27./28.05./Juli aktualisiert)*
+*🦅 KONTEXT.md v1.6 | Dynastie-Depot | Stand: 2026-06-08 (Umstrukturierung-2027 Phase A+B: §2-§5 auf 60/35/5 + 3-Tier-Roster (13) + ETF-Broker-Split nachgezogen, VEEV+COST raus / NOW/KYCCF/ZETA rein, §4b AVD-2027-Struktur (Invesco + Riester-Übertrag + Broker-Konsolidierung) neu, §6-Ersatzbank Staleness-Banner, §10 Termine aktualisiert)*
