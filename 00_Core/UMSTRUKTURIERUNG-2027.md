@@ -56,7 +56,7 @@
 
 **Funded gesamt:** 40 + 80 + 90 = **210 €** · **SOLL:** 160 + 96 + 108 = **364 €** (Tier 2 funded = ASML 32 + KYCCF 32 + V 16 = 80 €, da V D2-moduliert)
 
-- **Transitional:** VEEV + COST noch im Depot, Sparpläne gestoppt, Verkauf läuft (noch nicht abgeschlossen).
+- **Transitional:** VEEV + COST **roster-exited** (Sparpläne gestoppt, aus der 13er-Satelliten-Liste raus — alle Live-State-Files behandeln sie als exited). Die physische Verkaufs-Transaktion kann noch offen sein (COST LIMIT @863€, VEEV-Verkauf läuft) — siehe §4 Transaktionsplan.
 - **Roster-Wechsel:** 12 → 13 aktive Satelliten. Neu: NOW, KYCCF, ZETA. Raus: VEEV, COST.
 
 ### Gold

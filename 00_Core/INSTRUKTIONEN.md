@@ -631,7 +631,7 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 **Trigger-ID:** `trig_01PyAVAxFpjbPkvXq7UrS2uG` | **Frequenz:** Mo-Fr 10:00 MESZ (Cron `0 8 * * *` UTC) | **Modell:** `claude-sonnet-4-6` | **Token-Budget:** ~12-18k/Tag werktags
 **Prompt-Datei:** `03_Tools/morning-briefing-prompt-v3.md` (v3.1.1 prod; v3.2.0 Probe-Cutover PENDING)
 **Rollback-Backup:** `03_Tools/morning-briefing-prompt-v2.md` (30-Tage-Recovery-Window)
-**Scope:** 11 Satelliten + 5 Ersatzbank (MKL/SNPS/SPGI/RACE/ZTS) = 16 Symbole.
+**Scope:** 13 Satelliten + Ersatzbank. ⚠️ Briefing-Universe-Integration der neuen Satelliten NOW/KYCCF/ZETA (KYCCF=JP→yfinance-Pfad, NOW/ZETA=US→Shibui) + Ersatzbank-Refresh = offene operative Aufgabe (Umstrukturierung-2027 Phase A, gekoppelt an O3-Scoring; bis dahin briefen die bestehenden 10 Satelliten + Ersatzbank).
 **Datenquellen-Tier:** 13 Shibui (`stock_data_query` P1) + 3 Yahoo-curl (BRK.B/RMS/SU, Yahoo 403 known).
 
 **Manueller Trigger:** `!Briefing` (identischer Output) oder Desktop App → Routines.
@@ -726,7 +726,7 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 **Typische Falle:** Bonus wirkt nur in der Mitte der Score-Verteilung, weil Top-Namen bereits am Block-Cap (Fundamentals 50, Moat 20, etc.) anstehen. Ergebnis: asymmetrische Verzerrung zugunsten von B-Namen, Top-Namen verlieren Bonus-Headroom.
 
 **Pflichtcheck:**
-1. Für alle aktuellen 11 Satelliten durchrechnen: Block-Score + potenzieller Bonus.
+1. Für alle aktuellen 13 Satelliten durchrechnen: Block-Score + potenzieller Bonus.
 2. Wenn ≥3 Top-Namen am Cap hängen bleiben → Bonus entweder ins Block-Cap integrieren oder als Tie-Breaker statt Score-Boost.
 3. Dokumentieren in Scoring-Lektionen (CORE-MEMORY §5).
 
@@ -809,7 +809,7 @@ brechen darf.
 
 ### 27.6 Earnings-Calendar-Drift-Check (Stufe 2 — earnings_calendar.py v2.0, 06.05.2026)
 
-**Regel:** Earnings-Termin-Drift-Check läuft (a) automatisch im SessionStart-Hook (`briefing-sync-check.ps1`) als additive fail-soft-Sektion, (b) manuell on-demand via `python 03_Tools/earnings_calendar.py --check [--smoke-test] [--json]`. Tool pullt yfinance-Future-Dates UND mergt Override-YAML (`03_Tools/earnings_schedule_overrides.yaml`, earliest-wins-Union) für die 11 Satelliten + diff gegen PORTFOLIO „Nächster Trigger"-Spalte.
+**Regel:** Earnings-Termin-Drift-Check läuft (a) automatisch im SessionStart-Hook (`briefing-sync-check.ps1`) als additive fail-soft-Sektion, (b) manuell on-demand via `python 03_Tools/earnings_calendar.py --check [--smoke-test] [--json]`. Tool pullt yfinance-Future-Dates UND mergt Override-YAML (`03_Tools/earnings_schedule_overrides.yaml`, earliest-wins-Union) für die 13 Satelliten + diff gegen PORTFOLIO „Nächster Trigger"-Spalte.
 
 **Override-YAML:** SSoT für Earnings-Termine, die yfinance nicht oder unzuverlässig liefert (insbesondere Schneider/Hermès Q1+Q3 Trading-Updates und ASML-Sondertermine). Pflege 1×/Jahr nach IR-Calendar-Release der Non-US-Issuer (typisch November/Dezember für Folgejahr). `type`-Field treibt §19.1-Tag-0/Tag-+1-Decision: `trading_update_q*` = Tag 0 direkt (analog BRK.B), `half_year_*` / `annual_results` = Tag +1 mit Earnings-Call, `capital_markets_day` = Strategy-Update kein Score-Move.
 

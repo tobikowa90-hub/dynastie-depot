@@ -62,7 +62,7 @@
 ## 4. Score-Register
 
 → **Aktueller State:** [`Faktortabelle.md`](Faktortabelle.md) — Live-Score + DEFCON + FLAG pro Ticker
-→ **Portfolio-Snapshot:** [`PORTFOLIO.md`](PORTFOLIO.md) — Section "Portfolio-State (11 Satelliten)"
+→ **Portfolio-Snapshot:** [`PORTFOLIO.md`](PORTFOLIO.md) — Section "Portfolio-State (13 Satelliten)"
 → **Vollständige Historie:** `05_Archiv/score_history.jsonl` — alle Score-Records append-only (ab 17.04.2026 forward, Backfill-Records aus damaliger Section-4-Tabelle)
 → **FLAG-Events:** `05_Archiv/flag_events.jsonl` — Trigger + Resolution append-only
 → **Write-Tooling:** `03_Tools/backtest-ready/archive_score.py` + `archive_flag.py`
