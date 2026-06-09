@@ -1659,3 +1659,17 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Cross-Reference:** Memory `project_umstrukturierung_2027_pending_sync` (Execution-State) · `00_Core/PORTFOLIO.md` (Live-SSoT) · Decision-Record = die 8 Beschlüsse hier + im Memory (KEIN `docs/adr/`, Anti-Fork).
 
 **Lesson:** Scope-Discriminator als Werkzeug, nicht als Scope-Reduktions-Ausrede — Sample-n-„11" bleibt korrekt (historisches Backtest-Sample), Roster-„11" wird 13 (Live-Claim). Beide Urteile dokumentiert + im Commit/Log auditierbar (`feedback_historical_snapshot_not_a_scope_excuse` vs `feedback_information_loss_aversion` balanciert).
+
+---
+
+## 🧮 2026-06-09 — CodeBurn-Optimize-Audit: Empirie-Verdikt (system-zustand, scoring-neutral)
+
+**Trigger:** User `/grill-with-docs` auf CodeBurn-Optimize-Paste (30d, „Setup F (20/100)", „~$743 / 46% Savings"). Direktive: Empirie zuerst, keine Annahmen, >95% Confidence vor Umsetzung.
+
+**Empirie-Befund (kippt CodeBurns Kern-Empfehlung):**
+- **Finding 1 (10 MCP-Server entfernen, 232M Tk):** Live `claude mcp list` + `~/.claude.json` zeigen nur **2 von 10** existieren noch (`defeatbeta-api`, `Shibui`). Andere 8 (`claude-flow`/`ruflo`/`gsd-workflow`/`computer-use`/`Claude_in_Chrome`/`Windows-MCP`/`Claude_Preview`/UUID) **längst entfernt** — CodeBurn liest 30d-Historie. `defeatbeta` (3/69) = load-bearing US-Fundamentals; `Shibui` (0/11) = load-bearing autoritative US-Kurse Cloud-Cron-Briefing (`shibui_stock_data_query`, FIELD→SOURCE-MAP `morning-briefing-prompt-v3.md` L134-200). **„0/11" = Local-vs-Cloud-Mess-Artefakt** (Calls im Cloud-Cron-Layer-B, nicht lokale CLI-Sessions). Schemas harness-seitig **deferred** → Forward-Savings negligible.
+- **Finding 2/3 (low-worth/context-heavy Sessions):** kein Config-Change — CodeBurn selbst „review candidate, not proof"; retries ~95% Mech-Noise (`feedback_codeburn_retry_metric_calibration`); S428-432 = legitime Vault-Restructuring-Arbeit. Session-Opener NICHT in CLAUDE.md.
+
+**Entscheidung:** Scope = **nur Doku/Verankerung**, KEINE Server-Eingriffe (Connector-UUID-Fragilität `feedback_tavily_connector_uuid_rotation` + null Forward-Nutzen). Verankert: SYSTEM.md §MCP-Status (autoritativ) + Memory `reference_codeburn_mcp_remove_false_positives` (Recall). **Bei künftigem CodeBurn-Rerun: Verdikt zuerst lesen, nicht re-litigieren.**
+
+**Scoring-Status:** DEFCON v3.7 unverändert. Kein FLAG-Event, kein Re-Score, keine xlsx-Tools/config/score_history berührt (reiner Ops-Doku-Sync).
