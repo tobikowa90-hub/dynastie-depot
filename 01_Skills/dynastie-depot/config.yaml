@@ -1,6 +1,6 @@
 # Dynastie-Depot – Portfolio State
 # Regeln: SKILL.md | Strategie: manifest.md | Pipeline: PIPELINE.md
-# Stand: 2026-06-07 (Umstrukturierung-2027 Phase A: Equal-Weight→3-Tier Conviction-Modell [satelliten_tier_raten], Split 65/30/5→60/35/5, Roster 12→13 [VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter], ETF exUSA→JEDI+WQTM, Gold EUWAX→EWG2, Satelliten-Budget 285→364€ SOLL. Davor: 2026-05-18 AMZN 12. Satellit)
+# Stand: 2026-06-09 (Earnings-Kalender-Sync via earnings_calendar.py [yfinance+Override SSoT]: naechste_pruefung + flags_aktiv + termine auf tool-kanonische Termine — ASML 15.07, NOW/TMO 22.07, V 28.07, MSFT/APH/RMS/KYCCF 29.07, SU/AMZN 30.07, BRK.B 01.08, ZETA 04.08, AVGO 03.09; date-only, kein Score-Event. Davor: 2026-06-07 Umstrukturierung-2027 Phase A: Equal-Weight→3-Tier Conviction-Modell [satelliten_tier_raten], Split 65/30/5→60/35/5, Roster 12→13 [VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter], ETF exUSA→JEDI+WQTM, Gold EUWAX→EWG2, Satelliten-Budget 285→364€ SOLL. Davor: 2026-05-18 AMZN 12. Satellit)
 
 # ─────────────────────────────────────────────
 # PORTFOLIO-RAHMEN
@@ -161,7 +161,7 @@ satelliten:
     flag: false
     flag_hinweis: "China-Revenue ~24% FY2024 (Exportrestriktionen) — Risk-Map-Notiz aktiv, kein FLAG (unter 35%-Schwelle)"
     sparrate_hinweis: "DEFCON 3, kein 🔴 FLAG → Gewicht 1.0 (volle Rate)"
-    naechste_pruefung: "Q2 2026 Earnings (Q1 17.04. Vollanalyse ✅ — Score 66→68 post-Q1)"
+    naechste_pruefung: "Q2 2026 Earnings 15.07. (bmo, confirmed; Q1 17.04. Vollanalyse ✅ — Score 66→68 post-Q1)"
     scoring_notiz: "Score 68 (v3.7 Live-Verify post-Q1 17.04.): Moat 19/20 (Wide, Monopol), Fwd P/E FY27 30.30 (Grenzfall <30 triggert D3→D4). Screener-Exception #6 (Non-US/IFRS Pfad B)."
     ersatz: SNPS
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
@@ -181,7 +181,7 @@ satelliten:
     flag_seit: "2026-04-27"
     flag_wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON-Level (Score-unabhängig)."
     flag_aufloesung: "Diskretionäre Insider-Verkäufe 90d ≤ $20M (rolling re-check). Re-Eval bei Q3 FY26 Earnings via !Analysiere AVGO."
-    naechste_pruefung: "Q3 FY26 Earnings ~02.09.2026 — Insider-Block 90d-rolling + Re-Eval FLAG-Status (Q2 04.06. Score 53→56, FLAG bleibt) + Methodology-Watches-Resolve (PIPELINE #30-34)"
+    naechste_pruefung: "Q3 FY26 Earnings 03.09.2026 — Insider-Block 90d-rolling + Re-Eval FLAG-Status (Q2 04.06. Score 53→56, FLAG bleibt) + Methodology-Watches-Resolve (PIPELINE #30-34)"
     roic_notiz: "ROIC GAAP 5,54% (Q1'26) vs WACC defeatbeta 15,96% (carryover 30.04., Tool-Bug bc10_year 06.06.) strukturell unter Kapitalkosten — §410-Goodwill-Ausnahme angewandt: M&A-Compounder VMware $61B (2023) + CA $19B (2018) + Symantec $10B (2019) + Brocade $5,5B (2017), GW $97,8B = 57,2% Assets. NOPAT TTM ~$24,6B / IC-GW ~$48,1B = 51,1% bereinigt → Spread »15pp → 7/8 (konservativ statt 8/8 wegen Methodology-Drift). MSFT-WACC-#25 cross-relevant — FRED-Baseline-Verify Q3 FY26."
     scoring_notiz: "30.04.2026 Forward-Vollanalyse (erste echte seit Skill-Adoption, Pivot von PIPELINE #18 Backfill): Score 84→53 (Δ-31), D4→D2. Quality-Trap voll aktiv (Wide × Fwd P/E 22,98 max 1; Wide × P/FCF 74,4 hart 0). Sub-Scores: Fundamentals 23/50 (fwd_pe=1, p_fcf=0, bilanz=5, capex_ocf=9 Fabless 2,26%, roic=7 §410, fcf_yield=1, opm=2, sbc_malus=-2), Moat 18/20 (Wide 3 Quellen, -1 M&A-GW-Risk), Tech 7/10 (ATH -1,5%, RelStr +30pp, rising 200MA, kein DCF-Malus), Insider 3/10 (Live-Pull, Skip-Window-Carryover NICHT angewandt — V-Q2-Asymmetrie), Sentiment 2/10. Codex R1+R2-Pass APPROVE Master-Reading 74% Confidence (vs R1-Original 51 +2 von HIGH-2 Fwd-P/E + HIGH-5 DCF-Malus Methodology-Disziplin). FLAG aktiv unverändert (Sparrate 0€ unverändert, keine Kaskade). 5 PIPELINE-Methodology-Watches #30-34. ScoreRecord 2026-04-30_AVGO_vollanalyse."
     ersatz: "NVDA / MRVL"
@@ -201,13 +201,13 @@ satelliten:
     flag_grund: "CapEx/OCF FLAG aktiv — Q3 FY26 (30.04.2026 Tag-+1 Vollanalyse): bereinigt 9M FY26 = 57,7% (Trigger A erfüllt), aber Bull-Case UND-Verknüpfung mit (B) CapEx-Plateau/Decel FAIL (CY26 CapEx $190B vs Konsens $154,6B Surprise +23%, Q4-Guide >$40B sequential von $31,9B = +25%) und (C) Azure ≥30% cc ✅✅ (Q3 +39% cc) — nicht vollumfänglich. FLAG bleibt aktiv."
     flag_seit: "2026-Q1"
     flag_wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt alle DEFCON-Stufen."
-    flag_aufloesung: "Q4 FY26 Earnings ~Juli 2026 — Cash-CapEx Q4-bereinigt + FY27-Guide-Plateau-Hint + WACC-Methodology-Verify (FRED-Baseline)"
-    naechste_pruefung: "2026-07 Q4 FY26 Earnings — CapEx-Plateau-Recheck + WACC-Methodology-Verify + Insider-Block-Re-Score post-14.05. Skip-Window"
+    flag_aufloesung: "Q4 FY26 Earnings 29.07.2026 — Cash-CapEx Q4-bereinigt + FY27-Guide-Plateau-Hint + WACC-Methodology-Verify (FRED-Baseline)"
+    naechste_pruefung: "Q4 FY26 Earnings 29.07. — CapEx-Plateau-Recheck + WACC-Methodology-Verify + Insider-Block-Re-Score post-14.05. Skip-Window"
     roic_notiz: "ROIC 6Q-Ø 7,68% vs. WACC defeatbeta 13,64% (Methodology-Watch: 10y-CAGR-ERP 12,87% suspekt; FRED-Baseline-Verify Q4 PIPELINE) — strukturell unter Kapitalkosten in beiden Methodologies (FRED 9,7% Spread -2pp)"
     scoring_notiz: "30.04.2026 Tag-+1 Vollanalyse: Score 59→50 (Δ-9), D2 unverändert. Codex-R1+R2-Doppel-Review (R1 strict 48 D1, R2 V-Q2-Mittelweg 50 D2 via Insider-Skip-Window-Carryover Backfill 6/10). Quality-Trap aktiv (Wide × Fwd P/E 22,44 → max 1; Wide × P/FCF 39,7x >35 → hart 0). 4 PIPELINE-Items aktiv. 32-Jahre-Halten-Manifest dominiert über Score-Symbolik."
     ersatz: GOOGL
-    substitute_activation_rule: "GOOGL ist Ersatz aber selbst mit FLAG — bei DEFCON-1-Trigger: ZTS oder VEEV-Verstärkung prüfen. Aktuell D2 — kein Replace-Trigger formell aktiviert."
-    worst_case: "Score <50 → DEFCON 1 → Ersatz-Analyse eskalieren (GOOGL FLAG noch aktiv → alternativ ZTS/VEEV)"
+    substitute_activation_rule: "GOOGL ist Ersatz aber selbst mit FLAG — bei DEFCON-1-Trigger: ZTS-Verstärkung prüfen (VEEV roster-exited Umstrukturierung-2027). Aktuell D2 — kein Replace-Trigger formell aktiviert."
+    worst_case: "Score <50 → DEFCON 1 → Ersatz-Analyse eskalieren (GOOGL FLAG noch aktiv → alternativ ZTS)"
     region: USA
     us_exposure: true
 
@@ -221,7 +221,7 @@ satelliten:
     score_valid_until: "2026-10-14"
     flag: false
     sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Screener-Exception #3: ROIC 24% >> WACC 6,5% — Label D3 nach Schema-SKILL-Alignment 18.04. (Score 68 in 65-79-Range), Sparrate bei D3/D4 identisch."
-    naechste_pruefung: "H1 2026 Report Juli/Aug 2026"
+    naechste_pruefung: "H1 2026 Report 29.07.2026 (8:00 CEST, confirmed)"
     scoring_notiz: "Score 68 (v3.7 Live-Verify, 71→68 inkl. Q1-Recap). Revenue +6% CER/-1% rep. Kursreaktion -8,4%. Moat 19/20 intakt, ROIC 24% >> WACC 6,5%, Insider-Käufe +€7,67M (90d). D4-Exception #3: ROIC-Spread +17,5 PP."
     ersatz: RACE
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
@@ -238,7 +238,7 @@ satelliten:
     score_valid_until: "2026-10-14"
     flag: false
     sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 69 in 65-79-Range)."
-    naechste_pruefung: "H1 2026 Earnings Juli/Aug 2026"
+    naechste_pruefung: "H1 2026 Earnings 30.07.2026 (confirmed)"
     scoring_notiz: "Score 69 (v3.7 Algebra 71→69): CapEx/OCF 25.2% (ausgezeichnet), ROIC 10.48% > WACC 8.96%, FCF-Wachstum +41% 3J. Schwächen: P/FCF 37.7x, Goodwill 40.2% (AVEVA). Moat Narrow."
     ersatz: DE
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
@@ -255,7 +255,7 @@ satelliten:
     score_valid_until: "2026-10-31"
     flag: false
     sparrate_hinweis: "DEFCON 3, kein FLAG → Gewicht 1.0 (volle Rate, 38,00€). Label D3 nach Schema-SKILL-Alignment 18.04. (Score 71 in 65-79-Range). Screener-Exception: Insurance/Float-Modell."
-    naechste_pruefung: "Q2 FY26 Earnings ~02./03.08.2026 — KHC-OTTI-Resolve + GEICO-UW-Decel-Trend-Re-Read + Form-13F-Apple-Trim-Magnitude (mid-Mai 14.05.) + Buyback-Cashflow-Discrepancy-Reconciliation + BHE-ETR-Wildfire-Settlement + OxyChem-Goodwill-Allocation-Refinement (#36-#41)"
+    naechste_pruefung: "Q2 FY26 Earnings 01.08.2026 (Sa, 10-Q) — KHC-OTTI-Resolve + GEICO-UW-Decel-Trend-Re-Read + Form-13F-Apple-Trim-Magnitude (mid-Mai 14.05.) + Buyback-Cashflow-Discrepancy-Reconciliation + BHE-ETR-Wildfire-Settlement + OxyChem-Goodwill-Allocation-Refinement (#36-#41)"
     scoring_notiz: "04.05.2026 Q1 FY26 Tag-+1 Vollanalyse + Codex-R1-REJECT-Korrektur (§19.1 BRK-Ausnahme: Filing-Trigger 02.05. Sa, kein Q-Call): Score **75→71 (Δ-4)** post-R1-Sparring; D3 unverändert (65-79-Band 6pt-Puffer), FLAG ✅ Clean Insurance Exception unverändert, Sparrate 38€ unverändert, keine Kaskade. **Korrigierte Sub-Score-Karte:** F=35 (Forbes-Cash-Reconciliation ist Secondary, 10-Q p.2-3 ist Primary; Pre-Brief §7 NEUTRAL-mit-Caveat-Empfehlung gilt → kein +1-Lift) | M=19 (Wide-Konsens 3 Quellen carryover) | T=1 (SKILL.md Z.603 strict 'Kurs unter 200MA → 0/3'; ATH-Buffer-1 1/4 + RelStr 0/3 + 200MA 0/3) | I=10 (FRESH insider_intel.py 04.05.: 7 Form-4, Net Buy 6M $+15,3M Abel Open-Market, Diskr-90d $0 als legitimer Verify carryover-konsistent) | S=6 (Standard-Sentiment carryover; Annual-Meeting-Color +2 entfernt = V-Q2-Methodology-Drift-Lehre direkt, gehört in notizen-Feld nicht in Score). Codex-HIGH-Antis 15/15 pre-empted (#11 Insider-Form-4-Pull DONE LIVE, #15 Cash-Reconciliation RESOLVED via 10-Q-Primary). 6 PIPELINE-Methodology-Watches Q2-Carryover #36-#41 unverändert. P/B 1.44x Screener-Exception unverändert. Schritt 7 backtest-ready ScoreRecord-Append DEFER auf Tag-+1-Abend (close-of-04.05. nach US-Marktschluss; Provenance-Gate Check #3 kurs.referenz=close_of_score_datum sonst FAIL); ScoreRecord persistiert korrigierten Score 71 + Sub-Karte."
     ersatz: "MKL / FFH.TO"
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
@@ -273,7 +273,7 @@ satelliten:
     score_valid_until: "2026-10-25"
     flag: false
     sparrate_hinweis: "DEFCON 2, kein 🔴 FLAG → Gewicht 0.5 (halbe Rate 19,00€). D2-Watch reaktiviert 28.04. spätabends nach Codex-HIGH-1+HIGH-2-Revert."
-    naechste_pruefung: "2026-07 (Ende Juli) Q3 FY26 Earnings — Cross-Border-Velocity-Check (Q2 +12% cc deceleriert von Pre-Q-Niveau >15%; <10% cc Q3 = Travel-Schwäche-Signal) + defeatbeta-ROIC-Methodology-Verify (PIPELINE #21). Litigation-MDL-Restrisk persistent."
+    naechste_pruefung: "Q3 FY26 Earnings 28.07. (amc) — Cross-Border-Velocity-Check (Q2 +12% cc deceleriert von Pre-Q-Niveau >15%; <10% cc Q3 = Travel-Schwäche-Signal) + defeatbeta-ROIC-Methodology-Verify (PIPELINE #21). Litigation-MDL-Restrisk persistent."
     scoring_notiz: "Score 64 (v3.7 Rescoring-Korrektur 28.04. spätabends nach Codex-HIGH-1+HIGH-2-Review der mittags-Vollanalyse Score 68): Fundamentals 30/50 (Fwd P/E 5 21,79 / P/FCF 1 QT-cap / Bilanz 8 / CapEx/OCF 9 / ROIC 1 [HIGH-1 Korrektur: WACC 10,48% gesetzt → SKILL absolute alt-scale unzulässig; defeatbeta 9,89%-Wert empirisch inkonsistent → Carryover bis Q3-Verify PIPELINE #21] / FCF-Y 4 / OpM 2), Moat 19 (Wide carryover 18.04. ohne Pricing-Power-Bonus-Erfindung), Technicals 3 (carryover 18.04. ATH 3 + RS 0 + Trend 0), Insider 5 (carryover 18.04. — kein Up-Score ohne Rohdaten; MEDIUM-2 carryover-rounding-Disziplin), Sentiment 7 (SB 4 + Sell 1 + PT-Up 2 + EPS-Rev +1 post-beat + PT-Disp -1 — einziger fresh-Δ-Block, legitim). Δ vs 18.04. (63→64): +1 Sentiment EPS-Rev. Δ vs 28.04. mittags-Vollanalyse (68→64): -4 (Fundamentals -5 ROIC-Carryover-Revert + FCF-Y +1, Moat +1 carryover, Tech +1 carryover, Insider -1 carryover-Disziplin, Sentiment ±0). HIGH-2 Korrektur: kurs.referenz close_of_score_datum mit echtem 28.04.-close $309,30 USD (yahoo_close_28.04.2026) statt 27.04.-Carryover-Proxy $309,42. Original-Record `2026-04-28_V_vollanalyse` historisch in jsonl, operative Werte überschreiben durch Korrektur-Record `2026-04-28_V_rescoring`. Beat-Cascade-Substanz (Net Rev +17%, EPS +20%, Cross-Border +12% cc, $20B Buyback) bleibt qualitativ relevant — Q3 Cross-Border-Velocity entscheidet zusammen mit ROIC-Methodology-Verify. Anker-Promotion-Hint pausiert (V als US-Voll-Anker für Beispiele.md 4-Achsen-Refactor #17 erst nach Q3 FY26 belastbar — Codex-Review demonstriert das First-Live-Run-Provenance-Gate fängt Skill-Wortlaut-Drift NICHT ab; lag an Schritt 6c/Reviewer-Disziplin)."
     ersatz: MA
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
@@ -292,7 +292,7 @@ satelliten:
     flag_hinweis: "fcf_trend_neg Resolve-Gate CLEAR (23.04.2026 Q1 FY26 Beat): FCF $825M +121% YoY, OCF +64,9%, ΔWC -1.112M vs -1.425M (+$313M besser) — WC-Unwind-These bestätigt. Schema-Watch deaktiviert. Management FY26-FCF-Guide $6,9-7,4B."
     sparrate_hinweis: "DEFCON 3, kein 🔴 FLAG → Gewicht 1.0 (volle Rate 38,00€)"
     scoring_notiz: "Score 67 (v3.7 Forward-Vollanalyse 23.04. Q1 FY26 Earnings-Trigger): Fundamentals 32/50 (Fwd P/E 7 19,3 / P/FCF 1 QT-cap Wide+27,27x / Bilanz 6 / CapEx/OCF 7 31,5% Q1-Standalone / ROIC 6 bereinigt 17,18% / FCF-Y 4 / OpM 1), Moat 18 (Wide unverändert), Technicals 6 (ATH -18,5% / RelStärke 0 / Trend 3), Insider 4 (Skip-Window <14d), Sentiment 7 (SB 4 / Sell 1 / PT-Up 2 / EPS-Revision-Up +1 Guidance-Raise / PT-Disp -1). Δ vs Pre-Score 64: Fundamentals +2 (fwd_pe 6→7, fcf_yield 3→4), Sentiment +1 (eps_revision_delta 0→+1). Beat-Headline: Adj EPS $5,44 vs $5,24 Konsens (+3,8%); Revenue $11,01B (+6,2% reported / +1% organic). Guidance-Raise FY26: Revenue $47,3-48,1B, Adj EPS $24,64-25,12, FCF $6,9-7,4B."
-    naechste_pruefung: "2026-07 Q2 FY26 ~Ende Juli — Organic-Akzeleration (Q1 +1% → H2 3-4% Guide bestätigen) + Clario-Integration-Execution-Check."
+    naechste_pruefung: "Q2 FY26 Earnings 22.07. (bmo, yf+Nasdaq) — Organic-Akzeleration (Q1 +1% → H2 3-4% Guide bestätigen) + Clario-Integration-Execution-Check."
     earnings_trigger: "DEFCON 4 bei: Q2 Organic ≥3% + Clario-Integration on-track + Sustained-FCF-Recovery. DEFCON 3 bleibt bei: Q2 Organic 1-3% + Plan-konformes Track-Record. DEFCON 2 bei: Q2 Organic <1% + Lab-Tools-Softness persistent + Clario-Friktion. DEFCON 1 / ZTS-Aktivierung bei: Score <50 oder Moat-Downgrade."
     ersatz: ZTS
     substitute_activation_rule: "Vorbereitung PAUSIERT seit 23.04.2026 (Q1 FY26 Beat + Guidance-Raise + fcf_trend_neg Resolve-Gate CLEAR). Re-Aktivierung bei: Q2 FY26 Organic <3% ODER Score-Erosion Richtung D2. Ausführung bei Score <50 oder Moat-Downgrade. ZTS muss Score ≥80 ohne FLAG haben."
@@ -312,7 +312,7 @@ satelliten:
     flag_seit: "2026-04-09"
     flag_wirkung: "Sparrate komplett gestoppt (0 €)"
     sparrate_hinweis: "🔴 FLAG aktiv → Gewicht 0.0 (eingefroren)"
-    naechste_pruefung: "Q2 2026 Earnings ~23.07. — China-Tax-ETR-27%-Verify + CommScope-Net-Lev-Verlauf + ROIC-GW-Bereinigung-Full-Year-Check"
+    naechste_pruefung: "Q2 2026 Earnings 29.07. (13:00 ET) — China-Tax-ETR-27%-Verify + CommScope-Net-Lev-Verlauf + ROIC-GW-Bereinigung-Full-Year-Check"
     scoring_notiz: "Score 61 (v3.7, 30.04.2026 Q1 FY26 Vollanalyse): Fundamentals 25/50 (QT-Trap §472-§478 hart: Fwd P/E 33,7 + P/FCF 43,3 = 0+0; ROIC §410 GW-bereinigt CommScope >5B +13,7pp = 6/8; Bilanz mixed Q1-Live NL 1,6x + FY25 CR 2,98 + GW 29,2% = 8/9; CapEx/OCF 18,5% = 8/9; FCF-Yield 2,31% = 2/8; OpM 25,9% = 1/2). Moat 17/20 Wide kein Pricing-Bonus. Tech 7/10. Insider 5/10. Sentiment 7/10. Codex-Review-Pass mit 3 MEDIUM-Annotations. Score-Move-Driver: Multiple-Expansion + CommScope-Bilanz, nicht Operating-Deterioration."
     ersatz: null
     substitute_activation_rule: "Kein definierter Ersatz — bei DEFCON 1 Watchlist auf mögliche Kandidaten screenen"
@@ -331,10 +331,10 @@ satelliten:
     flag_grund: "CapEx/OCF FLAG aktiv (Neuaufnahme 15.05.2026 Forward-Vollanalyse): TTM netto 99,2% (Amazon Q1-2026-Press-Release Purchases-of-P&E-net TTM $147,3B / OCF TTM $148,5B) bzw. gross 101,7% (defeatbeta) — ≫60%-Schwelle, schärfer als GOOGL 74-79%. FCF TTM nur $1,23B (-95% YoY). Finance-Lease-Bereinigung irrelevant (TTM-Tilgung $1,6B vs $147B Cash-CapEx)."
     flag_seit: "2026-05-15"
     flag_wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON (Score-unabhängig). User-Entscheidung 2026-05-18: regelkonform 0€, KEIN Owner-Override."
-    flag_aufloesung: "CapEx/OCF <60% (rolling). Realistisch erst wenn KI/AWS-CapEx-Monetarisierung OCF überholt (Jassy Q1-Call: 'early years free cash flow is challenged', 6-24 Mt. Lag). Re-Eval Q2 FY26 ~Ende Juli via !Analysiere AMZN."
+    flag_aufloesung: "CapEx/OCF <60% (rolling). Realistisch erst wenn KI/AWS-CapEx-Monetarisierung OCF überholt (Jassy Q1-Call: 'early years free cash flow is challenged', 6-24 Mt. Lag). Re-Eval Q2 FY26 30.07. via !Analysiere AMZN."
     roic_notiz: "ROIC 6Q-Ø ~5,4% GAAP vs WACC defeatbeta 15,57% — strukturell ≪ Kapitalkosten. §410-Goodwill-Ausnahme NICHT anwendbar (Goodwill $23,4B = 2,56% Assets, kein M&A-GW-Compounder) → GAAP-ROIC kanonisch, keine Bereinigung. WACC-Methodology-Watch: expected_market_return 12,87% (10y-CAGR) wie MSFT/AVGO PIPELINE #25; selbst FRED-Baseline ~9-10% bliebe ROIC<WACC robust."
     scoring_notiz: "Neuaufnahme 12. Satellit (User-Direktive 2026-05-18 — Slot-Erweiterung 11→12, keine Verdrängung). Score 42/100 D1: Fundamentals 8/50 (fwd_pe 0 QT-hart Wide×34>30, p_fcf 0 QT-hart Wide×~2305>35, bilanz 8/9 NetDebt/EBITDA 0,4x+CR 1,18+GW 2,6%, capex_ocf 0/9 +FLAG, roic 0/8 <WACC, fcf_yield 0/8 0,04%, opm 0/2 TTM 11,5%, keine Mali), Moat 19/20 (Wide: AWS-Switching-Costs+$364B-Backlog/Marketplace-Netzwerk/Prime-Intangible/Logistik-Kostenführerschaft/Efficient-Scale + GM-Trend 3J +1,65pp/J Bonus, kein Pricing-Bonus da Retail-Preissenkungen), Technicals 6/10 (ATH-Distanz -5,2% 3/4, RelStärke 0/3 konservativ kein belastbarer SPX-6M-Rohwert [Schritt-6c V-Q2-Disziplin], Trend 3/3 Kurs≫steigendem 200MA, DCF 0), Insider 6/10 (Net-Buy 0/4, Ownership 3/3 Bezos 8,2% direct, kein-20M-Selling 3/3 — Bezos 2026 nur Gifts/Jassy 10b5-1 $7,9M, kein FLAG), Sentiment 3/10 (SB 1/4 >60%-Crowd-Malus B11, Sell 1/3 <3% Extrem-Konsens-Warnung, PT-Up 2/3 +15,8%, EPS-Rev 0, PT-Disp -1 64% Dispersion). Q1-NI $30,3B enthält +$16,8B Anthropic-Gain (non-op pretax) → Earnings-Quality bereinigt, Accruals -6,3% kein Malus. Codex-Single-Pass-Review (prozeduraler REJECT vor Sync, inhaltlich Algebra/FLAG/§410/QT bestätigt) + Diff-Re-Review post-Sync. ScoreRecord 2026-05-15_AMZN_vollanalyse + flag_events AMZN_capex_ocf_2026-05-15."
-    naechste_pruefung: "Q2 FY26 Earnings ~Ende Juli — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + voller DEFCON-Refresh"
+    naechste_pruefung: "Q2 FY26 Earnings 30.07. (amc) — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + voller DEFCON-Refresh"
     ersatz: null
     substitute_activation_rule: "Kein definierter Ersatz — Hyperscaler-Conviction-Position. Bei DEFCON-1-Persistenz Owner-Entscheidung (User-getrieben, kein automatischer Replace)."
     region: USA
@@ -349,7 +349,7 @@ satelliten:
     score_datum: null
     flag: false
     sparrate_hinweis: "Tier 1, DEFCON-3-Platzhalter, kein FLAG → volle Tier-1-Rate 40,00€ bis Vollanalyse."
-    naechste_pruefung: "O3 Vollanalyse (!Analysiere NOW, US) — ersetzt Platzhalter-Score"
+    naechste_pruefung: "Q2 ~22.07. (yf/UW; TipRanks 29.07, IR-confirm pending) — O3 Vollanalyse (!Analysiere NOW, US) ersetzt Platzhalter-Score"
     scoring_notiz: "Neuaufnahme Umstrukturierung 2026-06-07 (VEEV-Erlös → NOW). Owner-Conviction-Add ohne DEFCON-Score (Governance-Override UMSTRUKTURIERUNG-2027 §6.4, analog AMZN §1). DEFCON 3 = Platzhalter für volle Tier-Rate; echter Score via O3 Vollanalyse."
     ersatz: null
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
@@ -365,7 +365,7 @@ satelliten:
     score_datum: null
     flag: false
     sparrate_hinweis: "Tier 2, DEFCON-3-Platzhalter, kein FLAG → volle Tier-2-Rate 32,00€ bis Vollanalyse."
-    naechste_pruefung: "O3 Vollanalyse (non-us-fundamentals, Japan) — ersetzt Platzhalter-Score"
+    naechste_pruefung: "Q1 ~29.07. (yf — JP-Termin verifizieren) — O3 Vollanalyse (non-us-fundamentals, Japan) ersetzt Platzhalter-Score"
     scoring_notiz: "Neuaufnahme Umstrukturierung 2026-06-07. Owner-Conviction-Add ohne DEFCON-Score (Governance-Override UMSTRUKTURIERUNG-2027 §6.4). DEFCON 3 = Platzhalter für volle Tier-Rate; echter Score via O3 non-us-fundamentals (JP, JPY/IFRS)."
     ersatz: null
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
@@ -381,7 +381,7 @@ satelliten:
     score_datum: null
     flag: false
     sparrate_hinweis: "Tier 3, DEFCON-3-Platzhalter, kein FLAG → volle Tier-3-Rate 18,00€ bis Vollanalyse."
-    naechste_pruefung: "O3 Vollanalyse (!Analysiere ZETA, US) — ersetzt Platzhalter-Score"
+    naechste_pruefung: "Q2 ~04.08. — O3 Vollanalyse (!Analysiere ZETA, US) ersetzt Platzhalter-Score"
     scoring_notiz: "Neuaufnahme Umstrukturierung 2026-06-07. Owner-Conviction-Add ohne DEFCON-Score (Governance-Override UMSTRUKTURIERUNG-2027 §6.4), bewusste Spekulation — QuickScreener-Rot. DEFCON 3 = Platzhalter für volle Tier-Rate; echter Score via O3 Vollanalyse."
     ersatz: null
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
@@ -396,19 +396,19 @@ flags_aktiv:
     grund: "CapEx/OCF FLAG aktiv (30.04.2026 Q3 FY26 Tag-+1 Re-Eval): 9M FY26 bereinigt 57,7% (Trigger A erfüllt) ABER Bull-Case UND-Verknüpfung mit (B) CapEx-Plateau/Decel ❌ FAIL (CY26 CapEx $190B vs Konsens $154,6B = +23% Surprise) — Trigger B blockiert FLAG-Resolve trotz <60%-Schwelle"
     seit: "2026-Q1"
     wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON"
-    naechste_pruefung: "2026-07 Q4 FY26 Earnings — Q4-bereinigt-CapEx-Read + FY27-Guide-Plateau-Hint + WACC-Methodology-Verify (FRED-Baseline) + Insider-Block-Re-Score post-14.05."
+    naechste_pruefung: "Q4 FY26 Earnings 29.07. — Q4-bereinigt-CapEx-Read + FY27-Guide-Plateau-Hint + WACC-Methodology-Verify (FRED-Baseline) + Insider-Block-Re-Score post-14.05."
 
   - ticker: APH
     grund: "Score-basiert — Score 61 (v3.7, 30.04.2026 Q1 FY26 Vollanalyse), DEFCON 2 (<65 D3-Threshold). CommScope-Bilanz-Pressure (NL 1,6x post-Close). Tariff CN/MY Risk-Map aktiv."
     seit: "2026-04-09"
     wirkung: "Sparrate komplett gestoppt (0 €)"
-    naechste_pruefung: "Q2 2026 Earnings ~23.07. — China-Tax-ETR + CommScope-Net-Lev + ROIC-GW-Full-Year-Verify"
+    naechste_pruefung: "Q2 2026 Earnings 29.07. — China-Tax-ETR + CommScope-Net-Lev + ROIC-GW-Full-Year-Verify"
 
   - ticker: AVGO
     grund: "Insider-Selling 90d $106,4M (insider_intel.py 30.04. Live-Pull) bzw. $280M+ (OpenInsider-Lesart inkl. Samueli $250M) — beide Lesarten 5-14× über $20M-Schwelle. OpenInsider-Cross-Check 27.04.2026: 9 Transaktionen, alle 'S - Sale' ohne 10b5-1-Suffix, kein Cashless-Pattern. Watchlist-These 'Post-Vesting' widerlegt."
     seit: "2026-04-27"
     wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON 2 (Score-unabhängig; 30.04. Vollanalyse 84→53, 04.06. Q2 FY26 Vollanalyse 53→56 — FLAG bleibt da Diskr. 90d $106,4M ≫$20M, Samueli $281M=10b5-1 ausgeschl.)"
-    naechste_pruefung: "Q3 FY26 Earnings ~02.09.2026 — Re-Eval via !Analysiere AVGO + 90d-rolling-Insider-Check + Methodology-Watches-Resolve (#30-34)"
+    naechste_pruefung: "Q3 FY26 Earnings 03.09.2026 — Re-Eval via !Analysiere AVGO + 90d-rolling-Insider-Check + Methodology-Watches-Resolve (#30-34)"
 
 flags_review: []  # AVGO 2026-04-27 → flags_aktiv promotet (Insider-FLAG)
 
@@ -528,32 +528,29 @@ keine_zuteilung:
 # TERMINE & TRIGGER (Stand 25.04.2026)
 # ─────────────────────────────────────────────
 termine:
-  - datum: "2026-04-28 [DONE]"
-    event: "V Q2 FY26 Earnings — Beat-Cascade D2→D3 (mittags, Score 63→68) → REVERTED (spätabends) nach Codex-HIGH-1+HIGH-2-Review: Score 68→64, D3→D2, Sparrate 35,63€→19,00€, Nenner 8,0→7,5. HIGH-1: ROIC 1→7 via SKILL absolute alternative scale war regelwidrig (WACC 10,48% gesetzt ≠ 'fehlende WACC-Schätzung'). HIGH-2: kurs.referenz close_of_score_datum verletzt (27.04.-Carryover-Proxy statt 28.04.-Close). defeatbeta-ROIC-Methodology-Verify Q3 FY26 in PIPELINE #21. Beat-Substanz (Net Rev +17%, EPS +20%, $20B Buyback) bleibt qualitativ relevant — Q3 entscheidet. D2-Watch reaktiviert."
-  - datum: "2026-07 (Ende Juli)"
-    event: "V Q3 FY26 Earnings → Cross-Border-Velocity-Check (Q2 +12% cc deceleriert von Pre-Q-Niveau >15%; <10% cc Q3 = Travel-Schwäche-Signal) + defeatbeta-ROIC-Methodology-Refresh-Verify"
-  - datum: "2026-04-23 [DONE]"
-    event: "TMO Q1 FY26 Earnings → Beat + Guidance-Raise, fcf_trend_neg Resolve-Gate CLEAR. Score 64→67, D2→D3, Sparrate 17,81€→33,53€. Nächster Trigger: Q2 FY26 ~Ende Juli (Organic-Akzeleration + Clario-Integration-Check)."
-  - datum: "2026-07 (Ende Juli)"
-    event: "TMO Q2 FY26 Earnings → Organic-Akzeleration-Check (Q1 +1% → H2-Guide 3-4% bestätigen?) + Clario-Integration-Execution-Check"
-  - datum: "2026-04-28"
-    event: "SPGI Q1 2026 Earnings → Re-Analyse (Score 77 → ≥80 möglich bei ROIC-Normalisierung)"
-  - datum: "2026-04-28"
-    event: "SNPS Q1 2026 Earnings → Re-Analyse (Score 79 → ≥80 Katalysator)"
-  - datum: "2026-04-29"
-    event: "MSFT Q3 FY26 Earnings → CapEx-FLAG-Review (Ziel: CapEx/OCF <60%)"
-  - datum: "Mai 2026"
-    event: "BRK.B Q-Earnings + CPRT / ZTS / PEGA Earnings → Watchlist-Review"
+  # Stand 2026-06-09: tool-kanonische Earnings-Termine (earnings_calendar.py, yfinance+Override SSoT).
+  # 30-Tage-Fenster (→09.07.) leer; nächstes Roster-Event ASML 15.07. DONE-Chronik → CORE-MEMORY §12 + git + score_history.jsonl.
+  - datum: "2026-07-15"
+    event: "ASML Q2 2026 (bmo, confirmed) — nächstes Roster-Event"
+  - datum: "2026-07-22"
+    event: "NOW Q2 (yf/UW; TipRanks 29.07, IR-confirm pending, O3) · TMO Q2 FY26 (bmo) → Organic-Akzeleration (Q1 +1% → H2-Guide 3-4%) + Clario-Integration"
+  - datum: "2026-07-28"
+    event: "V Q3 FY26 (amc) → Cross-Border-Velocity (<10% cc = Travel-Schwäche-Signal) + defeatbeta-ROIC-Methodology-Verify (PIPELINE #21)"
+  - datum: "2026-07-29"
+    event: "MSFT Q4 FY26 (amc) CapEx-Plateau+WACC-Verify · APH Q2 (FLAG-Review China-Tax-ETR/CommScope-NL) · RMS H1 (8:00 CEST) · KYCCF Q1 (yf, JP-verifizieren, O3)"
+  - datum: "2026-07-30"
+    event: "SU H1 · AMZN Q2 FY26 (amc) → CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + voller DEFCON-Refresh"
+  - datum: "2026-08-01"
+    event: "BRK.B Q2 FY26 (Sa, 10-Q) → KHC-OTTI/GEICO-Decel/Form-13F-Apple-Trim/Buyback-Reconciliation (#36-#41)"
+  - datum: "2026-08-04"
+    event: "ZETA Q2 2026 (O3) — Scoring-Nachzug"
+  - datum: "2026-09-03"
+    event: "AVGO Q3 FY26 (amc) → Insider-FLAG-Resolve-Gate 90d-rolling + Methodology-Watches-Resolve (#30-34)"
+  # Sonstige offene (non-earnings):
   - datum: "Juni 2026"
     event: "Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung"
-  - datum: "Juli/Aug 2026"
-    event: "RMS H1 2026 Report + SU H1 2026 Earnings → Re-Check D4-Exception"
-  - datum: "2026-07-23"
-    event: "APH Q2 2026 Earnings → FLAG-Review + Tariff-Impact-Check"
   - datum: "Q2 2026"
-    event: "GOOGL FLAG-Review nach Earnings"
-  - datum: "Q3 FY26"
-    event: "AVGO !Analysiere — FLAG-Re-Eval (insider_selling_20m, getriggert 27.04.2026) + voller DEFCON-Refresh"
+    event: "GOOGL FLAG-Review nach Earnings (Watchlist, kein Einstieg bis Resolve)"
 
 # ─────────────────────────────────────────────
 # API-AUDIT-LOG (Quarterly Sanity Check)
@@ -561,5 +558,5 @@ termine:
 api_audit_log:
   eintraege:
     - "2026-04-07 | ASML | OCF: ~10% Δ (IFRS 16 vs ASC 842, strukturell) | CapEx: ≤3.5% Δ | Status: OK — kein API-Drift. FLAG: Clean unter beiden Standards."
-  naechster_check: "2026-05-01"
+  naechster_check: "2026-08-01"
   check_ticker_q2: ["V", "BRK.B", "TMO"]
