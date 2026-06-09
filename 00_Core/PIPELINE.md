@@ -24,7 +24,7 @@
 *(Earnings-Window 28.04.-04.05. abgeschlossen — V Q2 / MSFT Q3 / APH Q1 / BRK.B Q1 alle DONE. Detail-History in CORE-MEMORY §12.X + git log. Methodology-Watches als Items #21/#25/#27/#36/#38-#41 unten; #26 (MSFT-Insider-Block-Re-Score 14.05.) + #30-34 (AVGO-Cluster-A 09.05.) + #37 (BRK-Apple-Trim-13F RESOLVED 17.05., Apple 0 Trim → CORE-MEMORY §12.4) DONE → CORE-MEMORY §13/§12.4 + git log.)*
 
 - **Umstrukturierung-2027 Phase A (06.–08.06.):** Roster 12→13 (VEEV+COST **exited**, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter), 3-Tier-Modell, 60/35/5 — 00_Core-Markdown-Sync DONE. **🔴 O3-Scoring-Nachzug pending:** NOW (US `!Analysiere`) · KYCCF (JP `non-us-fundamentals`) · ZETA (US) — echte Scores ersetzen Platzhalter. **Vault-Sync pending** (Entity-Pages VEEV/COST→archiv, NOW/KYCCF/ZETA neu + Backlinks, Index/Concept-Drift).
-- **~23.07.** APH Q2 FY26 — Klasse-B (China-Tax + CommScope-Net-Lev, Score<65 FLAG) · **~Ende Juli** AMZN Q2 / V Q3 / TMO Q2 · **~02./03.08.** BRK.B Q2 · **~02.09.** AVGO Q3 FLAG-Resolve-Gate
+- **Earnings-Cluster (earnings_calendar.py-Kanon 09.06.; 30-Tage-Fenster →09.07. leer):** **15.07.** ASML Q2 · **22.07.** NOW Q2 (O3) / TMO Q2 · **28.07.** V Q3 · **29.07.** MSFT Q4 / APH Q2 (Score<65 FLAG) / RMS H1 / KYCCF Q1 (O3) · **30.07.** SU H1 / AMZN Q2 (CapEx/OCF-Re-Eval) · **01.08.** BRK.B Q2 · **04.08.** ZETA Q2 (O3) · **03.09.** AVGO Q3 FLAG-Resolve-Gate
 
 ### 🟡 Bereit, wartet auf Earnings-Window-Schluss (post-29.04.)
 
