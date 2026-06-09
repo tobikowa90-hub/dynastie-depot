@@ -9,7 +9,7 @@ exit_grund: "Umstrukturierung-2027 (User-Lock 05./06.06.2026): VEEV → NOW (Ser
 score_aktuell: 74
 defcon: 3
 flag: "keins"
-sparrate: "Volle Rate 35,63€ (Gewicht 1.0)"
+sparrate: "(eingefroren, Exit 06/2026) Volle Rate 35,63€ (Gewicht 1.0)"
 letzteAnalyse: 2026-04-09
 score_valid_until: 2026-10-06
 naechsterTrigger: "Nächste Earnings"

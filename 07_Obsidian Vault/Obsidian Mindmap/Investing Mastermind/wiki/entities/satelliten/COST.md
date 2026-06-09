@@ -9,13 +9,13 @@ exit_grund: "Umstrukturierung-2027 Roster-Reduktion (User-Lock 05./06.06.2026): 
 score_aktuell: 69
 defcon: 3
 flag: "keins"
-sparrate: "Volle Rate 35,63€ (Gewicht 1.0)"
+sparrate: "(eingefroren, Exit 06/2026) Volle Rate 35,63€ (Gewicht 1.0)"
 letzteAnalyse: 2026-04-17
 score_valid_until: 2026-10-14
 naechsterTrigger: "Q1 FY27 Earnings ~Dez 2026"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
 updated: 2026-04-18
-sparrate_eur: "35,63€ (volle Rate nach Nenner 8.5→8.0 Update 18.04.)"
+sparrate_eur: "(eingefroren, Exit 06/2026) 35,63€ (volle Rate nach Nenner 8.5→8.0 Update 18.04.)"
 scoring_notiz_v37: "v3.7: Score 69 stabil (Screener-Exception Membership Yield). Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment (Score 69 in 65-79-Range, Sparrate bei D3/D4-Übergang identisch)."
 ---
 

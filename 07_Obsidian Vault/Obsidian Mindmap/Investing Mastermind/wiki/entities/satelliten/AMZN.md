@@ -35,6 +35,8 @@ aliases:
 
 **Owner-Mandat vs. DEFCON-Determinismus sauber getrennt:** Das System dokumentiert den Zustand faktentreu (D1/FLAG/42), die Aufnahme-Entscheidung ist Owner-Mandat (`00_Core/KONTEXT.md` §1 „Mein Portfolio, meine Regeln"). Die Sparrate bleibt **regelkonform 0€** (User-Wahl via AskUserQuestion: „Regelkonform 0€ bis FLAG-Auflösung" — KEIN Owner-Override, FLAG heilig). **Slot-Erweiterung 11→12 ist nenner-neutral:** FLAG=Gewicht 0,0 → Sparraten-Nenner unverändert 7,5, alle 11 bestehenden Einzelraten unverändert (38€/19€/0€, Σ285€). Rebalancing-Zielgewicht jedoch exakt wie alle Aktien (30%-Satelliten-Block /12 = 2,50% je Position, ΣH=100%; J-Fehlbetrag durch P=0 unterdrückt → kein Kapitalfluss bis FLAG-Resolve).
 
+> *(Anmerkung 09.06.2026: Dieses Equal-Weight-Nenner-Modell [Σ285€ / Nenner 7,5 / 30%-Block-/12] ist durch das **3-Tier-Conviction-Modell** [SOLL 364€ / Funded 210€, 60/35/5] abgelöst — Umstrukturierung-2027, siehe [[PORTFOLIO]] + Frontmatter/History-Row 09.06. AMZN = T1-Basis 40€, FLAG-Override → 0€ unverändert. Body-Mechanik oben = 15.05.-Stand, historisch.)*
+
 ## FLAG-Details (`AMZN_capex_ocf_2026-05-15`)
 
 - **CapEx/OCF TTM netto 99,2%** — Amazon Q1-2026-Press-Release: Purchases-of-P&E-net TTM $147,3B / OCF TTM $148,5B. **Gross 101,7%** (defeatbeta). ≫60%-Schwelle gerissen, **schärfer als GOOGL 74-79%** ([[GOOGL]]).
