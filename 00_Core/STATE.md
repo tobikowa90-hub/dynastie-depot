@@ -14,9 +14,11 @@
 - **06.–08.06. 🔴 Umstrukturierung-2027 Phase A — Major Depot-Umbau** (User-Lock 05.06.). Split 65/30/5→**60/35/5**, Equal-Weight→**3-Tier Conviction** (Basis 40/32/18€ × DEFCON-Modulation × FLAG), Roster 12→**13** (VEEV+COST raus; NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter, **Scoring pending O3**), ETF exUSA→JEDI+WQTM, ~**1031€**/Mt (ETF 616 + Satelliten-SOLL 364 + Gold 51). Markdown-Sync + Hook-§G-False-PASS-Fix + AVGC-Broker-Fix `1e3c817`. Detail → 00_Core/UMSTRUKTURIERUNG-2027.md + PORTFOLIO + git log.
 - **04.06. ✅ AVGO Q2 FY26 Vollanalyse DONE** (Score 53→56, D2, FLAG bleibt — Insider-Selling 90d). Detail → CORE-MEMORY §12.1 + git log.
 
-**Forward-Triggers (~14 Tage + Gates):**
-- **O3-Scoring-Nachzug pending:** NOW (US `!Analysiere`) · KYCCF (JP `non-us-fundamentals`) · ZETA (US, war QuickScreener-Rot) → echte Scores ersetzen die DEFCON-3-Platzhalter
-- **~Ende Juli** AMZN Q2 FY26 — CapEx/OCF-FLAG-Re-Eval + Vollanalyse · **~02.09.** AVGO Q3 FY26 Re-Eval (Insider-FLAG 90d-rolling)
+**Forward-Triggers (`earnings_calendar.py`-Sync 09.06. — yfinance+Override):**
+- **Nächstes Event = ASML Q2 15.07.** (bmo, confirmed). 30-Tage-Fenster (→09.07.) sonst leer; einziges Pre-Cluster-Event.
+- **Juli-Cluster 22.–30.07.:** 22.07. NOW Q2 (yf/UW; TipRanks 29.07 — IR-confirm pending) + TMO Q2 (bmo, yf+Nasdaq) · 28.07. V Q3 FY26 (amc) · 29.07. MSFT Q4 FY26 (amc) + APH Q2 (13:00 ET) + RMS H1 + KYCCF Q1 (yf, JP-verifizieren) · 30.07. SU H1 + AMZN Q2 (amc, CapEx/OCF-FLAG-Re-Eval)
+- **Aug + Gates:** 01.08. BRK.B Q2 (Sa, 10-Q) · 04.08. ZETA Q2 · **03.09.** AVGO Q3 FY26 Re-Eval (Insider-FLAG 90d-rolling)
+- **O3-Scoring-Nachzug pending:** NOW (US `!Analysiere`, ~22.07.) · KYCCF (JP `non-us-fundamentals`, ~29.07. yf — JP-Q1-Termin verifizieren) · ZETA (US, war QuickScreener-Rot, ~04.08.) → echte Scores ersetzen die DEFCON-3-Platzhalter
 - **06.07.** FinnHub-Shadow-Run Reklassifizierungs-Gate (PIPELINE #75, scoring-neutral)
 
 ## Navigation (on-demand)
@@ -44,4 +46,4 @@
 
 <!-- system-audit:last-audit:end -->
 
-*🦅 STATE.md Hub v2.5 | Dynasty-Depot | **Stand:** 2026-06-08 (Umstrukturierung-2027 Phase A Markdown-Sync — Critical-Alerts + Forward-Triggers auf 13-Roster/3-Tier/60-35-5 nachgezogen; May-Alerts >10 Tage rolled off zu git log + CORE-MEMORY §13)*
+*🦅 STATE.md Hub v2.5 | Dynasty-Depot | **Stand:** 2026-06-09 (Earnings-Kalender-Sync via `earnings_calendar.py` [yfinance+Override] — Forward-Triggers auf Tool-Kanon: ASML 15.07. → NOW/TMO 22.07. → V 28.07. → MSFT/APH/RMS/KYCCF 29.07. → SU/AMZN 30.07. → BRK.B 01.08. → ZETA 04.08. → AVGO 03.09. Tool-Regex-Bug gefixt [7-Spalten-3-Tier-Tabelle]. Date-only, kein Score-Event. Vorher: 2026-06-08 Umstrukturierung-2027 Phase A Markdown-Sync)*
