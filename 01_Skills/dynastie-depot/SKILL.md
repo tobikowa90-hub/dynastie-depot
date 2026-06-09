@@ -78,7 +78,7 @@ Gilt für Chat, Cowork UND Claude Code.
 **API-Routing — PFLICHT vor jedem Datenabruf:**
 
 ```
-IF US-Ticker (NYSE/NASDAQ): AVGO, MSFT, V, BRK.B, TMO, VEEV, APH, COST
+IF US-Ticker (NYSE/NASDAQ): AVGO, MSFT, V, BRK.B, TMO, APH, AMZN, NOW, ZETA
     → Shibui Finance SQL: technical_indicators, cash_flow_quarterly (2 Zeilen 200MA-Slope)
     → defeatbeta MCP: annual_cash_flow, balance_sheet, income_statement, quarterly_roic, wacc,
                       annual_gross_margin, quarterly_revenue_by_geography, earning_call_transcript
@@ -139,7 +139,7 @@ IF Non-US-Ticker: ASML, RMS, SU
 2.  **ROIC-Quartale:** `get_stock_quarterly_roic` liefert 10+ Quartale — **maximal die letzten 6 auswerten**, ältere Werte nicht zitieren.
 3.  **Quarterly Cash Flow bedingt:** `get_stock_quarterly_cash_flow` **nur aufrufen wenn** Annual-CapEx/OCF im Grenzbereich (45–65%) liegt. Bei klar grünen (<40%) oder roten (>70%) Werten: weglassen.
 4.  **WebSearch konsolidieren:** Mehrere Web-Metriken in **einer einzigen Suche** abrufen (z.B. „TICKER AlphaSpread Fwd PE moat GuruFocus"). Separate Suchen nur wenn Quelle explizit vorgegeben.
-5.  **Geography bedingt:** `get_quarterly_revenue_by_geography` nur bei Titeln mit bekannten Produktionsstandorten in CN/TW/MY/TH/VN. US-Software-Moats (V, VEEV, MSFT): weglassen.
+5.  **Geography bedingt:** `get_quarterly_revenue_by_geography` nur bei Titeln mit bekannten Produktionsstandorten in CN/TW/MY/TH/VN. US-Software-Moats (V, NOW, MSFT): weglassen.
 6.  **Duplikat-Check:** Prüfen ob Metrik bereits im aktiven Thread. Kein Re-Fetch innerhalb derselben Session. Gilt für: WACC, ROIC, PE, FCF-Marge, Insider-Score.
 
 **BLOCK B — Early-Exit**
@@ -913,7 +913,7 @@ Wenn der User \!Rebalancing eingibt oder nach Sparplan-Verteilung fragt:
 **Ersatzbank (1:1 Matrix):**
 
 - RMS → RACE | SU → DE | BRK.B → MKL/FFH.TO
-- V → MA | MSFT → GOOGL | AVGO → NVDA / MRVL | ASML → SNPS | VEEV → ZTS/SAP
+- V → MA | MSFT → GOOGL | AVGO → NVDA / MRVL | ASML → SNPS
 
 **Keine Zuteilung (nur Beobachtung):** CLPBY, CPRT, FICO, MSCI, SPGI, PEGA
 
@@ -1094,8 +1094,9 @@ Kein API-Key. User-Agent-Header Pflicht:
 | BRK.B | 0001067983 |
 | TMO | 0000097745 |
 | APH | 0000820313 |
-| VEEV | 0001393052 |
-| COST | 0000909832 |
+| AMZN | 0001018724 |
+| NOW | 0001373715 |
+| ZETA | 0001851003 |
 
 Endpunkt: `https://data.sec.gov/submissions/CIK{NUMMER}.json`
 

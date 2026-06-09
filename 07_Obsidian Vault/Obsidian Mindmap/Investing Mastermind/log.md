@@ -1701,3 +1701,26 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Geänderte Files:** PIPELINE.md (v2.78) + INSTRUKTIONEN.md + RETROSPECTIVE-GATE.md + CORE-MEMORY.md §13 (v1.35) + dieser log.md-Eintrag
 
 **Scoring-Status:** DEFCON v3.7 unverändert. Kein FLAG-Event, kein Re-Score. 13 Scores + Sparraten unverändert.
+
+## [2026-06-09] system | O3-Prep Roster-Infra-Sync — Insider-CIK + dynastie-depot-SKILL.md auf Live-13-Roster (scoring-neutral, Pipeline-Item)
+
+**Event-Typ:** Pipeline-Item / Roster-Infra-Sync vor O3-Scoring-Nachzug (kein Score/FLAG/Sparraten-Touch)
+
+**Was passiert ist:**
+- **Auslöser:** User-Stopp vor `!Analysiere NOW` — empirischer Drift-Check der Analyse-Oberflächen gegen das neue 13-Roster (Umstrukturierung-2027 Phase A) statt blindem Run.
+- **Befund:** `insider_intel.py` `SATELLITES_CIK` war stale (altes 8er-Roster mit exited VEEV/COST, ohne AMZN/NOW/ZETA) → Insider-Block (10 Pkt) für NOW nicht scorebar = **harter Blocker** für den O3-NOW-Run. PIPELINE #24-Sub-Bullet hatte das getrackt, aber mit **invertierter Gating-Logik** („gated auf O3" — tatsächlich PREREQUISITE).
+- **CIKs empirisch von SEC** `company_tickers.json` verifiziert (MSFT/COST/VEEV-Match = Quelle autoritativ): NOW `0001373715` · AMZN `0001018724` · ZETA `0001851003`.
+- **Fix (a):** `01_Skills/insider-intelligence/insider_intel.py` `SATELLITES_CIK` → Live-9-US (AVGO/MSFT/V/BRK.B/TMO/APH + AMZN/NOW/ZETA, −VEEV/COST). `dynastie-depot/SKILL.md`: API-Routing-US-Liste (Z.81) + SEC-CIK-Tabelle (Z.1087-98) + Ersatzbank-Matrix (VEEV→ZTS/SAP entfernt) + Geography-Beispiel (VEEV→NOW). 
+- **Empirisch validiert:** `python insider_intel.py scan NOW` → 74 Form-4-Filings geparst, vollständiger Insider-Block, FLAG-Check 🟢 (diskr. Selling 90d $2,46M ≪ $20M), CEO McDermott als Käufer erkannt, ASCII-safe kein cp1252-Crash.
+
+**Drift-Matrix-Ergebnis (vollumfänglicher Analyse-Oberflächen-Check):** config.yaml ✅ · PORTFOLIO.md ✅ · Faktortabelle.md ✅ · sources.md ✅ (generisch) — alle sauber (Platzhalter-Rows). Stale waren nur insider_intel.py (Code) + dynastie-depot-SKILL.md (Doku, gefixt).
+
+**Offen verankert (PIPELINE #24-Sub (b)/(c)/(d)):** (b) INSTRUKTIONEN §1 „8-US-Satelliten"-Count + §14/§21 KYCCF-Non-US-Doku; (c) **KYCCF-Code-Infra** `eodhd_intel.py` JPY-Pfad (EUR-hardcoded) vor Q1-Earnings **29.07.**; (d) SKILL.md Quarterly-Sanity-Rotation (exited VEEV/COST) → Aug-Slot.
+
+**Sync-Set (§18 Pipeline-Item-Event, scoring-neutral):** PIPELINE.md (v2.78→v2.79, #24-Sub-(a)-DONE + Gating-Korrektur + (b)/(c)/(d) verankert) + log.md (dieser Eintrag) + Code `insider_intel.py` + `dynastie-depot/SKILL.md`. **KEIN** PORTFOLIO/Faktortabelle/score_history/config.yaml/xlsx/flag_events (kein Score/FLAG/Sparraten-Event). dynastie-depot-SKILL.md-Version bleibt v3.7.6 (reine Roster-Referenz-Daten, keine Scoring-Logik-Änderung).
+
+**Lehre:**
+- **Pre-Run-Drift-Check zahlt sich aus:** Der CIK-Blocker hätte den NOW-Run mitten im Insider-Block gecrasht. Empirie (`scan NOW`) > Annahme (Memory `feedback_empirie_statt_annahmen`).
+- **Gating-Logik-Inversion:** Ein „Folge-Staleness gated auf X"-Item kann in Wahrheit Prerequisite für X sein. Bei Gating-Notizen Richtung der Abhängigkeit prüfen.
+
+**Cross-Reference:** Commit `<TBD>` · PIPELINE.md #24 · Memory `project_umstrukturierung_2027_pending_sync` + `feedback_empirie_statt_annahmen`. **NOW-Vollanalyse (O3) = frische Session** (User-Direktive 09.06.).

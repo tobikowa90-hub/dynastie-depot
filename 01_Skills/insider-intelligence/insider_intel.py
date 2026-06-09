@@ -46,15 +46,18 @@ USER_AGENT = "Tobias tobikowa90@gmail.com"
 
 # CIK-Tabelle: Alle US-Satelliten des Dynastie-Depots
 # Einmalig hinterlegt — bei Slot-Tausch aktualisieren
+# Stand 2026-06-09 (Umstrukturierung-2027 Phase A): VEEV+COST roster-exited entfernt,
+# AMZN/NOW/ZETA ergänzt (CIKs SEC company_tickers.json verifiziert). KYCCF = JP/OTC → non-us-Modul.
 SATELLITES_CIK = {
     "AVGO": "0001730168",  # Broadcom Inc.
     "MSFT": "0000789019",  # Microsoft Corporation
     "V": "0001403161",  # Visa Inc.
     "BRK.B": "0001067983",  # Berkshire Hathaway Inc.
     "TMO": "0000097745",  # Thermo Fisher Scientific
-    "VEEV": "0001393052",  # Veeva Systems Inc.
     "APH": "0000820313",  # Amphenol Corporation
-    "COST": "0000909832",  # Costco Wholesale Corporation
+    "AMZN": "0001018724",  # Amazon.com Inc.
+    "NOW": "0001373715",  # ServiceNow, Inc.
+    "ZETA": "0001851003",  # Zeta Global Holdings Corp.
 }
 
 # Pfade (relativ zum Script-Verzeichnis)
