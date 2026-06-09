@@ -1687,3 +1687,17 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Sync-Set (system-zustand + pipeline-item Multi-Event-Union):** `CODE_GUIDELINES.md` (NEU) + `INSTRUKTIONEN.md` (§0-Stub + v1.15) + `CLAUDE.md` (3 Anker) + `SYSTEM.md` (§System-Zustand-Bullet) + dieser `log.md`-Eintrag + `PIPELINE.md` #26 (O3-gated Folge-Staleness `insider_intel.py`+§1/§14/§21 ergänzt, Vault-Sync-Status korrigiert).
 
 **Scoring-Status:** DEFCON v3.7 unverändert. Kein FLAG-Event, kein Re-Score. Folge-Sektionen (§17/§18 → `AUTOMATION_SYNC.md`, §27/§28) pending User-Entscheidung mit Pilot-Daten. Commit-Bundle → `!SessionClose` (Hard-Stop vor Push).
+
+## [2026-06-09] system | PIPELINE Cleanup + Quick-Fix-Welle (scoring-neutral, Pipeline-Item-Event)
+
+**Event-Typ:** Pipeline-Item-Cleanup + Doc-Fix-Welle (kein Score/FLAG/Sparraten-Touch)
+
+**Was passiert ist:**
+- **Entfernt (Numbering-Gap-Konvention, Detail git log + CORE-MEMORY §13):** core-slim-refactor-Komplex #78/#79/#80/#81 (Skill v0.1.0→v0.2.0 alle DONE — Core wird jetzt direkt bearbeitet, „Reinfall raus" per User-Direktive) + #73 Skill-Backlog (`paragraph-18-sync` + `xlsx-smoke-test-runner` live, (c) durch §18.1-Watchlist-xlsx-Eintrag abgedeckt) + stale Watchlist #62 (SPGI/SNPS, Trigger abgelaufen, nicht im Roster) + #63 (DE, Q2 21.05. ohne §6-Eintrag, SU stabil, Dublette zu #77) + #72 (cc-gemini-Bridge, zuvor)
+- **Quick-Fixes diese Session:** #58 ETF-Allokations-Drift OBSOLET (KONTEXT §3/§4 durch Umstrukturierung 06.07. auf konsistente 60%/616€ neu geschrieben — alte 70-vs-65-Diff existiert nicht mehr) · #59 §29.4-Aktivierungs-Widerspruch gefixt (INSTRUKTIONEN §29-FUTURE-ACTIVATION-Header + RETROSPECTIVE-GATE.md L11/L142: 2028-Range §29.1-4→§29.1-3, §29.4 t-Hurdle als SOFORT-aktiv klargestellt — konsistent mit §29.8-Reihenfolge) · #60 Stand-Konvention YYYY-MM-DD→DD.MM.YYYY (angeglichen an Parser `STAND_RE` = SSoT, kein Code-Touch)
+- #17 Inline-Stale-Fix (Anker-#5 COST exited → MKL); Footer-Versionshistorie v2.45→v2.77 → git log (war ~10 KB Wall-of-Text)
+- PIPELINE.md 106→83 Zeilen
+
+**Geänderte Files:** PIPELINE.md (v2.78) + INSTRUKTIONEN.md + RETROSPECTIVE-GATE.md + CORE-MEMORY.md §13 (v1.35) + dieser log.md-Eintrag
+
+**Scoring-Status:** DEFCON v3.7 unverändert. Kein FLAG-Event, kein Re-Score. 13 Scores + Sparraten unverändert.

@@ -8,7 +8,7 @@
 
 ## 29. Retrospective-Analyse-Gate
 
-> **`[FUTURE-ACTIVATION: 2028-04-01]` für §29.1-4 + §29.6 + §29.7. §29.5 Seven-Sins-Gate aktiv bereits jetzt bei Migration-Events.**
+> **`[FUTURE-ACTIVATION: 2028-04-01]` für §29.1-3 + §29.6 + §29.7. §29.4 (t-Hurdle) + §29.5 (Seven-Sins-Gate) aktiv bereits jetzt bei Migration-Events.**
 
 Systemischer Gate für jede retrospektive Analyse der `score_history.jsonl` (Strategy-Selection, Parameter-Tuning, Portfolio-Return-Validation). Aktivierung: Review 2028-04-01 ODER erste DEFCON-Parameter-Variation. §28 (Migration-Workflow) ist **komplementär**, nicht konkurrierend: §28 schützt Versions-Sprünge, §29 schützt Retrospective-Auswertungen.
 
@@ -139,7 +139,7 @@ realistische_forward_erwartung = in_sample_claim × 0,42
 3. **Crowding-Watch:** Post-Publication-Increase in Predictor-Korrelationen (Lee/Shleifer/Thaler-Pattern) → DEFCON-Wide-Moat-Strategien können in Stress-Events korrelierter abstürzen als in-sample-Sharpe suggeriert. Faktor 5b FRED-Regime-Filter (geplant) adressiert das partiell.
 4. **Score-Archiv-Markierung:** Bei retrospektiven Analysen der `score_history.jsonl` ab 2028 explizit ausweisen, dass Sample-Periode post-publication ist (kein zusätzlicher Discount nötig).
 
-**Aktivierungs-Trigger:** Review 2028-04-01 ODER erste DEFCON-Parameter-Variation (parallel zu §29.1-4 + §29.6).
+**Aktivierungs-Trigger:** Review 2028-04-01 ODER erste DEFCON-Parameter-Variation (parallel zu §29.1-3 + §29.6).
 
 **Strukturelle DEFCON-Bestätigung (kein Aktion-Item):** M&P zeigen, dass Fundamentals-/Accounting-Predictoren STRUKTURELL robuster gegen Post-Publication-Decay sind als Price-/Trading-only-Predictoren (höhere Arbitragekosten, langsamere Korrektur). Das bestätigt die DEFCON-Block-Gewichtung 50/20/10/10/10 (Fundamentals + Moat dominieren) als wissenschaftlich tragfähige Architektur-Entscheidung.
 

@@ -400,7 +400,7 @@ Alle zum Event-Set gehörenden Files in **einem** Commit bündeln (atomar). Pipe
 
 ### 18.4 Stand-Footer-Konvention (seit 2026-04-26)
 
-Alle 8 `00_Core/`-Files (`PORTFOLIO`, `STATE`, `CORE-MEMORY`, `Faktortabelle`, `PIPELINE`, `SYSTEM`, `INSTRUKTIONEN`, `KONTEXT`) tragen `**Stand:** YYYY-MM-DD` ausschließlich im **Footer-Versions-Banner** am Datei-Ende, nicht im Header. Beim Stand-Update wird nur die letzte Footer-Zeile editiert — Header und Body bleiben unberührt. Vorteil: Konsistenz beim File-Touch (Stand-Pflege ist mechanisch, nicht inhaltlich) + within-Session KV-Cache-Stabilität bei Re-Reads nach Stand-Edit.
+Alle 8 `00_Core/`-Files (`PORTFOLIO`, `STATE`, `CORE-MEMORY`, `Faktortabelle`, `PIPELINE`, `SYSTEM`, `INSTRUKTIONEN`, `KONTEXT`) tragen `**Stand:** DD.MM.YYYY` ausschließlich im **Footer-Versions-Banner** am Datei-Ende, nicht im Header. Beim Stand-Update wird nur die letzte Footer-Zeile editiert — Header und Body bleiben unberührt. Vorteil: Konsistenz beim File-Touch (Stand-Pflege ist mechanisch, nicht inhaltlich) + within-Session KV-Cache-Stabilität bei Re-Reads nach Stand-Edit.
 
 ### 18.5 Provenance-Gate für Score-Appends (seit 2026-04-28, v3.7.4)
 
@@ -875,7 +875,7 @@ Für diese Fälle reicht: Commit + zugehöriges Hub-Set-Update (PORTFOLIO bei Sc
 
 > **Detail-Spec ausgelagert (09.05.2026, PIPELINE #16 Variante A):** [`00_Core/RETROSPECTIVE-GATE.md`](RETROSPECTIVE-GATE.md). Hier nur Stub + Sub-Section-Anchors für Cross-Reference-Erhalt aus §28 / §18 / §27 / §30 / §4.
 >
-> **`[FUTURE-ACTIVATION: 2028-04-01]` für §29.1-4 + §29.6 + §29.7. §29.5 Seven-Sins-Gate aktiv bereits jetzt bei Migration-Events.**
+> **`[FUTURE-ACTIVATION: 2028-04-01]` für §29.1-3 + §29.6 + §29.7. §29.4 (t-Hurdle) + §29.5 (Seven-Sins-Gate) aktiv bereits jetzt bei Migration-Events.**
 
 Systemischer Gate für jede retrospektive Analyse der `score_history.jsonl` (Strategy-Selection, Parameter-Tuning, Portfolio-Return-Validation). §28 (Migration-Workflow) ist **komplementär**, nicht konkurrierend: §28 schützt Versions-Sprünge, §29 schützt Retrospective-Auswertungen.
 
