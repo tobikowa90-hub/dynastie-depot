@@ -4,22 +4,23 @@ ticker: V
 name: Visa Inc.
 sektor: Zahlungs-Infrastruktur / Netzwerk
 ersatz: MA
+tier: 2
 score_aktuell: 64
 defcon: 2
 flag: "keins"
-sparrate: "Halbe Rate 19,00€ (D2, Gewicht 0.5)"
+sparrate: "16€ (T2-Basis 32€ × D2 0,5 — Tier-Modell seit 06/2026)"
 letzteAnalyse: 2026-04-28
 score_valid_until: 2026-10-28
-naechsterTrigger: "Q3 FY26 ~Ende Juli 2026 — Cross-Border-Velocity (Q2 +12% cc Trend) + defeatbeta-ROIC-Methodology-Verify (PIPELINE #21) + Litigation-MDL-Persistent-Watch"
+naechsterTrigger: "Q3 FY26 Earnings 28.07.2026 (earnings_calendar.py-Kanon) — Cross-Border-Velocity + defeatbeta-ROIC-Methodology-Verify (PIPELINE #21) + Litigation-MDL-Persistent-Watch"
 scoring_notiz_v37: "28.04.2026 spätabends Codex-Review-Revert (post Q2 FY26 Beat-Cascade-Analyse mittags 63→68 D3): Score **68→64, D3→D2, Sparrate 35,63€→19,00€**. Codex-HIGH-1 (CHALLENGE): ROIC 1→7 via SKILL absolute alternative scale war regelwidrig (WACC vorhanden 10,48%, SKILL erlaubt das nur „bei fehlender WACC-Schätzung" — V-Q2-Methodology-Drift-Pitfall). HIGH-2 (CHALLENGE): kurs.referenz=close_of_score_datum semantisch verletzt (27.04.-Carryover-Proxy statt 28.04.-close). Korrektur: ROIC-Carryover (1/8) + WACC-Carryover (10,48%) + Kurs-Refresh ($309,30) + Sentiment-Δ +1 (EPS-Rev post-beat) bleibt legitim. Beat-Headline blieb: Net Rev $11,23B (+17%), Non-GAAP EPS $3,31 (+20%), Cross-Border +12% cc, $20B Buyback. **First-Live-Run Provenance-Gate** P3.5 8 Checks fail-close PASS. ROIC<WACC bleibt Methodology-Watch #21 für Q3."
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[DEFCON-System]]"
-updated: 2026-05-06
+updated: 2026-06-09
 ---
 
 # V — Visa Inc.
 
 > **DEFCON 🟠 2 | Score 64/100 (v3.7.6 post-Rescoring-Revert) | Kein FLAG (Clean)**
-> Sparrate: 19,00€ (D2, Gewicht 0.5)
+> Sparrate: 16€ (T2-Basis 32€ × D2 0,5 — Tier-Modell seit 06/2026)
 
 ## Aktuelle Lage (Stand: 18.04.2026 — v3.7 Forward-Vollanalyse + Rescoring)
 
@@ -78,6 +79,7 @@ Score 63 (v3.7 Forward nach Advisor-Review). Die Algebra-Projektion 86 vom 17.04
 - **2026-04-18** — Forward-Vollanalyse + Rescoring. Score 86 → 72 → **63 D2** (Advisor-Review). Record `2026-04-18_V_vollanalyse` + `2026-04-18_V_rescoring`.
 - **2026-04-28 mittags** — Q2 FY26 Beat-Cascade-Vollanalyse 63→**68 D3** (Sparrate 35,63€). First-Live-Run Provenance-Gate-Pipeline P3.5 fail-close PASS. Record `2026-04-28_V_vollanalyse`.
 - **2026-04-28 spätabends** — Codex-HIGH-1+HIGH-2-Revert: **68→64, D3→D2, Sparrate 35,63€→19,00€**. ROIC absolute alternative scale war regelwidrig (WACC vorhanden ≠ „fehlende WACC-Schätzung"). Korrektur-Record `2026-04-28_V_rescoring`. Memory `feedback_skill_methodology_drift_v_q2` als Präzedenz für BRK Codex-R1-3-HIGH 04.05.
+- **2026-06-09** — Vault-Sync (Umstrukturierung-2027): Tier-Migration Sparrate 19,00€ → **16€** (T2-Basis 32€ × D2 0,5) + Frontmatter-Score-Mirror aus `00_Core/Faktortabelle.md` (64/🟠2/Clean unverändert). **KEIN Re-Score** — reine State-Spiegelung.
 
 ## Factor-Exposure (Aghassi 2023)
 

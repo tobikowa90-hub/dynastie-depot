@@ -4,22 +4,23 @@ ticker: TMO
 name: Thermo Fisher Scientific
 sektor: Life-Science / Instrumente
 ersatz: ZTS
+tier: 3
 score_aktuell: 67
 defcon: 3
 flag: "✅ Clean (fcf_trend_neg Resolve-Gate CLEAR 23.04.2026 — Q1-Beat + Guidance-Raise + WC-Unwind bestätigt)"
-sparrate: "Volle Rate 38,00€ (D3, Gewicht 1.0)"
+sparrate: "18€ (T3-Basis, D3 ×1,0 — Tier-Modell seit 06/2026)"
 letzteAnalyse: 2026-04-23
 score_valid_until: 2026-10-23
-naechsterTrigger: "Q2 FY26 ~Ende Juli 2026 — Organic-Akzeleration (Q1 +1% → H2 3-4%-Guide) + Clario-Integration-Execution"
+naechsterTrigger: "Q2 FY26 Earnings 22.07.2026 (bmo, earnings_calendar.py-Kanon) — Organic-Akzeleration (Q1 +1% → H2 3-4%-Guide) + Clario-Integration-Execution"
 scoring_notiz_v37: "23.04.2026 Q1 FY26 Forward-Vollanalyse: Score **64→67 (Δ+3)**, **D2→D3**, fcf_trend_neg Resolve-Gate **CLEAR**, Sparrate **17,81€→33,53€** (post-AVGO-FLAG-Kaskade 27.04. dann 38,00€). Q1-Beat + Guidance-Raise: FCF $825M +121% YoY, WC-Unwind-These bestätigt (ΔWC −$1.112M vs −$1.425M = +$313M besser), Management FY26-FCF-Guide $6,9-7,4B. Schema-Watch deaktiviert. Neue Watches: Organic-Akzeleration Q1 +1% → H2 3-4%-Guide + Clario-Integration-Execution. ZTS-Ersatz-Vorbereitung pausiert."
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[DEFCON-System]]"
-updated: 2026-05-06
+updated: 2026-06-09
 ---
 
 # TMO — Thermo Fisher Scientific
 
 > **DEFCON 🟡 3 | Score 67/100 (v3.7 Forward 23.04.) | FLAG ✅ Clean** (fcf_trend_neg Resolve-Gate CLEAR)
-> Sparrate: 38,00€ (D3, Gewicht 1.0; post-AVGO-FLAG-Kaskade 27.04.)
+> Sparrate: 18€ (T3-Basis, D3 ×1,0 — Tier-Modell seit 06/2026)
 
 ## Aktuelle Lage (Stand: 23.04.2026 — Q1 FY26 Forward-Vollanalyse v3.7)
 
@@ -84,6 +85,7 @@ Schema-Signal war getriggert: FCF FY25 $6,293M vs FY24 $7,267M = **−13,4% YoY*
 | 17.04.2026 | 63 | 🟠 2 | v3.7 Algebra-Projektion (Fix-2 OpM + Fix-3 Sell-Ratio, -4 Pt.) — D3→D2 |
 | 18.04.2026 | 64 | 🟠 2 | v3.7 Forward-Vollanalyse — ROIC-Regel-4-Gating korrekt angewendet (+6,74pp Spread). fcf_trend_neg schema-getriggert, struktureller Disclosure (Advisor Option B). Record `2026-04-18_TMO_vollanalyse`. |
 | **23.04.2026** | **67** | **🟡 3** | **Q1 FY26 Forward-Vollanalyse** — Beat + Guidance-Raise (FCF Q1 $825M +121% YoY, FY26-FCF-Guide $6,9-7,4B), WC-Unwind bestätigt. fcf_trend_neg Resolve-Gate **CLEAR**. D2→D3, Sparrate 17,81€→33,53€ (Kaskade: Nenner 8,0→8,5; post 27.04. AVGO-FLAG-Kaskade weitere 38,00€). Record `2026-04-23_TMO_vollanalyse`. |
+| 2026-06-09 | **67** | 🟡 3 | **Vault-Sync (Umstrukturierung-2027):** Tier-Migration Sparrate 38,00€ → **18€** (T3-Basis × D3 1,0) + Frontmatter-Score-Mirror aus `00_Core/Faktortabelle.md` (67/🟡3/Clean unverändert) + Trigger-Datum 22.07. Tool-Kanon. **KEIN Re-Score** — reine State-Spiegelung. |
 
 ## Wissenschaftliche Basis
 

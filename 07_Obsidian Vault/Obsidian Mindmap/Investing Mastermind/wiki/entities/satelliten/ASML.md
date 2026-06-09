@@ -4,14 +4,15 @@ ticker: ASML
 name: ASML Holding N.V.
 sektor: Halbleiter-Equipment / Monopol
 ersatz: SNPS
+tier: 2
 score_aktuell: 68
 defcon: 3
 flag: "keins"
-sparrate: "Volle Rate 33,53€ (Gewicht 1.0, D3 kein FLAG)"
+sparrate: "32€ (T2-Basis, D3 ×1,0 — Tier-Modell seit 06/2026)"
 letzteAnalyse: 2026-04-17
 score_valid_until: 2026-10-17
-naechsterTrigger: "Q2 2026 Earnings + FY27 Fwd-P/E-Watch (30,30 → D3→D4-Pfad bei <30)"
-updated: 2026-04-17
+naechsterTrigger: "Q2 2026 Earnings 15.07.2026 (earnings_calendar.py-Kanon, bmo) — FY27 Fwd-P/E-Watch (30,30 → D3→D4-Pfad bei <30)"
+updated: 2026-06-09
 scoring_notiz_v37: "v3.7 Post-Q1-Vollanalyse (Pfad B): QT-Interaktionsterm beide Zweige hart 0 (Fwd P/E FY26 30,6x + P/FCF 58,5x). Score 66→68 (+2 Live-Verify-Delta innerhalb Toleranz — GM-Trend-Bonus +1,5pp, EPS-Revision post-Q1)."
 waehrung: EUR
 ifrs: true
@@ -21,7 +22,7 @@ related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie
 # ASML — ASML Holding N.V.
 
 > **DEFCON 🟡 3 | Score 68/100 | Kein FLAG** (Stand 17.04.2026, Post-Q1-Vollanalyse Pfad B)
-> Sparrate: Volle Rate (D3, Gewicht 1.0) | Non-US / IFRS | Kalibrierungsanker für v3.7-Mechanismus (QT beide Zweige hart 0)
+> Sparrate: 32€ (T2-Basis, D3 ×1,0 — Tier-Modell seit 06/2026) | Non-US / IFRS | Kalibrierungsanker für v3.7-Mechanismus (QT beide Zweige hart 0)
 
 ## Aktuelle Lage (Stand: 17.04.2026 — Post-Q1-Vollanalyse Pfad B)
 
@@ -123,6 +124,7 @@ Enger Spread (~6%) — Markt ist sich relativ einig. Kein hohes Unsicherheitssig
 | 10.04.2026 | 68 | 🟡 3 | Earnings Preview Q1 2026 erstellt (Berichtstag 15.04.) |
 | 17.04.2026 | 66 | 🟡 3 | v3.7 Backtest-Approximation (STATE.md) — Live-Verify ±2 |
 | 17.04.2026 | **68** | 🟡 3 | **Post-Q1-Vollanalyse Pfad B (Non-US/IFRS-Workflow-Anker für Beispiele.md).** Daten: eodhd_intel.py + Q1-Actuals. WACC 9,29% (FRED, nicht GuruFocus 18,21%). FCF-Marge 33,8%, ROIC 26,48%, ROIC-WACC-Spread +17,19pp (8/8). QT beide Zweige hart 0 (Fwd P/E FY26 30,6 + P/FCF 58,5). B11 Bias-Malus aktiv (35/44 SB). GM-Trend +1,5pp Bonus. China-Shift 36%→19% post-Q1. Subscores: Fund 28/50 · Moat 20/20 · Tech 7/10 · Insider 7/10 (AFM-H1 pending) · Sent 6/10. FY27-Watch 30,30 → D3→D4 bei <30 (+6-8 Pkt). |
+| 2026-06-09 | **68** | 🟡 3 | **Vault-Sync (Umstrukturierung-2027):** Tier-Migration Sparrate 33,53€ → **32€** (T2-Basis × D3 1,0) + Frontmatter-Score-Mirror aus `00_Core/Faktortabelle.md` (68/🟡3/Clean unverändert). **KEIN Re-Score** — reine State-Spiegelung. |
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten

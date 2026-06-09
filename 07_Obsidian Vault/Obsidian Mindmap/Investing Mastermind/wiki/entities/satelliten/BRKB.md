@@ -4,23 +4,24 @@ ticker: BRK.B
 name: Berkshire Hathaway Inc. (Class B)
 sektor: Kapitalallokation / Holding
 ersatz: MKL
+tier: 3
 score_aktuell: 71
 defcon: 3
 flag: "keins"
-sparrate: "Volle Rate 38,00€ (Gewicht 1.0)"
+sparrate: "18€ (T3-Basis, D3 ×1,0 — Tier-Modell seit 06/2026)"
 letzteAnalyse: 2026-05-04
 score_valid_until: 2026-10-31
-naechsterTrigger: "Q2 FY26 Earnings ~02./03.08.2026 — KHC-OTTI-Resolve + GEICO-UW-Decel-Trend + Form-13F Apple-Trim-Magnitude (mid-Mai 14.05.) + Buyback-Cashflow-Reconciliation + BHE-ETR-Wildfire-Settlement + OxyChem-Goodwill-Allocation-Refinement"
+naechsterTrigger: "Q2 FY26 10-Q-Filing 01.08.2026 (earnings_calendar.py-Kanon; §19.1 BRK-Ausnahme — kein Q-Call) — KHC-OTTI-Resolve + GEICO-UW-Decel-Trend + Form-13F Apple-Trim-Magnitude + Buyback-Cashflow-Reconciliation + BHE-ETR-Wildfire-Settlement + OxyChem-Goodwill-Allocation-Refinement"
 scoring_notiz_v37: "04.05.2026 Q1 FY26 Tag-+1 Vollanalyse + Codex-R1-REJECT-Korrektur (§19.1 BRK-Ausnahme: Filing-Trigger 02.05. Sa, kein Q-Call): Score **75→71 (Δ-4)** post-R1-Sparring; D3 unverändert (65-79-Band 6pt-Puffer), FLAG ✅ Clean Insurance-Exception unverändert, Sparrate 38€ unverändert, keine Kaskade. Sub-Score-Karte F=35/M=19/T=1/I=10/S=6."
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Buffett-Faktorlogik]], [[QMJ-Faktor]]"
 related_sources: "[[Buffetts-Alpha]]"
-updated: 2026-05-04
+updated: 2026-06-09
 ---
 
 # BRK.B — Berkshire Hathaway B
 
 > **DEFCON 🟡 3 | Score 71/100 | ✅ Clean (Insurance Exception)**
-> Sparrate: Volle Rate 38,00€ | Defensivster Satellit
+> Sparrate: 18€ (T3-Basis, D3 ×1,0 — Tier-Modell seit 06/2026) | Defensivster Satellit
 > *(Score 75→71 Δ-4 post Codex-R1-REJECT-Korrektur 04.05.2026 nach Q1 FY26 Tag-+1 Vollanalyse — D3 unverändert, keine Kaskade)*
 
 ## DEFCON v3.7 Analyse — Q1 FY26 Tag-+1 (04.05.2026)
@@ -43,6 +44,8 @@ updated: 2026-05-04
 - **HIGH-3** F=36 → F=35 (Forbes/Bill-Stone Cash-Reconciliation ist Secondary-Confirm; 10-Q p.2-3 ist Primary mit gleichem Inhalt; Pre-Brief §7 „NEUTRAL mit Caveat"-Empfehlung gilt — kein +1-Lift)
 
 **Nächste Aktion:** Q2 FY26 Earnings ~02./03.08.2026 — 6 Methodology-Watches PIPELINE #36-#41: KHC-OTTI-Resolve · GEICO-UW-Decel-Trend · Form-13F Apple-Trim-Magnitude (mid-Mai 14.05. Definitiv) · BHE-ETR-Wildfire-Settlement (PacifiCorp $577M unpaid) · OxyChem-Goodwill-Allocation-Refinement (ASC 805 12-Mo-Window) · Buyback-Cashflow-Discrepancy-Reconciliation ($4,57B 10-Q vs $235M PR Settlement-Timing-Hypothese)
+
+**Vault-Sync 2026-06-09 (Umstrukturierung-2027):** Tier-Migration Sparrate 38,00€ → **18€** (T3-Basis × D3 1,0) + Frontmatter-Score-Mirror aus `00_Core/Faktortabelle.md` (71/🟡3/Clean unverändert); Trigger-Datum auf `earnings_calendar.py`-Kanon 01.08. präzisiert. **KEIN Re-Score** — reine State-Spiegelung.
 
 ## Sonderregel
 

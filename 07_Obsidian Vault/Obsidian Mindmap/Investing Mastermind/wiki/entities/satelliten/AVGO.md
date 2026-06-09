@@ -4,22 +4,24 @@ ticker: AVGO
 name: Broadcom Inc.
 sektor: KI / Chips / Asset-Light
 ersatz: NVDA
-score_aktuell: 53
+tier: 1
+score_aktuell: 56
 defcon: 2
-flag: "FLAG aktiv (insider_selling_20m, $106M+ diskretionär 90d, aktiviert 27.04.2026 — Forward-Vollanalyse 30.04. bestätigt)"
-sparrate: "0€ (FLAG-Override Score-unabhängig)"
-letzteAnalyse: 2026-04-30
-score_valid_until: 2026-10-30
+flag: "FLAG aktiv (insider_selling_20m, $106,4M diskretionär 90d, aktiviert 27.04.2026; Q2 FY26 04.06. Beat-Raise — FLAG bleibt, Samueli $281M 25.03. als 10b5-1 ausgeschlossen)"
+sparrate: "0€ (T1-Basis 40€, FLAG-Override Score-unabhängig → 0€)"
+letzteAnalyse: 2026-06-04
+score_valid_until: 2026-12-04
 scoring_notiz_v37: "30.04.2026 Forward-Vollanalyse: Score **84→53 (Δ-31)**, D4→D2, FLAG aktiv unverändert. Codex R1+R2-Doppel-Pass APPROVE Master-Reading 74% Confidence. Quality-Trap voll aktiv (Wide × Fwd P/E 22,98 max 1; Wide × P/FCF 74,4 hart 0); ROIC GAAP 3,98% < WACC 15,96% → §410 Goodwill-bereinigt 45,7% (M&A-Compounder VMware/CA/Symantec/Brocade GW 57,2%). Insider 3/10 (Live-Pull insider_intel.py 30.04.: 231 Tx, Diskr. 90d $106,4M = 5× Schwelle); Skip-Window-Carryover NICHT angewandt (V-Q2-Asymmetrie). 5 PIPELINE-Methodology-Watches #30-34. Sparrate 0€ unverändert (FLAG-Override, keine Kaskade)."
-naechsterTrigger: "Q3 FY26 Re-Eval — FLAG-Resolution-Pfad: Insider-Diskretionär 90d <$20M-Schwelle"
+naechsterTrigger: "Q3 FY26 Earnings 03.09.2026 (earnings_calendar.py-Kanon) — !Analysiere FLAG-Re-Eval (Insider-Diskr 90d <$20M) + DEFCON-Refresh + Methodology-Watches"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Quality-Trap]], [[CapEx-FLAG]]"
-updated: 2026-05-06
+updated: 2026-06-09
 ---
 
 # AVGO — Broadcom Inc.
 
-> **DEFCON 🟠 2 | Score 53/100 (v3.7.6) | 🔴 FLAG aktiv** (insider_selling_20m, seit 27.04.2026)
-> Sparrate: 0€ (FLAG-Override Score-unabhängig) | ehemals Kalibrierungsanker #1 — Anker-Status revidiert post Forward-Vollanalyse
+> **DEFCON 🟠 2 | Score 56/100 (v3.7.6, Stand Q2 FY26 04.06.2026) | 🔴 FLAG aktiv** (insider_selling_20m, seit 27.04.2026)
+> Sparrate: 0€ (T1-Basis 40€, FLAG-Override → 0€) | ehemals Kalibrierungsanker #1 — Anker-Status revidiert post Forward-Vollanalyse
+> *(Q2 FY26 Tag-+1-Vollanalyse 04.06.2026 hob Score 53→56; D2/FLAG/0€ unverändert. Body „Warum 53" unten = 30.04.-Analyse — Body-Refresh deferred an `!Analysiere`.)*
 
 ## Aktuelle Lage (Stand: 30.04.2026 — Forward-Vollanalyse v3.7.6)
 
@@ -67,6 +69,8 @@ Score **84→53 (Δ-31, D4→D2)** in erster echter Forward-Vollanalyse seit Ski
 | 17.04.2026 | 84 | 🟢 4 | v3.7-Algebra (Fundamentals-Cap 50 Fix, -1 Pt.) — Sub-Audit pending Q3 FY26 |
 | 27.04.2026 | 84 | 🟢 4 | **FLAG aktiviert** (insider_selling_20m, $106M+ diskretionär 90d) — OpenInsider-Cross-Check widerlegt Watchlist-These „Post-Vesting" |
 | 30.04.2026 | **53** | **🟠 2** | **Forward-Vollanalyse v3.7.6** — Δ-31 (Quality-Trap voll + ROIC<WACC + Insider-Live-Verify); FLAG aktiv unverändert; Codex R1+R2 74% Confidence APPROVE; Sparrate 0€ (keine Kaskade) |
+| 2026-06-04 | **56** | 🟠 2 | **Q2 FY26 Tag-+1-Vollanalyse** — 53→56 (+3 Beat-Raise); D2/FLAG/Sparrate 0€ unverändert. Samueli $281M 25.03. korrekt als 10b5-1 ausgeschlossen (User-Challenge empirisch bestätigt). ScoreRecord `2026-06-04_AVGO_vollanalyse`, Commit `6f91aad`. |
+| 2026-06-09 | **56** | 🟠 2 | **Vault-Sync (Umstrukturierung-2027):** Frontmatter/Header-Score-Mirror 53→56 aus `00_Core/Faktortabelle.md` + Tier-Migration (T1-Basis 40€, FLAG → 0€) + Trigger-Datum 03.09. Tool-Kanon. **KEIN Re-Score** — Spiegelung des bereits committeten 04.06.-Stands. |
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten

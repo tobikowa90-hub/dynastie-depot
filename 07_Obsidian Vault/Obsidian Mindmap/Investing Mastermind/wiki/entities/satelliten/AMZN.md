@@ -4,17 +4,18 @@ ticker: AMZN
 name: Amazon.com Inc.
 sektor: Hyperscaler (AWS + E-Commerce + Ads)
 ersatz: null (Hyperscaler-Conviction-Position, kein definierter Ersatz)
+tier: 1
 score_aktuell: 42
 defcon: 1
 flag: "🔴 CapEx/OCF-FLAG aktiv (AMZN_capex_ocf_2026-05-15): TTM netto 99,2% / gross 101,7% ≫60%-Schwelle, schärfer als GOOGL 74-79%; FCF TTM $1,23B -95% YoY; Resolve-Gate <60%"
-sparrate: "0€ (regelkonform — FLAG-Override Score-unabhängig, KEIN Owner-Override)"
+sparrate: "0€ (T1-Basis 40€, FLAG-Override Score-unabhängig → 0€; regelkonform, KEIN Owner-Override)"
 letzteAnalyse: 2026-05-15
 score_valid_until: 2026-11-11
 scoring_notiz_v37: "15.05.2026 Forward-Vollanalyse (Score-Datum; Analyse 18.05.): Neuaufnahme **12. Satellit** per User-Direktive „Mein Portfolio, mein Geld, meine Regeln" — Slot-Erweiterung 11→12, keine Verdrängung. Score **42/100 → 🔴 DEFCON 1**. Fundamentals 8/50 (fwd_pe 0 + p_fcf 0 [Quality-Trap B6 hart: Wide × Fwd P/E ~34>30 / P/FCF ~2305>35; v3.7.6-Drawdown-Modulator inaktiv da nur -5,2% <20%] + bilanz 8/9 + capex_ocf 0/9 +FLAG + roic 0/8 + fcf_yield 0/8 + opm 0/2) · Moat 19/20 (Wide, GM-Trend +1,65pp/J Bonus, kein Pricing-Bonus da Retail-Preissenkungen) · Technicals 6/10 (ATH-Distanz -5,2% 3 · RelStärke 0 [Schritt-6c-Disziplin: kein belastbarer SPX-6M-Rohwert, V-Q2-Lehre] · Trend 3 Kurs≫steigendem 200MA) · Insider 6/10 (Ownership 3 Bezos 8,2% direct · kein-20M 3 — Bezos 2026 nur Gifts Code G / Jassy 10b5-1 $7,9M, kein FLAG) · Sentiment 3/10 (B11 >60%-Crowd-Malus · Sell 1 <3% Extrem-Konsens · PT-Up 2 +15,8% · PT-Disp -1 64%). §410 N/A (Goodwill 2,56% Assets, kein M&A-GW-Compounder → GAAP-ROIC 5,4% ≪ WACC defeatbeta 15,57%). Q1-NI $30,3B Anthropic-Gain-bereinigt (+$16,8B non-op pretax), Accruals -6,3% kein Malus. Sparrate 0€ regelkonform (User-Wahl AskUserQuestion: KEIN Owner-Override, FLAG heilig). Slot-Erweiterung nenner-neutral (FLAG=Gewicht 0,0 → Nenner 7,5 unverändert, alle 11 Bestands-Raten unverändert, Σ285€). Codex-Single-Pass (prozeduraler REJECT vor Sync, inhaltlich Algebra/FLAG/§410/QT bestätigt) + Diff-Re-Review post-Sync. ScoreRecord 2026-05-15_AMZN_vollanalyse."
-naechsterTrigger: "Q2 FY26 ~Ende Juli — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + voller DEFCON-Refresh. Realistisch erst wenn KI/AWS-CapEx-Monetarisierung OCF überholt (Jassy Q1-Call: „early years free cash flow is challenged", 6-24 Mt. Lag)"
+naechsterTrigger: "Q2 FY26 Earnings 30.07.2026 (amc, earnings_calendar.py-Kanon) — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + voller DEFCON-Refresh. Realistisch erst wenn KI/AWS-CapEx-Monetarisierung OCF überholt (Jassy Q1-Call: „early years free cash flow is challenged", 6-24 Mt. Lag)"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[Quality-Trap]], [[CapEx-FLAG]], [[ROIC-vs-WACC]]"
 created: 2026-05-18
-updated: 2026-05-18
+updated: 2026-06-09
 sources: []
 related: [MSFT, GOOGL]
 aliases:
@@ -25,8 +26,8 @@ aliases:
 
 # AMZN — Amazon.com Inc.
 
-> **DEFCON 🔴 1 | Score 42/100 (v3.7.6) | 🔴 CapEx/OCF-FLAG aktiv** (seit 15.05.2026, Neuaufnahme 12. Satellit)
-> Sparrate: 0€ (regelkonform — FLAG-Override Score-unabhängig, KEIN Owner-Override)
+> **DEFCON 🔴 1 | Score 42/100 (v3.7.6) | 🔴 CapEx/OCF-FLAG aktiv** (Neuaufnahme 15.05.2026, Owner-Add §6.4)
+> Sparrate: 0€ (T1-Basis 40€, FLAG-Override → 0€; regelkonform, KEIN Owner-Override)
 
 ## Aktuelle Lage (Stand: 15.05.2026 — Forward-Vollanalyse v3.7.6, Score-Datum; Analyse 18.05.)
 
@@ -74,13 +75,14 @@ aliases:
 - [[ROIC-vs-WACC]] — Warum ROIC ≪ WACC ein harter Malus ist
 - [[MSFT]] — Sibling: CapEx/OCF-FLAG-Hyperscaler (Bull-Case-Logik)
 - [[GOOGL]] — Sibling: CapEx/OCF-FLAG-Hyperscaler (AMZN 99,2% schärfer als GOOGL 74-79%)
-- [[PORTFOLIO]] — Live-State (12 Satelliten)
+- [[PORTFOLIO]] — Live-State (13 Satelliten, 3-Tier)
 
 ## Analyse-Historie
 
 | Datum | Score | DEFCON | Ereignis |
 |-------|-------|--------|---------|
 | **15.05.2026** | **42** | **🔴 1** | **Forward-Vollanalyse v3.7.6 — Neuaufnahme 12. Satellit** (User-Direktive „Mein Portfolio, meine Regeln"). 🔴 CapEx/OCF-FLAG getriggert (TTM netto 99,2%). Quality-Trap voll (fwd_pe/p_fcf hart 0) + ROIC≪WACC + §410 N/A. Sparrate 0€ regelkonform (kein Owner-Override). Slot 11→12 nenner-neutral. Codex-Single-Pass (prozed. REJECT vor Sync, inhaltl. bestätigt) + Diff-Re-Review post-Sync (PIPELINE #70) |
+| 2026-06-09 | **42** | 🔴 1 | **Vault-Sync (Umstrukturierung-2027):** Frontmatter/Header auf 3-Tier-Modell migriert — Sparrate 0€ jetzt als „T1-Basis 40€, FLAG-Override → 0€" (das 15.05.-Body beschriebene Equal-Weight-Nenner-Modell Σ285€/Nenner-7,5 ist durch das 3-Tier-Modell SOLL 364€ abgelöst) + Score-Mirror (42/🔴1/FLAG unverändert) + Trigger-Datum 30.07. Tool-Kanon. **KEIN Re-Score.** |
 
 ## Wissenschaftliche Basis
 - [[5J-Fundamental-Fenster]] — 5J-Perspektive als Pflichtrahmen für alle Fundamentaldaten

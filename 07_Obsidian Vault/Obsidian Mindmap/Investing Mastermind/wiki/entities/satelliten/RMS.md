@@ -4,24 +4,25 @@ ticker: RMS
 name: Hermès International S.A.
 sektor: Luxury / Monopol
 ersatz: RACE
+tier: 3
 score_aktuell: 68
 defcon: 3
 flag: "keins"
-sparrate: "Volle Rate 35,63€ (Gewicht 1.0)"
+sparrate: "18€ (T3-Basis, D3 ×1,0 — Tier-Modell seit 06/2026)"
 letzteAnalyse: 2026-04-17
 score_valid_until: 2026-10-14
 scoring_notiz_v37: "v3.7: Score 69→68 (Fix 1 Interaktionsterm milder Impact, Wide Moat + P/FCF hoch). Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment (Score 68 in 65-79-Range). Screener-Exception #3 bleibt ROIC 24% >> WACC 6,5%. Sparrate bei D3/D4-Übergang identisch."
-naechsterTrigger: "H1 2026 Earnings Juli/Aug 2026"
+naechsterTrigger: "H1 2026 Earnings 29.07.2026 (8:00 CEST, earnings_calendar.py-Kanon, half_year_h1 + Earnings-Call → Tag-+1)"
 waehrung: EUR
 ifrs: true
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]]"
-updated: 2026-04-18
+updated: 2026-06-09
 ---
 
 # RMS — Hermès International
 
 > **DEFCON 🟡 3 | Score 68/100 (v3.7) | Kein FLAG**
-> Sparrate: Volle Rate 35,63€ | Non-US / IFRS
+> Sparrate: 18€ (T3-Basis, D3 ×1,0 — Tier-Modell seit 06/2026) | Non-US / IFRS
 > *(Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment — Score unverändert, Screener-Exception #3 ROIC-Spread bleibt)*
 
 ## DEFCON v3.4 Analyse (15.04.2026)
@@ -36,7 +37,9 @@ updated: 2026-04-18
 
 **Screener-Exception:** Analog [[COST]] — hoher Return-Spread (ROIC 24% >> WACC 6.5%) rechtfertigt Beibehaltung trotz Score-Rückgang.
 
-**Nächste Aktion:** H1 2026 Earnings Juli/Aug 2026
+**Nächste Aktion:** H1 2026 Earnings 29.07.2026 (8:00 CEST, `earnings_calendar.py`-Kanon)
+
+**Vault-Sync 2026-06-09 (Umstrukturierung-2027):** Tier-Migration Sparrate 35,63€ → **18€** (T3-Basis × D3 1,0) + Frontmatter-Score-Mirror aus `00_Core/Faktortabelle.md` (68/🟡3/Clean unverändert) + Trigger-Datum 29.07. Tool-Kanon. **KEIN Re-Score** — reine State-Spiegelung.
 
 ## Stärken
 

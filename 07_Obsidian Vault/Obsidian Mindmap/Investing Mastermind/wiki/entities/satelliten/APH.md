@@ -4,22 +4,23 @@ ticker: APH
 name: Amphenol Corporation
 sektor: Verbindungstechnologie / Elektro
 ersatz: ""
+tier: 3
 score_aktuell: 61
 defcon: 2
 flag: "FLAG aktiv (seit 09.04.2026) — Score-basiert <65 D3-Threshold"
-sparrate: "0€"
+sparrate: "0€ (T3-Basis 18€, FLAG-Override → 0€)"
 letzteAnalyse: 2026-04-30
 score_valid_until: 2026-10-30
 scoring_notiz_v37: "30.04.2026 Q1 FY26 Tag-+1 Vollanalyse: Score **63→61 (Δ-2)**, D2/FLAG aktiv unverändert. Codex-Review-Pass (1 HIGH Transmission-Artifact, 3 MEDIUM: M1 Bilanz-Mixed-Basis, M2 ROIC-Methodology-Watch, M3 Sentiment-7-halten). Score-Move-Driver: Multiple-Expansion (P/E 25→33,7) + CommScope-Net-Lev 1,6x — operativ massiv besser, bewertungsseitig QT-Trap §472-§478 deckelt 16 Pt. weg. Methodology-Watches Q2: China-Tax-ETR 27% strukturell + CommScope-Net-Lev 1,6x → <1,5x bis Q4 + ROIC-GW-Bereinigung Full-Year-Confirm."
-naechsterTrigger: "Q2 FY26 ~23.07.2026 — China-Tax-ETR-Resolve + CommScope-Net-Lev-Pfad + ROIC-GW-Bereinigung-Full-Year"
+naechsterTrigger: "Q2 FY26 Earnings 29.07.2026 (13:00 ET, earnings_calendar.py-Kanon) — China-Tax-ETR-Resolve + CommScope-Net-Lev-Pfad + ROIC-GW-Bereinigung-Full-Year"
 related_concepts: "[[5J-Fundamental-Fenster]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[CapEx-FLAG]], [[Quality-Trap]]"
-updated: 2026-05-06
+updated: 2026-06-09
 ---
 
 # APH — Amphenol Corporation
 
 > **DEFCON 🟠 2 | Score 61/100 (v3.7.6) | FLAG 🔴 aktiv (Score-basiert <65, seit 09.04.2026)**
-> Sparrate: 0€ | FLAG pausiert Sparrate (überschreibt DEFCON-Gewicht)
+> Sparrate: 0€ (T3-Basis 18€, FLAG-Override → 0€) | FLAG pausiert Sparrate (überschreibt DEFCON-Gewicht)
 
 ## Aktuelle Lage (Stand: 30.04.2026 — Q1 FY26 Tag-+1 Vollanalyse v3.7.6)
 
@@ -41,7 +42,9 @@ Score **63→61 (Δ-2)**, D2/FLAG aktiv unverändert. Operativ massiver Beat, ab
 
 **FLAG:** Aktiv seit 09.04.2026 (Score-basiert <65 D3-Threshold). Sparrate 0€ bis Score ≥65.
 
-**Nächste Aktion:** Q2 FY26 ~23.07.2026 — Methodology-Watches: China-Tax + CommScope-Net-Lev + ROIC-GW-Full-Year.
+**Nächste Aktion:** Q2 FY26 Earnings 29.07.2026 (13:00 ET, `earnings_calendar.py`-Kanon) — Methodology-Watches: China-Tax + CommScope-Net-Lev + ROIC-GW-Full-Year.
+
+**Vault-Sync 2026-06-09 (Umstrukturierung-2027):** Tier-Migration Sparrate → **0€** (T3-Basis 18€, FLAG-Override) + Frontmatter-Score-Mirror aus `00_Core/Faktortabelle.md` (61/🟠2/FLAG unverändert) + Trigger-Datum 23.07.→**29.07.** auf Tool-Kanon korrigiert. **KEIN Re-Score** — reine State-Spiegelung.
 
 ## Tariff-Risiko-Hinweis
 
