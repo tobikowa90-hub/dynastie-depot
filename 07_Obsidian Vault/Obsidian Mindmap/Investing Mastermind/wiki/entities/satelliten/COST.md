@@ -1,9 +1,11 @@
 ---
-tags: [satellit, aktiv, defcon-3, screener-exception]
+tags: [satellit, exit, defcon-3, screener-exception]
 ticker: COST
 name: Costco Wholesale Corporation
 sektor: Retail / Mitgliedschaftsmodell
 ersatz: ""
+exit_datum: 2026-06-06
+exit_grund: "Umstrukturierung-2027 Roster-Reduktion (User-Lock 05./06.06.2026): Position 0,449289 Anteile via LIMIT @863€ aufgelöst, G/V +1,74€ marginal. Steuerfrei (kumuliert 2026 +417,39€ < 1.000€ Freibetrag → 0€ Steuer). Score 69 eingefroren (kein Re-Score)."
 score_aktuell: 69
 defcon: 3
 flag: "keins"
@@ -19,8 +21,13 @@ scoring_notiz_v37: "v3.7: Score 69 stabil (Screener-Exception Membership Yield).
 
 # COST — Costco Wholesale Corporation
 
-> **DEFCON 🟡 3 | Score 69/100 | Kein FLAG**
-> Sparrate: Volle Rate 35,63€ | Bestandsposition
+> **🚪 EXIT 2026-06-06 — nicht mehr im aktiven Roster.**
+> Verkauf via LIMIT @863€ (Position 0,449289 Anteile, G/V +1,74€ marginal) im Zuge der Umstrukturierung-2027 (User-Lock 05./06.06.2026). **Steuerfrei** (kumuliert 2026 +417,39€ < 1.000€ Freibetrag → 0€ Steuer).
+> Freigesetztes Kapital wird vom Rebalancing-Tool (SSoT) value-based auf untergewichtete Positionen gelenkt.
+> Score **69 eingefroren** (kein Re-Score) — Seite bleibt als Historie + Screener-Exception-Methodik-Anker erhalten.
+
+> *(Letzter aktiver State, eingefroren:)* **DEFCON 🟡 3 | Score 69/100 | Kein FLAG**
+> Sparrate (eingefroren): Volle Rate 35,63€ | Bestandsposition
 > *(Label D4→D3 seit 18.04.2026 nach Schema-SKILL-Threshold-Alignment — Score unverändert)*
 
 ## DEFCON v3.4 Analyse (15.04.2026)
