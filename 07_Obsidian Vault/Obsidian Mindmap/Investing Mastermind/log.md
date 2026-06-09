@@ -1673,3 +1673,17 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Entscheidung:** Scope = **nur Doku/Verankerung**, KEINE Server-Eingriffe (Connector-UUID-Fragilität `feedback_tavily_connector_uuid_rotation` + null Forward-Nutzen). Verankert: SYSTEM.md §MCP-Status (autoritativ) + Memory `reference_codeburn_mcp_remove_false_positives` (Recall). **Bei künftigem CodeBurn-Rerun: Verdikt zuerst lesen, nicht re-litigieren.**
 
 **Scoring-Status:** DEFCON v3.7 unverändert. Kein FLAG-Event, kein Re-Score, keine xlsx-Tools/config/score_history berührt (reiner Ops-Doku-Sync).
+
+---
+
+## 🛠️ 2026-06-09 — INSTRUKTIONEN De-Monolith §0-Pilot → CODE_GUIDELINES.md (system-zustand, scoring-neutral)
+
+**Trigger:** User `/grill-with-docs` auf INSTRUKTIONEN.md Token-Effizienz-Refactor. **Grill-Reframe (Empirie kippt Prämisse):** KEIN großer SKILL.md-Dedup vorhanden — der 17.04.-Dedup (`INSTRUKTIONEN-SKILL-Trennung.md`) hielt; §5/§6/§8/§13/§16 sind bereits dünne Pointer. Echter Token-Hebel = De-Monolithisierung der schweren Meta-Sektionen für selektives Per-Trigger-Laden (jeder Trigger lud bisher den ~91KB-Monolithen für einen Bruchteil). Ziel-Wahl: §0-Pilot zuerst, dann über Rest entscheiden.
+
+**Pilot (§0, niedrigstes Risiko / höchste ROI):** §0 Code-Verhaltens-Regeln (Karpathy, 77 Z.) Volltext → neuer **`00_Core/CODE_GUIDELINES.md`**. INSTRUKTIONEN.md §0 = Stub + 6 Sub-Anchors (§29-RETROSPECTIVE-GATE-Pattern). **CLAUDE.md (globaler Routing-Table) 3-fach verankert** (User-Direktive): §Verhalten-Bullet + Routing-Row „Code-Edit-Session" + 00_Core-Struktur-Inventar.
+
+**Empirie-Verify:** (1) **verlustfrei** — §0-Volltext byte-identisch (diff leer); (2) **Ref-Integrität** — alle 6 §0.x-Anchors im Stub, 0 gebrochene Links (Stub leitet Prosa-Cross-Refs in SYSTEM.md/failure_modes.md/Specs weiter — kein referenzierendes File angefasst außer den 2 bewussten CLAUDE.md-Pointer-Upgrades); (3) **Token-Win** — Code-Edit-Trigger lädt 6,2KB statt ~91KB (~93%), INSTRUKTIONEN −63 Z. (1096→1033) für jeden Trigger.
+
+**Sync-Set (system-zustand + pipeline-item Multi-Event-Union):** `CODE_GUIDELINES.md` (NEU) + `INSTRUKTIONEN.md` (§0-Stub + v1.15) + `CLAUDE.md` (3 Anker) + `SYSTEM.md` (§System-Zustand-Bullet) + dieser `log.md`-Eintrag + `PIPELINE.md` #26 (O3-gated Folge-Staleness `insider_intel.py`+§1/§14/§21 ergänzt, Vault-Sync-Status korrigiert).
+
+**Scoring-Status:** DEFCON v3.7 unverändert. Kein FLAG-Event, kein Re-Score. Folge-Sektionen (§17/§18 → `AUTOMATION_SYNC.md`, §27/§28) pending User-Entscheidung mit Pilot-Daten. Commit-Bundle → `!SessionClose` (Hard-Stop vor Push).
