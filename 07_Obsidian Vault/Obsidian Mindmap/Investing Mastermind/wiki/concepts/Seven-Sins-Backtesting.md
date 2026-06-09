@@ -3,7 +3,7 @@ title: "Seven Sins of Quantitative Investing"
 type: concept
 tags: [backtest, sins, validation, pre-flight, retrospective-gate, method]
 created: 2026-04-19
-updated: 2026-04-19
+updated: 2026-06-09
 sources: [Palomar-2025-Portfolio-Optimization]
 related: [Palomar-Methods-Reference, PBO-Backtest-Overfitting, Factor-Investing-Framework, Factor-Information-Decay, Backtest-Methodik-Roadmap, Score-Archiv, FLAG-Event-Log, Backtest-Ready-Infrastructure, DEFCON-System]
 wissenschaftlicher_anker: "Palomar (2025) — Portfolio Optimization Ch. 8.2"
@@ -64,7 +64,7 @@ PBO (Sin #4 formalisiert) ist ein Teil des Overfitting-Schutzes, aber **Sünden 
 **Mitigation:** §29.1 PBO < 0,05.
 
 ### Sin #5 Turnover & Transaction Cost
-**Angriff:** Unsere Sparplan-Struktur hat monatliche Transaktionen (ETF + 11 Satelliten + Gold). Broker-Kosten + Spread nicht in Return-Analyse eingerechnet.
+**Angriff:** Unsere Sparplan-Struktur hat monatliche Transaktionen (ETF + 13 Satelliten + Gold). Broker-Kosten + Spread nicht in Return-Analyse eingerechnet.
 
 **Mitigation bei Review 2028:**
 - Realistische TER-Annahmen pro Position

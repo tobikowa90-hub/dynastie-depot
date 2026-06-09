@@ -29,7 +29,7 @@ operative_regel: "Faktortabelle vor API-Abfragen lesen — spart ~60-70% Token-K
 
 ## Zweck
 
-Die Faktortabelle (`00_Core/Faktortabelle.md`) ist ein kompakter Snapshot aller 11 Satelliten-Scores, FLAGs, Fundamentaldaten und Termine. Sie reduziert den Token-Verbrauch pro Session um ~60-70%, weil Claude den aktuellen Depot-State aus einer einzigen Datei laden kann, statt config.yaml + Shibui + defeatbeta einzeln abzufragen.
+Die Faktortabelle (`00_Core/Faktortabelle.md`) ist ein kompakter Snapshot aller 13 Satelliten-Scores, FLAGs, Fundamentaldaten und Termine. Sie reduziert den Token-Verbrauch pro Session um ~60-70%, weil Claude den aktuellen Depot-State aus einer einzigen Datei laden kann, statt config.yaml + Shibui + defeatbeta einzeln abzufragen.
 
 ## Datenhierarchie
 

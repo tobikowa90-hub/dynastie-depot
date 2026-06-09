@@ -3,9 +3,9 @@ title: "DEFCON-System"
 type: concept
 tags: [konzept, defcon, scoring, kern]
 created: 2026-04-08
-updated: 2026-05-02
+updated: 2026-06-09
 version: v3.7
-stand: 2026-05-02
+stand: 2026-06-09
 sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha, llms-for-equity-stock-ratings, Wolff-Echterling-2023, Jadhav-Mirza-2025, Piotroski-F-Score, Novy-Marx-Gross-Profitability, Sloan-Accruals]
 wissenschaftlicher_anker: "B1–B28 (34 Quellen / 28 Befunde) — kanonische Status-Matrix in [[Wissenschaftliche-Fundierung-DEFCON#Status-Matrix (operative Aktivierungs-Klassifikation)]]"
 konfidenzstufe: peer-reviewed
@@ -47,30 +47,43 @@ aliases:
 
 | Score | DEFCON | Sparrate | Bedeutung |
 |-------|--------|----------|-----------|
-| ≥ 80 | 🟢 4 | Volle Rate (Gewicht 1.0) | Aktiv ausbauen |
-| 65–79 | 🟡 3 | Volle Rate (Gewicht 1.0) | These intakt, weiter besparen |
-| 50–64 | 🟠 2 | 50% Sockelbetrag (Gewicht 0.5) | Reduziert — Position halten, nicht ausbauen |
+| ≥ 80 | 🟢 4 | Tier-Basis × 1.0 | Aktiv ausbauen |
+| 65–79 | 🟡 3 | Tier-Basis × 1.0 | These intakt, weiter besparen |
+| 50–64 | 🟠 2 | Tier-Basis × 0.5 | Reduziert — Position halten, nicht ausbauen |
 | < 50 | 🔴 1 | 0 € — eingefroren | Auswechslung einleiten |
 
 > 🔴 FLAG überschreibt jeden Score → 0 €. Nur 🔴 FLAGs stoppen — 🟡/🚩 lassen Rate unverändert.
 
-## Sparplan-Formel
+## Sparplan-Formel (3-Tier-Conviction-Modell, seit Umstrukturierung-2027 / 06-2026)
 
-Aktien-Budget gesamt: **285 €/Monat**
+Satelliten-Block-Budget: **SOLL 364 €/Monat** (= Σ aller Tier-Basis-Raten bei allen D3/D4 clean; Anker). Teil des **60/35/5**-Splits (ETF 60 % · Satelliten 35 % · Gold 5 %, Gesamt ~1.031 €). Equal-Weight-Nenner-Modell (vormals 285 €) abgelöst.
+
+**3-Tier-Conviction (Owner-gesetzt):**
+
+| Tier | Basis-Rate | Positionen |
+|------|-----------|-----------|
+| T1 | 40 € | AMZN · MSFT · NOW · AVGO |
+| T2 | 32 € | V · KYCCF · ASML |
+| T3 | 18 € | RMS · BRK.B · TMO · APH · SU · ZETA |
+
+Σ Basis (Optimal-Fall, alle D3/D4 clean) = 4×40 + 3×32 + 6×18 = **364 €** (SOLL-Anker).
+
+**DEFCON moduliert die Tier-Basis-Rate WEITER (sie ist kein fixer Endwert):**
 
 ```
-Gewichte: D4/D3 (kein 🔴) = 1.0 | D2 (kein 🔴) = 0.5 | D1 / 🔴 FLAG = 0.0
-Einzelrate = 285€ / Σ Gewichte × Eigengewicht
+Effektiv-Rate = Tier-Basis × DEFCON-Faktor
+DEFCON-Faktor: D4/D3 (kein 🔴) = 1.0 | D2 (kein 🔴) = 0.5 | D1 / 🔴 FLAG = 0.0
 ```
 
-**Beispiel (Stand 30.04.2026: 7× D3 + 1× D2 (V) + 3× 🔴 FLAG (AVGO, APH, MSFT)):**
-- Nenner = (7 × 1.0) + (1 × 0.5) + (3 × 0.0) = **7,5**
-- D3-Rate = 285 / 7,5 × 1.0 = **38,00€**
-- D2-Rate (V allein) = 285 / 7,5 × 0.5 = **19,00€**
-- 🔴-Rate (AVGO, APH, MSFT) = **0€**
-- Check: 7 × 38,00€ + 1 × 19,00€ + 3 × 0€ = 266€ + 19€ = **285€** ✓
+> Die Tier-Basis-Rate ist die **Optimal-Fall-Basis** (= Rebalancing-Tool Spalte P). DEFCON/FLAG senkt sie, hebt sie nie. 🔴 FLAG überschreibt jeden Score → 0 € (heilig). Das Rebalancing-Tool lenkt freies Kapital (inkl. FLAG-/D2-Budget) value-based auf untergewichtete Positionen.
 
-> Historische Stände: 19.04. (Nenner 8,0, V+TMO in D2) → 23.04. (TMO D2→D3 Q1-Beat, Nenner 8,5) → 27.04. (AVGO Insider-FLAG, Nenner 7,5 ⏶ erstmals) → 28.04. spätabends (V Rescoring-Revert D3→D2, Nenner 7,5 ⏵). Live-State immer in `00_Core/PORTFOLIO.md`.
+**Beispiel (Stand 09.06.2026 — Funded Σ = 210 €):**
+- T1: NOW 40 € (D3*) · AMZN/MSFT/AVGO je 0 € (🔴 FLAG) → **40 €**
+- T2: ASML 32 € (D3) · KYCCF 32 € (D3*) · V 16 € (32 × D2 0,5) → **80 €**
+- T3: RMS/BRK.B/TMO/SU/ZETA je 18 € (D3) · APH 0 € (🔴 FLAG) → **90 €**
+- Funded Σ = 40 + 80 + 90 = **210 €** (SOLL 364 € − 154 € FLAG-/D2-Modulation)
+
+> Live-State immer in `00_Core/PORTFOLIO.md`. NOW/KYCCF/ZETA = DEFCON-3\*-Platzhalter (Owner-Add §6.4, Score O3-pending).
 
 ## Verlinkungen
 

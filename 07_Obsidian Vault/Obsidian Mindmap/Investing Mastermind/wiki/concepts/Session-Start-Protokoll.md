@@ -65,11 +65,11 @@ On-Demand via CLAUDE.md `## Routing-Table` (trigger-spezifisch):
 
 | Block | Inhalt |
 |-------|--------|
-| Portfolio-Tabelle | 11 Satelliten: Score, DEFCON, Rate, FLAG, nächster Trigger |
+| Portfolio-Tabelle | 13 Satelliten: Score, DEFCON, Rate, FLAG, nächster Trigger |
 | Sparraten-Nenner | aktueller Divisor + Einzelraten + Summencheck |
 | Aktive Watches | Grenzfälle (z.B. ASML Fwd P/E FY27 30,30), FLAG-Review-Pfade |
 | 30-Tage-Trigger | klassifizierte Earnings-/Watch-Termine |
-| Allokation | 65/30/5 Ziel + US-Hard-Cap-Check |
+| Allokation | 60/35/5 Ziel + US-Hard-Cap-Check |
 
 ## Sync-Pflicht (§18 v2.1, Trigger-basiertes Mapping)
 

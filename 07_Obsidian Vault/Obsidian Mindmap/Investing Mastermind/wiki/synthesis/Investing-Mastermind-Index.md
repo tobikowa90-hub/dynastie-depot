@@ -4,7 +4,7 @@ tags: [index, home, navigation]
 
 # 🦅 Investing Mastermind — Zentralindex
 
-> Zieljahr: 2058 | System: DEFCON v3.7 (Skill-Paket v3.7.2) | Stand: 19.04.2026
+> Zieljahr: 2058 | System: DEFCON v3.7 (Skill-Paket v3.7.2) | Stand: 09.06.2026 (Umstrukturierung-2027 Phase-A Vault-Sync)
 
 ## 📊 Depot-State
 
@@ -14,28 +14,32 @@ tags: [index, home, navigation]
 
 ## 🛰️ Satelliten (aktive Positionen)
 
-> Quelle: [[PORTFOLIO]] (`00_Core/PORTFOLIO.md`, Live-State-SSoT seit Tier-2-Refactor 25.04.2026; vorher `STATE.md`). DEFCON-Thresholds Schema-aligned seit 18.04.: ≥80 D4 / 65-79 D3 / 50-64 D2 / <50 D1. Sparraten-Nenner 8.0 → 35,63€ / 17,81€ / 0€.
+> Quelle: [[PORTFOLIO]] (`00_Core/PORTFOLIO.md`, Live-State-SSoT seit Tier-2-Refactor 25.04.2026; vorher `STATE.md`). DEFCON-Thresholds Schema-aligned seit 18.04.: ≥80 D4 / 65-79 D3 / 50-64 D2 / <50 D1. **Sparraten seit Umstrukturierung-2027 (06/2026): 3-Tier-Conviction** — Effektiv-Rate = Tier-Basis (T1 40€ / T2 32€ / T3 18€) × DEFCON-Faktor (D3/4=1,0 · D2=0,5 · D1/🔴FLAG=0). SOLL-Σ **364€** / Funded-Σ **210€** (vormals Equal-Weight-Nenner 8.0 → 35,63€/17,81€).
 
-| Ticker | DEFCON | Score | Rate | FLAG |
-|--------|--------|-------|------|------|
-| [[AVGO]] | 🟢 4 | 84 | 35,63€ | ⚠️ Insider-Review ($123M 90d) |
-| [[BRKB\|BRK.B]] | 🟡 3 | 75 | 35,63€ | Insurance-Exception |
-| [[VEEV]] | 🟡 3 | 74 | 35,63€ | — |
-| [[SU]] | 🟡 3 | 69 | 35,63€ | — |
-| [[COST]] | 🟡 3 | 69 | 35,63€ | Screener-Exception |
-| [[RMS]] | 🟡 3 | 68 | 35,63€ | Screener-Exception |
-| [[ASML]] | 🟡 3 | 68 | 35,63€ | — |
-| [[V]] | 🟠 2 | 63 | 17,81€ | — (D2-Entscheidung 28.04.) |
-| [[TMO]] | 🟠 2 | 64 | 17,81€ | fcf_trend_neg strukturell disclosed (Option B) |
-| [[APH]] | 🟠 2 | 63 | 0€ | 🔴 Score-basiert |
-| [[MSFT]] | 🟠 2 | 59 | 0€ | 🔴 CapEx/OCF 83,6% |
+| Ticker | Tier | DEFCON | Score | Rate | FLAG |
+|--------|------|--------|-------|------|------|
+| [[BRKB\|BRK.B]] | T3 | 🟡 3 | 71 | 18€ | Insurance-Exception ✅ |
+| [[SU]] | T3 | 🟡 3 | 69 | 18€ | Non-US |
+| [[RMS]] | T3 | 🟡 3 | 68 | 18€ | Screener-Exception, Non-US |
+| [[ASML]] | T2 | 🟡 3 | 68 | 32€ | Non-US |
+| [[TMO]] | T3 | 🟡 3 | 67 | 18€ | fcf_trend_neg Resolve-Gate CLEAR |
+| [[V]] | T2 | 🟠 2 | 64 | 16€ | ✅ Clean (T2×D2 0,5) |
+| [[APH]] | T3 | 🟠 2 | 61 | 0€ | 🔴 Score-basiert |
+| [[AVGO]] | T1 | 🟠 2 | 56 | 0€ | 🔴 Insider-Selling ($106M 90d), Q2 04.06. 53→56 |
+| [[MSFT]] | T1 | 🟠 2 | 50 | 0€ | 🔴 CapEx/OCF aktiv |
+| [[AMZN]] | T1 | 🔴 1 | 42 | 0€ | 🔴 CapEx/OCF TTM 99,2% |
+| [[NOW]] | T1 | 🟡 3\* | — (O3) | 40€ | Owner-Add §6.4 (VEEV-Slot, SaaS) |
+| [[KYCCF]] | T2 | 🟡 3\* | — (O3) | 32€ | Owner-Add §6.4 (JP/JPY-IFRS) |
+| [[ZETA]] | T3 | 🟡 3\* | — (O3) | 18€ | Owner-Add §6.4 (war QuickScreener-Rot) |
+
+> **Exits 06/2026:** [[COST]] (Score 69 eingefroren, LIMIT @863€) · [[VEEV]] (Score 74 eingefroren, → [[NOW]]). Pages behalten als Illustrations-Anker.
 
 ---
 
 ## 🏦 Ersatzbank & Watchlist
 
 - [[GOOGL]] — MSFT-Ersatz (FLAG aktiv, kein Einstieg)
-- [[ZTS]] — VEEV/TMO-Ersatz (DEFCON 4, bereit)
+- [[ZTS]] — VEEV/TMO-Ersatz (⚠️ VEEV exited 06/2026 — Reassignment pending §6/Watchlist; DEFCON 4, bereit)
 - [[PEGA]] — Slot-16-Kandidat (Earnings Mai 2026)
 - [[MKL]] — BRK.B-Ersatz (Specialty-Versicherung + Holding)
 - [[NVDA]] — AVGO-Ersatz (GPU-Marktführer, KI-Infrastruktur)

@@ -74,7 +74,7 @@ Die Autoren testen die in der LLM-Trading-Literatur viel-zitierte Behauptung, LL
 | Data-Snooping | Wie viele v3.x-Iterationen gab es auf demselben Hold-Out? Hold-Out überhaupt definiert? |
 | Regime-Asymmetrie | Underperformt DEFCON-Selektion in 2024-25 Bull-Phase ggü. SPY? |
 
-**Wichtigste Erkenntnis für uns:** Auch ein regelbasiertes System verdient einen Bias-Audit, sobald es als Selection-Strategy fungiert. DEFCON tut das (11 Satelliten-Auswahl + Sparrate-Modulation). Die Audit-Methode ist FINSABER-Pattern, nicht eine "LLM-Sicherheitsdebatte".
+**Wichtigste Erkenntnis für uns:** Auch ein regelbasiertes System verdient einen Bias-Audit, sobald es als Selection-Strategy fungiert. DEFCON tut das (13 Satelliten-Auswahl + Sparrate-Modulation). Die Audit-Methode ist FINSABER-Pattern, nicht eine "LLM-Sicherheitsdebatte".
 
 ## Operationalisierung (Phase 2 von Paper-Ingest 2026-04-20)
 

@@ -1628,3 +1628,34 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Scoring-Status:** DEFCON v3.7 + 12 Scores + Sparraten 285€ unverändert.
 
 **Lesson:** Discovery-Design braucht *bindend* (normativer Anker im Pflicht-Lese-Pfad) UND *auffindbar* (Memory) — Memory allein reicht nicht (Guard-Rail §17.1: advisory-only, nie route-determining).
+
+---
+
+## 🛰️ 2026-06-09 — Umstrukturierung-2027 Phase-A: Vault-Sync (13-Roster · 3-Tier · 60/35/5) DONE (Wiki-`edit`-Operation, KEIN §18-Score-Event)
+
+**Event-Typ:** Wiki-`edit` (Vault spiegelt bereits-committeten Live-State). **KEIN §18-Score-Event** — kein SSoT-Score/FLAG/Sparraten-Change, kein xlsx/config/Faktortabelle-Touch. Die Score/Allokations-Wahrheit wurde bereits committet (`6f91aad` AVGO Q2 / `1e3c817` Code-Side / `18e2c6b` 00_Core / `0c9460a`+`238f5f9` xlsx); diese Welle zieht ausschließlich den Vault nach.
+
+**Plan-of-Record:** 8 Beschlüsse D1–D8, gegrillt via grill-with-docs 2026-06-09 (Memory `project_umstrukturierung_2027_pending_sync`). Scope-Diskriminator: present-tense Live-State-Claims (Roster-Count/Allokation/Rate) → FIX; datierte Historie / Sample-n-Statements / `archive/`+`raw/` → KEEP.
+
+**Was passiert ist (37 Files):**
+- **D1 Exits (behalten, kein Delete):** `VEEV.md` + `COST.md` Exit-Tag + Exit-Block, Score eingefroren (74/69), letzte Equal-Weight-Rate 35,63€ als „(eingefroren)" gerahmt.
+- **D2 Owner-Add-Stubs (neu):** `NOW.md` (ServiceNow/T1/VEEV-Slot/SaaS) · `KYCCF.md` (Keyence/T2/JP-JPY-IFRS) · `ZETA.md` (Zeta Global/T3/US, war QuickScreener-Rot) — volles Frontmatter-Skelett, DEFCON-3\*-Platzhalter/score:null, „Owner-Add §6.4 analog AMZN", O3-pending-Marker statt erfundener Zahlen, WIKI-SCHEMA §4.3-Backlinks.
+- **D3 Live-Claim-Fix:** Roster-Count 11/12→**13** (Faktortabelle-Architektur, FCF-Primacy, Seven-Sins, LLM-Bias-Audit, Backtest-Ready-Infra, PORTFOLIO, Session-Start, Bryzgalova-src, FINSABER-src, index.md, Competitive-Advantage-Heading) · Allokation 65/30/5→**60/35/5** (PORTFOLIO, SYSTEM, Session-Start, Palomar-src) · Rate-Modell Equal-Weight-Nenner (285€/35,63€/17,81€) → **3-Tier** (T1 40/T2 32/T3 18, SOLL 364€/Funded 210€) in DEFCON-System, etf-core, dynastie-depot-skill-src, Investing-Mastermind-Index (Roster-Tabelle voll umgebaut auf SSoT-Stand inkl. AVGO 56).
+- **D4 Palomar-Methodik-Shift (ehrlich):** `Palomar-Methods-Reference` L74 — 3-Tier vermeidet MVO-Pathologien weiter (conviction-gesetzt), aber strikte 1/N-Optimalität (Ch 7.5) gilt **nicht mehr 1:1** (explizit benannt, kein „genauso validiert"). + Source-Page `Palomar-2025` (Ch 7.5/11-Relevanz reframed, 65/30/5→60/35/5).
+- **D5 Methodik-Regel-Marker:** `quick-screener` + `Quality-Trap` — COST/VEEV „seit 06/2026 nicht mehr im Roster; Regel bleibt ticker-agnostisch". Ticker-agnostische Methodik (GM-Exception/Screener-Exception) UNANGETASTET.
+- **D6 Ersatz-Mapping-Marker (DEFER, keine Neu-Zuweisung):** `ZTS.md` + `Investing-Mastermind-Index` L38 + `index.md` Ersatzbank → „VEEV exited 06/2026 — Reassignment pending §6/Watchlist" (gekoppelt an Watchlist-xlsx-Welle, sonst Cross-Source-Drift).
+- **D7 10 Keeper-Frontmatter/Header-Mirror (programmatisch aus `00_Core/Faktortabelle.md`):** ASML/BRKB/AVGO/V/MSFT/APH/TMO/AMZN/RMS/SU — Sparrate→Tier-Modell, naechsterTrigger→`earnings_calendar.py`-Tool-Kanon, +1 History-Row „Vault-Sync: Tier-Migration+Score-Mirror, KEIN Re-Score". **AVGO 53→56-Mirror** (Q2 04.06.-Stand). Body-Analyse unberührt.
+- **D8:** `updated:`-Bump 2026-06-09 (12 Concept/Source-Pages) + `index.md` Roster-Block 12→13 + Exits-Sektion + Stubs + neue Last-updated-Zeile + dieser log-Append.
+
+**Verifizierte Catches (Empirie statt Annahme):**
+- **APH Earnings-Drift** 23.07 (Faktortabelle) → **29.07** (`earnings_calendar.py --check` Tool-Kanon). Lesson `feedback_earnings_calendar_tool_is_ssot`.
+- **Sample-n-Statements bewusst KEEP** (Wiss-Fundierung L386, Backtest-Methodik L22, KG-Roadmap L146): „11" = historische gescorte Backtest-Sample-n; NOW/KYCCF/ZETA haben score:null/keine Forward-Records → „13" würde Validierungs-Sample überstellen.
+- **finnhub-Coverage-Claim (10/12)** als Defer-Marker statt Fabrikation (NOW/ZETA/KYCCF-Coverage braucht echten API-Verify; Earnings-SSoT ist ohnehin `earnings_calendar.py`).
+
+**Commit-Struktur (3 logische `docs(vault)`-Commits):** #1 Exits+Stubs · #2 Keeper-Frontmatter (10) · #3 Live-Claims+Palomar+Marker+index+log. **HARD-STOP vor `git push`** (User-Freigabe). Danach Gemini Cross-Scope-Sync über Gesamtstruktur + Git-Diff.
+
+**Scoring-Status:** DEFCON v3.7 unverändert. Scores/FLAGs/Sparraten = identisch zum bereits committeten Live-State (Vault-Spiegelung). Kein FLAG-Event, kein Re-Score.
+
+**Cross-Reference:** Memory `project_umstrukturierung_2027_pending_sync` (Execution-State) · `00_Core/PORTFOLIO.md` (Live-SSoT) · Decision-Record = die 8 Beschlüsse hier + im Memory (KEIN `docs/adr/`, Anti-Fork).
+
+**Lesson:** Scope-Discriminator als Werkzeug, nicht als Scope-Reduktions-Ausrede — Sample-n-„11" bleibt korrekt (historisches Backtest-Sample), Roster-„11" wird 13 (Live-Claim). Beide Urteile dokumentiert + im Commit/Log auditierbar (`feedback_historical_snapshot_not_a_scope_excuse` vs `feedback_information_loss_aversion` balanciert).

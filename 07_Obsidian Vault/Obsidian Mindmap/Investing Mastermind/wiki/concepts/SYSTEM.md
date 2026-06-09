@@ -6,7 +6,7 @@ aliases:
   - "SYSTEM.md"
 tags: [system, single-source-of-truth, infrastructure]
 created: 2026-04-25
-updated: 2026-04-26
+updated: 2026-06-09
 sources: []
 related: [STATE, PORTFOLIO, PIPELINE, CORE-MEMORY, Backtest-Ready-Infrastructure]
 ---
@@ -20,7 +20,7 @@ related: [STATE, PORTFOLIO, PIPELINE, CORE-MEMORY, Backtest-Ready-Infrastructure
 **System-Zustand + Infrastruktur** — operative Status-Sicht aller System-Komponenten:
 - Scoring-Version (DEFCON v3.7) + Schema-Thresholds + §27 Hygiene-Regeln
 - Live-Verify-Fortschritt (Forward-Verify Records pro Satellit)
-- Allokation (65/30/5) + US-Hard-Cap-Status
+- Allokation (60/35/5) + US-Hard-Cap-Status
 - MCP-Status (defeatbeta, Shibui, WebSearch, yfinance)
 - Morning-Briefing-Status (Version, Deploy, Tavily-Gate)
 - Backtest-Ready-Status (Score-Archiv, score_history.jsonl, flag_events.jsonl)

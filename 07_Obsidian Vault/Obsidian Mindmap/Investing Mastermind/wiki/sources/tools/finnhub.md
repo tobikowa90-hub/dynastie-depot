@@ -10,7 +10,7 @@ stand: 2026-05-22
 ## Was es liefert
 
 - **Quote** (`/quote`) — letzter US-Close, ~2h Lag intraday (löst defeatbeta-Stale-Problem für tagesaktuelle Confirmation)
-- **Earnings-Calendar** (`/calendar/earnings`) — per-symbol Earnings-Termine + EPS-Estimates (10/12 Satelliten + ASML; BRK.B liefert BRK.A-EPS)
+- **Earnings-Calendar** (`/calendar/earnings`) — per-symbol Earnings-Termine + EPS-Estimates (10/12 Satelliten + ASML; BRK.B liefert BRK.A-EPS) — *Stand vor Umstrukturierung-2027; Roster jetzt 13, Coverage der Owner-Adds NOW/ZETA [US] / KYCCF [JP-OTC] noch nicht re-verifiziert (Earnings-SSoT ist ohnehin `earnings_calendar.py`)*
 - **Company-News** (`/company-news`) — bis 249 Items/7d pro Symbol
 - **Stock-Metric** (`/stock/metric`) — 21/26 DEFCON-critical TTM-Metriken Free-Tier (peTTM, roe, roic, plus 18 weitere)
 - **Stock-Profile** (`/stock/profile2`) — Issuer-Profil

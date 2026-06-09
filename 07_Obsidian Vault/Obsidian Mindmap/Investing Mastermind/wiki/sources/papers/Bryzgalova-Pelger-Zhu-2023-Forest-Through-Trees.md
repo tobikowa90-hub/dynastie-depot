@@ -23,7 +23,7 @@ related:
   - "[[markus-pelger]]"
   - "[[jason-zhu]]"
 created: 2026-05-10
-updated: 2026-05-10
+updated: 2026-06-09
 aliases:
   - "Bryzgalova Pelger Zhu 2020"
   - "Bryzgalova Pelger Zhu 2023"
@@ -49,7 +49,7 @@ Bryzgalova, Pelger und Zhu konstruieren **Asset-Pricing-Trees (AP-Trees)** — e
 |---|---|---|
 | **Ziel** | Single-Stock-Long-Only-Selection mit Score | SDF-Approximation via Test-Asset-Konstruktion |
 | **Output** | DEFCON-Score 0-100 pro Ticker | Mean-Variance-Efficient-Portfolio-Gewichte über Tree-Endknoten |
-| **Universum** | 11 Satelliten-Stocks (manuelle Selektion + Watchlist) | gesamtes US-CRSP-Universum (~3.000+ Stocks) |
+| **Universum** | 13 Satelliten-Stocks (manuelle Selektion + Watchlist) | gesamtes US-CRSP-Universum (~3.000+ Stocks) |
 | **Konstruktions-Logik** | additiv-multiplikative Block-Aggregation (50/20/10/10/10) | binäre Median-Splits + Pruning |
 | **Long-Only-Single-Stock vs Long-Only-Portfolio** | Single-Stock | Managed-Portfolio (Aggregation über Endknoten) |
 | **OoS-Sharpe-Anwendbarkeit** | nicht direkt (Long-Only-Single-Stock-Sharpe ≠ Long-Short-MVE-Sharpe) | direkt im Long-Short-MVE-Frame |

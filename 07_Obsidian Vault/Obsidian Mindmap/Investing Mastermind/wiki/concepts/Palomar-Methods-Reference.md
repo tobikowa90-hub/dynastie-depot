@@ -3,7 +3,7 @@ title: "Palomar-Methods-Reference (Ch 6 + 8.3-8.5 + 7.5 + 11)"
 type: concept
 tags: [risk-metrics, backtesting-methods, walk-forward, synthetic-data, mvo-critique, risk-parity, reference]
 created: 2026-04-19
-updated: 2026-04-19
+updated: 2026-06-09
 sources: [Palomar-2025-Portfolio-Optimization]
 related: [Seven-Sins-Backtesting, PBO-Backtest-Overfitting, Backtest-Methodik-Roadmap, ETF-Core, DEFCON-System]
 wissenschaftlicher_anker: "Palomar (2025) — Portfolio Optimization"
@@ -71,14 +71,14 @@ Warum wir **nicht** klassische Markowitz-MVO verwenden:
 3. **Leverage** — MVO empfiehlt oft unrealistische Leverage
 4. **Sensitivity zu Covarianz-Schätzung** — historische Cov-Matrix instabil
 
-→ **Unser Equal-Weight-Sparplan** auf 11 Satelliten umgeht diese Pathologien. Palomar's Ch 7.5 ist **akademische Validation** dieses Designs, kein Aufruf zu einer Änderung.
+→ **Unser 3-Tier-Conviction-Sparplan** (seit 06/2026; vormals Equal-Weight auf 11 Satelliten) auf 13 Satelliten umgeht diese Pathologien **weiterhin in der Substanz**: die Gewichte sind **conviction-gesetzt** (Owner-Tier T1 40€ / T2 32€ / T3 18€), **nicht optimizer-derived** — kein Estimation-Error-Hebel, keine Cov-Matrix-Sensitivität, keine MVO-Konzentration/Leverage. **Wichtige Präzisierung (Methodik-Shift 06/2026):** Palomar Ch 7.5's strikte **1/N-(Equal-Weight)-Optimalität** validiert das 3-Tier-Design **nicht mehr 1:1** — sie galt für gleichgewichtete Allokation. Die Tier-Abstufung ist eine bewusste Owner-Conviction-Entscheidung jenseits der reinen 1/N-Robustheit; Ch 7.5 bleibt Rückenwind **gegen MVO**, ist aber **kein „genauso bewiesenes" Optimalitäts-Siegel** für die Tier-Gewichtung selbst.
 
 ## Ch. 11 — Risk Parity Portfolios
 
 **Kern-Idee:** Gewichte so, dass jede Position gleichen Volatilitäts-Beitrag hat (nicht gleichen Dollar-Anteil).
 
-**Abgrenzung zu unserem 65/30/5:**
-- 65/30/5 ist **strategische Dollar-Allokation** (ETF 65% / Satelliten 30% / Gold 5%)
+**Abgrenzung zu unserem 60/35/5:**
+- 60/35/5 ist **strategische Dollar-Allokation** (ETF 60% / Satelliten 35% / Gold 5%; seit 06/2026, vormals 65/30/5)
 - Risk Parity würde Vol-Beiträge ausgleichen — bei unseren Tickern hätte das vermutlich andere Gewichte (Low-Vol wie BRK.B mehr, High-Vol wie ASML/AVGO weniger)
 - Risk Parity ist **kein Design-Ziel** für Dynasty-Depot
 
@@ -103,5 +103,5 @@ Unterschiedliche operative Funktion → daher zwei getrennte Konzept-Seiten.
 - [[Seven-Sins-Backtesting]] — Pre-Flight-Sünden-Gate (Ch 8.2)
 - [[PBO-Backtest-Overfitting]] — CSCV-Primärmethode, hier erweitert um walk-forward + synthetic
 - [[Backtest-Methodik-Roadmap]] — 2028-Review-Entscheidungsmatrix
-- [[etf-core|ETF-Core]] — 65/30/5-Allokation, Ch. 11 Kontext
+- [[etf-core|ETF-Core]] — 60/35/5-Allokation, Ch. 11 Kontext
 - [[DEFCON-System]] — Zielsystem, dessen Return-Serie spätere Metrik-Anwendung erhält

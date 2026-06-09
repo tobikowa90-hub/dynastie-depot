@@ -6,7 +6,7 @@ aliases:
   - "PORTFOLIO.md"
 tags: [system, single-source-of-truth, live-state, projection-layer]
 created: 2026-04-25
-updated: 2026-04-26
+updated: 2026-06-09
 sources: []
 related: [STATE, PIPELINE, SYSTEM, CORE-MEMORY, Faktortabelle]
 ---
@@ -18,11 +18,11 @@ related: [STATE, PIPELINE, SYSTEM, CORE-MEMORY, Faktortabelle]
 ## Rolle (seit Tier-2-Refactor 2026-04-25)
 
 **Live-State** — default-load bei Session-Start (90% der Sessions). Enthält:
-- Portfolio-Tabelle: 11 Satelliten mit Score, DEFCON, Rate, FLAG, nächster Trigger
+- Portfolio-Tabelle: 13 Satelliten mit Score, DEFCON, Rate, FLAG, nächster Trigger
 - Sparraten-Nenner + Einzelraten + Summen-Check
 - Aktive Watches (Grenzfälle, FLAG-Review-Pfade)
 - 30-Tage-Trigger (klassifizierte Earnings-/Watch-Termine)
-- Allokation-Status (65/30/5 Ziel + US-Hard-Cap-Check)
+- Allokation-Status (60/35/5 Ziel + US-Hard-Cap-Check)
 
 Operative Inhalte, die früher in [[STATE]] lebten — beim Tier-2-Refactor ausgelagert, damit STATE.md als schlanker Hub bleibt (~40 Z).
 

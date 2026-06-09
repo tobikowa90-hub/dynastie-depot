@@ -3,7 +3,7 @@ title: "Regime-Aware Strategy Failure Modes (Bull/Bear-Asymmetrie)"
 type: concept
 tags: [regime, bull, bear, llm-investing, risk-management, validation, method]
 created: 2026-04-20
-updated: 2026-04-20
+updated: 2026-06-09
 sources: [Li-Kim-Cucuringu-Ma-2026-FINSABER]
 related: [LLM-Investing-Bias-Audit, Factor-Information-Decay, Backtest-Methodik-Roadmap, DEFCON-System]
 wissenschaftlicher_anker: "Li, Kim, Cucuringu, Ma (2026, KDD '26) — FINSABER Section: Regime Analysis"
@@ -39,7 +39,7 @@ DEFCON hat **explizite Risk-Controls** (CapEx-FLAG, ROIC<WACC-Malus, Insider-FLA
 
 **Self-Audit-Fragen:**
 - Hat DEFCON v3.7 in der Bull-Phase 2024-25 vs. SPY underperformt? (Datenlage: Forward-Records erst seit 17.04.2026)
-- Ist die Sparraten-Modulation (D2/FLAG → 17,81€/0€) regime-anti-zyklisch (mehr in Crash, weniger in Hype)?
+- Ist die Sparraten-Modulation (D2/FLAG → halbe Tier-Rate/0€) regime-anti-zyklisch (mehr in Crash, weniger in Hype)?
   - **Heuristik-Antwort:** ja, indirekt, weil DEFCON-Score sich zyklisch mit Bewertung bewegt (Quality-Trap-Term)
   - **Empirische Antwort:** offen, frühestens 2027 evaluierbar
 

@@ -3,7 +3,7 @@ tags: [concept, defcon, scoring, valuation]
 typ: concept
 related_skills: "[[dynastie-depot-skill]], [[backtest-ready-forward-verify]]"
 related_concepts: "[[DEFCON-System]], [[FCF-Primacy]], [[Moat-Taxonomie-Morningstar]], [[CapEx-FLAG]]"
-updated: 2026-05-06
+updated: 2026-06-09
 ---
 
 # Quality-Trap (DEFCON v3.7 §472-§478)
@@ -32,7 +32,7 @@ Bei M&A-Compoundern (GW/Assets ≥30%) ist die GAAP-ROIC-Lesart strukturell verz
 
 Skill-Paket v3.7.6 (30.04.2026, post Quality-Trap-Methodology-Review PIPELINE #28) ergänzt: **Drawdown ≥-20% vs. 52W-High UND Multiple unter 5J-Median (np.median 20 Stichtage, mind. 12 belastbar, strikt positive Nenner) → `max 1`-Caps deaktiviert per-Subscore.** Hard-Caps unverändert. Codex-R1→R4 96% Confidence (4 HIGH + 4 MEDIUM closed inkl. B1 Nenner-Sign-Gate).
 
-Anwendungsbereich: Forward-only (keine MSFT-Q3-Backfill); Non-US-Freeze (ASML/SU INAKTIV); Screener-Exceptions (BRK.B/COST/RMS/TMO) ausgenommen.
+Anwendungsbereich: Forward-only (keine MSFT-Q3-Backfill); Non-US-Freeze (ASML/SU INAKTIV); Screener-Exceptions (BRK.B/RMS/TMO; COST seit 06/2026 nicht mehr im Roster — Exit, Regel bleibt ticker-agnostisch) ausgenommen.
 
 ## Beispiele aus Live-Runs
 

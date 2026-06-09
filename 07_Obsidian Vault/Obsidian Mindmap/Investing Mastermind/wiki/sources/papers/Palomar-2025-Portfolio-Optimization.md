@@ -9,7 +9,7 @@ publisher: "Cambridge University Press"
 isbn: "9781009428088"
 authors: "Daniel P. Palomar (HKUST — Hong Kong University of Science and Technology)"
 status: processed
-defcon_relevanz: "Institutionelles Lehrbuch, selektiv wertvoll. Kap. 8.2 Seven Sins of Quantitative Investing = Pre-Flight-Gate §29.5. Kap. 8.3-8.5 walk-forward/CV/synthetic als methodische Erg\u00e4nzung zu Bailey PBO. Kap. 6 Risk-Metric-Formeln als Referenz f\u00fcr bestehenden risk-metrics-calculation-Skill. Kap. 7.5 + 11 als Validation-Reading f\u00fcr Equal-Weight/65-30-5-Allokation."
+defcon_relevanz: "Institutionelles Lehrbuch, selektiv wertvoll. Kap. 8.2 Seven Sins of Quantitative Investing = Pre-Flight-Gate §29.5. Kap. 8.3-8.5 walk-forward/CV/synthetic als methodische Erg\u00e4nzung zu Bailey PBO. Kap. 6 Risk-Metric-Formeln als Referenz f\u00fcr bestehenden risk-metrics-calculation-Skill. Kap. 7.5 + 11 als Validation-Reading f\u00fcr conviction-basierte 3-Tier/60-35-5-Allokation (1/N-Optimalit\u00e4t seit 06/2026 nicht mehr 1:1 g\u00fcltig, siehe [[Palomar-Methods-Reference]])."
 sources: []
 related:
   - "[[Seven-Sins-Backtesting]]"
@@ -31,13 +31,13 @@ Daniel Palomar (HKUST) liefert ein frei zugängliches, peer-reviewed Doktoranden
 | Kapitel | Titel | Relevanz | Warum |
 |---|---|---|---|
 | **Ch 6** | Portfolio Basics | 🔴 Hoch | Formale Definitionen Sortino/CVaR/Calmar/Max-DD/IR — direkt einsetzbar für `risk-metrics-calculation`-Skill + `03_Tools/portfolio_risk.py` |
-| Ch 7.5 | Drawbacks of MVP | 🟡 Mittel | Akademische Grundlage warum Mean-Variance-Optimization versagt → bestätigt Equal-Weight-Sparplan |
+| Ch 7.5 | Drawbacks of MVP | 🟡 Mittel | Akademische Grundlage warum Mean-Variance-Optimization versagt → stützt conviction-gesetzte (nicht optimizer-derived) Allokation; seit 06/2026 3-Tier statt Equal-Weight — strikte 1/N-Optimalität gilt nicht mehr 1:1 ([[Palomar-Methods-Reference]]) |
 | **Ch 8.1** | A Typical Backtest | 🟢 Referenz | Backtest-Struktur-Terminologie |
 | **Ch 8.2** | The Seven Sins of Quantitative Investing | 🔴 **Kernstück** | Sünden-Katalog → [[Seven-Sins-Backtesting]] §29.5 Gate |
 | **Ch 8.3** | The Dangers of Backtesting | 🔴 Hoch | p-hacking, stop-loss-gaming, Overfitting-Mechanik |
 | **Ch 8.4** | Backtesting with Historical Market Data | 🔴 Hoch | Walk-forward, Cross-Validation, Randomized — **komplementär zu Bailey CSCV** |
 | **Ch 8.5** | Backtesting with Synthetic Data | 🔴 Hoch | Monte Carlo, Bootstrap, I.I.D.-Stress-Testing — **alternative zu CSCV** |
-| Ch 11 | Risk Parity Portfolios | 🟡 Mittel | Vol-Contribution-Theorie → Kontext für 65/30/5 (nicht Validation) |
+| Ch 11 | Risk Parity Portfolios | 🟡 Mittel | Vol-Contribution-Theorie → Kontext für 60/35/5 (nicht Validation) |
 
 ## Nicht-relevant (überspringen)
 

@@ -64,7 +64,7 @@ Diese Regel gilt verbindlich in jeder DEFCON-Analyse:
 
 ## DEFCON-Relevanz nach Ticker
 
-Alle 11 Satelliten sind betroffen — FCF-Primacy gilt universal:
+Alle 13 Satelliten sind betroffen — FCF-Primacy gilt universal:
 
 | Ticker | FCF-Besonderheit |
 |--------|-----------------|

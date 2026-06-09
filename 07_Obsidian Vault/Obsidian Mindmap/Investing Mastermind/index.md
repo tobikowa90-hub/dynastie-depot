@@ -1,7 +1,8 @@
 # Wiki Index
 
 > Content catalog. Updated on every ingest, query save, or structural edit.
-> Last updated: 2026-05-18 (edit — AMZN-Satelliten-Page-Anlage [PIPELINE #70]: neue Entity-Page [[AMZN]] (12. Satellit, Score 42/🔴 DEFCON 1, 🔴 CapEx/OCF-FLAG TTM 99,2%, Sparrate 0€ regelkonform, Neuaufnahme 15.05.2026 User-Direktive); Satelliten-Block 11→12 ergänzt; Sibling-Backlink in [[GOOGL]] (CapEx/OCF-FLAG-Hyperscaler-Cluster). Score-Event-Commit `a6ed83b` durable, Vault-Page war out-of-scope der §18-Welle — jetzt nachgezogen.)
+> Last updated: 2026-06-09 (edit — Umstrukturierung-2027 Phase-A Vault-Sync: Satelliten-Block 12→13 + 3-Tier-Conviction (T1 40/T2 32/T3 18, SOLL 364€/Funded 210€); COST/VEEV → neue **Exits**-Sektion (Pages behalten); NOW/KYCCF/ZETA O3-Platzhalter-Stubs neu; AVGO 53→56 (Q2 04.06.-Mirror); Sparraten equal-weight 38€/19€ → Tier-Modell; Allokation 65/30/5→60/35/5; Roster-Count-Claims 11→13 über concept/synthesis/source-Pages; ZTS-Ersatz-Marker (VEEV exited, Reassignment pending §6/Watchlist). Wiki-`edit`-Op, KEIN §18-Score-Event — spiegelt committeten State [`6f91aad`/`1e3c817`/`18e2c6b`/`0c9460a`/`238f5f9`].)
+> Last updated (zuvor): 2026-05-18 (edit — AMZN-Satelliten-Page-Anlage [PIPELINE #70]: neue Entity-Page [[AMZN]] (12. Satellit, Score 42/🔴 DEFCON 1, 🔴 CapEx/OCF-FLAG TTM 99,2%, Sparrate 0€ regelkonform, Neuaufnahme 15.05.2026 User-Direktive); Satelliten-Block 11→12 ergänzt; Sibling-Backlink in [[GOOGL]] (CapEx/OCF-FLAG-Hyperscaler-Cluster). Score-Event-Commit `a6ed83b` durable, Vault-Page war out-of-scope der §18-Welle — jetzt nachgezogen.)
 > Last updated (zuvor): 2026-05-10 (Paper-Ingest Phase-D-1-Confidence-Upgrade-Pass — Voll-PDF-Read von 8 Papers in `raw/papers/`: 9 Sachfehler-Korrekturen in B29/B30-Source/Concept-Pages (Sample-Perioden 1975-2011 + 1972:07-2014:12 510 Monate; PEAD-CAR statt -SUE; Spanning 31/34 statt 24/30; Cumulant-Estimator statt GMM; Half-Life 6-9 Monate statt ~3 Monate; FIN-Multi-Year-Issuance-Index nicht single-quarter Buyback) + 6 neue Source-Pages: 5 deferred-Stubs ([[Eisfeldt-Papanikolaou-2013-Organization-Capital]] OrgCap / [[Barillas-Shanken-2015-Which-Alpha]] Which-Alpha / [[Eisfeldt-Kim-Papanikolaou-2020-Intangible-Value]] IV / [[Chen-Pelger-Zhu-2019-Deep-Learning-Asset-Pricing]] DL-AP / [[Crouzet-Eberly-Eisfeldt-Papanikolaou-2022-Economics-Intangible-Capital]] CEEP) + 1 Reject-Inventarisiert ([[Bryzgalova-Pelger-Zhu-2023-Forest-Through-Trees]] BPZ); + 11 neue Author-Stubs (Eisfeldt/Papanikolaou/Kim/Barillas/Shanken/Crouzet/Eberly/Chen/Pelger/Zhu/Bryzgalova); Synthese [[Wissenschaftliche-Fundierung-DEFCON]] 36→42 Quellen inventarisiert (36 active + 5 deferred-Stub + 1 reject), 30 Befunde unverändert; SKILL.md §410-Block 3 Präzisierungen (Misspezifikation/Prediction-4 statt Hayashi-Ablehnung; 40%-Schwelle als DEFCON-Konvention; CEEP-2022-Brücke); IV-2020 von D-3 SOURCE-ONLY auf D-2 active-deferred hochgestuft (User-Direktive, Cluster mit EP-2013 für Q3-2026-V-Trigger); CEEP-2022 als SOURCE-ONLY-Co-Anker B29 Goodwill-Brücke jetzt primär-belegt. Phase D-2/D-3 weiterhin deferred.)
 > Last updated (zuvor): 2026-05-09 (Paper-Ingest Phase D-1 Final-Closure — Gemini-Recherche-Triage: 2 neue Source-Pages [[Peters-Taylor-2017-Intangible-Capital]] (B29) + [[Daniel-Hirshleifer-Sun-2020-Behavioural-Factors]] (B30); 2 neue Concept-Pages [[Intangible-Adjusted-Value]] + [[Behavioural-Factors-DHS-Model]]; 5 neue Author-Stubs [[ryan-h-peters]] / [[lucian-a-taylor]] / [[kent-d-daniel]] / [[david-hirshleifer]] / [[lin-sun]]; Synthese [[Wissenschaftliche-Fundierung-DEFCON]] 34→36 Quellen / 28→30 Befunde + Codex-Pkt-7-Sync-Bruch-Korrektur (B30 Wortlaut-Präzisierung); SKILL.md §410-B29-Anker + §27.7-B30-Anti-Buyback-Cross-Reference. Codex-Single-Pass 96% APPROVE. Phase D-2/D-3 deferred.)
 > Last updated (zuvor): 2026-05-09 (Vault-Health-Maintenance PIPELINE #54: Index-Drift fix — `[[Quality-Trap]]` + `[[MA]]` ergänzt; `[[RETROSPECTIVE-GATE]]` Vault-Stub NEU als Backlink-Anker für `00_Core/RETROSPECTIVE-GATE.md` (§29 Pointer-Extraction Wave-3); 15 Concept-Pages §29-Backlink-Refresh.)
@@ -189,23 +190,36 @@ _(noch leer)_
 - [[christina-dan-wang]] — Co-Autorin FinGPT 2023 (SOURCE-ONLY) — NYU Shanghai ← NEU 2026-04-26 Phase A
 - [[robert-hable]] — Alleinautor 2iQ-Insider-Meta-Review 2021 (SOURCE-ONLY industry-meta) — 2iQ Research ← NEU 2026-04-26 Phase A
 
-### Satelliten (aktive Positionen)
-- [[AVGO]] — Broadcom Inc. | DEFCON 🟠 2 | Score 53 | 🔴 FLAG (insider_selling_20m, $106M+ diskretionär 90d) | Sparrate 0€ | Q1 FY26 Forward-Vollanalyse 30.04. (84→53, Δ-31, Codex R1+R2 74% Confidence)
-- [[COST]] — Costco Wholesale | DEFCON 🟡 3 | Score 69 | Sparrate 38€ | Screener-Exception
-- [[RMS]] — Hermès International | DEFCON 🟡 3 | Score 68 | Sparrate 38€ | Non-US | Screener-Exception (ROIC 24% >> WACC)
-- [[VEEV]] — Veeva Systems | DEFCON 🟡 3 | Score 74 | Sparrate 38€
-- [[SU]] — Schneider Electric | DEFCON 🟡 3 | Score 69 | Sparrate 38€ | Non-US
-- [[BRKB]] — Berkshire Hathaway B | DEFCON 🟡 3 | Score 71 | Sparrate 38€ | FLAG ✅ Clean (Insurance Exception) | Q1 FY26 Tag-+1 04.05. (75→71 Codex-R1-Korrektur)
-- [[V]] — Visa Inc. | DEFCON 🟠 2 | Score 64 | Sparrate 19€ | FLAG ✅ Clean | Q2 FY26 Beat 28.04. + Codex-Rescoring-Revert (68→64, ROIC-Methodology-Watch Q3)
-- [[APH]] — Amphenol Corp. | DEFCON 🟠 2 | Score 61 | 🔴 FLAG (Score-basiert <65) | Sparrate 0€ | Q1 FY26 Tag-+1 30.04. (63→61)
-- [[ASML]] — ASML Holding | DEFCON 🟡 3 | Score 68 | Sparrate 38€ | Non-US
-- [[TMO]] — Thermo Fisher Scientific | DEFCON 🟡 3 | Score 67 | Sparrate 38€ | Q1 FY26 Forward-Vollanalyse 23.04. (D2→D3, fcf_trend_neg Resolve-Gate CLEAR)
-- [[MSFT]] — Microsoft | DEFCON 🟠 2 | Score 50 | 🔴 CapEx/OCF-FLAG aktiv | Sparrate 0€ | Q3 FY26 Tag-+1 30.04. (59→50, Bull-Case Trigger A✅/B❌/C✅✅ — UND nicht erfüllt)
-- [[AMZN]] — Amazon.com Inc. | DEFCON 🔴 1 | Score 42 | 🔴 CapEx/OCF-FLAG aktiv (TTM netto 99,2% ≫60%) | Sparrate 0€ | Neuaufnahme 12. Satellit 15.05.2026 (Forward-Vollanalyse, User-Direktive; nenner-neutral, Slot 11→12)
+### Satelliten (aktive Positionen) — 13 (3-Tier-Conviction, seit Umstrukturierung-2027 / 06-2026)
+
+> SOLL-Anker Σ = 4×40 + 3×32 + 6×18 = **364€** · Funded Σ = **210€** (DEFCON/FLAG-moduliert) · Effektiv-Rate = Tier-Basis × DEFCON-Faktor (D3/4=1,0 · D2=0,5 · D1/🔴FLAG=0). Live-State: [[PORTFOLIO]].
+
+**Tier 1 (40€-Basis):**
+- [[AMZN]] — Amazon.com Inc. | DEFCON 🔴 1 | Score 42 | 🔴 CapEx/OCF-FLAG aktiv (TTM netto 99,2% ≫60%) | Sparrate 0€ (FLAG) | T1 | Owner-Add §6.4 (15.05.2026)
+- [[MSFT]] — Microsoft | DEFCON 🟠 2 | Score 50 | 🔴 CapEx/OCF-FLAG aktiv | Sparrate 0€ (FLAG) | T1 | Q3 FY26 Tag-+1 30.04. (59→50)
+- [[NOW]] — ServiceNow | DEFCON 🟡 3\* Platzhalter | Score ⏳ O3 pending | Sparrate 40€ (T1) | T1 | Owner-Add §6.4 (VEEV-Slot-Nachfolger, SaaS)
+- [[AVGO]] — Broadcom Inc. | DEFCON 🟠 2 | Score 56 | 🔴 FLAG (insider_selling_20m, $106M+ diskretionär 90d) | Sparrate 0€ (FLAG) | T1 | Q2 FY26 Tag-+1 04.06. (53→56, FLAG bleibt)
+
+**Tier 2 (32€-Basis):**
+- [[V]] — Visa Inc. | DEFCON 🟠 2 | Score 64 | Sparrate 16€ (T2×D2 0,5) | FLAG ✅ Clean | T2 | Q3 FY26 ~Ende Juli (ROIC-Methodology-Watch)
+- [[KYCCF]] — Keyence | DEFCON 🟡 3\* Platzhalter | Score ⏳ O3 pending | Sparrate 32€ (T2) | T2 | Non-US (JP/JPY-IFRS) | Owner-Add §6.4
+- [[ASML]] — ASML Holding | DEFCON 🟡 3 | Score 68 | Sparrate 32€ (T2) | T2 | Non-US
+
+**Tier 3 (18€-Basis):**
+- [[RMS]] — Hermès International | DEFCON 🟡 3 | Score 68 | Sparrate 18€ (T3) | T3 | Non-US | Screener-Exception (ROIC 24% >> WACC)
+- [[BRKB]] — Berkshire Hathaway B | DEFCON 🟡 3 | Score 71 | Sparrate 18€ (T3) | FLAG ✅ Clean (Insurance Exception) | T3
+- [[TMO]] — Thermo Fisher Scientific | DEFCON 🟡 3 | Score 67 | Sparrate 18€ (T3) | T3 | fcf_trend_neg Resolve-Gate CLEAR
+- [[APH]] — Amphenol Corp. | DEFCON 🟠 2 | Score 61 | 🔴 FLAG (Score-basiert <65) | Sparrate 0€ (FLAG) | T3
+- [[SU]] — Schneider Electric | DEFCON 🟡 3 | Score 69 | Sparrate 18€ (T3) | T3 | Non-US
+- [[ZETA]] — Zeta Global | DEFCON 🟡 3\* Platzhalter | Score ⏳ O3 pending | Sparrate 18€ (T3) | T3 | Owner-Add §6.4 (war QuickScreener-Rot-Spekulation)
+
+### Exits (Umstrukturierung-2027 / 06-2026)
+- [[COST]] — Costco Wholesale | **Exit 06/2026** (LIMIT @863€, G/V +1,74€ steuerfrei) | Score 69 eingefroren | Page behalten (Illustrations-Anker)
+- [[VEEV]] — Veeva Systems | **Exit 06/2026** (Kapital → [[NOW]] SaaS-Switch) | Score 74 eingefroren | Page behalten (Illustrations-Anker)
 
 ### Ersatzbank
 - [[GOOGL]] — MSFT-Ersatz | Score 72, DEFCON 3 | 🔴 FLAG: CapEx ~75% OCF — kein Einstieg
-- [[ZTS]] — VEEV/TMO-Ersatz | DEFCON 4 | bereit
+- [[ZTS]] — VEEV/TMO-Ersatz (⚠️ VEEV exited 06/2026 — Reassignment pending §6/Watchlist) | DEFCON 4 | bereit
 - [[PEGA]] — Slot-16-Kandidat | Earnings Mai 2026
 - [[MKL]] — BRK.B-Ersatz | Specialty-Versicherung + Holding
 - [[NVDA]] — AVGO-Ersatz | GPU-Marktführer, KI-Infrastruktur
@@ -279,7 +293,7 @@ _(noch leer)_
 
 ### Token-Effizienz & System
 - [[STATE]] — Hub: Verweise + Critical-Alerts + Last-Audit (~40 Z, Vault-Stub für `00_Core/STATE.md`, seit Tier-2-Hub-Split 25.04.2026)
-- [[PORTFOLIO]] — Live-State: 11 Satelliten Scores/DEFCON/FLAGs/Sparraten + 30-Tage-Trigger (Vault-Stub für `00_Core/PORTFOLIO.md`, default-load bei Session-Start)
+- [[PORTFOLIO]] — Live-State: 13 Satelliten Scores/DEFCON/FLAGs/Sparraten + 30-Tage-Trigger (Vault-Stub für `00_Core/PORTFOLIO.md`, default-load bei Session-Start)
 - [[PIPELINE]] — Pipeline-SSoT + Long-Term-Gates (Vault-Stub für `00_Core/PIPELINE.md`)
 - [[SYSTEM]] — System-Zustand + Infrastruktur: DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog (Vault-Stub für `00_Core/SYSTEM.md`)
 - [[CORE-MEMORY]] — Live-Gedächtnis: Lektionen + Per-Ticker-Chronik (§12) + System-Lifecycle (§13) (Vault-Stub für `00_Core/CORE-MEMORY.md`)

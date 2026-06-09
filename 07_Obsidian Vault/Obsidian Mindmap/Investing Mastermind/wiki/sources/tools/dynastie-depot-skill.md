@@ -62,17 +62,18 @@ Trigger: nur bei Score ≥ 80 aus Stufe 2.
 
 ## !Rebalancing — Workflow
 
-**Sparplan-Formel (v3.4 korrigiert):**
+**Sparplan-Formel (3-Tier-Conviction, seit Umstrukturierung-2027 / 06-2026 — Equal-Weight-Nenner abgelöst):**
 ```
-Gewichte: D4/D3 (kein 🔴 FLAG) = 1.0 | D2 (kein 🔴 FLAG) = 0.5 | D1 / 🔴 FLAG = 0.0
-Einzelrate = 285€ / Σ Gewichte × Eigengewicht
+Effektiv-Rate = Tier-Basis × DEFCON-Faktor
+Tier-Basis: T1 40€ | T2 32€ | T3 18€   (Optimal-Fall = Rebalancing-Tool Spalte P)
+DEFCON-Faktor: D4/D3 (kein 🔴) = 1.0 | D2 (kein 🔴) = 0.5 | D1 / 🔴 FLAG = 0.0
 ```
+Satelliten-SOLL Σ = 4×40 + 3×32 + 6×18 = **364€** (Anker, alle D3/D4 clean). Teil des **60/35/5**-Splits.
 
-**Rechenbeispiel (Stand 19.04.2026, v3.7: 7× D4/D3, 2× D2 (V+TMO), 2× 🔴 FLAG):**
-- Nenner = (7 × 1.0) + (2 × 0.5) = **8.0**
-- D4/D3-Rate = 285 / 8.0 × 1.0 = **35,63€**
-- D2-Rate (V, TMO) = 285 / 8.0 × 0.5 = **17,81€**
-- 🔴 FLAG-Rate (MSFT, APH) = **0€**
+**Rechenbeispiel (Stand 09.06.2026 — Funded Σ = 210€):**
+- ASML 32€ (T2 × D3) · V 16€ (T2 × D2 0,5) · NOW 40€ (T1, D3\*) · BRK.B/TMO/RMS/SU/ZETA je 18€ (T3 × D3)
+- 🔴 FLAG-Rate (AMZN, MSFT, AVGO, APH) = **0€** (FLAG-Override, heilig)
+- Funded Σ = T1 40 + T2 80 + T3 90 = **210€** · Live-State immer `00_Core/PORTFOLIO.md`
 
 ## Kalibrierungsanker (vor jeder Analyse pflichtlesen!)
 

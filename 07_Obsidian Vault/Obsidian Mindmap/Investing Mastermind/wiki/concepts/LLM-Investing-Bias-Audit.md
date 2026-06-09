@@ -3,7 +3,7 @@ title: "LLM-Investing-Bias-Audit (FINSABER-Pattern)"
 type: concept
 tags: [llm-investing, backtest, bias-audit, survivorship, look-ahead, data-snooping, validation, method]
 created: 2026-04-20
-updated: 2026-04-20
+updated: 2026-06-09
 sources: [Li-Kim-Cucuringu-Ma-2026-FINSABER]
 related: [Regime-Aware-LLM-Failure-Modes, PBO-Backtest-Overfitting, Seven-Sins-Backtesting, Backtest-Methodik-Roadmap, Score-Archiv, Backtest-Ready-Infrastructure, DEFCON-System]
 wissenschaftlicher_anker: "Li, Kim, Cucuringu, Ma (2026, KDD '26) — FINSABER-Framework"
@@ -28,7 +28,7 @@ FINSABER zeigt empirisch: Die meisten LLM-Investing-Vorteile aus 2023-2025-Vorpa
 
 **Audit-Frage für DEFCON:**
 - Welche Ticker hat der `quick-screener` historisch abgelehnt? Existiert ein Reject-Set?
-- Sind unsere 11 Satelliten + Ersatzbank das Ergebnis einer survivor-biased-Top-Down-Auswahl?
+- Sind unsere 13 Satelliten + Ersatzbank das Ergebnis einer survivor-biased-Top-Down-Auswahl?
 - Wird bei Slot-16-Suche heute aktive S&P-500-Membership als Ausgangspunkt genommen?
 
 **Mitigation:**

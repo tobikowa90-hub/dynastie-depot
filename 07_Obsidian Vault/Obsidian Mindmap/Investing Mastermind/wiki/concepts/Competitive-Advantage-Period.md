@@ -3,7 +3,7 @@ title: "Competitive Advantage Period (CAP)"
 type: concept
 tags: [defcon, moat, value-creation, sustainability, cap, mauboussin, dcf, design-context]
 created: 2026-04-26
-updated: 2026-04-27
+updated: 2026-06-09
 sources: [Mauboussin-Callahan-2024-Measuring-Moat]
 related: [Wissenschaftliche-Fundierung-DEFCON, Moat-Taxonomie-Morningstar, ROIC-vs-WACC, DEFCON-System, Buffett-Faktorlogik, Morningstar-Wide-Moat]
 wissenschaftlicher_anker: "Mauboussin & Callahan (2024) 'Measuring the Moat' 3. Auflage, Morgan Stanley Counterpoint Global Insights — CAP als zweite Dimension der Value Creation neben ROIC-WACC-Spread; Morningstar-Wide-Moat ≈ CAP >20J, Narrow ≈ 10-20J, None = transient."
@@ -66,7 +66,7 @@ Aggregate Value Creation = ROIC-WACC-Spread × Reinvestment-Volume × CAP
 
 3. **Konsolidierungstag-Argument für Slot-Allokation:** 16 Slots im Dynastie-Depot bei Zieljahr 2058 → Buy-and-Hold-Horizont 32 Jahre. Nur Wide Moat mit CAP ≥ 25J ist strukturell ausreichend lange — daher die strikte Wide-Moat-Pflicht für Hauptpositionen.
 
-## Konkrete CAP-Schätzungen für die 11 Satelliten (qualitativ, Konsensus-Schätzung)
+## Konkrete CAP-Schätzungen für die Satelliten (qualitativ, Konsensus-Schätzung)
 
 | Ticker | Moat | CAP (geschätzt) | Begründung |
 |---|---|---|---|
@@ -75,14 +75,16 @@ Aggregate Value Creation = ROIC-WACC-Spread × Reinvestment-Volume × CAP
 | MSFT | Wide | >20J | Azure-Plattform + Office-Switching-Costs; CapEx-FLAG drückt aktuell Score, aber CAP unverändert |
 | BRK.B | Wide | >30J | Float-Modell + Holding-Diversifikation; CAP = strukturelle Kapital-Allokation |
 | RMS | Wide | >25J | Hermès-Marke + Pricing-Power; Luxus-Markt strukturell stabil |
-| COST | Wide | >20J | Membership-Modell + Cost Advantage; Disruption durch Online-Retail begrenzt |
+| COST *(Exit 06/2026)* | Wide | >20J | Membership-Modell + Cost Advantage; Disruption durch Online-Retail begrenzt |
 | ASML | Wide | 15-20J | EUV-Monopol jetzt; ~2035-2040 Hochskalierung Lithografie-Alternativen möglich |
-| VEEV | Wide | >15J | Life-Sciences-SaaS-Switching-Costs; Konkurrenz durch Salesforce.com-Vertical begrenzt |
+| VEEV *(Exit 06/2026)* | Wide | >15J | Life-Sciences-SaaS-Switching-Costs; Konkurrenz durch Salesforce.com-Vertical begrenzt |
 | TMO | Wide | 15-20J | Switching-Costs Life-Sciences; ROIC<WACC kein CAP-Verkürzungs-Signal, sondern Bilanz-Komplexität |
 | SU | Narrow/Wide | 15-20J | Regulatory Moat + Energie-Infrastruktur; Energie-Transition-Risiko mid-term |
 | APH | Narrow | 10-15J | Switching-Costs Steckverbinder; Tariff-Exposure CN/MY/TH Disruption-Risiko |
 
 → **Strukturelle Beobachtung:** CAP <15J = strukturell zu kurz für Dynastie-Buy-and-Hold; APH ist der Edge-Case (FLAG-Score-basiert + niedrige CAP = Auswechselungs-Watch).
+
+> **Umstrukturierung-2027 (06/2026):** COST/VEEV exited (oben markiert). Owner-Adds **AMZN/NOW/KYCCF/ZETA** sind in dieser Tabelle noch ohne CAP-Schätzung — CAP ist SOURCE-ONLY/qualitativ (kein Score-Element, User-Decision 26.04.2026), daher hier **keine erfundenen Werte**; Nachtrag bei Bedarf nach O3-Analyse. Aktueller Roster: 13 Satelliten (siehe [[PORTFOLIO]]).
 
 ## Limitationen
 

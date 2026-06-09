@@ -30,7 +30,7 @@ stand: 2026-04-06
 | Exception | Anpassung |
 |-----------|-----------|
 | BRK.B, MKL, FFH.TO | P/FCF → Price/Book < 1.5; ROIC → Combined Ratio < 100% |
-| COST | Niedrige GM strukturell — Exception aktiv |
+| COST *(Exit 06/2026 — nicht mehr im Roster)* | Niedrige GM strukturell — Regel bleibt (ticker-agnostisch, Membership-Retail) |
 | FLAG-Ticker | Warnhinweis im Output — Screener hebt kein FLAG auf |
 
 ## Datenquellen

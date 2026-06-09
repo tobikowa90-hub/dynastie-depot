@@ -3,7 +3,7 @@ title: "Backtest-Ready-Infrastructure"
 type: concept
 tags: [defcon, backtest, infrastructure, roadmap, kern]
 created: 2026-04-17
-updated: 2026-04-27
+updated: 2026-06-09
 version: v3.7.3
 sources: [arXiv-1711.04837, Gu-Kelly-Xiu-2020, Morningstar-Wide-Moat, Buffetts-Alpha]
 related: [DEFCON-System, Score-Archiv, FLAG-Event-Log, Backtest-Methodik-Roadmap, Analyse-Pipeline, Wissenschaftliche-Fundierung-DEFCON]
@@ -19,7 +19,7 @@ konfidenzstufe: operativ
 
 Das DEFCON-Scoring-System ist wissenschaftlich fundiert (4 Papers, 14 Befunde), hart kalibriert (AVGO 84 / MKL 82 / SNPS 76 nach v3.7) und FLAG-verankert — aber **formal unvalidiert**. Ein statistisch belastbarer Backtest ist heute methodisch unseriös:
 
-- 11 aktive Satelliten, max. 28 inkl. Ersatzbank + Watchlist
+- 13 aktive Satelliten, max. 28 inkl. Ersatzbank + Watchlist
 - System läuft ~2 Jahre live — zu kurz für Forward-Return-Statistik
 - Historische Point-in-Time-Scores existieren nur verstreut in log.md / CORE-MEMORY.md, nicht maschinenlesbar
 - Point-in-Time-Moat-Ratings, EPS-Revisionen, Analyst-Konsensus historisch nicht verfügbar
