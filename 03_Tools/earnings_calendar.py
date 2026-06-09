@@ -221,11 +221,18 @@ def next_earnings(
 def portfolio_trigger_cell(ticker: str, portfolio_text: str) -> str:
     """Best-effort extraction of 'Nächster Trigger' cell for ticker.
 
-    Matches markdown table row | TICKER | ... | Trigger | (last column).
+    Matches the markdown table row containing TICKER as a standalone cell and
+    captures the LAST cell (= Trigger). Robust gegen führende Spalten: die alte
+    6-Spalten-Tabelle (`| Ticker | … | Trigger |`) UND die 3-Tier-Tabelle mit
+    vorangestelltem Tier (`| **T2** | ASML | … | Trigger |`) matchen beide.
+    `[^|\n]` hält den Match innerhalb einer Zeile (negated class würde sonst \n
+    fressen und über Rows driften).
     """
+    # ([^|\n]*) (nicht +): leere letzte Zelle `| … | |` matcht ebenfalls und
+    # liefert "" statt no-match (Codex-LOW 09.06.; no-match-Fallback wäre eh "").
     pattern = re.compile(
-        rf"^\|\s*\*?\*?{re.escape(ticker)}\*?\*?\s*\|"
-        r"[^|]+\|[^|]+\|[^|]+\|[^|]+\|([^|]+)\|\s*$",
+        rf"^\|(?:[^|\n]*\|)*?\s*\*?\*?{re.escape(ticker)}\*?\*?\s*\|"
+        r"(?:[^|\n]*\|)*?([^|\n]*)\|\s*$",
         re.MULTILINE,
     )
     m = pattern.search(portfolio_text)

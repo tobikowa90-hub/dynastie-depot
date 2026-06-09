@@ -16,8 +16,42 @@ from earnings_calendar import (
     evaluate_smoke,
     load_overrides,
     next_earnings,
+    portfolio_trigger_cell,
     render_report,
 )
+
+# ------------------------------------------------------------
+# portfolio_trigger_cell: 6-col (legacy) + 7-col (3-Tier) coverage
+# Regression-Guard: 3-Tier-Tabelle mit führender Tier-Spalte brach den
+# alten ticker-in-Spalte-1-Anchor (Umstrukturierung 2027, 05.06.).
+# ------------------------------------------------------------
+
+
+def test_trigger_cell_legacy_six_column():
+    txt = "| AVGO | x | y | z | w | 30.04. Forward-Vollanalyse DONE |\n"
+    assert portfolio_trigger_cell("AVGO", txt) == "30.04. Forward-Vollanalyse DONE"
+
+
+def test_trigger_cell_three_tier_seven_column():
+    txt = "| **T2** | ASML | **68** | 🟡 3 | **32€** | ✅ | **Q2 2026 15.07.** (bmo) |\n"
+    assert "15.07." in portfolio_trigger_cell("ASML", txt)
+
+
+def test_trigger_cell_substring_ticker_does_not_crossmatch():
+    # 'V' darf nicht in 'AVGO'/'VEEV' hineinmatchen; jede Row liefert ihre eigene Zelle.
+    txt = (
+        "| **T1** | AVGO | 56 | 🟠 2 | 0€ | 🔴 | Q3 03.09. |\n"
+        "| **T2** | V | 64 | 🟠 2 | 16€ | ✅ | Q3 28.07. |\n"
+    )
+    assert "28.07." in portfolio_trigger_cell("V", txt)
+    assert "03.09." in portfolio_trigger_cell("AVGO", txt)
+
+
+def test_trigger_cell_empty_last_cell_returns_empty():
+    # Leere letzte Zelle -> "" (nicht no-match-Krücke); regression-guard für ([^|\n]*).
+    txt = "| **T2** | ASML | **68** | 🟡 3 | **32€** | ✅ |  |\n"
+    assert portfolio_trigger_cell("ASML", txt) == ""
+
 
 # ------------------------------------------------------------
 # Test 4d: Broken YAML → load_overrides fail-soft
