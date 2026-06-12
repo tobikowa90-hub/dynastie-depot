@@ -1,6 +1,8 @@
 # 🔗 Quellen-Referenz – Dynastie-Depot v3.7
 
-**Stand:** 17.04.2026 | **Version:** 3.0 | **Zweck:** Verbindliche Quellenmatrix für alle DEFCON-Analysen
+**Stand:** 2026-06-13 | **Version:** 3.1 | **Zweck:** Verbindliche Quellenmatrix für alle DEFCON-Analysen
+
+> **Nachgezogen 2026-06-13:** Script-Pfade auf Skill-Ordner (`01_Skills/insider-intelligence/`, `01_Skills/non-us-fundamentals/`). KYCCF (JP) als Non-US-Satellit ergänzt (JP/JPY-Support O3-pending). FinnHub als read-only Real-Time-Layer (NICHT Scoring) referenziert.
 
 Lies diese Datei bei jeder `!Analysiere`- und `!CAPEX-FCF-ANALYSIS`-Analyse. Die Quellen-Reihenfolge entspricht dem DEFCON v3.7 Workflow.
 
@@ -16,6 +18,15 @@ Lies diese Datei bei jeder `!Analysiere`- und `!CAPEX-FCF-ANALYSIS`-Analyse. Die
 
 ---
 
+## ⚠️ FinnHub — Read-Only Real-Time-Layer (KEINE Scoring-Quelle)
+
+FinnHub (`03_Tools/finnhub_*.py`, BUILD v0.1) liefert Real-Time-Daten (Quotes/Calendar/News/TTM-Snapshot)
+zur defeatbeta-Lag-Mitigation. **Hard-Guardrail: `_meta.for_scoring=False`** (`archive_score.py::_assert_metric_for_scoring`) —
+FinnHub-Werte dürfen **niemals** in DEFCON-Sub-Scores/FLAG-Trigger/Sparraten einfließen (V-Q2-Methodology-Drift-Schutz).
+Details → `00_Core/SYSTEM.md §Passive Read-Only Data Layer`. Scoring-Quellen bleiben ausschließlich die unten gelisteten.
+
+---
+
 ## 🎯 Primärquellen (MCP / SQL / Scripts — Top-Tier)
 
 ### US-Ticker (NYSE/NASDAQ)
@@ -24,15 +35,16 @@ Lies diese Datei bei jeder `!Analysiere`- und `!CAPEX-FCF-ANALYSIS`-Analyse. Die
 | :---- | :---- | :---- |
 | **Shibui Finance SQL** | `mcp__claude_ai_Shibui_Finance__stock_data_query` | Technicals (RSI, MACD, MA, Rel. Stärke), Quarterly Cash Flow, Balance Sheet |
 | **defeatbeta MCP** | defeatbeta MCP Tools | Fundamentals (ROIC, FCF Yield, P/FCF annual, Revenue-Wachstum), EPS-Historie |
-| **insider_intel.py** | `python insider_intel.py [TICKER]` | SEC EDGAR Form 4 — automatisiert, inkl. 10b5-1-FLAG-Auswertung |
+| **insider_intel.py** | `python 01_Skills/insider-intelligence/insider_intel.py [TICKER]` | SEC EDGAR Form 4 — automatisiert, inkl. 10b5-1-FLAG-Auswertung |
 
-### Non-US-Ticker (ASML, RMS, SU)
+### Non-US-Ticker (ASML, RMS, SU; KYCCF JP)
 
 | Quelle | Zugriff | Liefert |
 | :---- | :---- | :---- |
-| **eodhd_intel.py** | `python eodhd_intel.py detail [TICKER]` | yfinance-basiert, vollständiger DEFCON-Block (Fundamentals + Technicals + Insider-Proxy) |
+| **eodhd_intel.py** | `python 01_Skills/non-us-fundamentals/eodhd_intel.py detail [TICKER]` | yfinance-basiert, vollständiger DEFCON-Block (Fundamentals + Technicals + Insider-Proxy) — ASML/RMS/SU (EUR). **KYCCF (Keyence, JP/JPY): JP-Support noch nicht im Script → O3-Scoring-Nachzug pending** |
 | **AFM-Register** | [afm.nl](https://afm.nl) | ASML-Insider (Niederlande) — manuell |
 | **AMF-Register** | [amf-france.org](https://amf-france.org) | RMS/SU-Insider (Frankreich) — manuell |
+| **EDINET (JP)** | [disclosure2.edinet-fsa.go.jp](https://disclosure2.edinet-fsa.go.jp) | KYCCF-Insider/Filings (Japan) — manuell, O3-pending |
 | **IFRS-PDF (10-K/20-F)** | IR-Seite des Unternehmens | Primärquelle bei IFRS-Abweichung gegen yfinance (ROU/Leasing) |
 
 **Hinweis:** Bei Non-US keine Form-4-Pflicht — AFM/AMF als manuelle Fundstelle, keine automatische Auswertung.
@@ -80,8 +92,8 @@ Diese 4 URLs werden **gleichzeitig** abgerufen. Sie decken den Moat-Block plus F
 
 | Quelle | Zugriff | Wofür | Priorität |
 | :---- | :---- | :---- | :---- |
-| **insider_intel.py** | `python insider_intel.py [TICKER]` | US-Form-4 automatisiert inkl. 10b5-1-FLAG | ✅ Primär (US) |
-| **eodhd_intel.py** | `python eodhd_intel.py detail [TICKER]` | Non-US Insider-Proxy (Institutional Holders) | ✅ Primär (Non-US) |
+| **insider_intel.py** | `python 01_Skills/insider-intelligence/insider_intel.py [TICKER]` | US-Form-4 automatisiert inkl. 10b5-1-FLAG | ✅ Primär (US) |
+| **eodhd_intel.py** | `python 01_Skills/non-us-fundamentals/eodhd_intel.py detail [TICKER]` | Non-US Insider-Proxy (Institutional Holders) | ✅ Primär (Non-US) |
 | **AFM / AMF** | Register-Seiten | Non-US Form-4-Äquivalent, manuell | ✅ Primär (Non-US) |
 | **SEC EDGAR Form 4** | sec.gov/cgi-bin/browse-edgar | Rohdaten für forensische Verifikation | Sekundär |
 | **OpenInsider** | [openinsider.com](https://openinsider.com)/[TICKER] | Triage-Check bei Unklarheit (Spalte X) | Sekundär |
@@ -206,7 +218,7 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
   * **Fallback:** GuruFocus/Macrotrends
 * **Non-US-Ticker (ASML, RMS, SU):**
   * **Primär:** `eodhd_intel.py` (yfinance, EUR-Ticker) — vollständiger DEFCON-Block automatisiert
-  * **Befehl:** `python eodhd_intel.py detail [TICKER]`
+  * **Befehl:** `python 01_Skills/non-us-fundamentals/eodhd_intel.py detail [TICKER]`
   * **Insider:** AFM (ASML) / AMF (RMS, SU) — manuell, keine Form-4-Pflicht
   * **Verifikation Valuation:** AlphaSpread `/par/[TICKER]` (Paris) oder `/ams/[TICKER]` (Amsterdam)
   * **Verifikation ROIC:** GuruFocus `term/roic/[TICKER]` (yfinance liefert nur Proxy)
@@ -282,7 +294,7 @@ Bei widersprüchlichen Daten zwischen Quellen: **konservativsten Wert verwenden*
 
 ## 🔍 URL-Muster für Ticker-spezifische Abfragen
 
-Ersetze `[TICKER]` durch das jeweilige Kürzel (z.B. COST, AVGO, MSFT).
+Ersetze `[TICKER]` durch das jeweilige Kürzel (z.B. AVGO, MSFT, NOW).
 
 **GuruFocus Term-Seiten (fetchbar, kein Login)**
 
@@ -325,4 +337,4 @@ Ersetze `[TICKER]` durch das jeweilige Kürzel (z.B. COST, AVGO, MSFT).
 ---
 
 *🦅 Bei widersprüchlichen Daten zwischen Quellen: konservativsten Wert verwenden und Abweichung dokumentieren.*
-*Version 3.0 – 17.04.2026 | MCP-first: Shibui + defeatbeta als Primärquelle. Scripts insider_intel.py (US) / eodhd_intel.py (Non-US) als automatisierte Insider-Primärquelle. GuruFocus Moat + term als Fallback/Moat. OpenInsider + SEC EDGAR Form 4 = Triage/Forensik.*
+*Version 3.1 – 2026-06-13 | MCP-first: Shibui + defeatbeta als Primärquelle. Scripts `01_Skills/insider-intelligence/insider_intel.py` (US) / `01_Skills/non-us-fundamentals/eodhd_intel.py` (Non-US: ASML/RMS/SU; KYCCF-JP O3-pending) als automatisierte Insider-Primärquelle. GuruFocus Moat + term als Fallback/Moat. OpenInsider + SEC EDGAR Form 4 = Triage/Forensik. FinnHub = read-only, NICHT Scoring.*

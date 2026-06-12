@@ -21,7 +21,7 @@ Tabelle aller Fail-Klassen mit konkretem Recovery-Pfad. Exit-Codes 0-6 wie in SK
 | P3 | 3 | SSoT-Drift gegen §18.1 (S7) | yaml updaten ODER §18.1-Bump in INSTRUKTIONEN.md nachvollziehen |
 | P3 | 3 | xlsx-Selektion ambiguous (Codex-M4) | `00_Core/SYSTEM.md ## Active xlsx-Filenames`-Block setzen mit aktuellem Filename |
 | P3 | 3 | xlsx-Stem ohne Glob-Match | xlsx-File-Existenz prüfen ODER SYSTEM.md-Pin manuell |
-| (info) | – | KONTEXT §6-Refactor (Drop/Add/Reassign) | v0.1 hat KEIN Auto-Event. `Watchlist_Ersatzbank_Monitor_v1.1.xlsx` muss bei §6-Refactor manuell mit-synced werden (Memory `feedback_watchlist_xlsx_in_sync_set`); Voll-Auto v0.2 via PIPELINE #73c. |
+| (info) | – | KONTEXT §6-Refactor (Drop/Add/Reassign) | v0.1 hat KEIN Auto-Event. `Watchlist_Ersatzbank_Monitor` muss bei §6-Refactor manuell mit-synced werden (Memory `feedback_watchlist_xlsx_in_sync_set`); Voll-Auto v0.2 via PIPELINE #73c. |
 | P4 | 4 | MISSING (File nicht touched + nicht staged) | File touchen + `git add <file>`; Expected-Set in `--dry-run` ansehen |
 | P4 | 4 | UNSTAGED_NEW (G-01: modifiziert aber nicht staged) | `git add <file>` — File wurde geändert aber Staging vergessen |
 | P5 | 5 | User-Confirm `n` | `03_Tools/xlsx-smoke-test.md`-Checklist durchgehen + xlsx neu schreiben |

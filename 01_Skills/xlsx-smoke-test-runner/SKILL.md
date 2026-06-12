@@ -2,8 +2,8 @@
 name: xlsx-smoke-test-runner
 description: |-
   Post-Write Integritäts-Verifikation für die drei live xlsx-Tools des Dynastie-Depots
-  (`03_Tools/Rebalancing_Tool_v3.4.xlsx`, `03_Tools/Satelliten_Monitor_v2.0.xlsx`,
-  `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx`). Library-Mode (kein CLI) —
+  (`03_Tools/Rebalancing_Tool`, `03_Tools/Satelliten_Monitor`,
+  `03_Tools/Watchlist_Ersatzbank_Monitor`; xlsx-Versionen → SYSTEM.md §Active xlsx-Filenames). Library-Mode (kein CLI) —
   importiere `verify_wrapper` + `safe_insert` aus Python.
 
   **Pflicht-Anwendung — diesen Skill IMMER verwenden, wenn:**
@@ -70,15 +70,15 @@ sys.path.insert(0, "01_Skills/xlsx-smoke-test-runner")
 from verify_wrapper import verify_after_write, verify_batch, VerifyResult
 
 # Einzeln
-r = verify_after_write(Path("03_Tools/Rebalancing_Tool_v3.4.xlsx"))
+r = verify_after_write(Path("03_Tools/Rebalancing_Tool_v4.0.xlsx"))
 if not r.ok:
     raise SystemExit(f"FAIL profile={r.profile} gate={r.failed_gate}: {r.detail}")
 
 # Batch (kein early-exit; ALLE Pfade laufen)
 results = verify_batch([
-    Path("03_Tools/Rebalancing_Tool_v3.4.xlsx"),
-    Path("03_Tools/Satelliten_Monitor_v2.0.xlsx"),
-    Path("03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx"),
+    Path("03_Tools/Rebalancing_Tool_v4.0.xlsx"),
+    Path("03_Tools/Satelliten_Monitor_v4.0.xlsx"),
+    Path("03_Tools/Watchlist_Ersatzbank_Monitor_v1.2.xlsx"),
 ])
 ```
 
@@ -97,10 +97,10 @@ sys.path.insert(0, "01_Skills/xlsx-smoke-test-runner")
 from safe_insert import safe_insert_rows, safe_insert_cols, safe_save
 import openpyxl
 
-wb = openpyxl.load_workbook("03_Tools/Rebalancing_Tool_v3.4.xlsx")
+wb = openpyxl.load_workbook("03_Tools/Rebalancing_Tool_v4.0.xlsx")
 ws = wb["Portfolio & Rebalancing"]
 safe_insert_rows(ws, idx=20, amount=1)   # merged Ranges werden preserved
-safe_save(wb, Path("03_Tools/Rebalancing_Tool_v3.4.xlsx"), profile="Rebalancing_Tool")
+safe_save(wb, Path("03_Tools/Rebalancing_Tool_v4.0.xlsx"), profile="Rebalancing_Tool")
 ```
 
 Adressiert die `feedback_openpyxl_insert_merge_trap`-Klasse: merged Range

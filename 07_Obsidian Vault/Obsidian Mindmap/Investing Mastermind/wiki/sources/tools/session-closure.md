@@ -59,7 +59,7 @@ Variiert je Event-Klasse (§18.1). Score-Event-Sync-Set:
 - `score_history.jsonl` (via [[backtest-ready-forward-verify]] Schritt 7)
 - `flag_events.jsonl` (via `03_Tools/backtest-ready/archive_flag.py`)
 - `01_Skills/dynastie-depot/config.yaml`
-- `03_Tools/Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx` (+ §18.7-Smoke pflicht)
+- `03_Tools/Rebalancing_Tool` + `Satelliten_Monitor` (+ §18.7-Smoke pflicht)
 
 System-Event-Sync-Set: PIPELINE.md + STATE.md + SYSTEM.md + Vault log.md + ggf. CORE-MEMORY §13.
 

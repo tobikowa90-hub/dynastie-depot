@@ -12,8 +12,10 @@ description: >
 
 # Non-US Fundamentals Module — Dynastie-Depot v1.1
 
-**Stand:** 06.04.2026 | **Zweck:** Automatisierte Fundamentaldaten fuer Non-US-Satelliten
+**Stand:** 06.04.2026 (Roster-Marker 2026-06-13) | **Zweck:** Automatisierte Fundamentaldaten fuer Non-US-Satelliten
 **Ersetzt:** Manueller GuruFocus/Macrotrends-Workflow fuer ASML, RMS, SU
+
+> ⚠️ **KYCCF-Gap (Umstrukturierung-2027):** KYCCF (Keyence, Japan) ist seit 06/2026 vierter Non-US-Satellit, wird aber von diesem Modul **noch NICHT** abgedeckt — das Script ist auf EUR-Ticker (ASML.AS/RMS.PA/SU.PA) gebaut; KYCCF braucht JPY/JP-Support (yf-Symbol, Currency-Handling). **JP-Build = O3-Scoring-Nachzug pending** (PIPELINE). Bis dahin: KYCCF manuell.
 
 ## Architektur
 
@@ -42,6 +44,8 @@ IF US_Ticker (NYSE/NASDAQ)
 IF Non-US-Ticker (ASML, RMS, SU)
     → eodhd_intel.py (dieses Modul, yfinance)
     → Insider: AFM (ASML) / AMF (RMS, SU) — manuell
+IF KYCCF (Japan)
+    → JP/JPY-Support O3-pending — bis dahin manuell (yfinance 6861.T verify + EDINET)
 ```
 
 ---
@@ -53,6 +57,9 @@ IF Non-US-Ticker (ASML, RMS, SU)
 | ASML | ASML.AS | Amsterdam (Euronext) | Quarterly (IFRS) | SNPS |
 | RMS | RMS.PA | Paris (Euronext) | Semi-annual H1/H2 | RACE |
 | SU | SU.PA | Paris (Euronext) | Semi-annual H1/H2 | DE |
+| KYCCF ⏳ | 6861.T (verify) | Tokyo (TSE) — JPY/IFRS | Quarterly | — (O3-pending) |
+
+⏳ **KYCCF noch nicht im Script** (`NON_US_SATELLITES`-Dict deckt nur ASML/RMS/SU) — JP/JPY-Support = O3-Build pending. yf-Symbol (6861.T Tokyo vs. KYCCF OTC) vor Aktivierung empirisch verifizieren.
 
 **Daten-Toleranz:**
 - US-Ticker: ±0.5% Abweichung akzeptabel
@@ -64,7 +71,7 @@ IF Non-US-Ticker (ASML, RMS, SU)
 
 ### !NonUSScan [TICKER | ALL]
 
-Scannt alle 3 Non-US-Satelliten oder einzelnen Ticker. Gibt vollstaendigen DEFCON-Block aus.
+Scannt alle 3 unterstützten Non-US-Satelliten (ASML/RMS/SU; KYCCF O3-pending) oder einzelnen Ticker. Gibt vollstaendigen DEFCON-Block aus.
 
 ```bash
 # Alle 3 Non-US-Satelliten

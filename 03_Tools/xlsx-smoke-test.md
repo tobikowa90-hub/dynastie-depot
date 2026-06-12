@@ -14,9 +14,9 @@
 
 | Datei | Smoke-Test-Tiefe | Begründung |
 |-------|------------------|------------|
-| `03_Tools/Rebalancing_Tool_v3.4.xlsx` | **Voll** (Punkte A-F) | **9 Conditional Formats** (CF-Ranges) — hohes Korruptions-Risiko (Live-State 2026-06-12 v4.0-Roster + **exUSA-Re-Add**: 13 Satelliten + **6 ETF** [EXUS reaktiviert als R8]; CF 7→9: User-Edit +K5:K24 dataBar [Abw.%] +H25 [GESAMT-Check], +EXUS-Row-Shift; §C/§D-Zell-Ref-Reconcile 2026-06-12: Satelliten **R12-R24** [R5 Gold EWG2, **R6-R11 ETFs**], GESAMT R25, US-Exposure-Mirror **R4-R23** = Portfolio R5-R24; vorher 2026-06-07 Satelliten R11-R23/R6-R10 ETF/19 Pos/7 CF) |
-| `03_Tools/Satelliten_Monitor_v2.0.xlsx` | **Voll** (Punkte A-F) | 11 Conditional Formats (5 Sheet `Satelliten Monitor`: L/M/N/O/R + 6 Sheet `QuickScreen Ampel`: Ampel-Coloring D/D-G/E/F/G/H, Umstrukturierung 2026-06-07) + §G SOLL-Σ-Check via Hook (Tier-Modell: `Σ satelliten_tier_raten[tier] == brokers.scalable.sparrate_eur` = 364€; Funded-Echo-Display layout-robust per Content-Scan, vorher fixe N19; vorher 2026-05-25 5 CF + flaches 285€-Modell) |
-| `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` | **Minimal-Check-Annex** (nur A + Existenz) | 0 Formeln, 0 CF — kein Korruptions-Risiko via openpyxl. Hochstufung in Voll-Smoke-Test erst sobald Excel-Formeln (`=...`) zur Watchlist hinzugefügt werden (file-pattern-driven Trigger, kein PIPELINE-Item-Backing). |
+| `03_Tools/Rebalancing_Tool` | **Voll** (Punkte A-F) | **9 Conditional Formats** (CF-Ranges) — hohes Korruptions-Risiko (Live-State 2026-06-12 v4.0-Roster + **exUSA-Re-Add**: 13 Satelliten + **6 ETF** [EXUS reaktiviert als R8]; CF 7→9: User-Edit +K5:K24 dataBar [Abw.%] +H25 [GESAMT-Check], +EXUS-Row-Shift; §C/§D-Zell-Ref-Reconcile 2026-06-12: Satelliten **R12-R24** [R5 Gold EWG2, **R6-R11 ETFs**], GESAMT R25, US-Exposure-Mirror **R4-R23** = Portfolio R5-R24; vorher 2026-06-07 Satelliten R11-R23/R6-R10 ETF/19 Pos/7 CF) |
+| `03_Tools/Satelliten_Monitor` | **Voll** (Punkte A-F) | 11 Conditional Formats (5 Sheet `Satelliten Monitor`: L/M/N/O/R + 6 Sheet `QuickScreen Ampel`: Ampel-Coloring D/D-G/E/F/G/H, Umstrukturierung 2026-06-07) + §G SOLL-Σ-Check via Hook (Tier-Modell: `Σ satelliten_tier_raten[tier] == brokers.scalable.sparrate_eur` = 364€; Funded-Echo-Display layout-robust per Content-Scan, vorher fixe N19; vorher 2026-05-25 5 CF + flaches 285€-Modell) |
+| `03_Tools/Watchlist_Ersatzbank_Monitor` | **Minimal-Check-Annex** (nur A + Existenz) | 0 Formeln, 0 CF — kein Korruptions-Risiko via openpyxl. Hochstufung in Voll-Smoke-Test erst sobald Excel-Formeln (`=...`) zur Watchlist hinzugefügt werden (file-pattern-driven Trigger, kein PIPELINE-Item-Backing). |
 
 ---
 
@@ -96,7 +96,7 @@ Sheet `Satelliten Monitor`. Verifizieren:
 
 **Status-Marker-Konvention (P10, vereinheitlicht 2026-05-25):** `●` ersetzt die alten Emoji-Marker (🟢/🟡/🟠/🔴) konsistent in B3/H3/K3/B25/B26/N7-N18. Inhaltliche Klassifikation bleibt erhalten (Volle Rate / D2-Sockel / Eingefroren / FLAG), nur das Glyph ist neutral. Smoke-Test prüft Existenz der Pflicht-Zellen, nicht das Marker-Glyph.
 
-### D2. QuickScreen-Ampel-Sheet Cross-Check (Satelliten_Monitor_v2.0.xlsx, Sheet 2)
+### D2. QuickScreen-Ampel-Sheet Cross-Check (Satelliten_Monitor, Sheet 2)
 
 Sheet `QuickScreen Ampel` (zweites Sheet im Satelliten-Monitor). 0 Formeln, **6 CF** (Ampel-Coloring D/D-G/E/F/G/H, neu ab 2026-06-07 Umstrukturierung — zählt in den §E-CF-Count 11) — Pflichtprüfung ist Struktur- + Ticker-Konsistenz gegen Hauptsheet:
 
@@ -127,7 +127,7 @@ Datei **ohne Save** schließen (`X`-Button → "Nicht speichern" bei Prompt).
 
 ---
 
-## Minimal-Check-Annex (Watchlist_Ersatzbank_Monitor_v1.1.xlsx)
+## Minimal-Check-Annex (Watchlist_Ersatzbank_Monitor)
 
 Aktuell nur:
 

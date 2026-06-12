@@ -4,7 +4,7 @@ version: "1.0"
 Stand: "2026-04-30"
 description: >
   Dynastie-Depot Insider Intelligence Module v1.0.
-  Automatisiertes Form-4-Scanning der 8 US-Satelliten via SEC EDGAR API.
+  Automatisiertes Form-4-Scanning der 9 US-Satelliten via SEC EDGAR API.
   Ersetzt den generischen sec-edgar-skill fuer den DEFCON-Insider-Scoring-Block.
   Trigger: !InsiderScan, !FlagCheck, !InsiderDetail [TICKER]
 ---
@@ -33,7 +33,7 @@ SEC EDGAR API (kostenlos, User-Agent-only)
 ```
 
 **Was automatisiert wird:**
-- Form-4-Abruf fuer alle 8 US-Satelliten (CIK hardcoded)
+- Form-4-Abruf fuer alle 9 US-Satelliten (CIK hardcoded)
 - Transaktionscode-Analyse: S (diskretionaer) vs. 10b5-1 Plan vs. Cashless Exercise
 - Net Buy/Sell Berechnung (90d / 180d / 12M Fenster)
 - FLAG-Erkennung: >$20M diskretionaere Verkaeufe in 90 Tagen
@@ -41,12 +41,14 @@ SEC EDGAR API (kostenlos, User-Agent-only)
 
 **Was manuell bleibt:**
 - Ownership-Score (3/10) — benoetigt Market Cap via Shibui `share_stats.percent_insiders`
-- Non-US Insider (ASML, RMS, SU) — keine Form-4-Pflicht, weiter manuell via AFM/AMF
+- Non-US Insider (ASML, RMS, SU; KYCCF JP) — keine Form-4-Pflicht, weiter manuell via AFM/AMF (KYCCF via EDINET, O3-pending)
 - OpenInsider Gegencheck bei Grenzfaellen — bleibt HEILIG als Verifikationsquelle
 
 ---
 
-## CIK-Tabelle (8 US-Satelliten)
+## CIK-Tabelle (9 US-Satelliten — Stand 2026-06-09, Umstrukturierung-2027)
+
+> Spiegelt `SATELLITES_CIK` in `insider_intel.py`. VEEV+COST roster-exited entfernt; AMZN/NOW/ZETA ergänzt. KYCCF = JP/OTC → `non-us-fundamentals`-Modul (kein Form-4).
 
 | Ticker | CIK | Unternehmen | Boerse |
 |--------|-----|-------------|--------|
@@ -55,9 +57,10 @@ SEC EDGAR API (kostenlos, User-Agent-only)
 | V | 0001403161 | Visa Inc. | NYSE |
 | BRK.B | 0001067983 | Berkshire Hathaway Inc. | NYSE |
 | TMO | 0000097745 | Thermo Fisher Scientific | NYSE |
-| VEEV | 0001393052 | Veeva Systems Inc. | NYSE |
 | APH | 0000820313 | Amphenol Corporation | NYSE |
-| COST | 0000909832 | Costco Wholesale Corporation | NASDAQ |
+| AMZN | 0001018724 | Amazon.com Inc. | NASDAQ |
+| NOW | 0001373715 | ServiceNow, Inc. | NYSE |
+| ZETA | 0001851003 | Zeta Global Holdings Corp. | NYSE |
 
 **Bei Slot-Tausch:** CIK des neuen Tickers in `SATELLITES_CIK` dict im Python-Script aktualisieren.
 CIK-Lookup: `https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=[TICKER]&action=getcompany`
@@ -71,7 +74,7 @@ CIK-Lookup: `https://www.sec.gov/cgi-bin/browse-edgar?company=&CIK=[TICKER]&acti
 Scannt Form-4-Filings der letzten 180 Tage und berechnet DEFCON-Metriken.
 
 ```bash
-# Alle 8 US-Satelliten scannen
+# Alle 9 US-Satelliten scannen
 python insider_intel.py scan
 
 # Nur bestimmte Ticker
@@ -91,14 +94,14 @@ python insider_intel.py scan --json
 
 ### !FlagCheck
 
-Schneller FLAG-Status aller 8 Satelliten — nur 90-Tage-Fenster.
+Schneller FLAG-Status aller 9 US-Satelliten — nur 90-Tage-Fenster.
 
 ```bash
 python insider_intel.py flag-check
 ```
 
 **Output:** Kompakte Tabelle mit FLAG/Clean-Status pro Ticker.
-**Laufzeit:** ~30-45 Sekunden (8 Ticker × ~4 API-Calls)
+**Laufzeit:** ~30-45 Sekunden (9 Ticker × ~4 API-Calls)
 
 ### !InsiderDetail [TICKER]
 

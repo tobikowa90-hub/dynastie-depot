@@ -54,9 +54,9 @@ Drei Szenarien. **Branchenspezifisch anpassen** — Defaults nur als Fallback:
 | Bear     | +1%          | 0%            | +4%            |
 
 **Anpassungshinweise:**
-- Luxury/Consumer Staples (RMS, COST): Rev-Wachstum Bull eher +6%, CapEx stabil
-- Halbleiter/Infra (ASML, AVGO, APH): CapEx-Volatilitaet hoeher, Bear CapEx +6-8%
-- Software/Asset-light (VEEV, MSFT): CapEx/OpCF strukturell <15%, Sensitivitaet gering
+- Luxury/Consumer Staples (RMS): Rev-Wachstum Bull eher +6%, CapEx stabil (COST exited 06/2026 — Muster gilt weiter)
+- Halbleiter/Infra (ASML, AVGO, APH, KYCCF): CapEx-Volatilitaet hoeher, Bear CapEx +6-8%
+- Software/Asset-light (NOW, MSFT, ZETA): CapEx/OpCF strukturell <15%, Sensitivitaet gering (VEEV exited 06/2026 → NOW)
 - Versicherung/Holdings (BRK.B, MKL): Float-Logik — FCF-Definition anpassen
 
 Fuer jedes Szenario: Revenue, OpCF, CapEx, FCF und FCF-Marge berechnen.

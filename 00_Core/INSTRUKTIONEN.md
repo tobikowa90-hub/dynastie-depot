@@ -41,8 +41,8 @@
 | `!Briefing` | Manuelles Morning Briefing (Kurs-Check, FLAGs, Earnings) | ~3-5 min |
 | `!EarningsPreview [TICKER]` | Earnings-Vorbereitung (48h vor Call) | ~5-10 min |
 | `!EarningsRecap [TICKER]` | Press-Release-Recap Tag 0 post-Call (kein Score-Move, siehe §19.1) | ~5-10 min |
-| `!EarningsCalendar` | Wöchentlicher Earnings-Überblick | ~2-3 min |
-| `!InsiderScan` | Form-4-Scan der 8 US-Satelliten (standalone, ohne `!Analysiere`) | ~5 min |
+| Earnings-Termine | Forward-Kalender via `03_Tools/earnings_calendar.py` (Tool; ersetzt `earnings-calendar`-Skill) | ~1 min |
+| `!InsiderScan` | Form-4-Scan der 9 US-Satelliten (standalone, ohne `!Analysiere`) | ~5 min |
 | `!ParaSync18 <event-type> [--also …]` | §18-Multi-File-Sync-Orchestrator vor `git commit` (§18.0) | ~1-3 min |
 | `!SyncBriefing` | Briefing-relevante `00_Core/`-Änderungen ins Repo pushen (Pflicht-Review-Gate, kein Auto-Commit) | ~2-3 min |
 | `!BriefingCheck` | Vorab-Check ob 10:00-Briefing-Trigger aktuelle Daten liest | ~30s |
@@ -86,7 +86,7 @@ Impuls / Idee
 
 **Sonderregeln:**
 - BRK.B, MKL, FFH.TO → P/B statt P/FCF (Float-Modelle)
-- COST → strukturell niedrige GM — Exception aktiv
+- COST → strukturell niedrige GM — Exception bleibt Methodik-Anker (COST seit 06/2026 nicht mehr im Roster; Regel gilt für Membership-/Discount-Retailer)
 - Versicherungen → Combined Ratio statt ROIC
 
 ---
@@ -289,7 +289,7 @@ Trigger: nur bei Score ≥ 80 aus Stufe 2
 | `!QuickCheck [TICKER\|ALL]` | `quick-screener` | Manuell (User-Trigger) |
 | `!EarningsPreview [TICKER]` | `earnings-preview` | Manuell (48h vor Earnings) |
 | `!EarningsRecap [TICKER]` | `earnings-recap` | Manuell (48h nach Earnings) |
-| `!EarningsCalendar` | `earnings-calendar` | Manuell (wöchentlicher Überblick) |
+| Earnings-Termine | `03_Tools/earnings_calendar.py` (Tool) | Forward-Kalender SSoT — ersetzt `earnings-calendar`-Skill (deprecated); `--check` / Briefing-Hook |
 | `!InsiderScan` | `insider-intelligence` | Manuell (Standalone-Scan ohne !Analysiere) |
 | `!Analysiere` Schritt 7 | **`backtest-ready-forward-verify`** | **⚙️ Programmatisch** (aus dynastie-depot SKILL.md Schritt 7, jsonl-Write-Pflicht) |
 | `!SessionClose` | `session-closure` | Manuell (Session-Ende, Strict-Trigger; siehe §25.5) |
@@ -331,7 +331,7 @@ Ein Ad-hoc-Skill-Load liest die jeweilige SKILL.md ohne Kenntnis von:
 
 ## 18. Sync-Pflicht — Trigger-basiertes File-Set-Mapping (v2.4, 2026-05-11)
 
-Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 8 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill + 2 xlsx-Tools) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.1: +2 xlsx-Tools (`Rebalancing_Tool_v3.4.xlsx` + `Satelliten_Monitor_v2.0.xlsx`) — User-Direktive 28.04.2026 spätabends: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte und Depot-Übersicht (Zero-Token-Lookup-Pflicht). Seit v2.4 (11.05.2026): jeder xlsx-Sync löst verpflichtenden Post-Write-Smoke-Test §18.7 aus (fail-close vor `git add`).
+Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Score/FLAG/Sparraten-Change = 8 Pflicht-Files (5 manuell + `score_history.jsonl` via Skill + 2 xlsx-Tools) + 1 conditional (`flag_events.jsonl` bei FLAG-Trigger/Resolve). Mehraufwand vs. v2.1: +2 xlsx-Tools (`Rebalancing_Tool` + `Satelliten_Monitor`; Versionen → SYSTEM.md-Pin) — User-Direktive 28.04.2026 spätabends: xlsx-Tools sind operative Live-State-Quelle für Sparplan-Werte und Depot-Übersicht (Zero-Token-Lookup-Pflicht). Seit v2.4 (11.05.2026): jeder xlsx-Sync löst verpflichtenden Post-Write-Smoke-Test §18.7 aus (fail-close vor `git add`).
 
 ### §18.0 Auto-Invoke-Disziplin `paragraph-18-sync` (NEU 2026-05-23 spätabends, v2.5 → v2.5.1 2026-05-24)
 
@@ -369,7 +369,7 @@ Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Sc
 
 | Event-Typ | Pflicht-Files |
 |---|---|
-| **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` + **`01_Skills/dynastie-depot/config.yaml`** + **`03_Tools/Rebalancing_Tool_v3.4.xlsx`** + **`03_Tools/Satelliten_Monitor_v2.0.xlsx`** (+ `flag_events.jsonl` bei FLAG-Trigger/Resolve) |
+| **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` + **`01_Skills/dynastie-depot/config.yaml`** + **`03_Tools/Rebalancing_Tool`** + **`03_Tools/Satelliten_Monitor`** (xlsx; Versionen gepinnt in `SYSTEM.md` §Active xlsx-Filenames) (+ `flag_events.jsonl` bei FLAG-Trigger/Resolve) |
 | **Pipeline-Item** (neuer Plan, Gate-Passage, Status-Transition, Done/Deferred) | **`PIPELINE.md`** + `log.md` (+ `SESSION-HANDOVER.md` Pflicht bei Session-Abschluss; mid-Session optional) |
 | **System-Zustand-Change** (DEFCON-Version, MCP-Change, Briefing-Status, neuer Backlog-Eintrag, Infra-Deploy) | **`SYSTEM.md`** + `log.md` (+ `CORE-MEMORY.md §6` bei Versionsprung) |
 | **Critical-Alert-Slot** (Hub) | `STATE.md` Hub-Edit (nur Alert-Slot); kein Bi-Sync erzwungen |
@@ -379,8 +379,8 @@ Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Sc
 - `flag_events.jsonl` (05_Archiv/) — append-only via `archive_flag.py` (nur bei FLAG-Trigger oder Resolution). SKILL.md Schritt 6b.
 - `Faktortabelle.md` — Score + FLAG-Spalte (manuell, im selben Sync-Commit).
 - `01_Skills/dynastie-depot/config.yaml` — TMO/Ticker-Block (`score`, `defcon`, `score_datum`, `score_valid_until`, `flag_hinweis`, `sparrate_hinweis`, `scoring_notiz`, `naechste_pruefung`, `earnings_trigger`, `substitute_activation_rule`) manuell sync. **Bei reinem Score-Change OHNE FLAG-Trigger ebenfalls Pflicht** — Lücke 25.04. nach 7-Tage-Drift TMO 23.04. (post-Q1) entdeckt.
-- `03_Tools/Rebalancing_Tool_v3.4.xlsx` — formel-basiert, Pflicht-Felder pro Ticker: Spalte N (`DEFCON Score`, z.B. `'DEFCON 2 (64)'`) + Spalte O (`FLAG-Status`-Text mit Datum/Pfad-Note). Sparraten-Berechnung läuft formel-basiert über DEFCON-Spalte (parsed `LEFT(N18,8)="DEFCON X"`), Output passt sich automatisch an wenn N/O korrekt. Sync via `openpyxl` (siehe Memory `feedback_xlsx_tools_in_sync_set.md` für Edit-Pattern).
-- `03_Tools/Satelliten_Monitor_v2.0.xlsx` — display-orientiert (statische Strings). Pflicht-Felder bei Score/FLAG/Sparraten-Change: (a) R2 Stand-Stempel (Spalte O), (b) R3 Header-Sparraten-Zeile (Spalte B: D3/D4-Rate, D2-Sockelbetrag, Nenner mit Pfad-Note), (c) Ticker-Zeile (Spalte L Score-String, Spalte M Δ-Note, Spalte N Status/FLAG-Text), (d) R3 H Eingefroren-Liste, (e) R3 K Ergebnis-Liste, (f) R24/R25 Footer (Eingefroren-Liste + Volle-Rate-Liste mit Σ-Check). Sync via `openpyxl`.
+- `03_Tools/Rebalancing_Tool` (xlsx, Version → SYSTEM.md-Pin) — formel-basiert, Pflicht-Felder pro Ticker: Spalte N (`DEFCON Score`, z.B. `'DEFCON 2 (64)'`) + Spalte O (`FLAG-Status`-Text mit Datum/Pfad-Note). Sparraten-Berechnung läuft formel-basiert über DEFCON-Spalte (parsed `LEFT(N18,8)="DEFCON X"`), Output passt sich automatisch an wenn N/O korrekt. Sync via `openpyxl` (siehe Memory `feedback_xlsx_tools_in_sync_set.md` für Edit-Pattern).
+- `03_Tools/Satelliten_Monitor` (xlsx, Version → SYSTEM.md-Pin) — display-orientiert (statische Strings). Pflicht-Felder bei Score/FLAG/Sparraten-Change: (a) R2 Stand-Stempel (Spalte O), (b) R3 Header-Sparraten-Zeile (Spalte B: D3/D4-Rate, D2-Sockelbetrag, Nenner mit Pfad-Note), (c) Ticker-Zeile (Spalte L Score-String, Spalte M Δ-Note, Spalte N Status/FLAG-Text), (d) R3 H Eingefroren-Liste, (e) R3 K Ergebnis-Liste, (f) R24/R25 Footer (Eingefroren-Liste + Volle-Rate-Liste mit Σ-Check). Sync via `openpyxl`.
 
 ### 18.2 Multi-Event-Union-Regel (bindender §18-Vertrags-Teil)
 
@@ -425,7 +425,7 @@ Verpflichtender Post-Write-Validation-Step für die xlsx-Sync-Welle. Adressiert 
 
 **Reihenfolge:** Smoke-Test läuft **nach** Provenance-Gate §18.5 (P3.5 PASS), **nach** `openpyxl`-Write der Pflicht-Zellen, **vor** `git add` der xlsx-Files. Damit greift §18.3-Commit-Atomarität wie geplant — Smoke-Test ist Pre-Stage-Gate, nicht Post-Commit-Audit.
 
-**Scope:** verpflichtender Smoke-Test (Punkte A-F gemäß Checklist) auf `03_Tools/Rebalancing_Tool_v3.4.xlsx` + `03_Tools/Satelliten_Monitor_v2.0.xlsx`. Minimal-Check-Annex (nur Punkt A + Existenz) auf `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` — Hochstufung erst nach Watchlist-Tool-Update.
+**Scope:** verpflichtender Smoke-Test (Punkte A-F gemäß Checklist) auf `03_Tools/Rebalancing_Tool` + `03_Tools/Satelliten_Monitor`. Minimal-Check-Annex (nur Punkt A + Existenz) auf `03_Tools/Watchlist_Ersatzbank_Monitor` — Hochstufung erst nach Watchlist-Tool-Update. (xlsx-Versionen gepinnt in `SYSTEM.md` §Active xlsx-Filenames.)
 
 **Failure-Mode (fail-close, analog §18.5-Pattern):** Bei jedem Fail-Signal (Repair-Prompt, Formel-Fehler `#REF!`/`#NAME?`/`#VALUE!`/`#N/A`-Treffer, Pflicht-Zell-Stale, Conditional-Format-Bruch, ungewollter Save-Prompt) → STOP, kein `git add`, Recovery durch Re-Edit des openpyxl-Write-Scripts. **Kein `--force`-Bypass**. Recovery-Pfade: Pflicht-Zell-Adresse korrigieren / Sheet-Name verifizieren / Toleranz-Ausnahme für `=NA()`-Zellen prüfen / Conditional-Format-Re-Apply via Backup-Restore wenn nötig.
 
@@ -707,7 +707,7 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 - `01_Skills/dynastie-depot/SKILL.md`
 - `00_Core/STATE.md` (Hub + Last-Audit), `00_Core/PORTFOLIO.md`, `00_Core/PIPELINE.md`, `00_Core/SYSTEM.md`, `Faktortabelle.md`
 - `07_Obsidian Vault/.../wiki/entities/satelliten/*.md`
-- `03_Tools/Rebalancing_Tool_v3.4.xlsx`, `Satelliten_Monitor_v2.0.xlsx`
+- `03_Tools/Rebalancing_Tool`, `Satelliten_Monitor` (xlsx, Versionen → SYSTEM.md-Pin)
 
 **Präzedenzfall:** 18.04.2026 Schema-SKILL-Threshold-Drift — Fix in schemas.py alleine hätte 5 Vault-Pages und beide Tools veraltet zurückgelassen. Kaskaden-Sync war Pflicht.
 

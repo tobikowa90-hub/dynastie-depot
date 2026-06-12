@@ -1,5 +1,7 @@
 # 🦅 Dynastie-Depot – Institutionelle Analyse-Pipeline
-**Version:** 2.2 | **Stand:** 25.04.2026 | **Zieljahr:** 2058 | **Scoring:** DEFCON v3.7 | **Skill-Paket:** v3.7.3
+**Version:** 2.3 | **Stand:** 2026-06-13 | **Zieljahr:** 2058 | **Scoring:** DEFCON v3.7 | **Skill-Paket:** → `00_Core/SYSTEM.md` (SSoT)
+
+> **Nachgezogen 2026-06-13** auf Umstrukturierung-2027 Phase A: 13-Roster (COST/VEEV exited, NOW/KYCCF/ZETA/AMZN rein), 3-Tier-Rate-Modell (T1 40€/T2 32€/T3 18€ × DEFCON-Modulation), 60/35/5. Script-Pfade auf Skill-Ordner aktualisiert.
 
 ---
 
@@ -46,7 +48,8 @@ Impuls / Idee
 | **`backtest-ready-forward-verify`** | **Schritt 7 jsonl-Write** | **⚙️ Programmatisch** (kanonisch) |
 | `insider-intelligence` Skill | Nur bei standalone `!InsiderScan` | ⚠️ Optional / Manuell |
 | `quick-screener` Skill | Nur bei `!QuickCheck` | ⚠️ Optional / Manuell |
-| `earnings-preview` / `-recap` / `-calendar` | Nur bei jeweiligem `!Earnings…`-Trigger | ⚠️ Optional / Manuell |
+| `_extern/earnings-preview` / `-recap` | Nur bei `!EarningsPreview`/`!EarningsRecap` | ⚠️ Optional / Manuell |
+| `03_Tools/earnings_calendar.py` (Tool) | Forward-Earnings-Kalender (SSoT) — ersetzt früheren `earnings-calendar`-Skill | ⚙️ Tool, kein Skill |
 
 **Konsequenz:** Kein **manuelles** Skill-Chaining innerhalb von `!Analysiere`. Jeder Ad-hoc-Skill-Load kostet Token und verliert DEFCON-Kontext (Scoring-Skalen, FLAG-Regeln, Kalibrierungsanker sind nur in der SKILL.md bekannt). Die Step-7-Programmatic-Invocation ist davon ausgenommen, weil sie keinen Scoring-Kontext braucht — sie schreibt einen fertigen `ScoreRecord` deterministisch ins Archiv.
 
@@ -55,9 +58,9 @@ Impuls / Idee
 | Befehl | Skill | Wann |
 |--------|-------|------|
 | `!QuickCheck [TICKER\|ALL]` | `quick-screener` | Stufe-0-Vorfilter |
-| `!EarningsPreview [TICKER]` | `earnings-preview` | 48h vor Earnings |
-| `!EarningsRecap [TICKER]` | `earnings-recap` | 48h nach Earnings |
-| `!EarningsCalendar` | `earnings-calendar` | Wöchentlicher Überblick |
+| `!EarningsPreview [TICKER]` | `_extern/earnings-preview` | 48h vor Earnings |
+| `!EarningsRecap [TICKER]` | `_extern/earnings-recap` | Tag 0 nach Earnings (Press-Release-Recap, §19.1) |
+| Earnings-Termine | `03_Tools/earnings_calendar.py` (Tool) | Forward-Kalender — ersetzt `earnings-calendar`-Skill (deprecated) |
 | `!InsiderScan` | `insider-intelligence` | Standalone ohne !Analysiere |
 | Portfolio-Risk-Audit | `03_Tools/portfolio_risk.py` (Python-Tool) | Quartalsweise manuell — kein Skill |
 
@@ -79,13 +82,13 @@ Impuls / Idee
 
 **Sonderregeln:**
 - BRK.B, MKL, FFH.TO → P/B statt P/FCF (Float-Modelle)
-- COST → GM-Exception (Membership-Modell, strukturell niedrig)
+- COST → GM-Exception (Membership-Modell) — COST seit 06/2026 nicht mehr im Roster; Regel bleibt als Methodik-Anker für Discount-/Membership-Retailer
 
 **Output:** Ampel + 1–2 Sätze + nächster Schritt
 **Weitergabe:** Nur 🟢 → Stufe 2. 🟡 → Watchlist. 🔴 → aussortiert.
 
 **Monatlicher Pflicht-Lauf:** Erster Montag des Monats — `!QuickCheck ALL`
-für alle 11 Satelliten in Risiko-Reihenfolge (FLAG/DEFCON-2+ zuerst).
+für alle 13 Satelliten in Risiko-Reihenfolge (FLAG/DEFCON-2+ zuerst).
 
 ---
 
@@ -100,27 +103,28 @@ für alle 11 Satelliten in Risiko-Reihenfolge (FLAG/DEFCON-2+ zuerst).
 ```
 PFLICHT ZUERST: get_latest_data_update_date → Referenzdatum feststellen
 
-IF US-Ticker (AVGO, MSFT, V, BRK.B, TMO, VEEV, APH, COST):
+IF US-Ticker (AVGO, MSFT, V, BRK.B, TMO, APH, AMZN, NOW, ZETA):
     defeatbeta MCP    → annual_cash_flow, balance_sheet, income_statement,
                          quarterly_roic (max. 6Q), wacc (nur neuester Wert),
                          annual_gross_margin, quarterly_revenue_by_geography*,
                          earning_call_transcript
     Shibui SQL        → technical_indicators (2 Zeilen für 200MA-Slope),
                          cash_flow_quarterly (12Q für CapEx-FLAG-Muster)
-    insider_intel.py  → python insider_intel.py scan [TICKER]
+    insider_intel.py  → python 01_Skills/insider-intelligence/insider_intel.py scan [TICKER]
     Web (Pflicht)     → Live-Kurs (Yahoo), Fwd P/E (AlphaSpread/GuruFocus),
                          Moat (GuruFocus moat-score), OpenInsider (10b5-1 HEILIG),
                          EPS-Revisionen (Zacks)
 
     *Geography nur bei Produktionsstandorten in CN/TW/MY/TH/VN
 
-IF Non-US-Ticker (ASML, RMS, SU):
-    eodhd_intel.py    → python eodhd_intel.py detail [TICKER]
+IF Non-US-Ticker (ASML, RMS, SU; KYCCF JP → O3-pending, JP/JPY-Support noch nicht im Script):
+    eodhd_intel.py    → python 01_Skills/non-us-fundamentals/eodhd_intel.py detail [TICKER]
                          (CapEx/OCF, Bilanz, Valuation, Margen, GM-Trend,
                           Technicals, Analysten, Ownership — EUR, IFRS)
     Web (Pflicht)     → Live-Kurs EUR (Yahoo), AlphaSpread DCF,
                          GuruFocus term/roic (ROIC-Verifikation), Moat
     Insider           → AFM (ASML) / AMF (RMS, SU) — manuell, kein API
+    KYCCF (Keyence)   → JPY/IFRS, JP-Support im non-us-fundamentals-Build noch offen (O3-Scoring-Nachzug)
 ```
 
 ### Pre-Processing Layer (4 Regeln — vor jedem Scoring):
@@ -168,7 +172,7 @@ IF Non-US-Ticker (ASML, RMS, SU):
 
 | Ticker | Score | DEFCON | Lektion |
 |--------|-------|--------|---------|
-| AVGO | 84 | 🟢 4 | Fabless + Wide Moat + Premium-Multiple → QT differenziert am P/FCF-Rand |
+| AVGO | 84 (Stand April 2026) | 🟢 4 | Fabless + Wide Moat + Premium-Multiple → QT differenziert am P/FCF-Rand. **Historischer Anker — illustriert „wie 84 aussieht".** AVGO Live seit 30.04.: **56/D2/🔴FLAG** (Quality-Trap-Collapse 84→53→56, selbst Lehr-Case). Live-Score → PORTFOLIO.md/Faktortabelle.md |
 | ASML | 68 | 🟡 3 | Non-US/IFRS Pfad B → QT beide Zweige hart 0; FY27-Watch 30,30 als D3→D4-Pfad |
 
 **Kanonische Regeln:** SKILL.md §Scoring-Skalen + §Screener-Exceptions (6 Exceptions: BRK.B / COST / RMS / TMO / MSFT / ASML). Beispiele.md §Mechanismen-Index mappt Mechanismus → Voll-Anker + SKILL-Zeile.
@@ -192,14 +196,20 @@ IF Non-US-Ticker (ASML, RMS, SU):
              Bei Deep-Dive-Trigger: !Analysiere
 ```
 
-**Kritische Termine 2026:**
+**Kritische Termine** (SSoT: `03_Tools/earnings_calendar.py --check` + `00_Core/PORTFOLIO.md`; Stand 09.06.2026):
 
 | Datum | Ticker | Aktion |
 |-------|--------|--------|
-| 23.04.2026 | TMO Q1 | FCF >$7.3B → DEFCON 4? Sonst ZTS prüfen |
-| 28.04.2026 | SPGI Q1 | QuickCheck → Re-Analyse-Trigger? |
-| 29.04.2026 | MSFT Q3 FY26 | FLAG-Auflösung wenn bereinigtes CapEx/OCF <60% |
-| Mai 2026 | PEGA | Slot-16-Entscheidung |
+| 15.07. | ASML Q2 | Nächstes Roster-Event |
+| 22.07. | NOW / TMO Q2 | NOW O3-Vollanalyse · TMO Organic-Akzeleration + Clario |
+| 28.07. | V Q3 FY26 | Cross-Border-Velocity + ROIC-Methodology-Verify |
+| 29.07. | MSFT Q4 / APH / RMS / KYCCF | MSFT CapEx-Plateau+WACC · APH FLAG-Review · RMS H1 · KYCCF Q1 (O3) |
+| 30.07. | SU / AMZN | SU H1 · AMZN CapEx/OCF-FLAG-Re-Eval |
+| 01.08. | BRK.B Q2 | 10-Q (KHC-OTTI / GEICO / Apple-Trim) |
+| 04.08. | ZETA Q2 | O3-Scoring-Nachzug |
+| 03.09. | AVGO Q3 FY26 | Insider-FLAG-Resolve-Gate |
+
+> Live-Terminliste ist volatil — diese Tabelle ist Snapshot. Autoritativ: Tool + PORTFOLIO „Nächster Trigger".
 
 ---
 
@@ -226,19 +236,22 @@ IF Non-US-Ticker (ASML, RMS, SU):
 
 **Skill:** `dynastie-depot` → Befehl: `!Rebalancing`
 **Trigger:** Monatlich (erster Sparplan-Eingang) oder Drift > 10%
-**Nächster echter Lauf:** 01.05.2026
+**SSoT:** `Rebalancing_Tool_v4.0.xlsx` (value-based, lenkt freies Kapital auf untergewichtete Positionen)
 
-### Formel:
+### Formel (3-Tier-Modell, Umstrukturierung-2027 — löst flaches 38/19-Equal-Weight ab):
 
 ```
-Gewichte: DEFCON-4-Clean = 1.0 | DEFCON-3 = 0.5 | FLAG (beliebig) = 0.0
-Einzelrate = 285€ / Σ Gewichte × Eigengewicht
+Tier-Basisrate (Optimal-Fall D3/D4 clean):  T1 = 40€ | T2 = 32€ | T3 = 18€
+Effektive Rate = Tier-Basis × DEFCON-Modulation × FLAG
+  DEFCON 3/4 → ×1,0 | DEFCON 2 → ×0,5 (Sockelbetrag) | DEFCON 1 → 0€ | 🔴 FLAG → 0€ (heilig)
+SOLL-Σ = 4×40 + 3×32 + 6×18 = 364€  (== config scalable.sparrate_eur)
+Funded-Σ (modulierte Raten) ist transient; Differenz → Rebalancing-Tool value-based
 ```
 
 ### Ablauf:
-1. `config.yaml` lesen → aktuellen DEFCON/FLAG-Status aller 11 Positionen
-2. Gewichte berechnen → Σ ermitteln
-3. Sparplan-Vorschlag pro Position ausgeben
+1. `config.yaml` lesen → Tier + aktuellen DEFCON/FLAG-Status aller 13 Positionen
+2. Effektive Raten berechnen (Tier-Basis × Modulation × FLAG) → Funded-Σ ermitteln
+3. Sparplan-Vorschlag pro Position ausgeben (SSoT = Rebalancing_Tool_v4.0.xlsx)
 4. **Steuer-Bremse:** Niemals durch Verkauf rebalancen → Sparplan umleiten
 5. US-Cap prüfen: Bleibt US-Exposure unter 63%?
 
@@ -248,7 +261,7 @@ Einzelrate = 285€ / Σ Gewichte × Eigengewicht
 
 ### Portfolio-Risk-Audit → `03_Tools/portfolio_risk.py` (kein Skill)
 **Wann ausführen:** Quartalsweise nach Rebalancing.
-**Output:** Correlation Matrix der 11 Satelliten, Component Risk Contribution,
+**Output:** Correlation Matrix der 13 Satelliten, Component Risk Contribution,
 Stress-Test (2020-COVID + 2022-Rate-Hikes). Markdown-Report nach `03_Tools/Output/`.
 **Aufruf:** `python 03_Tools/portfolio_risk.py`
 **Begründung für Tool statt Skill:** 80% eines Risk-Metrics-Skills (VaR/CVaR/Sharpe/
@@ -259,11 +272,11 @@ Die verbleibenden 3 Funktionen rechtfertigen keinen Skill-Load-Overhead.
 > DEFCON-Scoring (Moat-Block 20 Pkt.) + GuruFocus Moat-Score + §Screener-Exceptions
 > in SKILL.md kodifiziert. ESG bewusst ausgelassen (kein Veto-Kriterium).
 
-### `sec-edgar-skill` — Dokumenten-Eskalation
+### `sec-edgar-skill` v1.1 — Dokumenten-Eskalation
 **Wann aktivieren:** Manueller 10-K/10-Q-Textcheck (z.B. Finance-Lease-
 Fußnoten wie bei MSFT Pre-Processing Regel 2), XBRL-Datenkonflikte,
-8-K-Events zwischen Earnings-Terminen.
-**Nicht nötig bei:** Insider-Scoring (→ insider_intel.py ist besser).
+8-K-Events zwischen Earnings-Terminen. Trigger `!EdgarLookup`/`!EdgarFiling`/`!Edgar13F`.
+**Nicht nötig bei:** Insider-Scoring (→ `insider-intelligence` Skill / `01_Skills/insider-intelligence/insider_intel.py` ist besser).
 
 ---
 
@@ -277,4 +290,4 @@ Fußnoten wie bei MSFT Pre-Processing Regel 2), XBRL-Datenkonflikte,
 
 ---
 
-🦅 PIPELINE.md v2.2 | Dynastie-Depot DEFCON v3.7 | Skill-Paket v3.7.3 | Stand: 25.04.2026
+🦅 PIPELINE.md v2.3 | Dynastie-Depot DEFCON v3.7 | Stand: 2026-06-13 (Umstrukturierung-2027 nachgezogen)

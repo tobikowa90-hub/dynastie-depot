@@ -36,9 +36,9 @@
 
 > Pinning-SSoT für deterministische xlsx-Selektion via `paragraph-18-sync` validator (Codex-M4). Format strikt: `- ToolStem: Filename_vX.Y.xlsx`. Parser-Regex: `^\s*[-*]\s*([A-Za-z0-9_]+)\s*:\s*([A-Za-z0-9_.+-]+\.xlsx)\s*$`.
 
-- Rebalancing_Tool: Rebalancing_Tool_v3.4.xlsx
-- Satelliten_Monitor: Satelliten_Monitor_v2.0.xlsx
-- Watchlist_Ersatzbank_Monitor: Watchlist_Ersatzbank_Monitor_v1.1.xlsx
+- Rebalancing_Tool: Rebalancing_Tool_v4.0.xlsx
+- Satelliten_Monitor: Satelliten_Monitor_v4.0.xlsx
+- Watchlist_Ersatzbank_Monitor: Watchlist_Ersatzbank_Monitor_v1.2.xlsx
 
 ## §Plugin-Layer (2026-05-13, Hybrid 2026-05-16)
 

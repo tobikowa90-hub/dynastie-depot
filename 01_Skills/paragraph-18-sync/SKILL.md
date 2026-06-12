@@ -35,7 +35,7 @@ event_types:
 | `system-zustand` | DEFCON-Bump · MCP-Change · Briefing · Backlog | SYSTEM.md + log.md (+ CORE-MEMORY.md bei `--version-bump` Conditional, §6-relevanter Versions-Inkrement) |
 | `critical-alert` | STATE.md Hub-Edit (Alert-Slot only) | STATE.md (NO-OP-PASS — kein Bi-Sync) |
 
-> **xlsx-Tools-Hinweis:** Default-Set v0.1 = 2 xlsx (Rebalancing + Satelliten_Monitor) gemäß §18.1. `Watchlist_Ersatzbank_Monitor_v1.1.xlsx` ist bei KONTEXT §6-Refactor (Drop/Add/Reassign) zusätzlich §18.7-Smoke-relevant (Memory `feedback_watchlist_xlsx_in_sync_set`); v0.1 hat dafür noch keinen automatischen Trigger — manuelle Aufnahme nötig. Voll-Auto in v0.2 (PIPELINE #73c).
+> **xlsx-Tools-Hinweis:** Default-Set v0.1 = 2 xlsx (Rebalancing + Satelliten_Monitor) gemäß §18.1. `Watchlist_Ersatzbank_Monitor` ist bei KONTEXT §6-Refactor (Drop/Add/Reassign) zusätzlich §18.7-Smoke-relevant (Memory `feedback_watchlist_xlsx_in_sync_set`); v0.1 hat dafür noch keinen automatischen Trigger — manuelle Aufnahme nötig. Voll-Auto in v0.2 (PIPELINE #73c).
 
 **Multi-Event-Union (§18.2):** `--also` mehrfach erlaubt; Pflicht-Sets werden dedupliziert (z.B. log.md erscheint nur 1× im Expected-Set bei Score+Pipeline+System).
 

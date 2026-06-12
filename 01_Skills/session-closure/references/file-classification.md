@@ -20,8 +20,8 @@ Files mit Sync-Pflicht. Coupling-Trigger entscheidet, welches Sync-Set greift �
 | `00_Core/CORE-MEMORY.md` | §5/§12 Score-/Earnings-Lifecycle |
 | `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md` | Narrative Lifecycle-Log |
 | `01_Skills/dynastie-depot/config.yaml` | Per-Ticker Score/FLAG/Rate-SSoT für Skill |
-| `03_Tools/Rebalancing_Tool_v3.4.xlsx` | xlsx-Tool (Sparpläne) — §18.1 Pflicht ab v2.4 |
-| `03_Tools/Satelliten_Monitor_v2.0.xlsx` | xlsx-Tool (Depot-Übersicht) — §18.1 Pflicht ab v2.4 |
+| `03_Tools/Rebalancing_Tool` | xlsx-Tool (Sparpläne) — §18.1 Pflicht ab v2.4 |
+| `03_Tools/Satelliten_Monitor` | xlsx-Tool (Depot-Übersicht) — §18.1 Pflicht ab v2.4 |
 
 ### 1b — FLAG-Event-coupled (Trigger: `flag_events.jsonl`-Mutation)
 
@@ -38,7 +38,7 @@ Files mit Sync-Pflicht. Coupling-Trigger entscheidet, welches Sync-Set greift �
 | Pfad | Kommentar |
 |------|-----------|
 | `00_Core/KONTEXT.md` | §6 Watchlist/Ersatzbank-State — Trigger-File |
-| `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` | xlsx-Spiegel — Memory `feedback_watchlist_xlsx_in_sync_set.md` |
+| `03_Tools/Watchlist_Ersatzbank_Monitor` | xlsx-Spiegel — Memory `feedback_watchlist_xlsx_in_sync_set.md` |
 
 **Wichtig:** Watchlist-xlsx ist **nicht** Score-Event-coupled. Wenn nur Watchlist + KONTEXT mutiert sind, **darf** Skill nicht das 8-File-Score-Set verlangen. Coupling-Check muss nach Trigger-File-Typ unterscheiden.
 

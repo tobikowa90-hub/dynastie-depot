@@ -1745,3 +1745,23 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 - **Re-Derive-Gate statt Fabrikation:** Phase-B-Combined-View-%-Tabellen unter „exUSA verkauft"-Annahme gerechnet — bei Re-Add nicht blind neu-erfunden, sondern als offene 2027-Allokations-Entscheidung markiert.
 
 **Cross-Reference:** Commit `<TBD>` · `Rebalancing_Tool_v4.0.xlsx` (SSoT) · Memory `project_umstrukturierung_2027_pending_sync` + `feedback_xlsx_tools_in_sync_set`. DEFCON v3.7 + 13 Satelliten-Scores + Satelliten-Sparraten unverändert.
+
+## [2026-06-13] system+pipeline | Skill-Doc-Voll-Nachzug (Umstrukturierung-2027 Phase A) + xlsx-v4.0-De-Version (scoring-neutral)
+
+**Event-Typ:** Pipeline-Item + System-Zustand (Doku-Drift-Nachzug + xlsx-Versions-Migration). **KEIN** Score/FLAG/Sparraten-Event — DEFCON v3.7 + alle 13 Scores + Raten unverändert.
+
+**Anlass:** User entdeckte, dass die **Skill-internen** Referenz-Docs (manifest/PIPELINE/sources/Beispiele/SKILL aus März/April) nicht von der Phase-A-Welle (die 00_Core + Vault + config + xlsx synct hatte) erfasst wurden → April-Stand-Drift. Parallel: User hat die drei xlsx auf v4.0/v4.0/v1.2 umbenannt (Versions-Suffix nachgezogen).
+
+**Was passiert ist (24 Files, 1 atomarer Commit):**
+- **(A) Roster-Doc-Sync (11 md):** 60/35/5 · 3-Tier 364€ (T1 40/T2 32/T3 18 × DEFCON-Modulation) · 13-Roster (COST/VEEV exited → NOW/KYCCF/ZETA/AMZN) · Script-Pfade auf Skill-Ordner · `earnings-calendar`-Skill→`earnings_calendar.py`-Tool (preview/recap bleiben valide, empirisch verifiziert) · FinnHub read-only-Note (NICHT Scoring) · AVGO-84-Kalibrierungsanker KEEP + Datums-Marker (Live 56/D2/FLAG separat) · insider-CIK-Tabelle 9 US (spiegelt bereits-korrekte .py) · KYCCF (JP) als O3-pending-Gap markiert (nicht überclaimt).
+- **(B) xlsx-v4.0-De-Version (13 Refs + 3 Binaries):** Disk-Rename v3.4/v2.0/v1.1 → v4.0/v4.0/v1.2 committed (3× del + 3× add). `SYSTEM.md ##Active-xlsx-Filenames`-Pin = reale Namen (**load-bearing** für para18-Validator, liest Pin direkt). **De-Version** aller §18-Doktrin/Skill-Refs (CLAUDE.md · STATE · INSTRUKTIONEN §18 · session-closure ×4 · paragraph-18-sync ×2 · xlsx-smoke-test.md · runner-SKILL · Vault-Tool-Page) auf versionslosen Stem + Pin-Pointer → stoppt wiederkehrenden Bump-Drift. Code-Beispiele = valide reale v4.0/v1.2-Pfade.
+
+**Reviews:** Codex (gpt-5.3-codex) Single-Pass **APPROVE-WITH-NITS** (0 HIGH, 2 LOW: insider „8 Ticker"→9 + INSTRUKTIONEN-Befehlstabelle `!EarningsCalendar`/`!InsiderScan 8` → beide gefixt). §18-Verify (para18 dry-run): Expected-Set system-zustand+pipeline-item = SYSTEM.md + PIPELINE.md + log.md (alle im Commit).
+
+**Empirie-Catches (Karpathy / `feedback_empirie_statt_annahmen`):** (1) earnings-preview/-recap existieren in `_extern/` → NICHT deprecated; nur calendar-Skill weg. (2) KYCCF=Keyence(JP), `eodhd_intel.py` ist EUR-only → KYCCF-JP-Funktional NICHT halb-gefixt, sauber als O3-pending dokumentiert. (3) COST-Screener-Exceptions methodisch KEEP (config führt COST weiter als screener_exception).
+
+**OFFEN (gebündelt mit O3-KYCCF-Build, Trigger vor KYCCF Q1 29.07.):** PIPELINE #25 (c) — `eodhd_intel.py`/`earnings_calendar.py` KYCCF-JPY-Code + INSTRUKTIONEN §14/§21 KYCCF-Non-US-Addendum + `.py`-Count-Kosmetik + `para18_sync/_smoke_test.py`-Fixture/precommit-Kommentar (v3.4-Strings, self-contained Test bleibt grün).
+
+**Lehre:** Skill-interne Referenz-Docs sind **nicht** im §18-Sync-Set → laggen Major-Restructures (Phase A synct nur 00_Core/Vault/config/xlsx). Bei Roster-Umbau ist ein expliziter Skill-Doc-Nachzug-Pass nötig. Zusätzlich: §18-Doktrin hardcodete xlsx-Versionen → Drift bei jedem Bump; jetzt de-versioniert mit SYSTEM.md-Pin als Single-Source.
+
+**Cross-Reference:** Commit `<TBD>` · PIPELINE #25(d)+(e) DONE · Memory `project_umstrukturierung_2027_pending_sync`.

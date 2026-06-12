@@ -91,7 +91,7 @@ Daraus extrahieren:
 Für jeden Modified-/Untracked-File die **Kategorie** bestimmen via
 `references/file-classification.md`. Vier Kategorien:
 
-1. **scoring-relevant** — `score_history.jsonl`, `PORTFOLIO.md`, `Faktortabelle.md`, `CORE-MEMORY.md`, Vault `log.md`, `01_Skills/dynastie-depot/config.yaml`, `03_Tools/Rebalancing_Tool_v3.4.xlsx`, `03_Tools/Satelliten_Monitor_v2.0.xlsx`, `05_Archiv/flag_events.jsonl`
+1. **scoring-relevant** — `score_history.jsonl`, `PORTFOLIO.md`, `Faktortabelle.md`, `CORE-MEMORY.md`, Vault `log.md`, `01_Skills/dynastie-depot/config.yaml`, `03_Tools/Rebalancing_Tool`, `03_Tools/Satelliten_Monitor`, `05_Archiv/flag_events.jsonl`
 2. **doc-only** — `02_Analysen/Earnings Reports/**`, Vault-Notes, PDFs, Transkripte, Recherche-Materialien
 3. **code** — `03_Tools/**.py`, `01_Skills/**` (außer config.yaml), `06_Skills-Pakete/**`
 4. **meta** — `00_Core/**`, `CLAUDE.md`, `INSTRUKTIONEN.md`, `SYSTEM.md`, `PIPELINE.md`, `STATE.md`, `04_Templates/**`
@@ -102,7 +102,7 @@ Per `references/sync-coupling.md`:
 
 - Wenn **Score-Event** (`score_history.jsonl` heute mutiert/appended): **alle 8 §18-Sync-Set-Files** müssen entweder im aktuellen Staging oder in unpushed-Commits derselben Session vorliegen. Files 1-6 atomar in einem Commit, xlsx-Tools (7+8) dürfen separater Commit derselben Push-Welle sein. Fehlt einer → REFUSE mit Liste der fehlenden Files. (`PORTFOLIO.md` allein ohne `score_history.jsonl` ist erlaubt — Live-State-Edit ohne Score-Event.)
 - Wenn **xlsx** mutiert (egal welches der drei Tools): §18.7 Smoke-Test muss seit letztem `openpyxl`-Write gelaufen sein. Nicht prüfbar deterministisch → **Frage User explizit** ("xlsx-Smoke-Test für `<file>` gelaufen? y/n"). Bei "n" REFUSE.
-- Wenn **KONTEXT §6** mutiert: `Watchlist_Ersatzbank_Monitor_v1.1.xlsx` muss mit-mutiert sein (kontext-coupled, nicht Score-coupled). Fehlt → REFUSE.
+- Wenn **KONTEXT §6** mutiert: `Watchlist_Ersatzbank_Monitor` (xlsx) muss mit-mutiert sein (kontext-coupled, nicht Score-coupled). Fehlt → REFUSE.
 - Wenn **00_Core/** mutiert UND Briefing-deploy-relevant: erinnere an `!SyncBriefing` (§25), aber blockiere nicht.
 
 ### Schritt 4 — Commit-Plan erstellen

@@ -18,8 +18,8 @@ diese Szenarien gegen-prüfen (kein Auto-Run, qualitative Review).
 ## S2: Score-Event mit vollständigem §18-Sync (8-File-Set)
 
 **State:** Modified: `PORTFOLIO.md`, `Faktortabelle.md`, `CORE-MEMORY.md`, Vault `log.md`,
-`01_Skills/dynastie-depot/config.yaml`, `03_Tools/Rebalancing_Tool_v3.4.xlsx`,
-`03_Tools/Satelliten_Monitor_v2.0.xlsx`. Untracked: 1 neuer `score_history.jsonl`-Append
+`01_Skills/dynastie-depot/config.yaml`, `03_Tools/Rebalancing_Tool`,
+`03_Tools/Satelliten_Monitor`. Untracked: 1 neuer `score_history.jsonl`-Append
 (über `archive_score.py` schon gestaged).
 **Erwartet:**
 - Schritt 3: Coupling-Check pass (alle 8 Pflicht-Files da)

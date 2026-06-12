@@ -86,7 +86,7 @@ IF US-Ticker (NYSE/NASDAQ): AVGO, MSFT, V, BRK.B, TMO, APH, AMZN, NOW, ZETA
     → Web (Pflicht): Live-Kurs (Yahoo), Fwd P/E (AlphaSpread), Moat (GuruFocus moat-score),
                      OpenInsider (10b5-1 Pflichtcheck!), EPS-Revisionen (Zacks)
 
-IF Non-US-Ticker: ASML, RMS, SU
+IF Non-US-Ticker: ASML, RMS, SU  (KYCCF JP → O3-pending, JP/JPY-Support noch nicht im Script)
     → eodhd_intel.py: python eodhd_intel.py detail [TICKER]
       (liefert: CapEx/OCF, Bilanz, Valuation, Margen, GM-Trend, Technicals, Analysten, Ownership)
     → Web (Pflicht): Live-Kurs (Yahoo Finance EUR), AlphaSpread DCF (/par/ oder /ams/),
@@ -622,7 +622,7 @@ Vollständige 0–3 Metrik. Ersetzt den v3.4-Tiebreaker und die PT-Upside-Metrik
 | Underperformance > 5% | 0 |
 
 - Quelle: Finviz quote.ashx?t=TICKER → "Performance"-Tabelle Spalte "6M"
-- Non-US-Titel: Vergleich vs. Heimatindex (AEX für ASML, CAC40 für RMS und SU/Schneider Electric)
+- Non-US-Titel: Vergleich vs. Heimatindex (AEX für ASML, CAC40 für RMS und SU/Schneider Electric; TOPIX/Nikkei 225 für KYCCF/Keyence — O3-pending)
 - Konzeptuelle Orthogonalität: ATH-Distanz = Preis-Niveau, Relative Stärke = Markt-relativ, 200MA = Trend-Richtung
 
 ##### \*\*Bull/Bear DCF — Scoring-Anker:\*\*
@@ -803,7 +803,7 @@ Wenn der User \!QuickCheck \[TICKER\] oder \!QuickCheck ALL eingibt:
 
 \!QuickCheck \[TICKER\] → Einzelne Position
 
-\!QuickCheck ALL → Alle 11 Satelliten in Risiko-Reihenfolge (siehe unten)
+\!QuickCheck ALL → Alle 13 Satelliten in Risiko-Reihenfolge (siehe unten)
 
 ### Risiko-Reihenfolge bei \!QuickCheck ALL
 
@@ -1003,8 +1003,8 @@ Kalibrierung: MSFT capital_lease_obligations ~$17,3B → Finance Lease Check Pfl
 | :--- | :--- | :--- | :--- | :--- |
 | Q1-Check | Februar | AVGO, MSFT, ASML | SEC 10-Q / ASML Quarterly PDF | ±0,5% / ±1,5% |
 | Q2-Check | Mai | V, BRK.B, TMO | SEC 10-Q | ±0,5% |
-| Q3-Check | August | VEEV, APH, SU | SEC 10-Q / Schneider Half-Year PDF | ±0,5% / ±1,5% |
-| Q4-Check | November | COST, RMS + Wildcard Ersatzbank | SEC 10-Q / Hermès Semestriel PDF | ±0,5% / ±1,5% |
+| Q3-Check | August | NOW, APH, SU | SEC 10-Q / Schneider Half-Year PDF | ±0,5% / ±1,5% |
+| Q4-Check | November | ZETA, RMS + Wildcard Ersatzbank | SEC 10-Q / Hermès Semestriel PDF | ±0,5% / ±1,5% |
 
 ### Methodik — US-Titel (Toleranz ±0,5%)
 
@@ -1062,7 +1062,7 @@ IF US-Ticker (NYSE / NASDAQ):
     Technicals + Historie → Shibui Finance SQL-Connector
     Insider-Scoring       → SEC EDGAR API (Form 4) + OpenInsider (Pflicht-Gegencheck HEILIG)
 
-IF Non-US-Ticker (ASML / RMS / SU):
+IF Non-US-Ticker (ASML / RMS / SU; KYCCF JP O3-pending):
     Fundamentals          → EODHD API (Euronext-Primär, EUR-denominiert)
     Technicals            → Shibui (falls Coverage) sonst TradingView Web
     Insider-Scoring       → Manuell via AFM (ASML) / AMF (RMS, SU) — kein API-Äquivalent

@@ -24,6 +24,8 @@ trigger_words:
 
 **Zweck:** Kalibrierungsanker für konsistentes Scoring | **Stand:** 17.04.2026 | **System:** DEFCON v3.7
 
+> ⚠️ **Roster-Drift-Marker (2026-06-13, Umstrukturierung-2027 Phase A):** Diese Datei ist ein **datiertes Kalibrierungs-Archiv** — Anker bleiben als Workflow-/Mechanismus-Historie erhalten, sind aber **keine Live-Scores**. Seither geändert: **COST + VEEV exited** (06/2026), neu **NOW/KYCCF/ZETA/AMZN**; **AVGO Live = 56/D2/🔴FLAG** (Anker zeigt 84 = April-Stand, Quality-Trap-Collapse selbst Lehr-Case); **3-Tier-Rate-Modell** löst die hier genannten flachen 33,53€-Raten ab. **Live-Scores/Raten ausschließlich → `00_Core/Faktortabelle.md` + `PORTFOLIO.md` (SSoT).**
+
 ## 📌 Verwendung dieser Datei
 
 **Architektur (B-konform, 17.04.2026):**
@@ -38,7 +40,7 @@ trigger_words:
 - **ASML (68)** = Non-US/IFRS-Workflow + D3-Grenzfall, Quality-Trap beide Zweige hart 0, FY27-Watch 30,30 als D3→D4-Pfad
 
 **v3.7-Pending** (folgen bei Earnings-Trigger oder Vollanalyse):
-BRK.B, RMS, V, APH, MSFT, TMO, COST — Scoring-Mechanismen jeweils in SKILL.md §Screener-Exceptions dokumentiert; Portfolio-Kontext hier unter Legacy-Ankern oder als Statusnotiz.
+BRK.B, RMS, V, APH, MSFT, TMO — Scoring-Mechanismen jeweils in SKILL.md §Screener-Exceptions dokumentiert; Portfolio-Kontext hier unter Legacy-Ankern oder als Statusnotiz. (COST exited 06/2026 — nicht mehr Pending-Anker; Membership-Yield-Mechanismus bleibt methodisch dokumentiert.)
 
 ## 🧭 Mechanismen-Index
 
@@ -50,7 +52,7 @@ BRK.B, RMS, V, APH, MSFT, TMO, COST — Scoring-Mechanismen jeweils in SKILL.md 
 | Fundamentals-Cap 50 | SKILL.md §Fundamentals-Cap (Z.373) | ASML | — |
 | Anti-Double-Counting | SKILL.md §Scoring-Skalen | AVGO, ASML | — |
 | Insurance/Holding Exception | SKILL.md §Screener-Exceptions #1 | BRK.B (pending) | MKL |
-| Membership-Yield Exception | SKILL.md §Screener-Exceptions #2 | COST (pending) | — |
+| Membership-Yield Exception | SKILL.md §Screener-Exceptions #2 | COST (exited 06/2026 — Methodik-Anker) | — |
 | ROIC-Spread-Dominanz | SKILL.md §Screener-Exceptions #3 | RMS (pending) | — |
 | QT differenziert (ROIC<WACC) | SKILL.md §Screener-Exceptions #4 | TMO (pending Q1 23.04.) | TMO v3.5 |
 | CapEx-FLAG bereinigter Pfad | SKILL.md §Screener-Exceptions #5 | MSFT (pending Q3 29.04.) | — |
@@ -63,6 +65,8 @@ BRK.B, RMS, V, APH, MSFT, TMO, COST — Scoring-Mechanismen jeweils in SKILL.md 
 
 **Datum:** 17.04.2026 (v3.7-Rekalibrierung, Pfad-A — v3.5-Vollanalyse 25.03. + v3.7-Mechanik-Anwendung auf Top-Level) | **MC:** ~$1.51T (Stand 25.03.)
 **Rolle:** Top-D4-Referenz | CapEx-light Fabless | Quality-Trap-Interaktionsterm am P/FCF-Rand
+
+> 🔴 **Live-Update (Stand 2026-06-13):** Dieser 84/D4-Anker ist der **April-Stand**. AVGO Live = **56/D2/🔴FLAG** (Insider-Selling) seit der 30.04.-Vollanalyse (84→53→56). Der Collapse ist selbst ein Quality-Trap-Lehr-Case. Anker bleibt als „so sah 84 aus"-Illustration; Live-Score → Faktortabelle.md.
 
 ### Scoring-Status (v3.7)
 
@@ -325,9 +329,9 @@ Re-Scoring wenn ROIC >12% + PE <25x → Score könnte 74+ erreichen
 
 **FLAG:** ✅ Kein FLAG - CapEx/OCF 4%, kein Insider-Selling
 
-**Nächste Aktion:** Re-Analyse bei VEEV-Schwäche oder Score ≥80
+**Nächste Aktion:** Re-Analyse bei Score ≥80 (VEEV-Ersatz-Bezug obsolet — VEEV exited 06/2026)
 
-**Status:** 🟡Watchlist Klasse A — VEEV-Ersatz Kandidat #1
+**Status:** 🟡Watchlist Klasse A (vormals VEEV-Ersatz-Kandidat #1; VEEV exited 06/2026 → Reassignment pending §6/Watchlist)
 
 **Scoring-Lektion:** TTM-Verzerrung durch -52%-Kurscrash angewendet.
 
@@ -353,7 +357,7 @@ Cashless Exercise (Code M+S, gleicher Tag, Expiry ≤30d) ≠ diskretionärer Ve
 | HON | 71/100 | 🟡 3 | 28.03.2026 | — | ✅ | Post-Spinoff 2026 |
 | TMO | 62/100 | 🟠 2 | 02.04.2026 | Aktiv | ⚠️ Clario-Watch | Re-Analyse 23.04.2026 |
 | EXPN | 61/100 | 🟡 3 | 02.04.2026 | Watchlist | ✅ | P/FCF + Insider-Check |
-| FICO | 67/100 | 🟡 3 | 03.04.2026 | Watchlist | ✅ | Re-Analyse VEEV-Schwäche |
+| FICO | 67/100 | 🟡 3 | 03.04.2026 | Watchlist | ✅ | Re-Analyse bei Score ≥80 (VEEV exited 06/2026) |
 
 *🦅 Beispiele.md | DEFCON v3.7 | Stand: 17.04.2026*
 
@@ -372,8 +376,8 @@ Architektur-Entscheidung 17.04.2026 (B-konform): **Keine 8-Anker-Vollanalyse erz
 | MSFT ⏳ | Q3 FY26 29.04.2026 | CapEx-FLAG Auflösungs-Pfad |
 | BRK.B ⏳ | Q-Earnings Mai 2026 | Insurance-Exception |
 | RMS ⏳ | H1 Juli/Aug 2026 | ROIC-Spread-Dominanz |
-| COST ⏳ | Q1 FY27 Dez 2026 | Membership-Yield-Exception |
-| APH ⏳ | Q2 23.07.2026 | Score-basierter FLAG |
+| ~~COST~~ | exited 06/2026 | Membership-Yield-Exception bleibt Methodik-Anker (kein Roster-Voll-Anker mehr) |
+| APH ⏳ | Q2 29.07.2026 | Score-basierter FLAG |
 
 **Legacy-Anker (MKL, SNPS, SPGI, TMO-v3.5, EXPN, FICO)** bleiben dauerhaft mit v3.5-Zeitstand-Banner als Workflow-Historie — keine Löschung, keine v3.7-Nachkalibrierung. Kanonische Scoring-Regeln liegen in SKILL.md, nicht hier.
 

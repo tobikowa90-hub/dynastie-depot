@@ -17,8 +17,8 @@ Diese **8 Files** MÜSSEN gemeinsam in **derselben Session** committed sein
 4. `00_Core/CORE-MEMORY.md` (§5 oder §12 Score-Lifecycle-Eintrag)
 5. `07_Obsidian Vault/Obsidian Mindmap/Investing Mastermind/log.md` (narrative Notiz)
 6. `01_Skills/dynastie-depot/config.yaml` (Per-Ticker SSoT)
-7. `03_Tools/Rebalancing_Tool_v3.4.xlsx` (Sparplan-Tool)
-8. `03_Tools/Satelliten_Monitor_v2.0.xlsx` (Depot-Übersicht)
+7. `03_Tools/Rebalancing_Tool` (Sparplan-Tool)
+8. `03_Tools/Satelliten_Monitor` (Depot-Übersicht)
 
 **Granularitäts-Klausel:** Files 1-6 müssen **atomar in einem Commit** sein
 (§18.3). Files 7-8 (xlsx-Tools) dürfen in einem **separaten Commit derselben
@@ -57,7 +57,7 @@ passt. Sonst weich.
 Per Memory `feedback_watchlist_xlsx_in_sync_set.md` MÜSSEN dabei sein:
 
 - `00_Core/KONTEXT.md` (Trigger)
-- `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` (xlsx-Spiegel)
+- `03_Tools/Watchlist_Ersatzbank_Monitor` (xlsx-Spiegel)
 
 **Refuse-Action:** Wenn nur eines mutiert ist. §18.7 Minimal-Smoke-Test bestätigen.
 
