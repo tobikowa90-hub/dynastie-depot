@@ -11,6 +11,7 @@
 
 > **Konvention (11.05.2026 Slim-Refactor):** 1-3-Zeilen-Pointer. Detail → `git log` + `CORE-MEMORY.md §13` + PIPELINE-Item-Body.
 
+- **12.06. 🟢 exUSA-Re-Add — EXUS (Xtrackers MSCI World ex USA, IE0006WW1TQ4) @82€ reaktiviert** (User-Lock). US-Klumpenrisiko-Hedge, 8% Gesamtdepot, US-Faktor 0. Intern finanziert aus IWDA −51/AVGC −21/JEDI −10 → ETF-Block **616€ unverändert**, Slots 19→**20** (20 Positionen). Phase-B-Plan unberührt (EXUS+EIMI→Scalable, IWDA-Verkauf 2027). Rebalancing_Tool_v4.0 = SSoT. Detail → PORTFOLIO + config.yaml + git log.
 - **06.–08.06. 🔴 Umstrukturierung-2027 Phase A — Major Depot-Umbau** (User-Lock 05.06.). Split 65/30/5→**60/35/5**, Equal-Weight→**3-Tier Conviction** (Basis 40/32/18€ × DEFCON-Modulation × FLAG), Roster 12→**13** (VEEV+COST raus; NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter, **Scoring pending O3**), ETF exUSA→JEDI+WQTM, ~**1031€**/Mt (ETF 616 + Satelliten-SOLL 364 + Gold 51). Markdown-Sync + Hook-§G-False-PASS-Fix + AVGC-Broker-Fix `1e3c817`. Detail → 00_Core/UMSTRUKTURIERUNG-2027.md + PORTFOLIO + git log.
 - **04.06. ✅ AVGO Q2 FY26 Vollanalyse DONE** (Score 53→56, D2, FLAG bleibt — Insider-Selling 90d). Detail → CORE-MEMORY §12.1 + git log.
 
@@ -46,4 +47,4 @@
 
 <!-- system-audit:last-audit:end -->
 
-*🦅 STATE.md Hub v2.5 | Dynasty-Depot | **Stand:** 2026-06-09 (Earnings-Kalender-Sync via `earnings_calendar.py` [yfinance+Override] — Forward-Triggers auf Tool-Kanon: ASML 15.07. → NOW/TMO 22.07. → V 28.07. → MSFT/APH/RMS/KYCCF 29.07. → SU/AMZN 30.07. → BRK.B 01.08. → ZETA 04.08. → AVGO 03.09. Tool-Regex-Bug gefixt [7-Spalten-3-Tier-Tabelle]. Date-only, kein Score-Event. Vorher: 2026-06-08 Umstrukturierung-2027 Phase A Markdown-Sync)*
+*🦅 STATE.md Hub v2.5 | Dynasty-Depot | **Stand:** 2026-06-12 (exUSA-Re-Add: EXUS @82€ reaktiviert als US-Hedge, Slots 19→20, ETF-Block 616€ unverändert. Vorher: 2026-06-09 Earnings-Kalender-Sync via `earnings_calendar.py` [yfinance+Override] — Forward-Triggers auf Tool-Kanon: ASML 15.07. → NOW/TMO 22.07. → V 28.07. → MSFT/APH/RMS/KYCCF 29.07. → SU/AMZN 30.07. → BRK.B 01.08. → ZETA 04.08. → AVGO 03.09. Tool-Regex-Bug gefixt [7-Spalten-3-Tier-Tabelle]. Date-only, kein Score-Event. Vorher: 2026-06-08 Umstrukturierung-2027 Phase A Markdown-Sync)*

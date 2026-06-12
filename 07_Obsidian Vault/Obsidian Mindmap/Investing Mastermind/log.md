@@ -1724,3 +1724,24 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 - **Gating-Logik-Inversion:** Ein „Folge-Staleness gated auf X"-Item kann in Wahrheit Prerequisite für X sein. Bei Gating-Notizen Richtung der Abhängigkeit prüfen.
 
 **Cross-Reference:** Commit `<TBD>` · PIPELINE.md #24 · Memory `project_umstrukturierung_2027_pending_sync` + `feedback_empirie_statt_annahmen`. **NOW-Vollanalyse (O3) = frische Session** (User-Direktive 09.06.).
+
+---
+
+## [2026-06-12] portfolio | exUSA-Re-Add — EXUS reaktiviert (User-Lock, Owner-Override §2; scoring-neutral, kein Score/FLAG-Event)
+
+**Event-Typ:** ETF-Allokations-Change (Roster 19→20 Positionen). Kein Satelliten-Score/FLAG/Sparraten-Event → KEIN score_history/flag_events/Faktortabelle-Touch.
+
+**Was passiert ist:**
+- **User-Entscheidung:** exUSA nach reiflicher Überlegung zurück ins Depot — finales 20-Positionen-Setup, ausgewogenere Diversifikation + Puffer für US-Exposure.
+- **EXUS** (Xtrackers MSCI World ex USA, ISIN `IE0006WW1TQ4`, User-bestätigt) @**82€** reaktiviert (Broker ING, US-Faktor 0) = **8% Gesamtdepot**. War 04.06.–12.06. gestoppt (Sparplan), Bestand (~1.978€) durchgehend gehalten → kein Holding-Sprung.
+- **Finanzierung intern aus ETF-Bucket** (Total 1031€ + ETF-Block 616€ unverändert): IWDA 257→206 (−51) · AVGC 103→82 (−21) · JEDI 82→72 (−10) = +82€ EXUS. EIMI/WQTM/Gold/Satelliten unberührt.
+- **SSoT = `Rebalancing_Tool_v4.0.xlsx`** (User hand-edited in Excel; EXUS als Zeile R8 eingefügt → Satelliten R12-R24, GESAMT R25; feste ETF-Raten Parameter B56:B62). US-Ist 53,4% / Ziel 52,6% < 63% Hard-Cap.
+- **Phase-B-Plan unberührt** (User-Bestätigung): exUSA + EIMI In-Kind → Scalable, IWDA-Verkauf bei AVD-Start 2027. exUSA-Verkauf §4 **storniert** (EXUS behalten) → Netto-Steuer-Gewinn 2026 +417,39 → +339,98€ (<1.000€ Freibetrag). Phase-B-Combined-View-%-Tabellen (KONTEXT §4b + UMSTRUKT §3) als **Re-Derive-Gate** bei AVD-Start markiert — 2027-Zahlen bewusst nicht fabriziert (`feedback_empirie_statt_annahmen`).
+
+**Sync-Set (§18, ETF-Allokations-Klasse):** `config.yaml` (etfs-Liste +EXUS / IWDA/AVGC/JEDI-Raten / aktuelle_slots 19→20) + PORTFOLIO.md (v1.4) + KONTEXT.md (v1.7, §2/§3/§4/§4b) + STATE.md (Critical-Alert + Footer) + UMSTRUKTURIERUNG-2027.md (v0.3, §2/§4/§6/§3) + CORE-MEMORY §13 (v1.36) + log.md (dieser Eintrag) + dynastie-depot/SKILL.md (ETF-Listen) + 03_Tools/xlsx-smoke-test.md (Zell-Ref-Doku R6-R11 ETF / R12-R24 Satelliten). xlsx: Rebalancing_Tool = User-hand-edited (SSoT); **Satelliten_Monitor NICHT betroffen** (nur Satelliten, empirisch verifiziert); score_history/flag_events/Faktortabelle = KEIN Touch (kein Satelliten-Event).
+
+**Lehre:**
+- **ETF-Allokations-Change = eigene §18-Klasse:** Sync-Set verschiebt sich von der Satelliten-Achse (Faktortabelle/score_history/Satelliten_Monitor) auf die ETF-Achse (config etfs-Liste + Allokations-Header in PORTFOLIO/KONTEXT/STATE + Plan-Doc UMSTRUKTURIERUNG). Rebalancing_Tool bleibt SSoT, Claude spiegelt nur.
+- **Re-Derive-Gate statt Fabrikation:** Phase-B-Combined-View-%-Tabellen unter „exUSA verkauft"-Annahme gerechnet — bei Re-Add nicht blind neu-erfunden, sondern als offene 2027-Allokations-Entscheidung markiert.
+
+**Cross-Reference:** Commit `<TBD>` · `Rebalancing_Tool_v4.0.xlsx` (SSoT) · Memory `project_umstrukturierung_2027_pending_sync` + `feedback_xlsx_tools_in_sync_set`. DEFCON v3.7 + 13 Satelliten-Scores + Satelliten-Sparraten unverändert.

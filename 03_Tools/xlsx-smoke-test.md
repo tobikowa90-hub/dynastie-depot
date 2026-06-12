@@ -14,7 +14,7 @@
 
 | Datei | Smoke-Test-Tiefe | Begründung |
 |-------|------------------|------------|
-| `03_Tools/Rebalancing_Tool_v3.4.xlsx` | **Voll** (Punkte A-F) | 7 Conditional Formats — hohes Korruptions-Risiko (Live-State 2026-06-07 Umstrukturierung-2027 v4.0-Roster: 13 Satelliten [NOW/KYCCF/ZETA rein, VEEV/COST raus] + JEDI/WQTM → sheet1 CF 5→6 legit; §C/§D-Zell-Ref-Reconcile DONE 2026-06-07: Satelliten R11-R23 [R5 Gold EWG2, R6-R10 ETFs], US-Exposure-Mirror R4-R22 = Portfolio R5-R23; vorher 2026-05-25 6 CF) |
+| `03_Tools/Rebalancing_Tool_v3.4.xlsx` | **Voll** (Punkte A-F) | **9 Conditional Formats** (CF-Ranges) — hohes Korruptions-Risiko (Live-State 2026-06-12 v4.0-Roster + **exUSA-Re-Add**: 13 Satelliten + **6 ETF** [EXUS reaktiviert als R8]; CF 7→9: User-Edit +K5:K24 dataBar [Abw.%] +H25 [GESAMT-Check], +EXUS-Row-Shift; §C/§D-Zell-Ref-Reconcile 2026-06-12: Satelliten **R12-R24** [R5 Gold EWG2, **R6-R11 ETFs**], GESAMT R25, US-Exposure-Mirror **R4-R23** = Portfolio R5-R24; vorher 2026-06-07 Satelliten R11-R23/R6-R10 ETF/19 Pos/7 CF) |
 | `03_Tools/Satelliten_Monitor_v2.0.xlsx` | **Voll** (Punkte A-F) | 11 Conditional Formats (5 Sheet `Satelliten Monitor`: L/M/N/O/R + 6 Sheet `QuickScreen Ampel`: Ampel-Coloring D/D-G/E/F/G/H, Umstrukturierung 2026-06-07) + §G SOLL-Σ-Check via Hook (Tier-Modell: `Σ satelliten_tier_raten[tier] == brokers.scalable.sparrate_eur` = 364€; Funded-Echo-Display layout-robust per Content-Scan, vorher fixe N19; vorher 2026-05-25 5 CF + flaches 285€-Modell) |
 | `03_Tools/Watchlist_Ersatzbank_Monitor_v1.1.xlsx` | **Minimal-Check-Annex** (nur A + Existenz) | 0 Formeln, 0 CF — kein Korruptions-Risiko via openpyxl. Hochstufung in Voll-Smoke-Test erst sobald Excel-Formeln (`=...`) zur Watchlist hinzugefügt werden (file-pattern-driven Trigger, kein PIPELINE-Item-Backing). |
 
@@ -49,28 +49,28 @@ Empfehlung: "Suchen in: Arbeitsmappe" + "Suchen: Werte".
 
 ### C. Pflicht-Zell-Cross-Check Rebalancing-Tool
 
-Sheet `Portfolio & Rebalancing`. Positionen R5-R23 (R5 Gold EWG2, R6-R10 ETFs, **R11-R23 = 13 Satelliten**, R24 GESAMT). Per Satelliten-Zeile (R11-R23) verifizieren:
+Sheet `Portfolio & Rebalancing`. Positionen R5-R24 (R5 Gold EWG2, **R6-R11 ETFs** [EXUS R8, exUSA-Re-Add 2026-06-12], **R12-R24 = 13 Satelliten**, R25 GESAMT). Per Satelliten-Zeile (R12-R24) verifizieren:
 
 | Zelle | Inhalt | Erwartung |
 |-------|--------|-----------|
-| `N11`-`N23` | DEFCON-Score-String | Format `'DEFCON X (NN)'`, X = aktueller DEFCON-Level, NN = aktueller Score; Platzhalter NOW/KYCCF/ZETA = `'DEFCON 3 (–) \| Neu …'` |
-| `O11`-`O23` | FLAG-Status-Text | bei FLAG aktiv: `🔴 ... (Pfad-Note)`; sonst grün/leer |
-| `P11`-`P23` | Sparrate-Output (Formel) | Formel-Resolve gegen erwartete effektive Tier-Rate des Tickers (Tier-Modell: Cross-Check gegen `01_Skills/dynastie-depot/config.yaml` `satelliten_tier_raten` × DEFCON/FLAG-Modulation) |
+| `N12`-`N24` | DEFCON-Score-String | Format `'DEFCON X (NN)'`, X = aktueller DEFCON-Level, NN = aktueller Score; Platzhalter NOW/KYCCF/ZETA = `'DEFCON 3 (–) \| Neu …'` |
+| `O12`-`O24` | FLAG-Status-Text | bei FLAG aktiv: `🔴 ... (Pfad-Note)`; sonst grün/leer |
+| `P12`-`P24` | Sparrate-Output (Formel) | Formel-Resolve gegen erwartete effektive Tier-Rate des Tickers (Tier-Modell: Cross-Check gegen `01_Skills/dynastie-depot/config.yaml` `satelliten_tier_raten` × DEFCON/FLAG-Modulation) |
 
 - ✅ **PASS:** Alle Pflicht-Zellen reflektieren den aktuellen Sync-Stand
 - ❌ **FAIL:** Eine oder mehrere Pflicht-Zellen stale → openpyxl-Write hat nicht alle Zellen erreicht. STOP.
 
-**US-Exposure-Sentinel-Set (Sheet `US-Exposure`):** Spiegel-Sheet (R4-R22 = Portfolio R5-R23, 1:1-Mirror; R23 = GESAMT). Sentinel-Pflicht-Checks zur Drift-Vermeidung bei Portfolio-Ticker-Range-Änderungen (Range erweitert 2026-06-07 Umstrukturierung, vorher R4-R20):
+**US-Exposure-Sentinel-Set (Sheet `US-Exposure`):** Spiegel-Sheet (R4-R23 = Portfolio R5-R24, 1:1-Mirror; R24 = GESAMT). Sentinel-Pflicht-Checks zur Drift-Vermeidung bei Portfolio-Ticker-Range-Änderungen (Range erweitert 2026-06-12 exUSA-Re-Add EXUS-Einschub, vorher R4-R22 / 19 Pos):
 
 | Zelle | Inhalt | Erwartung |
 |-------|--------|-----------|
 | `US-Exposure!R4` (Spalten A-D) | `='Portfolio & Rebalancing'!A5/B5/F5/E5` | Erste Mirror-Zeile resolvet ohne `#REF!` (Portfolio R5 = EWG2 Gold) |
-| `US-Exposure!R22` (Spalten A-D) | `='Portfolio & Rebalancing'!A23/B23/F23/E23` | Letzte Mirror-Zeile resolvet ohne `#REF!` (Portfolio R23 = letzter Satellit, aktuell ZETA) |
-| `US-Exposure!R23 E` | `=SUM(E4:R22)` | Σ-US-Anteil € resolvet auf `> 0` (nicht 0/leer) |
-| `US-Exposure!R25/R27 B` | `='Parameter & Regeln'!B…` | US-Hard-Cap-Lookup resolvet (aktuell `0.63` = 63%); Cross-Ref-Existenz |
+| `US-Exposure!R23` (Spalten A-D) | `='Portfolio & Rebalancing'!A24/B24/F24/E24` | Letzte Mirror-Zeile resolvet ohne `#REF!` (Portfolio R24 = letzter Satellit, aktuell ZETA) |
+| `US-Exposure!R24 E` | `=SUM(E4:E23)` | Σ-US-Anteil € resolvet auf `> 0` (nicht 0/leer) |
+| `US-Exposure!B26/B28` | `='Portfolio & Rebalancing'!…` / `='Parameter & Regeln'!B11` | US-Ist (B26) + US-Hard-Cap-Lookup (B28) resolvet (aktuell `0.63` = 63%); Cross-Ref-Existenz |
 
-- ✅ **PASS:** R4 + R22 Mirror ohne `#REF!`, GESAMT-Σ > 0, US-Hard-Cap-Lookup löst auf
-- ❌ **FAIL:** `#REF!` in R4/R22 (Portfolio-Range-Drift, Mirror gebrochen) ODER Σ = 0/leer (Σ-Aggregat verloren) ODER Hard-Cap-Lookup = `#REF!` (Parameter-Sheet umbenannt/verschoben). STOP.
+- ✅ **PASS:** R4 + R23 Mirror ohne `#REF!`, GESAMT-Σ (E24) > 0, US-Hard-Cap-Lookup löst auf
+- ❌ **FAIL:** `#REF!` in R4/R23 (Portfolio-Range-Drift, Mirror gebrochen) ODER Σ = 0/leer (Σ-Aggregat verloren) ODER Hard-Cap-Lookup = `#REF!` (Parameter-Sheet umbenannt/verschoben). STOP.
 
 ### D. Pflicht-Zell-Cross-Check Satelliten-Monitor
 

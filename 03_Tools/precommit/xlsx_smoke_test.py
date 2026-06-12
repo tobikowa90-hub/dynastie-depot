@@ -76,7 +76,7 @@ _PROFILES: dict[str, dict] = {
             "US-Exposure",  # P13 NEU 2026-05-25 (drift-doc §1.1)
             "Parameter & Regeln",  # P13 NEU 2026-05-25 (drift-doc §1.1)
         ),
-        "cf_rule_count": 7,  # md: "325 Formeln + 7 Conditional Formats" (Live-State 2026-06-06 v4.0-Roster: NOW/KYCCF/ZETA rein, VEEV/COST raus -> sheet1 CF 5->6 legit; vorher 2026-05-25 249/6)
+        "cf_rule_count": 9,  # CF-Ranges (sqref-Bloecke). exUSA-Re-Add 2026-06-12 7->9: User-Edit fuegte 2 CFs hinzu (K5:K24 dataBar 'Abw.%' + H25 expression 'GESAMT Ziel-Anteil-Check'), bestaetigt gewollt; +EXUS-Row-Insert verschob 6 bestehende Ranges (N11:N23->N12:N24 etc.). Vorher 7 (Live-State 2026-06-06 v4.0-Roster); davor 6 (2026-05-25). HINWEIS: K-dataBar nutzt x14-Extension -> openpyxl-Write (Score-Sync) wuerde sie strippen.
     },
     "Satelliten_Monitor": {
         "scope": "voll",

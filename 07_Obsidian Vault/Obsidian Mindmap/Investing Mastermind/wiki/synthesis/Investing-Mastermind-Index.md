@@ -83,7 +83,7 @@ tags: [index, home, navigation]
 
 ## 💰 Kapitalstruktur
 
-- [[etf-core|ETF-Core]] — 65% (617,50€/Monat bei ING: IWDA, EIMI, EXUSA, AVGC, EWG2)
+- [[etf-core|ETF-Core]] — 60% (~616€/Monat: IWDA, EIMI, EXUS, AVGC, JEDI, WQTM + EWG2 Gold) — *exUSA-Re-Add EXUS 12.06.2026*
 - [[steuer-architektur|Steuer-Architektur]] — Lombardkredit, FIFO-Klon, 10-Jahres-Kaskade, PKV-Wäsche
 
 ---

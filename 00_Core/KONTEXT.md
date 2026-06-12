@@ -29,7 +29,7 @@
 
 | Triebwerk | Beschreibung | Status |
 |-----------|-------------|--------|
-| **1 — Hauptdepot** | ING (IWDA+EIMI) + Scalable Capital (Satelliten + AVGC/JEDI/WQTM + Gold) | ✅ Aktiv, ~1031€/Monat |
+| **1 — Hauptdepot** | ING (IWDA+EIMI+EXUS) + Scalable Capital (Satelliten + AVGC/JEDI/WQTM + Gold) | ✅ Aktiv, ~1031€/Monat (20 Positionen) |
 | **2 — Zweite Säule (AVD)** | Altersvorsorgedepot bei Scalable: Invesco MSCI World 257€/Mt (150€ förderfähig, Altersvorsorgereformgesetz) + Riester-Altvertrag-Übertrag (~5.252€). World-Sleeve relociert aus Dynastie. Detail → §4b | 🟡 Start Jan 2027 |
 | **3 — Opa-Booster** | Optional: 500€ zukünftig 100% in ETF-Fundament (De-Risking) | 🟡 Offen |
 
@@ -39,14 +39,15 @@
 
 | Block | Anteil | Betrag/Monat | Broker |
 |-------|--------|-------------|--------|
-| ETF-Core | 60% | 616 € | ING (IWDA+EIMI) + Scalable (AVGC+JEDI+WQTM) |
+| ETF-Core | 60% | 616 € | ING (IWDA+EIMI+EXUS) + Scalable (AVGC+JEDI+WQTM) |
 | Wide-Moat-Satelliten | 35% | 364 € SOLL (Funded 210 €) | Scalable Capital |
 | Gold | 5% | 51 € | Scalable Capital (EWG2) |
 
-> Umstrukturierung 2026-06-07: Split 65/30/5 → **60/35/5**. ETF-Core von Equal-Sleeve auf IWDA/EIMI/AVGC + Themen-Wetten JEDI/WQTM (exUSA gestoppt). Satelliten Equal-Weight → 3-Tier (siehe §5). Gesamt ~1031 €.
+> Umstrukturierung 2026-06-07: Split 65/30/5 → **60/35/5**. ETF-Core von Equal-Sleeve auf IWDA/EIMI/AVGC + Themen-Wetten JEDI/WQTM. Satelliten Equal-Weight → 3-Tier (siehe §5). Gesamt ~1031 €.
+> **exUSA-Re-Add 2026-06-12 (User-Lock):** EXUS (Xtrackers MSCI World ex USA) @82€ reaktiviert als US-Klumpenrisiko-Hedge (8% Gesamtdepot, US-Faktor 0), intern aus IWDA −51/AVGC −21/JEDI −10 finanziert — ETF-Block bleibt 616€, Slots 19→20. Raten = Rebalancing_Tool_v4.0 (SSoT).
 
-**US-Hard-Cap:** max. 63% | **Ist:** ~46,41% (unverändert — AMZN F=0€/Sparrate 0€, kein realer US-Kapitalfluss bis FLAG-Resolve) | **Ziel:** ~50,2% (AMZN trägt vollen US-Zielanteil wie alle Aktien — User-Direktive 18.05. „exakter Ziel-Anteil wie alle"; Rebalancing-Tool US-Exposure-Sheet B24 = 50,20%, <63% Hard-Cap)
-**Slots:** 19 gesamt (5 ETFs [IWDA/EIMI/AVGC/JEDI/WQTM, exUSA gestoppt] + 13 Aktien + 1 Gold) — alle vergeben (Umstrukturierung 2026-06-07: Aktien-Roster 12→13, VEEV+COST raus, NOW/KYCCF/ZETA rein)
+**US-Hard-Cap:** max. 63% | **Ist:** ~53,4% (Rebalancing_Tool US-Exposure-Sheet, EXUS-Faktor 0 dämpft) | **Ziel:** ~52,6% (Tool B27, <63% Hard-Cap)
+**Slots:** 20 gesamt (6 ETFs [IWDA/EIMI/EXUS/AVGC/JEDI/WQTM] + 13 Aktien + 1 Gold) — alle vergeben (Umstrukturierung 2026-06-07: Aktien-Roster 12→13, VEEV+COST raus, NOW/KYCCF/ZETA rein; exUSA-Re-Add 2026-06-12: EXUS reaktiviert)
 
 ---
 
@@ -54,13 +55,14 @@
 
 | Ticker | Name | €/Monat | Broker | Funktion |
 |--------|------|---------|--------|----------|
-| IWDA | iShares Core MSCI World (Acc) | 257 € | ING | Globale Marktdominanz, US-Kern |
+| IWDA | iShares Core MSCI World (Acc) | 206 € | ING | Globale Marktdominanz, US-Kern (257→206 exUSA-Re-Add) |
 | EIMI | iShares Core MSCI EM IMI | 123 € | ING | Schwellenländer + Small Caps |
-| AVGC | Avantis Global Small Cap Value | 103 € | Scalable | Faktor-Prämien (wissenschaftlich) |
-| JEDI | VanEck Space Innovators | 82 € | Scalable | Themen-Wette / Space (neu 04.06.) |
+| EXUS | Xtrackers MSCI World ex USA (IE0006WW1TQ4) | 82 € | ING | Geo-Hedge gegen US-Klumpenrisiko (reaktiviert 12.06., US-Faktor 0) |
+| AVGC | Avantis Global Small Cap Value | 82 € | Scalable | Faktor-Prämien (wissenschaftlich) (103→82) |
+| JEDI | VanEck Space Innovators | 72 € | Scalable | Themen-Wette / Space (neu 04.06.; 82→72) |
 | WQTM | WisdomTree Quantum Computing | 51 € | Scalable | Themen-Wette / Quantum |
 
-**Gold:** EWG2 (EUWAX Gold II) 51 € (5%) — Scalable; nach 1 Jahr steuerfrei. **exUSA** (Xtrackers MSCI World ex USA) **gestoppt 04.06.2026** (Erlös → JEDI/WQTM). ETF-Block Σ = 616 €. Broker-Split: ING hält physisch **nur** IWDA+EIMI (380 €); AVGC+JEDI+WQTM (236 €) bei Scalable. Phase B (2027): World-Sleeve → AVD, ING gekündigt.
+**Gold:** EWG2 (EUWAX Gold II) 51 € (5%) — Scalable; nach 1 Jahr steuerfrei. **EXUS** (Xtrackers MSCI World ex USA, IE0006WW1TQ4) **reaktiviert 2026-06-12** als US-Hedge @82€ (vorher 04.06.–12.06. gestoppt). ETF-Block Σ = 616 €. Broker-Split: ING hält physisch IWDA+EIMI+EXUS (411 €); AVGC+JEDI+WQTM (205 €) bei Scalable. Phase B (2027): World-Sleeve (IWDA) → AVD-Invesco, EXUS+EIMI In-Kind → Scalable, ING gekündigt.
 
 ---
 
@@ -82,7 +84,9 @@
 | WQTM | 5% | Dynastie |
 | **ETF gesamt** | **60%** | (Satelliten 35% · Gold 5%) |
 
-**Broker-Konsolidierung → alles zu Scalable:** EIMI per In-Kind-Übertrag ING→Scalable (Herbst 2026, keine Realisierung, +204 € latent). ING danach leer → **kündigen**. Endzustand: Dynastie (Satelliten + AVGC/JEDI/WQTM + Gold) + AVD (Invesco) komplett bei Scalable; ING aufgelöst.
+> ⚠️ **Phase-B-Re-Derive-Gate (exUSA-Re-Add 12.06.):** Diese Combined-View-%-Tabelle wurde unter „exUSA verkauft"-Annahme gerechnet und enthält EXUS noch nicht. EXUS bleibt jetzt permanent (Phase B: In-Kind → Scalable wie EIMI, NICHT verkauft). Die Combined-View-%-Aufteilung ist bei AVD-Start (Jan 2027) mit EXUS neu abzuleiten — offene 2027-Allokations-Entscheidung, hier bewusst nicht fabriziert.
+
+**Broker-Konsolidierung → alles zu Scalable:** EIMI **+ EXUS** per In-Kind-Übertrag ING→Scalable (Herbst 2026, keine Realisierung, +204 € latent EIMI). ING danach leer → **kündigen**. Endzustand: Dynastie (Satelliten + AVGC/JEDI/WQTM + Gold) + AVD (Invesco) komplett bei Scalable; ING aufgelöst.
 
 > Vollständiger Transaktionsplan + Timing → `UMSTRUKTURIERUNG-2027.md` §3 (Phase B) + §4 (Transaktionsplan 2026). Quelle: Desktop `Umstrukturierung.md` (Chat-Session 02.–04.06.2026).
 
@@ -293,4 +297,4 @@ Bei !QuickCheck-Rot oder Score <60: kein §6-Eintrag, Slot bleibt offen oder Bra
 - V-Q2-Incident 28.04.2026 — Präzedenz „Score-Move auf unzureichender Evidenz"
 
 ---
-*🦅 KONTEXT.md v1.6 | Dynastie-Depot | Stand: 2026-06-08 (Umstrukturierung-2027 Phase A+B: §2-§5 auf 60/35/5 + 3-Tier-Roster (13) + ETF-Broker-Split nachgezogen, VEEV+COST raus / NOW/KYCCF/ZETA rein, §4b AVD-2027-Struktur (Invesco + Riester-Übertrag + Broker-Konsolidierung) neu, §6-Ersatzbank Staleness-Banner, §10 Termine aktualisiert)*
+*🦅 KONTEXT.md v1.7 | Dynastie-Depot | Stand: 2026-06-12 (exUSA-Re-Add: EXUS @82€ reaktiviert als US-Hedge §2/§3/§4, Slots 19→20, intern aus IWDA/AVGC/JEDI finanziert, ETF-Block 616€ unverändert; §4b Phase-B-Combined-View als Re-Derive-Gate markiert. Vorher: 2026-06-08 Umstrukturierung-2027 Phase A+B: §2-§5 auf 60/35/5 + 3-Tier-Roster (13) + ETF-Broker-Split nachgezogen, VEEV+COST raus / NOW/KYCCF/ZETA rein, §4b AVD-2027-Struktur (Invesco + Riester-Übertrag + Broker-Konsolidierung) neu, §6-Ersatzbank Staleness-Banner, §10 Termine aktualisiert)*

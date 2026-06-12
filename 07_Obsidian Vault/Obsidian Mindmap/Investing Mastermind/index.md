@@ -308,7 +308,7 @@ _(noch leer)_
 - [[INSTRUKTIONEN-SKILL-Trennung]] — Post-Dedup Arbeitsteilung: User-Workflow (INSTRUKTIONEN) vs. Scoring-Technik (SKILL); 587→452 Zeilen, 10 Cross-Refs, seit 17.04.2026
 
 ### Depot-Struktur & Planung
-- [[etf-core|ETF-Core]] — 65% des Sparplans (617,50€/Monat); IWDA, EIMI, EXUSA, AVGC, EWG2
+- [[etf-core|ETF-Core]] — 60% des Sparplans (~616€/Monat); IWDA, EIMI, EXUS, AVGC, JEDI, WQTM + EWG2 (Gold) — *exUSA-Re-Add EXUS 12.06.2026*
 - [[steuer-architektur|Steuer-Architektur]] — Lombardkredit, FIFO-Klon, 10-Jahres-Kaskade, PKV-Wäsche; Zeithorizont 2058
 
 ---

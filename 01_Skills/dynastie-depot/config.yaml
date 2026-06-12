@@ -7,7 +7,7 @@
 # ─────────────────────────────────────────────
 portfolio:
   sparrate_eur: 1031  # Umstrukturierung 2026-06-07: real ~1.031€ SOLL (Live-File 950€ war veraltet). ETF 616 + Satelliten-SOLL 364 + Gold 51 = 1031
-  aktuelle_slots: 19  # 5 ETF (IWDA/EIMI/AVGC/JEDI/WQTM, exUSA gestoppt) + 13 Aktien + 1 Gold (Umstrukturierung 2026-06-07)
+  aktuelle_slots: 20  # 6 ETF (IWDA/EIMI/EXUS/AVGC/JEDI/WQTM) + 13 Aktien + 1 Gold (EXUS reaktiviert 2026-06-12 als US-Hedge — exUSA-Re-Add, finanziert aus ETF-Bucket; Total 616€ unverändert)
   max_aktien_slots: 13
   belegte_aktien_slots: 13
   freie_aktien_slots: 0
@@ -19,7 +19,7 @@ brokers:
   ing:
     zweck: "ETF-Core + Freistellungsauftrag"
     sparanteil_pct: 60  # Umstrukturierung 2026-06-07: Split 65→60
-    sparrate_eur: 616.00  # ETF-Core-Bucket gesamt (60%-Allokation): IWDA 257 + EIMI 123 + AVGC 103 + JEDI 82 + WQTM 51 = 616. Bucket-Modell, nicht physisch — physisch hält ING NUR IWDA+EIMI=380; AVGC+JEDI+WQTM=236 liegen bei Scalable (exUSA gestoppt 04.06.; Phase-A → alles Scalable, ING danach gekündigt, Plan §2 Z.94f).
+    sparrate_eur: 616.00  # ETF-Core-Bucket gesamt (60%-Allokation): IWDA 206 + EIMI 123 + EXUS 82 + AVGC 82 + JEDI 72 + WQTM 51 = 616. Bucket-Modell, nicht physisch — physisch hält ING IWDA+EIMI+EXUS=411; AVGC+JEDI+WQTM=205 liegen bei Scalable (EXUS reaktiviert 2026-06-12 als US-Hedge, finanziert aus IWDA −51/AVGC −21/JEDI −10; Phase-B → EXUS+EIMI In-Kind ING→Scalable, IWDA-Verkauf bei AVD-Start 2027, Plan §3/§4).
     freistellung_eur: 1500
   scalable:
     zweck: "Satelliten + Alpha"
@@ -105,32 +105,39 @@ system_regeln:
 # ─────────────────────────────────────────────
 # ETF-CORE (60% — Bucket über ING + Scalable verteilt; broker-Tag = physische Lage)
 # ─────────────────────────────────────────────
-# Umstrukturierung 2026-06-07: exUSA gestoppt 04.06.; JEDI + WQTM neu (zwei Themen-Wetten, zusammen 13% ETF-Block); Gold EUWAX→EWG2. ISIN/Rate aus UMSTRUKTURIERUNG-2027 §2.
+# Umstrukturierung 2026-06-07: exUSA gestoppt 04.06.; JEDI + WQTM neu (zwei Themen-Wetten); Gold EUWAX→EWG2. ISIN/Rate aus UMSTRUKTURIERUNG-2027 §2.
+# exUSA-Re-Add 2026-06-12 (User-Lock): EXUS reaktiviert @82€ als US-Klumpenrisiko-Hedge (8% Gesamtdepot), finanziert intern aus IWDA 257→206 / AVGC 103→82 / JEDI 82→72 — ETF-Block bleibt 616€, Slots 19→20. Raten = Rebalancing_Tool_v4.0 (SSoT, Parameter B56:B62).
 etfs:
   - ticker: IWDA
     name: "iShares Core MSCI World"
     isin: IE00B4L5Y983
     broker: ING
     typ: "Developed World"
-    rate_eur: 257
+    rate_eur: 206  # exUSA-Re-Add 2026-06-12: 257→206 (−51€ → EXUS-Finanzierung)
   - ticker: EIMI
     name: "iShares Core MSCI EM IMI"
     isin: IE00BKM4GZ66
     broker: ING
     typ: "Emerging Markets"
     rate_eur: 123
+  - ticker: EXUS
+    name: "Xtrackers MSCI World ex USA"
+    isin: IE0006WW1TQ4  # User-bestätigt 2026-06-12 (Xtrackers MSCI World ex USA UCITS ETF)
+    broker: ING
+    typ: "Geo-Hedge / World ex USA (US-Klumpenrisiko-Hedge)"
+    rate_eur: 82  # reaktiviert 2026-06-12 (exUSA-Re-Add, User-Lock; 8% Gesamtdepot, US-Faktor 0)
   - ticker: AVGC
     name: "Avantis Global Small Cap Value"
     isin: IE0003R87OG3
     broker: Scalable  # KORREKTUR 2026-06-08: physisch Scalable, nicht ING (ING hält nur IWDA+EIMI; Plan §2 Z.34 "läuft" ohne ING-Vermerk)
     typ: "Factor / Small Cap Value"
-    rate_eur: 103
+    rate_eur: 82  # exUSA-Re-Add 2026-06-12: 103→82 (−21€ → EXUS-Finanzierung)
   - ticker: JEDI
     name: "VanEck Space Innovators"
     isin: IE000YU9K6K2
     broker: Scalable
     typ: "Themen-Wette / Space"
-    rate_eur: 82  # neu gestartet 04.06.2026
+    rate_eur: 72  # neu gestartet 04.06.2026; exUSA-Re-Add 2026-06-12: 82→72 (−10€ → EXUS-Finanzierung)
   - ticker: WQTM
     name: "WisdomTree Quantum Computing"
     isin: IE000W8WMSL2

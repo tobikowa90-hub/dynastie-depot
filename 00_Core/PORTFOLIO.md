@@ -2,7 +2,7 @@
 
 **Stand:** 09.06.2026 (Earnings-Kalender-Sync via `03_Tools/earnings_calendar.py` [yfinance+Override, SSoT]: alle „Nächster Trigger"-Termine auf Tool-Kanon — ASML 15.07. → NOW/TMO 22.07. → V 28.07. → MSFT/APH/RMS/KYCCF 29.07. → SU/AMZN 30.07. → BRK.B 01.08. → ZETA 04.08. → AVGO 03.09. NOW yf-soft [TipRanks 29.07]. Date-only, kein Score-Event. Umstrukturierung-2027 Phase A: Roster 12→13, Equal-Weight→3-Tier, Split 60/35/5; letzter Score-Move AVGO 04.06. Q2 FY26 53→56 FLAG-bleibt). Score-/FLAG-/Sparraten-Chronik aller Moves seit 17.04. → CORE-MEMORY §12.X + git log (kanonische Detail-Quelle).
 
-**Allokation:** 60/35/5 (ETF 616€ / Satelliten SOLL 364€ [Funded 210€] / Gold 51€), Gesamt ~1031€/Mt. US-Cap 63% / Ist ~46%. ETF-Broker: ING (IWDA+EIMI) · Scalable (AVGC+JEDI+WQTM); exUSA raus.
+**Allokation:** 60/35/5 (ETF 616€ / Satelliten SOLL 364€ [Funded 210€] / Gold 51€), Gesamt ~1031€/Mt. US-Cap 63% / Ist ~53% (Tool). **20 Positionen** (6 ETF + 13 Aktien + Gold). ETF-Broker: ING (IWDA 206 + EIMI 123 + EXUS 82) · Scalable (AVGC 82 + JEDI 72 + WQTM 51). **exUSA-Re-Add 2026-06-12 (User-Lock):** EXUS (Xtrackers MSCI World ex USA) @82€ als US-Klumpenrisiko-Hedge (8% Gesamtdepot, US-Faktor 0), intern finanziert aus IWDA −51/AVGC −21/JEDI −10 — ETF-Block bleibt 616€. Raten = Rebalancing_Tool_v4.0 (SSoT).
 
 ## Verweise
 - [INSTRUKTIONEN.md §22](INSTRUKTIONEN.md#22-sparplan-formel-aktuell-18042026-v37) — Sparplan-Formel (Nenner-Berechnung)
@@ -74,4 +74,4 @@
 
 ---
 
-*🦅 PORTFOLIO.md v1.3 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-06-09 (Earnings-Kalender-Sync via `earnings_calendar.py` [yfinance+Override SSoT]; Tool-Regex-Bug für 7-Spalten-3-Tier-Tabelle gefixt; date-only, kein Score-Event. Vorher: 2026-06-08 Umstrukturierung-2027 Phase A 13-Roster + 3-Tier + 60/35/5. Detail-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)*
+*🦅 PORTFOLIO.md v1.4 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-06-12 (exUSA-Re-Add: EXUS @82€ reaktiviert als US-Hedge, Slots 19→20, intern aus IWDA/AVGC/JEDI finanziert, ETF-Block 616€ unverändert; Rebalancing_Tool_v4.0 SSoT. Vorher: 2026-06-09 Earnings-Kalender-Sync via `earnings_calendar.py` [yfinance+Override SSoT]; Tool-Regex-Bug für 7-Spalten-3-Tier-Tabelle gefixt; date-only, kein Score-Event. Vorher: 2026-06-08 Umstrukturierung-2027 Phase A 13-Roster + 3-Tier + 60/35/5. Detail-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)*

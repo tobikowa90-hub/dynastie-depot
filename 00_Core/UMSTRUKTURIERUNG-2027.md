@@ -29,12 +29,12 @@
 
 | ETF | ISIN | Rate | Status |
 |---|---|---|---|
-| IWDA (iShares Core MSCI World) | IE00B4L5Y983 | 257 € | läuft (noch ING) |
+| IWDA (iShares Core MSCI World) | IE00B4L5Y983 | 206 € | läuft (noch ING); 257→206 exUSA-Re-Add 12.06. |
 | EIMI (iShares Core MSCI EM IMI) | IE00BKM4GZ66 | 123 € | läuft (noch ING) |
-| AVGC (Avantis Global Small Cap Value) | IE0003R87OG3 | 103 € | läuft |
-| JEDI (VanEck Space Innovators) | IE000YU9K6K2 | 82 € | 🟢 neu gestartet 04.06. |
+| EXUS (Xtrackers MSCI World ex USA) | IE0006WW1TQ4 | 82 € | 🟢 **reaktiviert 12.06.** (US-Hedge; war 04.06.–12.06. gestoppt) |
+| AVGC (Avantis Global Small Cap Value) | IE0003R87OG3 | 82 € | läuft; 103→82 exUSA-Re-Add 12.06. |
+| JEDI (VanEck Space Innovators) | IE000YU9K6K2 | 72 € | 🟢 neu gestartet 04.06.; 82→72 exUSA-Re-Add 12.06. |
 | WQTM (WisdomTree Quantum Computing) | IE000W8WMSL2 | 51 € | läuft |
-| EXUSA (Xtrackers MSCI World ex USA) | — | 0 € | 🔴 gestoppt 04.06. |
 
 ### Satelliten — 3-Tier, FLAG-heilig (SOLL 364 € / real-funded 210 €)
 
@@ -91,6 +91,8 @@ EWG2 (EUWAX Gold II) — 51 €
 
 Satelliten 35 % · Gold 5 %.
 
+> ⚠️ **Re-Derive-Gate (exUSA-Re-Add 12.06.):** Tabelle ohne EXUS gerechnet (Verkaufs-Annahme). EXUS bleibt permanent (Phase B: In-Kind → Scalable, nicht verkauft) → Combined-View-% bei AVD-Start (Jan 2027) mit EXUS neu ableiten. Offene 2027-Allokations-Entscheidung, hier bewusst nicht fabriziert.
+
 ### Broker-Konsolidierung
 Alles → **Scalable**. EIMI per In-Kind-Übertrag ING→Scalable. ING danach leer → kündigen.
 
@@ -104,15 +106,16 @@ Alles → **Scalable**. EIMI per In-Kind-Übertrag ING→Scalable. ING danach le
 | JEDI Sparplan starten @82 € | — | — | — | ✅ erledigt 04.06. |
 | VEEV verkaufen | 399,88 € | **−31,12 €** | → NOW | läuft |
 | COST verkaufen | 387,74 € (LIMIT @863 €) | **+1,74 €** | → Rebalancing-Tool (freies Kapital)¹ | LIMIT offen @863 € (Kurs 841 €) |
-| exUSA verkaufen | 1.967,41 € | **+77,41 €** | 70 % JEDI / 30 % WQTM | noch 2026 |
-| EIMI Sparplan ING stoppen + Übertrag→Scalable | 1.387,26 € (in natura) | 0 € (keine Realisierung; +204,26 € latent) | Scalable | Herbst 2026 |
+| ~~exUSA verkaufen~~ → **STORNIERT (Re-Add 12.06.)** | — | — | EXUS bleibt; Sparplan @82 € restart, Bestand behalten | ✅ Re-Add 12.06. |
+| Sparraten-Anpassung exUSA-Finanzierung (IWDA 257→206 / AVGC 103→82 / JEDI 82→72) | — | — | finanziert EXUS @82 € intern (ETF-Block 616 € unverändert) | ✅ 12.06. |
+| EIMI **+ EXUS** Sparplan ING stoppen + Übertrag→Scalable | EIMI 1.387,26 € (in natura) + EXUS-Bestand | 0 € (keine Realisierung; +204,26 € latent EIMI) | Scalable | Herbst 2026 |
 | IWDA Sparplan stoppen | — | — | — | Ende 2026 |
 | IWDA verkaufen | 3.994,52 € | **+369,36 €** | Teil WQTM, Rest Satelliten | Ende 2026 |
 | AVD eröffnen + Invesco Sparplan @257 € | — | — | Scalable | Jan 2027 |
 | Riester-Übertrag → AVD | ~5.251,70 €+ | — | Invesco | Jan 2027 |
 | ING Depot kündigen | — | — | — | nach EIMI-Übertrag |
 
-**Netto-Gewinn (VEEV+exUSA+IWDA+COST):** −31,12 +77,41 +369,36 +1,74 = **+417,39 € < 1.000 € Freibetrag → 0 € Steuer.** Restpuffer 2026 ~582,61 € (1.000 − 417,39). Split-Realisierung nicht nötig (COST-Gewinn marginal; bei Verkauf zum aktuellen Kurs 841 € sogar −8,15 € Verlust).
+**Netto-Gewinn (VEEV+IWDA+COST — exUSA-Verkauf storniert 12.06.):** −31,12 +369,36 +1,74 = **+339,98 € < 1.000 € Freibetrag → 0 € Steuer.** Restpuffer 2026 ~660,02 € (1.000 − 339,98). Split-Realisierung nicht nötig. (exUSA-Verkaufsgewinn +77,41 € entfällt, da EXUS via Re-Add 12.06. behalten wird statt verkauft.)
 
 ¹ **COST-Erlös-Ziel:** ✅ User-Lock 06.06. — keine explizite Zuweisung; Erlös (~388 €, marginal) läuft universell über das Rebalancing-Tool auf untergewichtete Tier-Positionen (konsistent mit O1).
 
@@ -136,11 +139,11 @@ Alles → **Scalable**. EIMI per In-Kind-Übertrag ING→Scalable. ING danach le
 2. **DEFCON-Score moduliert die Rate WEITER** (Korrektur 06.06. — die ursprüngliche Chat-Annahme „moduliert nicht mehr" war FALSCH). Effektive Rate = `Tier-Basis × DEFCON-Modulation × FLAG`: D3/D4 → volle Tier-Rate, D2 → halbe Tier-Rate (z.B. V = 50% von 32 = **16 €**), D1/FLAG → 0 €. Die EINZIGE Methodik-Änderung ggü. alt ist Equal-Weight→Tier-Basis; die DEFCON-Modulation bleibt unverändert erhalten.
 3. **FLAG bleibt heilig** — geflaggte Titel weiter 0 € (beibehalten, konsistent mit AMZN-Präzedenz 18.05.).
 4. **Satelliten ohne Score** (NOW/KYCCF/ZETA) — Owner-Override analog AMZN; KONTEXT §12 Watchlist-Eintritts-Disziplin per §1 „Mein Portfolio, meine Regeln" gewaivt; Score-Wahrheit faktentreu dokumentieren.
-5. **exUSA raus, JEDI + WQTM** als zwei bewusste Themen-Wetten (zusammen 13 % ETF-Block).
+5. ~~**exUSA raus, JEDI + WQTM**~~ → **REVIDIERT 2026-06-12 (User-Lock): exUSA-Re-Add.** EXUS (Xtrackers MSCI World ex USA, IE0006WW1TQ4) @82 € reaktiviert als US-Klumpenrisiko-Hedge (8 % Gesamtdepot, US-Faktor 0), intern finanziert aus IWDA −51/AVGC −21/JEDI −10 — ETF-Block 616 € unverändert, Slots 19→20. JEDI (72 €) + WQTM (51 €) bleiben als Themen-Wetten. Verkauf storniert (§4), EXUS-Bestand behalten, Phase B: In-Kind → Scalable wie EIMI.
 6. **COST raus**, **VEEV raus** (→ NOW).
 7. **Split 65/30/5 → 60/35/5.**
 8. **AVD als 3. struktureller Baustein** (KONTEXT §2 „geplant ab 2027" → konkret).
 
 ---
 
-*🦅 UMSTRUKTURIERUNG-2027.md v0.2 | Dynastie-Depot | erstellt 2026-06-05 reconciled; v0.2 (06.06.) COST-Datenlücke O2 geschlossen → §4 + Netto-Steuerrechnung komplett. Phase A → Live-Sync ausstehend (gated: O4 AVGO Tag-+1), Phase B → PIPELINE-Gate*
+*🦅 UMSTRUKTURIERUNG-2027.md v0.3 | Dynastie-Depot | erstellt 2026-06-05 reconciled; v0.2 (06.06.) COST-Datenlücke O2 geschlossen; **v0.3 (12.06.) exUSA-Re-Add (User-Lock): §2 ETF-Block + §4 Transaktionsplan (Verkauf storniert) + §6 Override #5 revidiert + §3 Phase-B-Combined-View Re-Derive-Gate. EXUS @82€ reaktiviert, ETF-Block 616€ unverändert, Slots 19→20.** Phase A → Live-Sync ausstehend (gated: O4 AVGO Tag-+1), Phase B → PIPELINE-Gate*
