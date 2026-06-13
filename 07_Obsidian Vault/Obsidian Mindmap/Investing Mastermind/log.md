@@ -1785,3 +1785,20 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Lehre:** Bei moderner Py-3.14-Syntax (`except A, B:` ohne Klammern = PEP-758) zuerst AST-parsen + `requires-python`-Floor prüfen, nicht als Bug „fixen" (Memory `feedback_pyproject_floor_before_portability_claim`). yf-Symbol-Wahl bei Cross-Listings (OTC-ADR vs Heimatbörse) immer empirisch auf Währungs-Konsistenz prüfen — gleiche Fundamentals, aber Kurs-Währung divergiert.
 
 **Cross-Reference:** Commit `<TBD>` · PIPELINE #24(f) DONE · #24(b)+(c) DONE · Memory `feedback_pyproject_floor_before_portability_claim`, `feedback_windows_console_ascii_safe_inline_python`.
+
+## [2026-06-13] pipeline-item | PIPELINE-Cleanup + SystemAudit (scoring-neutral)
+
+**Event-Typ:** Pipeline-Item (PIPELINE-Bloat-Reduktion + Audit-Verify, kein Score/FLAG/Sparraten-Touch). Folge-Auftrag nach KYCCF-Commit.
+
+**SystemAudit (`system_audit.py --core --no-write`):** 8/15 PASS, 3 FAIL, 4 WARN. **Kern-Befund: 0 neue Drift aus dieser/letzter Session** — alle FAIL/WARN pre-existing chronisch: Check-3 markdown_header (STATE/SYSTEM Stand=None unparseable, PORTFOLIO/CORE-MEMORY 3d-Lag), Check-4 cross_source (Audit-Parser versteht 3-Tier-Tabellen-Format + Placeholder-defcon-3 nicht → false-positive), Check-5 existence (Brace-Glob `{PIPELINE,...}.md` in CLAUDE.md:67 + relative SKILL.md-Pfade nicht resolvbar), Check-2 R5-Daily-Persist 36d-Lag, Check-6 Skill-ZIP-Gap (core-slim/para18/xlsx-smoke), Check-11 Stand-Freshness, Check-13 COST/VEEV-Vault-Entities (Phase-A-exited, Vault-Mode-Cleanup separat). KYCCF-Arbeit erzeugte keine Audit-Regression.
+
+**PIPELINE.md v2.80→v2.81 Cleanup:**
+- #24 Umstrukturierung-Phase-A: DONE-Sub-Bullets (a)–(f) entfernt (alle Infra-Sync DONE) → kollabiert auf 1 Haupt-Bullet. Info-Flow erhalten: Infra ✅ DONE (Summary) + 🔴 O3-Scoring NOW/KYCCF/ZETA pending (earnings 22.07.–04.08.). Detail-Archiv → git log + Footer v2.79/v2.80 + dieser log.md.
+- Footer-Versionshistorie v2.78 → git-log-Pointer getrimmt (Konvention „Footer-Historie → git log", analog v2.45→v2.77). „Aktive Items"-Index erhalten.
+- 86→82 Zeilen, keine Double-Blanks, Numbering-Convention (Gaps = Pointer) gewahrt.
+
+**SYSTEM.md L23:** non-us-fundamentals Sub-Workflow-Liste „(ASML/RMS/SU)" → „(ASML/RMS/SU/KYCCF)" (einzige reale Doc-Drift aus KYCCF-Arbeit).
+
+**Lehre:** SystemAudit-FAILs zuerst gegen „neu aus eigener Arbeit vs. pre-existing chronisch" klassifizieren bevor man fixt — die meisten Core-Audit-FAILs sind Audit-Parser-Limits (Brace-Glob, 3-Tier-Format, Placeholder-Semantik), kein echter Drift. Cleanup-Scope eng halten (User: „PIPELINE 00_Core DONE raus"), nicht in chronische Systemic-Findings ausufern.
+
+**Cross-Reference:** Commit `<TBD>` · PIPELINE #24 collapsed · Memory `feedback_core_folder_lean_discipline`, `feedback_information_loss_aversion`.
