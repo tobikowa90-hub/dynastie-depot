@@ -24,7 +24,7 @@
 | **T1** | MSFT | **50** | 🟠 2 | **0€** | 🔴 CapEx/OCF (A ✅ 57,7% / B ❌ / C ✅✅ — UND nicht vollumfänglich) | **Q4 FY26 29.07.** (amc) — CapEx-Plateau + WACC-Methodology-Verify; Insider-Block-Re-Score (PIPELINE #25-#27) |
 | **T1** | AMZN | **42** | 🔴 1 | **0€** | 🔴 CapEx/OCF (TTM netto 99,2% ≫60%) | **Q2 FY26 30.07.** (amc) — CapEx/OCF-FLAG-Re-Eval + Vollanalyse |
 | **T2** | ASML | **68** | 🟡 3 | **32€** | ✅ | **Q2 2026 15.07.** (bmo, confirmed; Q1 17.04. Vollanalyse ✅) — nächstes Event im Roster |
-| **T2** | KYCCF | **— (O3)** | 🟡 3\* | **32€** | ✅ Platzhalter | **Q1 29.07.** (yf — JP-Termin verifizieren) — O3 pending (JP `non-us-fundamentals`, JPY/IFRS) — Owner-Add ohne Score (§6.4) |
+| **T2** | KYCCF | **67** | 🟡 3 | **32€** | ✅ Clean | **Q1 FY27 29.07.** (yf — JP-Termin verifizieren) — O3 DONE 13.06. (JGAAP FY26 Primärquelle; Wide-Moat QT beide Zweige hart 0, Festungs-Bilanz EQ-Ratio 94,6%, §12.14) |
 | **T2** | V | **64** | 🟠 2 | **16€** | ✅ Clean (D2-Sockelbetrag = 50% von 32) | **Q3 FY26 28.07.** (amc) — Cross-Border-Velocity + ROIC-Methodology-Verify |
 | **T3** | BRK.B | **71** | 🟡 3 | **18€** | ✅ Insurance Exception | **Q2 FY26 01.08.** (Sa, 10-Q — BRK released samstags) — KHC-OTTI / GEICO-Decel / Form-13F Apple-Trim / Buyback-Reconciliation (#36-#41) |
 | **T3** | SU | **69** | 🟡 3 | **18€** | ✅ | **H1 30.07.** (confirmed) |
@@ -33,7 +33,7 @@
 | **T3** | APH | **61** | 🟠 2 | **0€** | 🔴 Score-basiert (61 < 65 D3-Threshold) | **Q2 FY26 29.07.** (13:00 ET) — China-Tax + CommScope-Net-Lev (Score 63→61 am 30.04., §12.7) |
 | **T3** | ZETA | **— (O3)** | 🟡 3\* | **18€** | ✅ Platzhalter | **Q2 04.08.** — O3-Vollanalyse pending (US, war QuickScreener-Rot, bewusste Spekulation) — Owner-Add ohne Score (§6.4) |
 
-\* DEFCON-3-Platzhalter (NOW/KYCCF/ZETA): Owner-Conviction-Add ohne DEFCON-Score → volle Tier-Rate bis O3-Vollanalyse echten Score liefert.
+\* DEFCON-3-Platzhalter (NOW/ZETA): Owner-Conviction-Add ohne DEFCON-Score → volle Tier-Rate bis O3-Vollanalyse echten Score liefert. (KYCCF O3 DONE 13.06. → Score 67/D3.)
 
 **Sparraten-Modell (3-Tier × DEFCON-Modulation × FLAG):** **SOLL-Σ = 4×40 + 3×32 + 6×18 = 364€** (== `config.yaml` brokers.scalable.sparrate_eur). **Funded-Σ = 210€** = NOW 40 + [ASML 32 + KYCCF 32 + V 16] + [RMS/BRK.B/TMO/SU/ZETA je 18 = 90]. Differenz **154€** (138€ FLAG-eingefroren AMZN/MSFT/AVGO/APH + 16€ V-D2-Sockel) → Rebalancing-Tool lenkt value-based auf untergewichtete Positionen (voller Monatsbeitrag deployed, nur Verteilung verschiebt sich). FLAG ist score-unabhängig (heilig) — Score-Moves bei geflaggten Titeln wirken nicht auf die Rate solange FLAG aktiv.
 
@@ -65,7 +65,7 @@
 | **15.07.** (bmo) | ASML | B | Q2 2026 — nächstes Roster-Event (30-Tage-Fenster →09.07. sonst leer) |
 | **22.07.** | NOW / TMO | A/B | NOW Q2 (yf/UW; TipRanks 29.07 — IR-confirm pending, O3) · TMO Q2 (bmo, yf+Nasdaq) |
 | **28.07.** (amc) | V | B | Q3 FY26 — Cross-Border-Velocity + ROIC-Methodology-Verify |
-| **29.07.** | MSFT / APH / RMS / KYCCF | A/B | MSFT Q4 FY26 (amc, CapEx+WACC) · APH Q2 (13:00 ET, Score 61<65 FLAG) · RMS H1 (8:00 CEST) · KYCCF Q1 (yf, JP-Termin verifizieren, O3) |
+| **29.07.** | MSFT / APH / RMS / KYCCF | A/B | MSFT Q4 FY26 (amc, CapEx+WACC) · APH Q2 (13:00 ET, Score 61<65 FLAG) · RMS H1 (8:00 CEST) · KYCCF Q1 (yf, JP-Termin verifizieren; Score 67/D3) |
 | **30.07.** (amc) | SU / AMZN | B/C | SU H1 · AMZN Q2 FY26 — CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse (Score 42/D1) |
 | **01.08.** (Sa, 10-Q) | BRK.B | B | Q2 FY26 — KHC-OTTI / GEICO-Decel / Form-13F Apple-Trim (#36-#41) |
 | **04.08.** | ZETA | A | Q2 2026 — O3-Scoring-Nachzug |
@@ -74,4 +74,4 @@
 
 ---
 
-*🦅 PORTFOLIO.md v1.4 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-06-12 (exUSA-Re-Add: EXUS @82€ reaktiviert als US-Hedge, Slots 19→20, intern aus IWDA/AVGC/JEDI finanziert, ETF-Block 616€ unverändert; Rebalancing_Tool_v4.0 SSoT. Vorher: 2026-06-09 Earnings-Kalender-Sync via `earnings_calendar.py` [yfinance+Override SSoT]; Tool-Regex-Bug für 7-Spalten-3-Tier-Tabelle gefixt; date-only, kein Score-Event. Vorher: 2026-06-08 Umstrukturierung-2027 Phase A 13-Roster + 3-Tier + 60/35/5. Detail-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)*
+*🦅 PORTFOLIO.md v1.5 | Dynasty-Depot | Live-State — default-load bei Session-Start | Stand: 2026-06-13 (KYCCF O3-Vollanalyse: Score 67/🟡 D3, kein FLAG, Tier-2-Rate 32€ unverändert [Platzhalter war voll gefunded → Funded-Σ 210€ stabil]; Primärquelle JGAAP FY26; ersetzt DEFCON-3-Platzhalter; O3-Backlog jetzt NOW/ZETA. Vorher: 2026-06-12 exUSA-Re-Add: EXUS @82€ reaktiviert als US-Hedge, Slots 19→20, intern aus IWDA/AVGC/JEDI finanziert, ETF-Block 616€ unverändert; Rebalancing_Tool_v4.0 SSoT. Vorher: 2026-06-09 Earnings-Kalender-Sync via `earnings_calendar.py` [yfinance+Override SSoT]; Tool-Regex-Bug für 7-Spalten-3-Tier-Tabelle gefixt; date-only, kein Score-Event. Vorher: 2026-06-08 Umstrukturierung-2027 Phase A 13-Roster + 3-Tier + 60/35/5. Detail-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)*

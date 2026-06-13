@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 2026-06-08 (Umstrukturierung-2027 Phase A: Roster 12→13, VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter ohne Score; letzter Score-Move AVGO 04.06. 53→56. Detail-Move-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)
+**Stand:** 2026-06-13 (KYCCF O3-Vollanalyse 67/D3 — JGAAP-Primärquelle, ersetzt Platzhalter; O3-Backlog jetzt NOW/ZETA. Vorher: Umstrukturierung-2027 Phase A Roster 12→13, VEEV+COST raus, NOW/KYCCF/ZETA rein. Detail-Move-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -47,7 +47,7 @@
 <!-- DATA:NOW -->
 | NOW | — | — | — | — | — | **— (O3)** | 🟡 3\* | ✅ Platzhalter (Owner-Add §6.4) | — | O3-Vollanalyse (US `!Analysiere`) — Score nachzuholen |
 <!-- DATA:KYCCF -->
-| KYCCF | — | — | — | — | — | **— (O3)** | 🟡 3\* | ✅ Platzhalter (Owner-Add §6.4) | — | O3 `non-us-fundamentals` (JP, JPY/IFRS) — Score nachzuholen |
+| KYCCF | 34,4% (FY26) | 19,9% GuruFocus / op-ROIC >100% (Cash-verwässert) vs WACC 5,54% | 83,0% | Netto-Cash (EQ-Ratio 94,6%) | Wide | **67** | 🟡 3 | ✅ Clean | 2026-06-13 | Q1 FY27 ~29.07. (JP-Termin verifizieren) — JGAAP-Quelle |
 <!-- DATA:ZETA -->
 | ZETA | — | — | — | — | — | **— (O3)** | 🟡 3\* | ✅ Platzhalter (Owner-Add §6.4) | — | O3-Vollanalyse (US, war QuickScreener-Rot) — Score nachzuholen |
 <!-- END_TABLE -->
@@ -55,8 +55,8 @@
 **Aktive FLAGs:** MSFT (CapEx/OCF >60%, T1) | **AVGO (Insider-Selling 90d $106M+ — aktiviert 27.04.2026, T1)** | APH (Score-basiert <65, DEFCON 2, T3) | **AMZN (CapEx/OCF TTM 99,2% netto — aktiviert 2026-05-15, T1)** — alle 4 FLAG → Rate 0€ (heilig)
 **Struktureller Disclosure (kein FLAG):** ~~TMO (fcf_trend_neg)~~ **Resolved 23.04.2026** (Q1 FY26 FCF $825M +121% YoY, WC-Unwind-These bestätigt)
 **Unter Review:** — (AVGO 27.04.2026 zu aktivem FLAG promotet)
-**Analysierte Positionen:** 10/13 ✅ (Umstrukturierung 2026-06-07: VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter ohne Score → O3-Scoring-Nachzug pending. Bestehende Scores: ASML/RMS/SU 17.04. + V 18.04. + TMO 23.04. + MSFT/APH 30.04. + BRK.B 04.05. + AMZN 15.05. + AVGO 04.06.)
-**Offene Scores:** 3/13 (NOW · KYCCF · ZETA — O3-Vollanalyse pending)
+**Analysierte Positionen:** 11/13 ✅ (Umstrukturierung 2026-06-07: VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter ohne Score → O3-Scoring-Nachzug. Bestehende Scores: ASML/RMS/SU 17.04. + V 18.04. + TMO 23.04. + MSFT/APH 30.04. + BRK.B 04.05. + AMZN 15.05. + AVGO 04.06. + KYCCF 13.06.)
+**Offene Scores:** 2/13 (NOW · ZETA — O3-Vollanalyse pending; KYCCF O3 DONE 13.06. → 67/D3)
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
 **Sparraten-Modell (3-Tier, Umstrukturierung 2026-06-07):** Rate = Tier-Basis (T1 40 / T2 32 / T3 18€) × DEFCON-Modulation (D3/D4 ×1,0 · D2 ×0,5 · D1 0) × FLAG (🔴 → 0€). **SOLL-Σ = 4×40 + 3×32 + 6×18 = 364€**; **Funded-Σ = 210€** (FLAG-frozen AMZN/MSFT/AVGO/APH + V-D2-Sockel 16€ + NOW/KYCCF/ZETA-Platzhalter voll). SSoT = config.yaml `satelliten_tier_raten` + PORTFOLIO.md.
 
@@ -72,7 +72,7 @@
 
 | Datum | Position | Klasse | Trigger |
 |-------|----------|--------|---------|
-| pending (O3) | NOW / KYCCF / ZETA | A | Scoring-Nachzug — DEFCON-3-Platzhalter → echter Score (NOW US · KYCCF JP · ZETA US) |
+| pending (O3) | NOW / ZETA | A | Scoring-Nachzug — DEFCON-3-Platzhalter → echter Score (NOW US · ZETA US). KYCCF O3 DONE 13.06. → 67/D3 |
 | overdue | SNPS / SPGI | B | Q1 Earnings Watchlist-Review — Nachholbedarf (PIPELINE #62) |
 | Juni 2026 | — | — | Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung |
 | ~23.07. | APH | B | Q2 FY26 — China-Tax + CommScope-Net-Lev |
@@ -98,4 +98,4 @@ Konzept-Referenz: [[Faktortabelle-Architektur]] · [[Update-Klassen-DEFCON]] · 
 
 ---
 
-*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 2026-06-08 (Umstrukturierung-2027 Phase A: 13-Roster, VEEV+COST DATA-Rows raus, NOW/KYCCF/ZETA Platzhalter-Rows rein, Sparraten-Nenner→3-Tier-Modell, Vault-Links + Update-Kalender nachgezogen)*
+*🦅 Faktortabelle.md | Dynasty-Depot | DEFCON v3.7 | Stand: 2026-06-13 (KYCCF O3 67/D3 JGAAP-Primärquelle; O3-Backlog NOW/ZETA. Vorher 2026-06-08: 13-Roster, VEEV+COST DATA-Rows raus, NOW/KYCCF/ZETA Platzhalter-Rows rein, Sparraten-Nenner→3-Tier-Modell)*

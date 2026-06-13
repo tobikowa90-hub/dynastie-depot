@@ -1834,3 +1834,26 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Lehre:** „ACTIVE-TRACKING"-Status-Labels nicht vertrauen ohne On-Disk-Coverage-Check — ein Tool kann gebaut + abgenommen sein und trotzdem nie operieren, wenn der Trigger nie verdrahtet wurde. Empirie (`jsonl`-Count + `git log` + `health.json`) schlägt Status-Annahme. Spec-Phase-Cron-Deferrals („defer auf Build-Phase") sind ein systematischer Drop-Punkt — Build-Phase erledigt Code, vergisst Automation.
 
 **Cross-Reference:** PIPELINE #75 STALLED · #74 BUILD-DONE (CORE-MEMORY §13 2026-05-22) · Design-Spec `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` §4/§5/§8.1/§B · Commit `<TBD>` · Memory `feedback_aidefence_cloud_cron_limitation`, `feedback_empirie_statt_annahmen`.
+
+---
+
+## [2026-06-13] score | KYCCF (Keyence, 6861.T) O3-Vollanalyse — Score 67/🟡 D3 (score-flag-sparraten Event)
+
+**Event-Typ:** Score-Event (Initial-Vollanalyse, ersetzt DEFCON-3-Platzhalter durch echten Score). Owner-Conviction-Add Umstrukturierung-2027 Phase A (O3-Scoring-Nachzug). Kein FLAG, kein Sparraten-Change (Platzhalter war bereits voll gefunded @32€).
+
+**Auslöser:** User-Direktive „O3-Scoring, Start mit Keyence". Primärquelle = JGAAP-Originalreport (FY ended 31.03.2026, Consolidated, Daten-Symbol 6861.T) statt yfinance-Proxy — User-Direktive für korrektere standard-konsistente Daten. Damit **Reporting-Standard JGAAP bestätigt** (non-us-fundamentals v1.2 ließ JGAAP/IFRS offen).
+
+**Score 67/100 → 🟡 DEFCON 3:**
+- Fundamentals **30/50**: Fwd-P/E + P/FCF beide QT-hart-0 (Wide-Moat, Fwd-P/E ~38 >30, P/FCF 47x >35); Bilanz 9/9 (Netto-Cash-Festung EQ-Ratio 94,6%, ~0 Debt, Goodwill ~0, CR >5x); CapEx/OCF 6,6% → 9/9 (asset-light fabless, CapEx ¥28,4B/OCF ¥430,7B); ROIC 7/8 (GuruFocus 19,9% vs WACC 5,54% = +14,36pp, Cash-Mountain-verwässert da 2,4Bio Securities 65% Assets, op-ROIC >100%, kein §410 da kein Goodwill, konservativ 7); FCF-Yield 2,13% → 3/8; OpM 51,0% → 2/2; SBC ~0 + Accruals 0,40% kein Malus.
+- Moat **18/20** (Wide — Direct-Sales-Intelligence-Engine + Integration-Moat + 70% First-to-Market, GM 83,0%).
+- Technicals **8/10** (ATH-dist −7,25%, +29,18% über steigendem 200MA, RS vs Nikkei225 +9,28pp 6M).
+- Insider **8/10** (Founder Takizaki 18% direkt+TT KK; kein diskret. Selling 90d; Honorary-Chairman-Board-Exit 06/2026 = Governance).
+- Sentiment **3/10** (16 Analysten 11Buy/5Hold/0Sell crowded; PT ¥84.319 = +8,0% Upside; Dispersion 47,7%).
+
+Kurs ¥78.070, MC ¥18,93Bio. `non-us-qt-modulator-default-deny` (Non-US-Freeze). Kalibrierung Near-Twin ASML 68.
+
+**Infra-Bug gefixt (Pre-Requisite, separater Commit):** `03_Tools/backtest-ready/_forward_verify_helpers.py::parse_state_row` nahm Ticker=Spalte-0 an → failte für ALLE Ticker gegen die 3-Tier-PORTFOLIO-Tabelle (Umstrukturierung 06.06. prependete Tier-Spalte). Seit Restructure war KEIN Score-Archiv mehr möglich (AVGO 04.06. = letzter Lauf gegen alte Tabelle). Fix: Ticker-Spalte dynamisch lokalisieren, Score/DEFCON/FLAG relativ-Offset (alt+neu kompatibel). Empirisch verifiziert 10/10 gescorte Ticker. Bug-Klasse = earnings_calendar 7-Spalten-Regex-Bug.
+
+**Sync-Set (§18, score-flag-sparraten):** PORTFOLIO.md + Faktortabelle.md + CORE-MEMORY §12.14 + log.md (dieser Eintrag) + score_history.jsonl (`2026-06-13_KYCCF_vollanalyse`) + config.yaml + Rebalancing_Tool + Satelliten_Monitor xlsx (+ xlsx-Smoke-Test §18.7). Kein flag_events (kein FLAG-Change).
+
+**Cross-Reference:** CORE-MEMORY §12.14 · score_history `2026-06-13_KYCCF_vollanalyse` · Beispiele.md ASML-Anker (Near-Twin) · Commit `<TBD>` · Memory `feedback_correctness_over_runtime`, `feedback_empirie_statt_annahmen`.

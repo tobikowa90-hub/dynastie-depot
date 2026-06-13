@@ -367,13 +367,14 @@ satelliten:
     name: "Keyence"
     typ: "Asset-Light / Factory-Automation"
     tier: 2
-    defcon: 3   # Platzhalter (Owner-Conviction-Add ohne Score) — Vollanalyse O3 PIPELINE (non-us-fundamentals JP)
-    score: null
-    score_datum: null
+    defcon: 3
+    score: 67
+    score_datum: "2026-06-13"
+    score_valid_until: "2026-12-13"
     flag: false
-    sparrate_hinweis: "Tier 2, DEFCON-3-Platzhalter, kein FLAG → volle Tier-2-Rate 32,00€ bis Vollanalyse."
-    naechste_pruefung: "Q1 ~29.07. (yf — JP-Termin verifizieren) — O3 Vollanalyse (non-us-fundamentals, Japan) ersetzt Platzhalter-Score"
-    scoring_notiz: "Neuaufnahme Umstrukturierung 2026-06-07. Owner-Conviction-Add ohne DEFCON-Score (Governance-Override UMSTRUKTURIERUNG-2027 §6.4). DEFCON 3 = Platzhalter für volle Tier-Rate; echter Score via O3 non-us-fundamentals (JP, JPY/IFRS)."
+    sparrate_hinweis: "Tier 2, DEFCON 3, kein FLAG → volle Tier-2-Rate 32,00€."
+    naechste_pruefung: "Q1 FY27 ~29.07. (yf — JP-Termin verifizieren)"
+    scoring_notiz: "O3-Vollanalyse 2026-06-13 (Primärquelle JGAAP FY26 ended 31.03.2026, Daten-Symbol 6861.T): Score 67/D3 ersetzt Platzhalter. Fundamentals 30/50 (Fwd-P/E+P/FCF QT-hart-0 Wide-Moat; Bilanz 9/9 Netto-Cash EQ-Ratio 94,6%; CapEx/OCF 6,6%; ROIC 7/8 GuruFocus 19,9% vs WACC 5,54% Cash-verwässert op-ROIC>100%; FCF-Yield 2,13%; OpM 51%), Moat 18/20 Wide, Technicals 8/10, Insider 8/10 (Takizaki 18%), Sentiment 3/10. Kein FLAG. Reporting-Standard JGAAP bestätigt. Near-Twin ASML 68. non-us-qt-modulator-default-deny."
     ersatz: null
     substitute_activation_rule: "siehe system_regeln.substitute_activation_global"
     region: Asien
