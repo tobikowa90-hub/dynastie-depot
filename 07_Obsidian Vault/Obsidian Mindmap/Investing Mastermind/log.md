@@ -1802,3 +1802,35 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Lehre:** SystemAudit-FAILs zuerst gegen „neu aus eigener Arbeit vs. pre-existing chronisch" klassifizieren bevor man fixt — die meisten Core-Audit-FAILs sind Audit-Parser-Limits (Brace-Glob, 3-Tier-Format, Placeholder-Semantik), kein echter Drift. Cleanup-Scope eng halten (User: „PIPELINE 00_Core DONE raus"), nicht in chronische Systemic-Findings ausufern.
 
 **Cross-Reference:** Commit `<TBD>` · PIPELINE #24 collapsed · Memory `feedback_core_folder_lean_discipline`, `feedback_information_loss_aversion`.
+
+---
+
+## [2026-06-13] system | PIPELINE #75 FinnHub Shadow-Run als STALLED reklassifiziert + Doc-Drift-Fix (scoring-neutral, system-zustand + pipeline-item)
+
+**Event-Typ:** System-Zustand + Pipeline-Item-Status-Transition (ACTIVE-TRACKING → STALLED). KEIN Score/FLAG/Sparraten-Touch.
+
+**Auslöser:** User-Agenda-Review (#21/#55/#75 durchgegangen). Bei #75 empirischer Coverage-Check statt Annahme.
+
+**Empirie-Befund (3 Quellen konsistent):**
+- `03_Tools/finnhub_crosswalk_log.jsonl` = **24 Records, ALLE 22.05., alle `batch_id 20260522-a6-acceptance`** (= Build-Abnahme A6, meist MSFT-peTTM-Repeat). **0 `daily-crosswalk`-Records.**
+- `finnhub_health.json` last_run 22.05. (Build-Snapshot).
+- git log: alle Finnhub-Commits Build/Fix vom 22.05. (letzter `7cafaa4`), **kein Cron/Hook/Automations-Commit.**
+- → frühere PIPELINE-Notiz „Day-1-Trigger 23.05. ~Mittag gefeuert (siehe git log)" durch On-Disk-Daten **widerlegt** — 0 Akkumulation in 3 Wochen, Gate-Deadline 06.07. de-facto verfehlt.
+
+**Root-Cause (Spec-Verify, User-Hypothese „feuert via Briefing?" geprüft + verworfen):**
+- Design-Spec §4/§5/§8.1: Trigger = **lokaler Daily-Cron ODER manueller Local-Run**, explizit „NICHT Skill-Hook". `morning-briefing-spec.md` + `briefing-sync-check.ps1` Grep = **0 Finnhub-Treffer** → war nie ins Briefing verdrahtet.
+- Spec §B: Cron-Setup auf Build-Phase deferred → **nie eingerichtet**; Manual-Runs fanden nie statt. Das ist der ganze Gap.
+- Crosswalk braucht lokale WSL→defeatbeta-Bridge (Dual-Call) → Cloud-Cron-Briefing könnte ihn ohnehin nicht fahren (gleiche Tunnel-Limitation wie AIDefence, `feedback_aidefence_cloud_cron_limitation`). **→ lokale 0-Coverage IST Ground-Truth, kein verstecktes Cloud-Log.**
+
+**Doc-Drift gefixt (3 Stellen):**
+1. PIPELINE #75: Status ACTIVE-TRACKING → STALLED + Empirie-Befund + Root-Cause + DECISION-PENDING-Block.
+2. SYSTEM.md §Passive Read-Only Data Layer: „Shadow-Run aktiv seit 2026-05-23" → STALLED-Korrektur.
+3. Cross-Ref `01_Skills/_extern/finnhub/` (existiert nicht) → `03_Tools/finnhub_*.py` (reale Deliverables).
+
+**Substanz-Entscheid VERTAGT (User 13.06.):** Sunset jetzt [Gate-(b)-resolve] VS Clock-Reset + echte Local-Cron-Automation [Deadline 6 Wochen ab echtem Start] VS komprimierter 23-Tage-Run. Heute nur Doc-Drift, Entscheid in dedizierter Session.
+
+**Sync-Set (§18, scoring-neutral):** PIPELINE.md (#75-Status + Footer) + SYSTEM.md (§Passive Read-Only) + log.md (dieser Eintrag). KEIN PORTFOLIO/Faktortabelle/score_history/config/xlsx/flag_events (kein Score/FLAG/Sparraten-Event).
+
+**Lehre:** „ACTIVE-TRACKING"-Status-Labels nicht vertrauen ohne On-Disk-Coverage-Check — ein Tool kann gebaut + abgenommen sein und trotzdem nie operieren, wenn der Trigger nie verdrahtet wurde. Empirie (`jsonl`-Count + `git log` + `health.json`) schlägt Status-Annahme. Spec-Phase-Cron-Deferrals („defer auf Build-Phase") sind ein systematischer Drop-Punkt — Build-Phase erledigt Code, vergisst Automation.
+
+**Cross-Reference:** PIPELINE #75 STALLED · #74 BUILD-DONE (CORE-MEMORY §13 2026-05-22) · Design-Spec `docs/superpowers/specs/2026-05-22-finnhub-integration-design.md` §4/§5/§8.1/§B · Commit `<TBD>` · Memory `feedback_aidefence_cloud_cron_limitation`, `feedback_empirie_statt_annahmen`.
