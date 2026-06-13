@@ -49,6 +49,9 @@ agentdb.rvf
 agentdb.rvf.lock
 claude-flow.config.json
 
+# API keys / secrets — never commit (eodhd+fred bereits in public History a7f2be9 → ROTIEREN)
+01_Skills/non-us-fundamentals/config.json
+
 # Claude Code scheduled-tasks runtime lock (sessionId+pid, ephemeral)
 .claude/scheduled_tasks.lock
 
