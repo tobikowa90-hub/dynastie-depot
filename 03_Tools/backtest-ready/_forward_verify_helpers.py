@@ -160,8 +160,13 @@ def parse_state_row(ticker: str, state_md_content: str) -> dict:
     - Tickers with dots (``BRK.B``)
     - Arbitrary whitespace around pipes
 
-    Table column order assumed (per PORTFOLIO.md):
-        0=Ticker  1=Score  2=DEFCON  3=Rate  4=FLAG  5=Nächster Trigger
+    Table column order (Ticker-relative — robust to leading columns):
+        Ticker  Ticker+1=Score  Ticker+2=DEFCON  Ticker+3=Rate  Ticker+4=FLAG
+    The 2026-06 Umstrukturierung prepended a "Tier" column (Tier|Ticker|Score|
+    DEFCON|Rate|FLAG|Trigger), so Ticker is no longer guaranteed to be column 0.
+    Score/DEFCON/Rate/FLAG keep their order relative to Ticker in both the pre-
+    and post-restructure layouts, so we locate the Ticker cell and read the
+    others at fixed offsets from it.
 
     Raises:
         ValueError: if ticker is not found in any table row.
@@ -170,14 +175,17 @@ def parse_state_row(ticker: str, state_md_content: str) -> dict:
         cells = _cells_from_row(line)
         if cells is None or len(cells) < 5:
             continue
-        # Column 0: Ticker (strip bold)
-        row_ticker = _strip_bold(cells[0]).strip()
-        if row_ticker != ticker:
+        # Locate the Ticker cell dynamically (strip bold for exact match)
+        ticker_idx = next(
+            (i for i, c in enumerate(cells) if _strip_bold(c).strip() == ticker),
+            None,
+        )
+        if ticker_idx is None or ticker_idx + 4 >= len(cells):
             continue
-        # Found the row — extract columns
-        score = _parse_score(cells[1])
-        defcon = _parse_defcon(cells[2])
-        flags_active = _parse_flags_active(cells[4])
+        # Found the row — extract columns relative to the Ticker column
+        score = _parse_score(cells[ticker_idx + 1])
+        defcon = _parse_defcon(cells[ticker_idx + 2])
+        flags_active = _parse_flags_active(cells[ticker_idx + 4])
         return {"score": score, "defcon": defcon, "flags_active": flags_active}
 
     raise ValueError(f"ticker '{ticker}' not found in PORTFOLIO.md")
