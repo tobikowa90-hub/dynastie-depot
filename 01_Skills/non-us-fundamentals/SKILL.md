@@ -1,28 +1,29 @@
 ---
 name: non-us-fundamentals
-version: "1.1"
-Stand: "2026-04-24"
+version: "1.2"
+Stand: "2026-06-13"
 description: >
-  Dynastie-Depot Non-US Fundamentals Module v1.1.
+  Dynastie-Depot Non-US Fundamentals Module v1.2.
   Automatisierte DEFCON-Fundamentaldaten fuer ASML, RMS (Hermes), SU (Schneider Electric)
-  via Yahoo Finance (yfinance). Kein API-Key noetig. Schliesst die Shibui/defeatbeta-Luecke
-  fuer Non-US-Satelliten. EUR-Kurse, IFRS-Daten, vollstaendiger DEFCON-Block.
+  und KYCCF (Keyence, Japan) via Yahoo Finance (yfinance). Kein API-Key noetig. Schliesst
+  die Shibui/defeatbeta-Luecke fuer Non-US-Satelliten. EUR-Kurse (ASML/RMS/SU) bzw. JPY
+  (KYCCF, Daten-Symbol 6861.T), IFRS-Daten, vollstaendiger DEFCON-Block.
   Trigger: !NonUSScan, !NonUSDetail [TICKER], !NonUSPrices
 ---
 
-# Non-US Fundamentals Module — Dynastie-Depot v1.1
+# Non-US Fundamentals Module — Dynastie-Depot v1.2
 
-**Stand:** 06.04.2026 (Roster-Marker 2026-06-13) | **Zweck:** Automatisierte Fundamentaldaten fuer Non-US-Satelliten
-**Ersetzt:** Manueller GuruFocus/Macrotrends-Workflow fuer ASML, RMS, SU
+**Stand:** 2026-06-13 | **Zweck:** Automatisierte Fundamentaldaten fuer Non-US-Satelliten
+**Ersetzt:** Manueller GuruFocus/Macrotrends-Workflow fuer ASML, RMS, SU, KYCCF
 
-> ⚠️ **KYCCF-Gap (Umstrukturierung-2027):** KYCCF (Keyence, Japan) ist seit 06/2026 vierter Non-US-Satellit, wird aber von diesem Modul **noch NICHT** abgedeckt — das Script ist auf EUR-Ticker (ASML.AS/RMS.PA/SU.PA) gebaut; KYCCF braucht JPY/JP-Support (yf-Symbol, Currency-Handling). **JP-Build = O3-Scoring-Nachzug pending** (PIPELINE). Bis dahin: KYCCF manuell.
+> ✅ **KYCCF integriert (v1.2, 2026-06-13):** KYCCF (Keyence, Japan) ist seit 06/2026 vierter Non-US-Satellit und nun im Modul abgedeckt. **yf-Daten-Symbol = `6861.T`** (Tokyo, JPY) — empirisch verifiziert: das US-OTC-Symbol „KYCCF" mischt USD-Kurs mit JPY-Fundamentals und korrumpiert P/FCF, FCF-Yield, MCap-Ratios; 6861.T ist waehrungs-konsistent. Reporting-Standard (JGAAP vs. IFRS) bei O3-Vollanalyse final verifizieren. Insider: EDINET/FSA (JP) manuell. **Score = O3-Scoring-Nachzug pending** (PIPELINE) — das Tooling ist bereit.
 
 ## Architektur
 
 ```
 Yahoo Finance (yfinance) — kostenlos, kein API-Key
          |
-    EUR-Ticker abrufen (ASML.AS / RMS.PA / SU.PA)
+    Symbol abrufen (ASML.AS / RMS.PA / SU.PA / 6861.T)
          |
     DEFCON-Metriken berechnen:
     CapEx/OCF, Bilanz, Valuation, Margen, GM-Trend
@@ -30,7 +31,7 @@ Yahoo Finance (yfinance) — kostenlos, kein API-Key
          |
     FLAG-Detection: CapEx/OCF > 60%
          |
-    Output: DEFCON-ready Markdown-Block (EUR, IFRS)
+    Output: DEFCON-ready Markdown-Block (EUR/JPY, IFRS)
 ```
 
 **API-Routing-Regel (Gesamt-System):**
@@ -44,8 +45,9 @@ IF US_Ticker (NYSE/NASDAQ)
 IF Non-US-Ticker (ASML, RMS, SU)
     → eodhd_intel.py (dieses Modul, yfinance)
     → Insider: AFM (ASML) / AMF (RMS, SU) — manuell
-IF KYCCF (Japan)
-    → JP/JPY-Support O3-pending — bis dahin manuell (yfinance 6861.T verify + EDINET)
+IF KYCCF (Keyence, Japan)
+    → eodhd_intel.py (yf-Daten-Symbol 6861.T, JPY) — integriert v1.2
+    → Insider: EDINET/FSA (JP) — manuell, keine Form-4-Pflicht
 ```
 
 ---
@@ -57,9 +59,9 @@ IF KYCCF (Japan)
 | ASML | ASML.AS | Amsterdam (Euronext) | Quarterly (IFRS) | SNPS |
 | RMS | RMS.PA | Paris (Euronext) | Semi-annual H1/H2 | RACE |
 | SU | SU.PA | Paris (Euronext) | Semi-annual H1/H2 | DE |
-| KYCCF ⏳ | 6861.T (verify) | Tokyo (TSE) — JPY/IFRS | Quarterly | — (O3-pending) |
+| KYCCF | 6861.T | Tokyo (TSE) — JPY | Quarterly (FY Maerz) | — (O3-pending) |
 
-⏳ **KYCCF noch nicht im Script** (`NON_US_SATELLITES`-Dict deckt nur ASML/RMS/SU) — JP/JPY-Support = O3-Build pending. yf-Symbol (6861.T Tokyo vs. KYCCF OTC) vor Aktivierung empirisch verifizieren.
+**KYCCF integriert (v1.2):** Daten-Symbol `6861.T` (Tokyo), NICHT das US-OTC „KYCCF". Empirisch verifiziert 2026-06-13 — 6861.T liefert waehrungs-konsistente JPY-Daten (Kurs+MCap+Fundamentals), das OTC-Symbol mischt USD-Kurs mit JPY-Fundamentals und korrumpiert valuationsbasierte Ratios. Reporting-Standard (JGAAP vs. IFRS) bei O3-Vollanalyse verifizieren. Substitute-Ticker O3-pending.
 
 **Daten-Toleranz:**
 - US-Ticker: ±0.5% Abweichung akzeptabel
@@ -71,10 +73,10 @@ IF KYCCF (Japan)
 
 ### !NonUSScan [TICKER | ALL]
 
-Scannt alle 3 unterstützten Non-US-Satelliten (ASML/RMS/SU; KYCCF O3-pending) oder einzelnen Ticker. Gibt vollstaendigen DEFCON-Block aus.
+Scannt alle 4 unterstützten Non-US-Satelliten (ASML/RMS/SU/KYCCF) oder einzelnen Ticker. Gibt vollstaendigen DEFCON-Block aus.
 
 ```bash
-# Alle 3 Non-US-Satelliten
+# Alle 4 Non-US-Satelliten
 python eodhd_intel.py scan
 
 # Einzelner Ticker
@@ -105,11 +107,12 @@ Identisch zu !NonUSScan fuer einen einzelnen Ticker.
 python eodhd_intel.py detail ASML
 python eodhd_intel.py detail RMS
 python eodhd_intel.py detail SU
+python eodhd_intel.py detail KYCCF   # JPY-Block (Daten-Symbol 6861.T)
 ```
 
 ### !NonUSPrices
 
-Schneller Kurscheck aller 3 Satelliten mit 200MA-Status.
+Schneller Kurscheck aller 4 Satelliten mit 200MA-Status.
 
 ```bash
 python eodhd_intel.py prices
@@ -182,12 +185,12 @@ Aktuellsten Bericht immer auf IR-Website pruefen.
 
 ## Integration in !Analysiere Workflow
 
-Bei `!Analysiere [Non-US-TICKER]` (ASML, RMS, SU):
+Bei `!Analysiere [Non-US-TICKER]` (ASML, RMS, SU, KYCCF):
 
 1. Claude fuehrt `python eodhd_intel.py detail [TICKER]` aus
 2. Output wird als Fundamentals-Block (Abschnitt 1) in die Analyse eingefuegt
 3. Valuation-Metriken werden gegen AlphaSpread-DCF verifiziert
-4. Insider-Block bleibt manuell (AFM/AMF-Pflicht)
+4. Insider-Block bleibt manuell (AFM/AMF; KYCCF: EDINET/FSA JP)
 5. Tariff-Exposure-Check: ASML (CN-Exportrestriktionen) manuell via 20-F
 
 **Bei !Analysiere US-Ticker:** Dieses Modul wird NICHT verwendet.
@@ -205,7 +208,7 @@ pip install yfinance
 cd "01_Skills/non-us-fundamentals"
 python eodhd_intel.py scan ASML
 
-# Test: Alle 3 Non-US-Satelliten
+# Test: Alle 4 Non-US-Satelliten
 python eodhd_intel.py scan
 
 # Test: Kurscheck
@@ -228,8 +231,8 @@ Fundamentals-Endpoint** — 403 Forbidden. Nur Real-Time + EOD Historical Data
 sind im Free-Plan enthalten.
 
 yfinance ist die kostenlose Alternative mit vollstaendiger Coverage
-fuer EUR-Ticker (ASML.AS, RMS.PA, SU.PA) und liefert alle benoetigten
-DEFCON-Metriken ohne API-Key.
+fuer EUR-Ticker (ASML.AS, RMS.PA, SU.PA) und JPY (6861.T) und liefert alle
+benoetigten DEFCON-Metriken ohne API-Key.
 
 ---
 
@@ -249,5 +252,5 @@ DEFCON-Metriken ohne API-Key.
 
 ---
 
-*Non-US Fundamentals Module v1.1 | Dynastie-Depot | Stand: 06.04.2026*
+*Non-US Fundamentals Module v1.2 | Dynastie-Depot | Stand: 2026-06-13*
 *Basiert auf yfinance (Yahoo Finance). Kein API-Key erforderlich.*

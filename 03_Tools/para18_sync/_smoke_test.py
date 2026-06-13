@@ -905,16 +905,16 @@ def test_s14a_active_block_pin(tmp_path: Path):
         sysmd = tmp_path / "SYSTEM.md"
         sysmd.write_text(
             "## Active xlsx-Filenames\n"
-            "- Rebalancing_Tool: Rebalancing_Tool_v3.4.xlsx\n"
-            "- Satelliten_Monitor: Satelliten_Monitor_v2.0.xlsx\n"
+            "- Rebalancing_Tool: Rebalancing_Tool_v4.0.xlsx\n"
+            "- Satelliten_Monitor: Satelliten_Monitor_v4.0.xlsx\n"
             "\n"
             "## Anderer Block\n",
             encoding="utf-8",
         )
         pin = validator.parse_active_xlsx_block(sysmd)
         assert pin == {
-            "Rebalancing_Tool": "Rebalancing_Tool_v3.4.xlsx",
-            "Satelliten_Monitor": "Satelliten_Monitor_v2.0.xlsx",
+            "Rebalancing_Tool": "Rebalancing_Tool_v4.0.xlsx",
+            "Satelliten_Monitor": "Satelliten_Monitor_v4.0.xlsx",
         }
     finally:
         sys.path.pop(0)

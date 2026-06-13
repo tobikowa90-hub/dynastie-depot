@@ -2,11 +2,11 @@
 """
 Dynastie-Depot Insider Intelligence Module v1.0
 ================================================
-Spezialisiertes Form-4-Abfrage-Tool fuer die 8 US-Satelliten des Dynastie-Depots.
+Spezialisiertes Form-4-Abfrage-Tool fuer die 9 US-Satelliten des Dynastie-Depots.
 Ersetzt den generischen sec-edgar-skill fuer den DEFCON-Insider-Scoring-Block.
 
 Verwendung:
-    python insider_intel.py scan                    # Alle 8 US-Satelliten scannen
+    python insider_intel.py scan                    # Alle 9 US-Satelliten scannen
     python insider_intel.py scan AVGO MSFT          # Nur bestimmte Ticker
     python insider_intel.py detail AVGO             # Detail-Report eines Tickers
     python insider_intel.py flag-check              # Nur FLAG-relevante Transaktionen
@@ -1084,7 +1084,7 @@ def main():
 
     # scan
     p_scan = sub.add_parser("scan", help="Scanne US-Satelliten (alle oder bestimmte Ticker)")
-    p_scan.add_argument("tickers", nargs="*", help="Ticker-Liste (leer = alle 8 US-Satelliten)")
+    p_scan.add_argument("tickers", nargs="*", help="Ticker-Liste (leer = alle 9 US-Satelliten)")
     p_scan.add_argument(
         "--days", type=int, default=180, help="Lookback-Zeitraum in Tagen (default: 180)"
     )
@@ -1096,7 +1096,7 @@ def main():
     )
 
     # flag-check
-    p_flag = sub.add_parser("flag-check", help="Schneller FLAG-Status aller 8 US-Satelliten")
+    p_flag = sub.add_parser("flag-check", help="Schneller FLAG-Status aller 9 US-Satelliten")
     p_flag.add_argument(
         "--days", type=int, default=90, help="Lookback-Zeitraum in Tagen (default: 90)"
     )

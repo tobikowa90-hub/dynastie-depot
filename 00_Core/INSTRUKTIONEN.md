@@ -252,11 +252,13 @@ Trigger: nur bei Score ≥ 80 aus Stufe 2
 
 ---
 
-## 14. Non-US Scoring Addendum (ASML / RMS / SU)
+## 14. Non-US Scoring Addendum (ASML / RMS / SU / KYCCF)
 
 > **IFRS-Anpassungen + API-Routing → [SKILL.md §API-Routing-Regel (Non-US)](../01_Skills/dynastie-depot/SKILL.md) + §21 unten (Kurzreferenz)**
 >
 > EODHD ist Datenquelle für Non-US (Euronext-Primär, EUR). IFRS-Nuancen pro Block (IFRS 16 Leasing, Goodwill, SBC) siehe §21 Kurzreferenz. Insider: AFM (ASML) / AMF (RMS, SU) manuell — kein Form 4.
+>
+> **KYCCF-Addendum (Keyence, Japan — Umstrukturierung-2027, O3-pending):** yf-Daten-Symbol = **`6861.T`** (Tokyo, JPY), NICHT das US-OTC „KYCCF" — letzteres mischt USD-Kurs mit JPY-Fundamentals und korrumpiert P/FCF, FCF-Yield, MCap-Ratios (empirisch verifiziert 2026-06-13). Daten in **JPY** (kein EUR/USD-Umrechnen für Ratios — JPY-konsistent rechnen). Reporting-Standard **JGAAP vs. IFRS bei O3-Vollanalyse final verifizieren** (config-SSoT setzt vorläufig IFRS). Insider: **EDINET/FSA (JP)** manuell — kein Form 4, keine AMF/AFM. Tool: `python 01_Skills/non-us-fundamentals/eodhd_intel.py detail KYCCF` (Modul v1.2, JPY-Block). WACC-Hürde nutzt US-DGS10-Proxy (wie bei EUR-Satelliten — strukturelle Näherung, nicht JGB).
 
 ---
 
@@ -522,6 +524,13 @@ ASML/RMS/SU — IFRS-Besonderheiten:
 - **SU:** "Net cash from operations" (nach Steuern!) — IFRS-16 ROU-Zugänge nicht mitzählen
 - **Insider:** AFM (ASML) / AMF (RMS, SU) — manuell, kein Form 4
 - **Toleranz:** ±1,5% CapEx, bis ~15% OCF (IFRS 16-Effekt)
+
+KYCCF (Keyence, Japan) — Besonderheiten:
+- **Daten-Symbol:** `6861.T` (Tokyo, JPY) — NICHT US-OTC „KYCCF" (Währungs-Mismatch USD-Kurs/JPY-Fundamentals)
+- **Währung:** JPY durchgängig — keine cents, MCap-Ratios JPY-intern rechnen
+- **Reporting:** JGAAP vs. IFRS bei O3 verifizieren; FY endet 31.03., Q1 ~Ende Juli
+- **Insider:** EDINET/FSA (JP) — manuell, kein Form 4
+- **Profil:** asset-light (CapEx/OCF ~3-13%), schuldenfrei, GM ~83% — FLAG-Schwellen wie EUR-Satelliten
 
 ---
 

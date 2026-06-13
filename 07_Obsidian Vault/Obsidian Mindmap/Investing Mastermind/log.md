@@ -1765,3 +1765,23 @@ KEIN SYSTEM.md/PIPELINE.md/STATE.md-Touch (alle bereits im Build-Wave-Commit `98
 **Lehre:** Skill-interne Referenz-Docs sind **nicht** im §18-Sync-Set → laggen Major-Restructures (Phase A synct nur 00_Core/Vault/config/xlsx). Bei Roster-Umbau ist ein expliziter Skill-Doc-Nachzug-Pass nötig. Zusätzlich: §18-Doktrin hardcodete xlsx-Versionen → Drift bei jedem Bump; jetzt de-versioniert mit SYSTEM.md-Pin als Single-Source.
 
 **Cross-Reference:** Commit `<TBD>` · PIPELINE #25(d)+(e) DONE · Memory `project_umstrukturierung_2027_pending_sync`.
+
+## [2026-06-13] pipeline-item | #24(f) KYCCF-JPY-Code-Infra + Count-/xlsx-Versions-Kosmetik (scoring-neutral)
+
+**Event-Typ:** Pipeline-Item (KYCCF-Code-Infrastruktur + Doku-Sync, kein Score/FLAG/Sparraten-Touch). Schließt PIPELINE #24 (b)+(c); verbleibt nur O3-KYCCF-Score.
+
+**yf-Symbol-Verify (load-bearing):** Empirisch 2026-06-13 — `6861.T` (Tokyo) vs US-OTC `KYCCF`. Beide liefern dieselben (JPY-denominierten) Fundamentals (OCF/Rev byte-identisch), aber OTC-`KYCCF` meldet `currency=USD` beim Kurs (455 USD / MCap 110B USD) → Mischwährung USD-Kurs + JPY-Fundamentals korrumpiert P/FCF, FCF-Yield, MCap-Ratios. `6861.T` ist durchgängig JPY (Kurs 72.620 JPY / MCap 17,6T JPY). → **Daten-Symbol = 6861.T**, config-Ticker „KYCCF" bleibt nur Dynastie-/Brokerage-Label.
+
+**Was passiert ist:**
+- `eodhd_intel.py` v1.1→v1.2: KYCCF in `NON_US_SATELLITES` (6861.T/JPY/Tokyo/quarterly), neue `_INSIDER_REGULATOR`-Map (ASML=AFM, RMS/SU=AMF, KYCCF=EDINET/FSA JP), Currency-Header EUR→`(lok.)` + EUR/JPY, `stdout.reconfigure`-Robustness (cp1252-Emoji-Crash-Fix, analog `earnings_calendar.py`), Docstring-/argparse-Counts 3→4. `detail KYCCF` empirisch grün: JPY-konsistent, Keyence asset-light (CapEx/OCF 3,5%), schuldenfrei, GM 83 %, Insider-Note „EDINET/FSA (JP)".
+- `earnings_calendar.py`: `YAHOO_MAP` KYCCF→6861.T (Q1-Termin **29.07.2026 verifiziert**, 46d, Smoke PASS), Count-String 11→13.
+- `non-us-fundamentals/SKILL.md` v1.1→v1.2: KYCCF ⏳-Gap → ✅ integriert (Tabelle, Routing, Befehle, Footer).
+- `INSTRUKTIONEN.md` §14 (Titel +KYCCF) + §21: KYCCF-Japan-Addendum (6861.T-Begründung, JPY, EDINET/FSA, JGAAP-vs-IFRS-bei-O3, US-DGS10-WACC-Proxy-Hinweis).
+- `insider_intel.py`: Count-Strings „8 US-Satelliten" → „9" (Roster-Sync, SATELLITES_CIK empirisch 9 bestätigt).
+- `para18_sync/_smoke_test.py`: Test-Fixtures v3.4/v2.0 → v4.0 (nur echte Tools; FooTool-Synthetik unberührt; self-contained, pytest 48 passed / 3 skipped). Der erwähnte „precommit-Kommentar" existierte nicht im Code → kein Edit.
+
+**Review:** Codex (gpt-5.3-codex) Single-Pass: 0 HIGH / 0 MEDIUM / 1 LOW (argparse-Help-Texte „ASML RMS SU"/„EUR" stale → gefixt). ruff check + format clean auf allen .py.
+
+**Lehre:** Bei moderner Py-3.14-Syntax (`except A, B:` ohne Klammern = PEP-758) zuerst AST-parsen + `requires-python`-Floor prüfen, nicht als Bug „fixen" (Memory `feedback_pyproject_floor_before_portability_claim`). yf-Symbol-Wahl bei Cross-Listings (OTC-ADR vs Heimatbörse) immer empirisch auf Währungs-Konsistenz prüfen — gleiche Fundamentals, aber Kurs-Währung divergiert.
+
+**Cross-Reference:** Commit `<TBD>` · PIPELINE #24(f) DONE · #24(b)+(c) DONE · Memory `feedback_pyproject_floor_before_portability_claim`, `feedback_windows_console_ascii_safe_inline_python`.

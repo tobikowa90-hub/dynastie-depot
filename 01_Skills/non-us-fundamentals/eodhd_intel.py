@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Dynastie-Depot Non-US Fundamentals Module v1.1
+Dynastie-Depot Non-US Fundamentals Module v1.2
 ================================================
-Automatisierte Fundamentaldaten fuer ASML, RMS (Hermes) und SU (Schneider Electric)
-via Yahoo Finance (yfinance). Kein API-Key noetig. Daten in EUR/IFRS.
+Automatisierte Fundamentaldaten fuer ASML, RMS (Hermes), SU (Schneider Electric)
+und KYCCF (Keyence, Japan) via Yahoo Finance (yfinance). Kein API-Key noetig.
+Daten in EUR/IFRS (ASML/RMS/SU) bzw. JPY (KYCCF, Daten-Symbol 6861.T Tokyo).
 
 EODHD-Hinweis: Free-Tier hat keinen Zugriff auf Fundamentals-Endpoint.
 yfinance ist die kostenlose Alternative mit vollstaendiger Coverage.
@@ -13,13 +14,14 @@ Routing-Regel (aus SKILL.md):
   IF Non-US     -> dieses Script (yfinance, EUR-Ticker)
 
 Verwendung:
-    python eodhd_intel.py scan              # Alle 3 Non-US-Satelliten
+    python eodhd_intel.py scan              # Alle 4 Non-US-Satelliten
     python eodhd_intel.py scan ASML         # Einzelner Ticker
-    python eodhd_intel.py detail ASML       # Vollstaendiger DEFCON-Block
-    python eodhd_intel.py prices            # Aktuelle EUR-Kurse + MA-Status
+    python eodhd_intel.py detail KYCCF      # Vollstaendiger DEFCON-Block (JPY)
+    python eodhd_intel.py prices            # Aktuelle Kurse (EUR/JPY) + MA-Status
 """
 
 import argparse
+import contextlib
 import json
 import os
 import sys
@@ -64,10 +66,32 @@ NON_US_SATELLITES = {
         "reporting_freq": "semi-annual",  # H1 + H2 Berichte
         "substitute": "DE",
     },
+    "KYCCF": {
+        # yf-Symbol-Verify 2026-06-13: 6861.T (Tokyo) liefert waehrungs-konsistente
+        # JPY-Daten (Kurs+MCap+Fundamentals alle JPY). Das US-OTC-Symbol "KYCCF"
+        # meldet currency=USD beim Kurs ABER JPY-denominierte Fundamentals (OCF/Rev
+        # byte-identisch) -> Mischwaehrung korrumpiert P/FCF, FCF-Yield, MCap-Ratios.
+        # Daher 6861.T als Daten-Symbol; "KYCCF" bleibt nur Dynastie-/Brokerage-Label.
+        "yf_symbol": "6861.T",  # Tokyo (TSE), JPY
+        "name": "Keyence Corporation",
+        "currency": "JPY",
+        "exchange": "Tokyo",
+        "reporting": "IFRS",  # config-SSoT; JGAAP-vs-IFRS bei O3-Vollanalyse verifizieren (§14)
+        "reporting_freq": "quarterly",  # FY endet 31.03., Q1 ~Ende Juli
+        "substitute": "—",  # kein Ersatz definiert (O3-pending)
+    },
 }
 
 FLAG_CAPEX_THRESHOLD = 60.0  # CapEx/OCF > 60% = FLAG
 FLAG_SBC_THRESHOLD = 15.0  # SBC/OCF  > 15% = FLAG
+
+# Insider-Aufsicht pro Non-US-Satellit (keine Form-4-Pflicht; manuell pruefen)
+_INSIDER_REGULATOR = {
+    "ASML": "AFM",  # Autoriteit Financiele Markten (NL)
+    "RMS": "AMF",  # Autorite des marches financiers (FR)
+    "SU": "AMF",
+    "KYCCF": "EDINET/FSA (JP)",  # Japan Financial Services Agency
+}
 
 
 # API-Keys: config.json hat Vorrang, Env-Var als Fallback
@@ -712,7 +736,7 @@ def format_defcon_block(m: dict, wacc: dict | None = None) -> str:
             f"- Insider: {m['pct_insiders']:.2f}% {ins_label}",
             f"- Institutionen: {m['pct_institutions']:.1f}%",
             "",
-            f"_Non-US Insider-Pflicht: {'AFM' if m['ticker'] == 'ASML' else 'AMF'} manuell pruefen — keine Form-4-Pflicht._",
+            f"_Non-US Insider-Pflicht: {_INSIDER_REGULATOR.get(m['ticker'], 'lokale Aufsicht')} manuell pruefen — keine Form-4-Pflicht._",
         ]
     )
 
@@ -723,9 +747,9 @@ def format_summary_table(results: list[dict]) -> str:
     """Kompakte Uebersichtstabelle aller Non-US-Satelliten."""
     lines = [
         "# Non-US Fundamentals — Uebersicht",
-        f"**Datum:** {datetime.now().strftime('%d.%m.%Y')} | Quelle: Yahoo Finance (EUR)",
+        f"**Datum:** {datetime.now().strftime('%d.%m.%Y')} | Quelle: Yahoo Finance (EUR/JPY)",
         "",
-        "| Ticker | Kurs EUR | CapEx/OCF | FLAG | Fwd P/E | P/FCF | FCF-Marge | Net Debt/EBITDA |",
+        "| Ticker | Kurs (lok.) | CapEx/OCF | FLAG | Fwd P/E | P/FCF | FCF-Marge | Net Debt/EBITDA |",
         "|--------|----------|-----------|------|---------|-------|-----------|----------------|",
     ]
     for m in results:
@@ -751,21 +775,25 @@ def format_summary_table(results: list[dict]) -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Dynastie-Depot Non-US Fundamentals v1.1 (yfinance)"
+        description="Dynastie-Depot Non-US Fundamentals v1.2 (yfinance)"
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_scan = sub.add_parser("scan", help="Scan Non-US Satelliten")
-    p_scan.add_argument("tickers", nargs="*", help="Ticker (leer = ASML RMS SU)")
+    p_scan.add_argument("tickers", nargs="*", help="Ticker (leer = ASML RMS SU KYCCF)")
     p_scan.add_argument("--json", action="store_true", help="JSON-Output")
     p_scan.add_argument("--summary", action="store_true", help="Nur Uebersichtstabelle")
 
     p_det = sub.add_parser("detail", help="Vollstaendiger DEFCON-Block")
-    p_det.add_argument("ticker", help="ASML, RMS oder SU")
+    p_det.add_argument("ticker", help="ASML, RMS, SU oder KYCCF")
 
-    sub.add_parser("prices", help="Aktuelle EUR-Kurse + MA-Status")
+    sub.add_parser("prices", help="Aktuelle Kurse (EUR/JPY) + MA-Status")
 
     args = parser.parse_args()
+
+    # Windows cp1252 stdout wuerde Unicode-Marker (🟢🔴🟡⚠️) crashen (analog earnings_calendar.py)
+    with contextlib.suppress(Exception):
+        sys.stdout.reconfigure(encoding="utf-8")
 
     if args.command == "scan":
         tickers = (
@@ -819,7 +847,7 @@ def main():
 
     elif args.command == "prices":
         print(f"# Non-US Kurse — {datetime.now().strftime('%d.%m.%Y')}\n")
-        print("| Ticker | Kurs EUR | SMA-200 | vs. 200MA | 52W-Hoch | Dist. 52W |")
+        print("| Ticker | Kurs (lok.) | SMA-200 | vs. 200MA | 52W-Hoch | Dist. 52W |")
         print("|--------|----------|---------|-----------|----------|-----------|")
         for ticker in NON_US_SATELLITES:
             try:

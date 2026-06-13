@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """earnings_calendar.py — PIPELINE #24 Stufe 1.
 
-Pulls next earnings dates for the 11 Dynastie satellites via yfinance,
+Pulls next earnings dates for the 13 Dynastie satellites via yfinance,
 diffs against PORTFOLIO.md "Nächster Trigger" cells, prints stdout report.
 
 Usage:
@@ -35,11 +35,14 @@ PORTFOLIO = ROOT / "00_Core" / "PORTFOLIO.md"
 OVERRIDES_PATH = ROOT / "03_Tools" / "earnings_schedule_overrides.yaml"
 
 # Yahoo-Suffix-Mapping: Dynastie-Symbol → Yahoo-Symbol
+# KYCCF: 6861.T (Tokyo) statt US-OTC "KYCCF" — waehrungs-konsistente JPY-Daten
+# (verifiziert 2026-06-13; OTC-Symbol mischt USD-Kurs mit JPY-Fundamentals).
 YAHOO_MAP: dict[str, str] = {
     "BRK.B": "BRK-B",
     "ASML": "ASML.AS",
     "RMS": "RMS.PA",
     "SU": "SU.PA",
+    "KYCCF": "6861.T",
 }
 
 # BRK.B FY26 Q2 - manuell nachgezogen 2026-05-06 (Stufe 2 deploy)
