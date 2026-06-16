@@ -1,9 +1,8 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner (Sliding-Window — letzte 2 Sessions; volle Historie → `05_Archiv/SESSION-HANDOVER-bis-2026-05-25.md` + git log + Vault `log.md`):**
-- **Datum:** 2026-06-08 (So/Mo) ~00:00–01:00 Europe/Berlin — **✅ Umstrukturierung-2027 Phase A: Codex-Review + 00_Core-Markdown-Sync (bzgl. bestehender Scores neutral).** AVGC-Broker-Fix ING→Scalable + Hook-§G-False-PASS-Fix (exakte Zahlen-Token-Membership, +4 Tests, 59 passed) committed `1e3c817`. 00_Core nachgezogen auf 13-Roster + 3-Tier (40/32/18 × DEFCON × FLAG) + 60/35/5: STATE (Critical-Alerts+Forward), PORTFOLIO (Tabelle+Sparraten-Modell), Faktortabelle (DATA-Rows VEEV/COST raus, NOW/KYCCF/ZETA Platzhalter rein), KONTEXT (§2-§5 + neue §4b AVD-2027-Struktur: Invesco-World + Riester-Übertrag + Broker-Konsolidierung→Scalable), INSTRUKTIONEN §9+§22 Formel, PIPELINE-Trigger. **Pending:** Vault-Sync (Entity/Index/Concept-Drift + NOW/KYCCF/ZETA-Pages + Backlinks) + O3-Scoring (NOW/KYCCF/ZETA).
-- **Datum:** 2026-05-26 (Mo) ~22:00-23:15 Europe/Berlin — **✅ Mega-Evening 3-Wellen DONE (System-Zustand-Events, scoring-neutral, 3 Commits gepusht).** (a) **SYSTEM.md Slim-Refactor Welle 3 (Slim C)** `1de6fd7`: 4 Sub-Section-Strips unter §System-Zustand (Passive Read-Only Data Layer FinnHub-Mega → 1 Live-Bullet + Pflege-Regel / Briefing-Status → 6 lean Bullets / Earnings-Calendar → 4 Bullets / Plugin-Layer → 2 Paragraphs mit Hybrid-Final-State erhalten); Bilanz 117→82 Z., 30→18 KB (-40%); Welle 1+2+3 kumuliert 47→18 KB (-62%). (b) **Memory-Fork-Konsolidierung** `b0fb526`: OneDrive-Path 43→0 Files, Code-Path 55→78 (12 identische OD-Dupes gelöscht, 3 Code-Path-wins, 2 echte Merges (Tavily Stage-2-Block + CodeRabbit Workflow-Details), 23 OD-only migriert, 3 Discards); **Anti-Fork-Direktive in CLAUDE.md `## Kontinuierliches Lernen` verankert** (Code-Path = einziger Speicherort + einzige Quelle ab sofort); 7 S-Tier-Memory-Pointer expliziert; Archive belt-and-suspenders `05_Archiv/memory-fork-onedrive-archiv-2026-05-26/` (43 Files, 221K, gitignored). (c) **TOKEN-RULES.md Inline-Migrate Option B** `1b80fc8`: 3 unique-value Claude-Action-Rules (Snapshot-First / DEFCON-1-Stopp / /compact-Cue) inline in CLAUDE.md §Verhalten (+146 Tokens/Session statt Auto-Load +915 = ~6.3× effizienter); TOKEN-RULES.md slim 41→38 Z. (-184 Tokens), nur Operator-Detail + Skill-§-Cross-Refs verbleibend. **Doppel-SSoT eliminiert:** Claude-Action = CLAUDE.md SSoT / Operator-Action = TOKEN-RULES.md SSoT.
-- **Datum:** 2026-05-26 (Mo) ~18:30 Europe/Berlin — **✅ SYSTEM.md Slim-Refactor Welle 1 + Welle 2 (Migration B) DONE (System-Zustand-Event, scoring-neutral, 2 Commits `a4323ef` + `537cf13`).** Welle 1: 6 Strips Hard-Obsolete (Briefing v3.0.6 Phase-3.5-Narrative + Open-Backlog-21.04. 8 Items + 6-Paper-Ingest-Doppel + Plugin-Substrate-Deep-Sweep 13.05. + core-slim-refactor Mega-Bullet → 1-Zeile + Footer-Mega-Changelog), ~7700 Wörter Doku-Bloat raus. Migrate-before-Strip-Disziplin pro Schnitt: 2 stale Memory-Refs (`feedback_correctness_over_runtime` + `feedback_spec_section_drift`) OneDrive-Path → Code-Path migriert; Memory-Fork-Issue persistiert. Welle 2: 1 Migrate (Allokation 65/30/5 → PORTFOLIO.md) + 5 Strips (Live-Verify 5/11 / Backtest-Ready 27-Records / Track-5-Pläne / KG-Roadmap / claude-mem Context-Tuning 17.05.); Block-für-Block-Empirie-Check (Forward-Gates verifiziert). Bilanz Welle 1+2: ~47 KB → ~30 KB (-36%).
+- **Datum:** 2026-06-16 (Mo) ~00:00–01:10 Europe/Berlin — **🔬 Quellen-Audit Free-Stack (scoring-neutral; NUR Doc/Memory durable, KEINE Workflow-Edits — die folgen frische Session).** Empirisch geklärt (Sandbox-Probes + Shibui-Schema + yfinance 1.3.0): **defeatbeta + Shibui + yfinance decken ALLE Fundamentals-Daten aller 11 Satelliten ab, gratis → kein EODHD ($60)/FMP ($99)-Kauf nötig.** Lineage-Schlüssel: **Shibui = EODHD/Tiingo** (US-only; Tiefe CONFIRMED via AVGO-Live: ROIC 21,1 % / FCF 10,26 Mrd / P-FCF 55,2), **defeatbeta + yfinance = Yahoo**. **Unabhängiges Struktur-Dual nur US + ASML** (Shibui ⟂ Yahoo → **VERIFIED**); **RMS/SU/KYCCF nur Yahoo-Backend → CORROBORATED** (Tier-2 web/IR) + **KEINE non-US-Transcripts**. AlphaVantage (nie integriert, REJECT) + EODHD/FMP-Survey + ADR/Suffix-Re-Probe alle durable in `01_Skills/cross-source-verify/GATE0-COVERAGE.md` §Source-Routing CONFIRMED. **Nächste Session = bestehende Struktur updaten (≫ cross-source-verify-Skill-Entscheid): siehe 🔼 PRIORITÄT-Block unten.**
+- **Datum:** 2026-06-12/13 (Fr/Sa) — **✅ exUSA-Re-Add + KYCCF O3-Vollanalyse (2 Score/Portfolio-Events, §18-synced, gepusht).** 12.06.: **EXUS** (Xtrackers MSCI World ex USA, IE0006WW1TQ4) @82€ reaktiviert als US-Klumpenrisiko-Hedge (8% Gesamtdepot, US-Faktor 0), intern finanziert aus IWDA −51/AVGC −21/JEDI −10 → ETF-Block **616€ unverändert**, Slots 19→**20**; Rebalancing_Tool_v4.0 = SSoT. 13.06.: **KYCCF** (Keyence) O3 DONE → **Score 67/🟡 D3, kein FLAG, Tier-2-Rate 32€** (JGAAP FY26 Primärquelle, Wide-Moat QT beide Zweige hart 0, EQ-Ratio 94,6%; §12.14); ersetzt DEFCON-3-Platzhalter → **O3-Backlog jetzt nur noch NOW/ZETA**.
 
 ## 🎯 Resume-Anweisung für nächste Session
 
@@ -11,23 +10,36 @@
 
 **Wichtig — Re-Investigation-Recall-Check (Memory `feedback_pre_investigation_recall_check`):** Vor mehrschrittiger Diagnose immer EIN `mem-search`/PIPELINE-Live-Grep-Pass; veraltete Handover-Banner waren am 2026-05-26 nachweislich Quelle eines #73a-Misroutings, deswegen ist Live-State immer Ground-Truth, nie Handover-Snapshot allein.
 
+### 🔼 PRIORITÄT nächste Session (USER-Direktive 2026-06-16) — Free-3-Source-Stack vollumfänglich in Analyseworkflows einbinden
+
+**Wichtiger als die cross-source-verify-Skill-Entscheidung** ist das Updaten der BESTEHENDEN Struktur. **Standing-Konvention ab sofort:** !Analysiere-Datensammlung = **defeatbeta + Shibui (US + ASML) + yfinance (Non-US-Primär)**. Empirie-SSoT (durable): `01_Skills/cross-source-verify/GATE0-COVERAGE.md` §Source-Routing CONFIRMED 2026-06-16.
+
+**To-Do (eigene Session, §18-Sync-pflichtig — pipeline-item/system-zustand):**
+1. **PIPELINE.md** — neues Work-Item (#83+) für diese Integration anlegen + Footer-Bump (jetzt bewusst NICHT angelegt, um §18-Welle nicht mitten in Capture zu zünden).
+2. **dynastie-depot** — `01_Skills/dynastie-depot/references/sources.md` (o.ä.) + SKILL.md Datensammelschritt: Shibui als 2. strukturierter US-Layer + yfinance-Non-US-Routing + **Lineage-bewusste Verdikt-Tiers** (VERIFIED US+ASML / CORROBORATED RMS/SU/KYCCF) + **Basis-Norm-Pflicht** (Shibui-ROIC NOPAT/IC-TTM vs defeatbeta quartalsdekomponiert).
+3. **Relevante 01_Skills prüfen/anpassen:** `non-us-fundamentals` (yfinance-Primär + Self-Consistency-Gate bestätigen), `insider-intelligence` (Form-4 EDGAR-Pfad), `quick-screener` (falls Quellen referenziert), `backtest-ready-forward-verify` (ScoreRecord-Quellen-Provenance/`notizen`).
+4. **Caveats hart kodieren:** non-US-**Transcripts fehlen** (defeatbeta nur US/ASML → §19.1 für RMS/SU/KYCCF via IR-Webcast/Primär); Shibui **US-only + EODHD/Tiingo-Lineage** (NICHT unabhängig von EODHD — relevant falls je EODHD gekauft); `6861.T` `.info`-ROE/FCF=None → aus Statements rechnen; RMS CapEx/FCF historisch IFRS-flaky → Self-Consistency-Gate.
+5. **cross-source-verify-Skill = NACHRANGIG** (Gate-0 ✅; GATE0-COVERAGE.md hält Befund). Erst NACH Struktur-Update entscheiden, ob eigener Skill nötig oder Konvention in bestehenden Skills reicht.
+
+**§18-Impact dieser Capture-Session:** Keiner — SESSION-HANDOVER + Memory + GATE0-Doc = working-tree-doc, scoring-neutral, kein §18-Sync-Set-Touch (kein Score/FLAG/Sparraten/Pipeline-Item-Edit jetzt).
+
 ### 📅 Nächste reguläre Termine (chronologisch)
 
 | Datum | Item | Aktion |
 |-------|------|--------|
-| **pending (O3)** | NOW / KYCCF / ZETA | Scoring-Nachzug — DEFCON-3-Platzhalter → echter Score (NOW US `!Analysiere` · KYCCF JP `non-us-fundamentals` · ZETA US) |
-| **~23.07.** | APH Q2 FY26 | Klasse-B (China-Tax + CommScope-Net-Lev, Score<65 FLAG) — §19.1 Tag+1 |
-| **~Ende Juli** | AMZN Q2 / V Q3 / TMO Q2 | Klasse-B (AMZN CapEx/OCF-FLAG-Re-Eval · V Cross-Border-Velocity · TMO Organic+Clario) |
-| **~02./03.08.** | BRK.B Q2 FY26 | Klasse-B (KHC-OTTI / GEICO-Decel / Form-13F) |
-| **~02.09.** | AVGO Q3 FY26 | Klasse-B FLAG-Resolve-Gate (§19.1 Tag+1) |
+| **15.07.** (bmo) | ASML Q2 | Nächstes Roster-Event (Q1 17.04. ✅; 30-Tage-Fenster →09.07. sonst leer) |
+| **22.07.** | NOW Q2 / TMO Q2 | NOW O3-Vollanalyse (US `!Analysiere`; yf/UW, TipRanks 29.07 — IR-confirm pending) · TMO Organic+Clario |
+| **28.07.** (amc) | V Q3 FY26 | Cross-Border-Velocity + ROIC-Methodology-Verify (#21) |
+| **29.07.** | MSFT Q4 / APH Q2 / RMS H1 / KYCCF Q1 | MSFT CapEx+WACC (#25/#27) · APH China-Tax+CommScope (Score 61<65 FLAG) · RMS H1 · KYCCF Q1 (yf, JP-Termin verifizieren) |
+| **30.07.** (amc) | SU H1 / AMZN Q2 | SU H1 · AMZN CapEx/OCF-FLAG-Re-Eval (Resolve-Gate <60%) + Vollanalyse |
+| **01.08.** (Sa, 10-Q) | BRK.B Q2 FY26 | KHC-OTTI / GEICO-Decel / Form-13F Apple-Trim (#36) |
+| **04.08.** | ZETA Q2 | O3-Vollanalyse (US, war QuickScreener-Rot) |
+| **03.09.** (amc) | AVGO Q3 FY26 | FLAG-Resolve-Gate (Q2 04.06. 53→56, FLAG bleibt) — §19.1 Tag+1 |
 
 ### 📋 Pending offene Slots (kein fester Termin)
 
-- **PIPELINE #42.3** G3 3-Felder-Konsistenz-Check Tooling — Phase-2a-Slot
-- **PIPELINE #48** Codebase-Defect-Pattern-Audit (~7-10h, eigene Session) — taxonomische Pattern-Map über `03_Tools/` + `01_Skills/`-SKILL.md-Logic
 - **PIPELINE #52** Quick-Screener-Refresh deferred bis Use-Case-Trigger
 - **PIPELINE #53** ✅ Decision-C USER-APPROVED 10.05. — Weiter beobachten + Re-Audit ~09.07.2026 mit Use-Case-Count-Tracking (Memory `project_trigger_landscape_audit_2026-05`)
-- **PIPELINE #81** core-slim-refactor v0.2.0 BUILD-Phase (Spec-Lock erreicht 5/24, BUILD pending eigene Session)
 
 ### 🔬 Phase-D-Restbestand (deferred per Cluster-Trigger)
 
