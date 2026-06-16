@@ -4,25 +4,37 @@
 
 Danach: kompakte Zusammenfassung (max. 10 Zeilen). **`dynastie-depot`-Skill NICHT auto-laden** — nur lazy via Routing-Table-Trigger (`!Analysiere`/`!QuickCheck`/`!Rebalancing`/`!Briefing`/`!CAPEX-FCF-ANALYSIS`) oder expliziter User-Aufforderung. Begründung + Spec-Historie: `00_Core/TOKEN-RULES.md` „Skills lazy-load"-Bullet (SSoT). Bei Unsicherheit Routing-Table-Match prüfen statt eager laden.
 
+## Session-Optimierung
+
+- **Gotcha-Regel**: Optimiere basierend auf Verlauf jeder Session jegliche genutzten Skills und Workflows.
+- **Sektions-Pflicht**: Am Ende jeder Aufgabe oder Konversation zwingend Sektion `### Mögliche Stolpersteine (Gotchas)` anfügen.
+- **Inhalt**: Expliziter Verweis auf in dieser Session gemachte Fehler, versteckte Bugs, Edge Cases, Performance-Risiken oder typische Denkfehler. Ziel: Fehlervermeidung in Folge-Sessions.
+- **Tier-2-Bridge**: Identifizierst du in den Gotchas eine fundamentale Erkenntnis, schlage mir am Session-Ende den exakten Markdown-Code für den Übertrag in `00_Core/APPLIED-LEARNING.md` (Tier 2) aktiv vor.
+
+
 ## Verhalten
 
-- Wenn du mir Informationen mitteilst, sei äußerst prägnant und verzichte zugunsten der Prägnanz auf grammatikalische Korrektheit.
+**Oberste Leitlinien**:
+
+Wenn du mir Informationen mitteilst, sei äußerst prägnant und verzichte zugunsten der Prägnanz auf grammatikalische Korrektheit.
+
+Bevor du mit einem Workflow beginnst, gib an, wie dieser überprüft werden soll. Wenn du fertig bist, führe diese Überprüfung durch und berichte über    die Ergebnisse. Bevor du irgendwelche Änderungen an der Codebase vornimmst, frag mich zuerst und erkläre mir den Wirkungsradius.
+
 - `00_Core/CORE-MEMORY.md` **live** fortschreiben — sofort bei relevanten Ereignissen
 - Stil: direkt, faktenbasiert, kein Filler — siehe INSTRUKTIONEN.md
 - **Code-Verhalten (Karpathy-Regeln):** Bei Code-/File-Edit-Operationen gelten Think-Before-Coding, Simplicity-First, Surgical-Changes, Goal-Driven-Execution, **Pre-Refactor-Caller-Scan** (`Grep` auf Symbol vor Edit bei externen Aufrufern) und **Approach-Reset-Schwelle** (nach 2 identischen Failed-Attempts: Stop → Codex-Sparring / Plan-Wechsel / User-Konsultation). **Vor jedem Code-/File-Edit zwingend `00_Core/CODE_GUIDELINES.md` laden + befolgen** (Volltext §0, ausgelagert 2026-06-09; INSTRUKTIONEN.md §0 = Stub). Nicht verbindlich für Markdown-Sync und Wiki-Operationen.
 - **Pre-Investigation-Recall-Check:** Vor einer mehrschrittigen Re-Investigation (≥3 Tool-Calls Diagnose) eines Symptoms/Fehlers/Anomalie zuerst **EIN** gezielter `mem-search`/`get_observations`-Pass („schon mal gelöst/entschieden?"). Treffer = **advisory Prior** → billig gegen Live-State verifizieren (Memory-Guard-Rail/§17.1), nie als Ground-Truth übernehmen. Session-typ-übergreifend. Detail/Auslöser → Memory `feedback_pre_investigation_recall_check.md`.
 - **Sync-Pflicht (§18 — Voll-Spec + Versions-Historie → INSTRUKTIONEN §18):** Trigger-basiertes Event-Mapping. Score/FLAG/Sparraten-Change → log.md + CORE-MEMORY.md + Faktortabelle + **PORTFOLIO.md** + score_history.jsonl + **`01_Skills/dynastie-depot/config.yaml`** + **`03_Tools/Rebalancing_Tool`** + **`03_Tools/Satelliten_Monitor`** (xlsx; Versionen gepinnt in `SYSTEM.md` §Active xlsx-Filenames) (+ ggf. flag_events.jsonl), alles in einem git-Commit (xlsx-Tools können separater Tool-Commit sein, aber gleiche Session pflicht). Pipeline-Item → PIPELINE.md + log.md. System-Zustand-Change → SYSTEM.md + log.md. Multi-Event-Aktionen = Union der Sets. **score_history.jsonl-Write** via Skill `backtest-ready-forward-verify` (Schritt 7). **flag_events.jsonl** CLI-direkt via `03_Tools/backtest-ready/archive_flag.py`. **config.yaml** manuell sync auch ohne FLAG-Change. **xlsx-Tools** via `openpyxl` manuell sync (operative Zero-Token-Lookup-Quelle für Sparpläne + Depot-Übersicht). **xlsx-Smoke-Test §18.7:** nach jedem `openpyxl`-Write Pflicht-Smoke-Test gemäß `03_Tools/xlsx-smoke-test.md` vor `git add` der xlsx-Files; fail-close, kein `--force`-Bypass.
-- **Token-Effizienz (Claude-Disziplin — Operator-Detail in `00_Core/TOKEN-RULES.md`):** **Snapshot-First** PORTFOLIO + Faktortabelle vor API/MCP-Call (Routing-Table macht das default-implizit; explizit-pflicht bei Cross-Source-Drift-Check, spart 3-5 Tool-Calls). **DEFCON-1-Stopp** Score <50 → Analyse-Schritte stoppen, Insider-Modul läuft durch (siehe `dynastie-depot` §170/§172). **/compact-Cue** vorschlagen bei ~60% Kontext-Voll oder >5min Pause (Operator triggert; Preserve: Score/Tabelle/Urteil/FLAGs). Skills-lazy-load + §18-Sync sind bereits eigene Verhalten-Bullets.
+- **Token-Effizienz (Claude-Disziplin — Operator-Detail in `00_Core/TOKEN-RULES.md`):** **Snapshot-First** PORTFOLIO + Faktortabelle vor API/MCP-Call (Routing-Table macht das default-implizit; explizit-pflicht bei Cross-Source-Drift-Check, spart 3-5 Tool-Calls). **DEFCON-1-Stopp** Score <50 → Analyse-Schritte stoppen, Insider-Modul läuft durch (siehe `dynastie-depot` §170/§172). **/compact-Cue** vorschlagen bei ~60% Kontext-Voll oder >5min Pause (Operator triggert; Preserve: Score/Tabelle/Urteil/FLAGs/**aktuelle Gotchas**). Skills-lazy-load + §18-Sync sind bereits eigene Verhalten-Bullets.
 - **Earnings-Call-Wait-Discipline (§19.1):** Klasse-B-Vollanalyse läuft strikt **Tag +1 morgens nach Earnings Call**, nicht Tag 0. Tag 0 = `_extern/earnings-recap`-Skill für Press-Release-Recap + manueller FLAG-Quick-Check (FLAG-Trigger/Resolve via `archive_flag.py` sofort, Score unverändert) + Pre-Call-Snapshot in CORE-MEMORY §12.<ticker>. Score-Move + 8-File-Sync ausschließlich am Tag +1 mit Transcript-Read via defeatbeta-MCP. Outlier-Bypass: Tag-0-FLAG-Event ja, Score-Move nein. Detail INSTRUKTIONEN §19.1 + Memory `feedback_earnings_call_wait_discipline.md`.
-- **Briefing-Sync:** Vor Session-Ende `!SyncBriefing` falls 00_Core/ geändert wurde (§25). SessionEnd-Hook warnt automatisch.
-- **Remote-Control (User-Trigger):** Wenn User `remote-Control` eingibt (oder sinngemäße Phrase „remote weiter"/„mobile weiter"), Remote-Routine mit State-Snapshot via `ccr` spawnen (Memory remote-trigger-api.md). Sonst kein automatischer Prompt — User-gesteuert, Zero-Overhead. Spawn-Mechanismus + Kontext-Scope final am Konsolidierungstag 24.04. festlegen.
+
 
 ## Kontinuierliches Lernen
 
 | Tier | Speicherort | Wer schreibt | Wann gelesen | Pflege |
 |------|------------|--------------|-------------|--------|
 | 1. Auto-Memory | `~/.claude/projects/C--Users-tobia-Code/memory/*.md` | Claude automatisch | Session-Start (MEMORY.md auto-loaded) | Auto-Dream konsolidiert |
-| 2. Applied Learning | `00_Core/APPLIED-LEARNING.md` | Manuell bei Review | On-Demand (per Routing-Table) | Monatlich + Kurator-Regel |
+| 2. Applied Learning | `00_Core/APPLIED-LEARNING.md` | Manuell / Claude-Vorschlag | On-Demand (per Routing-Table) | Monatlich + Kurator-Regel |
 | 3. Formelle Regeln | `00_Core/INSTRUKTIONEN.md` §§ | Bei bewiesenem Bedarf | Per Routing-Table | Bei Systemänderungen |
 
 **Tier-1 Pfad-SSoT (NORMATIV ab 2026-05-26):** Code-Path `~/.claude/projects/C--Users-tobia-Code/memory/` ist der **einzige** Speicherort und die **einzige Quelle** für Auto-Memory-Files. Index = `MEMORY.md` (auto-loaded). **Anti-Fork-Direktive:** Neue Memories IMMER hier ablegen — keine Parallel-Pfade (z.B. `C--Users-tobia-OneDrive-Desktop-Claude-Stuff/memory/` ist DEPRECATED + konsolidiert 2026-05-26), keine Duplikate, keine Pfad-Schatten-Welten. Bei Fork-Verdacht oder unsichtbaren Memories: `reference_memory_fork_onedrive_vs_code_path` konsultieren.
@@ -35,8 +47,7 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen). **`dynastie-depot`-Skill NICH
 - `feedback_review_via_codex_not_advisor` — Reviews/Second-Opinions via Codex (`codex:codex-rescue` / `codex:rescue`), nie `advisor()`
 - `feedback_correctness_over_runtime` — Datenkorrektheit/Recall > Runtime-Optimierung (Briefing + Scoring + FLAG + alle Pipelines)
 - `reference_no_cloud_sync_onedrive_inactive` — Pfad heißt nur „OneDrive", KEIN aktiver Cloud-Sync; Worktree-Drift nicht auf Cloud schieben
-
-**Karpathy-Regeln** sind in `## Verhalten` „Code-Verhalten"-Bullet inline verankert + via Skill `andrej-karpathy-skills:karpathy-guidelines` abrufbar. **Memory-Guard-Rail** siehe Routing-Table-Klausel + `INSTRUKTIONEN.md §17.1`.
+**Memory-Guard-Rail** siehe Routing-Table-Klausel + `INSTRUKTIONEN.md §17.1`.
 
 Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNING.md`.
 
@@ -44,9 +55,9 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 
 - `00_Core/` — Kontext, Instruktionen, Gedächtnis (STATE, CORE-MEMORY, INSTRUKTIONEN, CODE_GUIDELINES [§0-Volltext, Code-Edit-Lazy-Load], RETROSPECTIVE-GATE, APPLIED-LEARNING, TOKEN-RULES, KONTEXT, Faktortabelle, SESSION-HANDOVER)
 - `01_Skills/` — dynastie-depot · backtest-ready-forward-verify · insider-intelligence · non-us-fundamentals · quick-screener · sec-edgar-skill · session-closure · paragraph-18-sync · core-slim-refactor · xlsx-smoke-test-runner · `_extern/` (read-only)
-- `02_Analysen/` — DEFCON-Analysen als Excel
-- `03_Tools/` — Rebalancing · Satelliten-Monitor · Watchlist · Briefing-Hook · system_audit
-- `04_Templates/` — Pointer + spezifische Templates (z.B. `04_Templates/CAPEX-FCF-ANALYSE.md` zeigt auf `01_Skills/dynastie-depot/capex-fcf-template.md` v4.0)
+- `02_Analysen/` — DEFCON-Analysen als Excel sowie Earnings Reports der Satelliten
+- `03_Tools/` — Rebalancing_Tool · Satelliten_Monitor · Watchlist_Ersatzbank_Monitor · Briefing-Hook · system_audit
+- `04_Templates/` — Pointer + spezifische Templates
 - `05_Archiv/` — Historische Dateien
 - `06_Skills-Pakete/` — Installierbare ZIP-Skills
 - `07_Obsidian Vault/` — Wiki (Schema + Workflows via WIKI-SCHEMA.md)
@@ -107,4 +118,4 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 
 ## Plugin-Layer (2026-05-13, Hybrid 2026-05-16)
 
-Ruflo Sunset. Passive Substrate: context-mode + obsidian-skills + **claude-mem v13.2.0 enabled = rein additiver read-only Augmentation-Layer, nie SSoT**; natives autoMemory kanonisch + Live-State-Priorität unberührt (HYBRID, empirisch verifiziert). Memory-Guard-Rail → §Routing-Table + INSTRUKTIONEN.md §17.1. Voll-Detail (Bun-Invariante, Begründung, Backups) → **SYSTEM.md §Plugin-Layer**.
+Passive Substrate: context-mode + obsidian-skills + **claude-mem v13.2.0 enabled = rein additiver read-only Augmentation-Layer, nie SSoT**; natives autoMemory kanonisch + Live-State-Priorität unberührt (HYBRID, empirisch verifiziert). Memory-Guard-Rail → §Routing-Table + INSTRUKTIONEN.md §17.1. Voll-Detail (Bun-Invariante, Begründung, Backups) → **SYSTEM.md §Plugin-Layer**.
