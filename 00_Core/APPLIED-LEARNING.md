@@ -2,7 +2,7 @@
 name: Applied Learning Log
 description: Kuratierte Arbeitsprinzipien für Dynasty-Depot-Sessions (Tier 2 des 3-Tier-Lernsystems). Enthält Pflege-Regeln und Versionshistorie.
 type: learning-log
-updated: 2026-05-23
+updated: 2026-08-26
 ---
 
 # Applied Learning — Kuratierte Arbeitsprinzipien
@@ -10,7 +10,7 @@ updated: 2026-05-23
 > Tier 2 des 3-Tier-Systems (Auto-Memory → Applied Learning → INSTRUKTIONEN.md).
 > <15 Wörter pro Bullet. Nur operativ relevante Arbeitsprinzipien — keine Tool-References (→ Auto-Memory) und keine systemischen Regeln (→ INSTRUKTIONEN.md §§).
 
-## Bullets (Stand: 17/20)
+## Bullets (Stand: 18/20)
 
 > **Proaktive Pflege (seit 18.04.2026):** Bei jedem Monats-Übergang: 5-Min-Scan — Tool-References identifizieren und evakuieren. Verhindert Buildup, billiger als reaktive Überlauf-Sanierung.
 >
@@ -35,6 +35,7 @@ updated: 2026-05-23
 - Bridge-/Substrate-Layer DONE-Verdict erfordert end-to-end Search-Verify mit known-query (similarity ≥ Schwelle), NICHT Storage+Reporter-Verify allein (Präzedenz: 7-Wochen-„Bridge connected"-Illusion ohne semantischen Recall-Test)
 - Plugin-/Substrate-Layer ohne konkreten Workflow-Use-Case = Über-Engineering — Nutzen empirisch belegen vor Engineering-Welle (Sunset-Präzedenz 13.05.; analog quick-screener-Refresh-Verzicht 09.05.)
 - Deferred-Sub-Scope: vor Execution prüfen ob Substrate-fail-close-Gates ihn unabhängig committbar machen — sonst Kosten umsonst
+- Zustand (API-abfragbar) nie handpflegen, Urteil (Score/FLAG) bleibt SSoT — Regelbrüche entstehen an der Naht
 
 ## Promotion-Logik
 
@@ -48,5 +49,6 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 | v2.7 | 07.05.2026 | +1 (Tooling-Bulk-Edit + CR-Pass koppeln) — empirische Evidenz aus Ruff-Cleanup. Stand: **13/20**. |
 | v2.8 | 13.05.2026 | +3 generelle Engineering-Hygiene-Bullets aus Ruflo-Sunset. Stand: **16/20**. |
 | v2.9 | 18.05.2026 | +1 (Deferred-Sub-Scope-Committbarkeit vor Execution prüfen). Tier-2-only (Bridge-Coherence). Stand: **17/20**. |
+| v3.0 | 26.08.2026 | +1 (Zustand vs. Urteil trennen) — Scalable-Agentic-Investing-Anbindung. Empirie: KYCCF-xlsx-Zeile trug wochenlang Veeva-Wert; 135 €/Mt liefen 2,5 Monate in geflaggte Titel, weil kein Markdown-File einen neu angelegten Sparplan bemerken kann. Detail → `02_Analysen/2026-08-26_Depot-Reconciliation.md` §F. Stand: **18/20**. |
 
 > Versionen v1.0-v2.5 (17.-24.04.2026) → git log (Datei-Historie). Pre-v2.6 im 00_Core Slim-Refactor 23.05.2026 entfernt (Lean-Pflicht-Lese-Pfad-Disziplin, Memory `feedback_core_folder_lean_discipline`). Promotion-Events alle in git log + Auto-Memory abgedeckt.
