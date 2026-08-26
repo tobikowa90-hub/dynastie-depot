@@ -10,7 +10,7 @@ updated: 2026-08-26
 > Tier 2 des 3-Tier-Systems (Auto-Memory → Applied Learning → INSTRUKTIONEN.md).
 > <15 Wörter pro Bullet. Nur operativ relevante Arbeitsprinzipien — keine Tool-References (→ Auto-Memory) und keine systemischen Regeln (→ INSTRUKTIONEN.md §§).
 
-## Bullets (Stand: 18/20)
+## Bullets (Stand: ⚠️ 21/20 — Kurator-Regel fällig)
 
 > **Proaktive Pflege (seit 18.04.2026):** Bei jedem Monats-Übergang: 5-Min-Scan — Tool-References identifizieren und evakuieren. Verhindert Buildup, billiger als reaktive Überlauf-Sanierung.
 >
@@ -36,6 +36,9 @@ updated: 2026-08-26
 - Plugin-/Substrate-Layer ohne konkreten Workflow-Use-Case = Über-Engineering — Nutzen empirisch belegen vor Engineering-Welle (Sunset-Präzedenz 13.05.; analog quick-screener-Refresh-Verzicht 09.05.)
 - Deferred-Sub-Scope: vor Execution prüfen ob Substrate-fail-close-Gates ihn unabhängig committbar machen — sonst Kosten umsonst
 - Zustand (API-abfragbar) nie handpflegen, Urteil (Score/FLAG) bleibt SSoT — Regelbrüche entstehen an der Naht
+- Entdopplung erst nach Vollständigkeits-Check aller Quellen — sonst zementiert der Umbau den Datenfehler
+- Vor neuer Regel bestehendes Regelwerk nach demselben Fall durchsuchen — stille Übersteuerung erzeugt Drift
+- Review-Befund: ganze Datei auf gleichartige Abhängigkeiten prüfen, nicht nur die gemeldete Zeile
 
 ## Promotion-Logik
 
@@ -50,5 +53,8 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 | v2.8 | 13.05.2026 | +3 generelle Engineering-Hygiene-Bullets aus Ruflo-Sunset. Stand: **16/20**. |
 | v2.9 | 18.05.2026 | +1 (Deferred-Sub-Scope-Committbarkeit vor Execution prüfen). Tier-2-only (Bridge-Coherence). Stand: **17/20**. |
 | v3.0 | 26.08.2026 | +1 (Zustand vs. Urteil trennen) — Scalable-Agentic-Investing-Anbindung. Empirie: KYCCF-xlsx-Zeile trug wochenlang Veeva-Wert; 135 €/Mt liefen 2,5 Monate in geflaggte Titel, weil kein Markdown-File einen neu angelegten Sparplan bemerken kann. Detail → `02_Analysen/2026-08-26_Depot-Reconciliation.md` §F. Stand: **18/20**. |
+| v3.1 | 26.08.2026 | +3 aus der Architektur-Spec-Session (Entdopplungs-Vorbedingung · Regelwerk-Kollisionsprüfung · Datei-weite Befundprüfung). Empirie: drei FLAG-Quellen paarweise widersprüchlich; „freigesetzt → Block-Untergewicht" hätte `substitute_activation_global` still übersteuert; `check_freshness` und `parse_state_row` stehen in derselben Datei, eine Sparring-Runde sah nur eines. Detail → `03_Tools/depot-architecture-spec.md` §4.2/§4.4/§7.4. Stand: **⚠️ 21/20 — Kappe gerissen, Kurator-Regel fällig.** |
+
+> **Offener Kurations-Auftrag (26.08.2026):** 21/20, Ziel laut Kurator-Regel ≤15. Bewusst nichts eigenmächtig gelöscht. Zwei Bullets sind inhaltlich überholt und wären die ersten Kandidaten: *„Advisor-Empfehlung nicht ohne neue Evidenz überstimmen"* (advisor ist projektweit durch Codex ersetzt, Memory `feedback_review_via_codex_not_advisor`) und *„Cloud-Sync-Verify ist Pre-Phase-Pflicht"* (kein aktiver Cloud-Sync, Memory `reference_no_cloud_sync_onedrive_inactive`). Entscheidung beim Owner.
 
 > Versionen v1.0-v2.5 (17.-24.04.2026) → git log (Datei-Historie). Pre-v2.6 im 00_Core Slim-Refactor 23.05.2026 entfernt (Lean-Pflicht-Lese-Pfad-Disziplin, Memory `feedback_core_folder_lean_discipline`). Promotion-Events alle in git log + Auto-Memory abgedeckt.
