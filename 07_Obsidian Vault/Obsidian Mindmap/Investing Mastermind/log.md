@@ -1887,3 +1887,43 @@ Kurs ¥78.070, MC ¥18,93Bio. `non-us-qt-modulator-default-deny` (Non-US-Freeze)
 **Gate für die Folge-Session (User-Direktive 26.08.):** Keine Planungs-Phase unter **95 % Joint-Confidence**. Restzweifel aus Spec §11 zuerst ausräumen.
 
 **Cross-Reference:** `03_Tools/depot-architecture-spec.md` v1.4 · `02_Analysen/2026-08-26_Depot-Reconciliation.md` · PIPELINE #83 · Commit `<TBD>` · Memory `feedback_empirie_statt_annahmen`, `feedback_codex_sparring_heuristic`, `reference_scalable_cli_agentic_investing`.
+
+---
+
+## [2026-08-27] system | PIPELINE #83 — Architektur-Spec v1.5, 95%-Gate PASSIERT (R4 mit Live-API-Verifikation, scoring-neutral, Pipeline-Item-Event)
+
+**Event-Typ:** Pipeline-Item (Gate-Passage + Spec-Revision). Kein Score-/FLAG-/Sparraten-Touch. Nacht-Session, Fortsetzung vom 26.08.; Spec trägt weiterhin „Stand 2026-08-26", weil Befunde und Live-Abfrage von dort stammen.
+
+**Was passiert ist:** Das 95%-Confidence-Gate aus der User-Direktive vom 26.08. wurde geprüft — und die Spec fiel zunächst durch. Vierte Prüfrunde, erstmals **gegen die Scalable-API statt nur gegen das Repo**, plus zwei Codex-Runden. Ergebnis: 13 neue Befunde, 5 HIGH. Spec auf v1.5 (662 → 744 Z.), Gate danach passiert.
+
+**Die fünf HIGH-Befunde:**
+- **`geschrieben_am` war nicht implementierbar.** `schemas.py:364` setzt `ConfigDict(extra="forbid")`, Z. 366 `schema_version: Literal["1.0"]` — ein Record mit neuem Feld wird von jedem Validator abgelehnt (`jsonl_schema.py`, `validate_score_history.py`, `archive_score.py`). §4 behauptete „Schema und Schreibwege bleiben"; das war falsch. Braucht Schema-Bump 1.0→1.1 samt `sum_consistency.py`, gebündelt in Stufe 2 Schritt 9. `schemas.py` fehlte komplett im Blast-Radius.
+- **Roster-ISINs existieren nirgends im Repo.** `config.yaml` führt 6 ISINs, alle ETFs; Gold hat keine; die drei xlsx enthalten keinen einzigen ISIN-String. Quelle ist der Broker (`holdings ∪ savings_plans`). **Folge: Stufe 1 ist nicht offline durchführbar** — das war als „begrenzter Blast-Radius" eingestuft.
+- **Vault-Frontmatter trägt Scores für 3 Seiten, keine davon ein Satellit.** Nur `entities/ersatzbank/{GOOGL,PEGA,ZTS}.md`; `WIKI-SCHEMA.md` Z. 57–71 kennt gar kein Score-Feld. Damit war die „sieben Kopien"-Zählung für die 13 Satelliten falsch. Erklärt zugleich das Versagen der Prüfinfrastruktur: `cross_source.py` überspringt die leere Quelle **still und absichtlich** (Z. 184 `if "score" not in data: continue`; Z. 332–334 kommentiertes `pass`).
+- **GOOGL — der Vault widerspricht der neuen Klassenregel.** `entities/ersatzbank/GOOGL.md`: „struktureller Ausschluss seit 01.04.2026 — kein Einstieg", während seit 26.08. 50 €/Mt laufen. Der Umbau hätte diese Entscheidung stillschweigend aufgehoben. Jetzt Stufe-0-Pflicht: förmlich aufheben oder Override nach §3.3 mit `review_am`.
+- **`INSTRUKTIONEN §22` ist eine achte Score-Kopie** (Z. 542–556, alle 13 Titel mit Score/DEFCON/Rate, inkl. KYCCF) und fehlte sowohl in der Kopien-Zählung als auch in den Sync-Zielen. Kein Skript liest sie — Rückbau ohne Code-Risiko.
+
+**Codex-Befunde (unabhängige Achse, Überschneidung praktisch null):**
+- **`CLAUDE.md` trägt den alten 8-9-Datei-Sync als Fließtext** (Z. 27, plus Z. 29/57/59/77/78). Die Spec behandelte sie nur als xlsx-Referenz-Ziel. Da sie zu Beginn **jeder** Session gelesen wird und über das Laden von `INSTRUKTIONEN.md` entscheidet, gehört sie in denselben Commit wie der Move — sonst folgt der Agent weiter der alten Anweisung.
+- **Gate 1 hat einen zweiten Abnehmer.** `provenance_gate.py:176–181` blockiert in P3.5 **fail-close** bei `vollanalyse` (35 von 37 Records). §4.4 nannte Gate 1 „bedeutungslos, dafür unsichtbar" — beide Fehlerbilder existieren gleichzeitig.
+- §9.3 Punkt 3 („die drei FLAG-Quellen stimmen überein") widersprach dem eigenen Folgeabsatz; präzisiert.
+- `validator.py` bricht nach dem xlsx-Move nicht, es warnt dauerhaft (Z. 447–449) — Maßnahme bleibt, Begründung ausgetauscht.
+
+**Vier §11-Punkte geschlossen:** Zielallokation (60/35/5 ist Politik, 59,7/35,3/5,0 war Euro-Rundung von 616/364/51) · Vault-Frontmatter-Schema · INSTRUKTIONEN §22 (stützt `additiv`, dritte Doku-Stelle gegen die Tool-Normierung) · `satelliten`-Block (alle 24 Felder in neuem §2.2 zugeordnet). **Drei neue eröffnet:** JEDI (Position ohne Sparplan), GOOGL-Ausschluss, ETF-SOLL-Raten (Ist weicht bei allen sechs ab, Σ 616 gegen 563).
+
+**Live-Verifikation gegen die API:** vier Spec-Zahlen bestätigt (NOW 14,6 % · Gold 2,7 % · Sparplan-Ist 1068 gegen SOLL 1031 · Depotwert 30.124 €), eine falsifiziert — META hat **keine Position**, nur einen Sparplan ab 01.09. Ebenso GOOGL. Fünf Titel haben umgekehrt Position ohne Sparplan (JEDI, COST, AVGO, NOW, ZETA) → `roster_fremd`/`roster_verwaist` prüfen jetzt gegen die **Vereinigung** beider Mengen.
+
+**Watchlist ist ein Homonym.** Broker-Watchlist (13 Titel, u. a. SpaceX, Roku, Kraken Robotics) ist Zustand und liefert nur ISIN/Name/Kurs. Die kuratierte Ersatzbank ist Regelwerk. Überschneidung: 3 von 10 Kandidaten. Der Broker kann die Ersatzbank-Synthese **nicht** ersetzen — §3.2 bleibt Handarbeit, jetzt empirisch belegt.
+
+**Lehre:**
+- **Drei Runden ohne strukturelle Befunde heißen nicht Konvergenz, sondern Erschöpfung einer Achse.** R1–R3 liefen sämtlich auf Schreibpfaden und Gates; alle neun R4-Befunde liegen außerhalb. Bei „95 %"-Zielen die Prüfachse wechseln, nicht die Rundenzahl erhöhen.
+- **Abwesenheit ist ein Befund.** Zwei HIGHs kamen aus *leeren* Greps (keine Satelliten-ISIN, kein Score im Vault-Schema). Ein leerer Treffer ist zu belegen, nicht zu überlesen.
+- **Die R3-Regel „prüfe die ganze Datei" reicht nicht.** Die richtige Frage ist nicht, was sonst in der Datei steht, sondern **wer den Rückgabewert konsumiert** — `provenance_gate.py` liegt in einer anderen Datei, aber im selben Datenfluss.
+- **Zwei eigene Zählfehler, beide durch Gegenprüfung gefunden:** `grep -c "isin"` zählte „r*isin*g" mit (7 statt 6), `ls` zählte `__pycache__/` als Datei (19 statt 18). Jede Zahl, die in eine Spec einzieht, gehört einzeln belegt — besonders in einem Dokument, das sich in §9.1 selbst Mustervergleich verbietet.
+- **Ein Check, der Abwesenheit als Normalfall behandelt, ist schlimmer als ein fehlender Check.** `cross_source.py` läuft grün und prüft für die Satelliten nichts.
+
+**Sync-Set (§18 Pipeline-Item, scoring-neutral):** `03_Tools/depot-architecture-spec.md` (v1.4 → v1.5) + PIPELINE.md (#83 Gate-Status + Footer v2.83 → v2.84) + log.md (dieser Eintrag) + SESSION-HANDOVER.md (Cut für Folge-Session). **KEIN** PORTFOLIO / Faktortabelle / score_history / config.yaml / xlsx / flag_events — kein Score-, FLAG- oder Sparraten-Event.
+
+**Stand nach dieser Session:** Stufe 0 umsetzungsreif · Stufe 1 umsetzungsreif, aber **nicht offline** · Stufe 2 gated auf Gate-Neufassung §4.4 + Schema-Bump §4.1 + `provenance_gate.py` Check #2. Offen sind ausschließlich **Owner-Entscheidungen**, keine Wissenslücken.
+
+**Cross-Reference:** `03_Tools/depot-architecture-spec.md` v1.5 · PIPELINE #83 · Commit `<TBD>` · Memory `feedback_empirie_statt_annahmen`, `feedback_codex_sparring_heuristic`, `feedback_windows_console_ascii_safe_inline_python`, `reference_scalable_cli_agentic_investing`.

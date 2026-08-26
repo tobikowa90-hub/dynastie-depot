@@ -1,6 +1,7 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner (Sliding-Window — letzte 2 Sessions; volle Historie → `05_Archiv/SESSION-HANDOVER-bis-2026-05-25.md` + git log + Vault `log.md`):**
+- **Datum:** 2026-08-26/27 (Di/Mi, Nacht-Session) — **✅ Architektur-Spec v1.5 — 95%-GATE PASSIERT (PIPELINE #83, scoring-neutral, kein §18-Score-Event).** Vierte Prüfrunde, erstmals **gegen die Scalable-API** statt nur gegen das Repo, plus zwei Codex-Runden (eine enge Verifikation, eine offene Suche — Überschneidung praktisch null). **13 Befunde, 5 HIGH:** `geschrieben_am` scheitert an `ConfigDict(extra="forbid")` in `schemas.py:364` → Schema-Bump 1.0→1.1 nötig, `schemas.py` fehlte im Blast-Radius · **Roster-ISINs existieren nirgends im Repo** (config.yaml führt 6, alle ETFs; xlsx keine) → Quelle ist der Broker → **Stufe 1 ist nicht offline durchführbar** · Vault-Frontmatter trägt Scores nur für 3 Ersatzbank-Seiten, `cross_source.py` überspringt die leere Quelle **still und absichtlich** (Z. 184/332-334) · **GOOGL:** Vault führt „struktureller Ausschluss seit 01.04." gegen die neue Core-Klassenregel mit 50 €/Mt → Stufe-0-Entscheidung nötig · `INSTRUKTIONEN §22` ist eine achte Score-Kopie (Z. 542-556) und fehlte in allen Sync-Zielen. **Codex zusätzlich:** `CLAUDE.md` trägt den alten 8-9-Datei-Sync als Fließtext (Z. 27/29/57/59/77/78) und gehört in denselben Commit wie der xlsx-Move · `provenance_gate.py:176-181` blockiert Gate 1 **hart** in P3.5 bei `vollanalyse` (35/37 Records) — §4.4 nannte es nur „bedeutungslos". **Live-Verifikation:** 4 Spec-Zahlen bestätigt (NOW 14,6 % · Gold 2,7 % · Sparplan-Ist 1068 vs. SOLL 1031 · Depotwert 30.124 €), eine falsifiziert (META hat **keine** Position, nur Sparplan ab 01.09. — wie GOOGL). §11 Punkte 4/5/6/7 geschlossen, 11/12/13 neu. **Stand: Stufe 0 + 1 umsetzungsreif (1 nicht offline), Stufe 2 gated auf §4.4 + §4.1 + `provenance_gate` Check #2. Offen nur noch Owner-Entscheidungen, keine Wissenslücken.**
 - **Datum:** 2026-08-26 (Di) — **📐 Depot-Architektur-Spec v1.4 SPEC-READY (PIPELINE #83 NEU, scoring-neutral, kein §18-Score-Event).** Konsequenz aus der Scalable-Anbindung: Positionen/Raten/Cash/Kurse sind **Zustand aus der API**, Urteil bleibt append-only in den beiden jsonl, Politik zieht in ein neues `00_Core/REGELWERK.yaml`; `PORTFOLIO.md` + `Faktortabelle.md` + `config.yaml` + Vault-Frontmatter werden **generiert**. Der aktuelle Score bekommt keinen Ort mehr — er ist der letzte Record je Ticker. Bilanz: −3 xlsx, −2 Skills, −900 Z. Prüfcode, §18 von 8-9 auf **4 Quellen mit je einem Schreiber**. 3 Codex-Runden, 14 HIGH alle nachgeprüft + bestätigt; Codex-Urteil **Stufe 0+1 umsetzungsreif, Stufe 2 gated**. **Fund mit Portfolio-Relevanz: GOOGL trägt seit 15.03. einen CapEx/OCF-Trigger ohne Resolve** und wird seit 26.08. mit 50 €/Mt als Core-4-Titel bespart — sichtbar nur in `flag_events.jsonl`. Entschieden: Rebalancing-Modell **additiv** mit gestaffeltem Ziel (Ersatz → Block-Untergewicht → ETF-Core).
 - **Datum:** 2026-06-16 (Mo) ~00:00–01:10 Europe/Berlin — **🔬 Quellen-Audit Free-Stack (scoring-neutral; NUR Doc/Memory durable, KEINE Workflow-Edits — die folgen frische Session).** Empirisch geklärt (Sandbox-Probes + Shibui-Schema + yfinance 1.3.0): **defeatbeta + Shibui + yfinance decken ALLE Fundamentals-Daten aller 11 Satelliten ab, gratis → kein EODHD ($60)/FMP ($99)-Kauf nötig.** Lineage-Schlüssel: **Shibui = EODHD/Tiingo** (US-only), **defeatbeta + yfinance = Yahoo**. **Unabhängiges Struktur-Dual nur US + ASML**; **RMS/SU/KYCCF nur Yahoo-Backend → CORROBORATED** + **KEINE non-US-Transcripts**. Durable in `01_Skills/cross-source-verify/GATE0-COVERAGE.md`.
 
@@ -10,22 +11,22 @@
 
 **Wichtig — Re-Investigation-Recall-Check (Memory `feedback_pre_investigation_recall_check`):** Vor mehrschrittiger Diagnose immer EIN `mem-search`/PIPELINE-Live-Grep-Pass; veraltete Handover-Banner waren am 2026-05-26 nachweislich Quelle eines #73a-Misroutings, deswegen ist Live-State immer Ground-Truth, nie Handover-Snapshot allein.
 
-### 🔼 PRIORITÄT nächste Session (USER-Direktive 2026-08-26) — Restzweifel an der Architektur-Spec ausräumen
+### 🔼 PRIORITÄT nächste Session — Owner-Entscheidungen, dann Stufe 0
 
-> **🔒 GATE — wörtliche User-Direktive:** *„Nächste Session müssen wir alle Restzweifel um die Spec ausmerzen. Unter 95 % Confidence will ich nicht in die Planung gehen."*
-> Kein `writing-plans`, kein Bau, keine Stufe-1-Ausführung, bevor die Punkte unten geschlossen sind und die Joint-Confidence ≥ 95 % steht.
+> **🔓 GATE PASSIERT (27.08.).** Die User-Direktive vom 26.08. („Unter 95 % Confidence will ich nicht in die Planung gehen") ist erfüllt: Spec v1.5, vier Prüfrunden, R4 erstmals **gegen die Live-API**. Was jetzt offen ist, sind **Owner-Entscheidungen — keine Wissenslücken.** Die schließt keine weitere Review-Runde.
 
-**Ausgangslage:** `03_Tools/depot-architecture-spec.md` v1.4, PIPELINE #83, drei Codex-Runden durch. Codex-Urteil: Stufe 0 und Stufe 1 umsetzungsreif, Stufe 2 gated auf die Gate-Neufassung §4.4.
+**Ausgangslage:** `03_Tools/depot-architecture-spec.md` **v1.5** (744 Z.), PIPELINE #83. Urteil beider R4-Runden: Stufe 0 + Stufe 1 umsetzungsreif, **Stufe 1 aber nicht offline** (Roster-ISINs kommen nur vom Broker). Stufe 2 gated auf Gate-Neufassung §4.4 **plus** Schema-Bump §4.1 **plus** `provenance_gate.py` Check #2.
 
-**Zu schließen vor der Planung (Spec §11):**
+**Zu entscheiden (Daten/Politik, nicht Recherche):**
 1. **Klassen-Zuordnung** (§3.1) — Core-4 gesetzt; offen: NOW `satellit T1` oder `core`? Adobe/Veeva Tier? ZETA bestätigen? Costco Roster oder Abgang (dann auch `screener_exceptions`-Eintrag mit entfernen)?
-2. **Ersatzbank-Synthese** (§3.2) — es gibt **keinen** `ersatzbank`-Block in `config.yaml`. Die Zuordnung liegt verstreut als Inline-`ersatz:` je Satellit, `system_regeln.substitute_activation_global` und Freitext in `watchlist`. Echte Synthesearbeit, kein Umzug.
-3. **Zielallokation** — Tool führt 59,7/35,3/5, Doku 60/35/5. Welche gilt?
-4. **Vault-Frontmatter-Schema** unverifiziert — vor Generierung gegen `WIKI-SCHEMA.md` prüfen.
-5. **`INSTRUKTIONEN §22`** (Sparplan-Formel) ungelesen — gegen Spec §7.2/§7.4 abgleichen.
-6. **`config.yaml satelliten`-Block Z. 158–398** nicht feldweise durchgegangen.
+2. **Ersatzbank-Synthese** (§3.2) — verstreut als Inline-`ersatz:`, `substitute_activation_global` und `watchlist`-Freitext. **Empirisch bestätigt 27.08.:** die Broker-Watchlist kann das nicht ersetzen — sie enthält 3 von 10 Kandidaten und ist eine andere Liste (Beobachtung statt Zuordnung). Bleibt Handarbeit.
+3. **GOOGL-Ausschluss** (§9.3, NEU) — der Vault führt „struktureller Ausschluss seit 01.04.2026 — kein Einstieg", während 50 €/Mt laufen. Förmlich aufheben (Chronik-Eintrag) **oder** Override nach §3.3 mit `grund`/`seit`/`review_am`. Unkommentiert stehen lassen ist nicht zulässig.
+4. **JEDI** (§11.11, NEU) — Position 2,25 Stk. ≈ 158 € **ohne Sparplan**. Halten, aufstocken, abgehen?
+5. **ETF-SOLL-Raten** (§11.13, NEU) — Ist weicht bei allen sechs ab (Σ config.yaml 616 gegen Broker 563; JEDI 72 → 0, Gold 51 → 80).
 
-**Danach erst Stufe 0** (Datenreparatur): APH-FLAG-Trigger in `flag_events.jsonl` nachtragen, AMZN-Divergenz in `flags_aktiv` klären.
+**Danach Stufe 0** (Datenreparatur, ~30 min): APH-FLAG-Trigger in `flag_events.jsonl` nachtragen · AMZN-Divergenz in `flags_aktiv` klären · GOOGL-Entscheidung aus Punkt 3 umsetzen. Danach ist die jsonl die maßgebliche Quelle — deckungsgleich sind die Listen bewusst **nicht** (GOOGL bleibt divergent bis zur Analyse).
+
+**Vor Stufe 1 beachten:** Regelwerk-Befüllen braucht den **laufenden Live-Layer** (ISINs aus `holdings ∪ savings_plans`) · `CLAUDE.md` gehört in denselben Commit wie den xlsx-Move (Z. 27/29/57/59/77/78 tragen den alten 8-9-Datei-Sync als Prosa) · `para18_sync/validator.py` in Stufe 1 stilllegen (bricht nicht, warnt aber dauerhaft).
 
 **⚠️ Live-State-Warnung:** `PORTFOLIO.md`, `Faktortabelle.md`, `config.yaml`, PIPELINE.md und die drei xlsx beschreiben den **Juni-Stand** und sind seit dem Broker-Übertrag 17.08. + der Sparplan-Umstellung 26.08. bewusst veraltet. Live-Wahrheit ist die **Scalable-API**; dokumentierter Ist-Stand → `02_Analysen/2026-08-26_Depot-Reconciliation.md` Abschnitt F. Nicht punktuell nachpflegen — das ist Teil von #83.
 
