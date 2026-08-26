@@ -1001,7 +1001,7 @@ Vor Architektur-Erweiterung schriftlich begründen:
 
 ### 33.3 Gate 3 — Anti-Over-Engineering-Check
 
-1. **Codex-Review Pflicht** (memory `feedback_codex_over_advisor.md`): Jede Architektur-Erweiterung braucht externe Bestätigung gegen Own-Bias ("LLM-Hype-FOMO").
+1. **Codex-Review Pflicht** (memory `feedback_review_via_codex_not_advisor.md`): Jede Architektur-Erweiterung braucht externe Bestätigung gegen Own-Bias ("LLM-Hype-FOMO").
 2. **3-Monats-Observation-Period:** Vor Produktions-Adoption 3 Monate Parallelbetrieb mit bestehender Architektur.
 3. **Rollback-Plan:** Jede Erweiterung muss ohne Daten-/State-Verlust zurücknehmbar sein.
 
@@ -1034,7 +1034,7 @@ Drei Szenarien wurden bei Paper-Ingest evaluiert:
 - **§28.1 Step 1** (Paper/Evidence-Check) — §33-Gates komplementär zu §28 für Skill-Architektur-Wechsel (nicht Scoring-Parameter)
 - **§29.5 Regime-Audit-Addendum** (B19 FINSABER) — Skill-Self-Audit-Dimension
 - **Status-Matrix** in [[Wissenschaftliche-Fundierung-DEFCON]] §Status-Matrix — `future-arch`-klassifizierte Befunde werden nur über §33 bewertbar
-- **`feedback_codex_over_advisor.md`** — Codex-Review-Pflicht aus Gate 3.1
+- **`feedback_review_via_codex_not_advisor.md`** — Codex-Review-Pflicht aus Gate 3.1
 
 Quelle: [[Knowledge-Graph-Architektur-Roadmap]] / [[Arun-et-al-2025-FinReflectKG]] / [[Labre-2025-FinReflectKG-Companion]] / [[Ngartera-Nadarajah-Koina-2026-Bayesian-RAG]] / [[Li-Kim-Cucuringu-Ma-2026-FINSABER]] / [[Iacovides-Zhou-Mandic-2025-FinDPO]]
 
