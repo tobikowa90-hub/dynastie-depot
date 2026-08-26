@@ -1857,3 +1857,33 @@ Kurs ¥78.070, MC ¥18,93Bio. `non-us-qt-modulator-default-deny` (Non-US-Freeze)
 **Sync-Set (§18, score-flag-sparraten):** PORTFOLIO.md + Faktortabelle.md + CORE-MEMORY §12.14 + log.md (dieser Eintrag) + score_history.jsonl (`2026-06-13_KYCCF_vollanalyse`) + config.yaml + Rebalancing_Tool + Satelliten_Monitor xlsx (+ xlsx-Smoke-Test §18.7). Kein flag_events (kein FLAG-Change).
 
 **Cross-Reference:** CORE-MEMORY §12.14 · score_history `2026-06-13_KYCCF_vollanalyse` · Beispiele.md ASML-Anker (Near-Twin) · Commit `<TBD>` · Memory `feedback_correctness_over_runtime`, `feedback_empirie_statt_annahmen`.
+
+---
+
+## [2026-08-26] system | PIPELINE #83 NEU — Depot-Architektur „Zustand / Urteil / Regelwerk" SPEC-READY v1.4 (scoring-neutral, Pipeline-Item-Event)
+
+**Event-Typ:** Pipeline-Item (neuer Plan). Kein Score-/FLAG-/Sparraten-Touch.
+
+**Was passiert ist:** Aus der Scalable-Anbindung vom 26.08. folgt, dass Positionen, Sparraten, Cash und Kurse Zustand aus einer Fremdquelle sind und nicht länger gepflegt werden. Die Spec `03_Tools/depot-architecture-spec.md` (v1.4, 661 Z.) trennt drei Sorten Information, die heute in denselben Dateien vermischt liegen — Zustand (API, gitignored Cache), Urteil (die beiden jsonl, append-only), Regelwerk (neu: `00_Core/REGELWERK.yaml`). `PORTFOLIO.md`, `Faktortabelle.md`, `config.yaml` und das Vault-Frontmatter werden generiert. Der aktuelle Score bekommt keinen eigenen Ort mehr: er ist der letzte Record je Ticker.
+
+**Warum das zählt:** Sechs von sieben Score-Kopien fallen weg, und mit ihnen rund 900 Zeilen Prüfcode (`cross_source`, `cross_source_reverse`, `score_event_parity`), zwei Skills (`xlsx-smoke-test-runner` vollständig, `paragraph-18-sync` weitgehend), die drei xlsx-Tools und der größte Teil von §18. Aus 8-9 Pflicht-Dateien mit gegenseitiger Konsistenzpflicht werden vier Quellen mit je genau einem Schreiber.
+
+**Befunde, die beim Schreiben entstanden (Ist-Zustand, nicht Spec-Fehler):**
+- **Die drei FLAG-Quellen widersprechen sich paarweise.** `config.yaml` führt MSFT/APH/AVGO, `flag_events.jsonl` MSFT/GOOGL/AVGO/AMZN, `PORTFOLIO.md` MSFT/AMZN/AVGO/APH. Keine zwei stimmen überein.
+- **GOOGL trägt seit 2026-03-15 einen CapEx/OCF-Trigger ohne Resolve** — sichtbar nur in der jsonl — und wird seit 26.08. mit 50 €/Mt als Core-4-Titel bespart. Analysefall, kein Reparaturfall.
+- **Die xlsx normiert, die Doku addiert.** `Rebalancing_Tool` rechnet `Budget × Tier-Gewicht / Σ Gewichte`; `PORTFOLIO.md` beschreibt feste Tier-Euro plus „value-based Umlenkung". Unsichtbar geblieben, weil Σ der Tier-Basen (364) zufällig gleich dem Aktienbudget (363,94) ist — der Unterschied zeigt sich erst beim ersten FLAG. **Entschieden 26.08.: additiv** mit gestaffeltem Ziel für freigesetzte Beträge (Ersatz → Block-Untergewicht → ETF-Core), nie diffus auf die übrigen Satelliten.
+- **Zwei Gates im Score-Schreibpfad hängen an den künftig generierten Dateien.** `check_freshness` (`REQUIRED_TOUCH_FILES`) würde nach der Generierung immer erfüllt sein und nichts mehr prüfen; die Tripwire P2b (`parse_state_row`, spaltenoffsetbasiert) blockiert hart. Beide Neufassungen sind in Stufe 2 Schritt 9 gebunden.
+
+**Review:** Drei Codex-Sparring-Runden (R1 7 HIGH, R2 5, R3 2), alle 14 gegen die realen Dateien nachgeprüft und bestätigt. Codex-Urteil: **Stufe 0 und Stufe 1 umsetzungsreif, Stufe 2 gated.**
+
+**Lehre:**
+- **Mustervergleich ersetzt kein Codelesen** — zweimal in derselben Session gestolpert. Erst wurde „Datei schreibt irgendetwas" mit „schreibt dieses Ziel" gleichgesetzt, dann das gesamte Verzeichnis `03_Tools/backtest-ready/` als Testcode eingestuft, weil der Ordnername die Zeichenfolge „test" enthält — 11 von 13 produktiven Dateien fielen aus dem Blast-Radius, darunter `archive_flag.py` und `archive_score.py`.
+- **Wird eine Datei wegen eines Review-Befunds angefasst, die ganze Datei prüfen.** `check_freshness` (Z. 256) und `parse_state_row` (Z. 152) stehen in derselben Datei; eine Runde reparierte nur das eine.
+- **Eine neue Regel kann eine bestehende still übersteuern.** Die erste Fassung „freigesetzte Beträge gehen ins Block-Untergewicht" hätte `substitute_activation_global` (seit April, inkl. Steuerlogik „niemals durch Verkauf tauschen") ausgehebelt. Gelöst durch Staffelung statt Ersetzung.
+- **Selbstreferenzielle Regeln gegen das eigene Gründungsdokument testen** — die Anti-Creep-Regel in §1.2 verbot in ihrer ersten Fassung die Spec, die sie einführt.
+
+**Sync-Set (§18 Pipeline-Item, scoring-neutral):** PIPELINE.md (#83 NEU + Footer v2.82 → v2.83) + log.md (dieser Eintrag) + SESSION-HANDOVER.md (Session-Abschluss-Pflicht). **KEIN** PORTFOLIO / Faktortabelle / score_history / config.yaml / xlsx / flag_events — kein Score-, FLAG- oder Sparraten-Event.
+
+**Gate für die Folge-Session (User-Direktive 26.08.):** Keine Planungs-Phase unter **95 % Joint-Confidence**. Restzweifel aus Spec §11 zuerst ausräumen.
+
+**Cross-Reference:** `03_Tools/depot-architecture-spec.md` v1.4 · `02_Analysen/2026-08-26_Depot-Reconciliation.md` · PIPELINE #83 · Commit `<TBD>` · Memory `feedback_empirie_statt_annahmen`, `feedback_codex_sparring_heuristic`, `reference_scalable_cli_agentic_investing`.

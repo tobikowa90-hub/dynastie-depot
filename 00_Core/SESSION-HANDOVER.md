@@ -1,8 +1,8 @@
 # 🔁 Session-Übergabeprompt — Dynastie-Depot
 
 **Status-Banner (Sliding-Window — letzte 2 Sessions; volle Historie → `05_Archiv/SESSION-HANDOVER-bis-2026-05-25.md` + git log + Vault `log.md`):**
-- **Datum:** 2026-06-16 (Mo) ~00:00–01:10 Europe/Berlin — **🔬 Quellen-Audit Free-Stack (scoring-neutral; NUR Doc/Memory durable, KEINE Workflow-Edits — die folgen frische Session).** Empirisch geklärt (Sandbox-Probes + Shibui-Schema + yfinance 1.3.0): **defeatbeta + Shibui + yfinance decken ALLE Fundamentals-Daten aller 11 Satelliten ab, gratis → kein EODHD ($60)/FMP ($99)-Kauf nötig.** Lineage-Schlüssel: **Shibui = EODHD/Tiingo** (US-only; Tiefe CONFIRMED via AVGO-Live: ROIC 21,1 % / FCF 10,26 Mrd / P-FCF 55,2), **defeatbeta + yfinance = Yahoo**. **Unabhängiges Struktur-Dual nur US + ASML** (Shibui ⟂ Yahoo → **VERIFIED**); **RMS/SU/KYCCF nur Yahoo-Backend → CORROBORATED** (Tier-2 web/IR) + **KEINE non-US-Transcripts**. AlphaVantage (nie integriert, REJECT) + EODHD/FMP-Survey + ADR/Suffix-Re-Probe alle durable in `01_Skills/cross-source-verify/GATE0-COVERAGE.md` §Source-Routing CONFIRMED. **Nächste Session = bestehende Struktur updaten (≫ cross-source-verify-Skill-Entscheid): siehe 🔼 PRIORITÄT-Block unten.**
-- **Datum:** 2026-06-12/13 (Fr/Sa) — **✅ exUSA-Re-Add + KYCCF O3-Vollanalyse (2 Score/Portfolio-Events, §18-synced, gepusht).** 12.06.: **EXUS** (Xtrackers MSCI World ex USA, IE0006WW1TQ4) @82€ reaktiviert als US-Klumpenrisiko-Hedge (8% Gesamtdepot, US-Faktor 0), intern finanziert aus IWDA −51/AVGC −21/JEDI −10 → ETF-Block **616€ unverändert**, Slots 19→**20**; Rebalancing_Tool_v4.0 = SSoT. 13.06.: **KYCCF** (Keyence) O3 DONE → **Score 67/🟡 D3, kein FLAG, Tier-2-Rate 32€** (JGAAP FY26 Primärquelle, Wide-Moat QT beide Zweige hart 0, EQ-Ratio 94,6%; §12.14); ersetzt DEFCON-3-Platzhalter → **O3-Backlog jetzt nur noch NOW/ZETA**.
+- **Datum:** 2026-08-26 (Di) — **📐 Depot-Architektur-Spec v1.4 SPEC-READY (PIPELINE #83 NEU, scoring-neutral, kein §18-Score-Event).** Konsequenz aus der Scalable-Anbindung: Positionen/Raten/Cash/Kurse sind **Zustand aus der API**, Urteil bleibt append-only in den beiden jsonl, Politik zieht in ein neues `00_Core/REGELWERK.yaml`; `PORTFOLIO.md` + `Faktortabelle.md` + `config.yaml` + Vault-Frontmatter werden **generiert**. Der aktuelle Score bekommt keinen Ort mehr — er ist der letzte Record je Ticker. Bilanz: −3 xlsx, −2 Skills, −900 Z. Prüfcode, §18 von 8-9 auf **4 Quellen mit je einem Schreiber**. 3 Codex-Runden, 14 HIGH alle nachgeprüft + bestätigt; Codex-Urteil **Stufe 0+1 umsetzungsreif, Stufe 2 gated**. **Fund mit Portfolio-Relevanz: GOOGL trägt seit 15.03. einen CapEx/OCF-Trigger ohne Resolve** und wird seit 26.08. mit 50 €/Mt als Core-4-Titel bespart — sichtbar nur in `flag_events.jsonl`. Entschieden: Rebalancing-Modell **additiv** mit gestaffeltem Ziel (Ersatz → Block-Untergewicht → ETF-Core).
+- **Datum:** 2026-06-16 (Mo) ~00:00–01:10 Europe/Berlin — **🔬 Quellen-Audit Free-Stack (scoring-neutral; NUR Doc/Memory durable, KEINE Workflow-Edits — die folgen frische Session).** Empirisch geklärt (Sandbox-Probes + Shibui-Schema + yfinance 1.3.0): **defeatbeta + Shibui + yfinance decken ALLE Fundamentals-Daten aller 11 Satelliten ab, gratis → kein EODHD ($60)/FMP ($99)-Kauf nötig.** Lineage-Schlüssel: **Shibui = EODHD/Tiingo** (US-only), **defeatbeta + yfinance = Yahoo**. **Unabhängiges Struktur-Dual nur US + ASML**; **RMS/SU/KYCCF nur Yahoo-Backend → CORROBORATED** + **KEINE non-US-Transcripts**. Durable in `01_Skills/cross-source-verify/GATE0-COVERAGE.md`.
 
 ## 🎯 Resume-Anweisung für nächste Session
 
@@ -10,7 +10,32 @@
 
 **Wichtig — Re-Investigation-Recall-Check (Memory `feedback_pre_investigation_recall_check`):** Vor mehrschrittiger Diagnose immer EIN `mem-search`/PIPELINE-Live-Grep-Pass; veraltete Handover-Banner waren am 2026-05-26 nachweislich Quelle eines #73a-Misroutings, deswegen ist Live-State immer Ground-Truth, nie Handover-Snapshot allein.
 
-### 🔼 PRIORITÄT nächste Session (USER-Direktive 2026-06-16) — Free-3-Source-Stack vollumfänglich in Analyseworkflows einbinden
+### 🔼 PRIORITÄT nächste Session (USER-Direktive 2026-08-26) — Restzweifel an der Architektur-Spec ausräumen
+
+> **🔒 GATE — wörtliche User-Direktive:** *„Nächste Session müssen wir alle Restzweifel um die Spec ausmerzen. Unter 95 % Confidence will ich nicht in die Planung gehen."*
+> Kein `writing-plans`, kein Bau, keine Stufe-1-Ausführung, bevor die Punkte unten geschlossen sind und die Joint-Confidence ≥ 95 % steht.
+
+**Ausgangslage:** `03_Tools/depot-architecture-spec.md` v1.4, PIPELINE #83, drei Codex-Runden durch. Codex-Urteil: Stufe 0 und Stufe 1 umsetzungsreif, Stufe 2 gated auf die Gate-Neufassung §4.4.
+
+**Zu schließen vor der Planung (Spec §11):**
+1. **Klassen-Zuordnung** (§3.1) — Core-4 gesetzt; offen: NOW `satellit T1` oder `core`? Adobe/Veeva Tier? ZETA bestätigen? Costco Roster oder Abgang (dann auch `screener_exceptions`-Eintrag mit entfernen)?
+2. **Ersatzbank-Synthese** (§3.2) — es gibt **keinen** `ersatzbank`-Block in `config.yaml`. Die Zuordnung liegt verstreut als Inline-`ersatz:` je Satellit, `system_regeln.substitute_activation_global` und Freitext in `watchlist`. Echte Synthesearbeit, kein Umzug.
+3. **Zielallokation** — Tool führt 59,7/35,3/5, Doku 60/35/5. Welche gilt?
+4. **Vault-Frontmatter-Schema** unverifiziert — vor Generierung gegen `WIKI-SCHEMA.md` prüfen.
+5. **`INSTRUKTIONEN §22`** (Sparplan-Formel) ungelesen — gegen Spec §7.2/§7.4 abgleichen.
+6. **`config.yaml satelliten`-Block Z. 158–398** nicht feldweise durchgegangen.
+
+**Danach erst Stufe 0** (Datenreparatur): APH-FLAG-Trigger in `flag_events.jsonl` nachtragen, AMZN-Divergenz in `flags_aktiv` klären.
+
+**⚠️ Live-State-Warnung:** `PORTFOLIO.md`, `Faktortabelle.md`, `config.yaml`, PIPELINE.md und die drei xlsx beschreiben den **Juni-Stand** und sind seit dem Broker-Übertrag 17.08. + der Sparplan-Umstellung 26.08. bewusst veraltet. Live-Wahrheit ist die **Scalable-API**; dokumentierter Ist-Stand → `02_Analysen/2026-08-26_Depot-Reconciliation.md` Abschnitt F. Nicht punktuell nachpflegen — das ist Teil von #83.
+
+**Offener Portfolio-Punkt, unabhängig von der Spec:** **GOOGL** trägt seit 2026-03-15 einen CapEx/OCF-Trigger ohne Resolve und wird seit 26.08. mit 50 €/Mt bespart. Klasse `core` → Analysepflicht, kein Ratenstopp. Dazu: AVGO Q3 FY26 am **03.09.** (FLAG-Resolve-Gate) und der unbearbeitete Juli-Earnings-Cluster (ASML/TMO/V/MSFT/APH/RMS/SU/AMZN/BRK.B).
+
+**Ebenfalls beschlossen, noch nicht terminiert:** systemweiter Rückbau. Empirie 26.08.: 719 Commits seit 15.04., davon 42 (5,8 %) mit Portfolio-/Analyse-Bezug. Reihenfolge vom User bestätigt — (1) Spec fertig, (2) Rückbau-Inventar, (3) Zielbild Ordnerstruktur + CLAUDE.md + Routing. Anti-Creep-Regel steht in Spec §1.2.
+
+---
+
+### 🔽 NACHRANGIG (USER-Direktive 2026-06-16, weiterhin offen) — Free-3-Source-Stack vollumfänglich in Analyseworkflows einbinden
 
 **Wichtiger als die cross-source-verify-Skill-Entscheidung** ist das Updaten der BESTEHENDEN Struktur. **Standing-Konvention ab sofort:** !Analysiere-Datensammlung = **defeatbeta + Shibui (US + ASML) + yfinance (Non-US-Primär)**. Empirie-SSoT (durable): `01_Skills/cross-source-verify/GATE0-COVERAGE.md` §Source-Routing CONFIRMED 2026-06-16.
 
@@ -24,6 +49,8 @@
 **§18-Impact dieser Capture-Session:** Keiner — SESSION-HANDOVER + Memory + GATE0-Doc = working-tree-doc, scoring-neutral, kein §18-Sync-Set-Touch (kein Score/FLAG/Sparraten/Pipeline-Item-Edit jetzt).
 
 ### 📅 Nächste reguläre Termine (chronologisch)
+
+> ⚠️ **Stand 09.06.2026 — die Juli-Termine sind sämtlich verstrichen und unbearbeitet.** Der Cluster ASML 15.07. · TMO/NOW 22.07. · V 28.07. · MSFT/APH/RMS/KYCCF 29.07. · SU/AMZN 30.07. · BRK.B 01.08. · ZETA 04.08. liegt als Earnings-Nachzug offen; §19.1 Tag-0/Tag-+1-Split greift nicht mehr, alle Transcripts sind verfügbar. Nächster **zukünftiger** Termin ist AVGO Q3 FY26 am **03.09.** KYCCF ist nicht mehr im Depot. Vor Verwendung `03_Tools/earnings_calendar.py --check` neu laufen lassen.
 
 | Datum | Item | Aktion |
 |-------|------|--------|
