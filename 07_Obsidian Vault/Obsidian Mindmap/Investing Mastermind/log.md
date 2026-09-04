@@ -2097,3 +2097,30 @@ flag_typ: Literal["capex_ocf", "fcf_trend_neg", "insider_selling_20m", "tariff_e
 **Sync-Set (§18, Pipeline-Item + FLAG-Datenreparatur, scoring-neutral):** `config.yaml` + Vault-Entity `GOOGL.md` + `CORE-MEMORY.md` (§12.16 neu, §12.12 ergänzt) + log.md. **KEIN** `flag_events.jsonl`-Write (Schritt 1 blockiert), **KEIN** PORTFOLIO/Faktortabelle/score_history/xlsx — kein Score-/Sparraten-Event.
 
 **Nächste Tracks:** Owner-Entscheidung zu Schritt 1 (Schema erweitern vs. APH als ableitbar behandeln) → danach Stufe 0 abschließen und Spec §9.3 + §4.2 entsprechend nachziehen. **Vorgezogen dringend: GOOGL-Vollanalyse vor dem 22.09.2026** (Score-Verfall + offener FLAG + laufende Rate).
+
+---
+
+## [2026-09-04] system | Codex-Review-Pfad repariert — CLI 0.121.0 → 0.153.2, Pin `gpt-5.3-codex` → `gpt-5.5` (system-zustand)
+
+**Event-Typ:** System-Zustand-Change. Kein Score-, FLAG- oder Sparraten-Bezug.
+
+**Wie es aufgefallen ist — das ist der eigentliche Merker.** Ein für die R5-Runde gespawnter `codex:codex-rescue`-Subagent ging **still auf `idle`, ohne je einen Report zu liefern**: keine Fehlermeldung, keine Notification, nur Stille. `ListAgents` zeigte ihn 31 Minuten lang als `idle`. Erst der **direkte** `codex exec`-Aufruf machte die Ursache sichtbar.
+
+**Zwei unabhängige Defekte:**
+1. Der Model-Pin `gpt-5.3-codex` aus dem 21.05.-Fix ist inzwischen policy-blockiert — `400 "The 'gpt-5.3-codex' model is not supported when using Codex with a ChatGPT account."` — und nach dem Upgrade meldet die CLI zusätzlich „Model metadata not found": das Modell existiert im Katalog nicht mehr.
+2. CLI 0.121.0 konnte die aktuelle Modell-Liste gar nicht mehr dekodieren (`unknown variant 'max', expected one of none|minimal|low|medium|high|xhigh`). **Damit war das Upgrade Voraussetzung der Modellwahl, nicht Alternative dazu** — ohne es hätte man blind aus einer abgeschnittenen Liste gewählt.
+
+**Fix (User-Entscheidung „beides"):** `npm install -g @openai/codex@latest` → 0.153.2, danach `~/.codex/config.toml` auf `model = "gpt-5.5"` (Backup `config.toml.bak-20260904`). Verifiziert: `model: gpt-5.5`, 524 Tokens, Antwort OK.
+
+**Empirisch getestete Matrix:** `gpt-5.5` ✅ · `gpt-5.4-mini` ✅ · `gpt-5.5-codex` ❌ · `gpt-5.4-codex` ❌ · `gpt-5.4` ❌ · `gpt-5.3-codex` ❌.
+
+**Bemerkenswert:** Die Mai-Tabelle führte `gpt-5.5` als „❌ requires newer CLI version". Genau das Upgrade hat es freigeschaltet — **der damals blockierte Kandidat ist der heutige Default.** Und alle `-codex`-Varianten sind jetzt gesperrt, während die generischen Modelle laufen; gegenüber Mai hat sich das Muster umgekehrt. Wer die alte Tabelle als gültig gelesen hätte, wäre auf `gpt-5.4-mini` ausgewichen und hätte grundlos die Mini-Klasse für Architektur-Sparring akzeptiert.
+
+**Lehre:**
+- **Ein Model-Pin ist kein Fix, sondern eine Wette auf eine Anbieter-Policy.** Er gehört mit Datum versehen und bei jedem 400er zuerst angezweifelt — die 21.05.-Regel sah das bereits vor, nur ihr Ergebnis war abgelaufen. Eine Memory-Tabelle mit Modell-Verfügbarkeit ist ein Verfallsdatum-Objekt, kein Nachschlagewerk.
+- **Ein Subagent auf `idle` ohne Report ist ein Fehlersignal, kein „arbeitet noch".** Nicht weiter pollen, nicht neu spawnen — direkt das darunterliegende Tool aufrufen und stderr lesen. Die 31 Minuten Wartezeit hätte eine Fünf-Sekunden-Probe vor dem Spawn gespart.
+- **Reihenfolge zählt bei Doppeldefekten.** Hätte ich nur den Pin geändert, wäre `gpt-5.4-mini` die einzige sichtbare Option gewesen — ein stiller Qualitätsabstieg für alle künftigen Reviews, ohne dass jemand den besseren Kandidaten je gesehen hätte.
+
+**Sync-Set (§18 system-zustand):** SYSTEM.md (§Review-Toolchain-Status neu) + log.md. Auto-Memory `feedback_review_via_codex_not_advisor` + MEMORY.md-Index ebenfalls nachgezogen (außerhalb des Repos).
+
+**Nächste Tracks:** R5-Review auf H14/H15 läuft jetzt tatsächlich (im Hintergrund, gpt-5.5).

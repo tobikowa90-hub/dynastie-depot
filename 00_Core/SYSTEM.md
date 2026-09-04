@@ -32,6 +32,25 @@
 
 ---
 
+## §Review-Toolchain-Status (NEU 04.09.2026)
+
+**Codex ist der einzige zugelassene Reviewer** (Memory `feedback_review_via_codex_not_advisor`, `advisor()` bleibt projektweit verboten). Der Pfad war am 04.09.2026 **tot** und ist repariert.
+
+| | Stand 04.09.2026 |
+|---|---|
+| CLI | `codex-cli` **0.153.2** (von 0.121.0, via `npm install -g @openai/codex@latest`) |
+| Model-Pin | `~/.codex/config.toml` → **`model = "gpt-5.5"`** (Backup `config.toml.bak-20260904`) |
+| Auth | ChatGPT-Account, `codex doctor`: websocket HTTP 101, 18 ok / 0 fail |
+
+**Was defekt war — zwei unabhängige Ursachen:**
+1. Der 21.05.-Pin `gpt-5.3-codex` ist inzwischen policy-blockiert (`400 "not supported when using Codex with a ChatGPT account"`) und im Katalog nicht mehr vorhanden.
+2. CLI 0.121.0 konnte die aktuelle Modell-Liste nicht mehr dekodieren (`unknown variant 'max'`) — man wählte also blind aus einer abgeschnittenen Auswahl. Deshalb war das Upgrade **Voraussetzung** der Modellwahl, nicht Alternative dazu.
+
+**Empirisch getestete Modell-Matrix (CLI 0.153.2, ChatGPT-Account):** `gpt-5.5` ✅ · `gpt-5.4-mini` ✅ · `gpt-5.5-codex` ❌ · `gpt-5.4-codex` ❌ · `gpt-5.4` ❌ · `gpt-5.3-codex` ❌. **Alle `-codex`-Varianten sind gesperrt, die generischen laufen** — das Muster hat sich gegenüber Mai umgekehrt, als genau umgekehrt `gpt-5.3-codex` lief und `gpt-5.5` „requires newer CLI version" meldete.
+
+**Betriebshinweis:** Ein `codex:codex-rescue`-Subagent geht bei Model-Fehlern **still auf `idle`, ohne Report und ohne Fehlermeldung**. Vor jedem Spawn lohnt `codex exec "sag OK"` als Fünf-Sekunden-Probe. `gpt-5.5` ist zudem deutlich langsamer (Reasoning): Ein-Wort-Test ~1–2 min, Repo-Review > 600 s → Timeout großzügig setzen oder im Hintergrund laufen lassen.
+
+
 ## Active xlsx-Filenames
 
 > Pinning-SSoT für deterministische xlsx-Selektion via `paragraph-18-sync` validator (Codex-M4). Format strikt: `- ToolStem: Filename_vX.Y.xlsx`. Parser-Regex: `^\s*[-*]\s*([A-Za-z0-9_]+)\s*:\s*([A-Za-z0-9_.+-]+\.xlsx)\s*$`.
