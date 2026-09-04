@@ -15,8 +15,8 @@ werden -- so zitiert die Spec sie durchgaengig). Bewusst NICHT auf den Stem:
 "STATE" in einer Aufzaehlung ist keine Behandlung als Quelle, und genau dieser
 Nachlass liess v1.6 bei der Selbstpruefung durchgehen.
 
-Exit 1, wenn Liste A nicht leer ist (Datei wird vom Agenten per Regel
-geladen, kommt in der Spec aber nicht vor). Sonst Exit 0.
+Exit 1, wenn A1 oder A2 nicht leer ist (Datei liegt auf dem Leseweg des
+Agenten, kommt in der Spec aber nicht vor). Sonst Exit 0.
 
 Run:
   python 03_Tools/spec_inventory_diff.py
@@ -45,14 +45,33 @@ FILE_TOKEN = re.compile(r"[\w./\\-]*[\w-]+\.(?:md|ya?ml|jsonl?|xlsx|py|toml|ps1|
 EXTS = (".md", ".yaml", ".yml", ".json", ".jsonl", ".xlsx", ".py", ".toml", ".ps1", ".txt")
 
 # Deklarierter Ausschluss. Wird im Report mit Begruendung und Anzahl gedruckt.
+# 02_Analysen ist bewusst NICHT mehr ausgeschlossen: R5 fusste auf
+# 02_Analysen/2026-09-04_Depot-Live-Verifikation.md.
 EXCLUDED_PREFIXES = (
-    ("02_Analysen/", "Analyse-Output, kein Regelwerk"),
     ("04_Templates/", "Vorlagen, kein Live-State"),
     ("05_Archiv/", "historisch -- Ausnahme: *.jsonl (Live-Append-Ziele)"),
     ("06_Skills-Pakete/", "ZIP-Distribution, keine gelesene Quelle"),
-    ("07_Obsidian Vault/", "Wiki-Korpus -- Ausnahme: WIKI-SCHEMA.md, log.md"),
+    ("07_Obsidian Vault/", "Wiki-Korpus ohne Urteil/Regel im Frontmatter"),
 )
 VAULT_KEEP = ("WIKI-SCHEMA.md", "log.md")
+
+# Frontmatter-Felder, die eine Vault-Seite zur Urteils- oder Regelwerk-Quelle machen.
+# Empirisch erhoben (04.09.2026), nicht geraten: `score_aktuell` steht auf 15
+# Entity-Seiten (12 mit echtem Wert), `operative_regel` auf 23 Concept-Seiten mit
+# echten Scoring-Regeln. Ein pauschaler "Vault ist nur Wiki"-Ausschluss ist damit
+# widerlegt -- das war dieselbe Ausschluss-nach-Sorte-Falle wie bei STATE.md.
+# Bewusst NICHT drin: `defcon_relevanz` (41) -- Relevanz-Tag auf Papern, keine Regel.
+VAULT_RULE_KEYS = (
+    "score_aktuell",
+    "score_valid_until",
+    "flag",
+    "defcon",
+    "defcon_block",
+    "operative_regel",
+    "naechsterTrigger",
+    "ersatz",
+    "ticker",
+)
 NOISE_MARKERS = (
     "__pycache__/",
     "/tests/",
@@ -77,7 +96,23 @@ def git_files() -> list[tuple[str, bool]]:
     return [(p, True) for p in tracked] + [(p, False) for p in untracked]
 
 
-def excluded_reason(rel: str) -> str | None:
+def vault_rule_pages(files: list[tuple[str, bool]]) -> set[str]:
+    """Vault-Seiten, deren Frontmatter Urteil (Score/FLAG) oder Regelwerk traegt."""
+    hits = set()
+    for rel, _ in files:
+        if not (rel.startswith("07_Obsidian Vault/") and rel.endswith(".md")):
+            continue
+        txt = read(rel)
+        if not txt.startswith("---"):
+            continue
+        end = txt.find("\n---", 3)
+        frontmatter = txt[3:end] if end != -1 else ""
+        if any(re.search(rf"^{k}:", frontmatter, re.MULTILINE) for k in VAULT_RULE_KEYS):
+            hits.add(rel)
+    return hits
+
+
+def excluded_reason(rel: str, vault_rule: set[str]) -> str | None:
     """None = gehoert in den Suchraum. Sonst der Grund fuer den Ausschluss."""
     base = rel.rsplit("/", 1)[-1]
     if any(m in "/" + rel for m in NOISE_MARKERS):
@@ -91,7 +126,9 @@ def excluded_reason(rel: str) -> str | None:
             else "historisch -- Ausnahme: *.jsonl (Live-Append-Ziele)"
         )
     if rel.startswith("07_Obsidian Vault/"):
-        return None if base in VAULT_KEEP else "Wiki-Korpus -- Ausnahme: WIKI-SCHEMA.md, log.md"
+        if base in VAULT_KEEP or rel in vault_rule:
+            return None
+        return "Wiki-Korpus ohne Urteil/Regel im Frontmatter"
     for prefix, reason in EXCLUDED_PREFIXES:
         if rel.startswith(prefix):
             return reason
@@ -128,13 +165,17 @@ def main() -> int:
 
     all_files = git_files()
     all_basenames = {rel.rsplit("/", 1)[-1] for rel, _ in all_files}
+    vault_rule = vault_rule_pages(all_files)
+    vault_md_total = sum(
+        1 for rel, _ in all_files if rel.startswith("07_Obsidian Vault/") and rel.endswith(".md")
+    )
 
     universe: list[tuple[str, bool]] = []
     skipped: dict[str, int] = {}
     for rel, tracked in all_files:
         if not rel.endswith(EXTS):
             continue
-        reason = excluded_reason(rel)
+        reason = excluded_reason(rel, vault_rule)
         if reason:
             skipped[reason] = skipped.get(reason, 0) + 1
         else:
@@ -144,6 +185,14 @@ def main() -> int:
     agent_tokens: set[str] = set()
     for src in AGENT_READ_SOURCES:
         agent_tokens |= tokens_in(read(src))
+    # Ein Hop weiter: was die per Regel gelesenen Dateien ihrerseits nennen.
+    # `UMSTRUKTURIERUNG-2027.md` war NUR so erreichbar -- ueber `STATE.md`, nicht
+    # ueber `CLAUDE.md` -- und landete deshalb in Liste B statt A. Wer nur A
+    # abarbeitet, laeuft am staerksten Treffer vorbei.
+    first_order = set(agent_tokens)
+    for rel, _ in all_files:
+        if rel.rsplit("/", 1)[-1] in first_order and rel.endswith((".md", ".yaml", ".yml", ".py")):
+            agent_tokens |= tokens_in(read(rel))
 
     def mentioned(rel: str) -> bool:
         base = rel.rsplit("/", 1)[-1]
@@ -160,11 +209,20 @@ def main() -> int:
         by_base.setdefault(rel.rsplit("/", 1)[-1], []).append(rel)
     ambiguous = {b: paths for b, paths in by_base.items() if len(paths) > 1 and b in spec_tokens}
 
-    tier_a, tier_b = [], []
+    # A1/A2 getrennt, weil der Hop Tier A sonst von 3 auf 90 aufblaeht und als
+    # Prioritaets-Signal wertlos wird. A1 = direkt in einer Regel-Datei genannt,
+    # A2 = erst ueber deren Inhalt erreichbar (die UMSTRUKTURIERUNG-Klasse).
+    tier_a1, tier_a2, tier_b = [], [], []
     for rel, tracked in universe:
         if mentioned(rel):
             continue
-        (tier_a if rel.rsplit("/", 1)[-1] in agent_tokens else tier_b).append((rel, tracked))
+        base = rel.rsplit("/", 1)[-1]
+        if base in first_order:
+            tier_a1.append((rel, tracked))
+        elif base in agent_tokens:
+            tier_a2.append((rel, tracked))
+        else:
+            tier_b.append((rel, tracked))
 
     stale = sorted(t for t in spec_tokens if t not in all_basenames)
 
@@ -176,7 +234,15 @@ def main() -> int:
     add("")
     add("Grundmenge: `git ls-files` (getrackt) + untracked-nicht-ignoriert.")
     add("Endungen: " + " ".join(EXTS))
-    add("Tier A = Basename kommt in " + ", ".join(AGENT_READ_SOURCES) + " vor.")
+    add(
+        f"Tier A = Basename kommt in {', '.join(AGENT_READ_SOURCES)} vor -- **plus ein Hop**: "
+        f"was diese Dateien ihrerseits nennen ({len(first_order)} Basenames erster Ordnung, "
+        f"{len(agent_tokens)} nach dem Hop)."
+    )
+    add(
+        f"Vault: {len(vault_rule)} von {vault_md_total} .md-Seiten sind im Suchraum, weil ihr "
+        f"Frontmatter Urteil/Regel traegt ({', '.join(VAULT_RULE_KEYS)}); der Rest ist Korpus."
+    )
     add("Treffer heisst: exakter Basename im Spec-Text (.xlsx auch ohne Endung).")
     add("")
     add("| Dateien | ausgeschlossen, weil |")
@@ -200,10 +266,12 @@ def main() -> int:
             + " * ".join(f"{k} {v}" for k, v in sorted(uncovered.items(), key=lambda kv: -kv[1]))
         )
         add("")
+    offen = len(tier_a1) + len(tier_a2) + len(tier_b)
     add(
         f"Im Suchraum: **{len(universe)}** Dateien. "
-        f"Erwaehnt: **{len(universe) - len(tier_a) - len(tier_b)}**. "
-        f"Nicht erwaehnt: **{len(tier_a) + len(tier_b)}** (A {len(tier_a)} / B {len(tier_b)})."
+        f"Erwaehnt: **{len(universe) - offen}**. "
+        f"Nicht erwaehnt: **{offen}** "
+        f"(A1 {len(tier_a1)} / A2 {len(tier_a2)} / B {len(tier_b)})."
     )
     add("")
 
@@ -231,9 +299,14 @@ def main() -> int:
         add("")
 
     block(
-        f"A -- vom Agenten gelesen, in der Spec nicht genannt ({len(tier_a)})",
-        tier_a,
-        "Die STATE.md-Klasse. Jede Zeile einzeln entscheiden: in die Spec aufnehmen oder begruendet abhaken.",
+        f"A1 -- direkt in einer Regel-Datei genannt, in der Spec nicht ({len(tier_a1)})",
+        tier_a1,
+        "Die STATE.md-Klasse, schaerfste Stufe. Jede Zeile einzeln: in die Spec aufnehmen oder begruendet abhaken.",
+    )
+    block(
+        f"A2 -- erst ueber den Inhalt einer Regel-Datei erreichbar ({len(tier_a2)})",
+        tier_a2,
+        "Die UMSTRUKTURIERUNG-Klasse: zweite Ordnung. Genau hier lag der staerkste Fund von R6, waehrend A1 leer aussah.",
     )
     block(
         f"B -- im Suchraum, in der Spec nicht genannt ({len(tier_b)})",
@@ -273,7 +346,7 @@ def main() -> int:
         out_path.write_text(report + "\n", encoding="utf-8", newline="\n")
         print(f"\n[geschrieben] {args.out}")
 
-    return 1 if tier_a else 0
+    return 1 if tier_a1 or tier_a2 else 0
 
 
 if __name__ == "__main__":
