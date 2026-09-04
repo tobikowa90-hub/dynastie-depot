@@ -2178,3 +2178,29 @@ Sie ist ein **stärkerer** Sync-Ziel-Kandidat als `KONTEXT.md`: die eine wird be
 **Offen aus R6 (nicht abgearbeitet):** Liste A 3 Einträge (`event_typ_mapping.yaml` · `precommit/crlf_guard.py` · `xlsx-smoke-test.md`) · Liste B 121 unadjudiziert · Vault pauschal ausgeschlossen, obwohl R4-H3 **Scores im Vault-Frontmatter** fand (dieselbe Ausschluss-nach-Sorte-Falle, jetzt in meinem Werkzeug) · `02_Analysen/` ausgeschlossen, obwohl R5 dort fußte · Mehrdeutigkeit `SKILL.md` (14×) und `config.yaml` (2×).
 
 **Sync-Set (§18 system-zustand, scoring-neutral):** SYSTEM.md (v1.16 → v1.17) + log.md. Zusätzlich berührt ohne eigene Event-Klasse: STATE.md · CORE-MEMORY.md · KONTEXT.md · beide PIPELINE.md · Spec (v1.7 → v1.7.1) · `git rm` der zurückgezogenen Datei. Kein Score/FLAG/Sparraten-Touch, keine xlsx-Kopplung.
+
+## [2026-09-04] system | ⛔ Spec-Track ausgesetzt — Radikalkur beschlossen (Owner-Entscheidung, scoring-neutral, pipeline-item)
+
+**Event-Typ:** Pipeline-Item, Richtungsentscheidung zu #83. Der wichtigste Eintrag dieser Session, und er widerruft die Arbeit der vorangegangenen.
+
+**Der Auslöser war ein Ergebnis, kein Argument.** R6 erweiterte den Suchraum von 185 auf 247 Dateien und förderte drei neue Funde zutage: der **Vault ist eine vierte Urteils-Quelle** (15 Satelliten-Seiten mit `score_aktuell`/`flag`; **AVGO dort 56 gegen live 59**, **COST 69 und VEEV 74 gültig bis Oktober, obwohl beide seit Juni aus dem Roster**), **zwei aktive Append-Ziele** (`portfolio_returns.jsonl`, `benchmark-series.jsonl`) mit null Treffern in der Spec, und **23 Concept-Seiten mit `operative_regel`** — echten Scoring-Regeln im Klartext. Damit stand am Ende einer Prüfrunde wieder eine längere Liste als am Anfang.
+
+**Die Lesart, die bis dahin galt, war falsch.** Sechs Runden, jede fand eine neue Fehlerklasse außerhalb des Vorrunden-Suchraums — das wurde als Methoden-Erfolg verbucht („getrennte Achsen finden getrennte Fehler", R4-Lehre). Die ehrlichere Deutung: **wenn Runde n+1 verlässlich eine Klasse findet, die n strukturell nicht sehen konnte, übersteigt das System seine eigene Überprüfbarkeit.** Runde sieben findet Klasse sieben. Das ist ein Skalen-Signal, kein Konvergenz-Signal.
+
+**Diagnose des Owners, empirisch gedeckt:** Die Komplexität sitzt nicht in der Fachlichkeit. Ein DEFCON-Score aus Fundamentaldaten, Earnings und News ist überschaubar. Sie sitzt in der **Zustands-Duplikation** — und alles Weitere ist Folgekosten: dieselbe Zahl in 8 Dateien erzwingt §18, §18 erzwingt `paragraph-18-sync`, zwei Kopien in Excel erzwingen `xlsx-smoke-test`, Drift zwischen Kopien erzwingt `system_audit`, unbekannte Kopien erzwingen `spec_inventory_diff`. **Keine dieser Schichten analysiert eine Aktie.** Belege aus derselben Session: ein Score in vier Kopien mit einer veralteten · ausgemusterte Ticker mit laufendem Score · drei nicht-identische §18-Dateilisten · ein Regelwert, der nur in einer Excel-Zelle existiert · ein 149-Zeilen-Dokument mit Allokationspolitik, das keine Prüfrunde inventarisiert hatte.
+
+**Und der Grund für die Duplikation ist entfallen.** Die Markdown-Dateien führen Positionen, Raten, Werte, ISINs und Quoten, weil es keine abfragbare Quelle gab. Seit dem Scalable-Übertrag gibt es sie. Der MCP macht die Hälfte des Systems **gegenstandslos, nicht migrationsbedürftig**.
+
+**Entschieden: Abriss im Repo, kein Greenfield.** Ein Neuanfang auf der grünen Wiese lädt dazu ein, das Unersetzliche neu zu erfinden. Unersetzlich sind vier Bestände: die Ledger (`score_history` · `flag_events` · `portfolio_returns` · `benchmark-series` — der einzige empirische Nachweis, ob das Scoring überhaupt trägt), die ING-Einstandsdaten für die Entnahme 2027 (über keine API erreichbar, §11.17), die fertigen Analysen, und die Vault-Concept-Seiten mit Literatur-Fundierung. Alles andere ist Gerüst.
+
+**Zielbild:** Broker = Live-State, nie abgeschrieben · ein Append-only-Ledger · eine Regeldatei mit den Zahlen, die sich nicht ableiten lassen (Zielallokation, Caps, Tier-Basen, Schwellen — eine Seite) · eine Analyse je Ticker plus Vault als Literatur. Nichts ist doppelt, also gibt es nichts zu synchronisieren: §18 wird leer, und `paragraph-18-sync`, `system_audit`, die xlsx-Kette, Teile der Routing-Table und `spec_inventory_diff` verlieren ihren Gegenstand — nicht per Löschbeschluss, sondern mangels Zuständigkeit.
+
+**Der Kerngedanke der Spec bleibt richtig.** §10 formuliert genau diese Kur: aus 8–9 Pflichtdateien mit gegenseitiger Konsistenzpflicht werden vier Quellen mit je einem Schreiber. Falsch war nicht der Gedanke, sondern der Aufwand, den Ist-Zustand auf 1.150 Zeilen vollständig zu beschreiben, bevor er abgerissen wird. **Ein Haus, das abgerissen wird, muss man nicht vermessen.**
+
+**Nächster Schritt — Empirie statt Dokument:** GOOGL muss vor dem **22.09.2026** analysiert werden (Score-Verfall bei offenem CapEx/OCF-FLAG, laufende 50-€-Rate, Position seit 01.09.) — die einzige Aufgabe im Backlog, die dem eigentlichen Zweck dient. Sie wird als **Minimal-Lauf** gefahren: Scalable-MCP für den Ist-Stand, defeatbeta für Fundamentals und Transcript, News. Mitgeschrieben wird, was tatsächlich gebraucht wurde. **Das Protokoll dieses einen Laufs ist die neue Spec** — beobachtet statt behauptet. Was darin nicht vorkommt, wird archiviert.
+
+**Damit entfallen:** Spec v1.8, das §11-Grilling der sieben offenen Entscheidungen, und die Abarbeitung der R6-Listen (A1 3 / A2 87 / B 94).
+
+**Offene Owner-Frage für die nächste Session:** Minimal-Lauf im Altsystem, oder erst den Abriss-Schnitt festlegen, damit die Analyse schon im Zielsystem läuft?
+
+**Sync-Set (§18 pipeline-item, scoring-neutral):** PIPELINE.md (#83 Status + v2.87 → v2.88) + log.md + SESSION-HANDOVER.md (Session-Abschluss). Kein Score/FLAG/Sparraten-Touch.
