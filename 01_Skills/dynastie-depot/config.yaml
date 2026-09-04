@@ -1,6 +1,6 @@
 # Dynastie-Depot – Portfolio State
 # Regeln: SKILL.md | Strategie: manifest.md | Pipeline: PIPELINE.md
-# Stand: 2026-06-09 (Earnings-Kalender-Sync via earnings_calendar.py [yfinance+Override SSoT]: naechste_pruefung + flags_aktiv + termine auf tool-kanonische Termine — ASML 15.07, NOW/TMO 22.07, V 28.07, MSFT/APH/RMS/KYCCF 29.07, SU/AMZN 30.07, BRK.B 01.08, ZETA 04.08, AVGO 03.09; date-only, kein Score-Event. Davor: 2026-06-07 Umstrukturierung-2027 Phase A: Equal-Weight→3-Tier Conviction-Modell [satelliten_tier_raten], Split 65/30/5→60/35/5, Roster 12→13 [VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter], ETF exUSA→JEDI+WQTM, Gold EUWAX→EWG2, Satelliten-Budget 285→364€ SOLL. Davor: 2026-05-18 AMZN 12. Satellit)
+# Stand: 2026-09-04 (AVGO Q3 FY26 Vollanalyse Paragraph 19.1: score 56->59, score_datum 2026-09-03, DEFCON 2 unveraendert, FLAG aktiv unveraendert -> Sparrate 0 EUR unveraendert, Funded-Summe 210 EUR unberuehrt. FLAG-Resolve-Gate verfehlt: diskr. Selling 90d 33,69 Mio USD > 20 Mio Schwelle. termine + naechste_pruefung auf Q4 FY26 09.12.2026. Kein flag_events-Write. Davor: 2026-06-09 Earnings-Kalender-Sync via earnings_calendar.py [yfinance+Override SSoT]: naechste_pruefung + flags_aktiv + termine auf tool-kanonische Termine — ASML 15.07, NOW/TMO 22.07, V 28.07, MSFT/APH/RMS/KYCCF 29.07, SU/AMZN 30.07, BRK.B 01.08, ZETA 04.08, AVGO 03.09; date-only, kein Score-Event. Davor: 2026-06-07 Umstrukturierung-2027 Phase A: Equal-Weight→3-Tier Conviction-Modell [satelliten_tier_raten], Split 65/30/5→60/35/5, Roster 12→13 [VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter], ETF exUSA→JEDI+WQTM, Gold EUWAX→EWG2, Satelliten-Budget 285→364€ SOLL. Davor: 2026-05-18 AMZN 12. Satellit)
 
 # ─────────────────────────────────────────────
 # PORTFOLIO-RAHMEN
@@ -180,15 +180,15 @@ satelliten:
     typ: "Asset-Light / Semiconductors"
     tier: 1
     defcon: 2
-    score: 56
-    score_datum: "2026-06-04"
-    score_valid_until: "2026-12-04"
+    score: 59
+    score_datum: "2026-09-03"
+    score_valid_until: "2027-03-02"
     flag: true
     flag_grund: "Insider-Selling FLAG (insider_selling_20m): Diskretionäre Verkäufe 90d $106,4M (Skript-Lesart insider_intel.py 30.04.) bzw. $280M+ (OpenInsider-Lesart 27.04. inkl. Samueli) — beide Lesarten 5-14× über $20M-Schwelle. OpenInsider-Cross-Check zeigt 9 Transaktionen, alle als 'S - Sale' ohne 10b5-1-Suffix. Kein Cashless-Pattern (M+S gleicher Tag) — Watchlist-These 'Post-Vesting' widerlegt."
     flag_seit: "2026-04-27"
     flag_wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON-Level (Score-unabhängig)."
     flag_aufloesung: "Diskretionäre Insider-Verkäufe 90d ≤ $20M (rolling re-check). Re-Eval bei Q3 FY26 Earnings via !Analysiere AVGO."
-    naechste_pruefung: "Q3 FY26 Earnings 03.09.2026 — Insider-Block 90d-rolling + Re-Eval FLAG-Status (Q2 04.06. Score 53→56, FLAG bleibt) + Methodology-Watches-Resolve (PIPELINE #30-34)"
+    naechste_pruefung: "Q4 FY26 Earnings 09.12.2026 (amc, im Q3-Call bestaetigt) — FLAG-Resolve-Gate #2: ZUSAMMENSETZUNG pruefen, nicht nur Betrag (Rueckgang $106,4M→$33,69M ist ueberwiegend 90d-Fenster-Mechanik; Juni/Juli-Tranchen fallen ab ~08.10. heraus) + Fwd-P/E-QT-Korridor-Watch (20,65 liegt unter 22 — Rueckkauf ueber ~$392 reaktiviert den Deckel). Vorher: Q3 FY26 Insider-Block 90d-rolling + Re-Eval FLAG-Status (Q2 04.06. Score 53→56, FLAG bleibt) + Methodology-Watches-Resolve (PIPELINE #30-34)"
     roic_notiz: "ROIC GAAP 5,54% (Q1'26) vs WACC defeatbeta 15,96% (carryover 30.04., Tool-Bug bc10_year 06.06.) strukturell unter Kapitalkosten — §410-Goodwill-Ausnahme angewandt: M&A-Compounder VMware $61B (2023) + CA $19B (2018) + Symantec $10B (2019) + Brocade $5,5B (2017), GW $97,8B = 57,2% Assets. NOPAT TTM ~$24,6B / IC-GW ~$48,1B = 51,1% bereinigt → Spread »15pp → 7/8 (konservativ statt 8/8 wegen Methodology-Drift). MSFT-WACC-#25 cross-relevant — FRED-Baseline-Verify Q3 FY26."
     scoring_notiz: "30.04.2026 Forward-Vollanalyse (erste echte seit Skill-Adoption, Pivot von PIPELINE #18 Backfill): Score 84→53 (Δ-31), D4→D2. Quality-Trap voll aktiv (Wide × Fwd P/E 22,98 max 1; Wide × P/FCF 74,4 hart 0). Sub-Scores: Fundamentals 23/50 (fwd_pe=1, p_fcf=0, bilanz=5, capex_ocf=9 Fabless 2,26%, roic=7 §410, fcf_yield=1, opm=2, sbc_malus=-2), Moat 18/20 (Wide 3 Quellen, -1 M&A-GW-Risk), Tech 7/10 (ATH -1,5%, RelStr +30pp, rising 200MA, kein DCF-Malus), Insider 3/10 (Live-Pull, Skip-Window-Carryover NICHT angewandt — V-Q2-Asymmetrie), Sentiment 2/10. Codex R1+R2-Pass APPROVE Master-Reading 74% Confidence (vs R1-Original 51 +2 von HIGH-2 Fwd-P/E + HIGH-5 DCF-Malus Methodology-Disziplin). FLAG aktiv unverändert (Sparrate 0€ unverändert, keine Kaskade). 5 PIPELINE-Methodology-Watches #30-34. ScoreRecord 2026-04-30_AVGO_vollanalyse."
     ersatz: "NVDA / MRVL"
@@ -416,7 +416,7 @@ flags_aktiv:
     grund: "Insider-Selling 90d $106,4M (insider_intel.py 30.04. Live-Pull) bzw. $280M+ (OpenInsider-Lesart inkl. Samueli $250M) — beide Lesarten 5-14× über $20M-Schwelle. OpenInsider-Cross-Check 27.04.2026: 9 Transaktionen, alle 'S - Sale' ohne 10b5-1-Suffix, kein Cashless-Pattern. Watchlist-These 'Post-Vesting' widerlegt."
     seit: "2026-04-27"
     wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON 2 (Score-unabhängig; 30.04. Vollanalyse 84→53, 04.06. Q2 FY26 Vollanalyse 53→56 — FLAG bleibt da Diskr. 90d $106,4M ≫$20M, Samueli $281M=10b5-1 ausgeschl.)"
-    naechste_pruefung: "Q3 FY26 Earnings 03.09.2026 — Re-Eval via !Analysiere AVGO + 90d-rolling-Insider-Check + Methodology-Watches-Resolve (#30-34)"
+    naechste_pruefung: "Q4 FY26 Earnings 09.12.2026 (amc) — Resolve-Gate #2. Stand 04.09.2026: diskr. Selling 90d $33,69M, weiterhin ueber $20M. $29,19M davon allein Brazeal (CLO) in 3 Tranchen (25.06./08.07./10.07.) ohne 10b5-1; Plan-Verkaeufe $250M/90d regelkonform ausgeschlossen; netto 6M -$639,7M bei einem Open-Market-Kauf. Kein flag_events-Write — Zwischenstand ohne Statuswechsel."
 
 flags_review: []  # AVGO 2026-04-27 → flags_aktiv promotet (Insider-FLAG)
 
@@ -552,8 +552,8 @@ termine:
     event: "BRK.B Q2 FY26 (Sa, 10-Q) → KHC-OTTI/GEICO-Decel/Form-13F-Apple-Trim/Buyback-Reconciliation (#36-#41)"
   - datum: "2026-08-04"
     event: "ZETA Q2 2026 (O3) — Scoring-Nachzug"
-  - datum: "2026-09-03"
-    event: "AVGO Q3 FY26 (amc) → Insider-FLAG-Resolve-Gate 90d-rolling + Methodology-Watches-Resolve (#30-34)"
+  - datum: "2026-12-09"
+    event: "AVGO Q4 FY26 (amc, im Q3-Call bestaetigt) → Insider-FLAG-Resolve-Gate #2 (Stand 04.09. $33,69M > $20M) + Fwd-P/E-QT-Korridor-Watch"
   # Sonstige offene (non-earnings):
   - datum: "Juni 2026"
     event: "Bausparvertrag 9.500€ + Steuererstattung ~2.000€ → Slot-Entscheidung"

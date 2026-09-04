@@ -1,6 +1,6 @@
 # DEFCON Faktortabelle
 
-**Stand:** 2026-06-13 (KYCCF O3-Vollanalyse 67/D3 — JGAAP-Primärquelle, ersetzt Platzhalter; O3-Backlog jetzt NOW/ZETA. Vorher: Umstrukturierung-2027 Phase A Roster 12→13, VEEV+COST raus, NOW/KYCCF/ZETA rein. Detail-Move-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)
+**Stand:** 2026-09-04 (**AVGO Q3 FY26 Vollanalyse: 56 -> 59, DEFCON 2, FLAG-Resolve-Gate verfehlt** [$33,69M > $20M]; score_datum 2026-09-03. Vorher: 2026-06-13 KYCCF O3-Vollanalyse 67/D3 — JGAAP-Primärquelle, ersetzt Platzhalter; O3-Backlog jetzt NOW/ZETA. Vorher: Umstrukturierung-2027 Phase A Roster 12→13, VEEV+COST raus, NOW/KYCCF/ZETA rein. Detail-Move-Chronik → CORE-MEMORY §12 + git log + score_history.jsonl)
 **Primärquelle:** config.yaml (hat immer Vorrang)
 **Scoring-Version:** DEFCON v3.7 (Quality-Trap-Interaktion + OpM + Analyst-Bias-Kalibrierung + Fundamentals-Cap 50)
 **DEFCON-Thresholds (SKILL.md-aligned seit 18.04.):** ≥80 → D4 | 65-79 → D3 | 50-64 → D2 | <50 → D1
@@ -27,7 +27,7 @@
 <!-- DATA:ASML -->
 | ASML | 33,8% | 26,48% | 52,8% | 0,21x | Wide | 68 | 🟡 3 | ✅ Clean | 2026-04-17 | Q2 2026 Earnings — FY27 Fwd P/E Watch (30,30 → D4-Kandidat <30) |
 <!-- DATA:AVGO -->
-| AVGO | ~30% | **5,54% GAAP / 51,1% §410-Goodwill-bereinigt (M&A-Compounder VMware/CA/Symantec/Brocade GW 57,2% Assets) vs WACC defeatbeta 15,96% (carryover, Tool-Bug `bc10_year`)** | ~67% | ~1,1x | Wide | **56** | **🟠 2** | 🔴 Insider-Selling 90d $106,4M (FLAG aktiv 27.04.2026 — Sparrate 0€, Resolve-Gate ≤$20M; Q2 04.06. Beat-Raise aber FLAG bleibt) | **2026-06-04** | **Q3 FY26 ~02.09. — !Analysiere Re-Eval; FLAG-Resolve-Check** |
+| AVGO | 44,2% (TTM FCF 39,4B / Rev 89,1B) | **6,72% GAAP-Q / 52,8% §410-Goodwill-bereinigt (M&A-Compounder VMware/CA/Symantec/Brocade, GW 51,98% Assets — von 57,2% gefallen, Assets 171→188B) vs WACC defeatbeta 15,96% (carryover, Tool-Bug `bc10_year` weiterhin offen)** | 75,5% TTM | **0,68x** (von 1,41x — $5,6B Tilgung in Q3) | Wide | **59** | **🟠 2** | 🔴 Insider-Selling 90d **$33,69M** (FLAG aktiv seit 27.04.2026 — Sparrate 0€, Resolve-Gate ≤$20M **am 04.09. verfehlt**; $29,19M davon allein Brazeal/CLO in 3 Tranchen ohne 10b5-1) | **2026-09-03** | **Q4 FY26 09.12.** (amc, im Q3-Call bestätigt) — FLAG-Resolve-Gate #2; Fwd P/E 20,65 hat den QT-Korridor 22–30 nach unten verlassen |
 <!-- DATA:V -->
 | V | ~54% 5J | **9,89% defeatbeta vs WACC 10,48% [carryover 18.04.; Q3-Verify-Watch PIPELINE #21]** | 80,4% | 0,31x | Wide | **64** | **🟠 2** | ✅ Clean (D2 nach Rescoring-Revert 28.04. spätabends) | **2026-04-28** | **Q3 FY26 ~Ende Juli** — Cross-Border-Velocity + ROIC-Methodology-Verify |
 <!-- DATA:MSFT -->
@@ -52,10 +52,10 @@
 | ZETA | — | — | — | — | — | **— (O3)** | 🟡 3\* | ✅ Platzhalter (Owner-Add §6.4) | — | O3-Vollanalyse (US, war QuickScreener-Rot) — Score nachzuholen |
 <!-- END_TABLE -->
 
-**Aktive FLAGs:** MSFT (CapEx/OCF >60%, T1) | **AVGO (Insider-Selling 90d $106M+ — aktiviert 27.04.2026, T1)** | APH (Score-basiert <65, DEFCON 2, T3) | **AMZN (CapEx/OCF TTM 99,2% netto — aktiviert 2026-05-15, T1)** — alle 4 FLAG → Rate 0€ (heilig)
+**Aktive FLAGs:** MSFT (CapEx/OCF >60%, T1) | **AVGO** (Insider-Selling 90d — aktiviert 27.04.2026 mit $106,4M; Stand 04.09. **$33,69M**, weiterhin ueber der $20M-Schwelle, T1) | APH (Score-basiert <65, DEFCON 2, T3) | **AMZN (CapEx/OCF TTM 99,2% netto — aktiviert 2026-05-15, T1)** — alle 4 FLAG → Rate 0€ (heilig)
 **Struktureller Disclosure (kein FLAG):** ~~TMO (fcf_trend_neg)~~ **Resolved 23.04.2026** (Q1 FY26 FCF $825M +121% YoY, WC-Unwind-These bestätigt)
 **Unter Review:** — (AVGO 27.04.2026 zu aktivem FLAG promotet)
-**Analysierte Positionen:** 11/13 ✅ (Umstrukturierung 2026-06-07: VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter ohne Score → O3-Scoring-Nachzug. Bestehende Scores: ASML/RMS/SU 17.04. + V 18.04. + TMO 23.04. + MSFT/APH 30.04. + BRK.B 04.05. + AMZN 15.05. + AVGO 04.06. + KYCCF 13.06.)
+**Analysierte Positionen:** 11/13 ✅ (Umstrukturierung 2026-06-07: VEEV+COST raus, NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter ohne Score → O3-Scoring-Nachzug. Bestehende Scores: ASML/RMS/SU 17.04. + V 18.04. + TMO 23.04. + MSFT/APH 30.04. + BRK.B 04.05. + AMZN 15.05. + AVGO 04.06. + KYCCF 13.06. + AVGO Q3 03.09.)
 **Offene Scores:** 2/13 (NOW · ZETA — O3-Vollanalyse pending; KYCCF O3 DONE 13.06. → 67/D3)
 **Tariff-Check:** APH abgeschlossen 15.04.2026 — China Revenue 14.7% (kein Revenue-FLAG), Supply-Chain CN/MY Risk-Map-Notiz aktiv
 **Sparraten-Modell (3-Tier, Umstrukturierung 2026-06-07):** Rate = Tier-Basis (T1 40 / T2 32 / T3 18€) × DEFCON-Modulation (D3/D4 ×1,0 · D2 ×0,5 · D1 0) × FLAG (🔴 → 0€). **SOLL-Σ = 4×40 + 3×32 + 6×18 = 364€**; **Funded-Σ = 210€** (FLAG-frozen AMZN/MSFT/AVGO/APH + V-D2-Sockel 16€ + NOW/KYCCF/ZETA-Platzhalter voll). SSoT = config.yaml `satelliten_tier_raten` + PORTFOLIO.md.
@@ -80,7 +80,7 @@
 | ~Ende Juli | V / TMO | B | V Q3 (Cross-Border-Velocity + ROIC-Verify) · TMO Q2 (Organic + Clario) |
 | ~02./03.08. | BRK.B | B | Q2 FY26 — KHC-OTTI / GEICO / Form-13F (#36-#41) |
 | Q2 2026 | GOOGL | C | FLAG-Review nach Earnings |
-| ~02.09. | AVGO | C | Q3 FY26 — !Analysiere FLAG-Re-Eval + DEFCON-Refresh + Methodology-Watches |
+| **09.12.** (amc) | AVGO | B | Q4 FY26 — FLAG-Resolve-Gate #2 (Stand 04.09. $33,69M; Juni/Juli-Tranchen fallen ab ~08.10. aus dem 90d-Fenster) + Fwd-P/E-QT-Korridor-Watch |
 
 ---
 

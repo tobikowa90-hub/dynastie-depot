@@ -2002,3 +2002,42 @@ Kurs ¥78.070, MC ¥18,93Bio. `non-us-qt-modulator-default-deny` (Non-US-Freeze)
 **Cross-Reference:** `03_Tools/depot-architecture-spec.md` v1.6 §13 R5 (Prüfspur) · `02_Analysen/2026-09-04_Depot-Live-Verifikation.md` (Belegquelle) · PIPELINE #83.
 
 **Nächste Tracks:** Codex-R5 auf §2.3/§2.4 + die sechs Entscheidungen → AVGO Q3 FY26 Tag +1 (§19.1, überfällig seit 04.09. morgens, FLAG-Resolve-Gate; Sync noch nach altem §18) → Stufe 0 (`flag_events.jsonl` vervollständigen + GOOGL-Ausschluss an drei Stellen aufheben). DEFCON v3.7 + Scores + Sparraten unverändert.
+
+---
+
+## [2026-09-04] scoring | AVGO Q3 FY26 Vollanalyse — Score 56 → 59, DEFCON 2, FLAG-Resolve-Gate verfehlt (Score-Event)
+
+**Event-Typ:** Score-Move + FLAG-Re-Eval ohne Statuswechsel (§19.1 post-Call-Vollanalyse). Sparrate **0 € unverändert** — FLAG ist heilig und überschreibt den Score-Anstieg.
+
+**Kalender-Korrektur vorab:** Der Call lief am **02.09.2026 amc**, nicht am 03.09. PORTFOLIO.md, STATE.md und `earnings_calendar.py` führten 03.09.; Faktortabelle führte „~02.09." und lag richtig. Belege: defeatbeta-Transcript `report_date 2026-09-02`, Volumen-Spike 37,5 Mio am 02.09. gegen ~19 Mio Normalniveau, CNBC-Meldung vom 02.09. Damit war heute **Tag +2**, nicht Tag +1 — die §19.1-Disziplin (Transcript vorhanden, post-Call) ist erfüllt, der Termin war einen Tag zu spät angesetzt.
+
+**Q3 FY26 (Rekordquartal):** Revenue **$29,6 Mrd (+86 % YoY)** · AI-Semi **$16,7 Mrd (+221 % YoY, +54 % QoQ)**, 56 % des Konzernumsatzes · Operating Income $20,1 Mrd (+92 %) · **Operating Margin 67,9 % (Rekord, +240 bp YoY)** · Gross Margin 75 % (−210 bp QoQ, über der 74-%-Guidance) · Non-GAAP-EPS $3,32 (+96 %) · **FCF $13,7 Mrd (46 % vom Umsatz)** · CapEx $532 Mio · Cash $24 Mrd · $5,6 Mrd Schulden getilgt. Guidance Q4 $34,8 Mrd (+93 %), AI $21,7 Mrd (+236 %), OpM ~66 %, CapEx $1,4 Mrd. FY26-AI auf **$58 Mrd** angehoben (von $56 Mrd), FY27-AI **~$115 Mrd**, FY28 **~$230 Mrd** — Supply für beide Jahre laut Management gesichert; „on target to exceed $30 EPS in fiscal 2028".
+
+**Kursreaktion −2,74 % auf $357,16** trotz Rekordzahlen — zweites Sell-the-News-Quartal in Folge. Grund: die Beats waren dünn (Revenue +0,53 %, EPS +2,53 % über Konsens) und die Q4-Guidance lag mit $34,8 Mrd **unter** dem Street-Wert von $35,05 Mrd. Intraday bis −6 %, ins Minus-Ende erholt.
+
+**Score 56 → 59 (+3), DEFCON 🟠 2 unverändert.** Die Bewegung ist ungewöhnlich, weil sie fast vollständig aus dem **Kursverfall** stammt, nicht aus dem Geschäft:
+
+| Block | alt | neu | Treiber |
+|---|---:|---:|---|
+| Fundamentals | 23 | **29** | Fwd P/E 22,7→**20,65** verlässt den Quality-Trap-Korridor 22–30 → Sub-Score 1→4 · FCF-Yield 1,6→2,32 % → 1→3 · Bilanz 5→6 (Net Debt/EBITDA 1,41→**0,68x**, Goodwill 57,2→51,98 % Assets) |
+| Moat | 18 | 18 | Wide bestätigt, GM-Trend stabil, kein Pricing-Power-Bonus (Klausel verlangt bestätigte **Preiserhöhungen** — der Call argumentiert Kostenvorteil, nicht Preis) |
+| Technicals | 9 | **5** | ATH-Distanz −27,85 % → 3→4, aber Kurs **unter** 200MA (−3,39 %) → 3→**0** und Rel. Stärke 38pp→**+0,80pp** → 3→**1** |
+| Insider | 3 | 3 | unverändert |
+| Sentiment | 3 | **4** | PT-Upside 2→3 (Ø PT $530,52 gegen $357,16 = +48,5 %) |
+
+**Der Fwd-P/E-Sprung ist der halbe Score-Move und er ist ein Schwellenereignis, kein Bewertungsurteil.** Bei 22,7 lag AVGO im QT-Korridor 22–30 und war auf max. 1 Punkt gedeckelt; bei 20,65 greift der Deckel nicht mehr und die Standardskala (20–25 → 4–5) gilt. Zwischen 1 und 4 Punkten liegen 1,7 Bewertungspunkte Kursbewegung. Das ist so gewollt — aber es heißt auch, dass ein Rückkauf über ~$392 den Deckel wieder aktiviert und drei Punkte kostet, ohne dass sich fundamental etwas ändert.
+
+**FLAG-Resolve-Gate verfehlt.** Diskretionäres Selling 90 d = **$33,69 Mio** gegen die $20-Mio-Schwelle. Rückgang von $106,4 Mio (27.04.), aber nicht darunter. **$29,19 Mio der $33,69 Mio entfallen auf eine einzige Person:** Brazeal (Chief Legal & Corp Affairs Officer), drei Tranchen — 25.06. $9,68 Mio · 08.07. $9,48 Mio · 10.07. $10,03 Mio, alle ohne 10b5-1-Marker. Plan-Verkäufe von $250 Mio in 90 Tagen wurden regelkonform ausgeschlossen. Netto 6 M **−$639,7 Mio** bei genau **einem** Open-Market-Kauf über $0,37 Mio. FLAG bleibt aktiv, Sparrate 0 €.
+
+**Sync-Set (§18 Score-Event):** PORTFOLIO.md + Faktortabelle.md + CORE-MEMORY.md §12.1 + score_history.jsonl + config.yaml + Rebalancing_Tool + Satelliten_Monitor (xlsx, §18.7-Smoke) + log.md. **KEIN** flag_events.jsonl-Write — der FLAG wechselt den Status nicht, weder Trigger noch Resolve; ein Zwischenstand ist kein Event.
+
+**Lehre:**
+- **Ein Score, der steigt, weil der Kurs fällt, ist kein besseres Unternehmen.** +6 Fundamentals-Punkte kommen hier zu zwei Dritteln aus dem Nenner (Kurs −27,85 % vom ATH), nicht aus dem Zähler. Der Score misst Attraktivität, nicht Qualität — bei einem Titel mit aktivem FLAG und Rate 0 € ändert er ohnehin nichts an der Handlung.
+- **Quality-Trap-Korridore sind Schwellen, keine Rampen.** Der Übergang 22,7 → 20,65 ist eine Kursbewegung von 9 %, der Score-Effekt beträgt 3 Punkte. Bei Titeln, die nahe an 22 bzw. 30 liegen, gehört die Distanz zur Schwelle in die Watch-Notiz — sonst wirkt der nächste Lauf wie eine Neubewertung, obwohl nur ein Grenzwert überschritten wurde.
+- **Ein fallender FLAG-Wert ist noch kein Resolve-Pfad.** $106,4M → $33,69M sieht nach Entspannung aus. Tatsächlich ist der Rückgang überwiegend Fenster-Mechanik: Die alten Tranchen fallen aus den 90 Tagen heraus. Fallen die Juni/Juli-Tranchen ab ~08.10. ebenfalls heraus, unterschreitet die Metrik die Schwelle **ohne jede Verhaltensänderung**. Das Gate am 09.12. kann also passieren, während das Verhalten unverändert bleibt — beim nächsten Lauf ist deshalb die **Zusammensetzung** zu prüfen, nicht nur der Betrag.
+- **Zwei defeatbeta-Endpunkte sind kaputt, nicht einer.** `get_stock_wacc` bricht mit `['bc10_year'] not in index` (bekannt seit 30.04.), `get_quarterly_revenue_by_geography` neu mit `Binder Error: breakdown_type not found`. Beide sind Pflichtquellen; WACC läuft als Carryover mit §27.7-Asymmetrie, der Tariff-Check musste auf Sekundärargumentation ausweichen.
+- **Transcript-Verfügbarkeit und Zahlen-Verfügbarkeit sind bei defeatbeta entkoppelt.** Das Q3-Transcript lag vor, die Quartals-Financials endeten bei Q2 (2026-04-30). Wer Tag +1 auf „Transcript da = Daten da" stützt, rechnet auf einem Quartal Rückstand. Die Q3-Zahlen kamen aus Press-Release plus StockAnalysis-TTM.
+
+**Cross-Reference:** CORE-MEMORY §12.1 · `score_history.jsonl` Record `2026-09-03_AVGO_vollanalyse` · FLAG `AVGO_insider_selling_20m_2026-04-27` (unverändert aktiv) · PORTFOLIO.md AVGO-Zeile + FLAG-Watch.
+
+**Nächste Tracks:** AVGO Q4 FY26 **09.12.2026 amc** (im Call bestätigt) — FLAG-Resolve-Gate #2 mit Zusammensetzungs-Prüfung + Fwd-P/E-Korridor-Watch. Offen im Roster: NOW/ZETA O3-Scoring. DEFCON v3.7 unverändert.
