@@ -1965,3 +1965,40 @@ Kurs ¥78.070, MC ¥18,93Bio. `non-us-qt-modulator-default-deny` (Non-US-Freeze)
 - **Eine Migration darf keine Regeln erfinden und keine archivieren.** Jeder Wert im künftigen `REGELWERK.yaml` braucht eine Herkunftsangabe (Datei + Zeile/Zelle oder Owner-Entscheidung mit Datum).
 
 **Nebenbefunde ohne Repo-Spur:** offene Sell-Limits COST @880 und JEDI @90 stehen beim Broker, in keiner Markdown-Datei — offene Orders sind Owner-Absicht und fehlen im Live-Layer der Spec (§5). APH hatte am 03.09. einen 1:2-Split (`SWAP_OUT` 2,90389 → `SWAP_IN` 5,80778). Für `TRANSFER_IN` liefert die API nur den Übertragswert, nicht die Anschaffungskosten — das FIFO-Risiko der Entnahme 2027 bleibt unbelegt, Quelle wäre die ING-Übertragungsanzeige.
+
+---
+
+## [2026-09-04] system | #83 Depot-Architektur-Spec v1.5 → v1.6 geschrieben (scoring-neutral, Pipeline-Item-Event)
+
+**Event-Typ:** Pipeline-Item-Fortschritt (Spec-Version v1.5 → v1.6, kein Score-/FLAG-/Sparraten-Touch). **Keine einzige API-Abfrage** — vollständig aus dem Übergabe-Dokument `02_Analysen/2026-09-04_Depot-Live-Verifikation.md` geschrieben, wie dort in Abschnitt 6 vorgesehen.
+
+**Was passiert ist:** `03_Tools/depot-architecture-spec.md` von 744 auf ~1.050 Zeilen. Drei strukturelle Zuwächse, sieben Befunde eingearbeitet, sechs Owner-Entscheidungen verankert, vier Fragen bewusst offen gelassen.
+
+**Drei neue Abschnitte im Datenmodell — alle drei sind Regelwerk-Quellen, die v1.5 nicht kannte:**
+- **§2.3** `Rebalancing_Tool_v4.0.xlsx` Blatt `Parameter & Regeln` (H14). Neun Zellen inventarisiert; **B10 Single-Stock-Cap = 0.1 ist die einzige Quelle im gesamten Repo**. Die Datei steht auf der Archiv-Liste von Stufe 1 — die Extraktion wird deshalb zur **Vorbedingung** des Moves (§9.4 Schritt 5 vor Schritt 7), nicht zur Nacharbeit.
+- **§2.4** `KONTEXT.md` (H15). In v1.5 an keiner Stelle erwähnt, von der Routing-Table bei jeder Allokationsfrage geladen. Sechs Drift-Stellen verifiziert. Schichtenzuordnung analog §2.1: Doktrin (§1/§8/§9) bleibt handgeschrieben, Regelwerk (§3/§5/§6/§7) zieht nach `REGELWERK.yaml`, Zustand (§2/§3/§4) entfällt.
+- **§2.5/§2.6** Entnahme-Topf „Hochzeit" + Steuer-Lage. 9.000 € vom 11.08., fünf Tranchen, Ziel 07.08.2027 — **raus aus allen Dynastie-Quoten**.
+
+**Die Basis-Umstellung ist die eigentliche Änderung.** Alle Quotenchecks rechnen jetzt gegen die Dynastie-Basis (Depot minus Topf, 22.881 € statt 32.128 €). Das kippt ein Ergebnis, das v1.5 an zwei Stellen als Konstante führte: Gold liegt nicht bei 2,7 % gegen 5 % (größter Unterhang), sondern bei 3,8 % und damit **innerhalb** der Toleranz; größter Unterhang ist der ETF-Core mit −12,1 pp. §7.4 korrigiert und das eingefrorene Beispiel durch eine Live-Ableitung mit Stichtag ersetzt.
+
+**§7.5 neu — Konzentrations-Kappung.** Das Pauschal-Flag `niemals_durch_verkauf: true` wird durch `block_rebalancing_durch_verkauf: verboten` plus eine abschließende Liste zulässiger Verkaufspfade ersetzt (Substitution · Kappung · Entnahme 2027). Die Unterscheidung: Block-Rebalancing auf Zielquote bleibt verboten, die Kappung einer Einzelposition über Cap ist Risikokontrolle und erlaubt. Heute bindet sie nur NOW (12,33 %, Owner-Override bis 07.08.2027), nächstgrößte Position ADBE 4,3 % — die Regel liegt still und kostet nichts.
+
+**Weitere eingearbeitete Befunde:** H10 (drei FLAG-Blöcke statt einem; `flags_watchlist` von Urteil nach **Regelwerk** umklassifiziert; GOOGL-Widerspruch dreifach statt zweifach) · H1 (ZETA-Override ergänzt) · M5 (§1.1-Selbstwiderspruch bei GOOGL aufgelöst — ohne Record sind ADBE/META/NOW/ZETA) · M6 (Verfalls-Tabelle mit hartem Datum, GOOGL 22.09.) · Live-Layer um Probe-First, offene Orders und die Performance-Warnung erweitert (§5).
+
+**Zwei Eigenbefunde beim Schreiben, beide protokolliert statt kaschiert:**
+1. **Die Budget-Invariante war als „heute erfüllt" behauptet — das war die Ist-Summe, nicht die SOLL-Summe.** 1.068 € = ETF 563 + Gold 80 + Aktien-**Ist** 425. Die SOLL-Summe folgt aus `klassen` und steht erst nach der Klassen-/Tier-Zuordnung (§3.1) fest; die alte 13er-Staffel ergab 364 € Aktienbudget. Korrigiert: die Invariante ist heute **nicht prüfbar**, und das ist eine Aussage über die offene Entscheidung, nicht über die Regel.
+2. **Die Spec verletzt die eigene Anti-Creep-Klausel** („kein Plandokument über 500 Zeilen", §1.2) — schon v1.5 mit 744 Zeilen, v1.6 mit ~1.050. In §1.2 offen protokolliert samt Teilungsplan nach Stufe 0 (§13 nach `05_Archiv/`, §2.3–2.6 gehen in `REGELWERK.yaml` + Chronik auf).
+
+**Bewusst offen in §11 (Punkte 14–18) — Owner-Entscheidungen, keine Ableitungen:** `allokation_drift`-Severity · Cap-Parameter (Höhe/Bezugsgröße/Hysterese/Steuerjahr) · zweiter Ernte-Auslöser neben dem Cap · FIFO-Beleg vor Q3/2027 · `max_aktien_slots` 13 gegen 17 Ist-Positionen.
+
+**Sync-Set (§18 Pipeline-Item-Event, scoring-neutral):** `03_Tools/depot-architecture-spec.md` (v1.5 → v1.6) + PIPELINE.md (#83-Block + Nächste-Schritte) + log.md (dieser Eintrag). **KEIN** PORTFOLIO/Faktortabelle/CORE-MEMORY/score_history/flag_events/config.yaml/xlsx — kein Score-/FLAG-/Sparraten-Event.
+
+**Lehre:**
+- **Ein Ergebnis im Fließtext ist eine Konstante, auch wenn es als Beispiel gemeint war.** „Ziel Gold (2,7 % gegen 5 %)" stand als Illustration einer Regel in §7.4 und wurde zehn Tage später als Regel gelesen. Live-Ableitungen gehören in den Report, nicht in die Spec; steht doch eine im Text, trägt sie einen Stichtag.
+- **Ein Abschnitt, der „Zuordnung aller X" heißt, beantwortet nur die Frage nach X.** §2.1 war für `config.yaml` vollständig und hieß trotzdem „vollständig". Zwei weitere Quellen blieben unentdeckt, weil niemand die Frage „welche Dateien halten sonst noch Politik?" gestellt hat. Der Titel eines Inventars ist seine Scope-Grenze.
+- **Ein Override-Ablaufdatum, das an ein Ereignis gebunden ist, ist ein anderes Instrument als eines an einem Kalenderrhythmus.** NOW `review_am: 2027-08-07` läuft ab, weil die Entnahme den Cap-Verstoß auflöst — nicht, weil ein Halbjahr um ist.
+- **Selbstwidersprüche einer Spec sind billiger zu protokollieren als zu kaschieren.** Beide Eigenbefunde (Budget-Invariante, 500-Zeilen-Klausel) hätte ein Review gefunden; sie vorher zu benennen kostet drei Absätze und spart eine Runde.
+
+**Cross-Reference:** `03_Tools/depot-architecture-spec.md` v1.6 §13 R5 (Prüfspur) · `02_Analysen/2026-09-04_Depot-Live-Verifikation.md` (Belegquelle) · PIPELINE #83.
+
+**Nächste Tracks:** Codex-R5 auf §2.3/§2.4 + die sechs Entscheidungen → AVGO Q3 FY26 Tag +1 (§19.1, überfällig seit 04.09. morgens, FLAG-Resolve-Gate; Sync noch nach altem §18) → Stufe 0 (`flag_events.jsonl` vervollständigen + GOOGL-Ausschluss an drei Stellen aufheben). DEFCON v3.7 + Scores + Sparraten unverändert.
