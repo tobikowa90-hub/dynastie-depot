@@ -2124,3 +2124,31 @@ flag_typ: Literal["capex_ocf", "fcf_trend_neg", "insider_selling_20m", "tariff_e
 **Sync-Set (§18 system-zustand):** SYSTEM.md (§Review-Toolchain-Status neu) + log.md. Auto-Memory `feedback_review_via_codex_not_advisor` + MEMORY.md-Index ebenfalls nachgezogen (außerhalb des Repos).
 
 **Nächste Tracks:** R5-Review auf H14/H15 läuft jetzt tatsächlich (im Hintergrund, gpt-5.5).
+
+---
+
+## [2026-09-04] system | #83 Spec v1.6 → v1.7 — Codex-R5-Gegenprüfung, `STATE.md` als vierte übersehene Quelle (scoring-neutral, pipeline-item)
+
+**Event-Typ:** Pipeline-Item. Die Gegenprüfung lief erst, nachdem der Codex-Pfad repariert war (siehe vorheriger Eintrag) — sie hat sich gelohnt.
+
+**2 HIGH, 2 MEDIUM, 2 LOW. Alle sechs vor der Einarbeitung eigenständig nachgeprüft**, nicht auf Zuruf übernommen: `STATE.md`-Trefferzahl in der Spec (0), `para18_sync_reminder.py` Z. 32 und 65–66, KONTEXT.md-Abschnittszählung (13), xlsx-Zelle A23 statt B23 — jeder Befund bestätigt.
+
+**Der schwerste Fund: `00_Core/STATE.md`.** Null Treffer in der gesamten Spec — obwohl die Datei bei **jeder** Session ungefragt geladen wird (`CLAUDE.md` Z. 3: „PFLICHT … ohne Rückfrage"), im bestehenden System eine **eigene Event-Klasse** trägt (`para18_sync_reminder.py` Z. 65–66 setzt `critical-alert`, einer der vier kanonischen §18-Typen) und von der Spec **selbst implizit mitgezählt** wird (§9.1: „liest alle sechs" — das sechste ist STATE.md). `KONTEXT.md` §11 nennt sie überdies „Projection-Layer" und „keine eigenständige Wahrheitsquelle" — also per Selbstbeschreibung ein generiertes Artefakt, das nur nie so behandelt wurde.
+
+Sie ist ein **stärkerer** Sync-Ziel-Kandidat als `KONTEXT.md`: die eine wird bei Strategiefragen geladen, die andere immer.
+
+**Warum fünf Runden das nicht fanden — und das ist die eigentliche Lehre.** Jede Runde hatte einen sauber definierten Suchraum: R1–R3 Schreibpfade, R4 Live-Daten, R5 Regelwerk-Quellen. `STATE.md` ist keins davon — es ist eine **Lesedatei**. Es fiel durch, weil jede Runde nach einer *Sorte* Datei suchte und STATE.md zu einer fünften gehört. Gefunden hat es erst die Frage **„was liest der Agent, und was davon führt die Spec?"** statt „was steht in den Dateien?". Ein Suchraum, der nach Datei-Sorte definiert ist, findet keine Datei, die zu keiner der gesuchten Sorten gehört.
+
+**Zweiter HIGH:** Die §2.4-Schichtenzuordnung deckte nur **9 von 13** `KONTEXT.md`-Abschnitten ab — dieselbe Fehlerklasse wie §2.1 selbst, ein Inventar mit zu weitem Titel. Besonders §11 „Datenhaltung — 4-Layer-Architektur": eine **konkurrierende Taxonomie** (State/Narrative/History/Projection), die diese Spec mit Zustand/Urteil/Regelwerk/Chronik ersetzt, **ohne sie je für obsolet zu erklären**. Nach der Migration wären beide dokumentiert und die ältere falsch. Der Unterschied ist instruktiv: §11 sortiert nach *Schreibverhalten*, §2 nach *Zuständigkeit* — §11 hätte die Doppelquellen nie gefunden, weil zwei Kopien derselben Zahl in seiner Systematik problemlos in denselben Layer passen. §12 („Watchlist-Eintritts-Disziplin") trägt zudem echtes Regelwerk (Schätz-Score-Verbot, Eintrittsschwelle) ohne Zielort.
+
+**MEDIUM:** Die Vorbedingung „Schritt 5 nachweislich abgeschlossen" war reine Prosa ohne Prüfmechanismus — jetzt mit `# xlsx-parameter-extrahiert-am:`-Marker belegt, den der Move-Schritt abfragt. Und §12 behauptete Vollständigkeit, ohne den eigenen Suchraum zu nennen; im Repo existieren **drei nicht-identische** §18-Datei-Listen (`para18_sync_reminder.py` sechs · `.pre-commit-config.yaml` sechs · **`CLAUDE.md` Z. 78 nur fünf, ohne STATE.md**). Genau diese Doku/Code-Drift erklärt den Blindspot: Wer gegen die CLAUDE.md-Prosa prüft, sieht fünf Dateien und hält sie für vollständig.
+
+**LOW:** `B23` war die falsche Zelle — der Text „NIEMALS durch Verkauf rebalancen" steht in **A23** (B23 = „Steuer-Bremse"). Drei Zitatstellen korrigiert. Ferner ein Klarstellungs-Halbsatz zu „kein Tranchen-Konstrukt" neben dem Feldnamen `tranchen:`.
+
+**Negativ verifiziert und damit geschlossen:** `Satelliten_Monitor_v4.0` und `Watchlist_Ersatzbank_Monitor_v1.2` wurden vollständig gedumpt — **kein eigenständiger Regelwert**. Die QuickScreen-Schwellen stehen wortgleich in `quick-screener/SKILL.md` Z. 159–160. Die Zurückhaltung der Spec war berechtigt, die Prüfung fällt negativ aus, und der Extraktionsschritt in §9.4 schrumpft auf den einen Wert B10.
+
+**Ausdrücklich bestätigt:** alle neun Zellwerte der §2.3-Tabelle, die B10-Exklusivität über `.py`/`.json`/`.xlsx`/Vault, alle sechs Drift-Zeilen in §2.4, alle sechs `CLAUDE.md`-Zeilennummern, die §7.2-Formelfundstellen, die FLAG-Blöcke — und die Dynastie-Basis nachgerechnet (32.128 − 9.246,62 = 22.881,38). Die sechs Owner-Entscheidungen ziehen sich widerspruchsfrei durch.
+
+**Sync-Set (§18 Pipeline-Item, scoring-neutral):** Spec + PIPELINE.md (v2.86 → v2.87) + log.md.
+
+**Nächste Tracks:** Owner-Freigabe der Spec, danach Stufe 1. **Dringend und terminiert: GOOGL-Vollanalyse vor dem 22.09.2026** (Score-Verfall bei offenem FLAG, laufender 50-€-Rate, Position seit 01.09.).

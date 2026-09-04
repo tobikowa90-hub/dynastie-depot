@@ -1,9 +1,9 @@
 # Depot-Architektur — Zustand, Urteil, Regelwerk
 
-**Status:** Entwurf zur Freigabe · **Stand:** 2026-09-04 · **Version:** v1.6.2 (post R5 + Stufe 0 abgeschlossen)
+**Status:** Entwurf zur Freigabe · **Stand:** 2026-09-04 · **Version:** v1.7 (post R5 + Codex-Gegenprüfung + Stufe 0 abgeschlossen)
 **Vorgänger-Dokumente:** `02_Analysen/2026-08-26_Depot-Reconciliation.md` · `02_Analysen/2026-09-04_Depot-Live-Verifikation.md`
 
-> **Entwicklung:** Fünf Prüfrunden — R1 7 HIGH, R2 5, R3 2, R4 5 HIGH + 4 Codex-Befunde, R5 3 HIGH + 3 MEDIUM. Alle gegen die realen Dateien nachgeprüft. Fünf Behauptungen der Vorfassungen waren empirisch falsch (Schreibverhalten §9.1, Ableitungsregel §4, Blast-Radius `backtest-ready/`, „ungescort trotz Position" bei META, „GOOGL ohne Score-Record" §1.1) und sind ersetzt. R4 war die erste Runde gegen die Live-API; **R5 die erste, die die Regelwerk-Quellen jenseits von `config.yaml` gesucht hat** — und zwei fand: das xlsx-Parameterblatt (§2.3) und `KONTEXT.md` (§2.4). Schwerster Fund: eine geltende Regel, die nur in einer Datei steht, die Stufe 1 archiviert. Prüfspur in §13.
+> **Entwicklung:** Fünf Prüfrunden — R1 7 HIGH, R2 5, R3 2, R4 5 HIGH + 4 Codex-Befunde, R5 3 HIGH + 3 MEDIUM + 6 Codex-Gegenbefunde. Alle gegen die realen Dateien nachgeprüft. Fünf Behauptungen der Vorfassungen waren empirisch falsch (Schreibverhalten §9.1, Ableitungsregel §4, Blast-Radius `backtest-ready/`, „ungescort trotz Position" bei META, „GOOGL ohne Score-Record" §1.1) und sind ersetzt. R4 war die erste Runde gegen die Live-API; **R5 die erste, die die Regelwerk-Quellen jenseits von `config.yaml` gesucht hat** — und zwei fand: das xlsx-Parameterblatt (§2.3) und `KONTEXT.md` (§2.4). Schwerster Fund: eine geltende Regel, die nur in einer Datei steht, die Stufe 1 archiviert. Prüfspur in §13.
 >
 > **Strukturelle Neuerung von v1.6:** Ein Teil des Depotwerts gehört nicht zum Dynastie-Depot. Der Entnahme-Topf „Hochzeit" (9.000 € vom 11.08.2026, Ziel 07.08.2027) ist ab §2.5 aus allen Quoten herausgerechnet. Das ändert kein Ergebnis kosmetisch, sondern die Basis, auf der `allokation_drift`, `cap_single_stock` und `cap_us` rechnen — und damit deren Urteil.
 >
@@ -91,7 +91,8 @@ Das System muss danach **kleiner** sein:
 | INSTRUKTIONEN §18 großteils, §18.7 vollständig | |
 | INSTRUKTIONEN §22 (Sparplan-Formel + hartcodierte 13-Zeilen-Score-Tabelle) | |
 | Sync-Prosa in `CLAUDE.md` (6 Stellen, §9.2) | |
-| `KONTEXT.md` §§ 2 · 3 · 4 (Broker, Raten, Positionszahlen, ETF-Zuordnung — Zustand, §2.4) | |
+| `KONTEXT.md` §§ 2 · 3 · 4 (Zustand) + §11 (obsolete 4-Layer-Taxonomie, §2.4) | |
+| `STATE.md` handgeschrieben → generiert; Event-Klasse `critical-alert` entfällt (§2.4b, §10) | |
 
 Ist die Bilanz nicht deutlich negativ, war der Entwurf falsch.
 
@@ -178,7 +179,7 @@ Vollständig **auf Blockebene** — alle 15 Top-Level-Keys sind zugeordnet. Nich
 | B11 | US-Hard-Cap | 0,63 | ja |
 | B12 | Max Aktien-Slots | 13 | ja |
 | B15 | Drift-Warnschwelle (Faktor) | 3 | nein |
-| B23 | „NIEMALS durch Verkauf rebalancen" | — | ja (`KONTEXT.md` §7) |
+| **A23** | „NIEMALS durch Verkauf rebalancen" | — | ja (`KONTEXT.md` §7) |
 | B65 | Nachkauf-Schwelle | 300 | nein |
 
 **Zwei Konsequenzen, die die Migration betreffen.**
@@ -186,7 +187,7 @@ Vollständig **auf Blockebene** — alle 15 Top-Level-Keys sind zugeordnet. Nich
 1. **§3 nannte für `single_stock_max_pct: 10` als einzigem Cap-Parameter keine Quelle.** Nicht aus Nachlässigkeit — es gab keine auffindbare. Ein `grep` über `.md` und `.yaml` liefert für den Wert nichts, weil er in einer Binärdatei steht. Die Quelle ist B10 und wird in §3 nachgetragen.
 2. **Diese Datei wandert in Stufe 1 Schritt 7 nach `05_Archiv/`.** Ohne vorherige Extraktion archiviert die Migration vier geltende Regelwerte, von denen einer nirgendwo sonst existiert. Die Extraktion ist deshalb **Voraussetzung** des Moves, nicht Nacharbeit (§9.4).
 
-Die beiden anderen xlsx (`Satelliten_Monitor`, `Watchlist_Ersatzbank_Monitor`) sind vor dem Move genauso durchzugehen. Für sie ist bislang **nicht geprüft**, ob sie eigene Regelwerte halten — die Aussage „sie tragen nur Kopien" ist unbelegt und wird beim Extraktionsschritt entschieden, nicht vorher angenommen.
+Die beiden anderen xlsx (`Satelliten_Monitor_v4.0`, `Watchlist_Ersatzbank_Monitor_v1.2`) waren in v1.6 als **ungeprüft** deklariert. **Geprüft am 04.09.2026 (Codex-R5, vollständiger Zell- und Formel-Dump beider Dateien): Ergebnis negativ — kein eigenständiger Regelwert.** Die Tier-Basen und der D2-Sockelbetrag im `Satelliten_Monitor` stehen bereits in `config.yaml`; die QuickScreen-Schwellen im `Watchlist_Ersatzbank_Monitor` (Zeile 23: P/FCF ≤35/≤45, ROIC ≥15 %/≥12 %) stehen wortgleich in `01_Skills/quick-screener/SKILL.md` Z. 159–160. **Die Zurückhaltung war berechtigt und die Prüfung fällt negativ aus** — damit ist der Extraktionsschritt auf das eine Parameterblatt begrenzt und ein offener Punkt in §9.4 Schritt 5 geschlossen.
 
 ### 2.4 Dritte Regelwerk-Quelle: `KONTEXT.md`
 
@@ -203,15 +204,47 @@ Verifizierte Drift [Stand 03.09.]:
 | 5 | 13 Satelliten | 17 Aktienpositionen |
 | 7 | ING 1.500–1.600 € / Scalable 400–500 € Freibetrag | ab 2027 alles Scalable, ab Heirat 2.000 € (§2.6) |
 
-**Schichtenzuordnung, analog §2.1:**
+**Schichtenzuordnung, analog §2.1 — alle 13 Abschnitte.** Die Fassung in v1.6 deckte nur §1–§9 ab und nannte sich trotzdem „vollständig"; §4b, §10, §11 und §12 fehlten (Codex-R5-H1). Das ist dieselbe Fehlerklasse wie §2.1 selbst — ein Inventar, dessen Titel weiter reicht als sein Inhalt.
 
 | § | Schicht |
 |---|---|
 | 1 Philosophie · 8 Psychologie · 9 Bus-Faktor | **Doktrin** — bleibt handgeschrieben, wird von nichts generiert |
-| 3 Caps · 5 Roster · 6 Ersatzbank · 7 Freibeträge | **Regelwerk** → `REGELWERK.yaml` |
+| 3 Caps · 5 Roster · 6 Ersatzbank · 7 Freibeträge · **12 Watchlist-Eintritts-Disziplin** | **Regelwerk** → `REGELWERK.yaml` |
 | 2 Broker · 3 Raten und Positionszahlen · 4 ETF-Zuordnung | **Zustand** → entfällt |
+| **4b Phase B ab 2027 (AVD/Riester/Broker-Konsolidierung)** · **10 Anstehende Termine** | **Chronik + generiert** — 4b ist Owner-Planung mit Begründung (Chronik); die Earnings-Termine in §10 kommen aus `earnings_calendar.py`, die freien Termine ohne Ticker-Bezug in die Chronik (analog `config.yaml termine`, §2.1) |
+| **11 Datenhaltung — 4-Layer-Architektur** | **ENTFÄLLT — wird durch diese Spec ersetzt** |
+
+**§12 ist echtes Regelwerk und war übersehen.** „Watchlist-Eintritts-Disziplin" (ab 2026-05-14) enthält zwei harte Regeln: das **Schätz-Score-Verbot** (`pending`, `~XX`, `?`, geschätzt-aus-Peer sind unzulässige Score-Werte) und eine **Eintrittsschwelle** über Score/DEFCON. Beides sind Politik-Entscheidungen, keine Beschreibungen — sie gehören nach `REGELWERK.yaml` und passen inhaltlich exakt zu `ohne_score` (§3): ein Platzhalter-Score ist ein erfundener Score.
+
+**§11 ist der unangenehmste Fund dieser Runde.** KONTEXT.md §11 beschreibt eine **eigene, konkurrierende Vier-Schichten-Taxonomie** — State-Layer (`Faktortabelle.md`) · Narrative-Layer (`log.md`, `CORE-MEMORY.md`) · History-Layer (die beiden jsonl) · Projection-Layer (`STATE.md`, `PORTFOLIO.md`, `PIPELINE.md`, `SYSTEM.md`). Diese Spec baut in §2 eine andere Taxonomie (Zustand / Urteil / Regelwerk / Chronik), die jene ersetzt — **ohne die Vorgängerin je für obsolet zu erklären.** Nach der Migration wären beide gleichzeitig dokumentiert und die ältere falsch. §11 wird deshalb ausdrücklich als entfallend markiert.
+
+Die beiden Taxonomien sind nicht deckungsgleich, und der Unterschied ist der Punkt: §11 sortiert nach **Schreibverhalten** (überschrieben / evolvierend / append-only / abgeleitet), §2 nach **Zuständigkeit** (wer darf das ändern und woher kommt die Wahrheit). §11 hätte die Doppelquellen nie gefunden, weil zwei Kopien derselben Zahl in seiner Systematik problemlos in denselben Layer passen.
 
 Die Doktrin-Schicht ist der Grund, warum `KONTEXT.md` nicht wie die xlsx verschwindet. §1 („kein Markttiming") und §7 („niemals durch Verkauf rebalancen") sind die Begründungen, gegen die §7.5 geprüft wird — sie in eine YAML zu pressen, würde sie unlesbar machen. Zustand und Regelwerk ziehen aus, die Begründung bleibt.
+
+### 2.4b Vierte Quelle — `00_Core/STATE.md`, die Datei mit null Treffern
+
+**Bis v1.6.2 kam `STATE.md` in dieser Spec kein einziges Mal vor** (grep-verifiziert: 0 Treffer). Das ist der schwerste Fund der R5-Codex-Runde, und er ist unangenehmer als H15, weil `STATE.md` ein **stärkerer** Kandidat ist als `KONTEXT.md`:
+
+| | `KONTEXT.md` | `STATE.md` |
+|---|---|---|
+| Wann geladen | bei Strategie-/Allokationsfragen | **bei jeder Session, ohne Rückfrage** (`CLAUDE.md` Z. 3: „PFLICHT … Lies sofort") |
+| Eigene §18-Event-Klasse | nein | **ja — `critical-alert`** |
+| Stand | Juni-Drift | Juni-Drift (Footer 2026-06-12) |
+
+**Die Belege, alle nachgeprüft:**
+
+- **`03_Tools/precommit/para18_sync_reminder.py` Z. 32** führt `STATE` im Sechser-Pattern; **Z. 65–66** vergibt dafür eine dedizierte Event-Klasse: `if norm.endswith("00_Core/STATE.md"): events.add("critical-alert")`. Das ist einer der **vier kanonischen Event-Typen** des bestehenden `paragraph-18-sync`-Skills.
+- **§10 dieser Spec („§18 neu") kennt `critical-alert` nicht.** Die Tabelle dort hat fünf Ereigniszeilen; die Klasse fehlt vollständig, und es steht nirgends, was nach der Migration mit `STATE.md` geschieht. §10 behauptet, aus 8–9 Pflicht-Dateien würden „vier Quellen mit je genau einem Schreiber" — eine der abgeschafften Dateien wurde dabei nie benannt.
+- **§9.1 dieser Spec zählt `STATE.md` bereits implizit mit**: dort steht „`para18_sync_reminder.py` · liest · **alle sechs**". Sechs sind PIPELINE, PORTFOLIO, CORE-MEMORY, Faktortabelle, SYSTEM **und STATE**. Die Spec wusste technisch von der Datei und hat sie trotzdem nie klassifiziert.
+- **`KONTEXT.md` §11 nennt `STATE.md` ausdrücklich „Projection-Layer" und „keine eigenständige Wahrheitsquelle"** — also per Selbstbeschreibung ein **abgeleitetes Artefakt**. Genau das ist die Kategorie von §8.
+- **`STATE.md` trägt das alte Sync-Modell als Prosa** (Z. 36: „… `03_Tools/Rebalancing_Tool` + `03_Tools/Satelliten_Monitor` (xlsx …)"). Identisches Argument wie R4-C1 zu `CLAUDE.md` und R5-H15 zu `KONTEXT.md` — nur bei der Datei, die am häufigsten gelesen wird.
+
+**Einordnung:** `STATE.md` ist **Zustand und generiertes Artefakt**, kein Regelwerk. Navigation, Critical-Alerts und der Last-Audit-Block sind sämtlich Projektionen aus Urteil × Regelwerk × Live; die Datei enthält keine Politik, die nicht anderswo steht. Sie wandert deshalb nach **§8** (generierte Artefakte) und **nicht** nach `REGELWERK.yaml` — und ihre Sync-Prosa muss im selben Commit fallen wie die von `CLAUDE.md` und `KONTEXT.md` (§9.4 Schritt 7).
+
+**Warum vier Prüfrunden das nicht fanden.** R1–R3 prüften Schreibpfade, R4 Live-Daten, R5 die Regelwerk-Quellen. `STATE.md` ist keins davon: keine Regelwerk-Quelle (deshalb übersah es R5), kein Schreibpfad (deshalb R1–R3), kein Live-Wert (deshalb R4). Es fiel durch, weil jede Runde nach einer *Sorte* Datei suchte — und `STATE.md` gehört zu einer fünften. **Der Suchraum war jedes Mal sauber definiert und jedes Mal zu eng**; gefunden hat es erst die Frage „welche Dateien lädt die Routing-Table, und welche davon führt die Spec?" — eine Frage über den Leseweg des Agenten, nicht über den Inhalt der Dateien.
+
+**Negative Verifikation, damit dieser Abschnitt seinen eigenen Suchraum nennt:** Die übrigen Dateien der Routing-Table — `TOKEN-RULES.md`, `APPLIED-LEARNING.md`, `WIKI-SCHEMA.md`, `CODE_GUIDELINES.md`, `SESSION-HANDOVER.md` — wurden einzeln durchgesehen und tragen **kein** Portfolio-Regelwerk und keinen Depot-Zustand, sondern Claude-Verhaltensregeln bzw. Session-Chronik. Damit ist die Liste der Migrations-Sync-Ziele jenseits von `config.yaml` **vollständig: xlsx-Parameterblatt (§2.3) · `KONTEXT.md` (§2.4) · `STATE.md` (§2.4b) · `CLAUDE.md` (§9.2)**.
 
 ### 2.5 Der Entnahme-Topf „Hochzeit" ist kein Dynastie-Kapital
 
@@ -239,7 +272,7 @@ Zieldatum **07.08.2027**, Zielwert **10.000–11.000 €** — es fehlen 753–1
 
 Gegen 60/35/5 bei Toleranz 1,5 / 4,0 pp: **ETF −12,1 pp · Aktien +13,3 pp · Gold −1,2 pp.** Die Gold-Lücke, die v1.5 an zwei Stellen als größten Unterhang führt, liegt auf der maßgeblichen Basis **innerhalb** der Toleranz — der größte Unterhang ist der ETF-Core. §7.4 ist entsprechend korrigiert.
 
-**Modellierung — Owner-Entscheidung: kein Tranchen- oder Klassen-Konstrukt.** Ein Block, fünf statische Datenzeilen im Regelwerk, **eine Subtraktion** in `depot check`. Der Topf bekommt keine eigene Klasse, keine eigene Kadenz und keine Analysepflicht; seine fünf Titel sind dieselben, die das Depot ohnehin führt. Der Preis dieser Einfachheit ist bekannt: verkauft der Owner 2027 Stücke, muss er die Stückzahlen im Regelwerk von Hand nachziehen. Bei fünf Zeilen und einem Termin ist das billiger als jede Automatik.
+**Modellierung — Owner-Entscheidung: kein Tranchen- oder Klassen-Konstrukt.** Ein Block, fünf statische Datenzeilen im Regelwerk, **eine Subtraktion** in `depot check`. *(Das YAML-Feld heißt `tranchen:` — gemeint sind genau diese fünf Datenzeilen, nicht ein Analyse- oder Kadenz-Konstrukt. Die Entscheidung richtet sich gegen eine eigene Objektklasse, nicht gegen das Wort.)* Der Topf bekommt keine eigene Klasse, keine eigene Kadenz und keine Analysepflicht; seine fünf Titel sind dieselben, die das Depot ohnehin führt. Der Preis dieser Einfachheit ist bekannt: verkauft der Owner 2027 Stücke, muss er die Stückzahlen im Regelwerk von Hand nachziehen. Bei fünf Zeilen und einem Termin ist das billiger als jede Automatik.
 
 **Was der Topf erklärt.** NOW liegt bei 15,88 % des Gesamtdepots, aber **12,33 %** der Dynastie-Basis — und nach der Entnahme am 07.08.2027 bei rund **7,90 %** (konstante Kurse, zwölf weitere Sparplan-Monate). Der Cap-Verstoß löst sich also durch den Entnahmetermin auf, nicht durch Verwässerung. Das ist die Grundlage des NOW-Overrides in §3.3.
 
@@ -305,7 +338,7 @@ rebalancing:
   nachkauf_schwelle_eur: 300     # Fehlbetrag fuer Einmalkauf-Signal (B65)
   block_rebalancing_durch_verkauf: verboten
                                  # ersetzt das Pauschal-Flag `niemals_durch_verkauf: true`
-                                 # (B23 / KONTEXT.md §7). Praezisiert in §7.5 —
+                                 # (Zeile 23 xlsx / KONTEXT.md §7). Praezisiert in §7.5 —
                                  # das Verbot gilt der BLOCK-Rueckfuehrung auf Zielquote,
                                  # nicht jedem Verkauf. Zulaessige Pfade abschliessend:
   verkauf_zulaessig:
@@ -667,6 +700,8 @@ Schweregrade: **FAIL** = Regelverstoß · **WARN** = Drift in Toleranznähe, Fä
 
 Aus `Rebalancing_Tool_v4.0.xlsx` ausgelesen, nicht aus der Prosa-Dokumentation übernommen — die beiden widersprechen sich, siehe §7.3.
 
+> **Zur Einordnung vorab:** Dieser Abschnitt beschreibt die **alte, per §7.3 als Befund gekennzeichnete xlsx-Normierungsformel** und dient ihrer Reproduzierbarkeit. Sie ist **nicht** die geltende Rechenregel — die steht in §7.4 (`modell: additiv`). Insbesondere ist das `budget` hier ein **Faktor der Formel**, während es unter §7.4 nur noch **Erhaltungs-Invariante** ist (§3). Wer §7.2 ohne §7.3/§7.4 liest, hält eine verworfene Formel für die aktuelle.
+
 Fundstellen für die Reproduktion: Die Formeln stehen auf Blatt **`Portfolio & Rebalancing`** (Bereich A1:R36), Spalte Q (Gewicht) und Spalte P (Rate). Blatt **`Parameter & Regeln`** (A1:C65) hält nur die Parameter, auf die diese Formeln per Cross-Sheet-Referenz zugreifen (`'Parameter & Regeln'!$B$4` usw.).
 
 **Zwei getrennte Mechanismen, die die bisherige Doku vermengt hat.**
@@ -737,7 +772,7 @@ Die erste Stufe ist keine Erfindung dieser Spec, sondern die bestehende Ersatzba
 
 **Die Unterscheidung, ohne die `niemals_durch_verkauf` falsch gelesen wird:**
 
-> **Block-Rebalancing** — ETF/Aktien/Gold durch Verkauf auf Zielquote zurückführen → **verboten.** `KONTEXT.md` §7, `Rebalancing_Tool` B23. Das Instrument ist die Umleitung der Sparrate, nicht der Verkauf.
+> **Block-Rebalancing** — ETF/Aktien/Gold durch Verkauf auf Zielquote zurückführen → **verboten.** `KONTEXT.md` §7, `Rebalancing_Tool` Blatt `Parameter & Regeln` Zeile 23. Das Instrument ist die Umleitung der Sparrate, nicht der Verkauf.
 >
 > **Konzentrations-Kappung** — eine Einzelposition wächst über ihren Cap, der Überhang wird verkauft → **erlaubt.** Das ist Risikokontrolle gegen idiosynkratisches Risiko, keine Quotenpflege.
 
@@ -764,6 +799,7 @@ Nie von Hand editieren. Bleiben committed und lesbar wie heute; geändert wird d
 |---|---|---|
 | `PORTFOLIO.md` | Regelwerk × Urteil × Live | Session-Start-Lesedatei, unveränderte Rolle |
 | `Faktortabelle.md` | `score_history.jsonl` | Sub-Score-Detail |
+| **`STATE.md`** | Regelwerk × Urteil × Live × `PIPELINE.md` | **neu in v1.7.** Hub: Navigation + Critical-Alerts + Last-Audit-Block. `KONTEXT.md` §11 nennt die Datei selbst „Projection-Layer" und „keine eigenständige Wahrheitsquelle" — sie ist damit per Selbstbeschreibung generiert und war nur nie so behandelt worden (§2.4b) |
 | `config.yaml` | Regelwerk + Urteil + `earnings_calendar.py` | Kompatibilität für `dynastie-depot`, das unverändert weiterläuft |
 | Vault-Entity-Frontmatter | Regelwerk + Urteil | **Vorerst zurückgestellt.** Heute tragen drei Ersatzbank-Seiten Score-Frontmatter, das Standardschema keines. Frontmatter für alle Roster-Ticker zu generieren wäre additive Arbeit und fiele unter die Anti-Creep-Regel (§1.2). Entscheidung nach Stufe 2. |
 
@@ -812,7 +848,9 @@ Produktive Konsumenten, bereinigt um echte Tests (`test_*`, `*_test.py`, `_smoke
 
 - **`KONTEXT.md`** → **neu in v1.6, vorher an keiner Stelle der Spec.** Die Zustands-Abschnitte (§2 Broker, §3 Raten und Positionszahlen, §4 ETF-Zuordnung) entfallen; die Regelwerk-Abschnitte (§3 Caps, §5 Roster, §6 Ersatzbank, §7 Freibeträge) ziehen nach `REGELWERK.yaml`; die Doktrin (§1, §8, §9) bleibt handgeschrieben. Vollständige Zuordnung und die verifizierte Drift in **§2.4**. Zeitpunkt: **Stufe 1 Schritt 7**, im selben Commit wie `CLAUDE.md` — aus demselben Grund.
 
-**`CLAUDE.md` und `KONTEXT.md` sind damit Sync-Ziele der Migration** — `CLAUDE.md` fehlte in v1.0 ganz und war in v1.4 auf „xlsx-Referenzen entfernen" verengt; `KONTEXT.md` fehlte bis v1.5 vollständig. Tatsächlich betroffen sind sechs Stellen (Z. 27, 29, 57, 59, 77, 78), darunter der vollständige Sync-Pflicht-Bullet, der das alte 8-9-Datei-Modell im Fließtext festschreibt, sowie zwei Routing-Zeilen, die `paragraph-18-sync` aufrufen. Weil die Datei zu Beginn **jeder** Session gelesen wird und darüber entscheidet, ob `INSTRUKTIONEN.md` überhaupt lädt, ist sie kein nachlaufendes Sync-Ziel, sondern gehört in denselben Commit wie der Move. Eine dort stehen gebliebene Sync-Anweisung wirkt stärker als jede korrigierte Spec.
+- **`STATE.md`** → **neu in v1.7.** Wird generiert (§8); die handgeschriebene Sync-Pflicht-Prosa (Z. 36, altes 8-9-Datei-Modell inkl. xlsx-Pfade) fällt im selben Commit wie die von `CLAUDE.md`. Begründung in **§2.4b**. Zeitpunkt: **Stufe 1 Schritt 7**.
+
+**`CLAUDE.md`, `KONTEXT.md` und `STATE.md` sind damit Sync-Ziele der Migration** — `CLAUDE.md` fehlte in v1.0 ganz und war in v1.4 auf „xlsx-Referenzen entfernen" verengt; `KONTEXT.md` fehlte bis v1.5 vollständig. Tatsächlich betroffen sind sechs Stellen (Z. 27, 29, 57, 59, 77, 78), darunter der vollständige Sync-Pflicht-Bullet, der das alte 8-9-Datei-Modell im Fließtext festschreibt, sowie zwei Routing-Zeilen, die `paragraph-18-sync` aufrufen. Weil die Datei zu Beginn **jeder** Session gelesen wird und darüber entscheidet, ob `INSTRUKTIONEN.md` überhaupt lädt, ist sie kein nachlaufendes Sync-Ziel, sondern gehört in denselben Commit wie der Move. Eine dort stehen gebliebene Sync-Anweisung wirkt stärker als jede korrigierte Spec.
 
 **Für `KONTEXT.md` gilt derselbe Mechanismus, nur seltener und dafür gezielter.** Die Routing-Table lädt sie bei jeder Strategie- und Allokationsfrage — also genau dann, wenn jemand wissen will, wo das Geld hinsoll. Dort steht heute ein leergeräumtes ING-Depot als aktiver Broker und eine Freibetragsaufteilung, die es nicht mehr gibt. Der Fall ist am 04.09. eingetreten: Die Session las die veraltete Steuer-Tabelle und schloss aus ihr auf einen ungenutzten Freibetrag — eine Behauptung, die anschließend zurückgezogen werden musste. Eine Doku-Drift, die der Agent regelmäßig liest, ist keine Kosmetik, sondern eine Fehlerquelle mit Beleg.
 
@@ -873,10 +911,10 @@ Ein score-basierter FLAG ist **ableitbar**: Score 61 < 65 → DEFCON 2. Er ist e
 
 ### 9.4 Stufe 1 — begrenzter Blast-Radius
 
-5. `REGELWERK.yaml` anlegen und befüllen — **aus drei Quellen, nicht aus einer:** `config.yaml` (§2.1), das xlsx-Parameterblatt (§2.3) und `KONTEXT.md` §§ 3/5/6/7 (§2.4). Für die xlsx heißt das: **alle drei Dateien mit `openpyxl` durchgehen und jeden Wert protokollieren, der keine Entsprechung in `.md`/`.yaml` hat** — B10 ist der bekannte Fall, nicht notwendig der einzige; für `Satelliten_Monitor` und `Watchlist_Ersatzbank_Monitor` ist bisher nichts geprüft. Dazu Klassen nach §3.1, Ersatzbank nach §3.2, Overrides nach §3.3 — Letztere **systematisch**, jede Position und jeder Sparplan einmal gegen die Regel gerechnet, nicht anlassbezogen. **Voraussetzung: laufender Live-Layer** — die ISINs des Rosters existieren nirgends im Repo und werden einmalig aus `holdings ∪ savings_plans` gezogen. Für Roster-Titel ohne Position **und** ohne Sparplan ist die ISIN von Hand zu ergänzen. Stufe 1 ist damit nicht offline durchführbar.
+5. `REGELWERK.yaml` anlegen und befüllen — **aus drei Quellen, nicht aus einer:** `config.yaml` (§2.1), das xlsx-Parameterblatt (§2.3) und `KONTEXT.md` §§ 3/5/6/7 (§2.4). Für die xlsx ist das seit dem 04.09.2026 **erledigt**: alle drei Dateien wurden per `openpyxl` vollständig gedumpt, **einziger Regelwert ohne Textquelle ist B10** (§2.3). Beim Befüllen ist also nur dieser eine Wert zu übernehmen — der Schritt ist klein geworden, aber seine **Vorbedingungs-Wirkung für Schritt 7 bleibt**. Dazu Klassen nach §3.1, Ersatzbank nach §3.2, Overrides nach §3.3 — Letztere **systematisch**, jede Position und jeder Sparplan einmal gegen die Regel gerechnet, nicht anlassbezogen. **Voraussetzung: laufender Live-Layer** — die ISINs des Rosters existieren nirgends im Repo und werden einmalig aus `holdings ∪ savings_plans` gezogen. Für Roster-Titel ohne Position **und** ohne Sparplan ist die ISIN von Hand zu ergänzen. Stufe 1 ist damit nicht offline durchführbar.
 6. `depot check` als reiner Report bauen (Live-Layer inkl. **Probe-First** und **offenen Orders** nach §5, Entnahme-Subtraktion nach §2.5, Checks, Verteilungsrechnung). Noch kein View-Bau.
-7. Die drei xlsx nach `05_Archiv/` verschieben — **Vorbedingung: Schritt 5 hat die Parameter-Extraktion nachweislich abgeschlossen** (§2.3; sonst archiviert der Move geltende Regeln, darunter die einzige Quelle des Single-Stock-Caps). Der Move läuft **gemeinsam** mit: Stilllegung von `xlsx-smoke-test-runner` und `precommit/xlsx_smoke_test.py`, Fix von `para18_sync/validator.py` (hart codierter Pfad), und Entfernen der xlsx-Referenzen aus `CLAUDE.md`, `INSTRUKTIONEN.md`, `SYSTEM.md`. **`para18_sync_reminder.py` bleibt aktiv** (§9.2).
-   Zu Schritt 7 gehören zusätzlich die Neufassungen von **`CLAUDE.md`** und **`KONTEXT.md`** (§2.4 — Zustands-Abschnitte raus, Regelwerk-Abschnitte nach `REGELWERK.yaml`, Doktrin bleibt), und zwar über die xlsx-Dateinamen hinaus: der Sync-Pflicht-Bullet (Z. 27) beschreibt das alte 8-9-Datei-Modell im Fließtext, die Routing-Zeile „§18-File-Touch" (Z. 78) und die `!ParaSync18`-Zeile (Z. 77) rufen einen Skill, der zurückgebaut wird, und die Projektstruktur (Z. 57/59) führt `paragraph-18-sync`, `xlsx-smoke-test-runner` sowie alle drei xlsx als aktives Inventar. Bleibt das stehen, folgt der Agent nach dem Move weiter der alten Prosa — mit zwei konkreten Folgen: manuelles Editieren von `PORTFOLIO.md` entgegen §8, und Suche nach xlsx-Pfaden, die es nicht mehr gibt.
+7. Die drei xlsx nach `05_Archiv/` verschieben — **Vorbedingung: Schritt 5 hat die Parameter-Extraktion abgeschlossen** (§2.3; sonst archiviert der Move geltende Regeln, darunter die einzige Quelle des Single-Stock-Caps). **„Nachweislich" braucht einen Beleg, sonst ist es Prosa** (Codex-R5-M3): `REGELWERK.yaml` trägt beim Befüllen die Zeile `# xlsx-parameter-extrahiert-am: <ISO-Datum>`, und der Move-Schritt prüft ihre Existenz, bevor er `git mv` ausführt. Eine Vorbedingung, die nie geprüft wird, ist gleichwertig zu keiner — die Kehrseite der §3.3-Lehre über Warnungen, die immer leuchten. Der Move läuft **gemeinsam** mit: Stilllegung von `xlsx-smoke-test-runner` und `precommit/xlsx_smoke_test.py`, Fix von `para18_sync/validator.py` (hart codierter Pfad), und Entfernen der xlsx-Referenzen aus `CLAUDE.md`, `INSTRUKTIONEN.md`, `SYSTEM.md`. **`para18_sync_reminder.py` bleibt aktiv** (§9.2).
+   Zu Schritt 7 gehören zusätzlich die Neufassungen von **`CLAUDE.md`**, **`KONTEXT.md`** (§2.4 — Zustands-Abschnitte raus, Regelwerk-Abschnitte nach `REGELWERK.yaml`, Doktrin bleibt, §11 als obsolet markiert) und **`STATE.md`** (§2.4b — wird generiert, Sync-Prosa fällt), und zwar über die xlsx-Dateinamen hinaus: der Sync-Pflicht-Bullet (Z. 27) beschreibt das alte 8-9-Datei-Modell im Fließtext, die Routing-Zeile „§18-File-Touch" (Z. 78) und die `!ParaSync18`-Zeile (Z. 77) rufen einen Skill, der zurückgebaut wird, und die Projektstruktur (Z. 57/59) führt `paragraph-18-sync`, `xlsx-smoke-test-runner` sowie alle drei xlsx als aktives Inventar. Bleibt das stehen, folgt der Agent nach dem Move weiter der alten Prosa — mit zwei konkreten Folgen: manuelles Editieren von `PORTFOLIO.md` entgegen §8, und Suche nach xlsx-Pfaden, die es nicht mehr gibt.
 **Was Stufe 1 ausdrücklich NICHT tut:** die Tabellenstruktur von `PORTFOLIO.md` anfassen. Der ursprüngliche Schritt „Live-Felder entfernen" ist nach Stufe 2 verschoben, weil die Tripwire ihre Spalten offsetbasiert liest (§4.4 Gate 2). Fiele die `Rate`-Spalte in Stufe 1 weg, rückte FLAG von Ticker+4 auf Ticker+3 — der Score-Schreibweg bräche **in Stufe 1**, lange vor der Neufassung, die ihn ersetzen soll. Das Sicherungsnetz darf nicht vor dem Plan reißen, der es ablöst.
 
 Anders als in v1.0 behauptet, laufen die bestehenden Skripte hier **nicht** unverändert weiter — Schritt 7 ist ein gebündelter Eingriff, kein reiner Move. Innerhalb des Schritts gibt es keine Reihenfolge-Falle: pre-commit liest seine Konfiguration zum Commit-Zeitpunkt aus dem Working-Tree, die Änderungen wirken also gemeinsam.
@@ -901,9 +939,12 @@ Die Sparplan-Änderung (AVGO und NOW entfernt, Gold 52 → 80, Core-4 je 40 → 
 | **Regelwerk-Änderung** (Allokation, Klasse, Tier, Roster, Kadenz, Cap, Override) | `REGELWERK.yaml` · Chronik |
 | **Sparraten-Änderung im Broker** | nichts — Zustand |
 | **Entnahme-Topf bewegt** (Zukauf, Teilverkauf, Entnahme 2027) | `REGELWERK.yaml` `entnahme_2027.tranchen` · Chronik — der einzige Zustand, der von Hand nachgezogen wird, bewusst (§2.5) |
+| **Critical-Alert** (bisher eigene Event-Klasse für `STATE.md`) | **entfällt als Sync-Ereignis.** Der Alert ist eine Projektion aus Urteil × Regelwerk × Live und wird mit `STATE.md` generiert (§8). Was heute ein Pflicht-Sync ist, wird ein Feld im Report |
 | **Pipeline / System-Zustand** | unverändert `PIPELINE.md` bzw. `SYSTEM.md` + `log.md` |
 
 Aus 8–9 Pflicht-Dateien mit gegenseitiger Konsistenzpflicht werden **vier Quellen mit je genau einem Schreiber**. Multi-Event-Union (§18.2) bleibt gültig, greift aber ins Leere, weil sich die Sets nicht mehr überlappen.
+
+**Von den vier heutigen Event-Typen bleiben zwei.** `score-flag-sparraten` wird zur Zeile „Analyse abgeschlossen", `pipeline-item` und `system-zustand` bleiben unverändert — **`critical-alert` entfällt ersatzlos**, weil seine einzige Zieldatei generiert wird. v1.6 hat diese Klasse nicht erwähnt und damit eine der abgeschafften Dateien nie benannt (§2.4b).
 
 ---
 
@@ -942,7 +983,9 @@ Aus 8–9 Pflicht-Dateien mit gegenseitiger Konsistenzpflicht werden **vier Quel
 
 ## 12 · Prüfung dieser Spec
 
-- **Vollständigkeit — mit benanntem Suchraum.** §2.1 ordnet jeden Top-Level-Block aus `config.yaml` einer Schicht zu; §2.3 das xlsx-Parameterblatt; §2.4 `KONTEXT.md`. Jede heute im §18-Set geführte Datei ist in §2, §8 oder §1.2 als Quelle, generiert oder entfallend klassifiziert. **Nicht abgedeckt und offen deklariert:** die Blätter der beiden anderen xlsx jenseits des Parameterblatts (§9.4 Schritt 5) und der `satelliten`-Block feldweise über §2.2 hinaus.
+- **Vollständigkeit — mit benanntem Suchraum.** §2.1 ordnet jeden Top-Level-Block aus `config.yaml` einer Schicht zu; §2.3 das xlsx-Parameterblatt (alle drei Dateien vollständig gedumpt); §2.4 alle 13 Abschnitte von `KONTEXT.md`; §2.4b `STATE.md`.
+  **Der Suchraum der §18-Set-Aussage, explizit** (Codex-R5-M4): geprüft wurde gegen **`03_Tools/precommit/para18_sync_reminder.py` Z. 32** — die Sechser-Liste PIPELINE/PORTFOLIO/CORE-MEMORY/Faktortabelle/SYSTEM/STATE. Diese Liste ist die maßgebliche, weil sie **ausgeführt** wird. `.pre-commit-config.yaml` Z. 61 führt dieselben sechs; **`CLAUDE.md` Z. 78 führt nur fünf — `STATE.md` fehlt dort in der Prosa.** Diese Doku/Code-Drift besteht unabhängig vom Umbau und ist genau der Grund, warum v1.6 die Datei übersah: Wer gegen die `CLAUDE.md`-Prosa prüft, sieht fünf Dateien und hält sie für vollständig.
+  **Nicht abgedeckt und offen deklariert:** der `satelliten`-Block feldweise über §2.2 hinaus.
 - **Deckung:** Jeder Konflikt aus Reconciliation §C hat in §7.1 einen benannten Check; C6 ist begründet gegenstandslos.
 - **Empirie:** Die in §9.1 genannten Zugriffe sind am Quellcode verifiziert, nicht aus Suchtreffern erschlossen. Die Ableitungsregeln in §4 sind gegen die realen jsonl-Dateien getestet. Live-Zahlen tragen einen Stichtag und sind gegen die Scalable-API belegt (04.09., MCP-Kanal).
 - **Negativbefunde nennen ihren Suchraum.** Jede Aussage der Form „X existiert nicht" nennt, wo gesucht wurde. Das ist keine Stilregel, sondern die Konsequenz aus dem schwersten Fehler dieser Runde: „Single-Stock-Cap nirgends verankert" war das Ergebnis eines `grep` über `.md` und `.yaml` — der Wert steht in einer `.xlsx` (§2.3). Ein Suchraum ohne Binärdateien liefert über Binärdateien keine Auskunft.
@@ -1083,8 +1126,25 @@ Grundlage: `02_Analysen/2026-09-04_Depot-Live-Verifikation.md`. Alle 24 Position
 
 **Präzisierung, die sich R5 selbst vorhält:** „60 % sind mit der heutigen Rate unerreichbar" war zu absolut. Es gilt nur *ceteris paribus* — bei gleicher Rendite beider Blöcke (§7.4).
 
-**Nächster Schritt:** Codex-Gegenprüfung auf §2.3, §2.4 und die sechs Entscheidungen, danach Owner-Freigabe, danach Stufe 0.
+#### Codex-Gegenprüfung R5 auf v1.6 (`e88f0d7`) — 2 HIGH, 2 MEDIUM, 2 LOW
+
+Gegen die realen Dateien geprüft (openpyxl-Dump aller drei xlsx, `KONTEXT.md`, `config.yaml`, `CLAUDE.md`, `.pre-commit-config.yaml`, `para18_sync_reminder.py`, `quick-screener/SKILL.md`). Alle sechs Befunde eigenständig nachgeprüft und bestätigt, bevor sie hier eingearbeitet wurden.
+
+| Befund | Status in v1.7 |
+|---|---|
+| **C5-H1** §2.4-Schichtenzuordnung deckt nur 9 von 13 `KONTEXT.md`-Abschnitten ab; §4b/§10/§11/§12 fehlen. §11 ist eine **konkurrierende 4-Layer-Taxonomie**, die diese Spec ersetzt, ohne sie für obsolet zu erklären; §12 trägt echtes Regelwerk | §2.4 auf alle 13 Abschnitte erweitert, §11 als entfallend markiert, §12 dem Regelwerk zugeordnet |
+| **C5-H2** **`STATE.md` fehlt vollständig** — 0 Treffer in der Spec, obwohl bei *jeder* Session pflicht-geladen, mit eigener `critical-alert`-Event-Klasse im Hook, und von §9.1 („alle sechs") implizit mitgezählt | **§2.4b neu** · §8 (generiertes Artefakt) · §9.2 · §9.4 Schritt 7 · §10 (`critical-alert` entfällt) · §1.2 |
+| **C5-M3** §9.4 Schritt 7: „Vorbedingung … nachweislich abgeschlossen" ist reine Prosa ohne Prüfmechanismus | §9.4 Schritt 7: `# xlsx-parameter-extrahiert-am:`-Marker in `REGELWERK.yaml`, den der Move-Schritt abfragt |
+| **C5-M4** §12 behauptet Vollständigkeit, ohne den eigenen Suchraum zu nennen — im Repo existieren **drei nicht-identische** §18-Datei-Listen | §12 benennt `para18_sync_reminder.py` Z. 32 als maßgeblich und dokumentiert die `CLAUDE.md`-Drift (5 statt 6) |
+| **C5-L5** `B23` ist die falsche Zelle — der Text steht in **A23** (B23 = „Steuer-Bremse") | drei Zitatstellen korrigiert (§2.3, §3, §7.5) |
+| **C5-L6** „kein Tranchen-Konstrukt" neben Feldname `tranchen:` ist missverständlich | §2.5 Klarstellungs-Halbsatz |
+
+**Negativ verifiziert und damit geschlossen:** `Satelliten_Monitor_v4.0` und `Watchlist_Ersatzbank_Monitor_v1.2` vollständig gedumpt — **kein eigenständiger Regelwert**; die QuickScreen-Schwellen stehen wortgleich in `quick-screener/SKILL.md` Z. 159–160. Ferner bestätigt: alle neun Zellwerte der §2.3-Tabelle, die Exklusivität von B10 über `.py`/`.json`/`.xlsx`/Vault, alle sechs Drift-Zeilen in §2.4, alle sechs `CLAUDE.md`-Zeilennummern in §9.2, die §7.2-Formelfundstellen, die FLAG-Blöcke in §1.1 — und die Dynastie-Basis nachgerechnet (32.128 − 9.246,62 = 22.881,38). Die sechs Owner-Entscheidungen ziehen sich widerspruchsfrei durch.
+
+**Die Lehre aus C5-H2 ist die allgemeinste dieser Spec.** Fünf Runden haben `STATE.md` übersehen, und jede hatte einen sauber definierten Suchraum: R1–R3 Schreibpfade, R4 Live-Daten, R5 Regelwerk-Quellen. `STATE.md` ist keins davon — es ist eine **Lesedatei**. Gefunden hat es erst die Frage *„was liest der Agent, und was davon führt die Spec?"* statt *„was steht in den Dateien?"*. **Ein Suchraum, der nach Datei-Sorte definiert ist, findet keine Datei, die zu keiner der gesuchten Sorten gehört.** Deshalb nennt §2.4b jetzt seinen eigenen Suchraum — die Routing-Table — und listet die geprüften Nicht-Kandidaten mit.
+
+**Nächster Schritt:** Owner-Freigabe, danach Stufe 1 (Stufe 0 ist am 04.09.2026 abgeschlossen).
 
 ---
 
-*Dynasty-Depot · Architektur-Spec v1.6.2 · Stand 2026-09-04 · Entwurf zur Freigabe. v1.6.2-Delta: Owner-Entscheidung Weg B — §4.2 neu gefasst (gemessene vs. abgeleitete FLAGs), Stufe 0 abgeschlossen, §11 Punkt 19 geschlossen. Die schwerste Korrektur dieser Spec stammt nicht aus einer Prüfrunde, sondern aus dem ersten Ausführungsversuch.*
+*Dynasty-Depot · Architektur-Spec v1.7 · Stand 2026-09-04 · Entwurf zur Freigabe. v1.7-Delta: Codex-R5-Gegenprüfung eingearbeitet — **§2.4b `STATE.md` neu** (vierte Quelle, in fünf Runden übersehen), §2.4 auf alle 13 `KONTEXT.md`-Abschnitte erweitert (§11 obsolet), `critical-alert` in §10 aufgelöst, §12 nennt seinen Suchraum, xlsx-Vorbedingung technisch belegt. Die beiden anderen xlsx sind geprüft — Ergebnis negativ. Zwei Befunde dieser Spec stammen nicht aus einer Prüfrunde, sondern aus Ausführung (§9.3.1) und aus der Frage nach dem Leseweg (§2.4b).*
