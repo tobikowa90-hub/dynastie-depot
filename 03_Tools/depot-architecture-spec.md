@@ -1,13 +1,13 @@
 # Depot-Architektur — Zustand, Urteil, Regelwerk
 
-**Status:** Entwurf zur Freigabe · **Stand:** 2026-09-04 · **Version:** v1.6.1 (post R5 + Stufe-0-Ausfuehrungsversuch)
+**Status:** Entwurf zur Freigabe · **Stand:** 2026-09-04 · **Version:** v1.6.2 (post R5 + Stufe 0 abgeschlossen)
 **Vorgänger-Dokumente:** `02_Analysen/2026-08-26_Depot-Reconciliation.md` · `02_Analysen/2026-09-04_Depot-Live-Verifikation.md`
 
 > **Entwicklung:** Fünf Prüfrunden — R1 7 HIGH, R2 5, R3 2, R4 5 HIGH + 4 Codex-Befunde, R5 3 HIGH + 3 MEDIUM. Alle gegen die realen Dateien nachgeprüft. Fünf Behauptungen der Vorfassungen waren empirisch falsch (Schreibverhalten §9.1, Ableitungsregel §4, Blast-Radius `backtest-ready/`, „ungescort trotz Position" bei META, „GOOGL ohne Score-Record" §1.1) und sind ersetzt. R4 war die erste Runde gegen die Live-API; **R5 die erste, die die Regelwerk-Quellen jenseits von `config.yaml` gesucht hat** — und zwei fand: das xlsx-Parameterblatt (§2.3) und `KONTEXT.md` (§2.4). Schwerster Fund: eine geltende Regel, die nur in einer Datei steht, die Stufe 1 archiviert. Prüfspur in §13.
 >
 > **Strukturelle Neuerung von v1.6:** Ein Teil des Depotwerts gehört nicht zum Dynastie-Depot. Der Entnahme-Topf „Hochzeit" (9.000 € vom 11.08.2026, Ziel 07.08.2027) ist ab §2.5 aus allen Quoten herausgerechnet. Das ändert kein Ergebnis kosmetisch, sondern die Basis, auf der `allokation_drift`, `cap_single_stock` und `cap_us` rechnen — und damit deren Urteil.
 >
-> **Umsetzungsreife — am 04.09.2026 durch den Ausführungsversuch korrigiert:** Stufe 0 ist **teilweise ausgeführt und nicht abschließbar**. Schritte 2 (AMZN) und 3 (GOOGL-Ausschluss) sind erledigt; **Schritt 1 (APH-Trigger) ist blockiert**, weil `score_basiert` nicht im `flag_typ`-Enum steht und die Reparatur damit einen Schema-Bump bräuchte, den §4.1 der Stufe 2 zuweist. **Stufe 0 ist also nicht die voraussetzungsfreie Stufe, als die sie geplant war** (§9.3.1, Owner-Entscheidung in §11 Punkt 19). Vier Prüfrunden haben das nicht gefunden — der erste Ausführungsversuch schon. Stufe 1 freigabefähig, aber **nicht offline** — das Regelwerk-Befüllen braucht den Live-Layer und ist in §9.4 Schritt 5 um die **Extraktion der xlsx-Parameter** erweitert, die zur Vorbedingung des Archiv-Moves in Schritt 7 wird. Stufe 2 erst nach der Gate-Neufassung aus §4.4 samt Schema-Bump, beides in Schritt 9 gebündelt.
+> **Umsetzungsreife — am 04.09.2026 durch den Ausführungsversuch korrigiert:** **Stufe 0 ist abgeschlossen.** Schritte 2 (AMZN-Divergenz) und 3 (GOOGL-Ausschluss) ausgeführt; Schritt 1 (APH-Trigger) **entfällt** — der Ausführungsversuch zeigte, dass nicht das Schema zu eng, sondern §4.2 falsch klassifiziert war (Owner-Entscheidung Weg B, §9.3.1). `flag_events.jsonl` ist damit autoritativ, ohne dass ein Event nachgetragen werden musste. Stufe 1 freigabefähig, aber **nicht offline** — das Regelwerk-Befüllen braucht den Live-Layer und ist in §9.4 Schritt 5 um die **Extraktion der xlsx-Parameter** erweitert, die zur Vorbedingung des Archiv-Moves in Schritt 7 wird. Stufe 2 erst nach der Gate-Neufassung aus §4.4 samt Schema-Bump, beides in Schritt 9 gebündelt.
 >
 > **Live-Zahlen tragen einen Stichtag.** Jede Zahl aus dem Broker ist mit `[03.09.]` bzw. `[26.08.]` markiert. v1.5 führte vier Live-Zahlen ohne Datum; drei davon waren nach acht Tagen falsch. Eine Zahl ohne Stichtag wird als Konstante gelesen.
 
@@ -495,13 +495,28 @@ Begründung, empirisch: `score_history.jsonl` enthält für V zwei Record-Paare 
    - der Bump gehört in **Stufe 2 Schritt 9**, gemeinsam mit der Gate-Neufassung. Bis dahin trägt die Dateireihenfolge allein, abgesichert durch den bestehenden Append-only-Check.
 2. **Append-only-Invariante wird geprüft.** Für `score_history.jsonl` **existiert das bereits**: `03_Tools/precommit/validate_score_history.py::check_append_only` (Z. 82–136), verdrahtet als Pre-Commit-Hook. Für `flag_events.jsonl` fehlt es — `validate_flag_events.py` prüft nur Schema und Open/Resolve-Paarung. Der Umbau ergänzt also **einen** Check, nicht zwei, und schließt eine Lücke, die schon heute besteht.
 
-### 4.2 FLAG-Status — erst nach Vollständigkeits-Backfill ableitbar
+### 4.2 FLAG-Status — zwei Objektklassen, die v1.5 vermischt hat
 
 **Regel:** aktiv, wenn das letzte Event je (Ticker, `flag_typ`) ein `trigger` ohne nachfolgendes `resolve` ist.
 
-**Diese Regel ist heute nicht anwendbar.** `flag_events.jsonl` enthält vier Trigger (MSFT, GOOGL, AVGO, AMZN). APH trägt seit 2026-04-09 einen Score-basierten FLAG in `config.yaml` und `PORTFOLIO.md`, für den **kein** Event existiert. Umgekehrt trägt GOOGL einen Trigger vom 2026-03-15 ohne Resolve, der in keiner der beiden gelesenen Dateien auftaucht — bei einem Titel, der seit 26.08. mit 50 €/Monat bespart wird.
+**Die Regel gilt — aber nur für gemessene FLAGs.** `flag_events.jsonl` enthält vier Trigger (MSFT, GOOGL, AVGO, AMZN). Alle vier stützen sich auf eine **externe Metrik**, die aus dem Score nicht folgt: CapEx/OCF, FCF-Trend, Insider-Selling, Tariff-Exposure. Genau deshalb brauchen sie ein Ereignis-Log — ihr Zustand ist ohne Messung nicht bekannt.
 
-**Daraus folgt Stufe 0 (§9.3):** Vor jeder Ableitung wird `flag_events.jsonl` auf Vollständigkeit gebracht — APH-Trigger nachtragen, GOOGL-Trigger entweder auflösen oder als aktiv bestätigen. Erst danach ist die jsonl autoritativ. Ohne diesen Schritt würde der Umbau einen bestehenden Datenfehler zementieren, statt ihn zu beheben.
+**APH ist kein solcher Fall — Korrektur gegenüber v1.5 (Owner-Entscheidung 04.09.2026, Weg B).** v1.5 führte APH als **Datenlücke**: „trägt seit 2026-04-09 einen Score-basierten FLAG, für den kein Event existiert", und leitete daraus Stufe 0 Schritt 1 ab. Das war eine **Fehlklassifikation der Spec, kein Datenfehler des Repos.**
+
+APHs FLAG ist **ableitbar**: Score 61 < 65 → DEFCON 2. Er ist eine reine Funktion des Scores, und der steht bereits in `score_history.jsonl`. Ihn zusätzlich als Event zu führen, hieße einen abgeleiteten Wert ins Ereignis-Log zu kopieren — genau das Muster, das dieser Umbau beseitigt. Der Beleg lag im Code: `schemas.py` Z. 612 lässt für `flag_typ` ausschließlich die vier gemessenen Typen zu. **Das Enum ist nicht unvollständig, es ist korrekt eng.**
+
+| | gemessener FLAG | abgeleiteter Score-Zustand |
+|---|---|---|
+| Beispiele | MSFT · GOOGL · AVGO · AMZN | APH |
+| Quelle | externe Metrik, nur durch Messung bekannt | `score_history.jsonl` |
+| Ort | `flag_events.jsonl` (Urteil) | keiner — wird berechnet |
+| Auflösung | frische Evidenz (`resolve`-Event) | nächster Score über der Schwelle |
+
+**Eine Lücke bleibt und wandert in §3.** Die Score-Schwelle allein erklärt APHs Rate nicht. DEFCON 2 bedeutet nach `defcon.modulation` **×0,5**, bei Tier 3 also 9 € — dokumentiert sind aber **0 €**, und der Broker führt live **20 €** (§3.3-Override). Es existiert also eine dritte, nirgends niedergeschriebene Regel: „Score unter D3-Schwelle → Rate 0". Unter Weg B ist sie **kein FLAG-Event, sondern eine Regelwerk-Regel** und gehört als solche nach `REGELWERK.yaml` — entweder als Klassenregel oder als expliziter `defcon.modulation`-Eintrag. Beim Befüllen (§9.4 Schritt 5) ist zu entscheiden, welcher der drei Werte gilt: 0 €, 9 € oder die 20 € des Overrides.
+
+**GOOGL bleibt ein echter Fall** und wird nicht mit APH vermengt: Trigger vom 2026-03-15 ohne Resolve, gemessene Metrik (CapEx/OCF ~75 %), auflösbar nur durch frische Evidenz. Der Ausschluss-Vermerk daneben war eine Handelsregel und ist am 04.09.2026 förmlich aufgehoben (§9.3); der FLAG selbst bleibt aktiv und wirkt über Klasse `core` als Analysepflicht.
+
+**Damit ist `flag_events.jsonl` ab sofort autoritativ** — es fehlt kein Event mehr. Was v1.5 als Vollständigkeits-Backfill plante, war die Aufforderung, eine korrekte Datei zu verunreinigen.
 
 ### 4.3 Nicht-Roster-Ticker
 
@@ -805,12 +820,12 @@ Produktive Konsumenten, bereinigt um echte Tests (`test_*`, `*_test.py`, `_smoke
 
 Ohne diesen Schritt zementiert der Umbau bestehende Fehler.
 
-1. ⛔ **BLOCKIERT — APH-Trigger nachtragen.** Ursprüngliche Fassung: `flag_typ: score_basiert`, `event_datum: 2026-04-09`, via `archive_flag.py trigger`. **Beim Ausführungsversuch am 04.09.2026 gescheitert** — siehe §9.3.1.
+1. ❌ **ENTFÄLLT — der Schritt war selbst der Fehler.** Ursprüngliche Fassung: APH-Trigger nachtragen mit `flag_typ: score_basiert` via `archive_flag.py trigger`. Der Ausführungsversuch am 04.09.2026 scheiterte am Schema; die Analyse ergab, dass nicht das Schema zu eng, sondern die Spec falsch war. **Owner-Entscheidung 04.09.2026 (Weg B): APH wird nicht als Event geführt** — §4.2. Es fehlt kein Event, `flag_events.jsonl` ist bereits vollständig. Herleitung und Konsequenzen: §9.3.1.
 2. ✅ **ERLEDIGT 04.09.2026 — AMZN-FLAG in `config.yaml flags_aktiv` ergänzt.** Der FLAG lief seit 15.05. in `flag_events.jsonl`, `PORTFOLIO.md` und `Faktortabelle.md`, fehlte aber in `flags_aktiv`. Reine Auslassung; die Rate stand korrekt auf 0 €, weil `PORTFOLIO.md` führend war. `flags_aktiv` = MSFT · APH · AVGO · AMZN.
 3. ✅ **ERLEDIGT 04.09.2026 — GOOGL-Ausschluss förmlich aufgehoben**, an drei Stellen (siehe unten). `flags_watchlist` steht jetzt auf `[]`, der Originaleintrag bleibt als Kommentar erhalten.
-4. Danach ist `flag_events.jsonl` die einzige gelesene FLAG-Quelle. **Noch nicht erreicht**, solange Punkt 1 offen ist.
+4. ✅ **ERREICHT 04.09.2026** — `flag_events.jsonl` ist die einzige gelesene FLAG-Quelle. **Stufe 0 ist damit abgeschlossen.**
 
-#### 9.3.1 Warum Schritt 1 nicht ausführbar war — und was das über die Stufen-Reihenfolge sagt
+#### 9.3.1 Warum Schritt 1 entfiel — und was der Ausführungsversuch über Prüfrunden verrät
 
 `03_Tools/backtest-ready/schemas.py` Z. 612:
 
@@ -824,16 +839,19 @@ flag_typ: Literal["capex_ocf", "fcf_trend_neg", "insider_selling_20m", "tariff_e
 
 **Die Folge trifft die Stufen-Ordnung, nicht nur diesen Schritt.** §9.3 nennt Stufe 0 die „Voraussetzung für alles Weitere". Schritt 1 dieser Voraussetzung braucht eine Schema-Änderung (Enum + `FLAG_RULES` + `schema_version`-Bump), und §4.1 weist Schema-Bumps ausdrücklich **Stufe 2 Schritt 9** zu. Die Abhängigkeit läuft rückwärts: **Stufe 0 ist nicht unabhängig von Stufe 2.** Das ist kein Tippfehler, sondern ein Planungsfehler, den vier Prüfrunden nicht gefunden haben — weil niemand den Schritt ausgeführt hat.
 
-**Zwei Auswege, Owner-Entscheidung offen (§11 Punkt 19):**
+**ENTSCHIEDEN 04.09.2026 — Weg B: APH wird nicht als Event geführt.**
 
-| | Weg | Kosten |
-|---|---|---|
-| **A** | Schema erweitern: `flag_typ` um `score_basiert`, `FLAG_RULES`-Eintrag (Schwelle 65, Richtung `<`), `schema_version` 1.0→1.1, `sum_consistency.py` mitziehen | zieht Stufe-2-Arbeit in Stufe 0 vor; der Bump kommt dann ohnehin, aber früher als geplant |
-| **B** | APH **gar nicht** als Event führen | erfordert, §4.2 umzuschreiben: der APH-Fall ist dann keine Datenlücke mehr |
+Ein score-basierter FLAG ist **ableitbar**: Score 61 < 65 → DEFCON 2. Er ist eine reine Funktion des Scores, der bereits in `score_history.jsonl` steht. Die vier Enum-Typen sind allesamt **externe** Metriken, die aus dem Score nicht folgen — genau deshalb brauchen sie ein Ereignis-Log. Einen abgeleiteten Wert dort einzutragen, wäre die Kopie, die dieser Umbau beseitigt.
 
-**Argument für B.** Ein score-basierter FLAG ist **ableitbar**: Score 61 < 65 → DEFCON 2 → Ratenmodulation. Er ist eine reine Funktion des Scores, der bereits in `score_history.jsonl` steht. Die vier Enum-Typen sind allesamt **externe** Metriken, die aus dem Score nicht folgen — genau deshalb brauchen sie ein Ereignis-Log. Einen abgeleiteten Wert dort einzutragen, wäre die Kopie, die dieser Umbau beseitigt. Unter B ist das Enum nicht unvollständig, sondern korrekt eng, und §4.2 hat den Fall falsch klassifiziert.
+**Damit kehrt sich der Befund um.** Das Enum ist nicht unvollständig, sondern korrekt eng. Nicht `schemas.py` war zu streng — **§4.2 hat den Fall falsch klassifiziert** und daraus einen Reparaturschritt abgeleitet, der eine korrekte Datei verunreinigt hätte. §4.2 ist entsprechend neu gefasst.
 
-**Lehre für die Bearbeitung dieser Spec:** Ein Reparaturschritt, der nie ausgeführt wurde, ist keine verifizierte Anweisung. Schritt 1 stand seit v1.1 in vier Fassungen und hat vier Codex-Runden überlebt; gescheitert ist er in der Sekunde, in der jemand `--help` aufgerufen hat. **Vor der Freigabe einer gestuften Migration wird pro Stufe geprüft, ob wirklich nur Vorwärts-Abhängigkeiten bestehen** — und jeder Schritt, der ein Tool aufruft, gegen dessen Signatur gelesen.
+**Der verworfene Weg A** hätte `flag_typ` um `score_basiert` erweitert, einen `FLAG_RULES`-Eintrag (Schwelle 65, Richtung `<`) ergänzt und `schema_version` auf 1.1 gehoben — samt `sum_consistency.py`. Er hätte funktioniert und Stufe-2-Arbeit vorgezogen. Er hätte aber die Vermischung zementiert, statt sie aufzulösen.
+
+**Die Stufen-Ordnung ist damit wiederhergestellt:** Stufe 0 braucht keinen Schema-Bump und ist tatsächlich voraussetzungsfrei — allerdings erst, nachdem der Ausführungsversuch den Planungsfehler sichtbar gemacht hat. **Hätte man Weg A ohne diese Analyse gewählt, wäre die Rückwärts-Abhängigkeit real geworden** — und niemand hätte gemerkt, dass sie vermeidbar war.
+
+**Eine Restaufgabe wandert nach §3:** Die Score-Schwelle erklärt APHs Rate nicht vollständig (0 € dokumentiert, 9 € nach `defcon.modulation`, 20 € live beim Broker). Die dahinterliegende Regel „Score unter D3-Schwelle → Rate 0" ist nirgends niedergeschrieben und gehört als **Regelwerk-Regel** nach `REGELWERK.yaml`, nicht als Event (§4.2 Schluss, §9.4 Schritt 5).
+
+**Lehre — die wichtigste dieser Spec.** Ein Reparaturschritt, der nie ausgeführt wurde, ist keine verifizierte Anweisung. Schritt 1 stand seit v1.1 in vier Fassungen, hat vier Codex-Runden und ein 95%-Confidence-Gate überlebt und war die ganze Zeit **nicht nur unausführbar, sondern inhaltlich falsch**. Gescheitert ist er in der Sekunde, in der jemand `--help` aufgerufen hat. Prüfrunden lesen, was dasteht; Ausführung prüft, ob es stimmt — **das sind verschiedene Achsen, und die zweite war hier stärker als vier Durchgänge der ersten.** **Regel ab jetzt: Vor der Freigabe einer gestuften Migration wird jeder Schritt, der ein Tool aufruft, gegen dessen Signatur gelesen — und pro Stufe geprüft, ob wirklich nur Vorwärts-Abhängigkeiten bestehen. Wo möglich wird der Schritt trocken ausgeführt, bevor er freigegeben wird.**
 
 **Der GOOGL-Trigger gehört nicht hierher.** Ihn aufzulösen erfordert nach dem eigenen Modell frische Evidenz (§4.2) — das ist Analysearbeit, keine Datenhygiene. Bis dahin gilt die konservative Lesart: **ein Trigger ohne Resolve ist aktiv.** Das Modell trägt den Fall von selbst, weil GOOGL Klasse `core` ist und `flag_wirkung: analysepflicht` gilt: Der offene FLAG stoppt keine Rate, sondern macht GOOGL über `analyse_faellig` (§6.1) analysepflichtig. Der Titel landet damit im Analyse-Backlog, wo er hingehört — und nicht in einem Reparaturschritt, der ihn stillschweigend wegräumt.
 
@@ -914,7 +932,7 @@ Aus 8–9 Pflicht-Dateien mit gegenseitiger Konsistenzpflicht werden **vier Quel
 16. **Ernte-Auslöser — reicht der Cap allein?** Oder braucht es einen zweiten (Thesenerfüllung, Bewertung)? **Der einzige dokumentierte Präzedenzfall geht in die andere Richtung:** `KONTEXT.md` §5 hält fest, der „VEEV+COST-Erlös finanziert mit" — dort ging der Erlös in **neue Satelliten**, nicht in den ETF-Core. Bevor §7.5 den ETF-Core als Ziel festschreibt, ist zu klären, ob das die Praxis ändern soll oder ob beide Ziele nebeneinander gelten.
 17. **FIFO-Beleg für die Entnahme 2027 — mit Frist.** Die ING-Einstandsdaten für IWDA (34), EIMI (40) und EXUS (53 Stk) sind **über keinen API-Kanal erreichbar** (§2.6). Quelle ist die ING-Übertragungsanzeige oder das Scalable-Steuerreporting. Ohne den Beleg ist unklar, ob die 2.000 € Freibetrag 2027 reichen. **Zu beschaffen vor Q3/2027**, nicht im Zuge dieser Migration — aber hier notiert, weil es sonst niemand aufschreibt.
 18. **`max_aktien_slots` 13 gegen 17 Ist-Positionen** [03.09.]. `slot_kapazitaet` meldet FAIL, sobald `depot check` läuft. Roster schrumpfen oder Cap anheben — hängt an §3.1 und ist dort die eigentliche Frage.
-19. **APH-FLAG: Schema erweitern oder als ableitbar behandeln?** (§9.3.1, aufgeworfen beim gescheiterten Ausführungsversuch am 04.09.2026). **Weg A** — `flag_typ`-Enum um `score_basiert` erweitern, `FLAG_RULES`-Eintrag, `schema_version` 1.0→1.1; zieht Stufe-2-Arbeit in Stufe 0 vor. **Weg B** — APH nicht als Event führen, weil ein score-basierter FLAG aus `score_history.jsonl` ableitbar ist; erfordert, §4.2 umzuschreiben (der Fall wäre dann keine Datenlücke, sondern eine Fehlklassifikation der Spec). **Bis zur Entscheidung bleibt Stufe 0 unabgeschlossen** und `flag_events.jsonl` nicht die alleinige FLAG-Quelle.
+19. ~~**APH-FLAG: Schema erweitern oder als ableitbar behandeln?**~~ **ENTSCHIEDEN 04.09.2026 — Weg B** (§9.3.1): APH wird nicht als Event geführt, weil ein score-basierter FLAG aus `score_history.jsonl` ableitbar ist. §4.2 neu gefasst, das `flag_typ`-Enum bleibt unverändert, **Stufe 0 ist abgeschlossen**. Restaufgabe daraus: die Regel „Score unter D3-Schwelle → Rate 0" ist nirgends niedergeschrieben (0 € dokumentiert / 9 € nach Modulation / 20 € live) und gehört beim Befüllen nach `REGELWERK.yaml`.
 20. **GOOGL-Vollanalyse vor dem 22.09.2026 — terminiert, nicht offen.** Kein Architektur-Punkt, aber der einzige mit hartem Datum: Score 72 verfällt (§1.1), der CapEx/OCF-Trigger vom 15.03. ist offen, die Rate läuft mit 50 €/Mt und seit 01.09. besteht eine Position. Die Analyse entscheidet zugleich über den FLAG-Resolve.
 
 *Geschlossen mit v1.5: Punkte 4, 5, 6, 7. Geschlossen mit v1.6: Punkt 12; Punkt 13 eingegrenzt.*
@@ -1069,4 +1087,4 @@ Grundlage: `02_Analysen/2026-09-04_Depot-Live-Verifikation.md`. Alle 24 Position
 
 ---
 
-*Dynasty-Depot · Architektur-Spec v1.6.1 · Stand 2026-09-04 · Entwurf zur Freigabe. v1.6.1-Delta: Stufe 0 teil-ausgeführt — Schritte 2+3 erledigt, Schritt 1 blockiert (§9.3.1), §11 Punkte 19+20 neu. Erste Fassung, die einen Befund aus der AUSFÜHRUNG statt aus der Prüfung trägt.*
+*Dynasty-Depot · Architektur-Spec v1.6.2 · Stand 2026-09-04 · Entwurf zur Freigabe. v1.6.2-Delta: Owner-Entscheidung Weg B — §4.2 neu gefasst (gemessene vs. abgeleitete FLAGs), Stufe 0 abgeschlossen, §11 Punkt 19 geschlossen. Die schwerste Korrektur dieser Spec stammt nicht aus einer Prüfrunde, sondern aus dem ersten Ausführungsversuch.*
