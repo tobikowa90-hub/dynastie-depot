@@ -1927,3 +1927,41 @@ Kurs ¥78.070, MC ¥18,93Bio. `non-us-qt-modulator-default-deny` (Non-US-Freeze)
 **Stand nach dieser Session:** Stufe 0 umsetzungsreif · Stufe 1 umsetzungsreif, aber **nicht offline** · Stufe 2 gated auf Gate-Neufassung §4.4 + Schema-Bump §4.1 + `provenance_gate.py` Check #2. Offen sind ausschließlich **Owner-Entscheidungen**, keine Wissenslücken.
 
 **Cross-Reference:** `03_Tools/depot-architecture-spec.md` v1.5 · PIPELINE #83 · Commit `<TBD>` · Memory `feedback_empirie_statt_annahmen`, `feedback_codex_sparring_heuristic`, `feedback_windows_console_ascii_safe_inline_python`, `reference_scalable_cli_agentic_investing`.
+
+## [2026-09-04] portfolio+system | #83 R5 Live-Verifikation + 6 Owner-Entscheidungen — Spec v1.6 schreibreif (scoring-neutral, Pipeline-Item-Event)
+
+**Event-Typ:** Pipeline-Item-Refinement (Spec v1.5 → v1.6-schreibreif). **Kein** Score-/FLAG-/Sparraten-Event — kein Score verändert, kein FLAG getriggert oder aufgelöst, keine Rate angefasst, keine Order platziert.
+
+**Was passiert ist:**
+- Depotstatus live über den MCP-Connector gezogen (CLI `sc` war tot: `no_session`, `sc login` ist `human_only` — die beiden Kanäle laufen unabhängig ab).
+- Erste Runde mit **tranchenscharfer** Broker-Verifikation statt Stichproben. Vollständige Übergabe → `02_Analysen/2026-09-04_Depot-Live-Verifikation.md`.
+- **Entnahme-Topf entdeckt und belegt:** Einzahlung 9.000 EUR am 11.08., investiert am 13.08. in einer Order-Welle über fünf Positionen (IWDA 3150 · NOW 2000 · EIMI 1750 · AVGC 1190 · EXUS 910), Summe centgenau. Heute 9.246,62 EUR. Zweckgebunden für die Hochzeit am 07.08.2027, Zielwert 10–11 k.
+- **Sechs Owner-Entscheidungen:** Allokation wertbasiert (Rate = Instrument) · `budget.monatlich_eur: 1068` als Erhaltungs-Invariante der §7.4-Staffel statt Eingangsfaktor · GOOGL-Ausschluss förmlich aufheben · Topf raus aus allen Quoten inkl. US-Cap · Zieldatum 07.08.2027 · kein Tranchen-/Klassen-Konstrukt, ein Block plus eine Subtraktion.
+- **Owner-Vorschlag Ernte-Mechanismus:** Konzentrations-Kappung als Auslöser für Gewinnmitnahme, Erlös in den ETF-Core — mit der Abgrenzung *Block-Rebalancing (verboten) vs. Konzentrations-Kappung (erlaubt, Risikokontrolle)*.
+
+**Zahlen (Stand 03.09.2026 21:00 UTC):**
+- Depot 32.132,01 EUR · Sparplan-Ist 1.068 EUR/Mt · 24 Positionen (6 ETF, 17 Aktien, 1 Gold)
+- Maßgebliche Dynastie-Basis (ohne Entnahme-Topf) **22.881 EUR** → **47,9 / 48,3 / 3,8** gegen 60/35/5: ETF −12,1 pp ROT, Aktien +13,3 pp ROT, Gold −1,2 pp OK
+- NOW **12,33 %** auf Dynastie-Basis (nicht 15,88 % wie auf Gesamtdepot); nach der Entnahme 7,90 % → der Termin löst den Cap-Verstoß, nicht Verwässerung
+- Drift ist **Bestand, nicht Flow**: Ratenüberschuss 51 EUR/Mt hätte 59 Monate für den 3.040-EUR-Überhang gebraucht. Ursache ist der ETF-lastige ING-Übertrag plus Outperformance der bei Scalable gebauten Einzelaktien.
+
+**Befunde für v1.6:**
+- **H14 (HIGH):** `03_Tools/Rebalancing_Tool_v4.0.xlsx` Blatt `Parameter & Regeln` ist eine nicht inventarisierte Regelwerk-Quelle. **`Single-Stock-Cap` B10 = 0.1 existiert nur dort**, ebenso die Drift-Toleranzen B8/B9, der Warnfaktor B15 und die Nachkauf-Schwelle B65. Spec §2.1 hat ausschließlich `config.yaml` durchgegangen — und **Stufe 1 Schritt 7 archiviert genau diese Datei**. Extraktion muss vor den Move.
+- **H15 (HIGH):** `KONTEXT.md` fehlt vollständig als Migrations-Sync-Ziel, wird aber von der Routing-Table bei jeder Strategie-/Allokationsfrage geladen. Sieben Stellen Doc-Drift verifiziert, darunter §4b: **IWDA wurde am 17.08. mit übertragen statt wie geplant 2027 verkauft** — die dortige Steuerplanung ist damit offen.
+- **H10 (HIGH):** `config.yaml` hat drei FLAG-Blöcke, die Spec kennt einen. GOOGL steht in `flags_watchlist` („kein Einstieg, kein Nachkauf") bei laufendem 50-EUR-Sparplan und Position seit 01.09. → der Widerspruch ist dreifach, nicht zweifach. §2.1 klassifiziert `flags_watchlist` zudem falsch als Urteil statt Regelwerk.
+- **H11 (MED):** §7.4 verankert ein basisabhängiges Rechenbeispiel („freigesetzt → Gold"), das auf der maßgeblichen Basis falsch ist — größter Unterhang ist ETF-Core.
+- **H1 (MED):** ZETA fehlt in der Override-Liste (Position ohne Rate, strukturell identisch mit dem NOW-Fall aus §3.3).
+- **M5/M6:** §1.1 widerspricht sich bei GOOGL (dort „ungescort", zwei Sätze später Score 72) · GOOGL-Score **verfällt am 22.09.2026**, danach Oktober-Cluster.
+
+**Bewusst offen (gehört als Frage in §11, nicht als Antwort in die Spec):** `allokation_drift`-Severity (FAIL/WARN/INFO — in der Session wurden beide Seiten vertreten) · Cap-Parameter (Höhe, Bezugsgröße, Hysterese, Steuerjahr-Kopplung) · Ernte-Auslöser jenseits des Caps.
+
+**Sync-Set (§18 Pipeline-Item-Event, scoring-neutral):** PIPELINE.md (#83-Block + Footer v2.84 → v2.85) + `02_Analysen/2026-09-04_Depot-Live-Verifikation.md` (neu) + SESSION-HANDOVER.md (Banner) + log.md (dieser Eintrag). **KEIN** PORTFOLIO/Faktortabelle/CORE-MEMORY/score_history/flag_events/config.yaml/xlsx — kein Score-/FLAG-/Sparraten-Event. Die Spec selbst bleibt auf v1.5 unangetastet; v1.6 wird in frischer Session geschrieben.
+
+**Lehre:**
+- **Sechs Fehlaussagen in einer Session, eine Wurzel: vom Teilausschnitt aufs Ganze geschlossen.** Teil-Basis (nur eine von fünf Tranchen aus dem Quoten-Nenner), Teil-Datei (Roster-Notiz statt laufendem Sparplan → VEEV fälschlich als Exit-Kandidat), Teil-Verzeichnis (Grep ohne `.xlsx` → „Single-Stock-Cap existiert nicht", obwohl er in B10 steht), Teil-Zeitfenster (Freibetrags-Auslastung aus einem Sechs-Wochen-Ausschnitt), fehlender Kontext (`KONTEXT.md` nicht gelesen, dann dessen veraltete Steuer-Tabelle geglaubt). Jede einzelne Rechnung war korrekt.
+- **Ein negativer Befund ist erst belastbar, wenn der Suchraum benannt ist.** Bei Widerspruch zwischen Nutzergedächtnis und leerem Suchergebnis zuerst den Suchraum anzweifeln — hier lag der Nutzer richtig und der Grep falsch.
+- **Routing-Table-Verstoß mit Folgekosten:** „Strategie-/Allokations-Frage → `KONTEXT.md`" wurde übersprungen; daraus entstand ein Rebalancing-per-Verkauf-Vorschlag, den §7 dort („Steuer-Bremse: Niemals durch Verkauf rebalancen") und `Rebalancing_Tool` B23 in je einer Zeile ausschließen.
+- **Ein aktiver Sparplan schlägt jede Roster-Notiz.** VEEV steht seit 06.06. als „exited" in KONTEXT und PIPELINE, wird aber weiter bespart (Kauf 01.09.) — Live-Verhalten ist das stärkere Signal. Das ist die Kernthese der Architektur-Spec, angewandt auf die eigene Arbeit.
+- **Eine Migration darf keine Regeln erfinden und keine archivieren.** Jeder Wert im künftigen `REGELWERK.yaml` braucht eine Herkunftsangabe (Datei + Zeile/Zelle oder Owner-Entscheidung mit Datum).
+
+**Nebenbefunde ohne Repo-Spur:** offene Sell-Limits COST @880 und JEDI @90 stehen beim Broker, in keiner Markdown-Datei — offene Orders sind Owner-Absicht und fehlen im Live-Layer der Spec (§5). APH hatte am 03.09. einen 1:2-Split (`SWAP_OUT` 2,90389 → `SWAP_IN` 5,80778). Für `TRANSFER_IN` liefert die API nur den Übertragswert, nicht die Anschaffungskosten — das FIFO-Risiko der Entnahme 2027 bleibt unbelegt, Quelle wäre die ING-Übertragungsanzeige.
