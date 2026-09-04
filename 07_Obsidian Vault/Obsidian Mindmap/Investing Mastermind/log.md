@@ -2041,3 +2041,59 @@ Kurs ¥78.070, MC ¥18,93Bio. `non-us-qt-modulator-default-deny` (Non-US-Freeze)
 **Cross-Reference:** CORE-MEMORY §12.1 · `score_history.jsonl` Record `2026-09-03_AVGO_vollanalyse` · FLAG `AVGO_insider_selling_20m_2026-04-27` (unverändert aktiv) · PORTFOLIO.md AVGO-Zeile + FLAG-Watch.
 
 **Nächste Tracks:** AVGO Q4 FY26 **09.12.2026 amc** (im Call bestätigt) — FLAG-Resolve-Gate #2 mit Zusammensetzungs-Prüfung + Fwd-P/E-Korridor-Watch. Offen im Roster: NOW/ZETA O3-Scoring. DEFCON v3.7 unverändert.
+
+---
+
+## [2026-09-04] system | #83 Stufe 0 — Schritte 2+3 ausgeführt, Schritt 1 (APH) BLOCKIERT (scoring-neutral, Pipeline-Item + FLAG-Datenreparatur)
+
+**Event-Typ:** Datenreparatur vor dem Architektur-Umbau. Kein Score-Move, keine Sparraten-Änderung. Zwei von drei Schritten abgeschlossen, einer an einer Schema-Grenze gescheitert — der Befund ist wichtiger als die beiden Erfolge.
+
+### Schritt 2 — AMZN-Divergenz aufgelöst ✅
+
+`config.yaml flags_aktiv` führte MSFT · APH · AVGO, aber **nicht AMZN** — obwohl `flag_events.jsonl` (`AMZN_capex_ocf_2026-05-15`), `PORTFOLIO.md` und `Faktortabelle.md` den FLAG seit dem 15.05.2026 übereinstimmend führen. Reine Auslassung, keine bewusste Divergenz; die Sparrate stand die ganze Zeit korrekt auf 0 €, weil PORTFOLIO führend war. Nachgetragen. `flags_aktiv` = MSFT · APH · AVGO · AMZN.
+
+Der Fall ist ein Musterbeispiel der Fehlerklasse, gegen die die Architektur-Spec antritt: vier Kopien desselben FLAG-Status, eine läuft still auseinander, und **kein Check schlägt an** — weil `cross_source.py` die Vault-Quelle überspringt und für `flags_aktiv` gegen `flag_events.jsonl` gar keine Rückrichtung prüft.
+
+### Schritt 3 — GOOGL-Ausschluss förmlich aufgehoben ✅
+
+Owner-Entscheidung 04.09.2026, an **drei** Stellen im selben Vorgang vollzogen:
+
+| Ort | Aktion |
+|---|---|
+| `config.yaml flags_watchlist` | GOOGL-Eintrag aufgehoben, Block auf `[]`; Originaleintrag als Kommentar erhalten (kein Info-Verlust) |
+| Vault `entities/ersatzbank/GOOGL.md` | Statuswechsel-Abschnitt, Frontmatter `ausschluss_aufgehoben: 2026-09-04`, Rolle „MSFT-Ersatz" → „Core-Position" |
+| Chronik | `CORE-MEMORY.md` **§12.16 GOOGL neu angelegt** + dieser log-Eintrag |
+
+**Der CapEx/OCF-FLAG bleibt aktiv** (Trigger `GOOGL_capex_ocf_2026-03-15`, kein Resolve). Das ist der Kern der Entscheidung und kein Widerspruch: Ein **Ausschluss** ist eine *Handelsregel* („nicht kaufen") und wird von einer Owner-Entscheidung aufgehoben; ein **FLAG** ist ein *Urteilsstand* („Risiko offen, Evidenz fehlt") und wird ausschließlich durch frische Evidenz aufgelöst — Analysearbeit, keine Datenpflege. GOOGL steht deshalb bewusst **nicht** in `flags_aktiv`: das bedeutete Rate 0 € und widerspräche dem laufenden 50-€-Sparplan.
+
+**Dringlichkeit, die dabei sichtbar wurde:** GOOGLs Score 72 vom 26.03.2026 **verfällt am 22.09.2026** — der erste Verfall im Roster. Der Titel vereint offenen FLAG, laufende Rate, seit 01.09. bestehende Position und ablaufenden Score. Die Vollanalyse ist vor dem 22.09. fällig und entscheidet zugleich über den FLAG-Resolve.
+
+### Schritt 1 — APH-Trigger: BLOCKIERT ⛔
+
+Spec v1.6 §9.3 Schritt 1 und das Übergabe-Dokument verlangen: APH-Trigger nachtragen mit `flag_typ: score_basiert` über `archive_flag.py trigger`. **Das ist nicht ausführbar.**
+
+`03_Tools/backtest-ready/schemas.py` Z. 612 definiert:
+
+```python
+flag_typ: Literal["capex_ocf", "fcf_trend_neg", "insider_selling_20m", "tariff_exposure"]
+```
+
+`score_basiert` ist **nicht** im Enum. Die CLI lehnt den Wert ab, bevor irgendetwas geschrieben wird. Zusätzlich verlangt der Validator zu jedem `flag_typ` eine `schwelle` aus `FLAG_RULES` und prüft, dass ein Trigger diese Schwelle *verletzt* — für einen score-basierten FLAG existiert dort kein Eintrag.
+
+**Das war bekannt und stand ungenutzt im Code:** `03_Tools/backtest-ready/backfill_flags.py` Z. 104 trägt wörtlich `flag_typ="score_basiert",  # NICHT im schema-enum`. Der Kommentar ist älter als die Spec; niemand hat ihn beim Schreiben von §9.3 gelesen.
+
+**Die Konsequenz trifft die Stufen-Reihenfolge der ganzen Spec.** §9.3 nennt Stufe 0 die „Voraussetzung für alles Weitere". Schritt 1 dieser Voraussetzung erfordert aber eine Schema-Änderung (Enum + `FLAG_RULES`-Eintrag + `schema_version`-Bump), und §4.1 weist Schema-Bumps ausdrücklich **Stufe 2 Schritt 9** zu. Die Abhängigkeit läuft also rückwärts: Stufe 0 ist nicht unabhängig von Stufe 2. Das ist ein struktureller Fund, kein Tippfehler.
+
+**Zwei Auswege, Owner-Entscheidung offen:**
+
+1. **Schema erweitern** — `flag_typ` um `score_basiert` ergänzen, `FLAG_RULES`-Eintrag (Schwelle 65, Richtung `<`), `schema_version` 1.0 → 1.1, `sum_consistency.py` mitziehen. Zieht Stufe-2-Arbeit in Stufe 0 vor.
+2. **APH gar nicht in `flag_events.jsonl` schreiben** — weil ein score-basierter FLAG **ableitbar** ist: Score 61 < 65 → DEFCON 2 → Ratenmodulation. Er ist eine reine Funktion des Scores, der bereits in `score_history.jsonl` steht. Die vier echten FLAG-Typen sind allesamt **externe** Metriken, die aus dem Score *nicht* folgen. Ihn als Event zu führen, hieße einen abgeleiteten Wert ins Ereignis-Log zu kopieren — genau das Muster, das der Umbau beseitigen soll.
+
+**Lehre:**
+- **Ein Reparaturschritt, der nie ausgeführt wurde, ist keine verifizierte Anweisung.** §9.3 Schritt 1 stand seit v1.1 in vier Spec-Fassungen und hat vier Codex-Runden überlebt. Gescheitert ist er in dem Moment, in dem jemand `--help` aufgerufen hat. Ausführbarkeit von Reparaturschritten gehört vor die Freigabe, nicht in die Umsetzung.
+- **Ein Kommentar im Code ist eine Quelle.** `# NICHT im schema-enum` stand die ganze Zeit an genau der richtigen Stelle. Die Spec hat `archive_flag.py` als Schreibweg zitiert, ohne seine Signatur zu prüfen — dieselbe Klasse wie „Grep ohne `.xlsx`": der Suchraum war zu klein, diesmal um eine Datei.
+- **„Voraussetzung für alles Weitere" ist eine prüfbare Behauptung.** Sie war hier falsch. Bei gestuften Plänen gehört pro Stufe explizit geprüft, ob wirklich nur Vorwärts-Abhängigkeiten bestehen.
+
+**Sync-Set (§18, Pipeline-Item + FLAG-Datenreparatur, scoring-neutral):** `config.yaml` + Vault-Entity `GOOGL.md` + `CORE-MEMORY.md` (§12.16 neu, §12.12 ergänzt) + log.md. **KEIN** `flag_events.jsonl`-Write (Schritt 1 blockiert), **KEIN** PORTFOLIO/Faktortabelle/score_history/xlsx — kein Score-/Sparraten-Event.
+
+**Nächste Tracks:** Owner-Entscheidung zu Schritt 1 (Schema erweitern vs. APH als ableitbar behandeln) → danach Stufe 0 abschließen und Spec §9.3 + §4.2 entsprechend nachziehen. **Vorgezogen dringend: GOOGL-Vollanalyse vor dem 22.09.2026** (Score-Verfall + offener FLAG + laufende Rate).

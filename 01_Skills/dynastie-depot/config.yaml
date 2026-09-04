@@ -418,14 +418,35 @@ flags_aktiv:
     wirkung: "Sparrate komplett gestoppt (0 €) — FLAG überschreibt DEFCON 2 (Score-unabhängig; 30.04. Vollanalyse 84→53, 04.06. Q2 FY26 Vollanalyse 53→56 — FLAG bleibt da Diskr. 90d $106,4M ≫$20M, Samueli $281M=10b5-1 ausgeschl.)"
     naechste_pruefung: "Q4 FY26 Earnings 09.12.2026 (amc) — Resolve-Gate #2. Stand 04.09.2026: diskr. Selling 90d $33,69M, weiterhin ueber $20M. $29,19M davon allein Brazeal (CLO) in 3 Tranchen (25.06./08.07./10.07.) ohne 10b5-1; Plan-Verkaeufe $250M/90d regelkonform ausgeschlossen; netto 6M -$639,7M bei einem Open-Market-Kauf. Kein flag_events-Write — Zwischenstand ohne Statuswechsel."
 
+  - ticker: AMZN
+    grund: "CapEx/OCF TTM 99,2% netto (Vollanalyse 2026-05-15, Score 42/DEFCON 1) — weit über der 60%-Schwelle. FCF TTM nur $1,2B (-95% YoY)."
+    seit: "2026-05-15"
+    wirkung: "Sparrate komplett gestoppt (0 €) — User-Entscheidung 18.05.2026: regelkonform, KEIN Owner-Override."
+    naechste_pruefung: "Q2 FY26 Earnings — CapEx/OCF-Resolve-Gate <60%. NACHGETRAGEN 04.09.2026 (Stufe 0 Schritt 2): Der Eintrag fehlte hier, obwohl flag_events.jsonl (AMZN_capex_ocf_2026-05-15), PORTFOLIO.md und Faktortabelle.md den FLAG seit 15.05. führen — reine Auslassung, keine bewusste Divergenz."
+
 flags_review: []  # AVGO 2026-04-27 → flags_aktiv promotet (Insider-FLAG)
 
-flags_watchlist:
-  - ticker: GOOGL
-    grund: "CapEx FY26: 74-79% OCF — strukturell über FLAG-Schwelle"
-    seit: "2026-Q1"
-    wirkung: "Kein Einstieg, kein Nachkauf bis FLAG aufgehoben"
-    naechste_pruefung: "Q2 2026 Earnings"
+# flags_watchlist haelt HANDELSREGELN (kein Einstieg / kein Nachkauf), nicht Urteilsstaende.
+# Damit gehoert der Block ins REGELWERK, nicht in den Urteil-Layer (Spec v1.6 §2.1, Befund R5-H10).
+#
+# AUFGEHOBEN 2026-09-04 (Stufe 0 Schritt 3, Owner-Entscheidung) — vorheriger Eintrag zur Nachvollziehbarkeit:
+#   - ticker: GOOGL
+#     grund: "CapEx FY26: 74-79% OCF — strukturell ueber FLAG-Schwelle"
+#     seit: "2026-Q1"
+#     wirkung: "Kein Einstieg, kein Nachkauf bis FLAG aufgehoben"
+#     naechste_pruefung: "Q2 2026 Earnings"
+#
+# Begruendung der Aufhebung: Der Owner baut GOOGL seit 26.08.2026 bewusst als Core-Position auf
+# (Sparplan 50 EUR/Mt, Position seit 01.09.2026). Eine Handelsregel "kein Einstieg" gegen eine laufende
+# Owner-Entscheidung ist keine Regel, sondern eine Altlast. Aufgehoben an drei Stellen im selben Vorgang:
+# hier + Vault-Entity entities/ersatzbank/GOOGL.md + Chronik (CORE-MEMORY §12 / log.md).
+#
+# WICHTIG: Der CapEx/OCF-FLAG bleibt AKTIV (Trigger GOOGL_capex_ocf_2026-03-15 ohne Resolve).
+# Ausschluss = Handelsregel (Owner hebt auf). FLAG = Urteilsstand (nur frische Evidenz loest auf, §4.2).
+# GOOGL steht bewusst NICHT in flags_aktiv — das bedeutete Rate 0 und widerspraeche dem laufenden Sparplan.
+# In der Zielarchitektur traegt Klasse `core` flag_wirkung: analysepflicht, nicht rate_null.
+# Merker: Score 72 vom 26.03.2026 VERFAELLT AM 22.09.2026 — erster Verfall im Roster.
+flags_watchlist: []
 
 # ─────────────────────────────────────────────
 # SCREENER-EXCEPTIONS (Float-/Holding-Modelle)
