@@ -10,7 +10,7 @@ updated: 2026-08-26
 > Tier 2 des 3-Tier-Systems (Auto-Memory → Applied Learning → INSTRUKTIONEN.md).
 > <15 Wörter pro Bullet. Nur operativ relevante Arbeitsprinzipien — keine Tool-References (→ Auto-Memory) und keine systemischen Regeln (→ INSTRUKTIONEN.md §§).
 
-## Bullets (Stand: ⚠️ 21/20 — Kurator-Regel fällig)
+## Bullets (Stand: ⚠️ 22/20 — Kurator-Regel überfällig)
 
 > **Proaktive Pflege (seit 18.04.2026):** Bei jedem Monats-Übergang: 5-Min-Scan — Tool-References identifizieren und evakuieren. Verhindert Buildup, billiger als reaktive Überlauf-Sanierung.
 >
@@ -39,6 +39,7 @@ updated: 2026-08-26
 - Entdopplung erst nach Vollständigkeits-Check aller Quellen — sonst zementiert der Umbau den Datenfehler
 - Vor neuer Regel bestehendes Regelwerk nach demselben Fall durchsuchen — stille Übersteuerung erzeugt Drift
 - Review-Befund: ganze Datei auf gleichartige Abhängigkeiten prüfen, nicht nur die gemeldete Zeile
+- Neue Fehlerklasse je Prüfrunde = Skalen-Signal, nicht Methodenerfolg — Ursache ist Zustands-Duplikation (Detail → Auto-Memory `feedback_verification_ratchet_state_duplication`)
 
 ## Promotion-Logik
 
