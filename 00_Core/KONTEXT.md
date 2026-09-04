@@ -88,7 +88,7 @@
 
 **Broker-Konsolidierung → alles zu Scalable:** EIMI **+ EXUS** per In-Kind-Übertrag ING→Scalable (Herbst 2026, keine Realisierung, +204 € latent EIMI). ING danach leer → **kündigen**. Endzustand: Dynastie (Satelliten + AVGC/JEDI/WQTM + Gold) + AVD (Invesco) komplett bei Scalable; ING aufgelöst.
 
-> Vollständiger Transaktionsplan + Timing → `UMSTRUKTURIERUNG-2027.md` §3 (Phase B) + §4 (Transaktionsplan 2026). Quelle: Desktop `Umstrukturierung.md` (Chat-Session 02.–04.06.2026).
+> **Plan-Doku zurückgezogen (04.09.2026).** Der frühere Detail-Transaktionsplan (`UMSTRUKTURIERUNG-2027.md` §3/§4) ist obsolet: Depotübertrag auf Scalable vollzogen, Steuerung läuft über MCP/CLI. Historischer Stand → `git log`. **Weiterhin offen und oben geregelt:** das Phase-B-Re-Derive-Gate (Combined-View mit EXUS, bei AVD-Start Jan 2027) sowie AVD/Riester-Übertrag.
 
 ---
 

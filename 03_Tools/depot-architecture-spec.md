@@ -1,6 +1,6 @@
 # Depot-Architektur — Zustand, Urteil, Regelwerk
 
-**Status:** Entwurf zur Freigabe · **Stand:** 2026-09-04 · **Version:** v1.7 (post R5 + Codex-Gegenprüfung + Stufe 0 abgeschlossen)
+**Status:** Entwurf zur Freigabe · **Stand:** 2026-09-04 · **Version:** v1.7.1 (post R5 + Codex-Gegenprüfung + Stufe 0 abgeschlossen; R6 Suchraum-Komplement)
 **Vorgänger-Dokumente:** `02_Analysen/2026-08-26_Depot-Reconciliation.md` · `02_Analysen/2026-09-04_Depot-Live-Verifikation.md`
 
 > **Entwicklung:** Fünf Prüfrunden — R1 7 HIGH, R2 5, R3 2, R4 5 HIGH + 4 Codex-Befunde, R5 3 HIGH + 3 MEDIUM + 6 Codex-Gegenbefunde. Alle gegen die realen Dateien nachgeprüft. Fünf Behauptungen der Vorfassungen waren empirisch falsch (Schreibverhalten §9.1, Ableitungsregel §4, Blast-Radius `backtest-ready/`, „ungescort trotz Position" bei META, „GOOGL ohne Score-Record" §1.1) und sind ersetzt. R4 war die erste Runde gegen die Live-API; **R5 die erste, die die Regelwerk-Quellen jenseits von `config.yaml` gesucht hat** — und zwei fand: das xlsx-Parameterblatt (§2.3) und `KONTEXT.md` (§2.4). Schwerster Fund: eine geltende Regel, die nur in einer Datei steht, die Stufe 1 archiviert. Prüfspur in §13.
@@ -940,7 +940,7 @@ Die Sparplan-Änderung (AVGO und NOW entfernt, Gold 52 → 80, Core-4 je 40 → 
 | **Sparraten-Änderung im Broker** | nichts — Zustand |
 | **Entnahme-Topf bewegt** (Zukauf, Teilverkauf, Entnahme 2027) | `REGELWERK.yaml` `entnahme_2027.tranchen` · Chronik — der einzige Zustand, der von Hand nachgezogen wird, bewusst (§2.5) |
 | **Critical-Alert** (bisher eigene Event-Klasse für `STATE.md`) | **entfällt als Sync-Ereignis.** Der Alert ist eine Projektion aus Urteil × Regelwerk × Live und wird mit `STATE.md` generiert (§8). Was heute ein Pflicht-Sync ist, wird ein Feld im Report |
-| **Pipeline / System-Zustand** | unverändert `PIPELINE.md` bzw. `SYSTEM.md` + `log.md` |
+| **Pipeline / System-Zustand** | unverändert `00_Core/PIPELINE.md` bzw. `00_Core/SYSTEM.md` + `log.md`. **Pfad ist nicht optional:** `01_Skills/dynastie-depot/PIPELINE.md` trägt denselben Basenamen, ist aber Skill-Doku und kein Sync-Ziel |
 
 Aus 8–9 Pflicht-Dateien mit gegenseitiger Konsistenzpflicht werden **vier Quellen mit je genau einem Schreiber**. Multi-Event-Union (§18.2) bleibt gültig, greift aber ins Leere, weil sich die Sets nicht mehr überlappen.
 
@@ -1147,4 +1147,4 @@ Gegen die realen Dateien geprüft (openpyxl-Dump aller drei xlsx, `KONTEXT.md`, 
 
 ---
 
-*Dynasty-Depot · Architektur-Spec v1.7 · Stand 2026-09-04 · Entwurf zur Freigabe. v1.7-Delta: Codex-R5-Gegenprüfung eingearbeitet — **§2.4b `STATE.md` neu** (vierte Quelle, in fünf Runden übersehen), §2.4 auf alle 13 `KONTEXT.md`-Abschnitte erweitert (§11 obsolet), `critical-alert` in §10 aufgelöst, §12 nennt seinen Suchraum, xlsx-Vorbedingung technisch belegt. Die beiden anderen xlsx sind geprüft — Ergebnis negativ. Zwei Befunde dieser Spec stammen nicht aus einer Prüfrunde, sondern aus Ausführung (§9.3.1) und aus der Frage nach dem Leseweg (§2.4b).*
+*Dynasty-Depot · Architektur-Spec v1.7.1 · Stand 2026-09-04 · Entwurf zur Freigabe. **v1.7.1-Delta (R6, mechanisches Suchraum-Komplement via `03_Tools/spec_inventory_diff.py`):** `00_Core/UMSTRUKTURIERUNG-2027.md` als Owner-Entscheidung zurückgezogen (war fünfte Regelwerk-Quelle in spe — 60/35/5, 3-Tier-Basis, „FLAG bleibt heilig, Override-frei"); §10 qualifiziert den Pfad von `PIPELINE.md`, weil der Basename im Repo doppelt vorkommt. Substanz unverändert gegenüber v1.7. v1.7-Delta: Codex-R5-Gegenprüfung eingearbeitet — **§2.4b `STATE.md` neu** (vierte Quelle, in fünf Runden übersehen), §2.4 auf alle 13 `KONTEXT.md`-Abschnitte erweitert (§11 obsolet), `critical-alert` in §10 aufgelöst, §12 nennt seinen Suchraum, xlsx-Vorbedingung technisch belegt. Die beiden anderen xlsx sind geprüft — Ergebnis negativ. Zwei Befunde dieser Spec stammen nicht aus einer Prüfrunde, sondern aus Ausführung (§9.3.1) und aus der Frage nach dem Leseweg (§2.4b).*

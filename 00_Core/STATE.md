@@ -12,7 +12,7 @@
 > **Konvention (11.05.2026 Slim-Refactor):** 1-3-Zeilen-Pointer. Detail → `git log` + `CORE-MEMORY.md §13` + PIPELINE-Item-Body.
 
 - **12.06. 🟢 exUSA-Re-Add — EXUS (Xtrackers MSCI World ex USA, IE0006WW1TQ4) @82€ reaktiviert** (User-Lock). US-Klumpenrisiko-Hedge, 8% Gesamtdepot, US-Faktor 0. Intern finanziert aus IWDA −51/AVGC −21/JEDI −10 → ETF-Block **616€ unverändert**, Slots 19→**20** (20 Positionen). Phase-B-Plan unberührt (EXUS+EIMI→Scalable, IWDA-Verkauf 2027). Rebalancing_Tool_v4.0 = SSoT. Detail → PORTFOLIO + config.yaml + git log.
-- **06.–08.06. 🔴 Umstrukturierung-2027 Phase A — Major Depot-Umbau** (User-Lock 05.06.). Split 65/30/5→**60/35/5**, Equal-Weight→**3-Tier Conviction** (Basis 40/32/18€ × DEFCON-Modulation × FLAG), Roster 12→**13** (VEEV+COST raus; NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter, **Scoring pending O3**), ETF exUSA→JEDI+WQTM, ~**1031€**/Mt (ETF 616 + Satelliten-SOLL 364 + Gold 51). Markdown-Sync + Hook-§G-False-PASS-Fix + AVGC-Broker-Fix `1e3c817`. Detail → 00_Core/UMSTRUKTURIERUNG-2027.md + PORTFOLIO + git log.
+- **06.–08.06. 🔴 Umstrukturierung-2027 Phase A — Major Depot-Umbau** (User-Lock 05.06.). Split 65/30/5→**60/35/5**, Equal-Weight→**3-Tier Conviction** (Basis 40/32/18€ × DEFCON-Modulation × FLAG), Roster 12→**13** (VEEV+COST raus; NOW/KYCCF/ZETA rein als DEFCON-3-Platzhalter, **Scoring pending O3**), ETF exUSA→JEDI+WQTM, ~**1031€**/Mt (ETF 616 + Satelliten-SOLL 364 + Gold 51). Markdown-Sync + Hook-§G-False-PASS-Fix + AVGC-Broker-Fix `1e3c817`. Detail → PORTFOLIO + git log.
 - **04.06. ✅ AVGO Q2 FY26 Vollanalyse DONE** (Score 53→56, D2, FLAG bleibt — Insider-Selling 90d). Detail → CORE-MEMORY §12.1 + git log.
 
 **Forward-Triggers (`earnings_calendar.py`-Sync 09.06. — yfinance+Override):**

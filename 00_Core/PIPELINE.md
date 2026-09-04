@@ -1,5 +1,7 @@
 # PIPELINE.md — Pipeline-SSoT + Long-Term-Gates
 
+> **Namens-Abgrenzung (04.09.2026):** Im Repo existieren zwei Dateien namens `PIPELINE.md`. **Diese hier — `00_Core/PIPELINE.md` — ist der SSoT für das Depot** (offene Plan-Items, Gates, §18-Pipeline-Item-Events). `01_Skills/dynastie-depot/PIPELINE.md` ist ausschließlich die Analyse-Pipeline-Doku des Skills und **kein** Work-SSoT. Bei Grep/Sync/Audit auf „PIPELINE.md" immer den Pfad qualifizieren.
+
 ## Verweise
 - [INSTRUKTIONEN.md §18](INSTRUKTIONEN.md#18-sync-pflicht-logmd--core-memorymd--faktortabellemd--statemd--score_historyjsonl--flag_eventsjsonl) — Pipeline-Item-Sync-Pflicht (Event-Typ "Pipeline-Item")
 - [PORTFOLIO.md](PORTFOLIO.md) — Portfolio-nahe Gates synchron

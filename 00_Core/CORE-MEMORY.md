@@ -24,7 +24,7 @@
 - **Equal-Weight → 3-Tier Conviction** (Basis T1 40 / T2 32 / T3 18€ × DEFCON-Modulation × FLAG — DEFCON-Modulation bleibt erhalten; einzige Methodik-Änderung ist Equal-Weight→Tier-Basis)
 - **Roster 12→13, Slots 16→19** (5 ETF + 13 Aktien + 1 Gold): VEEV+COST raus (Erlös → NOW/Rebalancing); NOW/KYCCF/ZETA rein als Owner-Conviction-Adds ohne Score (O3-Scoring pending, Präzedenz AMZN §12.12)
 - **ETF:** exUSA gestoppt → JEDI+WQTM; Broker-Split ING (IWDA+EIMI) / Scalable (AVGC+JEDI+WQTM). **Phase B 2027:** AVD (Invesco-World 257€ + Riester-Übertrag ~5.252€), alles → Scalable, ING gekündigt
-**Bindend:** Ja — ersetzt die drei nachstehenden Beschlüsse. Detail → `UMSTRUKTURIERUNG-2027.md` §3+§4+§6 + KONTEXT §3/§4/§4b/§5 + §13 unten.
+**Bindend:** Ja — ersetzt die drei nachstehenden Beschlüsse. Detail → KONTEXT §3/§4/§4b/§5 + §13 unten. (Die frühere Plan-Doku `UMSTRUKTURIERUNG-2027.md` ist am 04.09.2026 als obsolet zurückgezogen — historischer Stand → `git log`.)
 
 ### Allokations-Entscheidung (März 2026) — ⚠️ ÜBERSCHRIEBEN 05.06.2026 (siehe oben)
 **Beschluss:** 60/35/5 → **65/30/5** (ETF/Satelliten/Gold)

@@ -1,6 +1,8 @@
 # 🦅 Dynastie-Depot – Institutionelle Analyse-Pipeline
 **Version:** 2.3 | **Stand:** 2026-06-13 | **Zieljahr:** 2058 | **Scoring:** DEFCON v3.7 | **Skill-Paket:** → `00_Core/SYSTEM.md` (SSoT)
 
+> **Geltungsbereich (04.09.2026):** Diese Datei gehört **ausschließlich zum Skill `dynastie-depot`** und beschreibt dessen Analyse-Pipeline. Sie ist **kein** Work-SSoT und **kein** §18-Sync-Ziel der Klasse „Pipeline-Item". Offene Plan-Items, Gates und der Depot-Arbeitsstand stehen allein in **`00_Core/PIPELINE.md`**. Gleicher Dateiname, verschiedene Rolle — bei Grep/Sync/Audit den Pfad qualifizieren.
+
 > **Nachgezogen 2026-06-13** auf Umstrukturierung-2027 Phase A: 13-Roster (COST/VEEV exited, NOW/KYCCF/ZETA/AMZN rein), 3-Tier-Rate-Modell (T1 40€/T2 32€/T3 18€ × DEFCON-Modulation), 60/35/5. Script-Pfade auf Skill-Ordner aktualisiert.
 
 ---
