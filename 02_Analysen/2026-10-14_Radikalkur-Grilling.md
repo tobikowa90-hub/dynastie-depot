@@ -123,5 +123,14 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 
 **Q3-Cluster-Umfang = Ist-Bestand laut Scalable-CLI**, nicht Roster-Listen der Altdateien (Owner 14.10.). **KYCCF ist nicht im Depot** → keine Analyse. Score-Pflicht nach E9. Abschluss-Check Ende Phase 3: Zuordnung jede aktive Datei → Kernfrage (E1).
 
+## Offene Punkte aus den Gotchas (in die Phasen eingeplant)
+
+- **Phase 2 — `earnings_calendar.py` auf CLI-Bestand umstellen:** kennt nur das alte 13er-Roster; **META, GOOGL, Adobe, Veeva fehlen**, KYCCF ist noch drin. Ticker künftig aus `sc broker holdings` statt aus PORTFOLIO — sonst fehlen genau die Core-4-Termine (META/GOOGL melden Ende Oktober).
+- **Phase 2 — Freibetrag-Rest:** prüfen, ob die CLI den genutzten Sparerpauschbetrag liefert; sonst Owner-Eingabe 1×/Jahr im YAML-Block (E13).
+- **Bis Phase 3 — §18-Hook:** `paragraph-18-sync-reminder` läuft bei jedem 00_Core-Commit weiter; Übergehen mit `PARA18_VERIFIED=1` nur bis zur Archivierung des Hooks, nicht als Gewohnheit.
+- **Phase 3 — `.claude/settings.json`/Hook-Konfig:** Edits blockiert der Auto-Mode-Classifier (Self-Modification) trotz Owner-Freigabe → Owner führt per `!`-Befehl selbst aus.
+- **Mitte November — Schwellen-Review:** 70/65/50 beruhen auf 15 echten Analysen; nach dem Cluster (~27) einmal gegen die Verteilung prüfen (E5).
+- **Erledigt 14.10.:** `2026-09-20_Sparplan-Anpassung.md` mit Überholt-Vermerk committet (Begründungen erhalten, Live-Stand gilt).
+
 ---
 **Grilling abgeschlossen 14.10.2026 — E1–E17.**

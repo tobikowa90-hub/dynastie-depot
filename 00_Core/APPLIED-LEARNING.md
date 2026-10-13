@@ -40,6 +40,8 @@ updated: 2026-08-26
 - Vor neuer Regel bestehendes Regelwerk nach demselben Fall durchsuchen — stille Übersteuerung erzeugt Drift
 - Review-Befund: ganze Datei auf gleichartige Abhängigkeiten prüfen, nicht nur die gemeldete Zeile
 - Neue Fehlerklasse je Prüfrunde = Skalen-Signal, nicht Methodenerfolg — Ursache ist Zustands-Duplikation (Detail → Auto-Memory `feedback_verification_ratchet_state_duplication`)
+- **Abriss heißt ersetzen, nicht ergänzen:** Jeder neue Baustein eines Vereinfachungs-Umbaus muss beim Vorschlag sichtbar eine bestehende Datei/Regel *ersetzen*. Prüffrage: „Welche Datei verschwindet dafür?" — keine Antwort = kein Bau (Empirie 14.10.2026: erster REGELWERK.md-Entwurf wäre 14. Datei gewesen)
+- **Schwellen gegen die echte Verteilung kalibrieren:** Vor jeder Regel mit Schwellenwert die tatsächliche Verteilung der Messgröße prüfen — eine nie erreichbare Schwelle ist eine tote Regel, die wie eine lebende aussieht (Empirie 14.10.2026: Ersatz „Score ≥80" nie erfüllbar, 15 echte v3.7-Analysen Max 72, alle ≥80 = Backfills)
 
 ## Promotion-Logik
 
@@ -55,6 +57,7 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 | v2.9 | 18.05.2026 | +1 (Deferred-Sub-Scope-Committbarkeit vor Execution prüfen). Tier-2-only (Bridge-Coherence). Stand: **17/20**. |
 | v3.0 | 26.08.2026 | +1 (Zustand vs. Urteil trennen) — Scalable-Agentic-Investing-Anbindung. Empirie: KYCCF-xlsx-Zeile trug wochenlang Veeva-Wert; 135 €/Mt liefen 2,5 Monate in geflaggte Titel, weil kein Markdown-File einen neu angelegten Sparplan bemerken kann. Detail → `02_Analysen/2026-08-26_Depot-Reconciliation.md` §F. Stand: **18/20**. |
 | v3.1 | 26.08.2026 | +3 aus der Architektur-Spec-Session (Entdopplungs-Vorbedingung · Regelwerk-Kollisionsprüfung · Datei-weite Befundprüfung). Empirie: drei FLAG-Quellen paarweise widersprüchlich; „freigesetzt → Block-Untergewicht" hätte `substitute_activation_global` still übersteuert; `check_freshness` und `parse_state_row` stehen in derselben Datei, eine Sparring-Runde sah nur eines. Detail → `03_Tools/depot-architecture-spec.md` §4.2/§4.4/§7.4. Stand: **⚠️ 21/20 — Kappe gerissen, Kurator-Regel fällig.** |
+| v3.2 | 14.10.2026 | +2 aus dem Radikalkur-Grilling (Abriss = ersetzen statt ergänzen · Schwellen gegen echte Verteilung kalibrieren). Kurations-Auftrag bleibt offen → wird mit E16 (Memory-Verdichtung) in Phase 3 erledigt. |
 
 > **Offener Kurations-Auftrag (26.08.2026):** 21/20, Ziel laut Kurator-Regel ≤15. Bewusst nichts eigenmächtig gelöscht. Zwei Bullets sind inhaltlich überholt und wären die ersten Kandidaten: *„Advisor-Empfehlung nicht ohne neue Evidenz überstimmen"* (advisor ist projektweit durch Codex ersetzt, Memory `feedback_review_via_codex_not_advisor`) und *„Cloud-Sync-Verify ist Pre-Phase-Pflicht"* (kein aktiver Cloud-Sync, Memory `reference_no_cloud_sync_onedrive_inactive`). Entscheidung beim Owner.
 
