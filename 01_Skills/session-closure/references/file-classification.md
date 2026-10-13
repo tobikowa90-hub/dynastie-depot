@@ -100,9 +100,6 @@ Spec/Governance-Files. Pre-commit muss crlf-guard passen, sonst kein hartes Vali
 | `04_Templates/**` | Templates |
 | `05_Archiv/CORE-MEMORY-Meilensteine-*.md` | Chronik (historisch) |
 
-**Briefing-Trigger:** Mutation von `00_Core/**` außer `PORTFOLIO.md`/`Faktortabelle.md`/
-`CORE-MEMORY.md` löst `!SyncBriefing`-Reminder aus (§25), blockiert aber nicht.
-
 ## Entscheidungs-Heuristik bei Ambiguität
 
 1. Wenn der File in §18-Sync-Set-Liste → **scoring-relevant**.

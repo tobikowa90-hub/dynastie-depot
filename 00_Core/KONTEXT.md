@@ -225,7 +225,7 @@ Das Dynastie-Depot-System hält seinen Zustand in **vier formal getrennten Layer
 - **`STATE.md`** — **Hub**: Navigation + Critical-Alerts (≤10 Tage) + Last-Audit-Block. **Keine eigenständige Wahrheitsquelle.**
 - **`PORTFOLIO.md`** — Live-Portfolio-State: 13-Satelliten-Tabelle (3-Tier) + Aktive Watches + 30-Tage-Trigger + Sparraten-Modell. Default-load bei Session-Start.
 - **`PIPELINE.md`** — Offene Pläne (🔴/🟡/🔵) + Long-Term-Gates (⏰).
-- **`SYSTEM.md`** — System-Zustand: DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog.
+- **`SYSTEM.md`** — System-Zustand: DEFCON-Version, MCP, Backtest, R5, §30, Backlog.
 - Alle vier Projection-Files sind **Projektion aus State + Narrative**, werden via §18 Sync-Pflicht synchron gehalten (trigger-basiertes Event-Mapping seit 2026-04-25 Task-6 Governance).
 - **Merkmal:** "Was muss ich zum Session-Start wissen?" — Hub (~40 Z.) + PORTFOLIO (~55 Z.) statt 1.200 Auto-Read aus Single-STATE.md.
 
@@ -250,7 +250,7 @@ Jede Score/FLAG/Sparraten-Änderung triggert Updates in **allen vier Layern** (6
 | Live-Score/FLAG-Check | State-Layer (`Faktortabelle.md`) + Projection (`PORTFOLIO.md`) |
 | "Warum-Fragen", Lessons, Strategie | Narrative-Layer (`CORE-MEMORY.md` §5/§12/§13) |
 | Pipeline / Long-Term-Gates | Projection-Layer (`PIPELINE.md`) |
-| System / Infra / Briefing | Projection-Layer (`SYSTEM.md`) |
+| System / Infra | Projection-Layer (`SYSTEM.md`) |
 | 2028-Backtest, Event-Study, Review | History-Layer (JSONL-Archive) |
 
 **Anti-Pattern:** Narrative- oder Projection-Layer als Wahrheit für Backtest zitieren. Diese Layer sind für Menschen gedacht und können nachträglich editiert werden — nur History-Layer hat Point-in-Time-Garantie.

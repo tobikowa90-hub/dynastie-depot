@@ -3,7 +3,7 @@
 ## Verweise
 - [PORTFOLIO.md](PORTFOLIO.md) — Live-State (default-load bei Session-Start)
 - [PIPELINE.md](PIPELINE.md) — Offene Pläne + Long-Term-Gates
-- [SYSTEM.md](SYSTEM.md) — DEFCON / Infrastruktur / Briefing / Backtest-Ready
+- [SYSTEM.md](SYSTEM.md) — DEFCON / Infrastruktur / Backtest-Ready
 - [CORE-MEMORY.md](CORE-MEMORY.md) — Lektionen + Per-Ticker-Chronik (§12) + System-Lifecycle (§13)
 - [SESSION-HANDOVER.md](SESSION-HANDOVER.md) — Session-Banner-Chronik
 
@@ -27,7 +27,7 @@
 |---|---|
 | Scores / FLAGs / Watches / Sparraten / 30-Tage-Trigger | **PORTFOLIO.md** (default-load) |
 | Offene Pläne, Gates, Primary-Track | PIPELINE.md |
-| System-Versionen, Briefing-Status, Infra | SYSTEM.md |
+| System-Versionen, Infra | SYSTEM.md |
 | Lektionen / Per-Ticker-Chronik / Lifecycle | CORE-MEMORY.md (§5 / §12 / §13) |
 | Workflows / Sparraten-Formel / Sync-Pflicht | INSTRUKTIONEN.md |
 | Strategie / Allokation | KONTEXT.md (on-demand) |

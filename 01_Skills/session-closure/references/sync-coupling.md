@@ -74,14 +74,6 @@ Watchlist):
 
 ## Soft-Coupling (Reminder, keine Refuse)
 
-**00_Core/-Touch außerhalb Score-Event:**
-
-Wenn `INSTRUKTIONEN.md`, `CLAUDE.md`, `PIPELINE.md`, `SYSTEM.md`, `STATE.md` mutiert
-und Briefing-deploy-relevant:
-
-- **Soft-Reminder im Closure-Report:** "`!SyncBriefing` nicht vergessen (§25)."
-- Keine Refuse. User entscheidet.
-
 **01_Skills/-Touch:**
 
 Wenn Skill-Body geändert (SKILL.md, references/, scripts/):

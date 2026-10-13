@@ -2,7 +2,7 @@
 
 **PFLICHT bei `Session starten`:** Lies sofort **`00_Core/STATE.md` (Hub) und `00_Core/PORTFOLIO.md`** — ohne Rückfrage. Hub gibt Navigation + Critical-Alert; PORTFOLIO ist der Live-State für 90% der Sessions (Scores, DEFCON, FLAGs, Sparraten, Trigger, Watches).
 
-Danach: kompakte Zusammenfassung (max. 10 Zeilen). **`dynastie-depot`-Skill NICHT auto-laden** — nur lazy via Routing-Table-Trigger (`!Analysiere`/`!QuickCheck`/`!Rebalancing`/`!Briefing`/`!CAPEX-FCF-ANALYSIS`) oder expliziter User-Aufforderung. Begründung + Spec-Historie: `00_Core/TOKEN-RULES.md` „Skills lazy-load"-Bullet (SSoT). Bei Unsicherheit Routing-Table-Match prüfen statt eager laden.
+Danach: kompakte Zusammenfassung (max. 10 Zeilen). **`dynastie-depot`-Skill NICHT auto-laden** — nur lazy via Routing-Table-Trigger (`!Analysiere`/`!QuickCheck`/`!Rebalancing`/`!CAPEX-FCF-ANALYSIS`) oder expliziter User-Aufforderung. Begründung + Spec-Historie: `00_Core/TOKEN-RULES.md` „Skills lazy-load"-Bullet (SSoT). Bei Unsicherheit Routing-Table-Match prüfen statt eager laden.
 
 ## Session-Optimierung
 
@@ -45,7 +45,7 @@ Bevor du mit einem Workflow beginnst, gib an, wie dieser überprüft werden soll
 - `feedback_xlsx_tools_in_sync_set` — §18.1 Pflicht-Sync: Rebalancing + Satelliten-Monitor + Watchlist xlsx bei Score/FLAG/Sparraten-Change
 - `feedback_earnings_call_wait_discipline` — §19.1: Klasse-B-Vollanalyse Tag +1 morgens (nicht Tag 0)
 - `feedback_review_via_codex_not_advisor` — Reviews/Second-Opinions via Codex (`codex:codex-rescue` / `codex:rescue`), nie `advisor()`
-- `feedback_correctness_over_runtime` — Datenkorrektheit/Recall > Runtime-Optimierung (Briefing + Scoring + FLAG + alle Pipelines)
+- `feedback_correctness_over_runtime` — Datenkorrektheit/Recall > Runtime-Optimierung (Scoring + FLAG + alle Pipelines)
 - `reference_no_cloud_sync_onedrive_inactive` — Pfad heißt nur „OneDrive", KEIN aktiver Cloud-Sync; Worktree-Drift nicht auf Cloud schieben
 **Memory-Guard-Rail** siehe Routing-Table-Klausel + `INSTRUKTIONEN.md §17.1`.
 
@@ -56,7 +56,7 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 - `00_Core/` — Kontext, Instruktionen, Gedächtnis (STATE, CORE-MEMORY, INSTRUKTIONEN, CODE_GUIDELINES [§0-Volltext, Code-Edit-Lazy-Load], RETROSPECTIVE-GATE, APPLIED-LEARNING, TOKEN-RULES, KONTEXT, Faktortabelle, SESSION-HANDOVER)
 - `01_Skills/` — dynastie-depot · backtest-ready-forward-verify · insider-intelligence · non-us-fundamentals · quick-screener · sec-edgar-skill · session-closure · paragraph-18-sync · core-slim-refactor · xlsx-smoke-test-runner · `_extern/` (read-only)
 - `02_Analysen/` — DEFCON-Analysen als Excel sowie Earnings Reports der Satelliten
-- `03_Tools/` — Rebalancing_Tool · Satelliten_Monitor · Watchlist_Ersatzbank_Monitor · Briefing-Hook · system_audit
+- `03_Tools/` — Rebalancing_Tool · Satelliten_Monitor · Watchlist_Ersatzbank_Monitor · system_audit
 - `04_Templates/` — Pointer + spezifische Templates
 - `05_Archiv/` — Historische Dateien
 - `06_Skills-Pakete/` — Installierbare ZIP-Skills
@@ -72,7 +72,6 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 | `!Analysiere <Ticker>` | INSTRUKTIONEN.md, Faktortabelle.md, …/synthesis/Wissenschaftliche-Fundierung-DEFCON.md | KONTEXT, CORE-MEMORY (außer §5 bei Scoring-Edge-Case) | `dynastie-depot` + `backtest-ready-forward-verify` (Schritt 7, programmatisch) |
 | `!QuickCheck <Ticker>` | Faktortabelle.md | INSTRUKTIONEN, KONTEXT, CORE-MEMORY, Wiss-Fundierung | `quick-screener` |
 | `!Rebalancing` | INSTRUKTIONEN.md, KONTEXT.md | CORE-MEMORY, Faktortabelle, Wiss-Fundierung | — |
-| `!SyncBriefing` | INSTRUKTIONEN.md (§25) + SYSTEM.md §Briefing-Status (nur wenn Briefing-Version/Deploy-Status seit letztem Sync geändert) | alle anderen | — |
 | `!SessionClose` | INSTRUKTIONEN.md §25.5 | alle anderen | `session-closure` |
 | `!ParaSync18 <event-type>` | INSTRUKTIONEN.md §18, `01_Skills/paragraph-18-sync/references/event_typ_mapping.yaml` | KONTEXT, CORE-MEMORY (außer system-zustand `--version-bump`), Wiss-Fundierung | `paragraph-18-sync` |
 | **§18-File-Touch (auto, file-pattern-driven; NEU 2026-05-23 spätabends)** — Working-Tree-Diff enthält EINEN von: `00_Core/{PIPELINE,PORTFOLIO,CORE-MEMORY,Faktortabelle,SYSTEM}.md` · `07_Obsidian Vault/.../log.md` · `05_Archiv/{score_history,flag_events}.jsonl` · `01_Skills/dynastie-depot/config.yaml` · `01_Skills/*/SKILL.md` (Version-Edit) · `03_Tools/{Rebalancing,Satelliten_Monitor,Watchlist_Ersatzbank_Monitor}_v*.xlsx` | INSTRUKTIONEN.md §18 | KONTEXT, Wiss-Fundierung | `paragraph-18-sync` (event-type aus File-Pattern inferred — score-flag-sparraten/pipeline-item/system-zustand/critical-alert; `--dry-run` für Edit-Vorschau, ohne `--dry-run` vor `git commit`; Multi-Event via `--also`) |
@@ -105,7 +104,7 @@ Wiki-Modus und Dynasty-Depot-Modus schließen sich **nicht** aus.
 | `00_Core/INSTRUKTIONEN.md` | Tier-3-Regeln (Scoring-Skalen, Workflows, §§; §17.1 Memory-Guard-Rail: Routing-Inputs/Advisory-only/`mem-conflict`) |
 | `00_Core/PORTFOLIO.md` | Live-Portfolio (Satelliten + Watches + 30-Tage-Trigger) — default-load bei Session-Start |
 | `00_Core/PIPELINE.md` | Pipeline-SSoT (alle offenen Plan-Items + Long-Term-Gates) |
-| `00_Core/SYSTEM.md` | System-Zustand (DEFCON-Version, MCP, Briefing, Backtest, R5, §30, Backlog) |
+| `00_Core/SYSTEM.md` | System-Zustand (DEFCON-Version, MCP, Backtest, R5, §30, Backlog) |
 | `05_Archiv/CORE-MEMORY-Meilensteine-bis-14.04.2026.md` | Chronik vor 15.04.2026 (Projekt-Aufbau, Tool-Setups, erste Analysen) |
 
 ---

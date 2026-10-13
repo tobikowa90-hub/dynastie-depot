@@ -5,7 +5,7 @@
 - [STATE.md](STATE.md) — Hub + Last-Audit
 - [PORTFOLIO.md](PORTFOLIO.md) — Live-Portfolio-State
 - [PIPELINE.md](PIPELINE.md) — Pipeline-SSoT (ersetzt altes §9b)
-- [SYSTEM.md](SYSTEM.md) — Infra/Briefing/Backtest
+- [SYSTEM.md](SYSTEM.md) — Infra/Backtest
 - [INSTRUKTIONEN.md §5](INSTRUKTIONEN.md) — Sentiment/Scoring-Kontext
 - [Faktortabelle.md](Faktortabelle.md) — Score-Detail pro Ticker
 

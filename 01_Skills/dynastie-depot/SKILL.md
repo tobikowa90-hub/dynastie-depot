@@ -5,13 +5,12 @@ Stand: "2026-05-09"
 zieljahr: 2058
 system: DEFCON v3.7
 description: >
-  Schwergewichts-Workflow-Skill für DEFCON-v3.7-Investmentanalyse, Sparplan-Rebalancing und CapEx/FCF-Excel-Modelle (Dynastie-Depot, Zieljahr 2058). NICHT auto-laden — Aktivierung ausschließlich via expliziten Workflow-Trigger (`!Analysiere`/`!CAPEX-FCF-ANALYSIS`/`!Rebalancing`/`!QuickCheck`/`!Briefing`) oder direkter User-Aufforderung zum Workflow-Start. Generische Erwähnungen von Aktien, Portfolio, Score, FLAG, Sparplan, Watchlist usw. in Pipeline-/Strategie-/Wiki-/Tools-Sessions sind KEIN Aktivierungsgrund — Routing-Table in `CLAUDE.md` ist normativ. Lazy-Load-Regel: `00_Core/TOKEN-RULES.md` "Skills lazy-load"-Bullet (eingeführt 2026-05-09 zum Schließen der Spec-Lücke).
+  Schwergewichts-Workflow-Skill für DEFCON-v3.7-Investmentanalyse, Sparplan-Rebalancing und CapEx/FCF-Excel-Modelle (Dynastie-Depot, Zieljahr 2058). NICHT auto-laden — Aktivierung ausschließlich via expliziten Workflow-Trigger (`!Analysiere`/`!CAPEX-FCF-ANALYSIS`/`!Rebalancing`/`!QuickCheck`) oder direkter User-Aufforderung zum Workflow-Start. Generische Erwähnungen von Aktien, Portfolio, Score, FLAG, Sparplan, Watchlist usw. in Pipeline-/Strategie-/Wiki-/Tools-Sessions sind KEIN Aktivierungsgrund — Routing-Table in `CLAUDE.md` ist normativ. Lazy-Load-Regel: `00_Core/TOKEN-RULES.md` "Skills lazy-load"-Bullet (eingeführt 2026-05-09 zum Schließen der Spec-Lücke).
 trigger_words:
 - "!Analysiere"
 - "!CAPEX-FCF-ANALYSIS"
 - "!Rebalancing"
 - "!QuickCheck"
-- "!Briefing"
 ---
 # 🦅 Dynastie-Depot – Skill v3.7.6
 
@@ -27,8 +26,7 @@ Du bist der Investment-Analyst des Dynastie-Depots. Dein Handeln folgt ausschlie
 2.  \!CAPEX-FCF-ANALYSIS \[TICKER\] \[NAME\] → Excel-Dokument, 6 Sheets (siehe Referenz: capex-fcf-template.md)
 3.  \!Rebalancing → Sparplan-Update und Drift-Check (siehe Abschnitt WORKFLOW 3)
 4.  \!QuickCheck \[TICKER | ALL\] → Schneller Ampel-Check, kein Deep Dive (siehe Abschnitt WORKFLOW 4)
-5.  \!Briefing → Manuelles Morning Briefing (Kurs-Delta, FLAGs, Earnings)
-6.  Strategische Fragen → Beantworte auf Basis des Manifests (siehe Referenz: manifest.md)
+5.  Strategische Fragen → Beantworte auf Basis des Manifests (siehe Referenz: manifest.md)
 
 **§30 Live-Monitoring (ab 19.04.2026):** Monatlicher Refresh aktiver Investment-FLAGs (aktuell: MSFT CapEx-FLAG). FCF/CapEx/OCF aus Shibui oder yfinance refreshen → FLAG-Threshold-Check (FLAG_RULES) → `archive_flag.py resolve|trigger` bei Zustandsänderung (forward-dated, kein Backfill) → CORE-MEMORY §5 Zwischenupdate. **Kein Re-Score, nur FLAG-Status.** Basis: Flint-Vermaak 2021 Investment-Half-Life ~1M. Details: INSTRUKTIONEN §30.
 
@@ -862,24 +860,6 @@ Ein \!Analysiere wird ausgelöst wenn **mindestens eines** zutrifft:
 | \!QuickCheck \[TICKER\] | Innerhalb 48h nach Earnings einer Position |
 | \!Analysiere | Nur bei Deep-Dive-Trigger |
 | \!CAPEX-FCF-ANALYSIS | Nur bei Score ≥ 80 + Neueinstieg |
-
-## WORKFLOW 5: !Briefing
-
-Manueller Trigger fuer das Morning Briefing. Identischer Output wie der Scheduled Trigger.
-
-**Ablauf:**
-1. Faktortabelle.md lesen (00_Core/)
-2. Wenn Werktag: Shibui-Kurse fuer 16 Ticker abrufen
-3. Wenn Wochenende: nur Kalender-Check
-4. Briefing nach Morning-Briefing-Template generieren
-
-**Schwellenwerte:**
-- Kurs >10% Drop seit Score: → "!QuickCheck empfohlen"
-- Kurs >20% Drop seit Score: → "!Analysiere empfohlen"
-- Earnings <7 Tage: → Countdown anzeigen
-- Score >90 Tage: → "Update empfohlen"
-
-**Token-Budget:** ~12-18k (Werktag) | ~2-3k (Wochenende)
 
 ## WORKFLOW 3: \!Rebalancing
 

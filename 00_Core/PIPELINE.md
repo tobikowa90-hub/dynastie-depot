@@ -53,7 +53,6 @@
 
 ### 🔵 Deferred / Explizit zurückgestellt
 
-8. **v3.1 Cache-Refactor** — Plan `05_Archiv/superpowers-pre-sunset/plans/2026-04-20-briefing-v3.1-cache-refactor.md`. Trigger: „262s im Alltag stört" ODER „>400s-Alert wiederholt".
 
 9. **Track 4 ETF+Gold-Erweiterung** — Blockiert auf User-Input (ETF-Ticker IWDA.AS/SWDA.L/EUNL.DE? Gold-Ticker SGLD.DE/4GLD.DE/GC=F?). Cron-/Hook-Mechanismus für Auto-Persist kann jetzt auf `portfolio_risk.py --persist daily --as-of $(date -I)` aufsetzen (Backfill-Flag seit 23.04. verfügbar).
 

@@ -11,7 +11,6 @@
 - [CORE-MEMORY.md](CORE-MEMORY.md) — Lektionen + Per-Ticker + Lifecycle
 - [Faktortabelle.md](Faktortabelle.md) — Score-Detail
 - [RETROSPECTIVE-GATE.md](RETROSPECTIVE-GATE.md) — §29 Detail-Spec (4-Dimensionen-Framework, Future-Activation 2028)
-- [`../03_Tools/morning-briefing-spec.md`](../03_Tools/morning-briefing-spec.md) — §24+§25 Detail-Spec (Briefing-Trigger v3.1.1 + Sync-Workflows)
 
 ---
 
@@ -38,14 +37,11 @@
 | `!CAPEX-FCF-ANALYSIS [TICKER] [NAME]` | Excel-Tiefenanalyse, 6 Sheets | ~25–30 min |
 | `!Rebalancing` | Sparplan-Drift-Check + Vorschlag | ~10 min |
 | `!QuickCheck [TICKER\|ALL]` | Ampel-Check, kein Deep Dive | ~3–5 min |
-| `!Briefing` | Manuelles Morning Briefing (Kurs-Check, FLAGs, Earnings) | ~3-5 min |
 | `!EarningsPreview [TICKER]` | Earnings-Vorbereitung (48h vor Call) | ~5-10 min |
 | `!EarningsRecap [TICKER]` | Press-Release-Recap Tag 0 post-Call (kein Score-Move, siehe §19.1) | ~5-10 min |
 | Earnings-Termine | Forward-Kalender via `03_Tools/earnings_calendar.py` (Tool; ersetzt `earnings-calendar`-Skill) | ~1 min |
 | `!InsiderScan` | Form-4-Scan der 9 US-Satelliten (standalone, ohne `!Analysiere`) | ~5 min |
 | `!ParaSync18 <event-type> [--also …]` | §18-Multi-File-Sync-Orchestrator vor `git commit` (§18.0) | ~1-3 min |
-| `!SyncBriefing` | Briefing-relevante `00_Core/`-Änderungen ins Repo pushen (Pflicht-Review-Gate, kein Auto-Commit) | ~2-3 min |
-| `!BriefingCheck` | Vorab-Check ob 10:00-Briefing-Trigger aktuelle Daten liest | ~30s |
 | `!SessionClose` | Session-Ende-Workflow: lokale Commits autonom, Push nur nach Freigabe (§25.5) | ~3-5 min |
 
 ---
@@ -291,7 +287,7 @@ Trigger: nur bei Score ≥ 80 aus Stufe 2
 | `!QuickCheck [TICKER\|ALL]` | `quick-screener` | Manuell (User-Trigger) |
 | `!EarningsPreview [TICKER]` | `earnings-preview` | Manuell (48h vor Earnings) |
 | `!EarningsRecap [TICKER]` | `earnings-recap` | Manuell (48h nach Earnings) |
-| Earnings-Termine | `03_Tools/earnings_calendar.py` (Tool) | Forward-Kalender SSoT — ersetzt `earnings-calendar`-Skill (deprecated); `--check` / Briefing-Hook |
+| Earnings-Termine | `03_Tools/earnings_calendar.py` (Tool) | Forward-Kalender SSoT — ersetzt `earnings-calendar`-Skill (deprecated); `--check` |
 | `!InsiderScan` | `insider-intelligence` | Manuell (Standalone-Scan ohne !Analysiere) |
 | `!Analysiere` Schritt 7 | **`backtest-ready-forward-verify`** | **⚙️ Programmatisch** (aus dynastie-depot SKILL.md Schritt 7, jsonl-Write-Pflicht) |
 | `!SessionClose` | `session-closure` | Manuell (Session-Ende, Strict-Trigger; siehe §25.5) |
@@ -373,7 +369,7 @@ Pflicht-Listen pro **Event-Typ** statt pauschaler 6er-Liste. Kern-Invariante: Sc
 |---|---|
 | **Score / FLAG / Sparraten-Change** | `log.md` + `CORE-MEMORY.md` + `Faktortabelle.md` + **`PORTFOLIO.md`** + `score_history.jsonl` + **`01_Skills/dynastie-depot/config.yaml`** + **`03_Tools/Rebalancing_Tool`** + **`03_Tools/Satelliten_Monitor`** (xlsx; Versionen gepinnt in `SYSTEM.md` §Active xlsx-Filenames) (+ `flag_events.jsonl` bei FLAG-Trigger/Resolve) |
 | **Pipeline-Item** (neuer Plan, Gate-Passage, Status-Transition, Done/Deferred) | **`PIPELINE.md`** + `log.md` (+ `SESSION-HANDOVER.md` Pflicht bei Session-Abschluss; mid-Session optional) |
-| **System-Zustand-Change** (DEFCON-Version, MCP-Change, Briefing-Status, neuer Backlog-Eintrag, Infra-Deploy) | **`SYSTEM.md`** + `log.md` (+ `CORE-MEMORY.md §6` bei Versionsprung) |
+| **System-Zustand-Change** (DEFCON-Version, MCP-Change, neuer Backlog-Eintrag, Infra-Deploy) | **`SYSTEM.md`** + `log.md` (+ `CORE-MEMORY.md §6` bei Versionsprung) |
 | **Critical-Alert-Slot** (Hub) | `STATE.md` Hub-Edit (nur Alert-Slot); kein Bi-Sync erzwungen |
 
 **Kanonische Schreibwege:**
@@ -570,44 +566,9 @@ KYCCF (Keyence, Japan) — Besonderheiten:
 
 ---
 
-## 24. Morning Briefing (Scheduled Trigger v3.1.1, prod live seit 07.05.2026)
+## 25. Session-Closure
 
-> **Detail-Spec ausgelagert (09.05.2026, PIPELINE #16 Variante A):** [`03_Tools/morning-briefing-spec.md §24`](../03_Tools/morning-briefing-spec.md). Inline-Drift-Refresh §24-Header v2.1→v3.1.1 (Stand 07.05. PIPELINE #49 Stufe 2). Live-Stand-Detail (Allow-List-Regex / Bracket-Reservation / AIDefence-Hook v3.2.0) → SYSTEM.md §Briefing-Status.
-
-**Trigger-ID:** `trig_01PyAVAxFpjbPkvXq7UrS2uG` | **Frequenz:** Mo-Fr 10:00 MESZ (Cron `0 8 * * *` UTC) | **Modell:** `claude-sonnet-4-6` | **Token-Budget:** ~12-18k/Tag werktags
-**Prompt-Datei:** `03_Tools/morning-briefing-prompt-v3.md` (v3.1.1 prod; v3.2.0 Probe-Cutover PENDING)
-**Rollback-Backup:** `03_Tools/morning-briefing-prompt-v2.md` (30-Tage-Recovery-Window)
-**Scope:** 13 Satelliten + Ersatzbank. ⚠️ Briefing-Universe-Integration der neuen Satelliten NOW/KYCCF/ZETA (KYCCF=JP→yfinance-Pfad, NOW/ZETA=US→Shibui) + Ersatzbank-Refresh = offene operative Aufgabe (Umstrukturierung-2027 Phase A, gekoppelt an O3-Scoring; bis dahin briefen die bestehenden 10 Satelliten + Ersatzbank).
-**Datenquellen-Tier:** 13 Shibui (`stock_data_query` P1) + 3 Yahoo-curl (BRK.B/RMS/SU, Yahoo 403 known).
-
-**Manueller Trigger:** `!Briefing` (identischer Output) oder Desktop App → Routines.
-
-**Voraussetzung:** Faktortabelle aktuell (§18) + GitHub-Repo gepusht (`!SyncBriefing`).
-
-Detail (Critical-Guards SUNCOR-TRAP/BERKSHIRE-GAP/HERMES-GAP/ANTI-HALLUCINATION/KEIN-RETRY, Schwellenwerte-Tabelle Kurs/Earnings/Score-Alter, API-Update-Regel `ccr`-Replace, Known Limitations Yahoo 403 / Push-Notifications / `RemoteTrigger run` Noop) → `03_Tools/morning-briefing-spec.md §24`.
-
----
-
-## 25. Briefing-Sync Shortcuts (GitHub ↔ Local)
-
-> **Detail-Spec ausgelagert (09.05.2026, PIPELINE #16 Variante A):** [`03_Tools/morning-briefing-spec.md §25`](../03_Tools/morning-briefing-spec.md).
-
-Der 10:00-Briefing-Trigger liest `00_Core/` aus dem **GitHub-Repo** — nicht aus dem lokalen Arbeitsverzeichnis. Lokale `00_Core/`-Änderungen müssen vor 10:00 gepusht sein.
-
-### `!BriefingCheck`
-Vorab-Check ob Trigger aktuelle Daten liest. `git fetch origin main --quiet` + `git diff --stat origin/main -- 00_Core/`. Detail-Output-Schema → Spec.
-
-### `!SyncBriefing`
-Briefing-relevante `00_Core/`-Änderungen ins Repo pushen mit **Pflicht-Review-Gate** (kein Auto-Commit). `git add` 8 Hub-Split-Pfade explizit (parallel zu `briefingFiles`-Set in `03_Tools/briefing-sync-check.ps1` — SSoT-Brücke). Commit-Schema: `Briefing-Sync: <Inhalt>`. Detail-Workflow → Spec.
-
-### Reminder (Scheduled Task `briefing-sync-reminder`)
-Werktags 09:50, 10-Min-Puffer vor 10:00-Trigger, kein Auto-Push.
-
-### Wann nötig
-Nach DEFCON-Analyse (Score/FLAG-Änderung) / CORE-MEMORY-Eintrag / Sparraten-Änderung in SESSION-HANDOVER / vor Session-Ende mit unpushed Score-Updates.
-
-### Wann **kein** Push nötig
-Reine Skill-/Tool-/Vault-Änderungen (`01_Skills/`, `03_Tools/`, `07_Obsidian Vault/`) — Briefing liest diese nicht. WIP-Analysen erst nach Abschluss pushen.
+> §24 Morning Briefing + §25 Briefing-Sync-Shortcuts (`!Briefing`/`!SyncBriefing`/`!BriefingCheck`) **entfallen 14.10.2026** (Owner-Entscheidung: Briefing abgeschafft, News via Scalable-App + eigene Lektüre). Nur §25.5 bleibt.
 
 ### 25.5 Session-Closure-Workflow (21.05.2026, session-closure v0.2.0)
 
@@ -695,13 +656,11 @@ Systemische Regeln zur Qualitätssicherung von Scoring-Erweiterungen und Multi-S
 - `STATE.md` (Hub) — Navigation + Critical-Alert + Last-Audit-Block. Darf direkt editiert werden (handgepflegter Alert-Slot; Last-Audit-Block script-geschrieben).
 
 **Reine Projektion (aus Primärquellen ableiten, niemals selbst fortschreiben):**
-- Briefing-Tabellen (Morning Briefing Prompts)
 - Dashboard-Summaries (`dynasty-depot-dashboard` Artifact)
 
 **Pflichtreihenfolge bei Score/FLAG/Sparraten-Änderung:**
 1. Primärquellen zuerst (Faktortabelle.md, CORE-MEMORY.md, score_history.jsonl via Skill).
 2. PORTFOLIO.md synchron nachziehen.
-3. Briefing-Projektionen laufen automatisch beim nächsten Briefing-Trigger.
 
 **Präzedenzfall:** 24.04.2026 — 00_Core-Refactor entkoppelt Live-State (PORTFOLIO) vom Navigations-Hub (STATE) und räumt mit der Projektions-Aspiration auf, die in der Praxis nie gelebt wurde (Portfolio-Tabelle wurde immer direkt editiert).
 
@@ -755,17 +714,16 @@ brechen darf.
 
 ### 27.6 Earnings-Calendar-Drift-Check (Stufe 2 — earnings_calendar.py v2.0, 06.05.2026)
 
-**Regel:** Earnings-Termin-Drift-Check läuft (a) automatisch im SessionStart-Hook (`briefing-sync-check.ps1`) als additive fail-soft-Sektion, (b) manuell on-demand via `python 03_Tools/earnings_calendar.py --check [--smoke-test] [--json]`. Tool pullt yfinance-Future-Dates UND mergt Override-YAML (`03_Tools/earnings_schedule_overrides.yaml`, earliest-wins-Union) für die 13 Satelliten + diff gegen PORTFOLIO „Nächster Trigger"-Spalte.
+**Regel:** Earnings-Termin-Drift-Check läuft manuell on-demand via `python 03_Tools/earnings_calendar.py --check [--smoke-test] [--json]`. Tool pullt yfinance-Future-Dates UND mergt Override-YAML (`03_Tools/earnings_schedule_overrides.yaml`, earliest-wins-Union) für die 13 Satelliten + diff gegen PORTFOLIO „Nächster Trigger"-Spalte.
 
 **Override-YAML:** SSoT für Earnings-Termine, die yfinance nicht oder unzuverlässig liefert (insbesondere Schneider/Hermès Q1+Q3 Trading-Updates und ASML-Sondertermine). Pflege 1×/Jahr nach IR-Calendar-Release der Non-US-Issuer (typisch November/Dezember für Folgejahr). `type`-Field treibt §19.1-Tag-0/Tag-+1-Decision: `trading_update_q*` = Tag 0 direkt (analog BRK.B), `half_year_*` / `annual_results` = Tag +1 mit Earnings-Call, `capital_markets_day` = Strategy-Update kein Score-Move.
 
 **Output-Modi:**
 - Markdown (default): menschen-lesbarer CLI-Report mit Drift-Tabelle + Smoke-Test + Drift-Liste
-- `--json`: maschinen-lesbares Schema (orientiert an `system_audit/types.py::CheckResult`-Shape ohne Hard-Import). Konsumiert von `briefing-sync-check.ps1`.
+- `--json`: maschinen-lesbares Schema (orientiert an `system_audit/types.py::CheckResult`-Shape ohne Hard-Import).
 
 **Exit-Verhalten:** 0 = clean, 1 = Smoke-Test-FAIL nur mit `--smoke-test`-Flag (BRK.B-Anker bricht — Tool-Bug oder Yahoo-Datenstand-Problem), 2 = Drift im `--alert-window` (default 10d).
 
-**Hook-Integration (M2-konform):** SessionStart-Owner bleibt `briefing-sync-check.ps1` (single-owner-rule). Drift-Block ist additive im selben Process, fail-soft (Tool-Crash, broken YAML, missing Python alle abgefangen — Hook bleibt Exit 0).
 
 **Scope Stufe 2:** Tool diffed weiterhin **nur** gegen PORTFOLIO „Nächster Trigger"-Spalte. STATE-Critical-Alerts + PIPELINE-Kritische-Triggers-10d/30d sind nicht im Tool-Diff abgedeckt — Operator muss bei detektierter PORTFOLIO-Drift STATE + PIPELINE manuell mitziehen (Single-Sync-Welle). Auto-PIPELINE-Stub-Erzeugung + Late-Recovery-Workflow sind separater Track (Skill-Layer, nicht Calendar-Tool — Spec §5 Out-of-Scope).
 

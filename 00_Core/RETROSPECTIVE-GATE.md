@@ -134,7 +134,7 @@ realistische_forward_erwartung = in_sample_claim × 0,42
 
 **Operative Konsequenzen:**
 
-1. **Briefing-Sprache:** Keine in-sample-Performance-Claims im Briefing ohne Diskontierungsformel `claim × 0,42`. Jede zitierte Faktor-Outperformance aus Paper/Vendor → realistische Erwartung explizit ausweisen.
+1. **Analyse-Sprache:** Keine in-sample-Performance-Claims in Analysen ohne Diskontierungsformel `claim × 0,42`. Jede zitierte Faktor-Outperformance aus Paper/Vendor → realistische Erwartung explizit ausweisen.
 2. **§28.1-Erweiterung:** Migration-Workflow Step 1 (Paper/Evidence-Check) prüft NEU, ob Paper-Claim post-publication validiert wurde. Wenn nicht: M&P-Discount auf in-sample-Werte anwenden vor §29.4 t-Hurdle-Vergleich.
 3. **Crowding-Watch:** Post-Publication-Increase in Predictor-Korrelationen (Lee/Shleifer/Thaler-Pattern) → DEFCON-Wide-Moat-Strategien können in Stress-Events korrelierter abstürzen als in-sample-Sharpe suggeriert. Faktor 5b FRED-Regime-Filter (geplant) adressiert das partiell.
 4. **Score-Archiv-Markierung:** Bei retrospektiven Analysen der `score_history.jsonl` ab 2028 explizit ausweisen, dass Sample-Periode post-publication ist (kein zusätzlicher Discount nötig).

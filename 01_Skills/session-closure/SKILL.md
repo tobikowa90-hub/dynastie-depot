@@ -41,7 +41,6 @@ nach Plan-Präsentation.
 | `00_Core/INSTRUKTIONEN.md §18` | Sync-Pflicht-Set bei Score/FLAG/Sparraten-Change (8 Files + xlsx-Tools) |
 | `00_Core/INSTRUKTIONEN.md §18.7` | xlsx-Smoke-Test fail-close vor `git add` |
 | `00_Core/INSTRUKTIONEN.md §19.1` | Earnings-Call-Wait-Discipline (Tag 0 vs Tag +1) |
-| `00_Core/INSTRUKTIONEN.md §25` | Briefing-Sync (`!SyncBriefing` falls 00_Core/ geändert) |
 | `references/commit-banners.md` | Banner-Konventionen + Beispiele aus Commit-History |
 | `references/file-classification.md` | Klassifikations-Matrix (scoring-relevant/doc-only/code/meta) |
 | `references/sync-coupling.md` | §18-Coupling-Check-Regeln + Refuse-Conditions |
@@ -103,7 +102,6 @@ Per `references/sync-coupling.md`:
 - Wenn **Score-Event** (`score_history.jsonl` heute mutiert/appended): **alle 8 §18-Sync-Set-Files** müssen entweder im aktuellen Staging oder in unpushed-Commits derselben Session vorliegen. Files 1-6 atomar in einem Commit, xlsx-Tools (7+8) dürfen separater Commit derselben Push-Welle sein. Fehlt einer → REFUSE mit Liste der fehlenden Files. (`PORTFOLIO.md` allein ohne `score_history.jsonl` ist erlaubt — Live-State-Edit ohne Score-Event.)
 - Wenn **xlsx** mutiert (egal welches der drei Tools): §18.7 Smoke-Test muss seit letztem `openpyxl`-Write gelaufen sein. Nicht prüfbar deterministisch → **Frage User explizit** ("xlsx-Smoke-Test für `<file>` gelaufen? y/n"). Bei "n" REFUSE.
 - Wenn **KONTEXT §6** mutiert: `Watchlist_Ersatzbank_Monitor` (xlsx) muss mit-mutiert sein (kontext-coupled, nicht Score-coupled). Fehlt → REFUSE.
-- Wenn **00_Core/** mutiert UND Briefing-deploy-relevant: erinnere an `!SyncBriefing` (§25), aber blockiere nicht.
 
 ### Schritt 4 — Commit-Plan erstellen
 
@@ -174,7 +172,6 @@ Pushed: <N> commits (<sha-list>)
 Working tree: clean
 origin/main: synced
 Reminders:
-  - [ ] !SyncBriefing if 00_Core/ touched and not synced (§25)
   - [ ] CORE-MEMORY §12 update if score event today
   - [ ] /clear approved when ready
 
@@ -191,7 +188,6 @@ Falls Reminder-Bedingungen nicht zutreffen, Bullet weglassen. Status-Zeile immer
 - **§18-Sync-Set selbst mutieren.** Skill prüft Vollständigkeit, schreibt aber nicht. Sync-Writes laufen via dynastie-depot Schritt 7 + backtest-ready-forward-verify.
 - **xlsx-Smoke-Tests selbst ausführen.** Skill fragt nach Bestätigung, ruft `03_Tools/xlsx-smoke-test.md` nicht aktiv auf. (Future-Option: §18.7-Runner-Skill, separater Scope.)
 - **Tag-+1-Earnings-Vollanalyse triggern.** Skill refused nur Tag-0-Falle, plant keine Folge-Session.
-- **`!SyncBriefing` selbst ausführen.** Skill erinnert nur, falls 00_Core/ touched.
 
 ---
 
