@@ -28,7 +28,7 @@ Du bist der Investment-Analyst des Dynastie-Depots. Dein Handeln folgt ausschlie
 4.  \!QuickCheck \[TICKER | ALL\] → Schneller Ampel-Check, kein Deep Dive (siehe Abschnitt WORKFLOW 4)
 5.  Strategische Fragen → Beantworte auf Basis des Manifests (siehe Referenz: manifest.md)
 
-**§30 Live-Monitoring (ab 19.04.2026):** Monatlicher Refresh aktiver Investment-FLAGs (aktuell: MSFT CapEx-FLAG). FCF/CapEx/OCF aus Shibui oder yfinance refreshen → FLAG-Threshold-Check (FLAG_RULES) → `archive_flag.py resolve|trigger` bei Zustandsänderung (forward-dated, kein Backfill) → CORE-MEMORY §5 Zwischenupdate. **Kein Re-Score, nur FLAG-Status.** Basis: Flint-Vermaak 2021 Investment-Half-Life ~1M. Details: INSTRUKTIONEN §30.
+**§30 Live-Monitoring (ab 19.04.2026):** Monatlicher Refresh aktiver Investment-FLAGs (aktuell: MSFT CapEx-FLAG). FCF/CapEx/OCF aus yfinance (`quarterly_cashflow`) oder defeatbeta refreshen → FLAG-Threshold-Check (FLAG_RULES) → `archive_flag.py resolve|trigger` bei Zustandsänderung (forward-dated, kein Backfill) → CORE-MEMORY §5 Zwischenupdate. **Kein Re-Score, nur FLAG-Status.** Basis: Flint-Vermaak 2021 Investment-Half-Life ~1M. Details: INSTRUKTIONEN §30.
 
 ## Dateien in diesem Skill
 
@@ -77,7 +77,7 @@ Gilt für Chat, Cowork UND Claude Code.
 
 ```
 IF US-Ticker (NYSE/NASDAQ): AVGO, MSFT, V, BRK.B, TMO, APH, AMZN, NOW, ZETA
-    → Shibui Finance SQL: technical_indicators, cash_flow_quarterly (2 Zeilen 200MA-Slope)
+    → yfinance: history (200MA + Slope, RSI-14, Rel. Stärke vs SPY), major_holders (Insider-%), quarterly_cashflow (jüngstes Q)
     → defeatbeta MCP: annual_cash_flow, balance_sheet, income_statement, quarterly_roic, wacc,
                       annual_gross_margin, revenue_breakdown, earning_call_transcript
     → insider_intel.py: python insider_intel.py scan [TICKER]  (Form 4, automatisch)
@@ -101,9 +101,10 @@ IF Non-US-Ticker: ASML, RMS, SU  (KYCCF JP → O3-pending, JP/JPY-Support noch n
 3. Non-US ohne Call-Transcript (RMS, SU): IR-Präsentation/Webcast + Press-Release.
 Genutzte Stufe in `quellen` vermerken. Quartr ist **nicht** angebunden.
 
-**Pflicht via Shibui Finance SQL (US-Ticker — Technicals + FLAG-Historie):**
-*   `technical_indicators` → RSI-14, MACD, SMA-200, EMA-50, BB-Bänder, ADX-14 (2 Zeilen fuer Slope)
-*   `cash_flow_quarterly` → CapEx/OCF letzte 12 Quartale (FLAG-Muster erkennen)
+**Pflicht via yfinance (US-Ticker — Technicals + FLAG-Historie; ersetzt Shibui seit 14.10.2026, Shibui lokal nicht angebunden):**
+*   `yf.Ticker(T).history(period="14mo")` → Kurs, SMA-200 + Slope (SMA200 heute vs. vor 20 Handelstagen), RSI-14 selbst rechnen; Rel. Stärke 6M = Rendite T − Rendite `SPY` (gleiche Periode)
+*   CapEx/OCF letzte 12 Quartale (FLAG-Muster): defeatbeta `get_stock_quarterly_cash_flow` (lange Historie); yfinance `quarterly_cashflow` (nur ~6Q, dafür oft 1 Quartal aktueller) für das jüngste Quartal
+*   Inline-Abruf (`python -c`), da `eodhd_intel.py` nur ASML/RMS/SU/KYCCF kennt
 
 **Pflicht via defeatbeta-MCP (US-Ticker — Fundamentals-Tiefe):**
 *   `get_stock_annual_cash_flow` → OCF, CapEx, FCF (5 Jahre)
@@ -119,7 +120,7 @@ Genutzte Stufe in `quellen` vermerken. Quartr ist **nicht** angebunden.
 **Pflicht via insider_intel.py (US-Ticker — Insider-Block):**
 *   `python insider_intel.py scan [TICKER]` im Ordner `01_Skills/insider-intelligence/`
 *   Output direkt als Insider-Block (Abschnitt 4) verwenden
-*   Ownership-Score (3/10) via Shibui `share_stats.percent_insiders` ergaenzen
+*   Ownership-Score (3/10) via yfinance `major_holders` → `insidersPercentHeld` ergaenzen
 
 **Pflicht via eodhd_intel.py (Non-US-Ticker — Vollstaendiger DEFCON-Block):**
 *   `python eodhd_intel.py detail [TICKER]` im Ordner `01_Skills/non-us-fundamentals/`
@@ -127,7 +128,7 @@ Genutzte Stufe in `quellen` vermerken. Quartr ist **nicht** angebunden.
 *   ROIC-Proxy immer via GuruFocus verifizieren
 
 **Pflicht via Web (nicht durch MCP-Tools ersetzbar):**
-*   Aktueller Kurs (Yahoo Finance) — Shibui/defeatbeta Cutoff beachten
+*   Aktueller Kurs (Yahoo Finance) — yfinance/defeatbeta Cutoff beachten
 *   Forward P/E, Forward P/FCF (AlphaSpread) — MCP-Tools nur historisch
 *   Moat-Rating (GuruFocus term/moat-score) — kein API-Aequivalent
 *   **Insider-Transaktionen: OpenInsider (HEILIG — kein Ersatz)**
@@ -156,8 +157,8 @@ Genutzte Stufe in `quellen` vermerken. Quartr ist **nicht** angebunden.
 11. **SKILL.md nur bei Abweichung zitieren** — Standard-Workflow nicht referenzieren.
 
 **BLOCK D — Session-Management**
-12. **Snapshot-First:** Faktortabelle laden vor API-Abfragen. Shibui nur für Delta seit score_datum. Flow: Tabelle → Trigger? → Delta abrufen.
-13. **MCP-Aktivierung nach Arbeitsbereich:** Analyse: Shibui + defeatbeta + WebSearch. Vault/Wiki: filesystem. Chat+Cowork: /mcp disable nicht benötigter Server. Claude Code: Tool Search automatisch (on-demand).
+12. **Snapshot-First:** Faktortabelle laden vor API-Abfragen. Datenabruf nur für Delta seit score_datum. Flow: Tabelle → Trigger? → Delta abrufen.
+13. **MCP-Aktivierung nach Arbeitsbereich:** Analyse: defeatbeta + yfinance + WebSearch/Tavily. Vault/Wiki: filesystem. Chat+Cowork: /mcp disable nicht benötigter Server. Claude Code: Tool Search automatisch (on-demand).
 14. **/compact mit Anweisung bei 60%:** "Preserve: Score, Tabelle, Urteil, FLAGs. Discard: rohe API-Outputs, Zwischenschritte." Nach 3–4 Compacts: Summary → /clear → neu.
 15. **5-Min-Pause-Regel:** Cache-Timeout = 5 Min. Vor Pause >5 Min: /compact oder /clear.
 
@@ -493,7 +494,7 @@ Bei Aktivierung greift die **Standard-Skala** des betroffenen Subscores. Hard-Ca
 **5J-Median-Operationalisierung (literal prüfbar):**
 - Beobachtungsmenge = letzte 20 verfügbare Quartalsendstichtage innerhalb der letzten 5 abgeschlossenen Geschäftsjahre relativ zum Bewertungsstichtag.
 - Mindestabdeckung = 12 belastbare Stichtage. Bei <12 gültigen Stichtagen → Modulator INAKTIV (Default-deny).
-- **5J-Median-Fwd-P/E:** Je Stichtag t gilt `Fwd-P/E_t = Schlusskurs_t / Forward-EPS-Konsens_t`. Schlusskurs_t aus defeatbeta `get_stock_price` (Quartalsend-Schlusskurs); Forward-EPS-Konsens_t aus Faktortabelle/Shibui historisch (Point-in-Time-Konsens-Schätzung mit Stichtag t für die folgenden 4 Quartale). Gültig sind nur Stichtage mit belastbarem Schlusskurs_t UND strikt positivem Forward-EPS-Konsens_t (>0). Stichtage mit Forward-EPS-Konsens_t ≤0 oder fehlendem Wert sind UNGÜLTIG und werden ausgeschlossen. `5J-Median-Fwd-P/E = np.median(Fwd-P/E_t über alle gültigen Stichtage)`.
+- **5J-Median-Fwd-P/E:** Je Stichtag t gilt `Fwd-P/E_t = Schlusskurs_t / Forward-EPS-Konsens_t`. Schlusskurs_t aus defeatbeta `get_stock_price` (Quartalsend-Schlusskurs); Forward-EPS-Konsens_t aus Faktortabelle/yfinance historisch (Point-in-Time-Konsens-Schätzung mit Stichtag t für die folgenden 4 Quartale). Gültig sind nur Stichtage mit belastbarem Schlusskurs_t UND strikt positivem Forward-EPS-Konsens_t (>0). Stichtage mit Forward-EPS-Konsens_t ≤0 oder fehlendem Wert sind UNGÜLTIG und werden ausgeschlossen. `5J-Median-Fwd-P/E = np.median(Fwd-P/E_t über alle gültigen Stichtage)`.
 - **5J-Median-TTM-P/FCF:** Je Stichtag t gilt `TTM-P/FCF_t = Marktkap_t / TTM-FCF_t`. Marktkap_t aus defeatbeta `get_stock_market_capitalization` (Quartalsend); TTM-FCF_t aus defeatbeta `get_stock_quarterly_cash_flow` (rolling Summe der vier vorangehenden Quartale, Operating CF minus CapEx). Gültig sind nur Stichtage mit belastbarer Marktkap_t UND strikt positivem TTM-FCF_t (>0). Stichtage mit TTM-FCF_t ≤0 oder fehlendem Wert sind UNGÜLTIG und werden ausgeschlossen. `5J-Median-P/FCF = np.median(TTM-P/FCF_t über alle gültigen Stichtage)`.
 
 **Datenquellen-Pflicht (fail-closed):**
@@ -905,12 +906,12 @@ Wenn der User \!Rebalancing eingibt oder nach Sparplan-Verteilung fragt:
 
 ## 🧹 PRE-PROCESSING & DATA CLEANING (API-Filter)
 
-**Pflicht:** Bevor rohe Finanzdaten aus externen APIs (Shibui Finance, defeatbeta, EODHD) in die DEFCON-Matrix einfließen, MUSS dieser Data-Cleaning-Layer angewendet werden. Kein Scoring ohne vorherige Prüfung dieser fünf Regeln.
+**Pflicht:** Bevor rohe Finanzdaten aus externen APIs (defeatbeta, yfinance) in die DEFCON-Matrix einfließen, MUSS dieser Data-Cleaning-Layer angewendet werden. Kein Scoring ohne vorherige Prüfung dieser fünf Regeln.
 
 ### Regel 1 — SBC-Check (Stock-Based Compensation)
 
 **Kalkulation:** SBC / OCF (TTM)
-**Quelle:** Shibui `cash_flow_quarterly.stock_based_compensation` + `total_cash_from_operating_activities`
+**Quelle:** yfinance `quarterly_cashflow` → `Stock Based Compensation` + `Operating Cash Flow` (Gegencheck defeatbeta `get_stock_quarterly_cash_flow`)
 
 | SBC/OCF | Wirkung |
 | :--- | :--- |
@@ -922,10 +923,10 @@ Kalibrierung: AVGO SBC/OCF ~26% → Dokumentationspflicht aktiv (Post-Vesting st
 ### Regel 2 — Hyperscaler CapEx-Korrektur (Finance Leases)
 
 **Betrifft:** Cloud-/Infrastruktur-Titel mit Finance Lease Obligations > $5B im Balance Sheet
-**Erkennungsregel:** Shibui `balance_sheet_quarterly.capital_lease_obligations > 5.000.000.000`
+**Erkennungsregel:** yfinance `quarterly_balance_sheet` → `Capital Lease Obligations` > 5.000.000.000
 
 **Aktion bei Auslösung:**
-1. Automatische Berechnung aus Shibui NICHT möglich — Finance Lease Payments nicht isoliert verfügbar
+1. Automatische Berechnung aus API-Daten NICHT möglich — Finance Lease Payments nicht isoliert verfügbar
 2. Pflicht: Manueller Abgleich mit offiziellem Earnings Release / 10-Q vor FLAG-Entscheid
 3. Quelle: Cash Flow Statement → Zeile "Repayments of finance leases" (separat von CapEx)
 4. Erst nach diesem Check darf CapEx/OCF-Ratio final berechnet und FLAG gezogen werden
@@ -945,7 +946,7 @@ Kalibrierung: MSFT capital_lease_obligations ~$17,3B → Finance Lease Check Pfl
 ### Regel 4 — M&A Amortization Add-back (ROIC-Proxy)
 
 **Betrifft:** M&A-Compounder wenn Goodwill > 30% der Gesamtaktiva
-**Erkennungsregel:** Shibui `balance_sheet.goodwill / balance_sheet.total_assets > 0.30`
+**Erkennungsregel:** yfinance `quarterly_balance_sheet` → `Goodwill` / `Total Assets` > 0.30
 
 **Proxy-Formel:**
 > Cash-ROIC-Schätzung = ROIC berechnet mit NOPAT + (D&A × 0,65) / Invested Capital
@@ -968,8 +969,8 @@ Kalibrierung: MSFT capital_lease_obligations ~$17,3B → Finance Lease Check Pfl
 | defeatbeta `get_stock_wacc` | WACC-Wert (nur neuester Eintrag) |
 | defeatbeta `get_stock_annual_gross_margin` | GM-Trend 3J (Bonus/Malus) |
 | defeatbeta `get_stock_earning_call_transcript` | Guidance-Statement, Management-Tone, Pricing-Power-Aussage |
-| Shibui `technical_indicators` | 200MA-Slope, RSI-State, RelStärke vs SPY |
-| Shibui `cash_flow_quarterly` 12Q | CapEx-FLAG-Muster (Anzahl Quartale >60%) |
+| yfinance `history` (+ `SPY`) | 200MA-Slope, RSI-State, RelStärke vs SPY |
+| defeatbeta `get_stock_quarterly_cash_flow` 12Q (+ yfinance jüngstes Q) | CapEx-FLAG-Muster (Anzahl Quartale >60%) |
 | `insider_intel.py` / `eodhd_intel.py` | Netto-Selling 90d, 10b5-1-Flag-Status, Top-Insider-Liste |
 | GuruFocus `term/moat-score` | Moat-Klasse + Trend |
 
@@ -996,42 +997,42 @@ Kalibrierung: MSFT capital_lease_obligations ~$17,3B → Finance Lease Check Pfl
 
 Drei Felder abgleichen (~5 Min. pro Ticker):
 
-| Shibui-Feld | Zeile im SEC 10-Q Cash Flow Statement |
+| yfinance-Zeile | Zeile im SEC 10-Q Cash Flow Statement |
 | :--- | :--- |
-| `total_cash_from_operating_activities` | "Net cash provided by operating activities" |
-| `capital_expenditures` | "Purchases of property and equipment" |
-| `stock_based_compensation` | "Stock-based compensation expense" (non-cash add-back) |
+| `Operating Cash Flow` | "Net cash provided by operating activities" |
+| `Capital Expenditure` | "Purchases of property and equipment" |
+| `Stock Based Compensation` | "Stock-based compensation expense" (non-cash add-back) |
 
 ### Methodik — Non-US-Titel (Toleranz ±1,5%, IFRS)
 
 **ASML** (Quartalsweise, asml.com/investors → Quarterly Results PDF)
 
-| Shibui-Feld | IFRS-Zeile | Falle |
+| yfinance-Zeile | IFRS-Zeile | Falle |
 | :--- | :--- | :--- |
-| `total_cash_from_operating_activities` | "Net cash flows from operating activities" | — |
-| `capital_expenditures` | "Purchase of PP&E" + "Purchase of intangible assets" (addieren!) | "Purchase of land use rights" (China-Erbpacht) separat → gehört zum CapEx |
-| `stock_based_compensation` | "Share-based payments" | — |
+| `Operating Cash Flow` | "Net cash flows from operating activities" | — |
+| `Capital Expenditure` | "Purchase of PP&E" + "Purchase of intangible assets" (addieren!) | "Purchase of land use rights" (China-Erbpacht) separat → gehört zum CapEx |
+| `Stock Based Compensation` | "Share-based payments" | — |
 
 **Hermès / RMS** (Halbjährlich, finance.hermes.com → Résultats semestriels)
 
-| Shibui-Feld | IFRS-Zeile | Falle |
+| yfinance-Zeile | IFRS-Zeile | Falle |
 | :--- | :--- | :--- |
-| `total_cash_from_operating_activities` | "Cash flows from operating activities" | "Adjusted free cash flow" (Hermès-Kennzahl) enthält IFRS-16-Abzüge → NICHT verwenden |
-| `capital_expenditures` | "Purchases of PP&E and intangible assets" | — |
-| `stock_based_compensation` | Nicht separat (minimal, in "Autres" integriert) | — |
+| `Operating Cash Flow` | "Cash flows from operating activities" | "Adjusted free cash flow" (Hermès-Kennzahl) enthält IFRS-16-Abzüge → NICHT verwenden |
+| `Capital Expenditure` | "Purchases of PP&E and intangible assets" | — |
+| `Stock Based Compensation` | Nicht separat (minimal, in "Autres" integriert) | — |
 
 **Schneider Electric / SU** (Halbjährlich, se.com/investors → Half-Year Results)
 
-| Shibui-Feld | IFRS-Zeile | Falle |
+| yfinance-Zeile | IFRS-Zeile | Falle |
 | :--- | :--- | :--- |
-| `total_cash_from_operating_activities` | "Net cash from operating activities" (nach Steuern!) | "Cash generated from operations" ist VOR Steuern → falscher Wert |
-| `capital_expenditures` | "Purchases of PP&E" + "Purchases of intangible assets" | IFRS-16 ROU-Asset-Zugänge erscheinen nicht im CF → Toleranz ±1,5% gilt |
-| `stock_based_compensation` | "Share-based compensation expense" / "Equity-settled transactions" (Notes) | — |
+| `Operating Cash Flow` | "Net cash from operating activities" (nach Steuern!) | "Cash generated from operations" ist VOR Steuern → falscher Wert |
+| `Capital Expenditure` | "Purchases of PP&E" + "Purchases of intangible assets" | IFRS-16 ROU-Asset-Zugänge erscheinen nicht im CF → Toleranz ±1,5% gilt |
+| `Stock Based Compensation` | "Share-based compensation expense" / "Equity-settled transactions" (Notes) | — |
 
 ### FLAG-Protokoll bei Drift
 
 Abweichung > Toleranzgrenze = **API-DRIFT-FLAG:**
-1. Alle laufenden Shibui-Analysen pausieren
+1. Alle laufenden Analysen auf der betroffenen Quelle pausieren
 2. Primärquelle manuell gegenprüfen
 3. Befund in CORE-MEMORY.md → "API-Audit-Log" eintragen: `[Datum] | [Ticker] | OCF: X% | CapEx: X% | Status`
 4. Pipeline erst nach Klärung freigeben
@@ -1045,25 +1046,25 @@ Abweichung > Toleranzgrenze = **API-DRIFT-FLAG:**
 ```
 IF US-Ticker (NYSE / NASDAQ):
     Fundamentals-Primär  → defeatbeta-MCP
-    Technicals + Historie → Shibui Finance SQL-Connector
+    Technicals + Historie → yfinance (12Q-Cashflow: defeatbeta)
     Insider-Scoring       → SEC EDGAR API (Form 4) + OpenInsider (Pflicht-Gegencheck HEILIG)
 
 IF Non-US-Ticker (ASML / RMS / SU; KYCCF JP O3-pending):
-    Fundamentals          → EODHD API (Euronext-Primär, EUR-denominiert)
-    Technicals            → Shibui (falls Coverage) sonst TradingView Web
+    Fundamentals          → eodhd_intel.py (intern yfinance, EUR-denominiert; EODHD-Free-Tier ohne Fundamentals)
+    Technicals            → eodhd_intel.py (yfinance)
     Insider-Scoring       → Manuell via AFM (ASML) / AMF (RMS, SU) — kein API-Äquivalent
 ```
 
-### Feldname-Mapping: Shibui ↔ EODHD (Non-US)
+### Feldnamen yfinance (US + Non-US identisch)
 
-| Shibui-Feld | EODHD-Äquivalent | Einheit |
+| yfinance-Zeile (`quarterly_cashflow`) | Bedeutung | Einheit |
 | :--- | :--- | :--- |
-| `total_cash_from_operating_activities` | `operatingCashFlow` | EUR |
-| `capital_expenditures` | `capitalExpenditures` | EUR |
-| `stock_based_compensation` | `stockBasedCompensation` | EUR |
-| `free_cash_flow` | `freeCashFlow` | EUR |
+| `Operating Cash Flow` | OCF | Listing-Währung |
+| `Capital Expenditure` | CapEx (negativ) | Listing-Währung |
+| `Stock Based Compensation` | SBC | Listing-Währung |
+| `Free Cash Flow` | FCF | Listing-Währung |
 
-**Währungsregel:** EODHD liefert EUR. Ratios (P/FCF, ROIC, CapEx/OCF) währungsneutral — kein Umrechnungsbedarf. Absolute Zahlen immer mit EUR kennzeichnen.
+**Währungsregel:** yfinance liefert Euronext-Listings (`ASML.AS`, `RMS.PA`, `SU.PA`) in EUR. Ratios (P/FCF, ROIC, CapEx/OCF) währungsneutral — kein Umrechnungsbedarf. Absolute Zahlen immer mit EUR kennzeichnen.
 
 ### SEC EDGAR API — Insider-Scoring (US)
 

@@ -43,7 +43,7 @@ Impuls / Idee
 | Was genutzt wird | Wie genutzt | Skill-Load? |
 |------------------|------------|---|
 | defeatbeta MCP | MCP-Tool-Calls direkt | ❌ Nein |
-| Shibui Finance SQL | MCP-Tool-Calls direkt | ❌ Nein |
+| yfinance | Python inline (`yf.Ticker`) | ❌ Nein |
 | insider_intel.py | Bash → Python direkt | ❌ Nein |
 | eodhd_intel.py | Bash → Python direkt | ❌ Nein |
 | WebSearch | Tool-Call direkt | ❌ Nein |
@@ -110,7 +110,7 @@ IF US-Ticker (AVGO, MSFT, V, BRK.B, TMO, APH, AMZN, NOW, ZETA):
                          quarterly_roic (max. 6Q), wacc (nur neuester Wert),
                          annual_gross_margin, revenue_breakdown* (Tabelle revenue-by-geography),
                          earning_call_transcript (Fallback: SKILL Transcript-Quellenkette)
-    Shibui SQL        → technical_indicators (2 Zeilen für 200MA-Slope),
+    yfinance          → history (200MA + Slope, RSI, Rel. Stärke vs SPY), major_holders,
                          cash_flow_quarterly (12Q für CapEx-FLAG-Muster)
     insider_intel.py  → python 01_Skills/insider-intelligence/insider_intel.py scan [TICKER]
     Web (Pflicht)     → Live-Kurs (Yahoo), Fwd P/E (AlphaSpread/GuruFocus),
@@ -142,9 +142,9 @@ IF Non-US-Ticker (ASML, RMS, SU; KYCCF JP → O3-pending, JP/JPY-Support noch ni
 
 | Block | Gewicht | Primärquelle US | Primärquelle Non-US |
 |-------|---------|-----------------|---------------------|
-| Fundamentals | 50 Pt. | defeatbeta MCP + Shibui SQL | eodhd_intel.py |
+| Fundamentals | 50 Pt. | defeatbeta MCP + yfinance | eodhd_intel.py |
 | Moat | 20 Pt. | GuruFocus (Web) | GuruFocus (Web) |
-| Technicals | 10 Pt. | Shibui technical_indicators | eodhd_intel.py |
+| Technicals | 10 Pt. | yfinance history | eodhd_intel.py |
 | Insider | 10 Pt. | insider_intel.py + OpenInsider | AFM / AMF (manuell) |
 | Sentiment | 10 Pt. | Zacks + Yahoo Finance (Web) | Yahoo Finance EUR |
 
@@ -163,7 +163,7 @@ IF Non-US-Ticker (ASML, RMS, SU; KYCCF JP → O3-pending, JP/JPY-Support noch ni
 
 | Trigger | Quelle | Konsequenz |
 |---------|--------|-----------|
-| CapEx/OCF > 60% | Shibui quarterly / eodhd_intel.py | 🔴 FLAG → Sparrate 0 € |
+| CapEx/OCF > 60% | defeatbeta quarterly_cash_flow / eodhd_intel.py | 🔴 FLAG → Sparrate 0 € |
 | Negativer FCF-Trend + steigendes CapEx | defeatbeta CF | 🔴 FLAG → Sparrate 0 € |
 | Insider Netto-Selling > $20M / 90d (diskretionär) | insider_intel.py + OpenInsider | 🔴 FLAG → Sparrate 0 € |
 | Tariff Exposure > 35% CN/TW/MY/TH/VN | defeatbeta geography | 🔴 FLAG → -3 Pt. + Sparrate 0 € |

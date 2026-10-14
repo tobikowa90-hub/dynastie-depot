@@ -10,7 +10,7 @@ Lies diese Datei bei jeder `!Analysiere`- und `!CAPEX-FCF-ANALYSIS`-Analyse. Die
 
 ## ⚠️ Architektur-Änderungen v3.0 (gegenüber v2.7)
 
-- **MCP-First:** Shibui Finance SQL (Technicals) + defeatbeta MCP (Fundamentals) sind Primärquelle bei US-Tickern, nicht mehr GuruFocus/Macrotrends.
+- **API-First:** yfinance (Technicals, jüngstes Quartal) + defeatbeta MCP (Fundamentals) sind Primärquelle bei US-Tickern, nicht mehr GuruFocus/Macrotrends.
 - **Automatisierte Insider:** `insider_intel.py` (US, SEC EDGAR Form 4) und `eodhd_intel.py` (Non-US, yfinance) ersetzen manuelle OpenInsider/GuruFocus-Checks als Pflicht-Primärquelle.
 - **GuruFocus:** bleibt für Moat-Score + term-basierte Fallbacks. Pflicht-Batch unverändert.
 - **Entfernt:** Simply Wall St (paywall + unscharf), Stock3 (redundant), Fintel (Paywall), CB Insights (nicht DEFCON-relevant), Morningstar-Eintrag ohne User-Zugang.
@@ -33,7 +33,7 @@ Details → `00_Core/SYSTEM.md §Passive Read-Only Data Layer`. Scoring-Quellen 
 
 | Quelle | Zugriff | Liefert |
 | :---- | :---- | :---- |
-| **Shibui Finance SQL** | `mcp__claude_ai_Shibui_Finance__stock_data_query` | Technicals (RSI, MACD, MA, Rel. Stärke), Quarterly Cash Flow, Balance Sheet |
+| **yfinance** | `yf.Ticker(T)` (Python, inline) | Technicals (Kurs, MA200, RSI, Rel. Stärke vs SPY), `quarterly_cashflow` (~6Q), `quarterly_balance_sheet`, `major_holders` — ersetzt Shibui (lokal nicht angebunden, seit 14.10.2026) |
 | **defeatbeta MCP** | defeatbeta MCP Tools | Fundamentals (ROIC, FCF Yield, P/FCF annual, Revenue-Wachstum), EPS-Historie |
 | **insider_intel.py** | `python 01_Skills/insider-intelligence/insider_intel.py [TICKER]` | SEC EDGAR Form 4 — automatisiert, inkl. 10b5-1-FLAG-Auswertung |
 
@@ -57,10 +57,10 @@ Details → `00_Core/SYSTEM.md §Passive Read-Only Data Layer`. Scoring-Quellen 
 | :---- | :---- | :---- |
 | **GuruFocus** | [gurufocus.com](https://gurufocus.com) | Moat-Score (Primär für Moat-Block!), term-Pages für Verifikation |
 | **AlphaSpread** | [alphaspread.com](https://alphaspread.com) | DCF Fair Value, Relative Valuation, Fwd PE/FCF — Non-US mit Börsen-Prefix |
-| **StockAnalysis** | [stockanalysis.com](https://stockanalysis.com) | ⚠️ NUR quarterly Cash Flow Cross-Check zu Shibui. **NIEMALS für ROIC / Forward-P/E / Score-Inputs** (Methodology-Drift, siehe §7) |
+| **StockAnalysis** | [stockanalysis.com](https://stockanalysis.com) | ⚠️ NUR quarterly Cash Flow Cross-Check zu yfinance/defeatbeta. **NIEMALS für ROIC / Forward-P/E / Score-Inputs** (Methodology-Drift, siehe §7) |
 | **Macrotrends** | [macrotrends.net](https://macrotrends.net) | 10-Jahres-Historie FCF/CapEx/OCF für Trend-Analyse |
 | **Yahoo Finance** | [finance.yahoo.com](https://finance.yahoo.com) | Live-Kurs, USD/EUR-Rate, Earnings Calendar |
-| **Finviz** | [finviz.com](https://finviz.com) | Screener, PE/FCF-Übersicht (Fallback wenn Shibui down) |
+| **Finviz** | [finviz.com](https://finviz.com) | Screener, PE/FCF-Übersicht (Fallback wenn yfinance down) |
 | **Zacks** | [zacks.com](https://zacks.com) | EPS-Revisionen, Analyst-Ratings |
 | **TradingView** | [tradingview.com](https://tradingview.com) | Chart-Analyse (Fallback) |
 
@@ -170,7 +170,7 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 
 | **Schritt** | **Primär** | **Sekundär** |
 | :---- | :---- | :---- |
-| **Live-Kurs + Marktdaten** | Shibui `stock_data_query` (Technicals) | Yahoo Finance |
+| **Live-Kurs + Marktdaten** | yfinance `history` | Yahoo Finance Web / StockAnalysis |
 | **Fwd PE / DCF** | AlphaSpread | Yahoo /analysis |
 | **P/FCF (TTM)** | defeatbeta `annual_cash_flow` | GuruFocus term/price-to-free-cash-flow |
 | **ROIC** | defeatbeta `quarterly_roic` | GuruFocus term/roic |
@@ -180,7 +180,7 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 | **Moat-Check** | GuruFocus term/moat-score | defeatbeta (Margin-/ROIC-Persistenz) |
 | **Insider-Check (FLAG)** | `insider_intel.py` (US) / `eodhd_intel.py` + AFM/AMF (Non-US) | OpenInsider / SEC EDGAR Form 4 |
 | **Analyst-Konsensus + PTs** | Zacks | Yahoo Finance analysis |
-| **CapEx / OCF quarterly** | Shibui `cash_flow_quarterly` | StockAnalysis cash-flow-statement |
+| **CapEx / OCF quarterly** | defeatbeta `get_stock_quarterly_cash_flow` (+ yfinance jüngstes Q) | StockAnalysis cash-flow-statement |
 | **CapEx / OCF 5J-Historie** | defeatbeta `annual_cash_flow` | Macrotrends |
 | **10-K Primärquelle** | SEC EDGAR | IR-Website direkt |
 | **USD/EUR Umrechnung** | Yahoo Finance (Echtzeit) | EZB (offiziell) |
@@ -188,7 +188,7 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 | **Accruals Ratio** | defeatbeta (NI-OCF/Assets berechnet) | StockAnalysis balance+cash-flow |
 | **GM-Trend 3J** | defeatbeta `income_statement` (5J) | Macrotrends gross-profit-margin |
 | **Pricing Power** | Earnings Call Transcript (Transcript-Quellenkette, SKILL Schritt 1) | IR-Website Earnings Call |
-| **Rel. Stärke 6M** | Shibui `technical_indicators` | Finviz quote.ashx |
+| **Rel. Stärke 6M** | yfinance `history` (Ticker vs `SPY`) | Finviz quote.ashx |
 | **EPS Revisionen** | Zacks TICKER → Consensus EPS Revisions | Yahoo Finance analysis |
 | **Tariff Exposure** | SEC EDGAR 10-K → "Geographic Revenue" | Earnings Call Transcript (Management Commentary) |
 
@@ -213,7 +213,7 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 #### 3. Non-US Ticker Quellenregel
 
 * **US-Ticker (NYSE/NASDAQ):**
-  * **Primär:** Shibui Finance SQL (Technicals) + defeatbeta MCP (Fundamentals)
+  * **Primär:** yfinance (Technicals) + defeatbeta MCP (Fundamentals)
   * **Insider:** insider_intel.py (SEC EDGAR Form 4 — automatisiert)
   * **Fallback:** GuruFocus/Macrotrends
 * **Non-US-Ticker (ASML, RMS, SU):**
@@ -248,7 +248,7 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 
 | Metrik / Zweck | Frequenz / Zeitraum | Quelle |
 | ----- | ----- | ----- |
-| **CapEx/OCF** für CapEx-FLAG-Prüfung | Quarterly (letzte 4Q annualisiert) | Shibui `cash_flow_quarterly` |
+| **CapEx/OCF** für CapEx-FLAG-Prüfung | Quarterly (letzte 4Q annualisiert) | defeatbeta `get_stock_quarterly_cash_flow` / yfinance `quarterly_cashflow` |
 | **CapEx/OCF** für historischen Trend | Annual (5–10 Jahre) | defeatbeta / Macrotrends |
 | **FCF** für DEFCON-Score | TTM Annual | defeatbeta / GuruFocus |
 | **FCF** für Forward-Bewertung | Nächstes volles Fiskaljahr | AlphaSpread / Konsensus |
@@ -263,7 +263,7 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 
 | Quelle | Hard-Ausschluss für | Erlaubt für | Drift-Typ | Präzedenz-Cases |
 | :---- | :---- | :---- | :---- | :---- |
-| **StockAnalysis** | ROIC, Forward-P/E, alle Score-Berechnungs-Inputs | Quarterly CashFlow Cross-Check zu Shibui (rein deskriptiv) | Non-GAAP-Methodologie ohne konsistente SBC-Add-back-Behandlung; Forward-P/E mit gemischter Konsensus-Basis | AVGO 30.04.2026 (ROIC 21,33% StockAnalysis vs 3,98% defeatbeta GAAP / 45,7% §410-Goodwill-bereinigt — Codex-R1-HIGH-2 REJECT); MSFT 30.04.2026 (ROIC 26,1% StockAnalysis vs 7,68% defeatbeta GAAP) |
+| **StockAnalysis** | ROIC, Forward-P/E, alle Score-Berechnungs-Inputs | Quarterly CashFlow Cross-Check zu yfinance/defeatbeta (rein deskriptiv) | Non-GAAP-Methodologie ohne konsistente SBC-Add-back-Behandlung; Forward-P/E mit gemischter Konsensus-Basis | AVGO 30.04.2026 (ROIC 21,33% StockAnalysis vs 3,98% defeatbeta GAAP / 45,7% §410-Goodwill-bereinigt — Codex-R1-HIGH-2 REJECT); MSFT 30.04.2026 (ROIC 26,1% StockAnalysis vs 7,68% defeatbeta GAAP) |
 
 ### Hintergrund
 
@@ -288,7 +288,7 @@ DEFCON v3.7 Standard ist **GAAP-konservativ**: ROIC = NOPAT / Invested Capital o
 
 Bei widersprüchlichen Daten zwischen Quellen: **konservativsten Wert verwenden** und Abweichung explizit in der Analyse dokumentieren.
 
-**Hierarchie:** SEC EDGAR / IFRS-PDF > Shibui + defeatbeta MCP > GuruFocus term > AlphaSpread > Web-Drittanbieter.
+**Hierarchie:** SEC EDGAR / IFRS-PDF > defeatbeta MCP + yfinance > GuruFocus term > AlphaSpread > Web-Drittanbieter.
 
 ---
 
@@ -337,4 +337,4 @@ Ersetze `[TICKER]` durch das jeweilige Kürzel (z.B. AVGO, MSFT, NOW).
 ---
 
 *🦅 Bei widersprüchlichen Daten zwischen Quellen: konservativsten Wert verwenden und Abweichung dokumentieren.*
-*Version 3.1 – 2026-06-13 | MCP-first: Shibui + defeatbeta als Primärquelle. Scripts `01_Skills/insider-intelligence/insider_intel.py` (US) / `01_Skills/non-us-fundamentals/eodhd_intel.py` (Non-US: ASML/RMS/SU; KYCCF-JP O3-pending) als automatisierte Insider-Primärquelle. GuruFocus Moat + term als Fallback/Moat. OpenInsider + SEC EDGAR Form 4 = Triage/Forensik. FinnHub = read-only, NICHT Scoring.*
+*Version 3.2 – 2026-10-14 | yfinance ersetzt Shibui (lokal nie angebunden) für Technicals, jüngstes Quartal, Insider-%; 12Q-Cashflow via defeatbeta (0.0.62); Transcript-Quellenkette → SKILL Schritt 1. — Version 3.1 – 2026-06-13 | MCP-first: Shibui + defeatbeta als Primärquelle. Scripts `01_Skills/insider-intelligence/insider_intel.py` (US) / `01_Skills/non-us-fundamentals/eodhd_intel.py` (Non-US: ASML/RMS/SU; KYCCF-JP O3-pending) als automatisierte Insider-Primärquelle. GuruFocus Moat + term als Fallback/Moat. OpenInsider + SEC EDGAR Form 4 = Triage/Forensik. FinnHub = read-only, NICHT Scoring.*
