@@ -187,10 +187,10 @@ Primär zuerst abfragen. Sekundär nur bei fehlenden/widersprüchlichen Daten.
 | **SBC/Revenue** | defeatbeta `annual_cash_flow` (SBC-Zeile) | GuruFocus term/sbc-to-revenue |
 | **Accruals Ratio** | defeatbeta (NI-OCF/Assets berechnet) | StockAnalysis balance+cash-flow |
 | **GM-Trend 3J** | defeatbeta `income_statement` (5J) | Macrotrends gross-profit-margin |
-| **Pricing Power** | Quartr TICKER (Transcript) | IR-Website Earnings Call |
+| **Pricing Power** | Earnings Call Transcript (Transcript-Quellenkette, SKILL Schritt 1) | IR-Website Earnings Call |
 | **Rel. Stärke 6M** | Shibui `technical_indicators` | Finviz quote.ashx |
 | **EPS Revisionen** | Zacks TICKER → Consensus EPS Revisions | Yahoo Finance analysis |
-| **Tariff Exposure** | SEC EDGAR 10-K → "Geographic Revenue" | Quartr (Management Commentary) |
+| **Tariff Exposure** | SEC EDGAR 10-K → "Geographic Revenue" | Earnings Call Transcript (Management Commentary) |
 
 ---
 

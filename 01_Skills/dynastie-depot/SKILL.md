@@ -61,7 +61,7 @@ Gilt für Chat, Cowork UND Claude Code.
      - Manueller FLAG-Quick-Check (CapEx/OCF, FCF-Trend, Insider-Selling, Tariff). Bei FLAG-Trigger → `archive_flag.py trigger` sofort (Sparplan-Konsequenz zeitkritisch). Score bleibt unverändert.
      - Pre-Call-Snapshot-Notiz in `00_Core/CORE-MEMORY.md §12.<ticker>` (1-2 Sätze)
      - **STOP** — Vollanalyse erfolgt am Folgetag morgens. Sync-Set Tag 0 = nur FLAG-Files (falls Trigger) + log.md + ggf. CORE-MEMORY-Headline-Notiz. Kein Score-Event-Sync.
-   - **Post-Call-Phase (Tag +1 morgens, Transcript verfügbar):** Vollanalyse läuft regulär (Schritte 1-7 unten). Pflicht-Quelle `mcp__defeatbeta-api__get_stock_earning_call_transcript` (US) bzw. Quartr (Non-US) liefert Pricing-Power-Confirmation + Forward-Guidance-Detail + Management-Tone.
+   - **Post-Call-Phase (Tag +1 morgens, Transcript verfügbar):** Vollanalyse läuft regulär (Schritte 1-7 unten). Transcript nach **Transcript-Quellenkette** (Schritt 1) liefert Pricing-Power-Confirmation + Forward-Guidance-Detail + Management-Tone. Hinweis: ASML veröffentlicht den Call **voraufgezeichnet** mit den Zahlen (07:00) — Transcript ist dort schon Tag 0 verfügbar.
    - **Outlier-Bypass:** Wenn dringende Sparplan-Entscheidung am Tag 0 zwingt (z.B. AVGO-Style Insider-FLAG mit unmittelbarer Sparrate-Konsequenz) → FLAG-Event sofort + Score-Move trotzdem auf Tag +1 verschoben.
 4. **Bei aktivem Klasse-B-Trigger — Scope nach score_datum (am Tag +1):**
    - score_datum < 14 Tage → Insider aus Faktortabelle übernehmen (API-Skip), Rest Vollanalyse
@@ -79,7 +79,7 @@ Gilt für Chat, Cowork UND Claude Code.
 IF US-Ticker (NYSE/NASDAQ): AVGO, MSFT, V, BRK.B, TMO, APH, AMZN, NOW, ZETA
     → Shibui Finance SQL: technical_indicators, cash_flow_quarterly (2 Zeilen 200MA-Slope)
     → defeatbeta MCP: annual_cash_flow, balance_sheet, income_statement, quarterly_roic, wacc,
-                      annual_gross_margin, quarterly_revenue_by_geography, earning_call_transcript
+                      annual_gross_margin, revenue_breakdown, earning_call_transcript
     → insider_intel.py: python insider_intel.py scan [TICKER]  (Form 4, automatisch)
     → Web (Pflicht): Live-Kurs (Yahoo), Fwd P/E (AlphaSpread), Moat (GuruFocus moat-score),
                      OpenInsider (10b5-1 Pflichtcheck!), EPS-Revisionen (Zacks)
@@ -93,7 +93,13 @@ IF Non-US-Ticker: ASML, RMS, SU  (KYCCF JP → O3-pending, JP/JPY-Support noch n
     → Insider: AFM (ASML) / AMF (RMS, SU) — manuell prüfen, keine Form-4-Pflicht
 ```
 
-**Pflicht zuerst:** `get_latest_data_update_date` aufrufen → Referenzdatum fuer alle defeatbeta-Abfragen feststellen.
+**Pflicht zuerst — Datenfrische-Gate:** `get_latest_data_update_date` aufrufen → Referenzdatum fuer alle defeatbeta-Abfragen feststellen. **Zusätzlich** letzte Periode von `get_stock_quarterly_income_statement` prüfen: fehlt das gerade berichtete Quartal (defeatbeta hinkt typ. 1 Quartal), kommen Q-Zahlen aus Press-Release / 10-Q / 6-K — in `quellen` dokumentieren, nie still mit Vorquartal mischen.
+
+**Transcript-Quellenkette (festgelegt 14.10.2026):**
+1. defeatbeta `get_stock_earning_call_transcripts_list` → Quartal gelistet? → `get_stock_earning_call_transcript` (US + ASML-ADR).
+2. Quartal fehlt (Refresh-Verzug): `tavily_search "<TICKER> Q<n> <JJJJ> earnings call transcript"` → `tavily_extract` auf Volltext bei **investing.com** oder **Benzinga**.
+3. Non-US ohne Call-Transcript (RMS, SU): IR-Präsentation/Webcast + Press-Release.
+Genutzte Stufe in `quellen` vermerken. Quartr ist **nicht** angebunden.
 
 **Pflicht via Shibui Finance SQL (US-Ticker — Technicals + FLAG-Historie):**
 *   `technical_indicators` → RSI-14, MACD, SMA-200, EMA-50, BB-Bänder, ADX-14 (2 Zeilen fuer Slope)
@@ -106,8 +112,8 @@ IF Non-US-Ticker: ASML, RMS, SU  (KYCCF JP → O3-pending, JP/JPY-Support noch n
 *   `get_stock_quarterly_roic` → ROIC-Trend: **nur die letzten 6 Quartale auswerten** — ältere Werte (die API liefert 10+) ignorieren
 *   `get_stock_wacc` → WACC: **nur den neuesten Wert verwenden** — die Zeitreihe enthält 70+ Handelstage, nur der aktuellste ist relevant. Alle anderen Zeilen verwerfen.
 *   `get_stock_annual_gross_margin` → GM-Trend 3 Jahre (Moat-Check)
-*   `get_quarterly_revenue_by_geography` → Tariff Exposure (CN/TW/MY/TH/VN-Anteil) — **nur aufrufen wenn Produktionsstandorte in Hochrisiko-Regionen bekannt**; bei reinen US-Software-Titeln weglassen
-*   `get_stock_earning_call_transcript` → letztes Quartal (Pricing Power Check)
+*   `get_revenue_breakdown(symbol, "quarterly")` → Tabelle `revenue-by-geography` (falls offengelegt) für Tariff Exposure (CN/TW/MY/TH/VN-Anteil) — **nur aufrufen wenn Produktionsstandorte in Hochrisiko-Regionen bekannt**; bei reinen US-Software-Titeln weglassen (ersetzt seit defeatbeta 0.0.62 `get_quarterly_revenue_by_geography`/`_by_segment`)
+*   `get_stock_earning_call_transcript` → letztes Quartal (Pricing Power Check) — Fallback siehe Transcript-Quellenkette
 *   `get_stock_quarterly_cash_flow` → **BEDINGT:** Nur aufrufen wenn `get_stock_annual_cash_flow` bei CapEx/OCF einen Grenzwert (45–65%) zeigt und Quartals-Drill-Down zur FLAG-Entscheidung nötig ist. Standard: weglassen.
 
 **Pflicht via insider_intel.py (US-Ticker — Insider-Block):**
@@ -137,7 +143,7 @@ IF Non-US-Ticker: ASML, RMS, SU  (KYCCF JP → O3-pending, JP/JPY-Support noch n
 2.  **ROIC-Quartale:** `get_stock_quarterly_roic` liefert 10+ Quartale — **maximal die letzten 6 auswerten**, ältere Werte nicht zitieren.
 3.  **Quarterly Cash Flow bedingt:** `get_stock_quarterly_cash_flow` **nur aufrufen wenn** Annual-CapEx/OCF im Grenzbereich (45–65%) liegt. Bei klar grünen (<40%) oder roten (>70%) Werten: weglassen.
 4.  **WebSearch konsolidieren:** Mehrere Web-Metriken in **einer einzigen Suche** abrufen (z.B. „TICKER AlphaSpread Fwd PE moat GuruFocus"). Separate Suchen nur wenn Quelle explizit vorgegeben.
-5.  **Geography bedingt:** `get_quarterly_revenue_by_geography` nur bei Titeln mit bekannten Produktionsstandorten in CN/TW/MY/TH/VN. US-Software-Moats (V, NOW, MSFT): weglassen.
+5.  **Geography bedingt:** `get_revenue_breakdown` (Tabelle `revenue-by-geography`) nur bei Titeln mit bekannten Produktionsstandorten in CN/TW/MY/TH/VN. US-Software-Moats (V, NOW, MSFT): weglassen.
 6.  **Duplikat-Check:** Prüfen ob Metrik bereits im aktiven Thread. Kein Re-Fetch innerhalb derselben Session. Gilt für: WACC, ROIC, PE, FCF-Marge, Insider-Score.
 
 **BLOCK B — Early-Exit**
@@ -562,7 +568,7 @@ Quelle: Macrotrends gross-profit-margin/TICKER (3-Jahres-Verlauf)
 
 #### Pricing Power Confirmation (Bonus, optional)
 
-Quelle: Quartr TICKER → letztes Earnings Call Transcript
+Quelle: letztes Earnings Call Transcript (Transcript-Quellenkette, Schritt 1)
 
 - Management hat Preiserhöhungen in letzten 12 Monaten bestätigt UND umgesetzt → +1 Punkt
 - Suchbegriffe im Transcript: "pricing", "price increase", "raised prices"
@@ -762,7 +768,7 @@ Bei aktivem FLAG: Tariff-Szenario im Bull/Bear-Case verpflichtend dokumentieren.
 
 Quellen (Reihenfolge):
 1\. SEC EDGAR 10-K / 20-F → Abschnitt "Geographic Revenue" (primär)
-2\. Quartr TICKER → Earnings Call Management Commentary zu Zöllen
+2\. Earnings Call Transcript (Transcript-Quellenkette, Schritt 1) → Management Commentary zu Zöllen
 3\. Simply Wall St "Company Analysis" (grobe Schätzung, Fallback)
 
 Kalibrierung: AVGO 35% Exposure MY/TH → Grenzfall Notiz-Pflicht
@@ -929,7 +935,7 @@ Kalibrierung: MSFT capital_lease_obligations ~$17,3B → Finance Lease Check Pfl
 ### Regel 3 — CapEx-Qualität (Growth vs. Maintenance)
 
 **Aktion:** Semantischer Abgleich der API-Daten mit Earnings Call / 8-K Begleittexten
-**Quelle:** `get_stock_earning_call_transcript` (defeatbeta) oder Quartr TICKER
+**Quelle:** Earnings Call Transcript (Transcript-Quellenkette, Schritt 1) / 8-K
 
 | Befund | Wirkung |
 | :--- | :--- |

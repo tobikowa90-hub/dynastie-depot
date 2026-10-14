@@ -473,7 +473,7 @@ Basis: SSRN 2022. 80% DEFCON-Score >12 Monate Halbwertszeit.
 **Tag-+1-Workflow (Folgetag morgens, ~30-45 Min):**
 
 Standard `dynastie-depot` Vollanalyse (Schritte 0-7) — mit folgenden Pflicht-Quellen, die am Tag 0 noch nicht verfügbar waren:
-- **Earnings Call Transcript** via `mcp__defeatbeta-api__get_stock_earning_call_transcript` (US) oder Quartr (Non-US) — Pricing-Power-Confirmation-Suche (Suchbegriffe „pricing", „price increase", „raised prices") → Moat +1 Bonus möglich
+- **Earnings Call Transcript** via Transcript-Quellenkette (`dynastie-depot` SKILL Schritt 1: defeatbeta → Fallback `tavily_extract` investing.com/Benzinga → Non-US ohne Call: IR-Präsentation) — Pricing-Power-Confirmation-Suche (Suchbegriffe „pricing", „price increase", „raised prices") → Moat +1 Bonus möglich
 - **Forward-Guidance-Detail** aus Call-Q&A (oft präziser als Press-Release)
 - **Zacks-EPS-Revisions-Refresh** (12-72h post-Call typisch verfügbar)
 - **Management-Tone / Q&A-Insights** in Risk-Map

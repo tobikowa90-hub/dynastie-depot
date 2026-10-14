@@ -108,8 +108,8 @@ PFLICHT ZUERST: get_latest_data_update_date → Referenzdatum feststellen
 IF US-Ticker (AVGO, MSFT, V, BRK.B, TMO, APH, AMZN, NOW, ZETA):
     defeatbeta MCP    → annual_cash_flow, balance_sheet, income_statement,
                          quarterly_roic (max. 6Q), wacc (nur neuester Wert),
-                         annual_gross_margin, quarterly_revenue_by_geography*,
-                         earning_call_transcript
+                         annual_gross_margin, revenue_breakdown* (Tabelle revenue-by-geography),
+                         earning_call_transcript (Fallback: SKILL Transcript-Quellenkette)
     Shibui SQL        → technical_indicators (2 Zeilen für 200MA-Slope),
                          cash_flow_quarterly (12Q für CapEx-FLAG-Muster)
     insider_intel.py  → python 01_Skills/insider-intelligence/insider_intel.py scan [TICKER]
