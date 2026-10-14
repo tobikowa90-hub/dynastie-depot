@@ -2,7 +2,7 @@
 name: Applied Learning Log
 description: Kuratierte Arbeitsprinzipien für Dynasty-Depot-Sessions (Tier 2 des 3-Tier-Lernsystems). Enthält Pflege-Regeln und Versionshistorie.
 type: learning-log
-updated: 2026-08-26
+updated: 2026-10-14
 ---
 
 # Applied Learning — Kuratierte Arbeitsprinzipien
@@ -10,7 +10,7 @@ updated: 2026-08-26
 > Tier 2 des 3-Tier-Systems (Auto-Memory → Applied Learning → INSTRUKTIONEN.md).
 > <15 Wörter pro Bullet. Nur operativ relevante Arbeitsprinzipien — keine Tool-References (→ Auto-Memory) und keine systemischen Regeln (→ INSTRUKTIONEN.md §§).
 
-## Bullets (Stand: ⚠️ 22/20 — Kurator-Regel überfällig)
+## Bullets (Stand: ⚠️ 25/20 — Kurator-Regel überfällig)
 
 > **Proaktive Pflege (seit 18.04.2026):** Bei jedem Monats-Übergang: 5-Min-Scan — Tool-References identifizieren und evakuieren. Verhindert Buildup, billiger als reaktive Überlauf-Sanierung.
 >
@@ -42,6 +42,7 @@ updated: 2026-08-26
 - Neue Fehlerklasse je Prüfrunde = Skalen-Signal, nicht Methodenerfolg — Ursache ist Zustands-Duplikation (Detail → Auto-Memory `feedback_verification_ratchet_state_duplication`)
 - **Abriss heißt ersetzen, nicht ergänzen:** Jeder neue Baustein eines Vereinfachungs-Umbaus muss beim Vorschlag sichtbar eine bestehende Datei/Regel *ersetzen*. Prüffrage: „Welche Datei verschwindet dafür?" — keine Antwort = kein Bau (Empirie 14.10.2026: erster REGELWERK.md-Entwurf wäre 14. Datei gewesen)
 - **Schwellen gegen die echte Verteilung kalibrieren:** Vor jeder Regel mit Schwellenwert die tatsächliche Verteilung der Messgröße prüfen — eine nie erreichbare Schwelle ist eine tote Regel, die wie eine lebende aussieht (Empirie 14.10.2026: Ersatz „Score ≥80" nie erfüllbar, 15 echte v3.7-Analysen Max 72, alle ≥80 = Backfills)
+- **Quellen-Gesundheit = echter Datenabruf, Pflichtquelle = tatsächlich angebunden:** Vor Analyse-Phasen je Quelle einen echten Abruf testen und Skill-Pflichtquellen gegen `claude mcp list` abgleichen (Empirie 14.10.2026: defeatbeta antwortete auf `get_latest_data_update_date`, alle Datei-Endpunkte 404 nach Upstream-Pfadumbau; Shibui stand monatelang als Skill-Pflicht, war lokal nie angebunden)
 
 ## Promotion-Logik
 
@@ -58,6 +59,7 @@ Auto-Memory → Applied Learning (wenn kritisch + wiederholbar) → INSTRUKTIONE
 | v3.0 | 26.08.2026 | +1 (Zustand vs. Urteil trennen) — Scalable-Agentic-Investing-Anbindung. Empirie: KYCCF-xlsx-Zeile trug wochenlang Veeva-Wert; 135 €/Mt liefen 2,5 Monate in geflaggte Titel, weil kein Markdown-File einen neu angelegten Sparplan bemerken kann. Detail → `02_Analysen/2026-08-26_Depot-Reconciliation.md` §F. Stand: **18/20**. |
 | v3.1 | 26.08.2026 | +3 aus der Architektur-Spec-Session (Entdopplungs-Vorbedingung · Regelwerk-Kollisionsprüfung · Datei-weite Befundprüfung). Empirie: drei FLAG-Quellen paarweise widersprüchlich; „freigesetzt → Block-Untergewicht" hätte `substitute_activation_global` still übersteuert; `check_freshness` und `parse_state_row` stehen in derselben Datei, eine Sparring-Runde sah nur eines. Detail → `03_Tools/depot-architecture-spec.md` §4.2/§4.4/§7.4. Stand: **⚠️ 21/20 — Kappe gerissen, Kurator-Regel fällig.** |
 | v3.2 | 14.10.2026 | +2 aus dem Radikalkur-Grilling (Abriss = ersetzen statt ergänzen · Schwellen gegen echte Verteilung kalibrieren). Kurations-Auftrag bleibt offen → wird mit E16 (Memory-Verdichtung) in Phase 3 erledigt. |
+| v3.3 | 14.10.2026 | +1 (Quellen-Gesundheit = echter Abruf + Pflichtquelle angebunden) — defeatbeta-Totalausfall nach Upstream-Umbau + Shibui nie lokal angebunden; Fix in `b4eb8d7`/`8c1aae6`. Zählung korrigiert: real **25/20** (Kopfzeile stand auf 22). |
 
 > **Offener Kurations-Auftrag (26.08.2026):** 21/20, Ziel laut Kurator-Regel ≤15. Bewusst nichts eigenmächtig gelöscht. Zwei Bullets sind inhaltlich überholt und wären die ersten Kandidaten: *„Advisor-Empfehlung nicht ohne neue Evidenz überstimmen"* (advisor ist projektweit durch Codex ersetzt, Memory `feedback_review_via_codex_not_advisor`) und *„Cloud-Sync-Verify ist Pre-Phase-Pflicht"* (kein aktiver Cloud-Sync, Memory `reference_no_cloud_sync_onedrive_inactive`). Entscheidung beim Owner.
 
