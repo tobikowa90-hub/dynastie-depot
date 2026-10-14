@@ -123,6 +123,22 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 
 **Q3-Cluster-Umfang = Ist-Bestand laut Scalable-CLI**, nicht Roster-Listen der Altdateien (Owner 14.10.). **KYCCF ist nicht im Depot** → keine Analyse. Score-Pflicht nach E9. Abschluss-Check Ende Phase 3: Zuordnung jede aktive Datei → Kernfrage (E1).
 
+## E18 — Phase-1-Klärungen (14.10.2026)
+
+1. **Moat-Drift:** eigener Trigger entfällt (nie ausgelöst); Morningstar-Rating wird in jeder Analyse/QuickCheck geprüft, Downgrade seit letzter Analyse = „Analyse fällig“.
+2. **Ersatzbank:** KONTEXT hält nur eine Namensliste (Ticker + 1 Satz, keine Zahlen); ersatz-tauglich nach E5 erst mit echter Analyse im Ledger. Watchlist-xlsx + config-`watchlist` → Archiv.
+3. **§30 Monats-Refresh** gestrichen: FLAG-Prüfung in jeder Quartalsanalyse, Resolve-Check-Datum in der Ticker-Datei; Altbestand (5 FLAGs, 0 Resolves) im Q3-Cluster prüfen.
+4. **§28/§29:** 5-Zeilen-Regel „Versionssprung“ in INSTRUKTIONEN; §29 wörtlich ins Archiv, Verweis „vor Rückblick 2028 lesen“.
+5. **Aktien-Slots (13)** gestrichen — Roster = Broker (E9).
+6. **Tier** komplett gestrichen — die Rate drückt die Conviction aus.
+7. **Quellen-Drift ROIC:** >10 pp Abweichung Primär- vs. Sekundärquelle → Quellen/Definitionen ins `notizen`-Feld + Methodik-Check vor Append; Prüfer ohne Score-Änderungsbefugnis, Score folgt Primärquelle. Kein Versionssprung (Codex 14.10.: Option C, 91 %).
+8. **Statistik-Ledger** → Archiv bestätigt. **Core-4 „größte Position“** = größte Einzelaktien, IWDA bleibt größte Position.
+9. **Score-Alter:** 180 Tage im YAML-Block → danach „Analyse fällig“.
+
+**Verfahren Abgleichliste:** eine Zeile je Regel mit allen Fundstellen · Wert aus E1–E18 gilt, ohne E-Bezug bei widersprüchlichen Altwerten → „offen → Owner“ · Methode nur im Skill, je Zeile geprüft ob der Skill sie wörtlich hat (sonst Phase 2 unverändert einfügen) · xlsx via openpyxl · Vollständigkeit per Skript (Fehlende = 0) · je Regel Lebensnachweis prüfen (Ledger/git log), „AKTIV“ im Dokument reicht nicht.
+
+**Phase-1-Plan:** 16.10. Inventar → 16.–17. Verdikte → 18. Entwurf (eigene Datei neben diesem Protokoll; Tausch gegen alte INSTRUKTIONEN erst Phase 3 mit Skill-Kürzung) → 19. Codex + Owner-Review → 20. Commit.
+
 ## Offene Punkte aus den Gotchas (in die Phasen eingeplant)
 
 - **Phase 2 — `earnings_calendar.py` auf CLI-Bestand umstellen:** kennt nur das alte 13er-Roster; **META, GOOGL, Adobe, Veeva fehlen**, KYCCF ist noch drin. Ticker künftig aus `sc broker holdings` statt aus PORTFOLIO — sonst fehlen genau die Core-4-Termine (META/GOOGL melden Ende Oktober).
@@ -133,4 +149,4 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 - **Erledigt 14.10.:** `2026-09-20_Sparplan-Anpassung.md` mit Überholt-Vermerk committet (Begründungen erhalten, Live-Stand gilt).
 
 ---
-**Grilling abgeschlossen 14.10.2026 — E1–E17.**
+**Grilling abgeschlossen 14.10.2026 — E1–E17; Phase-1-Klärungen E18 (14.10.).**
