@@ -9,7 +9,7 @@ Danach: kompakte Zusammenfassung (max. 10 Zeilen). **`dynastie-depot`-Skill NICH
 - **Gotcha-Regel**: Optimiere basierend auf Verlauf jeder Session jegliche genutzten Skills und Workflows.
 - **Sektions-Pflicht**: Am Ende jeder Aufgabe oder Konversation zwingend Sektion `### Mögliche Stolpersteine (Gotchas)` anfügen.
 - **Inhalt**: Expliziter Verweis auf in dieser Session gemachte Fehler, versteckte Bugs, Edge Cases, Performance-Risiken oder typische Denkfehler. Ziel: Fehlervermeidung in Folge-Sessions.
-- **Tier-2-Bridge**: Identifizierst du in den Gotchas eine fundamentale Erkenntnis, schlage mir am Session-Ende den exakten Markdown-Code für den Übertrag in `00_Core/APPLIED-LEARNING.md` (Tier 2) aktiv vor.
+- **Lern-Routing (Radikalkur E21, ersetzt Tier-2-Bridge)**: Jedes Gotcha bekommt eine Ziel-Spalte — **Code** (maschinell prüfbar) · **Skill-Schritt** (Analyse-Methodik) · **CLAUDE.md-Arbeitsregel** (übergreifendes Verhalten) · **Memory** (Werkzeug-Bedienung) · **verwerfen** (einmalig) — und wird nach Owner-Freigabe **in derselben Session** dort eingetragen (Skill-/Code-Ziele bis Phase 2 auf die Einfügeliste im Radikalkur-Protokoll). `00_Core/APPLIED-LEARNING.md` erhält keine neuen Einträge.
 
 
 ## Verhalten
