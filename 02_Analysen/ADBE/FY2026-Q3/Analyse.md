@@ -1,10 +1,6 @@
-# ADBE — Adobe Inc.
+# ADBE · FY2026-Q3 — Analyse
 
-> **Begründungsdatei.** Die aktuelle Zahl (Score, DEFCON, FLAG) steht nur im Ledger — letzter Eintrag je Ticker in `05_Archiv/score_history.jsonl` / `flag_events.jsonl`. Owner-Festlegungen (Tier, Overrides) → `INSTRUKTIONEN.md`. Ein Abschnitt je Quartal, neuester oben; alte Abschnitte werden nicht überschrieben.
-
-**These:** Software-Plattform für Kreativ-, Dokument- und Marketing-Workflows (Creative Cloud, Acrobat, Experience Cloud), ~97 % Abo-Umsatz (Q3: $6,56 von $6,76 Mrd). Bewertet wie ein Value-Titel (Fwd P/E < 9), weil der Markt generative KI als Angriff auf den Kreativ-Burggraben liest. Die Frage jedes Quartals: hält der Burggraben — sichtbar an Net-New-ARR, Preissetzung und Margen?
-
----
+> Ticker-Index + These: [ADBE.md](../ADBE.md) · Rohquellen: dieser Ordner
 
 ## Q3 FY26 — Analyse 14.10.2026 (Bericht + Call 10.09.2026)
 

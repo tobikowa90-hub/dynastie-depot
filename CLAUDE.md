@@ -55,7 +55,7 @@ Bullets, Pflege-Regeln, Promotion-Logik, Historie: siehe `00_Core/APPLIED-LEARNI
 
 - `00_Core/` — Kontext, Instruktionen, Gedächtnis (STATE, CORE-MEMORY, INSTRUKTIONEN, CODE_GUIDELINES [§0-Volltext, Code-Edit-Lazy-Load], RETROSPECTIVE-GATE, APPLIED-LEARNING, TOKEN-RULES, KONTEXT, Faktortabelle, SESSION-HANDOVER)
 - `01_Skills/` — dynastie-depot · backtest-ready-forward-verify · insider-intelligence · non-us-fundamentals · quick-screener · sec-edgar-skill · session-closure · paragraph-18-sync · core-slim-refactor · xlsx-smoke-test-runner · `_extern/` (read-only)
-- `02_Analysen/` — DEFCON-Analysen als Excel sowie Earnings Reports der Satelliten
+- `02_Analysen/` — je Ticker ein Ordner `<TICKER>/` (`<TICKER>.md` = These + Quartals-Index, keine Scores) mit Unterordner je Geschäftsquartal `FY<JJJJ>-Q<n>/` (`Analyse.md` + Press-Release/Transcript) — Radikalkur E20; dazu Projekt-Dokumente (Grilling-Protokoll, Reconciliations)
 - `03_Tools/` — Rebalancing_Tool · Satelliten_Monitor · Watchlist_Ersatzbank_Monitor · system_audit
 - `04_Templates/` — Pointer + spezifische Templates
 - `05_Archiv/` — Historische Dateien

@@ -1,10 +1,6 @@
-# ASML — ASML Holding N.V.
+# ASML · FY2026-Q3 — Analyse
 
-> **Begründungsdatei.** Die aktuelle Zahl (Score, DEFCON, FLAG) steht nur im Ledger — letzter Eintrag je Ticker in `05_Archiv/score_history.jsonl` / `flag_events.jsonl`. Owner-Festlegungen (Overrides) → `INSTRUKTIONEN.md`. Ein Abschnitt je Quartal, neuester oben; alte Abschnitte werden nicht überschrieben.
-
-**These:** Einziger Hersteller von EUV-Lithografie — ohne ASML keine Leading-Edge-Chips (Logik wie DRAM). Umsatz aus Neusystemen (EUV, DUV) plus wachsender Installed-Base-Sparte (Service, Upgrades). Die Frage jedes Quartals: bleibt die Nachfrage über die eigene Kapazität hinaus gesichert (Aufträge, Anzahlungen, Sichtweite), und setzt sich die Preismacht in Marge um — gegen das Risiko China/Exportkontrollen und Zyklus?
-
----
+> Ticker-Index + These: [ASML.md](../ASML.md) · Rohquellen: dieser Ordner
 
 ## Q3 2026 — Analyse 15.10.2026 (Bericht + voraufgezeichneter Call 14.10.2026)
 

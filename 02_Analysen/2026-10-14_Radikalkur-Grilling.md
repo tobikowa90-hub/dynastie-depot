@@ -23,7 +23,7 @@ Positionen, Stückzahlen, Kurse, Sparraten, Cash **und Einstände** kommen live 
 
 - **Aktuelle Zahl** (Score, DEFCON, FLAG): letzter Eintrag je Ticker in `score_history.jsonl` / `flag_events.jsonl` — einzige Quelle.
 - **Owner-Festlegung** (Tier, Overrides wie AVGO trotz FLAG, GOOGL/META 100 €, Veeva): Tabelle in `INSTRUKTIONEN.md`.
-- **Begründung**: eine Datei je Ticker `02_Analysen/<TICKER>.md`, Abschnitt je Quartal, neuester oben. Ersetzt CORE-MEMORY §12, Vault-Frontmatter-Scores, verstreute Earnings-Notizen.
+- **Begründung**: eine Datei je Ticker `02_Analysen/<TICKER>.md`, Abschnitt je Quartal, neuester oben. *(Ablage geändert → E20: Ordner je Ticker, Unterordner je Geschäftsquartal.)* Ersetzt CORE-MEMORY §12, Vault-Frontmatter-Scores, verstreute Earnings-Notizen.
 - **Statistik-Ledger** `portfolio_returns` + `benchmark-series` (+ `portfolio_risk.py`) seit 23.04. tot → Archiv (Vorschlag, Owner-Bestätigung ausstehend). Frage 5 aus `score_history` + Broker-Performance.
 
 ## E4 — Prüfen statt rechnen; FLAG = Warnsignal, kein Verbot (14.10.2026)
@@ -94,7 +94,7 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 
 ## E14 — Zielstruktur + Archivliste (14.10.2026)
 
-**Aktiv:** `CLAUDE.md` · `00_Core/{INSTRUKTIONEN, KONTEXT, PIPELINE, APPLIED-LEARNING, CODE_GUIDELINES, SESSION-HANDOVER}` · `01_Skills/{dynastie-depot, insider-intelligence, non-us-fundamentals, quick-screener, _extern}` · `02_Analysen/<TICKER>.md` + Earnings Reports · `03_Tools/{depot_status.py (neu), earnings_calendar.py + overrides, backtest-ready/{archive_score, archive_flag, schemas}, precommit/{validate_score_history, validate_flag_events, crlf_guard}, video_ingest, defeatbeta_subprocess, Utils}` · `05_Archiv/{score_history, flag_events}.jsonl` · Vault (E11).
+**Aktiv:** `CLAUDE.md` · `00_Core/{INSTRUKTIONEN, KONTEXT, PIPELINE, APPLIED-LEARNING, CODE_GUIDELINES, SESSION-HANDOVER}` · `01_Skills/{dynastie-depot, insider-intelligence, non-us-fundamentals, quick-screener, _extern}` · `02_Analysen/<TICKER>/` (E20; Earnings Reports dort integriert) · `03_Tools/{depot_status.py (neu), earnings_calendar.py + overrides, backtest-ready/{archive_score, archive_flag, schemas}, precommit/{validate_score_history, validate_flag_events, crlf_guard}, video_ingest, defeatbeta_subprocess, Utils}` · `05_Archiv/{score_history, flag_events}.jsonl` · Vault (E11).
 
 **Archiv `05_Archiv/radikalkur-2026-10/`:** 00_Core PORTFOLIO · Faktortabelle · STATE · CORE-MEMORY · SYSTEM · TOKEN-RULES · RETROSPECTIVE-GATE — Skills paragraph-18-sync · xlsx-smoke-test-runner (+workspace) · core-slim-refactor · backtest-ready-forward-verify · cross-source-verify · session-closure · sec-edgar-skill — Tools para18_sync · system_audit (+ Slash-Command) · spec_inventory_diff · depot-architecture-spec · 3× xlsx · xlsx-smoke-test.md · finnhub_* · hook-latency-* · portfolio_risk · schema_drift_phase2 · precommit para18-Reminder + xlsx-Hook · specs/ — `config.yaml` · `04_Templates/CAPEX-FCF` · Statistik-Ledger · `06_Skills-Pakete/` (Owner nutzt nicht). Nichts wird gelöscht.
 
@@ -139,7 +139,41 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 
 **Phase-1-Plan:** 16.10. Inventar → 16.–17. Verdikte → 18. Entwurf (eigene Datei neben diesem Protokoll; Tausch gegen alte INSTRUKTIONEN erst Phase 3 mit Skill-Kürzung) → 19. Codex + Owner-Review → 20. Commit.
 
+## E19 — reserviert (Depot-Änderungen Keyence / COST / Overrides)
+
+Am 15.10. früh besprochen, noch nicht eingetragen; Keyence liegt bereits im Depot (CLI 15.10.). Formulierung mit dem Owner im Anschluss an die Session vom 15.10.
+
+## E20 — Ablage: Ordner je Ticker, Unterordner je Geschäftsquartal (15.10.2026)
+
+- `02_Analysen/<TICKER>/<TICKER>.md` = These + Quartals-Index (nur Links, **keine Scores** — Zahl bleibt allein im Ledger, E3).
+- `02_Analysen/<TICKER>/FY<JJJJ>-Q<n>/` = `Analyse.md` + Rohquellen (Press-Release, Transcript, Vorbereitungsnotizen). Quartalsname = Geschäftsquartal des Unternehmens (ADBE FY2026-Q3 endet 08/2026; Keyence-Jahresbericht 03/2026 = FY2026-Q4).
+- `Earnings Reports/` aufgelöst (24 Dateien per `git mv`, Firmennamen-Tippfehler durch Ticker-Ordner ersetzt). Index-Datei entsteht mit der ersten Analyse im neuen Format; Altanalysen (CORE-MEMORY §12) werden nicht rückwirkend zerlegt.
+
+## E21 — Lehren landen dort, wo sie ausgeführt werden (15.10.2026)
+
+**Befund:** `APPLIED-LEARNING.md` steht in keiner Routing-Zeile → wird nie automatisch gelesen. Automatisch geladen werden nur CLAUDE.md, der MEMORY-Index und der aktive Skill.
+
+| Art der Lehre | Ziel |
+|---|---|
+| maschinell prüfbar | Code (Validator, `depot_status.py`) |
+| Analyse-Methodik | Schritt im `dynastie-depot`-Skill |
+| übergreifendes Verhalten | CLAUDE.md-Block „Arbeitsregeln“ (≤ 10 Zeilen) |
+| Werkzeug-Bedienung | Memory |
+| einmalig | verwerfen |
+
+- **Gotcha-Abschnitt am Session-Ende:** jede Zeile mit Ziel-Spalte; Eintrag mit Owner-Freigabe in derselben Session. „Tier-2-Bridge“ entfällt.
+- `APPLIED-LEARNING.md`: Inhalt in Phase 3 auf die Ziele verteilen (zusammen mit E16), danach Archiv. Bis dahin keine neuen Einträge.
+
 ## Offene Punkte aus den Gotchas (in die Phasen eingeplant)
+
+- **Phase 2 — Skill-Einfügeliste (E21, beim Kürzen wörtlich übernehmen):**
+  1. *Kennzahl-Periodizität:* API-Kennzahlen (defeatbeta `quarterly_roic`) können Quartalswerte nicht annualisiert liefern → TTM selbst bilden (ADBE 14.10.: 10,4 % roh vs. 41,8 % TTM; V PIPELINE #21).
+  2. *Anzahlungsgetriebener Cashflow:* springen Vertragsverbindlichkeiten/Kundenanzahlungen, nach Regelwortlaut TTM scoren und Score ohne Anzahlungseffekt in `notizen` + Analyse nennen (ASML Q3 2026: 69 vs. 67).
+  3. *Strong-Buy-Quote* = nur „Strong Buy“ / alle Ratings (nicht Buy mitzählen; Präzedenz ADBE + ASML).
+  4. *Non-US-Insider ASML:* AFM-Register MAR 19 enthält keine ASML-Meldungen (Vollexport 15.10.) → Insider-Quelle für ASML neu festlegen (MarketScreener als Fallback dokumentiert).
+  5. *Datenfrische Non-US:* yfinance-Quartale hinken 1 Quartal → Q-Zahlen aus IR-Präsentation (`tavily_extract`); ASML-Statements-PDF blockt direkte Downloads.
+- **Phase 3 — Altdateien-Abgleich (Owner 15.10.: alles, nicht nur SESSION-HANDOVER):** Verweise per Dateiname außerhalb Archiv/Vault am 15.10.: PORTFOLIO 49 · CORE-MEMORY 46 · STATE 41 · Faktortabelle 41 · SYSTEM 28 · SESSION-HANDOVER 20 · TOKEN-RULES 9 Dateien. Je Altdatei Verdikt (Archiv / auflösen / behalten), dann Verweise bereinigen. Mit dabei: **SESSION-HANDOVER** (E14 führt sie noch als aktiv — Session-Start 15.10. brauchte sie nicht) · **APPLIED-LEARNING** (E21) · CLAUDE.md-Pflicht-Lesung beim Session-Start (STATE/PORTFOLIO), S-Tier-Liste, Tier-Tabelle, Gotcha-/Tier-2-Regel · `dynastie-depot`-Skill Schritt 0 (Faktortabelle) + Schritt 7 (§18-Set, `config.yaml`, Beispiele.md) · `non-us-fundamentals` (KYCCF-Roster) · `session-closure` (Pfad `Earnings Reports/`, ohnehin Archiv) · MEMORY-Index (E16).
+- **Phase 3 — CLAUDE.md-Arbeitsregeln (E21), Kandidaten:** *Sammel-Freigabe ≠ Optionswahl* — enthält ein Freigabe-Block eine Entweder-oder-Entscheidung, vorab eine Empfehlung als Default nennen, sonst reversiblen Status quo wählen und benennen (ADBE 14.10.) · *Teilausschnitt-Schluss* · *Empirie statt Annahme*.
 
 - **Phase 2 — `earnings_calendar.py` auf CLI-Bestand umstellen:** kennt nur das alte 13er-Roster; **META, GOOGL, Adobe, Veeva fehlen**, KYCCF ist noch drin. Ticker künftig aus `sc broker holdings` statt aus PORTFOLIO — sonst fehlen genau die Core-4-Termine (META/GOOGL melden Ende Oktober).
 - **Phase 2 — Freibetrag-Rest:** prüfen, ob die CLI den genutzten Sparerpauschbetrag liefert; sonst Owner-Eingabe 1×/Jahr im YAML-Block (E13).
@@ -149,4 +183,4 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 - **Erledigt 14.10.:** `2026-09-20_Sparplan-Anpassung.md` mit Überholt-Vermerk committet (Begründungen erhalten, Live-Stand gilt).
 
 ---
-**Grilling abgeschlossen 14.10.2026 — E1–E17; Phase-1-Klärungen E18 (14.10.).**
+**Grilling abgeschlossen 14.10.2026 — E1–E17; Phase-1-Klärungen E18 (14.10.); E20 Ablage + E21 Lern-Routing (15.10.); E19 offen.**
