@@ -48,7 +48,7 @@ Sparraten sind Owner-Entscheidung. Keine Formelrate mehr (§22, Tier×DEFCON×FL
 
 **Befund:** US-Anteil heute ~60,8 % (ETF-Faktoren geschätzt, IWDA ~0,72). Bei Core-4 >~11 % reißt der 63 %-Cap, wenn ETF-Mix + Satelliten so bleiben.
 
-- **US-Cap 63 % bleibt hart.** Raum für Core-4 entsteht durch ex-US-lastigeren ETF-Mix (neues ETF-Geld bevorzugt EXUS/EIMI, solange der Cap knapp ist) und bewusst weniger US-lastige Satelliten über die nächsten Jahre (Owner-Ziel).
+- **US-Cap 63 % bleibt hart.** Raum für Core-4 entsteht durch ex-US-lastigeren ETF-Mix (~~neues ETF-Geld bevorzugt EXUS/EIMI, solange der Cap knapp ist~~ — aufgehoben durch E19) und bewusst weniger US-lastige Satelliten über die nächsten Jahre (Owner-Ziel).
 - **Core-4-Zielmarke ~20 % Depot** (je ~5 %, größte Einzelaktien; offen: „größte Position" = größte Einzelaktien, nicht größer als IWDA — Owner-Bestätigung ausstehend).
 - Single-Stock-Cap 10 % kollidiert damit nicht.
 
@@ -87,9 +87,9 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 ## E13 — Verkaufsanlässe, Geldfluss, Freibetrag-Ernte (14.10.2026)
 
 - **Drei zulässige Verkaufsanlässe, nie automatisch, immer Owner-Entscheidung:** (1) **Kappung** Satellit >10 % Single-Stock-Cap → zurück auf ~8 % (Core-4 ausgenommen) · (2) **Umschichtung** Satellit <50 oder Ersatz ≥70 mit +10 Pkt. (E5) · (3) **Gewinnmitnahme** nach Owner-Ermessen.
-- **Geldfluss-Reihenfolge:** Core-4 solange <20 %-Zielmarke (E7) → sonst ETF ex-US solange US-Cap knapp → sonst IWDA. Bei Anlass 2 alternativ Ersatz-Kandidat.
+- **Geldfluss-Reihenfolge:** Core-4 solange <20 %-Zielmarke (E7) → ~~sonst ETF ex-US solange US-Cap knapp~~ (aufgehoben durch E19) → sonst IWDA. Bei Anlass 2 alternativ Ersatz-Kandidat.
 - **Verboten:** Verkauf nur zur Glättung der 60/35/5-Quote (Quote = Sparraten-Steuerung).
-- **NOW:** ~12 % gegen Dynastie-Basis (Topf-Tranche 2.000 € ausgenommen) → Anlass 1 nach Erst-Score (Analyse ~29.10.).
+- ~~**NOW:** ~12 % gegen Dynastie-Basis (Topf-Tranche 2.000 € ausgenommen) → Anlass 1 nach Erst-Score (Analyse ~29.10.).~~ Entfällt → E19 (Override Single-Stock-Cap bis 2027-07-31, Verkauf mit dem Topf).
 - **Freibetrag:** Sparerpauschbetrag 1.000 € (ledig) bis Heirat **07.08.2027**, danach 2.000 € Zusammenveranlagung (§ 26 EStG — für das ganze Jahr 2027 über die Steuererklärung; beim Broker erst mit gemeinsamem Freistellungsauftrag; geteilt mit Kapitalerträgen des Partners). **Jährliche Ernte:** Gewinne bis zum freien Rest realisieren + direkt zurückkaufen (Einstand steigt). `depot_status.py` zeigt bei Verkaufsanlässen Buchgewinn aus `fifo_price` + freien Freibetrag-Rest.
 
 ## E14 — Zielstruktur + Archivliste (14.10.2026)
@@ -139,9 +139,18 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 
 **Phase-1-Plan:** 16.10. Inventar → 16.–17. Verdikte → 18. Entwurf (eigene Datei neben diesem Protokoll; Tausch gegen alte INSTRUKTIONEN erst Phase 3 mit Skill-Kürzung) → 19. Codex + Owner-Review → 20. Commit.
 
-## E19 — reserviert (Depot-Änderungen Keyence / COST / Overrides)
+## E19 — Depot-Änderungen (Nacht 15.10.2026, CLI-geprüft 17.10.)
 
-Am 15.10. früh besprochen, noch nicht eingetragen; Keyence liegt bereits im Depot (CLI 15.10.). Formulierung mit dem Owner im Anschluss an die Session vom 15.10.
+- **Costco verkauft** (Erlös als Cash, 406 €; Verwendung nach Keyence-Analyse 30.10. — Tendenz Core-4 nach E13).
+- **Keyence aufgenommen:** 40 €/Mt ab 02.11. — Non-US-Qualität, Automations-Zulieferer, entschleunigt US-Anteil. Score 67 (06/2026) < 70 → **Override bis 30.10.** (Tag +1 nach Q-Zahlen 29.10.; negativ → Plan vor 02.11. löschen).
+- **NOW:** keine Kappung vor dem Topf-Verkauf → **Override Single-Stock-Cap bis 2027-07-31**; E13-Zeile „NOW Anlass 1 nach Erst-Score“ entfällt.
+- **AVGO:** 30 € trotz Insider-FLAG → **Override bis 2026-12-10**; keine Erhöhung solange FLAG oder Score <65.
+- **ADBE:** 25 € trotz Insider-FLAG → **Override bis 2026-12-15** (14.10.).
+- **Veeva + Hermès bleiben** (Überzeugung/Diversifikation); Veeva-Erstanalyse 25.11.
+- **WQTM + JEDI pausiert**, Entscheidung über Komplettverkauf bis Jahresende (ggf. mit Freibetrag-Ernte).
+- **Kein höheres exUSA-ETF-Gewicht** (MSCI World wird nicht beschnitten) → **E7** „neues ETF-Geld bevorzugt EXUS/EIMI“ und **E13** Geldfluss-Schritt „ETF ex-US“ **aufgehoben**; US-Entlastung über Non-US-Einzelaktien.
+- **Atlas Copco** (QuickCheck Grün 15.10.: P/FCF 38,6 · ROIC 21 % · Wide Moat) → Ersatzbank-Namensliste (KONTEXT, E18-2); keine Kaufentscheidung.
+- Raten selbst stehen nicht hier (E2: Zustand = Broker).
 
 ## E20 — Ablage: Ordner je Ticker, Unterordner je Geschäftsquartal (15.10.2026)
 
@@ -184,4 +193,4 @@ Am 15.10. früh besprochen, noch nicht eingetragen; Keyence liegt bereits im Dep
 - **Erledigt 14.10.:** `2026-09-20_Sparplan-Anpassung.md` mit Überholt-Vermerk committet (Begründungen erhalten, Live-Stand gilt).
 
 ---
-**Grilling abgeschlossen 14.10.2026 — E1–E17; Phase-1-Klärungen E18 (14.10.); E20 Ablage + E21 Lern-Routing (15.10.); E19 offen.**
+**Grilling abgeschlossen 14.10.2026 — E1–E17; Phase-1-Klärungen E18 (14.10.); E20 Ablage + E21 Lern-Routing (15.10.); E19 Depot-Änderungen (17.10.).**
