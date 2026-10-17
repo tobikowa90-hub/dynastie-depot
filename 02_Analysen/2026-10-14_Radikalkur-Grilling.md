@@ -137,7 +137,7 @@ Ein Block (~30 Z.) mit bloecke, caps, schwellen, core4, themen_etf_satellit, us_
 
 **Verfahren Abgleichliste:** eine Zeile je Regel mit allen Fundstellen · Wert aus E1–E18 gilt, ohne E-Bezug bei widersprüchlichen Altwerten → „offen → Owner“ · Methode nur im Skill, je Zeile geprüft ob der Skill sie wörtlich hat (sonst Phase 2 unverändert einfügen) · xlsx via openpyxl · Vollständigkeit per Skript (Fehlende = 0) · je Regel Lebensnachweis prüfen (Ledger/git log), „AKTIV“ im Dokument reicht nicht.
 
-**Phase-1-Plan:** 16.10. Inventar → 16.–17. Verdikte → 18. Entwurf (eigene Datei neben diesem Protokoll; Tausch gegen alte INSTRUKTIONEN erst Phase 3 mit Skill-Kürzung) → 19. Codex + Owner-Review → 20. Commit.
+**Phase-1-Plan (neu terminiert 17.10., Owner-freigegeben):** 17.–18.10. Inventar (Wegwerf-Skript im Scratchpad: alle §-Überschriften INSTRUKTIONEN + KONTEXT, alle config.yaml-Blätter, xlsx-Parameterzeilen via openpyxl → `02_Analysen/2026-10-17_Abgleichliste.md`) → 18.–19. Verdikte (Vorbelegung aus E1–E19, Owner nur „offen“) → 20. Entwurf `INSTRUKTIONEN-neu.md` neben diesem Protokoll (Tausch erst Phase 3) → 21. Codex + Owner-Review + Commit. **Prüfung:** Fehlende = 0 · keine offene Zeile · YAML parst + Werte = E1–E19. **Folge:** 22.10. TMO-Abnahmetest (Minimal-Lauf) · Phase 2 23.–26.10. · Phase 3 nach dem Earnings-Cluster ~31.10.–05.11. (statt 27.10.).
 
 ## E19 — Depot-Änderungen (Nacht 15.10.2026, CLI-geprüft 17.10.)
 
